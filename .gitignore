@@ -2,8 +2,8 @@
 /*
 
 # Directories
-!/gradle/wrapper
 !/src
+!/gradle
 
 # files
 !/.gitignore
