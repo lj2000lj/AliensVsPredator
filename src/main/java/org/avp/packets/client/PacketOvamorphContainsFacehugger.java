@@ -2,11 +2,12 @@ package org.avp.packets.client;
 
 import org.avp.entities.mob.EntityOvamorph;
 
+import com.arisux.amdxlib.lib.game.Game;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 
@@ -43,7 +44,7 @@ public class PacketOvamorphContainsFacehugger implements IMessage, IMessageHandl
     @Override
     public PacketOvamorphContainsFacehugger onMessage(PacketOvamorphContainsFacehugger packet, MessageContext ctx)
     {
-        World world = Minecraft.getMinecraft().thePlayer.worldObj;
+        World world = Game.minecraft().thePlayer.worldObj;
         Entity entity = world.getEntityByID(packet.entityId);
 
         if (world != null && entity != null && entity instanceof EntityOvamorph)

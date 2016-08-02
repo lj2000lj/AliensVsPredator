@@ -2,7 +2,7 @@ package org.avp.entities;
 
 import java.util.List;
 
-import com.arisux.airi.lib.WorldUtil.Entities;
+import com.arisux.amdxlib.lib.world.entity.Entities;
 
 import cpw.mods.fml.common.registry.IThrowableEntity;
 import cpw.mods.fml.relauncher.Side;

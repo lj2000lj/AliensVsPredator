@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import org.avp.AliensVsPredator;
 import org.avp.util.IHiveSignature;
 
-import com.arisux.airi.lib.WorldUtil.Blocks.CoordData;
-import com.arisux.airi.lib.WorldUtil.Entities;
+import com.arisux.amdxlib.lib.world.CoordData;
+import com.arisux.amdxlib.lib.world.entity.Entities;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;

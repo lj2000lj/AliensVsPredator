@@ -1,12 +1,12 @@
 package org.avp.entities.mob.model;
 
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.client.ModelBaseWrapper;
+import com.arisux.amdxlib.lib.client.Model;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.MathHelper;
 
-public class ModelWarrior extends ModelBaseWrapper
+public class ModelWarrior extends Model
 {
     public ModelRenderer chest, abdomen, rThigh, lThigh, lShin1, rShin1, lShin2, rShin2, lFoot, rFoot, lArm1, rArm1, lClaw1, rArm2, neck, headSpine1, rHead, jaw, jaw2, headSpine2, lArm2, rClaw1, lClaw2, rClaw2, back1, back2, tail1, tail2, stabber, tail3, tail4, lHead, tailSpikes5, tailSpikes4, tailSpikes3, tailSpikes2, tail5, tailSpikes1, part1, part2, part3, part4, headBase, headTop;
 
@@ -302,9 +302,9 @@ public class ModelWarrior extends ModelBaseWrapper
         this.lClaw1.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1.4F * o.swingProgressPrev + 0.3665191F;
         this.lClaw2.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1.4F * o.swingProgressPrev + 0.3665191F;
 
-        GlStateManager.pushMatrix();
+        OpenGL.pushMatrix();
         {
-            GlStateManager.translate(0F, 0.32F, 0F);
+            OpenGL.translate(0F, 0.32F, 0F);
 
             float newangle = 0.0F;
             float multiplier = 0.1F;
@@ -376,7 +376,7 @@ public class ModelWarrior extends ModelBaseWrapper
             this.headTop.render(boxTranslation);
             this.back1.render(boxTranslation);
             this.back2.render(boxTranslation);
-            GlStateManager.translate(0F, -0.3F, 0.8F);
+            OpenGL.translate(0F, -0.3F, 0.8F);
             this.tail1.render(boxTranslation);
             this.tail2.render(boxTranslation);
             this.tail3.render(boxTranslation);
@@ -389,7 +389,7 @@ public class ModelWarrior extends ModelBaseWrapper
             this.tailSpikes5.render(boxTranslation);
             this.stabber.render(boxTranslation);
         }
-        GlStateManager.popMatrix();
+        OpenGL.popMatrix();
     }
 
     private void doTail(float angle, float distMult)

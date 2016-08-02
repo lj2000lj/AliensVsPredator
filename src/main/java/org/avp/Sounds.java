@@ -1,6 +1,6 @@
 package org.avp;
 
-import com.arisux.airi.lib.client.Sound;
+import com.arisux.amdxlib.lib.client.Sound;
 
 public class Sounds
 {

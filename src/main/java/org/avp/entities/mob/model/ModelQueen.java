@@ -4,13 +4,13 @@ import org.avp.AliensVsPredator;
 import org.avp.entities.mob.EntityQueen;
 import org.lwjgl.opengl.GL11;
 
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.client.ModelBaseWrapper;
+import com.arisux.amdxlib.lib.client.Model;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.MathHelper;
 
-public class ModelQueen extends ModelBaseWrapper
+public class ModelQueen extends Model
 {
     public ModelRenderer torso0, torso1, rThigh, lThigh, lShin0, lShin1, lFoot, rShin0, rShin1, rFoot, lArm0, lArm1, lHand, lClaw, rArm0, rArm1, rHand, rClaw, tail0, tail1, tail2, tail3, tail4, tailStabber, bStabber0, bStabber1, bStabber2, bStabber3, bStabber4, bStabber5, bSpines0, bSpines1, bSpines2, bSpines3, bSpines4, bSpines5, bSpines6, lArmMini0, lArmMini1, rArmMini0, rArmMini1, lHandMini, rHandMini, lClawMini, rClawMini, neck, Jaw1, head0, head1, headBase0, headFinL0, headFinL1, headFinL2, headFinR0, headFinR1, headFinR2, headWebL, headSpinesL, headSpinesM, headSpinesR, headWebR, rHip, lHip, lShinSpike, rShinSpike, sack0, sack7, sack1, sack2, sack3, sack4, sack5, sack6;
 
@@ -496,7 +496,7 @@ public class ModelQueen extends ModelBaseWrapper
         this.lArmMini1.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1.4F * o.swingProgressPrev - 0.6065191F;
         this.lClawMini.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1.4F * o.swingProgressPrev + 0.3665191F;
 
-        GlStateManager.enableCullFace();
+        OpenGL.enableCullFace();
         this.torso0.render(boxTranslation);
         this.torso1.render(boxTranslation);
         this.rThigh.render(boxTranslation);
@@ -543,17 +543,17 @@ public class ModelQueen extends ModelBaseWrapper
         this.rClawMini.render(boxTranslation);
         this.neck.render(boxTranslation);
 
-        GlStateManager.pushMatrix();
-        GlStateManager.disableCullFace();
-        GlStateManager.scale(1F, 1F, -1F);
-        GlStateManager.translate(0F, 0.01F, -9.1F);
+        OpenGL.pushMatrix();
+        OpenGL.disableCullFace();
+        OpenGL.scale(1F, 1F, -1F);
+        OpenGL.translate(0F, 0.01F, -9.1F);
         this.tailStabber.render(boxTranslation);
-        GlStateManager.enableCullFace();
-        GlStateManager.popMatrix();
+        OpenGL.enableCullFace();
+        OpenGL.popMatrix();
 
-        GlStateManager.pushMatrix();
+        OpenGL.pushMatrix();
         {
-            GlStateManager.rotate(((float) Math.toRadians(o.headYaw) + o.swingProgressPrev) * 30F, 0, 1, 0);
+            OpenGL.rotate(((float) Math.toRadians(o.headYaw) + o.swingProgressPrev) * 30F, 0, 1, 0);
             this.Jaw1.render(boxTranslation);
             this.head0.render(boxTranslation);
             this.head1.render(boxTranslation);
@@ -570,7 +570,7 @@ public class ModelQueen extends ModelBaseWrapper
             this.headSpinesR.render(boxTranslation);
             this.headWebR.render(boxTranslation);
         }
-        GlStateManager.popMatrix();
+        OpenGL.popMatrix();
 
         this.rHip.render(boxTranslation);
         this.lHip.render(boxTranslation);
@@ -589,13 +589,13 @@ public class ModelQueen extends ModelBaseWrapper
                 AliensVsPredator.resources().models().OVAMORPH.bindTexture();
                 ovamorph.render();
 
-                GlStateManager.pushMatrix();
+                OpenGL.pushMatrix();
                 {
-                    GlStateManager.translate(0, -0.05F, 1F - queen.getOvipositorSize());
-                    GlStateManager.scale(queen.getOvipositorSize(), queen.getOvipositorSize(), queen.getOvipositorSize());
-                    GlStateManager.enableBlend();
-                    GlStateManager.disableCullFace();
-                    GlStateManager.blendFunc(GL11.GL_ONE, GL11.GL_ONE_MINUS_DST_COLOR);
+                    OpenGL.translate(0, -0.05F, 1F - queen.getOvipositorSize());
+                    OpenGL.scale(queen.getOvipositorSize(), queen.getOvipositorSize(), queen.getOvipositorSize());
+                    OpenGL.enableBlend();
+                    OpenGL.disableCullFace();
+                    OpenGL.blendFunc(GL11.GL_ONE, GL11.GL_ONE_MINUS_DST_COLOR);
                     AliensVsPredator.resources().models().XENOQUEEN_MASK.getTexture().bind();
                     draw(sack0);
                     draw(sack1);
@@ -605,10 +605,10 @@ public class ModelQueen extends ModelBaseWrapper
                     draw(sack5);
                     draw(sack6);
                     draw(sack7);
-                    GlStateManager.enableCullFace();
-                    GlStateManager.blendClear();
+                    OpenGL.enableCullFace();
+                    OpenGL.blendClear();
                 }
-                GlStateManager.popMatrix();
+                OpenGL.popMatrix();
             }
         }
     }

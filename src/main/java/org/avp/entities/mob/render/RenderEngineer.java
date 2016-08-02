@@ -6,10 +6,10 @@ import org.avp.entities.mob.EntityMarine;
 import org.avp.entities.mob.render.RenderFacehugger.FaceMountRenderer;
 import org.avp.entities.mob.render.RenderFacehugger.IFaceMountable;
 
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.client.ModelBaseWrapper;
-import com.arisux.airi.lib.client.ModelTexMap;
-import com.arisux.airi.lib.client.RenderLivingWrapper;
+import com.arisux.amdxlib.lib.client.Model;
+import com.arisux.amdxlib.lib.client.TexturedModel;
+import com.arisux.amdxlib.lib.client.RenderLivingWrapper;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -21,7 +21,7 @@ public class RenderEngineer extends RenderLivingWrapper implements IFaceMountabl
         super(AliensVsPredator.resources().models().ENGINEER);
     }
     
-    public RenderEngineer(ModelTexMap<? extends ModelBaseWrapper> model)
+    public RenderEngineer(TexturedModel<? extends Model> model)
     {
         super(model);
     }
@@ -34,7 +34,7 @@ public class RenderEngineer extends RenderLivingWrapper implements IFaceMountabl
     @Override
     protected void preRenderCallback(EntityLivingBase entityliving, float renderPartialTicks)
     {
-        GlStateManager.scale(1.25F, 1.25F, 1.25F);
+        OpenGL.scale(1.25F, 1.25F, 1.25F);
     }
 
     @Override
@@ -45,10 +45,10 @@ public class RenderEngineer extends RenderLivingWrapper implements IFaceMountabl
             @Override
             public void render(EntityFacehugger facehugger, float renderPartialTicks)
             {
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.rotate(115.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.translate(0F, -0.2F, 0.2F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(115.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, -0.2F, 0.2F);
             }
         };
     }

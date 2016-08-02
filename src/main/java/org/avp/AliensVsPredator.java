@@ -4,9 +4,9 @@ package org.avp;
 import org.avp.api.AssemblerAPI;
 import org.avp.api.WristbracerAPI;
 
-import com.arisux.airi.AIRI;
-import com.arisux.airi.lib.ModUtil;
-import com.arisux.airi.lib.interfaces.IMod;
+import com.arisux.amdxlib.AMDXLib;
+import com.arisux.amdxlib.lib.game.Game;
+import com.arisux.amdxlib.lib.game.IMod;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -18,8 +18,9 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.creativetab.CreativeTabs;
 
-@Mod(modid = AliensVsPredator.ID, acceptedMinecraftVersions = "1.7.10", canBeDeactivated = true, dependencies = "required-after:AIRI")
+@Mod(modid = AliensVsPredator.ID, acceptedMinecraftVersions = "1.7.10", canBeDeactivated = true, dependencies = "required-after:amdxlib")
 public class AliensVsPredator implements IMod
 {
     protected static final String ID = "avp";
@@ -27,6 +28,18 @@ public class AliensVsPredator implements IMod
     @Mod.Instance(AliensVsPredator.ID)
     private static AliensVsPredator instance;
     private ModContainer container;
+
+    @Override
+    public ModContainer container()
+    {
+        return this.container == null ? this.container = Game.getModContainer(AliensVsPredator.ID) : this.container;
+    }
+
+    @Override
+    public String domain()
+    {
+        return container().getModId() + ":";
+    }
 
     public static AliensVsPredator instance()
     {
@@ -152,88 +165,81 @@ public class AliensVsPredator implements IMod
         return Settings.instance;
     }
 
-    @Override
-    public ModContainer container()
-    {
-        return this.container == null ? this.container = ModUtil.getModContainerForId(AliensVsPredator.ID) : this.container;
-    }
-
-    @Override
-    public String domain()
-    {
-        return container().getModId() + ":";
-    }
-
-    @Override
-    public CreativeTab tab()
+    public static CreativeTabs tabMain()
     {
         return CreativeTab.tabMain;
     }
 
-    public CreativeTab tabBlocks()
+    public static CreativeTabs tabBlocks()
     {
         return CreativeTab.tabBlocks;
     }
 
-    @Override
-    @Mod.EventHandler
-    public void preInitialize(FMLPreInitializationEvent event)
+    public static CreativeTabs tabEntities()
     {
-        AIRI.logger.info("[AliensVsPredator] Copyright(C) 2012-2016 Arisux Technology Group");
-        AIRI.logger.info("[AliensVsPredator] Pre-Initialization");
+        return CreativeTab.tabEntities;
+    }
 
-        AIRI.remappingApi().registerRemappedMod("AliensVsPredator", AliensVsPredator.ID, "com.arisux.avp.AliensVsPredator");
-        AIRI.remappingApi().registerMappingInfo("lv426portal", "portal.acheron", "avp");
-        AIRI.remappingApi().registerMappingInfo("lv223portal", "portal.varda", "avp");
+    public static CreativeTabs tabGunComponents()
+    {
+        return CreativeTab.tabGunParts;
+    }
 
-        settings().preInitialize(event);
-        renderTypes().preInitialize(event);
+    public static CreativeTabs tabRecipeItems()
+    {
+        return CreativeTab.tabRecipeItems;
     }
 
     @Override
     @Mod.EventHandler
-    public void initialize(FMLInitializationEvent event)
+    public void pre(FMLPreInitializationEvent event)
     {
-        AIRI.logger.info("[AliensVsPredator] Initialization");
+        AMDXLib.log().info("[AliensVsPredator] Copyright(C) 2012-2016 Arisux Technology Group");
+        AMDXLib.log().info("[AliensVsPredator] Pre-Initialization");
 
-        fluids().initialize(event);
-        network().initialize(event);
-        materials().initialize(event);
-        items().initialize(event);
-        blocks().initialize(event);
-        ores().initialize(event);
-        dimensions().initialize(event);
-        worldgen().initialize(event);
-        crafting().initialize(event);
-        interfaces().initialize(event);
-        events().initialize(event);
-        commands().initialize(event);
-        playermodehandler().initialize(event);
-        schematics().initialize(event);
-        assembler().initialize(event);
-        entities().initialize(event);
+        settings().preInitialize(event);
+        renderTypes().pre(event);
+    }
+
+    @Override
+    @Mod.EventHandler
+    public void init(FMLInitializationEvent event)
+    {
+        AMDXLib.log().info("[AliensVsPredator] Initialization");
+
+        fluids().init(event);
+        network().init(event);
+        materials().init(event);
+        items().init(event);
+        blocks().init(event);
+        ores().init(event);
+        dimensions().init(event);
+        worldgen().init(event);
+        crafting().init(event);
+        interfaces().init(event);
+        events().init(event);
+        commands().init(event);
+        playermodehandler().init(event);
+        schematics().init(event);
+        assembler().init(event);
+        entities().init(event);
 
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
         {
-            wristbracer().initialize(event);
+            wristbracer().init(event);
         }
     }
 
     @Override
     @Mod.EventHandler
-    public void postInitialize(FMLPostInitializationEvent event)
+    public void post(FMLPostInitializationEvent event)
     {
-        AIRI.logger.info("[AliensVsPredator] Post-Initialization");
+        AMDXLib.log().info("[AliensVsPredator] Post-Initialization");
 
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
         {
-            renderers().postInitialize(event);
-            keybinds().postInitialize(event);
-
-            if (settings().isUpdaterEnabled())
-            {
-                UpdateHandler.instance.postInitialize(event);
-            }
+            renderers().post(event);
+            keybinds().post(event);
         }
     }
 

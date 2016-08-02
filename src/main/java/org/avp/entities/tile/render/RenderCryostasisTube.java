@@ -10,8 +10,7 @@ import org.avp.entities.tile.TileEntityCryostasisTube;
 import org.avp.entities.tile.model.ModelCryostasisTube;
 import org.lwjgl.opengl.GL12;
 
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.RenderUtil;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -37,27 +36,27 @@ public class RenderCryostasisTube extends TileEntitySpecialRenderer
     {
         public void renderChassis(RenderCryostasisTube renderer, TileEntityCryostasisTube tile, double posX, double posY, double posZ)
         {
-            GlStateManager.enable(GL_BLEND);
-            GlStateManager.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            GlStateManager.translate(posX + 0.5F, posY + 1.125F, posZ + 0.5F);
-            RenderUtil.rotate(tile);
-            GlStateManager.enable(GL12.GL_RESCALE_NORMAL);
-            GlStateManager.scale(0.75F, -0.75F, 0.75F);
-            GlStateManager.enable(GL_ALPHA_TEST);
-            GlStateManager.disableCullFace();
+            OpenGL.enable(GL_BLEND);
+            OpenGL.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            OpenGL.translate(posX + 0.5F, posY + 1.125F, posZ + 0.5F);
+            OpenGL.rotate(tile);
+            OpenGL.enable(GL12.GL_RESCALE_NORMAL);
+            OpenGL.scale(0.75F, -0.75F, 0.75F);
+            OpenGL.enable(GL_ALPHA_TEST);
+            OpenGL.disableCullFace();
             AliensVsPredator.resources().models().CRYOSTASIS_TUBE.draw(tile);
-            GlStateManager.enableCullFace();
+            OpenGL.enableCullFace();
         }
 
         public void renderTube(RenderCryostasisTube renderer, TileEntityCryostasisTube tile, double posX, double posY, double posZ)
         {
             if (tile.getVoltage() > 0)
             {
-                GlStateManager.disableLightMapping();
-                GlStateManager.disableLight();
+                OpenGL.disableLightMapping();
+                OpenGL.disableLight();
             }
 
-            GlStateManager.enableCullFace();
+            OpenGL.enableCullFace();
             
             if (tile.isShattered())
             {
@@ -72,25 +71,25 @@ public class RenderCryostasisTube extends TileEntitySpecialRenderer
                 AliensVsPredator.resources().models().CRYOSTASIS_TUBE_MASK.draw();
             }
             
-            GlStateManager.enableLightMapping();
-            GlStateManager.enableLight();
-            GlStateManager.enableDepthTest();
+            OpenGL.enableLightMapping();
+            OpenGL.enableLight();
+            OpenGL.enableDepthTest();
         }
 
         public void renderEntity(RenderCryostasisTube renderer, TileEntityCryostasisTube tile, double posX, double posY, double posZ)
         {
             if (tile.stasisEntity != null)
             {
-                GlStateManager.pushMatrix();
+                OpenGL.pushMatrix();
                 {
                     if (tile.getVoltage() > 0)
                     {
-                        GlStateManager.disableLight();
+                        OpenGL.disableLight();
                     }
 
                     RenderManager.instance.renderEntityWithPosYaw(tile.stasisEntity, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
                 }
-                GlStateManager.popMatrix();
+                OpenGL.popMatrix();
             }
         }
     }
@@ -100,7 +99,7 @@ public class RenderCryostasisTube extends TileEntitySpecialRenderer
     {
         TileEntityCryostasisTube tile = (TileEntityCryostasisTube) tileEntity;
 
-        GlStateManager.pushMatrix();
+        OpenGL.pushMatrix();
         {
             CryostasisTubeRenderer tubeRenderer = null;
 
@@ -121,10 +120,10 @@ public class RenderCryostasisTube extends TileEntitySpecialRenderer
             tubeRenderer.renderEntity(this, tile, posX, posY, posZ);
             tubeRenderer.renderTube(this, tile, posX, posY, posZ);
 
-            GlStateManager.disable(GL_BLEND);
-            GlStateManager.enableLight();
-            GlStateManager.enableLightMapping();
+            OpenGL.disable(GL_BLEND);
+            OpenGL.enableLight();
+            OpenGL.enableLightMapping();
         }
-        GlStateManager.popMatrix();
+        OpenGL.popMatrix();
     }
 }

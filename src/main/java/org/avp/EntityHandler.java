@@ -67,7 +67,7 @@ import org.avp.entities.tile.TileEntityTransformer;
 import org.avp.entities.tile.TileEntityTurret;
 import org.avp.entities.tile.TileEntityWorkstation;
 
-import com.arisux.airi.lib.interfaces.IInitializable;
+import com.arisux.amdxlib.lib.game.IInitEvent;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.registry.EntityRegistry;
@@ -75,12 +75,12 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.world.biome.BiomeGenBase;
 
-public class EntityHandler implements IInitializable
+public class EntityHandler implements IInitEvent
 {
     public static final EntityHandler instance = new EntityHandler();
 
     @Override
-    public void initialize(FMLInitializationEvent event)
+    public void init(FMLInitializationEvent event)
     {
         this.registerTileEntities();
         this.registerEntities();

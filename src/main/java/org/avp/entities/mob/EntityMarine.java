@@ -9,7 +9,7 @@ import org.avp.entities.EntityAcidPool;
 import org.avp.entities.EntityBullet;
 import org.avp.util.MarineTypes;
 
-import com.arisux.airi.lib.WorldUtil.Entities;
+import com.arisux.amdxlib.lib.world.entity.Entities;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;

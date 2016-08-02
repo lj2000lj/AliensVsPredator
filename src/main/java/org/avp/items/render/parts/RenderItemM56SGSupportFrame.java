@@ -2,16 +2,16 @@ package org.avp.items.render.parts;
 
 import org.avp.items.render.ItemRendererGroup;
 
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.client.ModelBaseWrapper;
-import com.arisux.airi.lib.client.ModelTexMap;
+import com.arisux.amdxlib.lib.client.Model;
+import com.arisux.amdxlib.lib.client.TexturedModel;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.item.ItemStack;
 
 public class RenderItemM56SGSupportFrame extends ItemRendererGroup
 {
-    public RenderItemM56SGSupportFrame(ModelTexMap<? extends ModelBaseWrapper> model, ModelRenderer... modelRenderers)
+    public RenderItemM56SGSupportFrame(TexturedModel<? extends Model> model, ModelRenderer... modelRenderers)
     {
         super(model, modelRenderers);
     }
@@ -21,15 +21,15 @@ public class RenderItemM56SGSupportFrame extends ItemRendererGroup
     {
         super.renderInInventory(item, data);
 
-        GlStateManager.pushMatrix();
+        OpenGL.pushMatrix();
         {
             float glScale = 32F;
-            GlStateManager.translate(8F, 8F, 0F);
+            OpenGL.translate(8F, 8F, 0F);
 
-            GlStateManager.scale(glScale, glScale, glScale);
-            GlStateManager.translate(-0.1F, -0.05F, -0.8F);
+            OpenGL.scale(glScale, glScale, glScale);
+            OpenGL.translate(-0.1F, -0.05F, -0.8F);
             this.renderPart();
         }
-        GlStateManager.popMatrix();
+        OpenGL.popMatrix();
     }
 }

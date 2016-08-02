@@ -6,8 +6,8 @@ import org.avp.entities.tile.render.RenderCryostasisTube;
 import org.avp.entities.tile.render.RenderCryostasisTube.CryostasisTubeRenderer;
 import org.avp.entities.tile.render.RenderCryostasisTube.ICustomCryostasisRenderer;
 
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.client.RenderLivingWrapper;
+import com.arisux.amdxlib.lib.client.RenderLivingWrapper;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -25,7 +25,7 @@ public class RenderOvamorph extends RenderLivingWrapper implements ICustomCryost
     protected void preRenderCallback(EntityLivingBase entityLiving, float partialTicks)
     {
         super.preRenderCallback(entityLiving, partialTicks);
-        GlStateManager.scale(1.75F, 1.75F, 1.75F);
+        OpenGL.scale(1.75F, 1.75F, 1.75F);
     }
 
     @SideOnly(Side.CLIENT)
@@ -45,18 +45,18 @@ public class RenderOvamorph extends RenderLivingWrapper implements ICustomCryost
             {
                 if (tile.stasisEntity != null)
                 {
-                    GlStateManager.pushMatrix();
+                    OpenGL.pushMatrix();
                     {
                         if (tile.getVoltage() > 0)
                         {
-                            GlStateManager.disableLight();
+                            OpenGL.disableLight();
                         }
 
-                        GlStateManager.translate(0F, 0.5F, 0F);
-                        GlStateManager.rotate(180F, 1F, 0F, 0F);
+                        OpenGL.translate(0F, 0.5F, 0F);
+                        OpenGL.rotate(180F, 1F, 0F, 0F);
                         RenderManager.instance.renderEntityWithPosYaw(tile.stasisEntity, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
                     }
-                    GlStateManager.popMatrix();
+                    OpenGL.popMatrix();
                 }
             }
 

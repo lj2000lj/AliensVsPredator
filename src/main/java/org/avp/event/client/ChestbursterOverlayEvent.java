@@ -3,7 +3,8 @@ package org.avp.event.client;
 import org.avp.AliensVsPredator;
 import org.avp.entities.extended.ExtendedEntityLivingBase;
 
-import com.arisux.airi.lib.RenderUtil;
+import com.arisux.amdxlib.lib.client.render.Draw;
+import com.arisux.amdxlib.lib.game.Game;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.client.Minecraft;
@@ -12,7 +13,7 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.Pre;
 
 public class ChestbursterOverlayEvent
 {
-    private Minecraft mc = Minecraft.getMinecraft();
+    private Minecraft mc = Game.minecraft();
 
     @SubscribeEvent
     public void renderTickOverlay(Pre event)
@@ -25,9 +26,9 @@ public class ChestbursterOverlayEvent
 
                 if (livingBaseProperties.doesEntityContainEmbryo())
                 {
-                    if (livingBaseProperties.doesEntityContainEmbryo() && Minecraft.getMinecraft().thePlayer.isDead && livingBaseProperties.getEmbryo().getTicksExisted() >= livingBaseProperties.getEmbryo().getGestationPeriod() - 80)
+                    if (livingBaseProperties.doesEntityContainEmbryo() && Game.minecraft().thePlayer.isDead && livingBaseProperties.getEmbryo().getTicksExisted() >= livingBaseProperties.getEmbryo().getGestationPeriod() - 80)
                     {
-                        RenderUtil.renderOverlay(AliensVsPredator.resources().BLUR_CHESTBURSTER_EMERGE, 1F, 0F, 0F, 1F);
+                        Draw.drawOverlay(AliensVsPredator.resources().BLUR_CHESTBURSTER_EMERGE, 1F, 0F, 0F, 1F);
                     }
                 }
             }

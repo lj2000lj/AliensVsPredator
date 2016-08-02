@@ -1,11 +1,12 @@
 package org.avp.command;
 
-import com.arisux.airi.AIRI;
-import com.arisux.airi.lib.ChatUtil;
-import com.arisux.airi.lib.WorldUtil;
-import com.arisux.airi.lib.WorldUtil.Blocks.CoordData;
-import com.arisux.airi.lib.world.Schematic;
-import com.arisux.airi.lib.world.Structure;
+import com.arisux.amdxlib.AMDXLib;
+import com.arisux.amdxlib.lib.game.Chat;
+import com.arisux.amdxlib.lib.world.CoordData;
+import com.arisux.amdxlib.lib.world.Structure;
+import com.arisux.amdxlib.lib.world.StructureGenerationHandler;
+import com.arisux.amdxlib.lib.world.entity.player.Players;
+import com.arisux.amdxlib.lib.world.storage.Schematic;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -30,13 +31,13 @@ public class CommandGenerate extends CommandBase
     @Override
     public void processCommand(ICommandSender commandSender, String[] args)
     {
-        final EntityPlayer player = WorldUtil.Entities.Players.getPlayerForCommandSender(commandSender);
+        final EntityPlayer player = Players.getPlayerForCommandSender(commandSender);
 
         if (args.length == 1 || args.length == 4)
         {
             String schematicTargetName = args[0];
 
-            for (Schematic schematic : AIRI.instance().getLoadedSchematics())
+            for (Schematic schematic : AMDXLib.getSchematicRegistry())
             {
                 String schematicFileName = schematic.getFile().getName();
                 final String schematicName = schematicFileName.replace(".schematic", "");
@@ -75,12 +76,12 @@ public class CommandGenerate extends CommandBase
                         @Override
                         public void onProcessingComplete()
                         {
-                            player.addChatMessage(ChatUtil.component("Generation of " + this.getName() + " completed."));
+                            player.addChatMessage(Chat.component("Generation of " + this.getName() + " completed."));
                         }
                     };
 
-                    AIRI.instance().events.getStructuresInQueue().add(structure);
-                    commandSender.addChatMessage(ChatUtil.component("Started generation of " + schematicName));
+                    StructureGenerationHandler.addStructureToQueue(structure);
+                    commandSender.addChatMessage(Chat.component("Started generation of " + schematicName));
                 }
             }
         }

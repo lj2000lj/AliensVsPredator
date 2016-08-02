@@ -5,17 +5,17 @@ import java.util.HashMap;
 import org.avp.AliensVsPredator;
 import org.avp.packets.server.PacketSpawnNuke;
 
-import com.arisux.airi.AIRI;
-import com.arisux.airi.lib.RenderUtil;
-import com.arisux.airi.lib.interfaces.IInitializable;
+import com.arisux.amdxlib.AMDXLib;
+import com.arisux.amdxlib.lib.client.render.Draw;
+import com.arisux.amdxlib.lib.game.Game;
+import com.arisux.amdxlib.lib.game.IInitEvent;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.Minecraft;
 
 @SideOnly(Side.CLIENT)
-public class WristbracerAPI implements IInitializable
+public class WristbracerAPI implements IInitEvent
 {
     private HashMap<String, IWristbracerAction> registeredCombos = new HashMap<String, IWristbracerAction>();
     public static final WristbracerAPI instance = new WristbracerAPI();
@@ -53,20 +53,20 @@ public class WristbracerAPI implements IInitializable
         }
         else
         {
-            AIRI.logger.warning("[AVP/API/Wristbracer] Combonation '%s' is already registered.", combonation);
+            AMDXLib.log().warn(String.format("[AVP/API/Wristbracer] Combonation '%s' is already registered.", combonation));
         }
     }
 
     @Override
-    public void initialize(FMLInitializationEvent event)
+    public void init(FMLInitializationEvent event)
     {
         this.registerCombonation("009000", new IWristbracerAction()
         {
             @Override
             public void actionPerformed(String combonation, Object... args)
             {
-                RenderUtil.drawString("gui.avp.wristbracer.notify.detmode", 10, 10, 0xFFFF0000);
-                RenderUtil.drawString("gui.avp.wristbracer.warning.itemslost", 10, 20, 0xFFFF0000);
+                Draw.drawString("gui.avp.wristbracer.notify.detmode", 10, 10, 0xFFFF0000);
+                Draw.drawString("gui.avp.wristbracer.warn.itemslost", 10, 20, 0xFFFF0000);
             }
         });
 
@@ -76,7 +76,7 @@ public class WristbracerAPI implements IInitializable
             public void actionPerformed(String combonation, Object... args)
             {
                 AliensVsPredator.network().sendToServer(new PacketSpawnNuke());
-                Minecraft.getMinecraft().currentScreen = null;
+                Game.minecraft().currentScreen = null;
             }
         });
     }

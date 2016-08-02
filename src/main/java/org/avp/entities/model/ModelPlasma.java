@@ -2,14 +2,14 @@ package org.avp.entities.model;
 
 import org.lwjgl.opengl.GL11;
 
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.client.ModelBaseWrapper;
-import com.arisux.airi.lib.client.render.Color;
-import com.arisux.airi.lib.client.render.Vertex;
+import com.arisux.amdxlib.lib.client.Model;
+import com.arisux.amdxlib.lib.client.render.Color;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
+import com.arisux.amdxlib.lib.client.render.Vertex;
 
 import net.minecraft.client.renderer.Tessellator;
 
-public class ModelPlasma extends ModelBaseWrapper
+public class ModelPlasma extends Model
 {
     private Tessellator tessellator = Tessellator.instance;
     private Color color;
@@ -52,24 +52,24 @@ public class ModelPlasma extends ModelBaseWrapper
     @Override
     protected void render(IRenderObject renderObject, float boxTranslation)
     {
-        GlStateManager.pushMatrix();
+        OpenGL.pushMatrix();
         {
-            GlStateManager.scale(scale, scale, scale);
-            GlStateManager.disable(GL11.GL_TEXTURE_2D);
-            GlStateManager.disableLightMapping();
-            GlStateManager.disableLight();
-            GlStateManager.enable(GL11.GL_BLEND);
-            GlStateManager.blendFunc(GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE);
+            OpenGL.scale(scale, scale, scale);
+            OpenGL.disable(GL11.GL_TEXTURE_2D);
+            OpenGL.disableLightMapping();
+            OpenGL.disableLight();
+            OpenGL.enable(GL11.GL_BLEND);
+            OpenGL.blendFunc(GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE);
 
             for (int rZ = 0; rZ < 2; ++rZ)
             {
-                GlStateManager.rotate(rZ * 180, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(rZ * 180, 0.0F, 0.0F, 1.0F);
 
                 for (int rY = 0; rY < 4; ++rY)
                 {
-                    GlStateManager.pushMatrix();
+                    OpenGL.pushMatrix();
                     {
-                        GlStateManager.rotate(rY * 90, 0.0F, 1.0F, 0.0F);
+                        OpenGL.rotate(rY * 90, 0.0F, 1.0F, 0.0F);
                         this.addTri(t2, t10, t12);
                         this.addTri(t10, t5, t11);
                         this.addTri(t12, t11, t4);
@@ -87,15 +87,15 @@ public class ModelPlasma extends ModelBaseWrapper
                         this.addTri(t6, t8, t14);
                         this.addTri(t8, t11, t14);
                     }
-                    GlStateManager.popMatrix();
+                    OpenGL.popMatrix();
                 }
             }
-            GlStateManager.enableLight();
-            GlStateManager.enableLightMapping();
-            GlStateManager.enable(GL11.GL_TEXTURE_2D);
-            GlStateManager.disable(GL11.GL_BLEND);
+            OpenGL.enableLight();
+            OpenGL.enableLightMapping();
+            OpenGL.enable(GL11.GL_TEXTURE_2D);
+            OpenGL.disable(GL11.GL_BLEND);
         }
-        GlStateManager.popMatrix();
+        OpenGL.popMatrix();
     }
     
     public void setColor(Color color)

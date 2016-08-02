@@ -9,14 +9,14 @@ import org.avp.packets.server.PacketAssembleCurrentSchematic;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
-import com.arisux.airi.lib.GuiElements.GuiCustomButton;
-import com.arisux.airi.lib.RenderUtil;
-import com.arisux.airi.lib.WorldUtil.Entities.Players.Inventories;
-import com.arisux.airi.lib.interfaces.IActionPerformed;
+import com.arisux.amdxlib.lib.client.gui.GuiCustomButton;
+import com.arisux.amdxlib.lib.client.gui.IAction;
+import com.arisux.amdxlib.lib.client.render.Draw;
+import com.arisux.amdxlib.lib.game.Game;
+import com.arisux.amdxlib.lib.world.entity.player.inventory.Inventories;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -70,14 +70,14 @@ public class GuiAssembler extends GuiContainer
                 for (ItemStack stack : selectedSchematic.getItemsRequired())
                 {
                     curStack++;
-                    int amountOfStack = Inventories.getAmountOfItemPlayerHas(stack.getItem(), Minecraft.getMinecraft().thePlayer);
+                    int amountOfStack = Inventories.getAmountOfItemPlayerHas(stack.getItem(), Game.minecraft().thePlayer);
                     boolean playerHasItemstack = amountOfStack > 0;
                     int stackY = this.ySize + (curStack * 12);
                     int curStackSize = (amountOfStack > stack.stackSize ? stack.stackSize : amountOfStack);
-                    RenderUtil.drawRect(2, stackY - 2, this.xSize - 4, 12, 0x11FFFFFF);
-                    RenderUtil.drawString(curStackSize + "/" + stack.stackSize, 220, stackY, curStackSize >= stack.stackSize ? 0xFFFF0000 : curStackSize < stack.stackSize && curStackSize > 0 ? 0xFFFFAA00 : 0xFF888888);
-                    RenderUtil.drawString(stack.getDisplayName(), 20, stackY, 0xFF888888);
-                    RenderUtil.drawItemIcon(stack.getItem(), 5, stackY, 8, 8);
+                    Draw.drawRect(2, stackY - 2, this.xSize - 4, 12, 0x11FFFFFF);
+                    Draw.drawString(curStackSize + "/" + stack.stackSize, 220, stackY, curStackSize >= stack.stackSize ? 0xFFFF0000 : curStackSize < stack.stackSize && curStackSize > 0 ? 0xFFFFAA00 : 0xFF888888);
+                    Draw.drawString(stack.getDisplayName(), 20, stackY, 0xFF888888);
+                    Draw.drawItemIcon(stack.getItem(), 5, stackY, 8, 8);
 
                     maxProgress += stack.stackSize;
 
@@ -88,7 +88,7 @@ public class GuiAssembler extends GuiContainer
                 }
 
                 int percentComplete = (progress * 100 / maxProgress);
-                RenderUtil.drawProgressBar("Materials (" + progress + " of " + maxProgress + ") - " + percentComplete + "% Complete", maxProgress, progress, 0, -12, this.xSize, 7, 3, percentComplete < 25 ? 0xFF888888 : percentComplete < 50 ? 0xFFFFAA00 : 0xFFFF0000, false);
+                Draw.drawProgressBar("Materials (" + progress + " of " + maxProgress + ") - " + percentComplete + "% Complete", maxProgress, progress, 0, -12, this.xSize, 7, 3, percentComplete < 25 ? 0xFF888888 : percentComplete < 50 ? 0xFFFFAA00 : 0xFFFF0000, false);
 
                 if (percentComplete == 100)
                 {
@@ -117,9 +117,9 @@ public class GuiAssembler extends GuiContainer
 
                         if (numberRendered >= 0 && numberRendered <= 7)
                         {
-                            RenderUtil.drawRect(entryX, entryY, this.xSize - 16, 12, 0x11FFFFFF);
-                            RenderUtil.drawString(StatCollector.translateToLocal(item.getUnlocalizedName() + ".name"), entryX + 13, entryY + 2, curItem == this.scroll ? 0xFFFF0000 : 0xFF555555);
-                            RenderUtil.drawItemIcon(item, entryX + 2, entryY + 2, 8, 8);
+                            Draw.drawRect(entryX, entryY, this.xSize - 16, 12, 0x11FFFFFF);
+                            Draw.drawString(StatCollector.translateToLocal(item.getUnlocalizedName() + ".name"), entryX + 13, entryY + 2, curItem == this.scroll ? 0xFFFF0000 : 0xFF555555);
+                            Draw.drawItemIcon(item, entryX + 2, entryY + 2, 8, 8);
                         }
                     }
                 }
@@ -153,10 +153,10 @@ public class GuiAssembler extends GuiContainer
         this.buttonScrollUp.displayString = "\u21e7";
         this.buttonScrollUp.baseColor = this.getScroll() == 0 ? 0x22000000 : 0xAA000000;
         this.buttonScrollUp.drawButton();
-        this.buttonScrollUp.setAction(new IActionPerformed()
+        this.buttonScrollUp.setAction(new IAction()
         {
             @Override
-            public void actionPerformed(GuiCustomButton button)
+            public void perform(GuiCustomButton button)
             {
                 scrollDown();
             }
@@ -167,10 +167,10 @@ public class GuiAssembler extends GuiContainer
         this.buttonScrollDown.displayString = "\u21e9";
         this.buttonScrollDown.baseColor = this.getScroll() >= (this.schematics.size() - 1) ? 0x22000000 : 0xAA000000;
         this.buttonScrollDown.drawButton();
-        this.buttonScrollDown.setAction(new IActionPerformed()
+        this.buttonScrollDown.setAction(new IAction()
         {
             @Override
-            public void actionPerformed(GuiCustomButton button)
+            public void perform(GuiCustomButton button)
             {
                 scrollUp();
             }
@@ -182,13 +182,13 @@ public class GuiAssembler extends GuiContainer
         this.buttonAssemble.width = 20;
         this.buttonAssemble.baseColor = this.hasMaterials ? 0xAA000000 : 0x22000000;
         this.buttonAssemble.drawButton();
-        this.buttonAssemble.setAction(new IActionPerformed()
+        this.buttonAssemble.setAction(new IAction()
         {
             @Override
-            public void actionPerformed(GuiCustomButton button)
+            public void perform(GuiCustomButton button)
             {
                 AssemblerSchematic selectedSchematic = schematics.get(getScroll());
-                AliensVsPredator.assembler().assembleSchematicAsPlayer(selectedSchematic, Minecraft.getMinecraft().thePlayer);
+                AliensVsPredator.assembler().assembleSchematicAsPlayer(selectedSchematic, Game.minecraft().thePlayer);
                 AliensVsPredator.network().sendToServer(new PacketAssembleCurrentSchematic(selectedSchematic.getSchematicId()));
             }
         });

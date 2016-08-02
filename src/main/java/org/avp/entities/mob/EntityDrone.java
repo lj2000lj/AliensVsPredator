@@ -6,15 +6,14 @@ import java.util.Random;
 import org.avp.AliensVsPredator;
 import org.avp.entities.tile.TileEntityHiveResin;
 
-import com.arisux.airi.lib.WorldUtil;
-import com.arisux.airi.lib.WorldUtil.Blocks.CoordData;
-import com.arisux.airi.lib.WorldUtil.Entities;
+import com.arisux.amdxlib.lib.world.CoordData;
+import com.arisux.amdxlib.lib.world.block.Blocks;
+import com.arisux.amdxlib.lib.world.entity.Entities;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -106,7 +105,7 @@ public class EntityDrone extends EntityXenomorph
     {
         this.resinLevel += 1;
 
-        ArrayList<EntityItem> entityItemList = (ArrayList<EntityItem>) WorldUtil.Entities.getEntitiesInCoordsRange(worldObj, EntityItem.class, new CoordData(this), 8);
+        ArrayList<EntityItem> entityItemList = (ArrayList<EntityItem>) Entities.getEntitiesInCoordsRange(worldObj, EntityItem.class, new CoordData(this), 8);
 
         for (EntityItem entityItem : entityItemList)
         {
@@ -137,7 +136,7 @@ public class EntityDrone extends EntityXenomorph
             {
                 if (this.resinLevel >= 128)
                 {
-                    ArrayList<CoordData> data = WorldUtil.Blocks.getCoordDataInRangeForBlocksExcluding((int) posX, (int) posY, (int) posZ, this.resinMultiplier, this.worldObj, AliensVsPredator.blocks().terrainHiveResin, Blocks.air);
+                    ArrayList<CoordData> data = Blocks.getCoordDataInRangeForBlocksExcluding((int) posX, (int) posY, (int) posZ, this.resinMultiplier, this.worldObj, AliensVsPredator.blocks().terrainHiveResin, net.minecraft.init.Blocks.air);
 
                     if (data.size() > 0)
                     {
@@ -176,7 +175,7 @@ public class EntityDrone extends EntityXenomorph
         CoordData coord = new CoordData(this).add(-this.resinMultiplier + this.rand.nextInt(this.resinMultiplier * 2), -this.resinMultiplier + this.rand.nextInt(this.resinMultiplier * 2), -this.resinMultiplier + this.rand.nextInt(this.resinMultiplier * 2));
         Block coordBlock = coord.getBlock(this.worldObj);
 
-        if (coordBlock != AliensVsPredator.blocks().terrainHiveResin && coordBlock != Blocks.air && coord.isAnySurfaceVisible(this.worldObj))
+        if (coordBlock != AliensVsPredator.blocks().terrainHiveResin && coordBlock != net.minecraft.init.Blocks.air && coord.isAnySurfaceVisible(this.worldObj))
         {
             return coord;
         }

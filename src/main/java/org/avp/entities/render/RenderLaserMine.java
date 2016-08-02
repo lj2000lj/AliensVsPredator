@@ -4,7 +4,7 @@ import org.avp.AliensVsPredator;
 import org.avp.entities.EntityLaserMine;
 import org.lwjgl.opengl.GL11;
 
-import com.arisux.airi.lib.GlStateManager;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
@@ -18,23 +18,23 @@ public class RenderLaserMine extends Render
     {
         EntityLaserMine laserMine = (EntityLaserMine) entity;
 
-        GlStateManager.pushMatrix();
+        OpenGL.pushMatrix();
         {
-            GlStateManager.translate((float) posX, (float) posY, (float) posZ);
-            GlStateManager.translate(0.0F, 0.25F, 0.0F);
-            GlStateManager.rotate(yaw, 0.0F, 1.0F, 0.0F);
-            GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
+            OpenGL.translate((float) posX, (float) posY, (float) posZ);
+            OpenGL.translate(0.0F, 0.25F, 0.0F);
+            OpenGL.rotate(yaw, 0.0F, 1.0F, 0.0F);
+            OpenGL.rotate(180.0F, 0.0F, 0.0F, 1.0F);
             GL11.glScaled(0.5F, 0.5F, 0.5F);
             AliensVsPredator.resources().models().LASER_MINE.draw();
-            GlStateManager.disable(GL11.GL_CULL_FACE);
-            GlStateManager.scale(2F, -2F, 2F);
-            GlStateManager.translate(0.004F, -0.74F, 0.06F);
+            OpenGL.disable(GL11.GL_CULL_FACE);
+            OpenGL.scale(2F, -2F, 2F);
+            OpenGL.translate(0.004F, -0.74F, 0.06F);
 
             boolean active = laserMine.getLaserHit() != null && laserMine.getLaserHit().entityHit != null;
 
             this.renderBeam(0, 0, Math.abs(laserMine.getLaserHitDistanceFromMine() * 2), -1, 0, 100, active ? 0x8800FF00 : 0x88FF0000, active ? 0x8800FF00 : 0x88FF0000, 90, 0, -1);
         }
-        GlStateManager.popMatrix();
+        OpenGL.popMatrix();
     }
 
     @Override
@@ -47,17 +47,17 @@ public class RenderLaserMine extends Render
     {
         w = w * scale / 2;
 
-        GlStateManager.pushMatrix();
+        OpenGL.pushMatrix();
         {
-            GlStateManager.translate(0F, 0.75F, 0F);
-            GlStateManager.rotate(rotationYaw, 0F, 1F, 0F);
-            GlStateManager.rotate(rotationPitch, 0F, 0F, 1F);
-            GlStateManager.scale(1F / scale, 1F / scale, 1F / scale);
-            GlStateManager.disable(GL11.GL_TEXTURE_2D);
-            GlStateManager.disable(GL11.GL_LIGHTING);
-            GlStateManager.disableLight();
-            GlStateManager.enable(GL11.GL_BLEND);
-            GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+            OpenGL.translate(0F, 0.75F, 0F);
+            OpenGL.rotate(rotationYaw, 0F, 1F, 0F);
+            OpenGL.rotate(rotationPitch, 0F, 0F, 1F);
+            OpenGL.scale(1F / scale, 1F / scale, 1F / scale);
+            OpenGL.disable(GL11.GL_TEXTURE_2D);
+            OpenGL.disable(GL11.GL_LIGHTING);
+            OpenGL.disableLight();
+            OpenGL.enable(GL11.GL_BLEND);
+            OpenGL.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
             GL11.glShadeModel(GL11.GL_SMOOTH);
             Tessellator tessellator = Tessellator.instance;
             tessellator.startDrawingQuads();
@@ -69,8 +69,8 @@ public class RenderLaserMine extends Render
             tessellator.addVertex(w, h, zLevel);
             tessellator.draw();
 
-            GlStateManager.translate(0F, -0.5F, 0.5F);
-            GlStateManager.rotate(90F, 1F, 0F, 0F);
+            OpenGL.translate(0F, -0.5F, 0.5F);
+            OpenGL.rotate(90F, 1F, 0F, 0F);
             tessellator.startDrawingQuads();
             tessellator.setColorRGBA_F((color2 >> 16 & 255) / 255.0F, (color2 >> 8 & 255) / 255.0F, (color2 & 255) / 255.0F, (color2 >> 24 & 255) / 255.0F);
             tessellator.addVertex(w, y, zLevel);
@@ -80,11 +80,11 @@ public class RenderLaserMine extends Render
             tessellator.addVertex(w, h, zLevel);
             tessellator.draw();
             GL11.glShadeModel(GL11.GL_FLAT);
-            GlStateManager.enable(GL11.GL_LIGHTING);
-            GlStateManager.enableLight();
-            GlStateManager.enable(GL11.GL_TEXTURE_2D);
-            GlStateManager.disable(GL11.GL_BLEND);
+            OpenGL.enable(GL11.GL_LIGHTING);
+            OpenGL.enableLight();
+            OpenGL.enable(GL11.GL_TEXTURE_2D);
+            OpenGL.disable(GL11.GL_BLEND);
         }
-        GlStateManager.popMatrix();
+        OpenGL.popMatrix();
     }
 }

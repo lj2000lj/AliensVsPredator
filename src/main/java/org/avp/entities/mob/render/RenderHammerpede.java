@@ -2,8 +2,8 @@ package org.avp.entities.mob.render;
 
 import org.avp.AliensVsPredator;
 
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.client.RenderLivingWrapper;
+import com.arisux.amdxlib.lib.client.RenderLivingWrapper;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.entity.EntityLivingBase;
 
@@ -18,6 +18,6 @@ public class RenderHammerpede extends RenderLivingWrapper
     protected void preRenderCallback(EntityLivingBase entitylivingBase, float partialTicks)
     {
         super.preRenderCallback(entitylivingBase, shadowSize);
-        GlStateManager.scale(0.65F, 0.65F, 0.65F);
+        OpenGL.scale(0.65F, 0.65F, 0.65F);
     }
 }

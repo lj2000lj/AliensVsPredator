@@ -1,11 +1,11 @@
 package org.avp.items.model;
 
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.client.ModelBaseWrapper;
+import com.arisux.amdxlib.lib.client.Model;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.model.ModelRenderer;
 
-public class ModelM240ICU extends ModelBaseWrapper
+public class ModelM240ICU extends Model
 {
     ModelRenderer canister;
     ModelRenderer canisterSealTop;
@@ -171,7 +171,7 @@ public class ModelM240ICU extends ModelBaseWrapper
     @Override
     protected void render(IRenderObject renderObject, float boxTranslation)
     {
-        GlStateManager.rotate(180F, 0, 1, 0);
+        OpenGL.rotate(180F, 0, 1, 0);
         canister.render(boxTranslation);
         canisterSealTop.render(boxTranslation);
         canisterSealTopLeft.render(boxTranslation);

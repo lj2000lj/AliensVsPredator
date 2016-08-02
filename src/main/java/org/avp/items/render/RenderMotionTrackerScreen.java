@@ -5,8 +5,9 @@ import java.util.ArrayList;
 import org.avp.AliensVsPredator;
 import org.lwjgl.opengl.GL11;
 
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.RenderUtil;
+import com.arisux.amdxlib.lib.client.render.Draw;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
+import com.arisux.amdxlib.lib.game.Game;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -23,7 +24,7 @@ public class RenderMotionTrackerScreen
     private int               pingCount        = 0;
     private boolean           updateTracker    = false;
     private boolean           shouldPing       = false;
-    private Minecraft         mc               = Minecraft.getMinecraft();
+    private Minecraft         mc               = Game.minecraft();
 
     public RenderMotionTrackerScreen()
     {
@@ -43,14 +44,14 @@ public class RenderMotionTrackerScreen
 
         this.direction = this.direction >= 360.0F ? this.direction -= 360.0F : this.direction < 0.0F ? this.direction += 360.0F : (-this.mc.thePlayer.rotationYaw);
         this.displayString = this.pingCount > 0 ? this.minDistance < 10 ? "0" + this.minDistance + "m" : this.minDistance + "m" : "00m";
-        GlStateManager.scale(w / 128F, h / 96F, 1F);
-        GlStateManager.enable(GL11.GL_BLEND);
+        OpenGL.scale(w / 128F, h / 96F, 1F);
+        OpenGL.enable(GL11.GL_BLEND);
         this.drawScreen(x, y);
-        GlStateManager.translate(64F, 0F, 0F);
+        OpenGL.translate(64F, 0F, 0F);
         this.drawPings(x, y);
-        GlStateManager.disable(GL11.GL_BLEND);
-        GlStateManager.translate(0, 0, -90.01F);
-        RenderUtil.drawString(displayString, x - 9, y + 64, 0xFF005599, false);
+        OpenGL.disable(GL11.GL_BLEND);
+        OpenGL.translate(0, 0, -90.01F);
+        Draw.drawString(displayString, x - 9, y + 64, 0xFF005599, false);
     }
 
     private void drawPings(int x, int y)
@@ -71,21 +72,21 @@ public class RenderMotionTrackerScreen
             {
                 double hypot = this.contactsDistance.get(i);
 
-                GlStateManager.pushMatrix();
+                OpenGL.pushMatrix();
                 {
-                    GlStateManager.color(1.0F, 1.0F, 1.0F, (float) fadeIntensity);
-                    GlStateManager.translate(-32.0F, 37.0F, 0.0F);
-                    GlStateManager.rotate(-locate + this.direction + 180.0F, 0.0F, 0.0F, 1.0F);
-                    GlStateManager.translate(0.0D, -hypot, 0.0D);
-                    GlStateManager.rotate(-(-locate + this.direction + 180.0F), 0.0F, 0.0F, 1.0F);
-                    GlStateManager.translate(0.0D, hypot, 0.0D);
-                    GlStateManager.translate(-32.0F, -37.0F, 0.0F);
-                    GlStateManager.translate(0.0D, -hypot, 0.0D);
+                    OpenGL.color(1.0F, 1.0F, 1.0F, (float) fadeIntensity);
+                    OpenGL.translate(-32.0F, 37.0F, 0.0F);
+                    OpenGL.rotate(-locate + this.direction + 180.0F, 0.0F, 0.0F, 1.0F);
+                    OpenGL.translate(0.0D, -hypot, 0.0D);
+                    OpenGL.rotate(-(-locate + this.direction + 180.0F), 0.0F, 0.0F, 1.0F);
+                    OpenGL.translate(0.0D, hypot, 0.0D);
+                    OpenGL.translate(-32.0F, -37.0F, 0.0F);
+                    OpenGL.translate(0.0D, -hypot, 0.0D);
                     AliensVsPredator.resources().MOTIONTRACKER_PING.bind();
-                    GlStateManager.antiAlias2d();
-                    RenderUtil.drawQuad(x * 2, y * 2, 128, 128);
+                    OpenGL.antiAlias2d();
+                    Draw.drawQuad(x * 2, y * 2, 128, 128);
                 }
-                GlStateManager.popMatrix();
+                OpenGL.popMatrix();
             }
 
         }
@@ -95,16 +96,16 @@ public class RenderMotionTrackerScreen
     {
         int time = (int) (System.currentTimeMillis() / 100L) % 15;
 
-        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        OpenGL.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glMatrixMode(GL11.GL_TEXTURE);
-        GlStateManager.pushMatrix();
+        OpenGL.pushMatrix();
         {
-            GlStateManager.translate(0.5F, 0.5F, 0.0F);
-            GlStateManager.rotate(-this.direction, 0.0F, 0.0F, 1.0F);
-            GlStateManager.translate(-0.5F, -0.5F, 0.0F);
+            OpenGL.translate(0.5F, 0.5F, 0.0F);
+            OpenGL.rotate(-this.direction, 0.0F, 0.0F, 1.0F);
+            OpenGL.translate(-0.5F, -0.5F, 0.0F);
             AliensVsPredator.resources().MOTIONTRACKER_BG.bind();
-            GlStateManager.antiAlias2d();
-            RenderUtil.drawQuad(x, y, 128, 76, 64, 64);
+            OpenGL.antiAlias2d();
+            Draw.drawQuad(x, y, 128, 76, 64, 64);
 
             if (shouldPing)
             {
@@ -133,17 +134,17 @@ public class RenderMotionTrackerScreen
                     AliensVsPredator.resources().MOTIONTRACKER_S1.bind();
                 }
 
-                GlStateManager.antiAlias2d();
-                RenderUtil.drawQuad(x, y, 128, 76, 64, 64);
+                OpenGL.antiAlias2d();
+                Draw.drawQuad(x, y, 128, 76, 64, 64);
             }
         }
-        GlStateManager.popMatrix();
+        OpenGL.popMatrix();
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
 
         AliensVsPredator.resources().MOTIONTRACKER_FG.bind();
-        GlStateManager.antiAlias2d();
-        GlStateManager.translate(0, 0, -0.0002F);
-        RenderUtil.drawQuad(x, y, 128, 128, 64, 64);
+        OpenGL.antiAlias2d();
+        OpenGL.translate(0, 0, -0.0002F);
+        Draw.drawQuad(x, y, 128, 128, 64, 64);
     }
 
     @SuppressWarnings("unchecked")

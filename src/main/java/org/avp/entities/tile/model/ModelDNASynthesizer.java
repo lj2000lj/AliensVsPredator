@@ -1,10 +1,10 @@
 package org.avp.entities.tile.model;
 
-import com.arisux.airi.lib.client.ModelBaseWrapper;
+import com.arisux.amdxlib.lib.client.Model;
 
 import net.minecraft.client.model.ModelRenderer;
 
-public class ModelDNASynthesizer extends ModelBaseWrapper
+public class ModelDNASynthesizer extends Model
 {
     public ModelRenderer tankFloor;
     public ModelRenderer supportBar;

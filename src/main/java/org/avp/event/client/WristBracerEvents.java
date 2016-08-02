@@ -3,13 +3,15 @@ package org.avp.event.client;
 import org.avp.AliensVsPredator;
 import org.avp.packets.server.PacketOpenWristbracerContainer;
 
+import com.arisux.amdxlib.lib.game.Game;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraft.client.Minecraft;
 
 public class WristBracerEvents
 {
-    private Minecraft mc = Minecraft.getMinecraft();
+    private Minecraft mc = Game.minecraft();
 
     @SubscribeEvent
     public void tick(ClientTickEvent event)

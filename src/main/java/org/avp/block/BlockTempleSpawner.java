@@ -4,9 +4,6 @@ import org.avp.AliensVsPredator;
 import org.avp.entities.mob.EntityOvamorph;
 import org.avp.entities.mob.EntityQueen;
 
-import com.arisux.airi.lib.client.render.IconSet;
-import com.arisux.airi.lib.enums.IconSides;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;

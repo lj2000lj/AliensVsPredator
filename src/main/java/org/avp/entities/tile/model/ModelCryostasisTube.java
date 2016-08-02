@@ -1,10 +1,10 @@
 package org.avp.entities.tile.model;
 
-import com.arisux.airi.lib.client.ModelBaseWrapper;
+import com.arisux.amdxlib.lib.client.Model;
 
 import net.minecraft.client.model.ModelRenderer;
 
-public class ModelCryostasisTube extends ModelBaseWrapper
+public class ModelCryostasisTube extends Model
 {
     public ModelRenderer cap,
         capN,

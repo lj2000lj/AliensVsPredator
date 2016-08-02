@@ -2,7 +2,7 @@ package org.avp.items;
 
 import java.util.List;
 
-import com.arisux.airi.lib.ItemTypes.HookedItem;
+import com.arisux.amdxlib.lib.world.item.HookedItem;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

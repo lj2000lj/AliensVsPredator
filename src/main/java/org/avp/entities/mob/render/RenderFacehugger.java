@@ -13,11 +13,10 @@ import org.avp.entities.tile.render.RenderCryostasisTube.CryostasisTubeRenderer;
 import org.avp.entities.tile.render.RenderCryostasisTube.ICustomCryostasisRenderer;
 import org.avp.event.client.RenderEntityInMedpodEvent;
 
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.RenderUtil;
-import com.arisux.airi.lib.client.ModelBaseWrapper;
-import com.arisux.airi.lib.client.ModelTexMap;
-import com.arisux.airi.lib.client.RenderLivingWrapper;
+import com.arisux.amdxlib.lib.client.Model;
+import com.arisux.amdxlib.lib.client.TexturedModel;
+import com.arisux.amdxlib.lib.client.RenderLivingWrapper;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -55,7 +54,7 @@ public class RenderFacehugger extends RenderLivingWrapper implements ICustomCryo
         public abstract void render(EntityFacehugger facehugger, float renderPartialTicks);
     }
 
-    public RenderFacehugger(ModelTexMap<? extends ModelBaseWrapper> model)
+    public RenderFacehugger(TexturedModel<? extends Model> model)
     {
         super(model);
         new VanillaFaceMountRenderers();
@@ -83,7 +82,7 @@ public class RenderFacehugger extends RenderLivingWrapper implements ICustomCryo
         {
             if (facehugger.motionY > 0 || facehugger.motionY < -0.1)
             {
-                GlStateManager.rotate(-45F, 1, 0, 0);
+                OpenGL.rotate(-45F, 1, 0, 0);
             }
         }
 
@@ -92,7 +91,7 @@ public class RenderFacehugger extends RenderLivingWrapper implements ICustomCryo
             Entity entity = facehugger.ridingEntity;
             EntityMedpod medpod = (EntityMedpod) entity.ridingEntity;
 
-            RenderUtil.rotate(medpod.getTileEntity());
+            OpenGL.rotate(medpod.getTileEntity());
             RenderEntityInMedpodEvent.transformMedpodEntity(medpod, entity);
         }
 
@@ -126,11 +125,11 @@ public class RenderFacehugger extends RenderLivingWrapper implements ICustomCryo
     {
         if (facehugger != null && !facehugger.isFertile() && facehugger.ridingEntity == null)
         {
-            GlStateManager.scale(1F, -1F, 1F);
-            GlStateManager.translate(0F, 0.25F, 0F);
+            OpenGL.scale(1F, -1F, 1F);
+            OpenGL.translate(0F, 0.25F, 0F);
         }
 
-        GlStateManager.scale(glScale, glScale, glScale);
+        OpenGL.scale(glScale, glScale, glScale);
     }
 
     @SideOnly(Side.CLIENT)
@@ -150,18 +149,18 @@ public class RenderFacehugger extends RenderLivingWrapper implements ICustomCryo
             {
                 if (tile.stasisEntity != null)
                 {
-                    GlStateManager.pushMatrix();
+                    OpenGL.pushMatrix();
                     {
                         if (tile.getVoltage() > 0)
                         {
-                            GlStateManager.disableLight();
+                            OpenGL.disableLight();
                         }
 
-                        GlStateManager.translate(0F, -0.5F, 0F);
-                        GlStateManager.rotate(90F, 1F, 0F, 0F);
+                        OpenGL.translate(0F, -0.5F, 0F);
+                        OpenGL.rotate(90F, 1F, 0F, 0F);
                         RenderManager.instance.renderEntityWithPosYaw(tile.stasisEntity, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
                     }
-                    GlStateManager.popMatrix();
+                    OpenGL.popMatrix();
                 }
             }
 

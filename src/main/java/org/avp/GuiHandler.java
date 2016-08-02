@@ -12,7 +12,7 @@ import org.avp.gui.GuiWristbracer;
 import org.avp.inventory.container.ContainerWristbracer;
 import org.avp.items.ItemWristbracer;
 
-import com.arisux.airi.lib.interfaces.IInitializable;
+import com.arisux.amdxlib.lib.game.IInitEvent;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
@@ -21,12 +21,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
 
-public class GuiHandler implements IGuiHandler, IInitializable
+public class GuiHandler implements IGuiHandler, IInitEvent
 {
     public static final GuiHandler instance = new GuiHandler();
 
     @Override
-    public void initialize(FMLInitializationEvent event)
+    public void init(FMLInitializationEvent event)
     {
         NetworkRegistry.INSTANCE.registerGuiHandler(AliensVsPredator.instance(), this);
     }

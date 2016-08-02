@@ -1,27 +1,75 @@
 package org.avp;
 
+import com.arisux.amdxlib.lib.game.Game;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
-public class CreativeTab extends CreativeTabs
+public class CreativeTab
 {
-    public static CreativeTab tabMain = new CreativeTab();
-    public static CreativeTab tabBlocks = new CreativeTab();
+    public static CreativeTabs tabMain        = new CreativeTabs("main")
+                                              {
+                                                  @Override
+                                                  public Item getTabIconItem()
+                                                  {
+                                                      return AliensVsPredator.items().helmTitanium;
+                                                  }
 
-    public CreativeTab()
-    {
-        super(AliensVsPredator.instance().container().getName());
-    }
+                                                  public String getTranslatedTabLabel()
+                                                  {
+                                                      return "Main";
+                                                  }
+                                              };
+    public static CreativeTabs tabBlocks      = new CreativeTabs("blocks")
+                                              {
+                                                  @Override
+                                                  public Item getTabIconItem()
+                                                  {
+                                                      return Game.getItem(AliensVsPredator.blocks().blockEngineerShipColumn1);
+                                                  }
 
-    @Override
-    public String getTranslatedTabLabel()
-    {
-        return AliensVsPredator.instance().container().getName();
-    }
+                                                  public String getTranslatedTabLabel()
+                                                  {
+                                                      return "Blocks";
+                                                  }
+                                              };
+    public static CreativeTabs tabEntities    = new CreativeTabs("summoners")
+                                              {
+                                                  @Override
+                                                  public Item getTabIconItem()
+                                                  {
+                                                      return AliensVsPredator.items().itemSummonerFacehugger;
+                                                  }
 
-    @Override
-    public Item getTabIconItem()
-    {
-        return AliensVsPredator.items().helmTitanium;
-    }
+                                                  public String getTranslatedTabLabel()
+                                                  {
+                                                      return "Summoners";
+                                                  }
+                                              };
+    public static CreativeTabs tabGunParts    = new CreativeTabs("gunparts")
+                                              {
+                                                  @Override
+                                                  public Item getTabIconItem()
+                                                  {
+                                                      return AliensVsPredator.items().itemM41A;
+                                                  }
+
+                                                  public String getTranslatedTabLabel()
+                                                  {
+                                                      return "Gun Components";
+                                                  }
+                                              };
+    public static CreativeTabs tabRecipeItems = new CreativeTabs("recipeitems")
+                                              {
+                                                  @Override
+                                                  public Item getTabIconItem()
+                                                  {
+                                                      return AliensVsPredator.items().itemLedDisplay;
+                                                  }
+
+                                                  public String getTranslatedTabLabel()
+                                                  {
+                                                      return "Recipe Items";
+                                                  }
+                                              };
 }

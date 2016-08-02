@@ -6,8 +6,8 @@ import org.avp.entities.tile.render.RenderCryostasisTube;
 import org.avp.entities.tile.render.RenderCryostasisTube.CryostasisTubeRenderer;
 import org.avp.entities.tile.render.RenderCryostasisTube.ICustomCryostasisRenderer;
 
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.client.RenderLivingWrapper;
+import com.arisux.amdxlib.lib.client.RenderLivingWrapper;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -25,7 +25,7 @@ public class RenderChestburster extends RenderLivingWrapper implements ICustomCr
     protected void preRenderCallback(EntityLivingBase entitylivingBase, float partialTicks)
     {
         super.preRenderCallback(entitylivingBase, shadowSize);
-        GlStateManager.scale(0.55F, 0.55F, 0.55F);
+        OpenGL.scale(0.55F, 0.55F, 0.55F);
     }
 
     @SideOnly(Side.CLIENT)
@@ -45,18 +45,18 @@ public class RenderChestburster extends RenderLivingWrapper implements ICustomCr
             {
                 if (tile.stasisEntity != null)
                 {
-                    GlStateManager.pushMatrix();
+                    OpenGL.pushMatrix();
                     {
                         if (tile.getVoltage() > 0)
                         {
-                            GlStateManager.disableLight();
+                            OpenGL.disableLight();
                         }
 
-                        GlStateManager.translate(0F, -0.5F, 0F);
-                        GlStateManager.rotate(90F, 1F, 0F, 0F);
+                        OpenGL.translate(0F, -0.5F, 0F);
+                        OpenGL.rotate(90F, 1F, 0F, 0F);
                         RenderManager.instance.renderEntityWithPosYaw(tile.stasisEntity, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
                     }
-                    GlStateManager.popMatrix();
+                    OpenGL.popMatrix();
                 }
             }
 

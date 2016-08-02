@@ -3,26 +3,26 @@ package org.avp;
 import org.avp.block.BlockShape;
 import org.avp.block.BlockShape.ShapeTypes;
 
-import com.arisux.airi.lib.AccessWrapper;
-import com.arisux.airi.lib.ModUtil.IBHandler;
+import com.arisux.amdxlib.lib.game.Game;
+import com.arisux.amdxlib.lib.world.block.Blocks;
 
 import net.minecraft.block.Block;
 
 public class ShapedBlockUtil
 {
-    public static void registerBlock(IBHandler ibHandler, Block block, String identifier)
+    public static void register(String modid,  Block block, String identifier)
     {
-        registerBlock(ibHandler, block, identifier, 0);
+        register(modid, block, identifier, 0);
     }
 
-    public static void registerBlock(IBHandler ibHandler, Block block, String identifier, int textureSide)
+    public static void register(String modid, Block block, String identifier, int textureSide)
     {
-        registerBlock(ibHandler, block, identifier, 0, block);
+        register(modid, block, identifier, 0, block);
     }
 
-    public static void registerBlock(IBHandler ibHandler, Block blockParent, String identifier, int textureSide, Block textureBlock)
+    public static void register(String modid, Block blockParent, String identifier, int textureSide, Block textureBlock)
     {
-        ibHandler.registerBlock(blockParent, identifier, AliensVsPredator.instance().tabBlocks());
+        Game.register(modid, blockParent, identifier).setCreativeTab(AliensVsPredator.tabBlocks());
 
         BlockShape blockSlope = new BlockShape(ShapeTypes.SLOPE);
         BlockShape blockCorner = new BlockShape(ShapeTypes.CORNER);
@@ -40,20 +40,24 @@ public class ShapedBlockUtil
         applyPropertiesToShapedBlock(blockSmartInvertedRidge, blockParent, textureBlock);
         applyPropertiesToShapedBlock(blockSmartRidge, blockParent, textureBlock);
 
-        ibHandler.registerBlock(blockSlope, identifier + ".slope", AliensVsPredator.instance().tabBlocks());
-        ibHandler.registerBlock(blockCorner, identifier + ".corner", AliensVsPredator.instance().tabBlocks());
-        ibHandler.registerBlock(blockInvertedCorner, identifier + ".invertedcorner", AliensVsPredator.instance().tabBlocks());
-        ibHandler.registerBlock(blockRidge, identifier + ".ridge", AliensVsPredator.instance().tabBlocks());
-        ibHandler.registerBlock(blockInvertedRidge, identifier + ".invertedridge", AliensVsPredator.instance().tabBlocks());
-        ibHandler.registerBlock(blockSmartInvertedRidge, identifier + ".smartinvertedridge", AliensVsPredator.instance().tabBlocks());
-        ibHandler.registerBlock(blockSmartRidge, identifier + ".smartridge", AliensVsPredator.instance().tabBlocks());
+        Game.register(modid, blockSlope, identifier + ".slope").setCreativeTab(AliensVsPredator.tabBlocks());
+        Game.register(modid, blockCorner, identifier + ".corner").setCreativeTab(AliensVsPredator.tabBlocks());
+        Game.register(modid, blockInvertedCorner, identifier + ".invertedcorner").setCreativeTab(AliensVsPredator.tabBlocks());
+        Game.register(modid, blockRidge, identifier + ".ridge").setCreativeTab(AliensVsPredator.tabBlocks());
+        Game.register(modid, blockInvertedRidge, identifier + ".invertedridge").setCreativeTab(AliensVsPredator.tabBlocks());
+        Game.register(modid, blockSmartInvertedRidge, identifier + ".smartinvertedridge").setCreativeTab(AliensVsPredator.tabBlocks());
+        Game.register(modid, blockSmartRidge, identifier + ".smartridge").setCreativeTab(AliensVsPredator.tabBlocks());
     }
 
     public static void applyPropertiesToShapedBlock(BlockShape shaped, Block blockParent, Block textureBlock)
     {
         shaped.setIconsFromBlock(textureBlock);
-        shaped.setResistance(AccessWrapper.getBlockResistance(blockParent));
-        shaped.setHardness(AccessWrapper.getBlockHardness(blockParent));
-        shaped.setLightOpacity(blockParent.getLightOpacity());
+
+        if (blockParent != null)
+        {
+            shaped.setResistance(Blocks.getBlockResistance(blockParent));
+            shaped.setHardness(Blocks.getBlockHardness(blockParent));
+            shaped.setLightOpacity(blockParent.getLightOpacity());
+        }
     }
 }

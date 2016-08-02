@@ -6,7 +6,7 @@ import org.avp.AliensVsPredator;
 import org.avp.entities.tile.TileEntityTurret;
 import org.avp.packets.server.PacketAddTuretTarget;
 
-import com.arisux.airi.lib.WorldUtil;
+import com.arisux.amdxlib.lib.world.entity.Entities;
 
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import net.minecraft.block.Block;
@@ -98,7 +98,7 @@ public class BlockTurret extends Block
                 for (int i = 0; i < tile.getDangerousTargets().size(); i++)
                 {
                     if (tile.getDangerousTargets().get(i) != null)
-                        AliensVsPredator.network().sendToAll(new PacketAddTuretTarget(xCoord, yCoord, zCoord, EntityList.getEntityID(WorldUtil.Entities.constructEntity(worldObj, tile.getDangerousTargets().get(i)))));
+                        AliensVsPredator.network().sendToAll(new PacketAddTuretTarget(xCoord, yCoord, zCoord, EntityList.getEntityID(Entities.constructEntity(worldObj, tile.getDangerousTargets().get(i)))));
                 }
             }
         }

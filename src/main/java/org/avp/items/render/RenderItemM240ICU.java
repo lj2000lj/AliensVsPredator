@@ -5,9 +5,9 @@ import org.avp.items.ItemFirearm;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.RenderUtil;
-import com.arisux.airi.lib.client.ItemRenderer;
+import com.arisux.amdxlib.lib.client.render.Draw;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
+import com.arisux.amdxlib.lib.client.render.ItemRenderer;
 
 import net.minecraft.item.ItemStack;
 
@@ -28,21 +28,21 @@ public class RenderItemM240ICU extends ItemRenderer
     public void renderInWorld(ItemStack item, Object... data)
     {
         super.renderInWorld(item, data);
-        GlStateManager.translate(0F, 0.5F, 0F);
-        GlStateManager.scale(1F, -1F, 1F);
-        GlStateManager.disable(GL11.GL_CULL_FACE);
+        OpenGL.translate(0F, 0.5F, 0F);
+        OpenGL.scale(1F, -1F, 1F);
+        OpenGL.disable(GL11.GL_CULL_FACE);
         this.getModelTexMap().draw();
     }
 
     @Override
     public void renderThirdPerson(ItemStack item, Object... data)
     {
-        GlStateManager.rotate(15.0F, 1.0F, 0.0F, 0.0F);
-        GlStateManager.rotate(15.0F, 0.0F, 1.0F, 0.0F);
-        GlStateManager.rotate(190.0F, 0.0F, 0.0F, 1.0F);
-        GlStateManager.translate(-0.35F, -0.27F, 0.7F);
+        OpenGL.rotate(15.0F, 1.0F, 0.0F, 0.0F);
+        OpenGL.rotate(15.0F, 0.0F, 1.0F, 0.0F);
+        OpenGL.rotate(190.0F, 0.0F, 0.0F, 1.0F);
+        OpenGL.translate(-0.35F, -0.27F, 0.7F);
         float glScale = 1.9F;
-        GlStateManager.scale(glScale, glScale, glScale);
+        OpenGL.scale(glScale, glScale, glScale);
         this.getModelTexMap().draw();
     }
 
@@ -54,41 +54,41 @@ public class RenderItemM240ICU extends ItemRenderer
 
         if (firstPersonRenderCheck(data[1]))
         {
-            GlStateManager.rotate(10.0F, 1.0F, 0.0F, 0.0F);
+            OpenGL.rotate(10.0F, 1.0F, 0.0F, 0.0F);
 
             if (Mouse.isButtonDown(0) && mc.inGameHasFocus)
             {
-                GlStateManager.translate(0.8F, 0.7F, -0.7F);
-                GlStateManager.rotate(91.0F, 1.0F, 0.0F, 0.0F);
-                GlStateManager.rotate(117.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotate(80.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.translate(-0.26F, 0F, 0F);
+                OpenGL.translate(0.8F, 0.7F, -0.7F);
+                OpenGL.rotate(91.0F, 1.0F, 0.0F, 0.0F);
+                OpenGL.rotate(117.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(80.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(-0.26F, 0F, 0F);
             }
             else
             {
-                GlStateManager.translate(0.8F, 0.85F, -0.5F);
-                GlStateManager.rotate(70.0F, 1.0F, 0.0F, 0.0F);
-                GlStateManager.rotate(120.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotate(100.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.translate(0.2F, 0F, 0F);
+                OpenGL.translate(0.8F, 0.85F, -0.5F);
+                OpenGL.rotate(70.0F, 1.0F, 0.0F, 0.0F);
+                OpenGL.rotate(120.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(100.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0.2F, 0F, 0F);
             }
 
-            GlStateManager.disable(GL11.GL_CULL_FACE);
-            GlStateManager.scale(glScale, glScale, glScale);
+            OpenGL.disable(GL11.GL_CULL_FACE);
+            OpenGL.scale(glScale, glScale, glScale);
             this.getModelTexMap().draw();
 
             if (mc.thePlayer.getCurrentEquippedItem() != null && mc.thePlayer.getCurrentEquippedItem().getItem() instanceof ItemFirearm)
             {
-                GlStateManager.disable(GL11.GL_LIGHTING);
-                GlStateManager.translate(-0.3439F, 0.6F, 0.04F);
-                GlStateManager.scale(displayScale, displayScale, displayScale);
-                GlStateManager.rotate(90F, 0F, 1F, 0F);
-                RenderUtil.drawRect(-2, -2, 16, 11, 0xFF000000);
-                GlStateManager.translate(0F, 0F, -0.01F);
-                GlStateManager.disableLightMapping();
-                RenderUtil.drawString(getAmmoCountDisplayString(), 0, 0, 0xFFFF0000);
-                GlStateManager.enable(GL11.GL_LIGHTING);
-                GlStateManager.color(1F, 1F, 1F, 1F);
+                OpenGL.disable(GL11.GL_LIGHTING);
+                OpenGL.translate(-0.3439F, 0.6F, 0.04F);
+                OpenGL.scale(displayScale, displayScale, displayScale);
+                OpenGL.rotate(90F, 0F, 1F, 0F);
+                Draw.drawRect(-2, -2, 16, 11, 0xFF000000);
+                OpenGL.translate(0F, 0F, -0.01F);
+                OpenGL.disableLightMapping();
+                Draw.drawString(getAmmoCountDisplayString(), 0, 0, 0xFFFF0000);
+                OpenGL.enable(GL11.GL_LIGHTING);
+                OpenGL.color(1F, 1F, 1F, 1F);
             }
         }
     }
@@ -96,10 +96,10 @@ public class RenderItemM240ICU extends ItemRenderer
     @Override
     public void renderInInventory(ItemStack item, Object... data)
     {
-        GlStateManager.translate(8F, 1F, 0F);
-        GlStateManager.translate(0F, 5F, 0F);
-        GlStateManager.scale(10F, 10F, 10F);
-        GlStateManager.disable(GL11.GL_CULL_FACE);
+        OpenGL.translate(8F, 1F, 0F);
+        OpenGL.translate(0F, 5F, 0F);
+        OpenGL.scale(10F, 10F, 10F);
+        OpenGL.disable(GL11.GL_CULL_FACE);
         this.getModelTexMap().draw();
     }
 

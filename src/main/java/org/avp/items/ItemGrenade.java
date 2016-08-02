@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.avp.entities.EntityGrenade;
 
-import com.arisux.airi.lib.ItemTypes.HookedItem;
-import com.arisux.airi.lib.WorldUtil;
+import com.arisux.amdxlib.lib.world.entity.player.inventory.Inventories;
+import com.arisux.amdxlib.lib.world.item.HookedItem;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -32,7 +32,7 @@ public class ItemGrenade extends HookedItem
             EntityGrenade grenade = new EntityGrenade(worldObj, entityplayer);
             grenade.setFlaming(this.isFlaming);
             worldObj.spawnEntityInWorld(grenade);
-            WorldUtil.Entities.Players.Inventories.consumeItem(entityplayer, this);
+            Inventories.consumeItem(entityplayer, this);
         }
 
         return itemstack;

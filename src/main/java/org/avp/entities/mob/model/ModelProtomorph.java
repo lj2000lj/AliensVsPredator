@@ -1,13 +1,13 @@
 package org.avp.entities.mob.model;
 
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.client.ModelBaseWrapper;
+import com.arisux.amdxlib.lib.client.Model;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
+import com.arisux.amdxlib.lib.game.Game;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.MathHelper;
 
-public class ModelProtomorph extends ModelBaseWrapper
+public class ModelProtomorph extends Model
 {
     ModelRenderer torso;
     ModelRenderer abdomen;
@@ -337,12 +337,12 @@ public class ModelProtomorph extends ModelBaseWrapper
         rClaw4.render(boxTranslation);
         rClaw5.render(boxTranslation);
 
-        GlStateManager.pushMatrix();
+        OpenGL.pushMatrix();
         {
-            GlStateManager.rotate(Minecraft.getMinecraft().theWorld.getWorldTime() % 10, 1, 0, 0);
+            OpenGL.rotate(Game.minecraft().theWorld.getWorldTime() % 10, 1, 0, 0);
             exteriorJaw.render(boxTranslation);
         }
-        GlStateManager.popMatrix();
+        OpenGL.popMatrix();
         interiorJaw.render(boxTranslation);
     }
 }

@@ -1,10 +1,10 @@
 package org.avp.entities.tile.model;
 
-import com.arisux.airi.lib.client.ModelBaseWrapper;
+import com.arisux.amdxlib.lib.client.Model;
 
 import net.minecraft.client.model.ModelRenderer;
 
-public class ModelSatelliteDish extends ModelBaseWrapper
+public class ModelSatelliteDish extends Model
 {
     public ModelRenderer discBaseN;
     public ModelRenderer swivelJoint;

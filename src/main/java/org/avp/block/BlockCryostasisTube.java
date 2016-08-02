@@ -3,7 +3,7 @@ package org.avp.block;
 import org.avp.entities.tile.TileEntityCryostasisTube;
 import org.avp.items.ItemEntitySummoner;
 
-import com.arisux.airi.lib.WorldUtil;
+import com.arisux.amdxlib.lib.world.entity.player.inventory.Inventories;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -73,7 +73,7 @@ public class BlockCryostasisTube extends Block
                     ItemEntitySummoner item = (ItemEntitySummoner) player.getCurrentEquippedItem().getItem();
                     tile.stasisItemstack = new ItemStack(item, 1);
                     tile.stasisEntity = item.createNewEntity(worldObj);
-                    WorldUtil.Entities.Players.Inventories.consumeItem(player, item);
+                    Inventories.consumeItem(player, item);
                 }
                 else if (player.getCurrentEquippedItem() == null)
                 {

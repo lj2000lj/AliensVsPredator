@@ -2,7 +2,7 @@ package org.avp.items;
 
 import org.avp.AliensVsPredator;
 
-import com.arisux.airi.lib.ItemTypes.HookedItem;
+import com.arisux.amdxlib.lib.world.item.HookedItem;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

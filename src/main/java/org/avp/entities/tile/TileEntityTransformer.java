@@ -3,7 +3,7 @@ package org.avp.entities.tile;
 import org.avp.util.IVoltageProvider;
 import org.avp.util.IVoltageReceiver;
 
-import com.arisux.airi.lib.interfaces.IRotatable;
+import com.arisux.amdxlib.lib.world.tile.IRotatable;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;

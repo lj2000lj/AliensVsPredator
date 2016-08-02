@@ -2,8 +2,8 @@ package org.avp.entities.mob.render;
 
 import org.avp.AliensVsPredator;
 
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.client.RenderLivingWrapper;
+import com.arisux.amdxlib.lib.client.RenderLivingWrapper;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -24,6 +24,6 @@ public class RenderQueen extends RenderLivingWrapper
     @Override
     protected void preRenderCallback(EntityLivingBase entityliving, float partialTicks)
     {
-        GlStateManager.scale(1.75F, 1.75F, 1.75F);
+        OpenGL.scale(1.75F, 1.75F, 1.75F);
     }
 }

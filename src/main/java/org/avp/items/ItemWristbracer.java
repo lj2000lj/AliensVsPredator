@@ -3,7 +3,7 @@ package org.avp.items;
 import org.avp.AliensVsPredator;
 import org.avp.inventory.container.ContainerWristbracer;
 
-import com.arisux.airi.lib.ItemTypes.HookedItem;
+import com.arisux.amdxlib.lib.world.item.HookedItem;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;

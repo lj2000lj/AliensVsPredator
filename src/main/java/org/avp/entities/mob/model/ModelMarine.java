@@ -1,12 +1,12 @@
 package org.avp.entities.mob.model;
 
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.client.ModelBaseWrapper;
+import com.arisux.amdxlib.lib.client.Model;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.MathHelper;
 
-public class ModelMarine extends ModelBaseWrapper
+public class ModelMarine extends Model
 {
     public ModelRenderer bipedHead, bipedHeadwear, bipedBody, bipedRightArm, bipedLeftArm, bipedRightLeg, bipedLeftLeg, bipedEars, bipedCloak;
     public int heldItemLeft;
@@ -167,21 +167,21 @@ public class ModelMarine extends ModelBaseWrapper
         if (this.isChild)
         {
             float scale = 2.0F;
-            GlStateManager.pushMatrix();
-            GlStateManager.scale(1.5F / scale, 1.5F / scale, 1.5F / scale);
-            GlStateManager.translate(0.0F, 16.0F * boxTranslation, 0.0F);
+            OpenGL.pushMatrix();
+            OpenGL.scale(1.5F / scale, 1.5F / scale, 1.5F / scale);
+            OpenGL.translate(0.0F, 16.0F * boxTranslation, 0.0F);
             this.bipedHead.render(boxTranslation);
-            GlStateManager.popMatrix();
-            GlStateManager.pushMatrix();
-            GlStateManager.scale(1.0F / scale, 1.0F / scale, 1.0F / scale);
-            GlStateManager.translate(0.0F, 24.0F * boxTranslation, 0.0F);
+            OpenGL.popMatrix();
+            OpenGL.pushMatrix();
+            OpenGL.scale(1.0F / scale, 1.0F / scale, 1.0F / scale);
+            OpenGL.translate(0.0F, 24.0F * boxTranslation, 0.0F);
             this.bipedBody.render(boxTranslation);
             this.bipedRightArm.render(boxTranslation);
             this.bipedLeftArm.render(boxTranslation);
             this.bipedRightLeg.render(boxTranslation);
             this.bipedLeftLeg.render(boxTranslation);
             this.bipedHeadwear.render(boxTranslation);
-            GlStateManager.popMatrix();
+            OpenGL.popMatrix();
         }
         else
         {

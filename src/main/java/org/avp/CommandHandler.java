@@ -3,21 +3,21 @@ package org.avp;
 import org.avp.command.CommandGenerate;
 import org.avp.command.CommandPlayerMode;
 
-import com.arisux.airi.lib.interfaces.IInitializable;
+import com.arisux.amdxlib.lib.game.IInitEvent;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 
-public class CommandHandler implements IInitializable
+public class CommandHandler implements IInitEvent
 {
     public static final CommandHandler instance = new CommandHandler();
     public CommandPlayerMode commandPlayerMode;
     public CommandGenerate commandGenerate;
 
     @Override
-    public void initialize(FMLInitializationEvent event)
+    public void init(FMLInitializationEvent event)
     {
         FMLCommonHandler.instance().bus().register(this);
     }

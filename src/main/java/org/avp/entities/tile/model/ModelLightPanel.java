@@ -1,10 +1,10 @@
 package org.avp.entities.tile.model;
 
-import com.arisux.airi.lib.client.ModelBaseWrapper;
+import com.arisux.amdxlib.lib.client.Model;
 
 import net.minecraft.client.model.ModelRenderer;
 
-public class ModelLightPanel extends ModelBaseWrapper
+public class ModelLightPanel extends Model
 {
     ModelRenderer side0;
     ModelRenderer side1;

@@ -1,7 +1,5 @@
 package org.avp.gui;
 
-import static com.arisux.airi.lib.RenderUtil.drawQuad;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,10 +9,10 @@ import org.avp.api.WristbracerAPI;
 import org.avp.inventory.container.ContainerWristbracer;
 import org.lwjgl.opengl.GL11;
 
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.GuiElements.GuiCustomButton;
-import com.arisux.airi.lib.RenderUtil;
-import com.arisux.airi.lib.interfaces.IActionPerformed;
+import com.arisux.amdxlib.lib.client.gui.GuiCustomButton;
+import com.arisux.amdxlib.lib.client.gui.IAction;
+import com.arisux.amdxlib.lib.client.render.Draw;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -69,13 +67,13 @@ public class GuiWristbracer extends GuiContainer
         this.guiLeft = this.width / 2 - xSize / 2;
         this.guiTop = this.height / 2 - ySize / 2;
         AliensVsPredator.resources().GUI_WRISTBRACER.bind();
-        drawQuad(guiLeft, guiTop, xSize, ySize - 30, 0, 0, 0);
+        Draw.drawQuad(guiLeft, guiTop, xSize, ySize - 30, 0, 0, 0);
 
-        RenderUtil.drawRect(guiLeft + 31, guiTop + 16, 16, 16, 0x33FF0000);
+        Draw.drawRect(guiLeft + 31, guiTop + 16, 16, 16, 0x33FF0000);
 
         for (byte s = 0; s < 9; s++)
         {
-            RenderUtil.drawRect(guiLeft + 15 + (18 * s), guiTop + 136, 16, 16, 0xAA000000);
+            Draw.drawRect(guiLeft + 15 + (18 * s), guiTop + 136, 16, 16, 0xAA000000);
         }
 
         for (int x1 = 1; x1 <= 6; x1++)
@@ -92,10 +90,10 @@ public class GuiWristbracer extends GuiContainer
             button.overlayColorHover = 0x22FF0000;
             button.drawButton();
 
-            button.setAction(new IActionPerformed()
+            button.setAction(new IAction()
             {
                 @Override
-                public void actionPerformed(GuiCustomButton button)
+                public void perform(GuiCustomButton button)
                 {
                     updateScreenDigit(button.id, displays.get(button) < 9 ? displays.get(button) + 1 : 0);
                 }
@@ -140,9 +138,9 @@ public class GuiWristbracer extends GuiContainer
         {
             if (x == number)
             {
-                GlStateManager.enable(GL11.GL_BLEND);
+                OpenGL.enable(GL11.GL_BLEND);
                 AliensVsPredator.resources().GUI_WRISTBRACER.bind();
-                drawQuad(xPos, yPos, 28, 50, 0, (27 * (x - 1)), 126);
+                Draw.drawQuad(xPos, yPos, 28, 50, 0, (27 * (x - 1)), 126);
             }
         }
     }

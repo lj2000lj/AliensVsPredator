@@ -4,9 +4,9 @@ import org.avp.dimension.TeleporterLV;
 import org.avp.dimension.acheron.ProviderAcheron;
 import org.avp.dimension.varda.ProviderVarda;
 
-import com.arisux.airi.lib.WorldUtil.Blocks.CoordData;
-import com.arisux.airi.lib.WorldUtil.Entities;
-import com.arisux.airi.lib.interfaces.IInitializable;
+import com.arisux.amdxlib.lib.game.IInitEvent;
+import com.arisux.amdxlib.lib.world.CoordData;
+import com.arisux.amdxlib.lib.world.entity.Entities;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -22,13 +22,13 @@ import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 
-public class DimensionHandler implements IInitializable
+public class DimensionHandler implements IInitEvent
 {
     public static final DimensionHandler instance = new DimensionHandler();
     public boolean dimensionsInitialized;
 
     @Override
-    public void initialize(FMLInitializationEvent event)
+    public void init(FMLInitializationEvent event)
     {
         registerDimension(AliensVsPredator.settings().dimensionIdAcheron(), ProviderAcheron.class, true);
         registerDimension(AliensVsPredator.settings().dimensionIdVarda(), ProviderVarda.class, true);

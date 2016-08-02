@@ -2,14 +2,15 @@ package org.avp.items.model;
 
 import org.avp.items.ItemFlamethrower;
 
-import com.arisux.airi.lib.client.ModelBaseWrapper;
+import com.arisux.amdxlib.lib.client.Model;
+import com.arisux.amdxlib.lib.game.Game;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class ModelNostromoFlamethrower extends ModelBaseWrapper
+public class ModelNostromoFlamethrower extends Model
 {
     public ModelRenderer barrel;
     public ModelRenderer barrelRod;
@@ -107,7 +108,7 @@ public class ModelNostromoFlamethrower extends ModelBaseWrapper
         this.buttSlope.render(boxTranslation);
         this.stockBack.render(boxTranslation);
 
-        Minecraft minecraft = Minecraft.getMinecraft();
+        Minecraft minecraft = Game.minecraft();
         ItemStack currentItemStack = minecraft.thePlayer.inventory.getCurrentItem();
 
         if (currentItemStack != null && currentItemStack.getItem() instanceof ItemFlamethrower)

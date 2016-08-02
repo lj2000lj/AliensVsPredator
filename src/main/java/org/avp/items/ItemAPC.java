@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.avp.entities.EntityAPC;
 
-import com.arisux.airi.lib.ItemTypes.HookedItem;
+import com.arisux.amdxlib.lib.world.item.HookedItem;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;

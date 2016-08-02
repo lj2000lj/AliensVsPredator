@@ -4,11 +4,11 @@ import org.avp.AliensVsPredator;
 import org.avp.entities.EntityAPC;
 import org.lwjgl.opengl.GL11;
 
-import com.arisux.airi.api.wavefrontapi.Part;
-import com.arisux.airi.api.wavefrontapi.WavefrontModel;
-import com.arisux.airi.lib.GlStateManager;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
+import com.arisux.amdxlib.lib.client.render.wavefront.Part;
+import com.arisux.amdxlib.lib.client.render.wavefront.TriangulatedWavefrontModel;
+import com.arisux.amdxlib.lib.game.Game;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,7 +17,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class RenderAPC extends Render
 {
-    private final WavefrontModel model      = AliensVsPredator.resources().models().M577_APC;
+    private final TriangulatedWavefrontModel model      = AliensVsPredator.resources().models().M577_APC;
     private Part                 tire0      = model.getPart("Mesh75_APCTire1_4_Group10_Model");
     private Part                 tire0Rim   = model.getPart("Mesh76_APCWhAmr4_Group10_Model");
     private Part                 tire0Fin0  = model.getPart("Mesh77_APCWhPlt10_Group10_Model");
@@ -100,66 +100,66 @@ public class RenderAPC extends Render
     {
         float scale = 1F;
         double curVelocity = Math.sqrt(apc.motionX * apc.motionX + apc.motionZ * apc.motionZ);
-        float tireRotation = curVelocity > 0.1 ? (-Minecraft.getMinecraft().thePlayer.worldObj.getWorldTime() % 360 * 8) - partialTicks : 0;
+        float tireRotation = curVelocity > 0.1 ? (-Game.minecraft().thePlayer.worldObj.getWorldTime() % 360 * 8) - partialTicks : 0;
         float time = (float) apc.getTimeSinceHit() - partialTicks;
         float damage = apc.getDamageTaken() - partialTicks;
         damage = damage < 0.0F ? 0.0F : damage;
 
-        GlStateManager.pushMatrix();
+        OpenGL.pushMatrix();
         {
-            GlStateManager.disable(GL11.GL_CULL_FACE);
-            GlStateManager.translate((float) posX - 2.2F, (float) posY - 2.02F, (float) posZ + 0.1F);
-            GlStateManager.rotate(-apc.rotationYaw + 180, 0, 1, 0);
+            OpenGL.disable(GL11.GL_CULL_FACE);
+            OpenGL.translate((float) posX - 2.2F, (float) posY - 2.02F, (float) posZ + 0.1F);
+            OpenGL.rotate(-apc.rotationYaw + 180, 0, 1, 0);
 
             if (time > 0.0F)
             {
-                GlStateManager.rotate(MathHelper.sin(time) * time * damage / 10.0F * (float) apc.getForwardDirection(), 1.0F, 0.0F, 0.0F);
+                OpenGL.rotate(MathHelper.sin(time) * time * damage / 10.0F * (float) apc.getForwardDirection(), 1.0F, 0.0F, 0.0F);
             }
 
-            GlStateManager.scale(-scale, -scale, scale);
-            GlStateManager.rotate(-180f, 0f, 0f, 1f);
+            OpenGL.scale(-scale, -scale, scale);
+            OpenGL.rotate(-180f, 0f, 0f, 1f);
 
-            for (Part p : model.nameToPartHash.values())
+            for (Part p : model.parts.values())
             {
                 if (isPartATire(p))
                 {
-                    GlStateManager.pushMatrix();
+                    OpenGL.pushMatrix();
                     {
                         if (this.isPartOfTire0(p) || this.isPartOfTire1(p))
                         {
-                            GlStateManager.translate(-3.2F, 0.8F, -0.01F);
-                            GlStateManager.rotate(tireRotation, 0, 0, 1);
-                            GlStateManager.translate(3.2F, -0.8F, 0);
+                            OpenGL.translate(-3.2F, 0.8F, -0.01F);
+                            OpenGL.rotate(tireRotation, 0, 0, 1);
+                            OpenGL.translate(3.2F, -0.8F, 0);
                         }
 
                         if (this.isPartOfTire2(p) || this.isPartOfTire3(p))
                         {
-                            GlStateManager.translate(1.6F, 0.8F, 0F);
-                            GlStateManager.rotate(tireRotation, 0, 0, 1);
-                            GlStateManager.translate(-1.6F, -0.8F, 0F);
+                            OpenGL.translate(1.6F, 0.8F, 0F);
+                            OpenGL.rotate(tireRotation, 0, 0, 1);
+                            OpenGL.translate(-1.6F, -0.8F, 0F);
                         }
 
                         p.draw();
                     }
-                    GlStateManager.popMatrix();
+                    OpenGL.popMatrix();
                 }
 
                 if (this.isPartOfTurret(p))
                 {
                     if (apc.riddenByEntity != null && apc.riddenByEntity instanceof EntityPlayer)
                     {
-                        GlStateManager.pushMatrix();
+                        OpenGL.pushMatrix();
                         {
                             EntityPlayer playerIn = (EntityPlayer) apc.riddenByEntity;
-                            GlStateManager.translate(-2.9F, 0.75F, -0.25F);
-                            GlStateManager.rotate(-90, 0F, 1F, 0F);
-                            GlStateManager.rotate(apc.rotationYaw - 108, 0, 1, 0);
-                            GlStateManager.rotate(-playerIn.rotationYawHead - 72, 0F, 1F, 0F);
-                            GlStateManager.translate(2.9F, -0.75F, 0.25F);
+                            OpenGL.translate(-2.9F, 0.75F, -0.25F);
+                            OpenGL.rotate(-90, 0F, 1F, 0F);
+                            OpenGL.rotate(apc.rotationYaw - 108, 0, 1, 0);
+                            OpenGL.rotate(-playerIn.rotationYawHead - 72, 0F, 1F, 0F);
+                            OpenGL.translate(2.9F, -0.75F, 0.25F);
 
                             p.draw();
                         }
-                        GlStateManager.popMatrix();
+                        OpenGL.popMatrix();
                     }
                 }
 
@@ -173,7 +173,7 @@ public class RenderAPC extends Render
                 }
             }
         }
-        GlStateManager.popMatrix();
+        OpenGL.popMatrix();
     }
 
     public boolean isPartOfTurret(Part p)

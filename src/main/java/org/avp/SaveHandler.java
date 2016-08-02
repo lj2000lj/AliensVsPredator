@@ -4,8 +4,8 @@ import java.io.File;
 
 import org.avp.world.DedicatedWorldInfo;
 
-import com.arisux.airi.AIRI;
-import com.arisux.airi.lib.WorldUtil.NBT;
+import com.arisux.amdxlib.AMDXLib;
+import com.arisux.amdxlib.lib.world.storage.NBTStorage;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -45,11 +45,11 @@ public class SaveHandler
             {
                 if (!this.getWorldInfo().save(tag))
                 {
-                    AIRI.logger.info("Unable to save world data: ", this.getFileName());
+                    AMDXLib.log().info(String.format("Unable to save world data: ", this.getFileName()));
                 }
             }
 
-            NBT.writeCompressed(tag, file);
+            NBTStorage.writeCompressed(tag, file);
         }
         catch (Exception e)
         {
@@ -70,10 +70,10 @@ public class SaveHandler
         {
             if (!file.exists())
             {
-                NBT.writeCompressed(tag, file);
+                NBTStorage.writeCompressed(tag, file);
             }
 
-            NBTTagCompound read = NBT.readCompressed(file);
+            NBTTagCompound read = NBTStorage.readCompressed(file);
             tag = read == null ? tag : read;
 
             this.worldInfo = new DedicatedWorldInfo(tag);

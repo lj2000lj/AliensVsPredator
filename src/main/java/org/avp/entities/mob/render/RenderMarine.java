@@ -7,12 +7,11 @@ import org.avp.entities.mob.render.RenderFacehugger.FaceMountRenderer;
 import org.avp.entities.mob.render.RenderFacehugger.IFaceMountable;
 import org.lwjgl.opengl.GL11;
 
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.RenderUtil;
-import com.arisux.airi.lib.client.ModelBaseWrapper;
-import com.arisux.airi.lib.client.ModelBipedWrapper;
-import com.arisux.airi.lib.client.ModelTexMap;
-import com.arisux.airi.lib.client.RenderLivingWrapper;
+import com.arisux.amdxlib.lib.client.Model;
+import com.arisux.amdxlib.lib.client.SpecialModelBiped;
+import com.arisux.amdxlib.lib.client.TexturedModel;
+import com.arisux.amdxlib.lib.client.RenderLivingWrapper;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.entity.EntityLivingBase;
 
@@ -29,9 +28,9 @@ public class RenderMarine extends RenderLivingWrapper implements IFaceMountable
         super.preRenderCallback(living, partialTicks);
     }
     
-    public ModelBipedWrapper getModel()
+    public SpecialModelBiped getModel()
     {
-        return (ModelBipedWrapper) this.getModelTexMap().getModel();
+        return (SpecialModelBiped) this.getModelTexMap().getModel();
     }
 
     @Override
@@ -40,11 +39,11 @@ public class RenderMarine extends RenderLivingWrapper implements IFaceMountable
         super.renderEquippedItems(living, partialTicks);
 
         EntityMarine marine = (EntityMarine) living;
-        ModelTexMap<? extends ModelBaseWrapper> model = marine.getMarineType().getFirearmModelTexMap();
+        TexturedModel<? extends Model> model = marine.getMarineType().getFirearmModelTexMap();
 
-        GlStateManager.pushMatrix();
+        OpenGL.pushMatrix();
         {
-            this.getModel().bipedRightArm.postRender(RenderUtil.DEFAULT_BOX_TRANSLATION);
+            this.getModel().bipedRightArm.postRender(Model.DEFAULT_BOX_TRANSLATION);
             if (marine.isFiring())
             {
                 this.getModel().aimedBow = true;
@@ -53,23 +52,23 @@ public class RenderMarine extends RenderLivingWrapper implements IFaceMountable
             {
                 this.getModel().aimedBow = false;
             }
-            GlStateManager.translate(-0.35F, 0.8F, -0.85F);
-            GlStateManager.rotate(270.0F, 1.0F, 0.0F, 0.0F);
-            GlStateManager.rotate(0.0F, 0.0F, 1.0F, 0.0F);
-            GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
-            GlStateManager.scale(1.2F, 1.2F, 1.2F);
-            GlStateManager.disable(GL11.GL_CULL_FACE);
+            OpenGL.translate(-0.35F, 0.8F, -0.85F);
+            OpenGL.rotate(270.0F, 1.0F, 0.0F, 0.0F);
+            OpenGL.rotate(0.0F, 0.0F, 1.0F, 0.0F);
+            OpenGL.rotate(180.0F, 0.0F, 0.0F, 1.0F);
+            OpenGL.scale(1.2F, 1.2F, 1.2F);
+            OpenGL.disable(GL11.GL_CULL_FACE);
 
             switch (marine.getMarineType())
             {
                 case AK47:
-                    GlStateManager.translate(-0.35F, 0.45F, -0.55F);
+                    OpenGL.translate(-0.35F, 0.45F, -0.55F);
                     break;
                 case SNIPER:
-                    GlStateManager.translate(-0.25F, 0.45F, 0.05F);
+                    OpenGL.translate(-0.25F, 0.45F, 0.05F);
                     break;
                 case M56SG:
-                    GlStateManager.translate(-0.15F, 0.7F, -0.73F);
+                    OpenGL.translate(-0.15F, 0.7F, -0.73F);
                     this.getModel().aimedBow = false;
                     break;
                 default:
@@ -78,7 +77,7 @@ public class RenderMarine extends RenderLivingWrapper implements IFaceMountable
 
             model.draw();
         }
-        GlStateManager.popMatrix();
+        OpenGL.popMatrix();
     }
     
     @Override
@@ -89,10 +88,10 @@ public class RenderMarine extends RenderLivingWrapper implements IFaceMountable
             @Override
             public void render(EntityFacehugger facehugger, float renderPartialTicks)
             {
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.rotate(90.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.translate(0F, -0.2F, 0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, -0.2F, 0F);
             }
         };
     }

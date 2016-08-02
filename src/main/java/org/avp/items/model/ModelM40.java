@@ -1,10 +1,10 @@
 package org.avp.items.model;
 
-import com.arisux.airi.lib.client.ModelBaseWrapper;
+import com.arisux.amdxlib.lib.client.Model;
 
 import net.minecraft.client.model.ModelRenderer;
 
-public class ModelM40 extends ModelBaseWrapper
+public class ModelM40 extends Model
 {
     ModelRenderer cap;
     ModelRenderer core;

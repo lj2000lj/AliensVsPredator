@@ -4,11 +4,12 @@ import java.util.List;
 
 import org.avp.AliensVsPredator;
 
+import com.arisux.amdxlib.lib.game.Game;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -404,11 +405,11 @@ public class EntityAPC extends Entity
 
             if (this.worldObj.isRemote && this.riddenByEntity instanceof EntityPlayer)
             {
-                if (Minecraft.getMinecraft().gameSettings.thirdPersonView == 0)
+                if (Game.minecraft().gameSettings.thirdPersonView == 0)
                 {
-                    if (Minecraft.getMinecraft().thePlayer == this.riddenByEntity)
+                    if (Game.minecraft().thePlayer == this.riddenByEntity)
                     {
-                        Minecraft.getMinecraft().gameSettings.thirdPersonView = 1;
+                        Game.minecraft().gameSettings.thirdPersonView = 1;
                     }
                 }
             }

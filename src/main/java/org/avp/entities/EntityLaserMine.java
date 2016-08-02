@@ -6,7 +6,7 @@ import org.avp.AliensVsPredator;
 import org.avp.DamageSources;
 import org.avp.packets.server.PacketDamageEntity;
 
-import com.arisux.airi.lib.WorldUtil;
+import com.arisux.amdxlib.lib.world.entity.Entities;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -88,7 +88,7 @@ public class EntityLaserMine extends Entity
 
         if (this.worldObj.getWorldTime() % 10 == 0)
         {
-            this.laserHit = WorldUtil.Entities.rayTrace(this, this.getLaserMaxDepth());
+            this.laserHit = Entities.rayTrace(this, this.getLaserMaxDepth());
         }
 
         if (this.worldObj.isRemote)

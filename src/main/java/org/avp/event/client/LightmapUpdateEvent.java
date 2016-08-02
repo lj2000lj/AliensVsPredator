@@ -1,6 +1,6 @@
 package org.avp.event.client;
 
-import com.arisux.airi.lib.AccessWrapper;
+import com.arisux.amdxlib.lib.game.Game;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.RenderTickEvent;
@@ -22,7 +22,7 @@ public class LightmapUpdateEvent
 
     public void updateLightmap(float partialTicks)
     {
-        Minecraft mc = Minecraft.getMinecraft();
+        Minecraft mc = Game.minecraft();
         WorldClient worldclient = mc.theWorld;
 
         if (worldclient != null)
@@ -31,7 +31,7 @@ public class LightmapUpdateEvent
             {
                 float f1 = worldclient.getSunBrightness(1.0F) * 0.95F + 0.05F;
                 float f2 = worldclient.provider.lightBrightnessTable[i / 16] * f1;
-                float f3 = worldclient.provider.lightBrightnessTable[i % 16] * (AccessWrapper.getTorchFlickerX() * 0.1F + 1.5F);
+                float f3 = worldclient.provider.lightBrightnessTable[i % 16] * (Game.getTorchFlickerX() * 0.1F + 1.5F);
 
                 if (worldclient.lastLightningBolt > 0)
                 {
@@ -50,9 +50,9 @@ public class LightmapUpdateEvent
                 f10 = f10 * 0.96F + 0.03F;
                 float gamma;
 
-                if (AccessWrapper.getBossColorModifier() > 0.0F)
+                if (Game.getBossColorModifier() > 0.0F)
                 {
-                    gamma = AccessWrapper.getBossColorModifierPrev() + (AccessWrapper.getBossColorModifier() - AccessWrapper.getBossColorModifierPrev()) * partialTicks;
+                    gamma = Game.getBossColorModifierPrev() + (Game.getBossColorModifier() - Game.getBossColorModifierPrev()) * partialTicks;
                     f8 = f8 * (1.0F - gamma) + f8 * 0.7F * gamma;
                     f9 = f9 * (1.0F - gamma) + f9 * 0.6F * gamma;
                     f10 = f10 * (1.0F - gamma) + f10 * 0.6F * gamma;
@@ -150,11 +150,11 @@ public class LightmapUpdateEvent
                 int j = (int) (f8 * 255.0F);
                 int k = (int) (f9 * 255.0F);
                 int l = (int) (f10 * 255.0F);
-                AccessWrapper.getLightmapColors()[i] = short1 << 24 | j << 16 | k << 8 | l;
+                Game.getLightmapColors()[i] = short1 << 24 | j << 16 | k << 8 | l;
             }
 
-            AccessWrapper.getLightmapTexture().updateDynamicTexture();
-            AccessWrapper.setLightmapUpdateNeeded(false);
+            Game.getLightmapTexture().updateDynamicTexture();
+            Game.setLightmapUpdateNeeded(false);
         }
     }
 

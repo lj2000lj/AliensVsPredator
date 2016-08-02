@@ -3,13 +3,13 @@ package org.avp.entities.tile.model;
 import org.avp.AliensVsPredator;
 import org.avp.entities.tile.TileEntityWorkstation;
 
-import com.arisux.airi.lib.client.ModelBaseWrapper;
+import com.arisux.amdxlib.lib.client.Model;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.init.Blocks;
 
-public class ModelWorkstation extends ModelBaseWrapper
+public class ModelWorkstation extends Model
 {
     ModelRenderer stand;
     ModelRenderer standBase;

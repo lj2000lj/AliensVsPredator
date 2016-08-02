@@ -5,7 +5,7 @@ import java.util.Random;
 import org.avp.entities.EntitySupplyChute;
 import org.avp.entities.tile.TileEntitySupplyCrate;
 
-import com.arisux.airi.lib.interfaces.IRotatable;
+import com.arisux.amdxlib.lib.world.tile.IRotatable;
 
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.material.Material;

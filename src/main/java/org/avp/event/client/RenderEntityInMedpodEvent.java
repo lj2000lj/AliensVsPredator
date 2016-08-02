@@ -5,13 +5,14 @@ import org.avp.entities.extended.ExtendedEntityPlayer;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import com.arisux.airi.lib.AccessWrapper;
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.RenderUtil;
+import com.arisux.amdxlib.lib.client.Model;
+import com.arisux.amdxlib.lib.client.render.Draw;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
+import com.arisux.amdxlib.lib.game.Game;
+import com.arisux.amdxlib.lib.world.entity.Entities;
 
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -39,7 +40,7 @@ public class RenderEntityInMedpodEvent
             {
                 event.setCanceled(true);
 
-                EntityPlayer client = Minecraft.getMinecraft().thePlayer;
+                EntityPlayer client = Game.minecraft().thePlayer;
 
                 double renderX = event.entity.lastTickPosX + (event.entity.posX - event.entity.lastTickPosX) * (double) event.partialRenderTick;
                 double renderY = event.entity.lastTickPosY + (event.entity.posY - event.entity.lastTickPosY) * (double) event.partialRenderTick;
@@ -53,7 +54,7 @@ public class RenderEntityInMedpodEvent
                 renderY = renderY - clientY;
                 renderZ = renderZ - clientZ;
 
-                renderLiving.render((EntityLivingBase) event.entity, event.renderer, renderX, renderY, renderZ, AccessWrapper.getRenderPartialTicks());
+                renderLiving.render((EntityLivingBase) event.entity, event.renderer, renderX, renderY, renderZ, Game.partialTicks());
             }
         }
     }
@@ -78,7 +79,7 @@ public class RenderEntityInMedpodEvent
         if (event.entity != null && event.entity.ridingEntity instanceof EntityMedpod && !(event.entity instanceof EntityPlayer))
         {
             event.setCanceled(true);
-            renderLiving.render(event.entity, event.renderer, event.x, event.y, event.z, AccessWrapper.getRenderPartialTicks());
+            renderLiving.render(event.entity, event.renderer, event.x, event.y, event.z, Game.partialTicks());
         }
     }
 
@@ -95,31 +96,31 @@ public class RenderEntityInMedpodEvent
     {
         if (entity instanceof EntityOtherPlayerMP || entity instanceof EntityPlayerSP)
         {
-            GlStateManager.rotate(180F, 1F, 0F, 0F);
-            GlStateManager.translate(0F, -2.5F, 0F);
+            OpenGL.rotate(180F, 1F, 0F, 0F);
+            OpenGL.translate(0F, -2.5F, 0F);
 
             if (entity instanceof EntityPlayerSP)
             {
-                GlStateManager.translate(0F, -1.45F, 0F);
+                OpenGL.translate(0F, -1.45F, 0F);
             }
         }
         
         float medpodRotation = (float) medpod.getTileEntity().getDoorProgress() * 45 / medpod.getTileEntity().getMaxDoorProgress();
-        GlStateManager.translate(0F, 1.5F, -0F);
-        GlStateManager.rotate(medpodRotation, 1F, 0F, 0F);
-        GlStateManager.translate(0F, -1.75F + entity.height, 0F);
-        GlStateManager.translate(0F, -0.5F, 0F);
-        GlStateManager.rotate(180F, 0F, 1F, 0);
+        OpenGL.translate(0F, 1.5F, -0F);
+        OpenGL.rotate(medpodRotation, 1F, 0F, 0F);
+        OpenGL.translate(0F, -1.75F + entity.height, 0F);
+        OpenGL.translate(0F, -0.5F, 0F);
+        OpenGL.rotate(180F, 0F, 1F, 0);
 
         if (entity instanceof EntityOtherPlayerMP || entity instanceof EntityPlayerSP)
         {
-            GlStateManager.rotate(90F, 1F, 0F, 0F);
-            GlStateManager.rotate(180F, 0F, 0F, 1F);
-            GlStateManager.translate(0F, -0.6F, -0.85F);
+            OpenGL.rotate(90F, 1F, 0F, 0F);
+            OpenGL.rotate(180F, 0F, 0F, 1F);
+            OpenGL.translate(0F, -0.6F, -0.85F);
 
             if (entity instanceof EntityPlayerSP)
             {
-                GlStateManager.translate(0F, 0F, 0.15F);
+                OpenGL.translate(0F, 0F, 0.15F);
             }
         }
     }
@@ -147,7 +148,7 @@ public class RenderEntityInMedpodEvent
             if (this.renderer != renderer)
             {
                 this.renderer = renderer;
-                this.mainModel = AccessWrapper.getMainModel(renderer);
+                this.mainModel = Model.getMainModel(renderer);
             }
 
             GL11.glPushMatrix();
@@ -169,10 +170,10 @@ public class RenderEntityInMedpodEvent
                 GL11.glDisable(GL11.GL_CULL_FACE);
                 try
                 {
-                    float rotationYaw = RenderUtil.interpolateRotation(entity.prevRenderYawOffset, entity.renderYawOffset, renderPartialTicks);
-                    float rotationYawHead = RenderUtil.interpolateRotation(entity.prevRotationYawHead, entity.rotationYawHead, renderPartialTicks);
-                    float rotationPitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * AccessWrapper.getRenderPartialTicks();
-                    float swingProgressPrev = entity.prevLimbSwingAmount + (entity.limbSwingAmount - entity.prevLimbSwingAmount) * AccessWrapper.getRenderPartialTicks();
+                    float rotationYaw = com.arisux.amdxlib.lib.util.Math.interpolateRotation(entity.prevRenderYawOffset, entity.renderYawOffset, renderPartialTicks);
+                    float rotationYawHead = com.arisux.amdxlib.lib.util.Math.interpolateRotation(entity.prevRotationYawHead, entity.rotationYawHead, renderPartialTicks);
+                    float rotationPitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * Game.partialTicks();
+                    float swingProgressPrev = entity.prevLimbSwingAmount + (entity.limbSwingAmount - entity.prevLimbSwingAmount) * Game.partialTicks();
                     float swingProgress = entity.limbSwing - entity.limbSwingAmount * (1.0F - renderPartialTicks);
                     float idleProgress = (float) Math.toRadians(10F);
 
@@ -187,17 +188,17 @@ public class RenderEntityInMedpodEvent
                     }
 
                     this.renderLivingAt(entity, posX, posY, posZ);
-                    RenderUtil.rotate(medpod.getTileEntity());
+                    OpenGL.rotate(medpod.getTileEntity());
                     GL11.glEnable(GL12.GL_RESCALE_NORMAL);
                     GL11.glScalef(-1.0F, -1.0F, 1.0F);
 
                     this.preRenderCallback(entity, renderPartialTicks);
-                    GL11.glTranslatef(0.0F, -24.0F * RenderUtil.DEFAULT_BOX_TRANSLATION - 0.0078125F, 0.0F);
+                    GL11.glTranslatef(0.0F, -24.0F * Model.DEFAULT_BOX_TRANSLATION - 0.0078125F, 0.0F);
                     transformMedpodEntity(medpod, entity);
 
                     GL11.glEnable(GL11.GL_ALPHA_TEST);
                     this.mainModel.setLivingAnimations(entity, swingProgress, swingProgressPrev, renderPartialTicks);
-                    this.renderModel(entity, swingProgress, swingProgressPrev, idleProgress, rotationYawHead - rotationYaw, rotationPitch, RenderUtil.DEFAULT_BOX_TRANSLATION);
+                    this.renderModel(entity, swingProgress, swingProgressPrev, idleProgress, rotationYawHead - rotationYaw, rotationPitch, Model.DEFAULT_BOX_TRANSLATION);
                     GL11.glDisable(GL12.GL_RESCALE_NORMAL);
                 }
                 catch (Exception exception)
@@ -216,13 +217,13 @@ public class RenderEntityInMedpodEvent
 
         protected void renderModel(EntityLivingBase living, float swingProgress, float swingProgressPrev, float idleProgress, float rotationYawHead, float rotationPitch, float boxTranslation)
         {
-            RenderUtil.bindTexture(AccessWrapper.getEntityTexture(this.renderer, living));
+            Draw.bindTexture(Entities.getEntityTexture(this.renderer, living));
 
             if (!living.isInvisible())
             {
                 this.mainModel.render(living, swingProgress, swingProgressPrev, idleProgress, rotationYawHead, rotationPitch, boxTranslation);
             }
-            else if (!living.isInvisibleToPlayer(Minecraft.getMinecraft().thePlayer))
+            else if (!living.isInvisibleToPlayer(Game.minecraft().thePlayer))
             {
                 GL11.glPushMatrix();
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.15F);

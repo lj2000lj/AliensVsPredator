@@ -5,8 +5,7 @@ import org.avp.entities.extended.ExtendedEntityPlayer;
 import org.avp.packets.client.PacketPlayerModeUpdate;
 import org.avp.util.PlayerMode;
 
-import com.arisux.airi.lib.WorldUtil;
-import com.arisux.airi.lib.WorldUtil.Entities.Players;
+import com.arisux.amdxlib.lib.world.entity.player.Players;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -31,7 +30,7 @@ public class CommandPlayerMode extends CommandBase
     @Override
     public void processCommand(ICommandSender commandSender, String[] args)
     {
-        EntityPlayer player = WorldUtil.Entities.Players.getPlayerForCommandSender(commandSender);
+        EntityPlayer player = Players.getPlayerForCommandSender(commandSender);
         ExtendedEntityPlayer playerExtension = (ExtendedEntityPlayer) player.getExtendedProperties(ExtendedEntityPlayer.IDENTIFIER);
         PlayerMode playerMode = PlayerMode.get(Integer.valueOf(args[0]));
 

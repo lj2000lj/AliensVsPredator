@@ -7,8 +7,8 @@ import org.avp.AliensVsPredator;
 import org.avp.dimension.varda.worldgen.VardaGenCaves;
 import org.avp.dimension.varda.worldgen.VardaGenLakes;
 
-import com.arisux.airi.lib.WorldUtil;
-import com.arisux.airi.lib.WorldUtil.Blocks.CoordData;
+import com.arisux.amdxlib.lib.world.CoordData;
+import com.arisux.amdxlib.lib.world.Worlds;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSand;
@@ -411,8 +411,8 @@ public class ChunkProviderVarda implements IChunkProvider
 		this.randomSeed.setSeed(this.world.getSeed());
 		this.randomSeed.setSeed(chunkX * (this.randomSeed.nextLong() / 2L * 2L + 1L) + chunkZ * (this.randomSeed.nextLong() / 2L * 2L + 1L) ^ this.world.getSeed());
 
-		WorldUtil.generateWorldGenInChunk(world, new VardaGenLakes(Blocks.water), randomSeed, this.randomSeed.nextInt(2), 0, this.randomSeed.nextInt(128), chunkCoord);
-		WorldUtil.generateWorldGenInChunk(world, new VardaGenLakes(Blocks.lava), randomSeed, this.randomSeed.nextInt(14), 0, this.randomSeed.nextInt(this.randomSeed.nextInt(120) + 8), chunkCoord);
+		Worlds.generateWorldGenInChunk(world, new VardaGenLakes(Blocks.water), randomSeed, this.randomSeed.nextInt(2), 0, this.randomSeed.nextInt(128), chunkCoord);
+		Worlds.generateWorldGenInChunk(world, new VardaGenLakes(Blocks.lava), randomSeed, this.randomSeed.nextInt(14), 0, this.randomSeed.nextInt(this.randomSeed.nextInt(120) + 8), chunkCoord);
 
 		biome.decorate(this.world, this.randomSeed, posX, posZ);
 		SpawnerAnimals.performWorldGenSpawning(this.world, biome, posX + 8, posZ + 8, 16, 16, this.randomSeed);

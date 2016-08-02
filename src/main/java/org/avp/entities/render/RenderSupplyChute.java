@@ -2,7 +2,7 @@ package org.avp.entities.render;
 
 import org.avp.AliensVsPredator;
 
-import com.arisux.airi.lib.GlStateManager;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
@@ -22,15 +22,15 @@ public class RenderSupplyChute extends Render
         double renderY = (entity.posY - entity.lastTickPosY) * (double) renderPartialTicks;
         double renderZ = (entity.posZ - entity.lastTickPosZ) * (double) renderPartialTicks;
         
-        GlStateManager.pushMatrix();
-        GlStateManager.translate((float) posX, (float) posY + 0.75F, (float) posZ);
-        GlStateManager.translate((float) renderX, (float) renderY, (float) renderZ);
-        GlStateManager.scale(1F, -1F, 1F);
-        GlStateManager.disableCullFace();
-        GlStateManager.rotate(entity.rotationYaw, 0.0F, 1.0F, 0.0F);
-        GlStateManager.rotate(entity.rotationPitch, 0.0F, 0.0F, 1.0F);
+        OpenGL.pushMatrix();
+        OpenGL.translate((float) posX, (float) posY + 0.75F, (float) posZ);
+        OpenGL.translate((float) renderX, (float) renderY, (float) renderZ);
+        OpenGL.scale(1F, -1F, 1F);
+        OpenGL.disableCullFace();
+        OpenGL.rotate(entity.rotationYaw, 0.0F, 1.0F, 0.0F);
+        OpenGL.rotate(entity.rotationPitch, 0.0F, 0.0F, 1.0F);
         AliensVsPredator.resources().models().SUPPLY_CHUTE.draw();
-        GlStateManager.popMatrix();
+        OpenGL.popMatrix();
     }
 
     @Override

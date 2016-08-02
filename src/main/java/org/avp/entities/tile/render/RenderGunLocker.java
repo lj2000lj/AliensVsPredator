@@ -4,8 +4,7 @@ import org.avp.AliensVsPredator;
 import org.avp.entities.tile.TileEntityLocker;
 import org.lwjgl.opengl.GL11;
 
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.RenderUtil;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
@@ -21,30 +20,30 @@ public class RenderGunLocker extends TileEntitySpecialRenderer
     {
         TileEntityLocker tile = (TileEntityLocker) tileEntity;
 
-        GlStateManager.pushMatrix();
+        OpenGL.pushMatrix();
         {
             float scale = 0.95F;
-            GlStateManager.enable(GL11.GL_CULL_FACE);
-            GlStateManager.translate(posX + 0.5F, posY + 1.41F, posZ + 0.5F);
-            GlStateManager.scale(scale, -scale, scale);
-            GlStateManager.enable(GL11.GL_ALPHA_TEST);
-            GlStateManager.disableCullFace();
-            RenderUtil.rotate(tile);
+            OpenGL.enable(GL11.GL_CULL_FACE);
+            OpenGL.translate(posX + 0.5F, posY + 1.41F, posZ + 0.5F);
+            OpenGL.scale(scale, -scale, scale);
+            OpenGL.enable(GL11.GL_ALPHA_TEST);
+            OpenGL.disableCullFace();
+            OpenGL.rotate(tile);
             
             AliensVsPredator.resources().models().GUN_LOCKER.getModel().door.rotateAngleY = !tile.isOpen() ? 0 : -1.5F;
             AliensVsPredator.resources().models().GUN_LOCKER.draw(tile);
 
             if (tile != null)
             {
-                GlStateManager.pushMatrix();
+                OpenGL.pushMatrix();
                 {
                     float itemScale = 0.06F;
-                    GlStateManager.scale(itemScale, itemScale, itemScale);
-                    GlStateManager.rotate(-90F, 0F, 0F, 1F);
-                    GlStateManager.translate(-27F, -7.5F, -4F);
-                    GlStateManager.rotate(-50F, 0F, 1F, 0F);
-                    GlStateManager.enableLight();
-                    GlStateManager.blendClear();
+                    OpenGL.scale(itemScale, itemScale, itemScale);
+                    OpenGL.rotate(-90F, 0F, 0F, 1F);
+                    OpenGL.translate(-27F, -7.5F, -4F);
+                    OpenGL.rotate(-50F, 0F, 1F, 0F);
+                    OpenGL.enableLight();
+                    OpenGL.blendClear();
 
                     ItemStack stack = null;
                     int rows = 21;
@@ -76,19 +75,19 @@ public class RenderGunLocker extends TileEntitySpecialRenderer
                         {
                             Object[] args = {};
 
-                            GlStateManager.pushMatrix();
+                            OpenGL.pushMatrix();
                             {
-                                GlStateManager.translate(8F, 0F, 0F);
+                                OpenGL.translate(8F, 0F, 0F);
                                 renderer.renderItem(ItemRenderType.INVENTORY, stack, args);
-                                GlStateManager.enableLight();
+                                OpenGL.enableLight();
                             }
-                            GlStateManager.popMatrix();
+                            OpenGL.popMatrix();
                         }
                     }
                 }
-                GlStateManager.popMatrix();
+                OpenGL.popMatrix();
             }
         }
-        GlStateManager.popMatrix();
+        OpenGL.popMatrix();
     }
 }

@@ -2,7 +2,7 @@ package org.avp.items;
 
 import org.avp.AliensVsPredator;
 
-import com.arisux.airi.lib.RenderUtil;
+import com.arisux.amdxlib.lib.client.render.Draw;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,15 +25,15 @@ public class ItemArmorTitanium extends ItemArmor
         switch (slot)
         {
             case 0:
-                return RenderUtil.getResourcePath(AliensVsPredator.resources().TITANIUM1);
+                return Draw.getResourcePath(AliensVsPredator.resources().TITANIUM1);
             case 1:
-                return RenderUtil.getResourcePath(AliensVsPredator.resources().TITANIUM1);
+                return Draw.getResourcePath(AliensVsPredator.resources().TITANIUM1);
             case 2:
-                return RenderUtil.getResourcePath(AliensVsPredator.resources().TITANIUM2);
+                return Draw.getResourcePath(AliensVsPredator.resources().TITANIUM2);
             case 3:
-                return RenderUtil.getResourcePath(AliensVsPredator.resources().TITANIUM1);
+                return Draw.getResourcePath(AliensVsPredator.resources().TITANIUM1);
             default:
-                return RenderUtil.getResourcePath(AliensVsPredator.resources().TITANIUM1);
+                return Draw.getResourcePath(AliensVsPredator.resources().TITANIUM1);
         }
     }
 

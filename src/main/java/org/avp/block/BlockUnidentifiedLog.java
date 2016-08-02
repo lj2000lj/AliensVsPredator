@@ -1,6 +1,6 @@
 package org.avp.block;
 
-import com.arisux.airi.lib.enums.IconSides;
+import com.arisux.amdxlib.lib.world.block.BlockSide;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -28,7 +28,7 @@ public class BlockUnidentifiedLog extends BlockLog
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta)
     {
-        IconSides iconSide = IconSides.getSideFor(side);
+        BlockSide iconSide = BlockSide.getSide(side);
 
         switch (iconSide)
         {

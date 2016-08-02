@@ -4,15 +4,16 @@ import org.avp.AliensVsPredator;
 import org.avp.entities.extended.ExtendedEntityPlayer;
 import org.avp.event.client.TacticalHUDRenderEvent;
 
-import com.arisux.airi.lib.GuiElements.GuiCustomButton;
-import com.arisux.airi.lib.GuiElements.GuiCustomScreen;
-import com.arisux.airi.lib.GuiElements.GuiCustomSlider;
-import com.arisux.airi.lib.GuiElements.GuiCustomTextbox;
-import com.arisux.airi.lib.RenderUtil;
-import com.arisux.airi.lib.client.ScaledResolution;
-import com.arisux.airi.lib.interfaces.IActionPerformed;
+import com.arisux.amdxlib.lib.client.gui.GuiCustomButton;
+import com.arisux.amdxlib.lib.client.gui.GuiCustomScreen;
+import com.arisux.amdxlib.lib.client.gui.GuiCustomSlider;
+import com.arisux.amdxlib.lib.client.gui.GuiCustomTextbox;
+import com.arisux.amdxlib.lib.client.gui.IAction;
+import com.arisux.amdxlib.lib.client.render.Draw;
+import com.arisux.amdxlib.lib.client.render.ScaledResolution;
+import com.arisux.amdxlib.lib.client.render.Screen;
+import com.arisux.amdxlib.lib.game.Game;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 
 public class GuiTacticalHUDSettings extends GuiCustomScreen
@@ -28,7 +29,7 @@ public class GuiTacticalHUDSettings extends GuiCustomScreen
 
     public GuiTacticalHUDSettings(GuiScreen parent)
     {
-        this.properties = ExtendedEntityPlayer.get(Minecraft.getMinecraft().thePlayer);
+        this.properties = ExtendedEntityPlayer.get(Game.minecraft().thePlayer);
         this.event = ((TacticalHUDRenderEvent) AliensVsPredator.events().getEvent(TacticalHUDRenderEvent.class));
         this.textboxChannel = new GuiCustomTextbox(this, 0, 0, 100, 15);
         this.buttonSave = new GuiCustomButton(0, 0, 0, 100, 15, "", null);
@@ -50,30 +51,30 @@ public class GuiTacticalHUDSettings extends GuiCustomScreen
         this.sliderViewportThreshold.sliderValue = event.getViewportThreshold() / sliderViewportThreshold.sliderMaxValue;
         this.sliderViewportThreshold.displayString = "Threshold: " + (int) (sliderViewportThreshold.sliderValue * sliderViewportThreshold.sliderMaxValue);
 
-        this.buttonNightvisionToggle.setAction(new IActionPerformed()
+        this.buttonNightvisionToggle.setAction(new IAction()
         {
             @Override
-            public void actionPerformed(GuiCustomButton button)
+            public void perform(GuiCustomButton button)
             {
                 properties.setNightvisionEnabled(!properties.isNightvisionEnabled());
                 properties.syncServer();
             }
         });
 
-        this.buttonEntityCullingToggle.setAction(new IActionPerformed()
+        this.buttonEntityCullingToggle.setAction(new IAction()
         {
             @Override
-            public void actionPerformed(GuiCustomButton button)
+            public void perform(GuiCustomButton button)
             {
                 properties.setEntityCullingEnabled(!properties.isEntityCullingEnabled());
                 properties.syncServer();
             }
         });
 
-        this.buttonSave.setAction(new IActionPerformed()
+        this.buttonSave.setAction(new IAction()
         {
             @Override
-            public void actionPerformed(GuiCustomButton button)
+            public void perform(GuiCustomButton button)
             {
                 TacticalHUDRenderEvent event = ((TacticalHUDRenderEvent) AliensVsPredator.events().getEvent(TacticalHUDRenderEvent.class));
 
@@ -97,22 +98,22 @@ public class GuiTacticalHUDSettings extends GuiCustomScreen
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
-        ScaledResolution resolution = RenderUtil.scaledDisplayResolution();
+        ScaledResolution resolution = Screen.scaledDisplayResolution();
 
         int interfaceWidth = 250;
         int interfaceStartX = resolution.getScaledWidth() - interfaceWidth;
         int elementStart = 30;
         int elementSpacing = 21;
 
-        RenderUtil.drawRect(interfaceStartX, 0, interfaceWidth, height, 0xCC000000);
-        RenderUtil.drawString("Tactical HUD Configuration", interfaceStartX + 10, 10, 0xFF00AAFF);
+        Draw.drawRect(interfaceStartX, 0, interfaceWidth, height, 0xCC000000);
+        Draw.drawString("Tactical HUD Configuration", interfaceStartX + 10, 10, 0xFF00AAFF);
 
         textboxChannel.setMaxStringLength(18);
         textboxChannel.xPosition = interfaceStartX + 10;
         textboxChannel.yPosition = elementStart;
         textboxChannel.height = 15;
         textboxChannel.width = 120;
-        RenderUtil.drawString("Broadcast Channel", textboxChannel.xPosition + textboxChannel.width + 10, textboxChannel.yPosition + 3, 0xFFCCCCCC);
+        Draw.drawString("Broadcast Channel", textboxChannel.xPosition + textboxChannel.width + 10, textboxChannel.yPosition + 3, 0xFFCCCCCC);
         textboxChannel.drawTextBox();
 
         sliderTxPower.label = "TX Power";
@@ -124,7 +125,7 @@ public class GuiTacticalHUDSettings extends GuiCustomScreen
         sliderTxPower.baseColor = 0x55000000;
         sliderTxPower.sliderButtonColor = 0x9900AAFF;
         sliderTxPower.tooltip = "The distance this tactical HUD will connect to other tactical HUDs.";
-        RenderUtil.drawString("Transmit Power", sliderTxPower.xPosition + sliderTxPower.width + 10, sliderTxPower.yPosition + 3, 0xFFCCCCCC);
+        Draw.drawString("Transmit Power", sliderTxPower.xPosition + sliderTxPower.width + 10, sliderTxPower.yPosition + 3, 0xFFCCCCCC);
         sliderTxPower.drawButton();
 
         sliderViewportThreshold.label = "Threshold";
@@ -136,7 +137,7 @@ public class GuiTacticalHUDSettings extends GuiCustomScreen
         sliderViewportThreshold.baseColor = 0x55000000;
         sliderViewportThreshold.sliderButtonColor = 0x9900AAFF;
         sliderViewportThreshold.tooltip = "The amount of users with tactical HUDs to display in the viewport.";
-        RenderUtil.drawString("Viewport Threshold", sliderViewportThreshold.xPosition + sliderViewportThreshold.width + 10, sliderViewportThreshold.yPosition + 3, 0xFFCCCCCC);
+        Draw.drawString("Viewport Threshold", sliderViewportThreshold.xPosition + sliderViewportThreshold.width + 10, sliderViewportThreshold.yPosition + 3, 0xFFCCCCCC);
         sliderViewportThreshold.drawButton();
 
         buttonNightvisionToggle.displayString = properties.isNightvisionEnabled() ? "Disable Nightvision" : "Enable Nightvision";
@@ -159,7 +160,7 @@ public class GuiTacticalHUDSettings extends GuiCustomScreen
 
         buttonSave.displayString = "Save";
         buttonSave.xPosition = interfaceStartX + 10;
-        buttonSave.yPosition = RenderUtil.scaledDisplayResolution().getScaledHeight() - buttonSave.height - 10;
+        buttonSave.yPosition = Screen.scaledDisplayResolution().getScaledHeight() - buttonSave.height - 10;
         buttonSave.width = 50;
         buttonSave.height = 20;
         buttonSave.baseColor = 0xAA00AAFF;
@@ -196,9 +197,9 @@ public class GuiTacticalHUDSettings extends GuiCustomScreen
     {
         super.onGuiClosed();
 
-        textboxChannel.remove();
-        buttonSave.remove();
-        sliderTxPower.remove();
-        sliderViewportThreshold.remove();
+//        textboxChannel.remove();
+//        buttonSave.remove();
+//        sliderTxPower.remove();
+//        sliderViewportThreshold.remove();
     }
 }

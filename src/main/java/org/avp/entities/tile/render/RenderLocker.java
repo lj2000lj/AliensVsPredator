@@ -5,8 +5,8 @@ import org.avp.entities.tile.TileEntityLocker;
 import org.avp.entities.tile.model.ModelLocker;
 import org.lwjgl.opengl.GL11;
 
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.RenderUtil;
+import com.arisux.amdxlib.lib.client.render.Draw;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
@@ -22,27 +22,27 @@ public class RenderLocker extends TileEntitySpecialRenderer
     {
         TileEntityLocker tile = (TileEntityLocker) tileEntity;
 
-        GlStateManager.pushMatrix();
+        OpenGL.pushMatrix();
         {
             float scale = 0.95F;
-            GlStateManager.disable(GL11.GL_CULL_FACE);
-            GlStateManager.translate(posX + 0.5F, posY + 1.41F, posZ + 0.5F);
-            GlStateManager.scale(scale, -scale, scale);
-            GlStateManager.enable(GL11.GL_ALPHA_TEST);
-            GlStateManager.disableCullFace();
-            RenderUtil.rotate(tile);
+            OpenGL.disable(GL11.GL_CULL_FACE);
+            OpenGL.translate(posX + 0.5F, posY + 1.41F, posZ + 0.5F);
+            OpenGL.scale(scale, -scale, scale);
+            OpenGL.enable(GL11.GL_ALPHA_TEST);
+            OpenGL.disableCullFace();
+            OpenGL.rotate(tile);
             ((ModelLocker) AliensVsPredator.resources().models().LOCKER.getModel()).door.rotateAngleY = !tile.isOpen() ? 0 : -1.5F;
             AliensVsPredator.resources().models().LOCKER.draw(tile);
 
             if (tile != null)
             {
-                GlStateManager.pushMatrix();
+                OpenGL.pushMatrix();
                 {
                     float itemScale = 0.009F;
-                    GlStateManager.scale(itemScale, itemScale, itemScale);
-                    GlStateManager.translate(-46F, -64F, 24F);
-                    GlStateManager.enableLight();
-                    GlStateManager.blendClear();
+                    OpenGL.scale(itemScale, itemScale, itemScale);
+                    OpenGL.translate(-46F, -64F, 24F);
+                    OpenGL.enableLight();
+                    OpenGL.blendClear();
 
                     int rows = 21;
                     int stackIndex = 0;
@@ -52,8 +52,8 @@ public class RenderLocker extends TileEntitySpecialRenderer
                         for (int rowY = 0; rowY < rows; rowY++)
                         {
                             ItemStack stack = tile.inventory.getStackInSlot(stackIndex++);
-                            GlStateManager.pushMatrix();
-                            GlStateManager.translate((rowX * 32), (rowY * 9), 0F);
+                            OpenGL.pushMatrix();
+                            OpenGL.translate((rowX * 32), (rowY * 9), 0F);
 
                             if (stack != null)
                             {
@@ -63,31 +63,31 @@ public class RenderLocker extends TileEntitySpecialRenderer
                                 {
                                     Object[] args = {};
 
-                                    GlStateManager.pushMatrix();
+                                    OpenGL.pushMatrix();
                                     {
-                                        GlStateManager.translate(8F, 0F, 0F);
+                                        OpenGL.translate(8F, 0F, 0F);
                                         renderer.renderItem(ItemRenderType.INVENTORY, stack, args);
-                                        GlStateManager.enableLight();
+                                        OpenGL.enableLight();
                                     }
-                                    GlStateManager.popMatrix();
+                                    OpenGL.popMatrix();
                                 }
                                 else
                                 {
-                                    GlStateManager.pushMatrix();
+                                    OpenGL.pushMatrix();
                                     {
-                                        GlStateManager.rotate(-45, 1F, 0F, 0F);
-                                        RenderUtil.drawItemIcon(stack.getItem(), 0, 0, 32, 32);
+                                        OpenGL.rotate(-45, 1F, 0F, 0F);
+                                        Draw.drawItemIcon(stack.getItem(), 0, 0, 32, 32);
                                     }
-                                    GlStateManager.popMatrix();
+                                    OpenGL.popMatrix();
                                 }
                             }
-                            GlStateManager.popMatrix();
+                            OpenGL.popMatrix();
                         }
                     }
                 }
-                GlStateManager.popMatrix();
+                OpenGL.popMatrix();
             }
         }
-        GlStateManager.popMatrix();
+        OpenGL.popMatrix();
     }
 }

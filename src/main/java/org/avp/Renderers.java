@@ -181,8 +181,8 @@ import org.avp.items.render.parts.RenderItemSniperPeripherals;
 import org.avp.items.render.parts.RenderItemSniperScope;
 import org.avp.items.render.parts.RenderItemSniperStock;
 
-import com.arisux.airi.lib.client.ModelTexMap;
-import com.arisux.airi.lib.interfaces.IInitializablePost;
+import com.arisux.amdxlib.lib.client.TexturedModel;
+import com.arisux.amdxlib.lib.game.IPostInitEvent;
 
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -190,12 +190,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.item.Item;
 
 @SideOnly(Side.CLIENT)
-public class Renderers implements IInitializablePost
+public class Renderers implements IPostInitEvent
 {
     public static Renderers instance = new Renderers();
 
     @Override
-    public void postInitialize(FMLPostInitializationEvent event)
+    public void post(FMLPostInitializationEvent event)
     {
         registerSimpleBlockRenderingHandlers();
         registerTileEntitySpecialRenderers();
@@ -310,35 +310,35 @@ public class Renderers implements IInitializablePost
         registerItemRenderer(items.itemSummonerYautjaBerserker, (new RenderItemSummoner(EntityYautjaBerserker.class)).setScale(7.5F).setY(8F));
         registerItemRenderer(items.itemSummonerDeaconShark, (new RenderItemSummoner(EntityDeaconShark.class)).setScale(7.5F).setY(8F));
 
-        ModelTexMap<Model88MOD4> _88MOD4 = AliensVsPredator.resources().models()._88MOD4;
+        TexturedModel<Model88MOD4> _88MOD4 = AliensVsPredator.resources().models()._88MOD4;
         registerItemRenderer(items.itemPistolBarrel, new RenderItem88Mod4Barrel(_88MOD4, _88MOD4.getModel().getBarrel()));
         registerItemRenderer(items.itemPistolAction, new RenderItem88Mod4Action(_88MOD4, _88MOD4.getModel().getAction()));
         registerItemRenderer(items.itemPistolStock, new RenderItem88Mod4Stock(_88MOD4, _88MOD4.getModel().getStock()));
 
-        ModelTexMap<ModelAK47> AK47 = AliensVsPredator.resources().models().AK47;
+        TexturedModel<ModelAK47> AK47 = AliensVsPredator.resources().models().AK47;
         registerItemRenderer(items.itemAK47Barrel, new RenderItemAK47Barrel(AK47, AK47.getModel().getBarrel()));
         registerItemRenderer(items.itemAK47Action, new RenderItemAK47Action(AK47, AK47.getModel().getAction()));
         registerItemRenderer(items.itemAK47Stock, new RenderItemAK47Stock(AK47, AK47.getModel().getStock()));
 
-        ModelTexMap<ModelM4> M4 = AliensVsPredator.resources().models().M4;
+        TexturedModel<ModelM4> M4 = AliensVsPredator.resources().models().M4;
         registerItemRenderer(items.itemM4Barrel, new RenderItemM4Barrel(M4, M4.getModel().getBarrel()));
         registerItemRenderer(items.itemM4Action, new RenderItemM4Action(M4, M4.getModel().getAction()));
         registerItemRenderer(items.itemM4Stock, new RenderItemM4Stock(M4, M4.getModel().getStock()));
 
-        ModelTexMap<ModelM56SG> M56SG = AliensVsPredator.resources().models().M56SG;
+        TexturedModel<ModelM56SG> M56SG = AliensVsPredator.resources().models().M56SG;
         registerItemRenderer(items.itemM56SGAction, new RenderItemM56SGAction(M56SG, M56SG.getModel().getAction()));
         registerItemRenderer(items.itemM56SGAimingModule, new RenderItemM56SGAimingModule(M56SG, M56SG.getModel().getAccessories()));
         registerItemRenderer(items.itemM56SGBarrel, new RenderItemM56SGBarrel(M56SG, M56SG.getModel().getBarrel()));
         registerItemRenderer(items.itemM56SGStock, new RenderItemM56SGStock(M56SG, M56SG.getModel().getStock()));
         registerItemRenderer(items.itemM56SGSupportFrame, new RenderItemM56SGSupportFrame(M56SG, M56SG.getModel().getPeripherals()));
 
-        ModelTexMap<ModelM41A> M41A = AliensVsPredator.resources().models().M41A;
+        TexturedModel<ModelM41A> M41A = AliensVsPredator.resources().models().M41A;
         registerItemRenderer(items.itemM41AAction, new RenderItemM41AAction(M41A, M41A.getModel().getAction()));
         registerItemRenderer(items.itemM41ABarrel, new RenderItemM41ABarrel(M41A, M41A.getModel().getBarrel()));
         registerItemRenderer(items.itemM41AStock, new RenderItemM41AStock(M41A, M41A.getModel().getStock()));
         registerItemRenderer(items.itemM41APeripherals, new RenderItemM41APeripherals(M41A, M41A.getModel().getPeripherals()));
 
-        ModelTexMap<ModelSniper> SNIPER = AliensVsPredator.resources().models().SNIPER;
+        TexturedModel<ModelSniper> SNIPER = AliensVsPredator.resources().models().SNIPER;
         registerItemRenderer(items.itemSniperBarrel, new RenderItemSniperBarrel(SNIPER, SNIPER.getModel().getBarrel()));
         registerItemRenderer(items.itemSniperAction, new RenderItemSniperAction(SNIPER, SNIPER.getModel().getAction()));
         registerItemRenderer(items.itemSniperScope, new RenderItemSniperScope(SNIPER, SNIPER.getModel().getScope()));

@@ -2,8 +2,8 @@ package org.avp.world;
 
 import java.util.Random;
 
-import com.arisux.airi.AIRI;
-import com.arisux.airi.lib.WorldUtil.Blocks.CoordData;
+import com.arisux.amdxlib.lib.world.CoordData;
+import com.arisux.amdxlib.lib.world.StructureGenerationHandler;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
@@ -98,7 +98,7 @@ public class DerelictLocation
 
     public void generate(World world, int addX, int addY, int addZ)
     {
-        AIRI.instance().events.getStructuresInQueue().add(new StructureDerelict(MinecraftServer.getServer().worldServerForDimension(0), this.getCoord().add(addX, addY, addZ)));
+        StructureGenerationHandler.addStructureToQueue(new StructureDerelict(MinecraftServer.getServer().worldServerForDimension(0), this.getCoord().add(addX, addY, addZ)));
         this.setGenerated(true);
     }
 }

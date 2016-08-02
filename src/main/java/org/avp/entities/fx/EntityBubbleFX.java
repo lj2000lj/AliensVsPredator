@@ -1,6 +1,6 @@
 package org.avp.entities.fx;
 
-import com.arisux.airi.lib.RenderUtil;
+import com.arisux.amdxlib.lib.client.render.Draw;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -48,7 +48,7 @@ public class EntityBubbleFX extends EntityFX
     public void renderParticle(Tessellator tessellator, float partialTickTime, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ)
     {
         super.renderParticle(tessellator, partialTickTime, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
-        RenderUtil.drawParticle(32, 0, 0, 1, 1);
+        Draw.drawParticle(32, 0, 0, 1, 1);
     }    
     
     

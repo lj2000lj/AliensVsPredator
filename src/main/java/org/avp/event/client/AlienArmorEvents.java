@@ -2,7 +2,8 @@ package org.avp.event.client;
 
 import org.avp.AliensVsPredator;
 
-import com.arisux.airi.lib.WorldUtil;
+import com.arisux.amdxlib.lib.game.Game;
+import com.arisux.amdxlib.lib.world.entity.player.inventory.Inventories;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -10,16 +11,16 @@ import net.minecraft.client.Minecraft;
 
 public class AlienArmorEvents
 {
-    private Minecraft mc = Minecraft.getMinecraft();
+    private Minecraft mc = Game.minecraft();
 
     @SubscribeEvent
     public void tick(TickEvent.ClientTickEvent event)
     {
         if (mc.thePlayer != null)
         {
-            if (WorldUtil.Entities.Players.Inventories.getLegsSlotItemStack(mc.thePlayer) != null)
+            if (Inventories.getLegsSlotItemStack(mc.thePlayer) != null)
             {
-                if (WorldUtil.Entities.Players.Inventories.getLegsSlotItemStack(mc.thePlayer).getItem() == AliensVsPredator.items().legsXeno && mc.gameSettings.keyBindForward.isPressed() && AliensVsPredator.keybinds().KEYBIND_XENO_ARMOR_CLIMB.isPressed() && mc.thePlayer.isCollidedHorizontally)
+                if (Inventories.getLegsSlotItemStack(mc.thePlayer).getItem() == AliensVsPredator.items().legsXeno && mc.gameSettings.keyBindForward.isPressed() && AliensVsPredator.keybinds().KEYBIND_XENO_ARMOR_CLIMB.isPressed() && mc.thePlayer.isCollidedHorizontally)
                 {
                     mc.thePlayer.motionY = 0.3D;
                     mc.thePlayer.setAIMoveSpeed(5.5F);

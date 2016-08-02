@@ -2,16 +2,16 @@ package org.avp.api;
 
 import java.util.ArrayList;
 
-import com.arisux.airi.AIRI;
-import com.arisux.airi.lib.WorldUtil.Entities.Players.Inventories;
-import com.arisux.airi.lib.interfaces.IInitializable;
+import com.arisux.amdxlib.AMDXLib;
+import com.arisux.amdxlib.lib.game.IInitEvent;
+import com.arisux.amdxlib.lib.world.entity.player.inventory.Inventories;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class AssemblerAPI implements IInitializable
+public class AssemblerAPI implements IInitEvent
 {
     public static final AssemblerAPI instance = new AssemblerAPI();
     private ArrayList<AssemblerSchematic> registeredSchematics = new ArrayList<AssemblerSchematic>();
@@ -99,12 +99,12 @@ public class AssemblerAPI implements IInitializable
         }
         else
         {
-            AIRI.logger.warning("[AVP/API/Assembler] Schematic for id '%s' is already registered.", schematic.getSchematicId());
+            AMDXLib.log().warn(String.format("[AVP/API/Assembler] Schematic for id '%s' is already registered.", schematic.getSchematicId()));
         }
     }
 
     @Override
-    public void initialize(FMLInitializationEvent event)
+    public void init(FMLInitializationEvent event)
     {
         // Schematic registration has been moved to CraftingHandler.addSchematics();
     }

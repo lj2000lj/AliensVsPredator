@@ -6,8 +6,8 @@ import org.avp.AliensVsPredator;
 import org.avp.dimension.BiomeLVBase;
 import org.avp.dimension.varda.worldgen.VardaGenSpike;
 
-import com.arisux.airi.lib.WorldUtil;
-import com.arisux.airi.lib.WorldUtil.Blocks.CoordData;
+import com.arisux.amdxlib.lib.world.CoordData;
+import com.arisux.amdxlib.lib.world.Worlds;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
@@ -59,13 +59,13 @@ public class BiomeDecoratorVarda extends BiomeDecorator
     {
         this.generateOres();
 
-        WorldUtil.generateWorldGenInChunk(world, this.stalagmiteGen, this.randomGenerator, 10, new CoordData(chunk_X, 0, chunk_Z));
-        WorldUtil.generateWorldGenInChunk(world, this.landSpikeGen, this.randomGenerator, 10, new CoordData(chunk_X, 0, chunk_Z));
+        Worlds.generateWorldGenInChunk(world, this.stalagmiteGen, this.randomGenerator, 10, new CoordData(chunk_X, 0, chunk_Z));
+        Worlds.generateWorldGenInChunk(world, this.landSpikeGen, this.randomGenerator, 10, new CoordData(chunk_X, 0, chunk_Z));
     }
 
     @Override
     protected void generateOres()
     {
-        WorldUtil.generateBlockInChunk(world, AliensVsPredator.blocks().terrainUniDirt, this.randomGenerator, 20, 32, 0, 128, new CoordData(chunk_X, 0, chunk_Z));
+        Worlds.generateBlockInChunk(world, AliensVsPredator.blocks().terrainUniDirt, this.randomGenerator, 20, 32, 0, 128, new CoordData(chunk_X, 0, chunk_Z));
     }
 }

@@ -3,7 +3,8 @@ package org.avp.entities.ai.alien;
 import org.avp.entities.mob.EntityQueen;
 import org.avp.entities.mob.EntityXenomorph;
 
-import com.arisux.airi.lib.WorldUtil;
+import com.arisux.amdxlib.lib.world.CoordData;
+import com.arisux.amdxlib.lib.world.entity.Entities;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -52,7 +53,7 @@ public class EntityAIQueenIdentificationTask extends EntityAIBase
 
         if (targetQueen == null || targetQueen != null && targetQueen.isDead)
         {
-            EntityQueen queen = (EntityQueen) WorldUtil.Entities.getEntityInCoordsRange(xenomorph.worldObj, EntityQueen.class, new WorldUtil.Blocks.CoordData(xenomorph), 64, 64);
+            EntityQueen queen = (EntityQueen) Entities.getEntityInCoordsRange(xenomorph.worldObj, EntityQueen.class, new CoordData(xenomorph), 64, 64);
             targetQueen = queen;
         }
 

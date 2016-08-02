@@ -2,11 +2,11 @@ package org.avp.items.model;
 
 import org.avp.util.IFirearmModel;
 
-import com.arisux.airi.lib.client.ModelBaseWrapper;
+import com.arisux.amdxlib.lib.client.Model;
 
 import net.minecraft.client.model.ModelRenderer;
 
-public class ModelM56SG extends ModelBaseWrapper implements IFirearmModel
+public class ModelM56SG extends Model implements IFirearmModel
 {
     public ModelRenderer handleBase;
     public ModelRenderer base;

@@ -4,7 +4,7 @@ import org.avp.entities.mob.EntityFacehugger;
 import org.avp.entities.mob.render.RenderFacehugger;
 import org.avp.entities.mob.render.RenderFacehugger.FaceMountRenderer;
 
-import com.arisux.airi.lib.GlStateManager;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.monster.EntityBlaze;
@@ -42,10 +42,10 @@ public class VanillaFaceMountRenderers
             @Override
             public void render(EntityFacehugger facehugger, float renderPartialTicks)
             {
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.rotate(110.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.translate(0F, -0.1F, 0.15F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(110.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, -0.1F, 0.15F);
             }
         });
 
@@ -54,10 +54,10 @@ public class VanillaFaceMountRenderers
             @Override
             public void render(EntityFacehugger facehugger, float renderPartialTicks)
             {
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.rotate(90.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.translate(0F, -0.2F, 0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, -0.2F, 0F);
 
                 if (facehugger.ridingEntity instanceof EntityZombie)
                 {
@@ -65,7 +65,7 @@ public class VanillaFaceMountRenderers
 
                     if (zombie.isChild())
                     {
-                        GlStateManager.translate(0F, 0F, 0.85F);
+                        OpenGL.translate(0F, 0F, 0.85F);
                     }
                 }
             }
@@ -77,12 +77,12 @@ public class VanillaFaceMountRenderers
             public void render(EntityFacehugger facehugger, float renderPartialTicks)
             {
                 EntityClientPlayerMP player = (EntityClientPlayerMP) facehugger.ridingEntity;
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.rotate(90.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.translate(0F, -0.0F, 2.05F);
-                GlStateManager.rotate(-player.rotationPitch, 1, 0, 0);
-                GlStateManager.translate(0F, -0.1F, -0.15F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, -0.0F, 2.05F);
+                OpenGL.rotate(-player.rotationPitch, 1, 0, 0);
+                OpenGL.translate(0F, -0.1F, -0.15F);
             }
         });
 
@@ -91,10 +91,10 @@ public class VanillaFaceMountRenderers
             @Override
             public void render(EntityFacehugger facehugger, float renderPartialTicks)
             {
-                GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotate(-110.0F, 1.0F, 0.0F, 0.0F);
-                GlStateManager.rotate(5F, 1F, 0F, 0F);
-                GlStateManager.translate(0F, -0.8F, -0.15F);
+                OpenGL.rotate(180.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(-110.0F, 1.0F, 0.0F, 0.0F);
+                OpenGL.rotate(5F, 1F, 0F, 0F);
+                OpenGL.translate(0F, -0.8F, -0.15F);
             }
         });
 
@@ -103,10 +103,10 @@ public class VanillaFaceMountRenderers
             @Override
             public void render(EntityFacehugger facehugger, float renderPartialTicks)
             {
-                GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotate(-100.0F, 1.0F, 0.0F, 0.0F);
-                GlStateManager.rotate(5F, 1F, 0F, 0F);
-                GlStateManager.translate(0F, -0.85F, 0.25F);
+                OpenGL.rotate(180.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(-100.0F, 1.0F, 0.0F, 0.0F);
+                OpenGL.rotate(5F, 1F, 0F, 0F);
+                OpenGL.translate(0F, -0.85F, 0.25F);
             }
         });
 
@@ -115,9 +115,9 @@ public class VanillaFaceMountRenderers
             @Override
             public void render(EntityFacehugger facehugger, float renderPartialTicks)
             {
-                GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotate(-150.0F, 1.0F, 0.0F, 0.0F);
-                GlStateManager.translate(0F, -0.6F, -1.0F);
+                OpenGL.rotate(180.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(-150.0F, 1.0F, 0.0F, 0.0F);
+                OpenGL.translate(0F, -0.6F, -1.0F);
             }
         });
 
@@ -126,10 +126,10 @@ public class VanillaFaceMountRenderers
             @Override
             public void render(EntityFacehugger facehugger, float renderPartialTicks)
             {
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.rotate(90.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.translate(0F, -0.1F, 0.25F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, -0.1F, 0.25F);
             }
         });
 
@@ -138,10 +138,10 @@ public class VanillaFaceMountRenderers
             @Override
             public void render(EntityFacehugger facehugger, float renderPartialTicks)
             {
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.rotate(90.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.translate(0F, -0.1F, -0.1F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, -0.1F, -0.1F);
             }
         });
 
@@ -150,10 +150,10 @@ public class VanillaFaceMountRenderers
             @Override
             public void render(EntityFacehugger facehugger, float renderPartialTicks)
             {
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.rotate(90.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.translate(0F, -0.60F, 0.45F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, -0.60F, 0.45F);
             }
         });
 
@@ -163,10 +163,10 @@ public class VanillaFaceMountRenderers
             public void render(EntityFacehugger facehugger, float renderPartialTicks)
             {
                 EntitySlime slime = (EntitySlime) facehugger.ridingEntity;
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.rotate(90.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.translate(0F, slime.getSlimeSize() * -0.25F, 0.75F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, slime.getSlimeSize() * -0.25F, 0.75F);
             }
         });
 
@@ -175,9 +175,9 @@ public class VanillaFaceMountRenderers
             @Override
             public void render(EntityFacehugger facehugger, float renderPartialTicks)
             {
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.rotate(90.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
             }
         });
 
@@ -186,10 +186,10 @@ public class VanillaFaceMountRenderers
             @Override
             public void render(EntityFacehugger facehugger, float renderPartialTicks)
             {
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.rotate(90.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.translate(0F, -0.1F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, -0.1F, 0.0F);
             }
         });
 
@@ -198,10 +198,10 @@ public class VanillaFaceMountRenderers
             @Override
             public void render(EntityFacehugger facehugger, float renderPartialTicks)
             {
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.rotate(90.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.translate(0F, -0.3F, 0.4F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, -0.3F, 0.4F);
             }
         });
 
@@ -210,11 +210,11 @@ public class VanillaFaceMountRenderers
             @Override
             public void render(EntityFacehugger facehugger, float renderPartialTicks)
             {
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.rotate(-30.0F, 1.0F, 0.0F, 0.0F);
-                GlStateManager.translate(0F, 0.7F, 0.55F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(180.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(-30.0F, 1.0F, 0.0F, 0.0F);
+                OpenGL.translate(0F, 0.7F, 0.55F);
             }
         });
 
@@ -223,10 +223,10 @@ public class VanillaFaceMountRenderers
             @Override
             public void render(EntityFacehugger facehugger, float renderPartialTicks)
             {
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.rotate(90.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.translate(0F, -0.15F, 0.25F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, -0.15F, 0.25F);
             }
         });
 
@@ -235,10 +235,10 @@ public class VanillaFaceMountRenderers
             @Override
             public void render(EntityFacehugger facehugger, float renderPartialTicks)
             {
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.rotate(90.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.translate(0F, -0.1F, 0.25F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, -0.1F, 0.25F);
             }
         });
 
@@ -247,10 +247,10 @@ public class VanillaFaceMountRenderers
             @Override
             public void render(EntityFacehugger facehugger, float renderPartialTicks)
             {
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.rotate(90.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.translate(0F, -0.8F, 0.25F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, -0.8F, 0.25F);
             }
         });
 
@@ -259,10 +259,10 @@ public class VanillaFaceMountRenderers
             @Override
             public void render(EntityFacehugger facehugger, float renderPartialTicks)
             {
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.rotate(50.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.translate(0F, -0.3F, -0.45F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(50.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, -0.3F, -0.45F);
             }
         });
 
@@ -271,10 +271,10 @@ public class VanillaFaceMountRenderers
             @Override
             public void render(EntityFacehugger facehugger, float renderPartialTicks)
             {
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.rotate(90.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotate(270.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.translate(0F, -0.7F, 0.55F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(270.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, -0.7F, 0.55F);
             }
         });
 
@@ -283,10 +283,10 @@ public class VanillaFaceMountRenderers
             @Override
             public void render(EntityFacehugger facehugger, float renderPartialTicks)
             {
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.rotate(140.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.translate(0F, -0.15F, 0.75F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(140.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, -0.15F, 0.75F);
             }
         });
 
@@ -295,10 +295,10 @@ public class VanillaFaceMountRenderers
             @Override
             public void render(EntityFacehugger facehugger, float renderPartialTicks)
             {
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.rotate(140.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.translate(0F, -0.15F, 0.9F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(140.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, -0.15F, 0.9F);
             }
         });
     }

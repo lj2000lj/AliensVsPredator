@@ -6,10 +6,10 @@ import org.avp.AliensVsPredator;
 import org.avp.packets.server.PacketReloadFirearm;
 import org.avp.packets.server.PacketShootEntity;
 
-import com.arisux.airi.lib.AccessWrapper;
-import com.arisux.airi.lib.ItemTypes.HookedItem;
-import com.arisux.airi.lib.WorldUtil;
-import com.arisux.airi.lib.WorldUtil.Entities.Players.Inventories;
+import com.arisux.amdxlib.lib.game.Game;
+import com.arisux.amdxlib.lib.world.entity.Entities;
+import com.arisux.amdxlib.lib.world.entity.player.inventory.Inventories;
+import com.arisux.amdxlib.lib.world.item.HookedItem;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -71,7 +71,7 @@ public class ItemFirearm extends HookedItem
         {
             if (this.ammoCount > 0 || player.capabilities.isCreativeMode)
             {
-                MovingObjectPosition objMouseOver = WorldUtil.Entities.rayTrace(player, 128);
+                MovingObjectPosition objMouseOver = Entities.rayTrace(player, 128);
 
                 this.renderRecoil();
                 this.fixDelay();
@@ -202,8 +202,8 @@ public class ItemFirearm extends HookedItem
     @SideOnly(Side.CLIENT)
     public void fixDelay()
     {
-        AccessWrapper.setEquippedProgress(0.85F);
-        AccessWrapper.setRightClickDelayTimer((int) this.fireRate);
+        Game.setEquippedProgress(0.85F);
+        Game.setRightClickDelayTimer((int) this.fireRate);
     }
 
     @Override

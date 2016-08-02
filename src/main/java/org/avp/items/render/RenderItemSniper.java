@@ -6,12 +6,12 @@ import org.avp.items.model.ModelSniper;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import com.arisux.airi.lib.AccessWrapper;
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.RenderUtil;
-import com.arisux.airi.lib.client.ItemRenderer;
-import com.arisux.airi.lib.client.PlayerResource;
-import com.arisux.airi.lib.client.Texture;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
+import com.arisux.amdxlib.lib.client.render.ItemRenderer;
+import com.arisux.amdxlib.lib.client.render.PlayerResource;
+import com.arisux.amdxlib.lib.client.render.Texture;
+import com.arisux.amdxlib.lib.game.Game;
+import com.arisux.amdxlib.lib.util.Remote;
 
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
@@ -43,9 +43,9 @@ public class RenderItemSniper extends ItemRenderer
     public void renderInWorld(ItemStack item, Object... data)
     {
         super.renderInWorld(item, data);
-        GlStateManager.translate(-0.1F, 0.5F, 0F);
-        GlStateManager.scale(1F, -1F, 1F);
-        GlStateManager.disable(GL11.GL_CULL_FACE);
+        OpenGL.translate(-0.1F, 0.5F, 0F);
+        OpenGL.scale(1F, -1F, 1F);
+        OpenGL.disable(GL11.GL_CULL_FACE);
         this.getModelTexMap().draw();
     }
 
@@ -75,19 +75,19 @@ public class RenderItemSniper extends ItemRenderer
     @Override
     public void renderThirdPerson(ItemStack item, Object... data)
     {
-        PlayerResource player = resourceManager.createPlayerResource(((EntityPlayer) data[1]).getCommandSenderName());
+        PlayerResource player = resourceStorage.create(((EntityPlayer) data[1]).getCommandSenderName());
 
         if (player != null)
         {
-            GlStateManager.translate(0.2F, 0.3F, -0.17F);
-            GlStateManager.rotate(180.0F, 1.0F, 0.0F, 0.0F);
-            GlStateManager.rotate(90.0F, 0.0F, 1.0F, 0.0F);
-            GlStateManager.rotate(40.0F, 1.0F, 0.0F, 0.0F);
-            GlStateManager.disable(GL11.GL_CULL_FACE);
-            GlStateManager.translate(0.1F, -0.0F, 0.8F);
+            OpenGL.translate(0.2F, 0.3F, -0.17F);
+            OpenGL.rotate(180.0F, 1.0F, 0.0F, 0.0F);
+            OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
+            OpenGL.rotate(40.0F, 1.0F, 0.0F, 0.0F);
+            OpenGL.disable(GL11.GL_CULL_FACE);
+            OpenGL.translate(0.1F, -0.0F, 0.8F);
             float glScale = 1.2F;
-            GlStateManager.scale(glScale, glScale, glScale);
-            new Texture(RenderUtil.downloadResource(String.format(URLs.urlSkinSniper, player.getUUID()), this.getModelTexMap().getTexture())).bind();
+            OpenGL.scale(glScale, glScale, glScale);
+            new Texture(Remote.downloadResource(String.format(URLs.urlSkinSniper, player.playerUUID()), this.getModelTexMap().getTexture())).bind();
             this.getModelTexMap().getModel().render();
         }
     }
@@ -100,23 +100,23 @@ public class RenderItemSniper extends ItemRenderer
             if (Mouse.isButtonDown(0) && mc.inGameHasFocus)
             {
                 this.getModel().setFirstPerson(true);
-                GlStateManager.translate(1.26F, 1.985F, -0.375F);
-                GlStateManager.rotate(102.4F, 1.0F, 0.0F, 0.0F);
-                GlStateManager.rotate(115F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotate(78.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.translate(-0.495F, 0.60F, -1.835F);
+                OpenGL.translate(1.26F, 1.985F, -0.375F);
+                OpenGL.rotate(102.4F, 1.0F, 0.0F, 0.0F);
+                OpenGL.rotate(115F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(78.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(-0.495F, 0.60F, -1.835F);
             }
             else
             {
                 this.getModel().setFirstPerson(false);
-                GlStateManager.translate(1.5F, 0.95F, 0.35F);
-                GlStateManager.rotate(95.0F, 1.0F, 0.0F, 0.0F);
-                GlStateManager.rotate(120.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotate(80.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.scale(2.2F, 2.2F, 2.2F);
+                OpenGL.translate(1.5F, 0.95F, 0.35F);
+                OpenGL.rotate(95.0F, 1.0F, 0.0F, 0.0F);
+                OpenGL.rotate(120.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(80.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.scale(2.2F, 2.2F, 2.2F);
             }
-            GlStateManager.disable(GL11.GL_CULL_FACE);
-            new Texture(RenderUtil.downloadResource(String.format(URLs.urlSkinSniper, AccessWrapper.getSession().getPlayerID()), this.getModelTexMap().getTexture())).bind();;
+            OpenGL.disable(GL11.GL_CULL_FACE);
+            new Texture(Remote.downloadResource(String.format(URLs.urlSkinSniper, Game.session().getPlayerID()), this.getModelTexMap().getTexture())).bind();;
             this.getModel().render();
         }
     }
@@ -124,14 +124,14 @@ public class RenderItemSniper extends ItemRenderer
     @Override
     public void renderInInventory(ItemStack item, Object... data)
     {
-        GlStateManager.disable(GL11.GL_CULL_FACE);
-        GlStateManager.rotate(0F, 1.0F, 0.0F, 0.0F);
-        GlStateManager.rotate(-40F, 0.0F, 1.0F, 0.0F);
-        GlStateManager.rotate(0F, 0.0F, 0.0F, 1.0F);
-        GlStateManager.translate(0F, 5.77F, -10.85F);
+        OpenGL.disable(GL11.GL_CULL_FACE);
+        OpenGL.rotate(0F, 1.0F, 0.0F, 0.0F);
+        OpenGL.rotate(-40F, 0.0F, 1.0F, 0.0F);
+        OpenGL.rotate(0F, 0.0F, 0.0F, 1.0F);
+        OpenGL.translate(0F, 5.77F, -10.85F);
         float glScale = 20F;
-        GlStateManager.scale(glScale, glScale, glScale);
-        new Texture(RenderUtil.downloadResource(String.format(URLs.urlSkinSniper, AccessWrapper.getSession().getPlayerID()), this.getModelTexMap().getTexture())).bind();;
+        OpenGL.scale(glScale, glScale, glScale);
+        new Texture(Remote.downloadResource(String.format(URLs.urlSkinSniper, Game.session().getPlayerID()), this.getModelTexMap().getTexture())).bind();;
         this.getModel().render();
     }
 }

@@ -5,14 +5,14 @@ import org.avp.DamageSources;
 import org.avp.dimension.varda.ProviderVarda;
 import org.avp.packets.client.PacketVardaStormMoveEntity;
 
-import com.arisux.airi.lib.WorldUtil;
-import com.arisux.airi.lib.WorldUtil.Blocks.CoordData;
+import com.arisux.amdxlib.lib.game.Game;
+import com.arisux.amdxlib.lib.world.CoordData;
+import com.arisux.amdxlib.lib.world.Worlds;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -33,10 +33,10 @@ public class VardaStormHandler
         {
             if (event.world.isRemote)
             {
-                Minecraft.getMinecraft().thePlayer.motionZ += 0.04F;
-                Minecraft.getMinecraft().thePlayer.motionY += MathHelper.sin(event.world.getWorldTime() * 0.4F) * 0.1F;
-                Minecraft.getMinecraft().thePlayer.fallDistance = 0F;
-                AliensVsPredator.network().sendToAll(new PacketVardaStormMoveEntity(Integer.valueOf(Minecraft.getMinecraft().thePlayer.getEntityId())));
+                Game.minecraft().thePlayer.motionZ += 0.04F;
+                Game.minecraft().thePlayer.motionY += MathHelper.sin(event.world.getWorldTime() * 0.4F) * 0.1F;
+                Game.minecraft().thePlayer.fallDistance = 0F;
+                AliensVsPredator.network().sendToAll(new PacketVardaStormMoveEntity(Integer.valueOf(Game.minecraft().thePlayer.getEntityId())));
             }
 
             Object[] entities = event.world.loadedEntityList.toArray();
@@ -47,7 +47,7 @@ public class VardaStormHandler
                 {
                     Entity entity = (Entity) o;
 
-                    if (event.world != null && entity.worldObj.provider instanceof ProviderVarda && WorldUtil.canSeeSky(new CoordData(entity), event.world))
+                    if (event.world != null && entity.worldObj.provider instanceof ProviderVarda && Worlds.canSeeSky(new CoordData(entity), event.world))
                     {
                         entity.motionZ += 0.04F;
                         entity.motionY += MathHelper.sin(entity.worldObj.getWorldTime() * 0.4F) * 0.1F;
@@ -96,7 +96,7 @@ public class VardaStormHandler
     {
         if (world.isRemote)
         {
-            if (!Minecraft.getMinecraft().isGamePaused())
+            if (!Game.minecraft().isGamePaused())
             {
                 this.cloudTickCounter++;
             }

@@ -2,13 +2,13 @@ package org.avp.entities.tile.model;
 
 import org.avp.entities.tile.TileEntityElectrical;
 
-import com.arisux.airi.lib.client.ModelBaseWrapper;
+import com.arisux.amdxlib.lib.client.Model;
 
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class ModelCable extends ModelBaseWrapper
+public class ModelCable extends Model
 {
     ModelRenderer node, down, up, front, back, left, right;
 

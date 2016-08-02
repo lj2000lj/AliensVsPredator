@@ -3,8 +3,8 @@ package org.avp;
 import org.avp.api.AssemblerAPI;
 import org.avp.api.AssemblerAPI.AssemblerSchematic;
 
-import com.arisux.airi.lib.WorldUtil.Entities.Players.Inventories;
-import com.arisux.airi.lib.interfaces.IInitializable;
+import com.arisux.amdxlib.lib.game.IInitEvent;
+import com.arisux.amdxlib.lib.world.entity.player.inventory.Inventories;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -13,7 +13,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class CraftingHandler implements IInitializable
+public class CraftingHandler implements IInitEvent
 {
     public static final CraftingHandler instance = new CraftingHandler();
     private ItemStack jungleWood = new ItemStack(Blocks.planks, 4);
@@ -26,7 +26,7 @@ public class CraftingHandler implements IInitializable
     }
 
     @Override
-    public void initialize(FMLInitializationEvent event)
+    public void init(FMLInitializationEvent event)
     {
         this.addRecipes();
         this.addSmelting();

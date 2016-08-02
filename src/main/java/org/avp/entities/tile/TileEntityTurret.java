@@ -22,8 +22,9 @@ import org.avp.packets.server.PacketTurretTargetUpdate;
 import org.avp.util.IDataDevice;
 import org.avp.util.IVoltageReceiver;
 
-import com.arisux.airi.lib.WorldUtil;
-import com.arisux.airi.lib.WorldUtil.Blocks.CoordData;
+import com.arisux.amdxlib.lib.world.CoordData;
+import com.arisux.amdxlib.lib.world.entity.Entities;
+import com.arisux.amdxlib.lib.world.storage.NBTStorage;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -134,9 +135,9 @@ public class TileEntityTurret extends TileEntityElectrical implements IDataDevic
 
     public Entity findNewTarget()
     {
-        Entity newTarget = WorldUtil.Entities.getRandomEntityInCoordsRange(this.worldObj, EntityLiving.class, new com.arisux.airi.lib.WorldUtil.Blocks.CoordData(this), range, 12);
+        Entity newTarget = Entities.getRandomEntityInCoordsRange(this.worldObj, EntityLiving.class, new CoordData(this), range, 12);
 
-        if (newTarget != null && this.getEntity().getDistanceToEntity(newTarget) < range && !newTarget.isDead && WorldUtil.Entities.canEntityBeSeenBy(newTarget, this.getEntity()) && !isSafe(newTarget))
+        if (newTarget != null && this.getEntity().getDistanceToEntity(newTarget) < range && !newTarget.isDead && Entities.canEntityBeSeenBy(newTarget, this.getEntity()) && !isSafe(newTarget))
         {
             return targetEntity = newTarget;
         }
@@ -153,13 +154,13 @@ public class TileEntityTurret extends TileEntityElectrical implements IDataDevic
 
         if (targetEntity != null)
         {
-            if (this.getEntity().getDistanceToEntity(targetEntity) < range && !targetEntity.isDead && WorldUtil.Entities.canEntityBeSeenBy(targetEntity, this.getEntity()))
+            if (this.getEntity().getDistanceToEntity(targetEntity) < range && !targetEntity.isDead && Entities.canEntityBeSeenBy(targetEntity, this.getEntity()))
             {
-                turnTurretToPoint(new WorldUtil.Blocks.CoordData(targetEntity.posX, targetEntity.posY, targetEntity.posZ));
+                turnTurretToPoint(new CoordData(targetEntity.posX, targetEntity.posY, targetEntity.posZ));
 
                 if (worldObj.getWorldInfo().getWorldTime() % fireRate == 0L && this.getEntity().rotationYaw != 0 && this.rotationYaw == this.focusYaw)
                 {
-                    if (curAmmo-- > 0 && WorldUtil.Entities.canEntityBeSeenBy(targetEntity, this.getEntity()))
+                    if (curAmmo-- > 0 && Entities.canEntityBeSeenBy(targetEntity, this.getEntity()))
                     {
                         this.fire();
                     }
@@ -254,7 +255,7 @@ public class TileEntityTurret extends TileEntityElectrical implements IDataDevic
     {
         if (this.worldObj != null && this.inventoryAmmo != null)
         {
-            ArrayList<EntityItem> entityItemList = (ArrayList<EntityItem>) WorldUtil.Entities.getEntitiesInCoordsRange(worldObj, EntityItem.class, new com.arisux.airi.lib.WorldUtil.Blocks.CoordData(this), 1);
+            ArrayList<EntityItem> entityItemList = (ArrayList<EntityItem>) Entities.getEntitiesInCoordsRange(worldObj, EntityItem.class, new CoordData(this), 1);
 
             for (EntityItem entityItem : entityItemList)
             {
@@ -316,7 +317,7 @@ public class TileEntityTurret extends TileEntityElectrical implements IDataDevic
         this.getEntity().playSound(AliensVsPredator.properties().SOUND_WEAPON_M56SG, 1F, 1F);
     }
 
-    public void turnTurretToPoint(com.arisux.airi.lib.WorldUtil.Blocks.CoordData coord)
+    public void turnTurretToPoint(CoordData coord)
     {
         this.focusPoint = coord;
 
@@ -479,10 +480,10 @@ public class TileEntityTurret extends TileEntityElectrical implements IDataDevic
 
         for (Class<? extends Entity> c : this.getDangerousTargets())
         {
-            entityIDs.add(String.valueOf(EntityList.getEntityID(WorldUtil.Entities.constructEntity(worldObj, c))));
+            entityIDs.add(String.valueOf(EntityList.getEntityID(Entities.constructEntity(worldObj, c))));
         }
 
-        nbt.setTag("Targets", WorldUtil.NBT.newStringNBTList(entityIDs));
+        nbt.setTag("Targets", NBTStorage.newStringNBTList(entityIDs));
     }
 
     @SuppressWarnings("unchecked")
@@ -784,10 +785,10 @@ public class TileEntityTurret extends TileEntityElectrical implements IDataDevic
 
                 for (Class<? extends Entity> c : this.getDangerousTargets())
                 {
-                    entityIDs.add(String.valueOf(EntityList.getEntityID(WorldUtil.Entities.constructEntity(worldObj, c))));
+                    entityIDs.add(String.valueOf(EntityList.getEntityID(Entities.constructEntity(worldObj, c))));
                 }
 
-                nbt.setTag("Targets", WorldUtil.NBT.newStringNBTList(entityIDs));
+                nbt.setTag("Targets", NBTStorage.newStringNBTList(entityIDs));
 
                 devicePort.setTagCompound(nbt);
                 devicePort.setStackDisplayName("NBT Drive - " + this.getEntity().getUniqueID());

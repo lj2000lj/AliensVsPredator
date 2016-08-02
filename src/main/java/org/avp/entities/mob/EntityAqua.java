@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import org.avp.AliensVsPredator;
 import org.avp.entities.EntityAcidPool;
 
-import com.arisux.airi.lib.WorldUtil;
-import com.arisux.airi.lib.WorldUtil.Blocks.CoordData;
-import com.arisux.airi.lib.WorldUtil.Entities;
+import com.arisux.amdxlib.lib.world.CoordData;
+import com.arisux.amdxlib.lib.world.block.Blocks;
+import com.arisux.amdxlib.lib.world.entity.Entities;
 
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
@@ -15,7 +15,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 
 @SuppressWarnings("all")
@@ -60,15 +59,16 @@ public class EntityAqua extends EntityXenomorph
 
         if (this.getAttackTarget() == null && this.worldObj.getWorldTime() % 60 == 0 && this.rand.nextInt(3) == 0)
         {
-            ArrayList<EntityLivingBase> entities = (ArrayList<EntityLivingBase>) WorldUtil.Entities.getEntitiesInCoordsRange(worldObj, EntityLivingBase.class, new CoordData(this), (int) this.getEntityAttribute(SharedMonsterAttributes.followRange).getAttributeValue() / 2);
+            ArrayList<EntityLivingBase> entities = (ArrayList<EntityLivingBase>) Entities.getEntitiesInCoordsRange(worldObj, EntityLivingBase.class, new CoordData(this), (int) this.getEntityAttribute(SharedMonsterAttributes.followRange).getAttributeValue() / 2);
 
             for (EntityLivingBase entity : entities)
             {
                 if (entitySelector.isEntityApplicable(entity) && Entities.canEntityBeSeenBy(entity, this) && (!entitySelector.isEntityApplicable(entity.getLastAttacker()) && (entity.ticksExisted - entity.getLastAttackerTime() > 150)))
                 {
                     if (entity instanceof EntityPlayer && !((EntityPlayer) entity).capabilities.isCreativeMode)
-
+                    {
                         this.setAttackTarget(entity);
+                    }
                 }
             }
         }
@@ -80,10 +80,10 @@ public class EntityAqua extends EntityXenomorph
         {
             if (this.worldObj.getWorldTime() % 40 == 0 && this.rand.nextInt(4) == 0)
             {
-                if (this.worldObj.getBlock((int) this.posX, (int) this.posY, (int) this.posZ) != Blocks.water)
+                if (this.worldObj.getBlock((int) this.posX, (int) this.posY, (int) this.posZ) != net.minecraft.init.Blocks.water)
                 {
                     double range = this.getEntityAttribute(SharedMonsterAttributes.followRange).getAttributeValue() / 2;
-                    ArrayList<CoordData> coordData = WorldUtil.Blocks.getCoordDataInRangeForBlocks((int) this.posX, (int) this.posY, (int) this.posZ, (int) range, this.worldObj, Blocks.water);
+                    ArrayList<CoordData> coordData = Blocks.getCoordDataInRangeForBlocks((int) this.posX, (int) this.posY, (int) this.posZ, (int) range, this.worldObj, net.minecraft.init.Blocks.water);
 
                     if (coordData.size() > 0)
                     {

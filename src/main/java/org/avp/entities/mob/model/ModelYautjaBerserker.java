@@ -2,13 +2,13 @@ package org.avp.entities.mob.model;
 
 import org.avp.entities.mob.EntitySpeciesYautja;
 
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.client.ModelBaseWrapper;
+import com.arisux.amdxlib.lib.client.Model;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.MathHelper;
 
-public class ModelYautjaBerserker extends ModelBaseWrapper
+public class ModelYautjaBerserker extends Model
 {
     public ModelRenderer head;
     public ModelRenderer head1Biomask;
@@ -622,10 +622,10 @@ public class ModelYautjaBerserker extends ModelBaseWrapper
             this.BiomaskHeadPlate.render(boxTranslation);
         }
 
-        GlStateManager.pushMatrix();
+        OpenGL.pushMatrix();
         {
             float rightArmRotation = MathHelper.cos(o.swingProgress * boxTranslation + (float) Math.PI) * 2.0F * o.swingProgressPrev * 0.5F;
-            GlStateManager.rotate(rightArmRotation * 60, 1F, 0F, 0F);
+            OpenGL.rotate(rightArmRotation * 60, 1F, 0F, 0F);
             this.rightarm.render(boxTranslation);
             this.rightarm_1.render(boxTranslation);
             this.rightarm3.render(boxTranslation);
@@ -633,39 +633,39 @@ public class ModelYautjaBerserker extends ModelBaseWrapper
             this.blade1.render(boxTranslation);
             this.blade2.render(boxTranslation);
         }
-        GlStateManager.popMatrix();
+        OpenGL.popMatrix();
 
-        GlStateManager.pushMatrix();
+        OpenGL.pushMatrix();
         {
             float leftArmRotation = -MathHelper.cos(o.swingProgress * boxTranslation + (float) Math.PI) * 2.0F * o.swingProgressPrev * 0.5F;
-            GlStateManager.rotate(leftArmRotation * 60, 1F, 0F, 0F);
+            OpenGL.rotate(leftArmRotation * 60, 1F, 0F, 0F);
             this.leftarm.render(boxTranslation);
             this.leftarm_1.render(boxTranslation);
             this.leftarm2.render(boxTranslation);
             this.leftarm3.render(boxTranslation);
         }
-        GlStateManager.popMatrix();
+        OpenGL.popMatrix();
 
-        GlStateManager.pushMatrix();
+        OpenGL.pushMatrix();
         {
             float leftLegRotation = -MathHelper.cos(o.swingProgress * 0.6662F) * 1.4F * o.swingProgressPrev;
-            GlStateManager.rotate(leftLegRotation * 20, 1F, 0F, 0F);
+            OpenGL.rotate(leftLegRotation * 20, 1F, 0F, 0F);
             this.leftleg.render(boxTranslation);
             this.leftleg2.render(boxTranslation);
             this.leftleg3.render(boxTranslation);
             this.leftlegLower.render(boxTranslation);
         }
-        GlStateManager.popMatrix();
+        OpenGL.popMatrix();
 
-        GlStateManager.pushMatrix();
+        OpenGL.pushMatrix();
         {
             float rightLegRotation = MathHelper.cos(o.swingProgress * 0.6662F) * 1.4F * o.swingProgressPrev;
-            GlStateManager.rotate(rightLegRotation * 20, 1F, 0F, 0F);
+            OpenGL.rotate(rightLegRotation * 20, 1F, 0F, 0F);
             this.rightleg.render(boxTranslation);
             this.rightleg2.render(boxTranslation);
             this.rightleg3.render(boxTranslation);
             this.rightlegLower.render(boxTranslation);
         }
-        GlStateManager.popMatrix();
+        OpenGL.popMatrix();
     }
 }

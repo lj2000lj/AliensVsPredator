@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.avp.AliensVsPredator;
 
-import com.arisux.airi.lib.WorldUtil;
-import com.arisux.airi.lib.WorldUtil.Blocks;
-import com.arisux.airi.lib.WorldUtil.Blocks.CoordData;
+import com.arisux.amdxlib.lib.world.CoordData;
+import com.arisux.amdxlib.lib.world.Worlds;
+import com.arisux.amdxlib.lib.world.entity.Entities;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -56,7 +56,7 @@ public class EntityPlasma extends EntityThrowable
 
         if (!this.worldObj.isRemote)
         {
-            Entity entityHit = WorldUtil.Entities.getEntityInCoordsRange(worldObj, EntityLiving.class, new CoordData(this), 1, 1);
+            Entity entityHit = Entities.getEntityInCoordsRange(worldObj, EntityLiving.class, new CoordData(this), 1, 1);
 
             if (entityHit != null)
             {
@@ -98,11 +98,11 @@ public class EntityPlasma extends EntityThrowable
     {
         if (!this.worldObj.isRemote)
         {
-            WorldUtil.createExplosion(null, worldObj, new Blocks.CoordData(this), 1.5F * size, false, true, AliensVsPredator.settings().areExplosionsEnabled());
+            Worlds.createExplosion(null, worldObj, new CoordData(this), 1.5F * size, false, true, AliensVsPredator.settings().areExplosionsEnabled());
             this.worldObj.playSoundAtEntity(this, "random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 
             @SuppressWarnings("unchecked")
-            List<Entity> entitiesInRange = (List<Entity>) WorldUtil.Entities.getEntitiesInCoordsRange(worldObj, EntityLivingBase.class, new CoordData(this.posX, this.posY, this.posZ), (int) Math.ceil(1.5F * size));
+            List<Entity> entitiesInRange = (List<Entity>) Entities.getEntitiesInCoordsRange(worldObj, EntityLivingBase.class, new CoordData(this.posX, this.posY, this.posZ), (int) Math.ceil(1.5F * size));
 
             for (Entity entity : entitiesInRange)
             {

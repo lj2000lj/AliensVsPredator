@@ -7,9 +7,9 @@ import org.avp.entities.mob.render.RenderFacehugger.FaceMountRenderer;
 import org.avp.entities.mob.render.RenderFacehugger.IFaceMountable;
 import org.lwjgl.opengl.GL11;
 
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.RenderUtil;
-import com.arisux.airi.lib.client.RenderLivingWrapper;
+import com.arisux.amdxlib.lib.client.Model;
+import com.arisux.amdxlib.lib.client.RenderLivingWrapper;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.EntityLivingBase;
@@ -38,19 +38,19 @@ public class RenderCombatSynthetic extends RenderLivingWrapper implements IFaceM
         {
             ModelBiped model = (ModelBiped) this.mainModel;
 
-            GlStateManager.pushMatrix();
+            OpenGL.pushMatrix();
             {
                 model.aimedBow = true;
-                model.bipedRightArm.postRender(RenderUtil.DEFAULT_BOX_TRANSLATION);
-                GlStateManager.translate(-0.35F, 0.8F, -0.85F);
-                GlStateManager.rotate(270.0F, 1.0F, 0.0F, 0.0F);
-                GlStateManager.rotate(0.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.disable(GL11.GL_CULL_FACE);
-                GlStateManager.scale(glScale, glScale, glScale);
+                model.bipedRightArm.postRender(Model.DEFAULT_BOX_TRANSLATION);
+                OpenGL.translate(-0.35F, 0.8F, -0.85F);
+                OpenGL.rotate(270.0F, 1.0F, 0.0F, 0.0F);
+                OpenGL.rotate(0.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(180.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.disable(GL11.GL_CULL_FACE);
+                OpenGL.scale(glScale, glScale, glScale);
                 AliensVsPredator.resources().models().M41A.draw();
             }
-            GlStateManager.popMatrix();
+            OpenGL.popMatrix();
         }
     }
 
@@ -62,10 +62,10 @@ public class RenderCombatSynthetic extends RenderLivingWrapper implements IFaceM
             @Override
             public void render(EntityFacehugger facehugger, float renderPartialTicks)
             {
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.rotate(90.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.translate(0F, -0.2F, 0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, -0.2F, 0F);
             }
         };
     }

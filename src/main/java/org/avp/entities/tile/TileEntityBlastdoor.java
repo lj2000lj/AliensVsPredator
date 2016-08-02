@@ -8,10 +8,10 @@ import org.avp.packets.client.PacketOpenBlastdoor;
 import org.avp.util.IOpenable;
 import org.avp.util.IVoltageReceiver;
 
-import com.arisux.airi.lib.interfaces.IRotatable;
+import com.arisux.amdxlib.lib.game.Game;
+import com.arisux.amdxlib.lib.world.tile.IRotatable;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -237,7 +237,7 @@ public class TileEntityBlastdoor extends TileEntityElectrical implements IVoltag
         {
             if (this.worldObj.isRemote)
             {
-                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("Unable to place a blastdoor here. Blocks are in the way."));
+                Game.minecraft().thePlayer.addChatMessage(new ChatComponentText("Unable to place a blastdoor here. Blocks are in the way."));
             }
 
             return false;

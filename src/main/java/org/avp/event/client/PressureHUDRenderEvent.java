@@ -20,14 +20,16 @@ import org.avp.entities.tile.TileEntityPowercell;
 import org.avp.entities.tile.TileEntityStasisMechanism;
 import org.avp.util.IVoltageReceiver;
 
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.ModUtil;
-import com.arisux.airi.lib.RenderUtil;
-import com.arisux.airi.lib.WorldUtil;
-import com.arisux.airi.lib.WorldUtil.Blocks;
-import com.arisux.airi.lib.WorldUtil.Blocks.CoordData;
-import com.arisux.airi.lib.client.ScaledResolution;
-import com.arisux.airi.lib.enums.BlockSides;
+import com.arisux.amdxlib.lib.client.render.Draw;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
+import com.arisux.amdxlib.lib.client.render.ScaledResolution;
+import com.arisux.amdxlib.lib.client.render.Screen;
+import com.arisux.amdxlib.lib.game.Game;
+import com.arisux.amdxlib.lib.world.CoordData;
+import com.arisux.amdxlib.lib.world.Worlds;
+import com.arisux.amdxlib.lib.world.block.BlockSide;
+import com.arisux.amdxlib.lib.world.block.Blocks;
+import com.arisux.amdxlib.lib.world.entity.player.inventory.Inventories;
 
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -47,7 +49,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class PressureHUDRenderEvent
 {
-    private Minecraft mc = Minecraft.getMinecraft();
+    private Minecraft mc = Game.minecraft();
     private boolean gammaRestored = true;
 
     @SubscribeEvent
@@ -63,28 +65,28 @@ public class PressureHUDRenderEvent
         {
             if (event.type == RenderGameOverlayEvent.ElementType.HOTBAR)
             {
-                if (WorldUtil.Entities.Players.Inventories.getHelmSlotItemStack(mc.thePlayer) != null && mc.gameSettings.thirdPersonView == 0 && WorldUtil.Entities.Players.Inventories.getHelmSlotItemStack(mc.thePlayer).getItem() == AliensVsPredator.items().pressureMask)
+                if (Inventories.getHelmSlotItemStack(mc.thePlayer) != null && mc.gameSettings.thirdPersonView == 0 && Inventories.getHelmSlotItemStack(mc.thePlayer).getItem() == AliensVsPredator.items().pressureMask)
                 {
-                    ExtendedEntityPlayer playerProperties = ExtendedEntityPlayer.get(Minecraft.getMinecraft().thePlayer);
+                    ExtendedEntityPlayer playerProperties = ExtendedEntityPlayer.get(Game.minecraft().thePlayer);
 
                     this.gammaRestored = false;
                     AliensVsPredator.events().getLightmapUpdateEvent().gammaValue = playerProperties.isNightvisionEnabled() ? 8F : 0F;
-                    GlStateManager.disableLight();
-                    GlStateManager.disableLightMapping();
+                    OpenGL.disableLight();
+                    OpenGL.disableLightMapping();
 
-                    GlStateManager.enable(GL_BLEND);
-                    GlStateManager.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_CONSTANT_ALPHA);
-                    GlStateManager.disable(GL_DEPTH_TEST);
+                    OpenGL.enable(GL_BLEND);
+                    OpenGL.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_CONSTANT_ALPHA);
+                    OpenGL.disable(GL_DEPTH_TEST);
                     glDepthMask(false);
-                    GlStateManager.color(1F, 1F, 1F, 1F);
-                    GlStateManager.disable(GL_ALPHA_TEST);
+                    OpenGL.color(1F, 1F, 1F, 1F);
+                    OpenGL.disable(GL_ALPHA_TEST);
                     // RenderUtil.bindTexture(AliensVsPredator.resources().BLUR_TACTICAL_HUD);
                     // RenderUtil.drawQuad(0, 0, RenderUtil.scaledDisplayResolution().getScaledWidth(), RenderUtil.scaledDisplayResolution().getScaledHeight());
                     glDepthMask(true);
-                    GlStateManager.enable(GL_DEPTH_TEST);
-                    GlStateManager.enable(GL_ALPHA_TEST);
-                    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-                    GlStateManager.disable(GL_BLEND);
+                    OpenGL.enable(GL_DEPTH_TEST);
+                    OpenGL.enable(GL_ALPHA_TEST);
+                    OpenGL.color(1.0F, 1.0F, 1.0F, 1.0F);
+                    OpenGL.disable(GL_BLEND);
 
                     this.drawInfoBar();
                     this.drawImpregnationIndicator(getProperties());
@@ -109,7 +111,7 @@ public class PressureHUDRenderEvent
 
     public void renderInventoryElements()
     {
-        if (WorldUtil.Entities.Players.Inventories.getHelmSlotItemStack(mc.thePlayer) != null && WorldUtil.Entities.Players.Inventories.getHelmSlotItemStack(mc.thePlayer).getItem() == AliensVsPredator.items().pressureMask)
+        if (Inventories.getHelmSlotItemStack(mc.thePlayer) != null && Inventories.getHelmSlotItemStack(mc.thePlayer).getItem() == AliensVsPredator.items().pressureMask)
         {
             ;
         }
@@ -117,43 +119,43 @@ public class PressureHUDRenderEvent
 
     public ExtendedEntityPlayer getProperties()
     {
-        return this.mc != null ? this.mc.thePlayer != null ? ExtendedEntityPlayer.get(Minecraft.getMinecraft().thePlayer) : null : null;
+        return this.mc != null ? this.mc.thePlayer != null ? ExtendedEntityPlayer.get(Game.minecraft().thePlayer) : null : null;
     }
 
     public void drawInfoBar()
     {
-        ScaledResolution res = RenderUtil.scaledDisplayResolution();
-        int guiScale = Minecraft.getMinecraft().gameSettings.guiScale;
+        ScaledResolution res = Screen.scaledDisplayResolution();
+        int guiScale = Game.minecraft().gameSettings.guiScale;
         float scale = guiScale == 0 ? res.getScaleFactor() * 0.25F : (guiScale == 1 ? res.getScaleFactor() * 1F : res.getScaleFactor() * 0.5F);
         int barPadding = 40;
 
-        int hourOfMinecraftDay = (int) (Math.floor(Minecraft.getMinecraft().thePlayer.worldObj.getWorldTime() / 1000 + 8) % 24);
-        int minuteOfMinecraftDay = (int) (60 * Math.floor(Minecraft.getMinecraft().thePlayer.worldObj.getWorldTime() % 1000) / 1000);
+        int hourOfMinecraftDay = (int) (Math.floor(Game.minecraft().thePlayer.worldObj.getWorldTime() / 1000 + 8) % 24);
+        int minuteOfMinecraftDay = (int) (60 * Math.floor(Game.minecraft().thePlayer.worldObj.getWorldTime() % 1000) / 1000);
 
         String timeString = String.format("%02dH%02dM", hourOfMinecraftDay, minuteOfMinecraftDay);
         String fpsString = mc.debug.substring(0, mc.debug.indexOf(" fps")) + " FPS";
         String barString = timeString + " [" + fpsString + "]";
 
-        GlStateManager.pushMatrix();
+        OpenGL.pushMatrix();
         {
             FontRenderer fontrenderer = mc.fontRendererObj;
-            GlStateManager.scale(scale, scale, scale);
-            GlStateManager.enable(GL_BLEND);
-            GlStateManager.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_CONSTANT_ALPHA);
-            RenderUtil.drawString(barString, barPadding, 25, 0xFF666666, false);
-            GlStateManager.pushMatrix();
+            OpenGL.scale(scale, scale, scale);
+            OpenGL.enable(GL_BLEND);
+            OpenGL.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_CONSTANT_ALPHA);
+            Draw.drawString(barString, barPadding, 25, 0xFF666666, false);
+            OpenGL.pushMatrix();
             {
                 float nameScale = 1.5F;
-                GlStateManager.scale(nameScale, nameScale, nameScale);
-                RenderUtil.drawString("[" + 100 + "%%] " + mc.thePlayer.getCommandSenderName(), (int) ((barPadding) / nameScale), (int) (10 / nameScale), 0xFFFFAA00, false);
+                OpenGL.scale(nameScale, nameScale, nameScale);
+                Draw.drawString("[" + 100 + "%%] " + mc.thePlayer.getCommandSenderName(), (int) ((barPadding) / nameScale), (int) (10 / nameScale), 0xFFFFAA00, false);
             }
-            GlStateManager.popMatrix();
-            GlStateManager.color4i(0xFFFFFFFF);
+            OpenGL.popMatrix();
+            OpenGL.color4i(0xFFFFFFFF);
 
-            RenderUtil.drawPlayerFace(Minecraft.getMinecraft().thePlayer.getCommandSenderName(), 0, 0, 32, 32);
+            Draw.drawPlayerFace(Game.minecraft().thePlayer.getCommandSenderName(), 0, 0, 32, 32);
 
             /** Silica storm detection indicator **/
-            WorldProvider provider = Minecraft.getMinecraft().theWorld.provider;
+            WorldProvider provider = Game.minecraft().theWorld.provider;
 
             if (provider instanceof ProviderVarda)
             {
@@ -166,17 +168,17 @@ public class PressureHUDRenderEvent
 
                 if ((timeUntilStorm < warningTime && worldTime < stormStartTime || worldTime > stormStartTime && worldTime % 20 <= 10) && worldTime <= stormEndTime + 1000)
                 {
-                    GlStateManager.enableBlend();
-                    GlStateManager.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_CONSTANT_ALPHA);
+                    OpenGL.enableBlend();
+                    OpenGL.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_CONSTANT_ALPHA);
                     int indicatorWidth = 300;
                     int indicatorHeight = 30;
-                    int indicatorX = (RenderUtil.scaledDisplayResolution().getScaledWidth() / 2) - (indicatorWidth / 2);
+                    int indicatorX = (Screen.scaledDisplayResolution().getScaledWidth() / 2) - (indicatorWidth / 2);
                     int indicatorY = 0;
-                    RenderUtil.drawRect(indicatorX, indicatorY, indicatorWidth, indicatorHeight, 0x66333333);
-                    GlStateManager.pushMatrix();
+                    Draw.drawRect(indicatorX, indicatorY, indicatorWidth, indicatorHeight, 0x66333333);
+                    OpenGL.pushMatrix();
                     {
                         float nameScale = 1.5F;
-                        GlStateManager.scale(nameScale, nameScale, nameScale);
+                        OpenGL.scale(nameScale, nameScale, nameScale);
 
                         int actualX = (int) ((indicatorX) / nameScale);
                         int actualY = (int) ((indicatorY) / nameScale);
@@ -184,22 +186,22 @@ public class PressureHUDRenderEvent
                         int actualHeight = (int) (indicatorHeight / nameScale);
                         fontrenderer.drawString("Storm Indicator for " + provider.getDimensionName(), actualX + 7, actualY + 7, 0xFFAA00);
 
-                        if (WorldUtil.canSeeSky(new CoordData(Minecraft.getMinecraft().thePlayer), Minecraft.getMinecraft().theWorld))
+                        if (Worlds.canSeeSky(new CoordData(Game.minecraft().thePlayer), Game.minecraft().theWorld))
                         {
-                            RenderUtil.drawStringAlignCenter("You are outdoors, take cover immediately!", (int) ((RenderUtil.scaledDisplayResolution().getScaledWidth() / 2) / nameScale), actualY + 35, 0xFF0000);
+                            Draw.drawStringAlignCenter("You are outdoors, take cover immediately!", (int) ((Screen.scaledDisplayResolution().getScaledWidth() / 2) / nameScale), actualY + 35, 0xFF0000);
                         }
 
                         if (worldTime > stormStartTime)
                         {
-                            RenderUtil.drawProgressBar("Storm Inbound", (int) stormStartTime, 0, actualX, actualY + 20, actualWidth, 4, 2, 0xFFFFAA00, false);
+                            Draw.drawProgressBar("Storm Inbound", (int) stormStartTime, 0, actualX, actualY + 20, actualWidth, 4, 2, 0xFFFFAA00, false);
                         }
                         else
                         {
-                            RenderUtil.drawProgressBar("Time Until Storm (" + (timeUntilStorm / 20) + " seconds)", (int) stormStartTime, ((int) stormStartTime - (int) worldTime), actualX, actualY + 20, actualWidth, 4, 2, (timeUntilStorm / 20) < 15 ? 0xFFFF0000 : 0xFFFFAA00, false);
+                            Draw.drawProgressBar("Time Until Storm (" + (timeUntilStorm / 20) + " seconds)", (int) stormStartTime, ((int) stormStartTime - (int) worldTime), actualX, actualY + 20, actualWidth, 4, 2, (timeUntilStorm / 20) < 15 ? 0xFFFF0000 : 0xFFFFAA00, false);
                         }
                     }
-                    GlStateManager.popMatrix();
-                    GlStateManager.color4i(0xFFFFFFFF);
+                    OpenGL.popMatrix();
+                    OpenGL.color4i(0xFFFFFFFF);
                 }
             }
 
@@ -208,7 +210,7 @@ public class PressureHUDRenderEvent
                 if (mc.objectMouseOver != null)
                 {
                     /** GUI Drawing Information **/
-                    int subMenuX = (int) (RenderUtil.scaledDisplayResolution().getScaledWidth() - (200 * scale));
+                    int subMenuX = (int) (Screen.scaledDisplayResolution().getScaledWidth() - (200 * scale));
                     int subMenuY = 0;
                     int subMenuPadding = 10;
                     int subMenuStartY = subMenuY + subMenuPadding / 2;
@@ -223,24 +225,24 @@ public class PressureHUDRenderEvent
                         {
                             subMenuStartY = 5 + subMenuStartY;
 
-                            GlStateManager.pushMatrix();
+                            OpenGL.pushMatrix();
                             {
                                 float nameScale = 1.5F;
-                                GlStateManager.scale(nameScale, nameScale, nameScale);
+                                OpenGL.scale(nameScale, nameScale, nameScale);
                                 fontrenderer.drawString("" + entity.getCommandSenderName(), (int) ((subMenuX + subMenuPadding) / nameScale), (int) ((subMenuStartY + (curEntry++ * subEntrySpacing)) / nameScale), 0xFFAA00);
                             }
-                            GlStateManager.popMatrix();
+                            OpenGL.popMatrix();
 
                             if (entity instanceof EntityLivingBase)
                             {
-                                RenderUtil.drawProgressBar((int) ((EntityLivingBase) entity).getHealth() + "/" + (int) ((EntityLivingBase) entity).getMaxHealth(), (int) ((EntityLivingBase) entity).getMaxHealth(), (int) ((EntityLivingBase) entity).getHealth(), RenderUtil.scaledDisplayResolution().getScaledWidth() - 190, 25, 180, 1, 0, 0xFF00AAFF, false);
+                                Draw.drawProgressBar((int) ((EntityLivingBase) entity).getHealth() + "/" + (int) ((EntityLivingBase) entity).getMaxHealth(), (int) ((EntityLivingBase) entity).getMaxHealth(), (int) ((EntityLivingBase) entity).getHealth(), Screen.scaledDisplayResolution().getScaledWidth() - 190, 25, 180, 1, 0, 0xFF00AAFF, false);
                             }
                             else
                             {
-                                RenderUtil.drawProgressBar("NULL / NULL", 1, 1, 10, 7, RenderUtil.scaledDisplayResolution().getScaledWidth() - 20, 1, 0, 0xFF777777, false);
+                                Draw.drawProgressBar("NULL / NULL", 1, 1, 10, 7, Screen.scaledDisplayResolution().getScaledWidth() - 20, 1, 0, 0xFF777777, false);
                             }
-                            GlStateManager.enableBlend();
-                            GlStateManager.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_CONSTANT_ALPHA);
+                            OpenGL.enableBlend();
+                            OpenGL.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_CONSTANT_ALPHA);
 
                             subMenuStartY = subMenuStartY + 20;
 
@@ -309,46 +311,46 @@ public class PressureHUDRenderEvent
 
                             if (entity instanceof Entity)
                             {
-                                GlStateManager.disableBlend();
-                                GlStateManager.color(1F, 1F, 1F);
-                                RenderUtil.drawEntity(RenderUtil.scaledDisplayResolution().getScaledWidth() - 100, curHeight + 140, 30, -45, 0, entity);
-                                GlStateManager.enableBlend();
-                                GlStateManager.disableLight();
-                                GlStateManager.color(1F, 1F, 1F);
+                                OpenGL.disableBlend();
+                                OpenGL.color(1F, 1F, 1F);
+                                Draw.drawEntity(Screen.scaledDisplayResolution().getScaledWidth() - 100, curHeight + 140, 30, -45, 0, entity);
+                                OpenGL.enableBlend();
+                                OpenGL.disableLight();
+                                OpenGL.color(1F, 1F, 1F);
                             }
 
                             curHeight = curHeight + 150;
 
-                            GlStateManager.enableBlend();
-                            GlStateManager.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_CONSTANT_ALPHA);
-                            RenderUtil.drawRect(RenderUtil.scaledDisplayResolution().getScaledWidth() - 200, 0, 200, curHeight, 0x66333333);
-                            GlStateManager.blendClear();
-                            GlStateManager.disableBlend();
+                            OpenGL.enableBlend();
+                            OpenGL.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_CONSTANT_ALPHA);
+                            Draw.drawRect(Screen.scaledDisplayResolution().getScaledWidth() - 200, 0, 200, curHeight, 0x66333333);
+                            OpenGL.blendClear();
+                            OpenGL.disableBlend();
                         }
                     }
 
                     if (mc.objectMouseOver.typeOfHit == MovingObjectType.BLOCK)
                     {
                         /** Block Information **/
-                        Blocks.CoordData coord = new Blocks.CoordData(mc.objectMouseOver.blockX, mc.objectMouseOver.blockY, mc.objectMouseOver.blockZ);
+                        CoordData coord = new CoordData(mc.objectMouseOver.blockX, mc.objectMouseOver.blockY, mc.objectMouseOver.blockZ);
                         Block block = mc.theWorld.getBlock((int) coord.x(), (int) coord.y(), (int) coord.z());
-                        BlockSides side = BlockSides.getSide(mc.objectMouseOver.sideHit);
-                        TileEntity tile = coord.getTileEntity(Minecraft.getMinecraft().thePlayer.worldObj);
+                        BlockSide side = BlockSide.getSide(mc.objectMouseOver.sideHit);
+                        TileEntity tile = coord.getTileEntity(Game.minecraft().thePlayer.worldObj);
 
-                        RenderUtil.drawBlockSide(block, side.getId(), subMenuX + subMenuPadding - 56, 0, 48, 48);
+                        Draw.drawBlockSide(block, side.getId(), subMenuX + subMenuPadding - 56, 0, 48, 48);
 
-                        GlStateManager.pushMatrix();
+                        OpenGL.pushMatrix();
                         {
                             float nameScale = 1.5F;
-                            GlStateManager.scale(nameScale, nameScale, nameScale);
+                            OpenGL.scale(nameScale, nameScale, nameScale);
                             fontrenderer.drawString("" + block.getLocalizedName(), (int) ((subMenuX + subMenuPadding) / nameScale), (int) ((subMenuStartY + (curEntry++ * subEntrySpacing)) / nameScale), 0xFFAA00);
                         }
-                        GlStateManager.popMatrix();
+                        OpenGL.popMatrix();
 
                         subMenuStartY = subMenuStartY + 10;
 
                         String blockDomain = Blocks.getDomain(block);
-                        ModContainer modContainer = ModUtil.getModContainerForId(blockDomain.replace(":", ""));
+                        ModContainer modContainer = Game.getModContainer(blockDomain.replace(":", ""));
                         String mod = modContainer != null ? modContainer.getName() : "???";
                         fontrenderer.drawString("From " + mod, subMenuX + subMenuPadding, subMenuStartY + (curEntry++ * subEntrySpacing), 0x666666);
                         fontrenderer.drawString("Looking at " + ForgeDirection.getOrientation(side.getId()) + " face", subMenuX + subMenuPadding, subMenuStartY + (curEntry++ * subEntrySpacing), 0x666666);
@@ -379,19 +381,19 @@ public class PressureHUDRenderEvent
 
                         int curHeight = 20 + 12 * curEntry;
 
-                        GlStateManager.enableBlend();
-                        GlStateManager.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_CONSTANT_ALPHA);
-                        RenderUtil.drawRect(RenderUtil.scaledDisplayResolution().getScaledWidth() - 246, 0, 246, curHeight, 0x66333333);
-                        GlStateManager.blendClear();
-                        GlStateManager.disableBlend();
+                        OpenGL.enableBlend();
+                        OpenGL.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_CONSTANT_ALPHA);
+                        Draw.drawRect(Screen.scaledDisplayResolution().getScaledWidth() - 246, 0, 246, curHeight, 0x66333333);
+                        OpenGL.blendClear();
+                        OpenGL.disableBlend();
 
                     }
 
-                    GlStateManager.disableBlend();
+                    OpenGL.disableBlend();
                 }
             }
         }
-        GlStateManager.popMatrix();
+        OpenGL.popMatrix();
     }
 
     public void drawImpregnationIndicator(ExtendedEntityPlayer playerProperties)
@@ -402,31 +404,31 @@ public class PressureHUDRenderEvent
 
             if (livingProperties.doesEntityContainEmbryo() && livingProperties.getEntityLivingBase().worldObj.getWorldTime() % 20 <= 10)
             {
-                ScaledResolution res = RenderUtil.scaledDisplayResolution();
+                ScaledResolution res = Screen.scaledDisplayResolution();
                 int lifeTimeTicks = livingProperties.getEmbryo().getGestationPeriod() - livingProperties.getEmbryo().getTicksExisted();
                 int lifeTimeSeconds = lifeTimeTicks / 20;
                 int iconSize = 64;
 
-                GlStateManager.enable(GL_BLEND);
-                GlStateManager.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_CONSTANT_ALPHA);
-                GlStateManager.pushMatrix();
+                OpenGL.enable(GL_BLEND);
+                OpenGL.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_CONSTANT_ALPHA);
+                OpenGL.pushMatrix();
                 {
                     float scale = 1.5F;
-                    GlStateManager.scale(scale, scale, scale);
-                    RenderUtil.drawStringAlignRight("Analysis Complete:", (int) ((res.getScaledWidth() / scale) - (iconSize / scale)), (int) (10 / scale), 0xFFFFAA00);
+                    OpenGL.scale(scale, scale, scale);
+                    Draw.drawStringAlignRight("Analysis Complete:", (int) ((res.getScaledWidth() / scale) - (iconSize / scale)), (int) (10 / scale), 0xFFFFAA00);
                 }
-                GlStateManager.popMatrix();
-                RenderUtil.drawStringAlignRight("1 Foreign Organism(s) Detected", res.getScaledWidth() - iconSize, 25, 0x666666);
-                RenderUtil.drawStringAlignRight("Please do NOT terminate organism.", res.getScaledWidth() - iconSize, 35, 0x666666);
+                OpenGL.popMatrix();
+                Draw.drawStringAlignRight("1 Foreign Organism(s) Detected", res.getScaledWidth() - iconSize, 25, 0x666666);
+                Draw.drawStringAlignRight("Please do NOT terminate organism.", res.getScaledWidth() - iconSize, 35, 0x666666);
 
                 if (!playerProperties.getPlayer().capabilities.isCreativeMode)
                 {
-                    RenderUtil.drawStringAlignRight(lifeTimeSeconds / 60 + " Minute(s) Estimated Until Death", res.getScaledWidth() - iconSize, 45, 0xFFFFAA00);
+                    Draw.drawStringAlignRight(lifeTimeSeconds / 60 + " Minute(s) Estimated Until Death", res.getScaledWidth() - iconSize, 45, 0xFFFFAA00);
                 }
 
-                GlStateManager.color4i(0xFFFFAA00);
+                OpenGL.color4i(0xFFFFAA00);
                 AliensVsPredator.resources().INFECTION_INDICATOR.bind();
-                RenderUtil.drawQuad(res.getScaledWidth() - iconSize, 0, iconSize, iconSize);
+                Draw.drawQuad(res.getScaledWidth() - iconSize, 0, iconSize, iconSize);
             }
         }
     }

@@ -11,9 +11,9 @@ import org.avp.AliensVsPredator;
 import org.avp.entities.tile.TileEntityWorkstation;
 import org.lwjgl.opengl.GL12;
 
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.RenderUtil;
-import com.arisux.airi.lib.SystemUtil;
+import com.arisux.amdxlib.lib.client.render.Draw;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
+import com.arisux.amdxlib.lib.util.SystemInfo;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -28,44 +28,44 @@ public class RenderWorkstation extends TileEntitySpecialRenderer
     {
         TileEntityWorkstation tile = (TileEntityWorkstation) t;
 
-        GlStateManager.pushMatrix();
+        OpenGL.pushMatrix();
         {
-            GlStateManager.disable(GL_CULL_FACE);
-            GlStateManager.enable(GL_BLEND);
-            GlStateManager.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            GlStateManager.translate(posX + 0.5F, posY + 1.5F, posZ + 0.5F);
-            GlStateManager.rotate(tile.rotation * (-90F), 0F, 1F, 0F);
-            GlStateManager.enable(GL12.GL_RESCALE_NORMAL);
-            GlStateManager.scale(1.0F, -1.0F, 1.0F);
-            GlStateManager.enable(GL_ALPHA_TEST);
+            OpenGL.disable(GL_CULL_FACE);
+            OpenGL.enable(GL_BLEND);
+            OpenGL.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            OpenGL.translate(posX + 0.5F, posY + 1.5F, posZ + 0.5F);
+            OpenGL.rotate(tile.rotation * (-90F), 0F, 1F, 0F);
+            OpenGL.enable(GL12.GL_RESCALE_NORMAL);
+            OpenGL.scale(1.0F, -1.0F, 1.0F);
+            OpenGL.enable(GL_ALPHA_TEST);
             AliensVsPredator.resources().models().WORKSTATION.draw(tile);
 
             if (tile.isOperational())
             {
-                GlStateManager.disableLightMapping();
-                GlStateManager.disableLight();
-                GlStateManager.enable(GL_BLEND);
-                GlStateManager.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+                OpenGL.disableLightMapping();
+                OpenGL.disableLight();
+                OpenGL.enable(GL_BLEND);
+                OpenGL.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
                 AliensVsPredator.resources().models().WORKSTATION_MASK.draw(tile);
 
                 this.renderDisplay(tile);
 
-                GlStateManager.disable(GL_BLEND);
-                GlStateManager.enableLight();
-                GlStateManager.enableLightMapping();
+                OpenGL.disable(GL_BLEND);
+                OpenGL.enableLight();
+                OpenGL.enableLightMapping();
             }
         }
-        GlStateManager.popMatrix();
+        OpenGL.popMatrix();
     }
 
     public void renderDisplay(TileEntityWorkstation tile)
     {
-        GlStateManager.pushMatrix();
+        OpenGL.pushMatrix();
         {
             float textscale = 0.004F;
-            GlStateManager.translate(0.45F, -0.58F, 0.254F);
-            GlStateManager.rotate(6.5F, 1F, 0F, 0F);
-            GlStateManager.scale(-textscale, textscale, textscale);
+            OpenGL.translate(0.45F, -0.58F, 0.254F);
+            OpenGL.rotate(6.5F, 1F, 0F, 0F);
+            OpenGL.scale(-textscale, textscale, textscale);
 
             if (tile.getWorld().getWorldTime() % 40 == 0)
             {
@@ -76,11 +76,11 @@ public class RenderWorkstation extends TileEntitySpecialRenderer
                     displayText[linestart++] = "User:  \u00A77 Ri5ux was here.";
                     displayText[linestart++] = "Country:  \u00A77" + SystemUtils.USER_COUNTRY;
                     displayText[linestart++] = "Language:  \u00A77" + SystemUtils.USER_LANGUAGE;
-                    displayText[linestart++] = "Java:  \u00A77" + SystemUtil.javaVersion();
-                    displayText[linestart++] = "CPU Cores:  \u00A77" + SystemUtil.cpuCores();
-                    displayText[linestart++] = "GPU:  \u00A77" + SystemUtil.gpu();
-                    displayText[linestart++] = "GPU Vendor:  \u00A77" + (SystemUtil.gpuVendor().contains("NVIDIA") ? "\u00A7a" : (SystemUtil.gpuVendor().contains("AMD") || (SystemUtil.gpuVendor()).contains("ATI") ? "\u00A7c" : "\u00A7b")) + SystemUtil.gpuVendor();
-                    displayText[linestart++] = "VMRAM:  \u00A77" + (SystemUtil.toMBFromB(SystemUtil.vmMemoryTotalBytes()) - SystemUtil.toMBFromB(SystemUtil.vmMemoryFreeBytes())) + "MB/" + SystemUtil.toMBFromB(SystemUtil.vmMemoryTotalBytes()) + "MB";
+                    displayText[linestart++] = "Java:  \u00A77" + SystemInfo.javaVersion();
+                    displayText[linestart++] = "CPU Cores:  \u00A77" + SystemInfo.cpuCores();
+                    displayText[linestart++] = "GPU:  \u00A77" + SystemInfo.gpu();
+                    displayText[linestart++] = "GPU Vendor:  \u00A77" + (SystemInfo.gpuVendor().contains("NVIDIA") ? "\u00A7a" : (SystemInfo.gpuVendor().contains("AMD") || (SystemInfo.gpuVendor()).contains("ATI") ? "\u00A7c" : "\u00A7b")) + SystemInfo.gpuVendor();
+                    displayText[linestart++] = "VMRAM:  \u00A77" + (SystemInfo.toMBFromB(SystemInfo.vmMemoryTotalBytes()) - SystemInfo.toMBFromB(SystemInfo.vmMemoryFreeBytes())) + "MB/" + SystemInfo.toMBFromB(SystemInfo.vmMemoryTotalBytes()) + "MB";
                     displayText[linestart++] = "VOLTAGE:  \u00A77" + tile.getVoltage();
                 }
                 catch (Exception e)
@@ -91,9 +91,9 @@ public class RenderWorkstation extends TileEntitySpecialRenderer
 
             for (int l = 0; l < lines - 2; l++)
             {
-                RenderUtil.drawString(String.format("%s", displayText[l]), 0, l * 10, 0xFFFFFFFF);
+                Draw.drawString(String.format("%s", displayText[l]), 0, l * 10, 0xFFFFFFFF);
             }
         }
-        GlStateManager.popMatrix();
+        OpenGL.popMatrix();
     }
 }

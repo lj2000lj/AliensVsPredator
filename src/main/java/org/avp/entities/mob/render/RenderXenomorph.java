@@ -16,11 +16,11 @@ import org.avp.entities.tile.render.RenderCryostasisTube.CryostasisTubeRenderer;
 import org.avp.entities.tile.render.RenderCryostasisTube.ICustomCryostasisRenderer;
 import org.lwjgl.opengl.GL12;
 
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.RenderUtil;
-import com.arisux.airi.lib.client.ModelBaseWrapper;
-import com.arisux.airi.lib.client.ModelTexMap;
-import com.arisux.airi.lib.client.RenderLivingWrapper;
+import com.arisux.amdxlib.lib.client.Model;
+import com.arisux.amdxlib.lib.client.TexturedModel;
+import com.arisux.amdxlib.lib.client.RenderLivingWrapper;
+import com.arisux.amdxlib.lib.client.render.Draw;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -33,12 +33,12 @@ public class RenderXenomorph extends RenderLivingWrapper implements ICustomCryos
 {
     private float renderScale;
 
-    public RenderXenomorph(ModelTexMap<? extends ModelBaseWrapper> modelTexMap)
+    public RenderXenomorph(TexturedModel<? extends Model> modelTexMap)
     {
         this(modelTexMap, 1F);
     }
 
-    public RenderXenomorph(ModelTexMap<? extends ModelBaseWrapper> modelTexMap, float renderScale)
+    public RenderXenomorph(TexturedModel<? extends Model> modelTexMap, float renderScale)
     {
         super(modelTexMap);
         this.renderScale = renderScale;
@@ -48,7 +48,7 @@ public class RenderXenomorph extends RenderLivingWrapper implements ICustomCryos
     protected void preRenderCallback(EntityLivingBase entity, float renderPartialTicks)
     {
         this.renderScale = 1F;
-        GlStateManager.scale(this.renderScale, this.renderScale, this.renderScale);
+        OpenGL.scale(this.renderScale, this.renderScale, this.renderScale);
         super.preRenderCallback(entity, renderPartialTicks);
     }
     
@@ -73,21 +73,21 @@ public class RenderXenomorph extends RenderLivingWrapper implements ICustomCryos
             @Override
             public void renderChassis(RenderCryostasisTube renderer, TileEntityCryostasisTube tile, double posX, double posY, double posZ)
             {
-                GlStateManager.disable(GL_CULL_FACE);
-                GlStateManager.enable(GL_BLEND);
-                GlStateManager.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-                GlStateManager.translate(posX + 0.5F, posY + 1.7F, posZ + 0.5F);
-                RenderUtil.rotate(tile);
-                GlStateManager.enable(GL12.GL_RESCALE_NORMAL);
-                GlStateManager.scale(0.75F, -0.75F, 0.75F);
-                GlStateManager.enable(GL_ALPHA_TEST);
-                GlStateManager.pushMatrix();
+                OpenGL.disable(GL_CULL_FACE);
+                OpenGL.enable(GL_BLEND);
+                OpenGL.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+                OpenGL.translate(posX + 0.5F, posY + 1.7F, posZ + 0.5F);
+                OpenGL.rotate(tile);
+                OpenGL.enable(GL12.GL_RESCALE_NORMAL);
+                OpenGL.scale(0.75F, -0.75F, 0.75F);
+                OpenGL.enable(GL_ALPHA_TEST);
+                OpenGL.pushMatrix();
                 {
-                    GlStateManager.scale(4, 3, 4);
-                    GlStateManager.translate(0F, -0.75F, 0F);
+                    OpenGL.scale(4, 3, 4);
+                    OpenGL.translate(0F, -0.75F, 0F);
                     AliensVsPredator.resources().models().CRYOSTASIS_TUBE.draw();
                 }
-                GlStateManager.popMatrix();
+                OpenGL.popMatrix();
             }
 
             @Override
@@ -95,32 +95,32 @@ public class RenderXenomorph extends RenderLivingWrapper implements ICustomCryos
             {
                 if (tile.stasisEntity != null && !(tile.stasisEntity instanceof EntityQueen))
                 {
-                    GlStateManager.pushMatrix();
+                    OpenGL.pushMatrix();
                     {
                         if (tile.getVoltage() > 0)
                         {
-                            GlStateManager.disableLight();
+                            OpenGL.disableLight();
                         }
 
                         double depth = tile.stasisEntity instanceof EntityPraetorian ? -1.95 : tile.stasisEntity instanceof EntityDrone ? -1.0 : -1.5F;
 
-                        GlStateManager.translate(0F, -2.75F, depth);
-                        GlStateManager.rotate(90F, 1F, 0F, 0F);
+                        OpenGL.translate(0F, -2.75F, depth);
+                        OpenGL.rotate(90F, 1F, 0F, 0F);
                         RenderManager.instance.renderEntityWithPosYaw(tile.stasisEntity, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
                     }
-                    GlStateManager.popMatrix();
+                    OpenGL.popMatrix();
                 }
                 else if (tile.stasisEntity instanceof EntityQueen)
                 {
-                    GlStateManager.pushMatrix();
+                    OpenGL.pushMatrix();
                     {
-                        GlStateManager.disableLight();
-                        GlStateManager.scale(0.25, 0.25, 0.25);
-                        GlStateManager.translate(-3.25, -16, 0);
-                        RenderUtil.drawString("\u26A0", 0, 0, 0xFFFF0000, false);
-                        GlStateManager.enableLight();
+                        OpenGL.disableLight();
+                        OpenGL.scale(0.25, 0.25, 0.25);
+                        OpenGL.translate(-3.25, -16, 0);
+                        Draw.drawString("\u26A0", 0, 0, 0xFFFF0000, false);
+                        OpenGL.enableLight();
                     }
-                    GlStateManager.popMatrix();
+                    OpenGL.popMatrix();
                 }
             }
 
@@ -129,13 +129,13 @@ public class RenderXenomorph extends RenderLivingWrapper implements ICustomCryos
             {
                 if (tile.getVoltage() > 0)
                 {
-                    GlStateManager.disableLightMapping();
-                    GlStateManager.disableLight();
+                    OpenGL.disableLightMapping();
+                    OpenGL.disableLight();
                 }
 
-                GlStateManager.disableCullFace();
-                GlStateManager.scale(4, 3, 4);
-                GlStateManager.translate(0F, -0.75F, 0F);
+                OpenGL.disableCullFace();
+                OpenGL.scale(4, 3, 4);
+                OpenGL.translate(0F, -0.75F, 0F);
                 
                 if (tile.isShattered())
                 {
@@ -150,9 +150,9 @@ public class RenderXenomorph extends RenderLivingWrapper implements ICustomCryos
                     AliensVsPredator.resources().models().CRYOSTASIS_TUBE_MASK.draw();
                 }
                 
-                GlStateManager.scale(0.5, 0.5, 0.5);
-                GlStateManager.enableLightMapping();
-                GlStateManager.enableLight();
+                OpenGL.scale(0.5, 0.5, 0.5);
+                OpenGL.enableLightMapping();
+                OpenGL.enableLight();
             }
         };
     }

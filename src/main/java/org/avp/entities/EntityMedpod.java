@@ -8,7 +8,7 @@ import org.avp.entities.extended.ExtendedEntityPlayer;
 import org.avp.entities.mob.EntitySpeciesAlien;
 import org.avp.entities.tile.TileEntityMedpod;
 
-import com.arisux.airi.lib.WorldUtil;
+import com.arisux.amdxlib.lib.world.Worlds;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -87,7 +87,7 @@ public class EntityMedpod extends Entity
         {
             if (this.lastRiddenEntityUUID != null)
             {
-                this.lastRiddenEntity = WorldUtil.getEntityByUUID(this.worldObj, this.lastRiddenEntityUUID);
+                this.lastRiddenEntity = Worlds.getEntityByUUID(this.worldObj, this.lastRiddenEntityUUID);
             }
         }
 

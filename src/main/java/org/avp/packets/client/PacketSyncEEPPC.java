@@ -2,12 +2,13 @@ package org.avp.packets.client;
 
 import org.avp.entities.extended.ExtendedEntityPlayer;
 
+import com.arisux.amdxlib.lib.game.Game;
+
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -45,7 +46,7 @@ public class PacketSyncEEPPC implements IMessage, IMessageHandler<PacketSyncEEPP
     @Override
     public PacketSyncEEPPC onMessage(PacketSyncEEPPC packet, MessageContext ctx)
     {
-        Entity entity = Minecraft.getMinecraft().thePlayer.worldObj.getEntityByID(packet.entityId);
+        Entity entity = Game.minecraft().thePlayer.worldObj.getEntityByID(packet.entityId);
 
         if (entity != null)
         {

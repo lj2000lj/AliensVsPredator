@@ -5,9 +5,8 @@ import java.util.List;
 import org.avp.entities.ai.helpers.EntityExtendedLookHelper;
 import org.avp.entities.pathfinding.PathNavigateSwimmer;
 
-import com.arisux.airi.lib.AccessWrapper;
-import com.arisux.airi.lib.WorldUtil;
-import com.arisux.airi.lib.WorldUtil.Blocks.CoordData;
+import com.arisux.amdxlib.lib.world.CoordData;
+import com.arisux.amdxlib.lib.world.entity.Entities;
 
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
@@ -59,9 +58,9 @@ public class EntityDeaconShark extends EntitySpeciesAlien
         this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, Entity.class, 10, true, false, entitySelector));
         this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, true));
         this.targetTasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
-        AccessWrapper.setMoveHelper(this, new EntityDeaconShark.DeaconSharkMoveHelper());
-        AccessWrapper.setNavigator(this, new PathNavigateSwimmer(this, this.worldObj));
-        AccessWrapper.setLookHelper(this, new EntityExtendedLookHelper(this));
+        Entities.setMoveHelper(this, new EntityDeaconShark.DeaconSharkMoveHelper());
+        Entities.setNavigator(this, new PathNavigateSwimmer(this, this.worldObj));
+        Entities.setLookHelper(this, new EntityExtendedLookHelper(this));
     }
 
     @Override
@@ -111,7 +110,7 @@ public class EntityDeaconShark extends EntitySpeciesAlien
 
     public EntityLivingBase findTarget()
     {
-        List<? extends Entity> targets = WorldUtil.Entities.getEntitiesInCoordsRange(this.worldObj, EntityLiving.class, new CoordData(this), (int) this.getEntityAttribute(SharedMonsterAttributes.followRange).getAttributeValue(), 64);
+        List<? extends Entity> targets = Entities.getEntitiesInCoordsRange(this.worldObj, EntityLiving.class, new CoordData(this), (int) this.getEntityAttribute(SharedMonsterAttributes.followRange).getAttributeValue(), 64);
 
         for (Entity target : targets)
         {
@@ -193,7 +192,7 @@ public class EntityDeaconShark extends EntitySpeciesAlien
     @Override
     protected boolean canDespawn()
     {
-        List<? extends Entity> otherSharks = WorldUtil.Entities.getEntitiesInCoordsRange(this.worldObj, EntityDeaconShark.class, new CoordData(this), (int) 64);
+        List<? extends Entity> otherSharks = Entities.getEntitiesInCoordsRange(this.worldObj, EntityDeaconShark.class, new CoordData(this), (int) 64);
         return otherSharks != null && otherSharks.size() > 0 && !this.hasCustomNameTag();
     }
 

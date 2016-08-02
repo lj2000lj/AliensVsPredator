@@ -4,7 +4,7 @@ import org.avp.AliensVsPredator;
 import org.avp.util.EmbryoType;
 import org.avp.util.EvolutionType;
 
-import com.arisux.airi.lib.WorldUtil.Entities;
+import com.arisux.amdxlib.lib.world.entity.Entities;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;

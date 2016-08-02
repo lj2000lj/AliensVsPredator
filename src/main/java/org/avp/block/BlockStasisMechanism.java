@@ -5,7 +5,7 @@ import java.util.Random;
 import org.avp.entities.tile.TileEntityStasisMechanism;
 import org.avp.items.ItemEntitySummoner;
 
-import com.arisux.airi.lib.WorldUtil;
+import com.arisux.amdxlib.lib.world.entity.player.inventory.Inventories;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -75,7 +75,7 @@ public class BlockStasisMechanism extends Block
             {
                 ItemEntitySummoner item = (ItemEntitySummoner) player.getCurrentEquippedItem().getItem();
                 tile.itemstack = new ItemStack(item, 1);
-                WorldUtil.Entities.Players.Inventories.consumeItem(player, item);
+                Inventories.consumeItem(player, item);
             }
             else if (player.getCurrentEquippedItem() == null)
             {

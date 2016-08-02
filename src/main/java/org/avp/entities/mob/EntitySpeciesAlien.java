@@ -9,7 +9,8 @@ import org.avp.packets.client.PacketJellyLevelUpdate;
 import org.avp.util.EvolutionType;
 import org.avp.util.IHiveSignature;
 
-import com.arisux.airi.lib.WorldUtil;
+import com.arisux.amdxlib.lib.world.CoordData;
+import com.arisux.amdxlib.lib.world.entity.Entities;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -124,7 +125,7 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IHiv
 
             if (!this.worldObj.isRemote && evolution != null && evolution.getEvolution() != null && evolution.getLevel() != 0 && this.jellyLevel >= evolution.getLevel())
             {
-                EntitySpeciesAlien alien = (EntitySpeciesAlien) WorldUtil.Entities.constructEntity(this.worldObj, evolution.getEvolution());
+                EntitySpeciesAlien alien = (EntitySpeciesAlien) Entities.constructEntity(this.worldObj, evolution.getEvolution());
                 alien.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
                 this.worldObj.spawnEntityInWorld(alien);
                 this.setDead();
@@ -137,7 +138,7 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IHiv
     {
         if (!this.worldObj.isRemote && !(this instanceof EntityOvamorph))
         {
-            ArrayList<EntityItem> entityItemList = (ArrayList<EntityItem>) WorldUtil.Entities.getEntitiesInCoordsRange(worldObj, EntityItem.class, new com.arisux.airi.lib.WorldUtil.Blocks.CoordData(this), 8);
+            ArrayList<EntityItem> entityItemList = (ArrayList<EntityItem>) Entities.getEntitiesInCoordsRange(worldObj, EntityItem.class, new CoordData(this), 8);
 
             for (EntityItem entityItem : entityItemList)
             {

@@ -5,8 +5,7 @@ import static org.lwjgl.opengl.GL11.GL_BLEND;
 import org.avp.AliensVsPredator;
 import org.avp.entities.tile.TileEntityMedpod;
 
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.RenderUtil;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -18,31 +17,31 @@ public class RenderMedpod extends TileEntitySpecialRenderer
     {
         TileEntityMedpod tile = (TileEntityMedpod) tileEntity;
 
-        GlStateManager.pushMatrix();
+        OpenGL.pushMatrix();
         {
             float newScale = 1.5F;
-            GlStateManager.translate(posX, posY, posZ);
-            GlStateManager.translate(0.5F, 2.25F, 0.5F);
-            GlStateManager.scale(1F, -1F, 1F);
-            GlStateManager.scale(newScale, newScale, newScale);
-            GlStateManager.disableCullFace();
-            RenderUtil.rotateOpposite(tile);
+            OpenGL.translate(posX, posY, posZ);
+            OpenGL.translate(0.5F, 2.25F, 0.5F);
+            OpenGL.scale(1F, -1F, 1F);
+            OpenGL.scale(newScale, newScale, newScale);
+            OpenGL.disableCullFace();
+            OpenGL.rotateOpposite(tile);
             AliensVsPredator.resources().models().MEDPOD.draw(tile);
 
-            GlStateManager.blendClear();
+            OpenGL.blendClear();
 
             if (tile.getVoltage() > 0)
             {
-                GlStateManager.disableLight();
-                GlStateManager.disableLightMapping();
+                OpenGL.disableLight();
+                OpenGL.disableLightMapping();
             }
 
-            GlStateManager.enableBlend();
+            OpenGL.enableBlend();
             AliensVsPredator.resources().models().MEDPOD_MASK.draw(tile);
-            GlStateManager.enableLight();
-            GlStateManager.enableLightMapping();
-            GlStateManager.disable(GL_BLEND);
+            OpenGL.enableLight();
+            OpenGL.enableLightMapping();
+            OpenGL.disable(GL_BLEND);
         }
-        GlStateManager.popMatrix();
+        OpenGL.popMatrix();
     }
 }

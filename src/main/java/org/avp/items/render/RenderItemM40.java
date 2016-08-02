@@ -3,10 +3,10 @@ package org.avp.items.render;
 import org.avp.AliensVsPredator;
 import org.lwjgl.opengl.GL11;
 
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.client.ItemRenderer;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
+import com.arisux.amdxlib.lib.client.render.ItemRenderer;
+import com.arisux.amdxlib.lib.game.Game;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 
 public class RenderItemM40 extends ItemRenderer
@@ -27,11 +27,11 @@ public class RenderItemM40 extends ItemRenderer
     {
         float glScale = 1F;
 
-        GlStateManager.rotate(10F, 0F, 0F, 1F);
-        GlStateManager.rotate(12F, 0F, 1F, 0F);
-        GlStateManager.translate(0.4F, 0.1F, 0.2F);
-        GlStateManager.disable(GL11.GL_CULL_FACE);
-        GlStateManager.scale(glScale, -glScale, glScale);
+        OpenGL.rotate(10F, 0F, 0F, 1F);
+        OpenGL.rotate(12F, 0F, 1F, 0F);
+        OpenGL.translate(0.4F, 0.1F, 0.2F);
+        OpenGL.disable(GL11.GL_CULL_FACE);
+        OpenGL.scale(glScale, -glScale, glScale);
         this.getModelTexMap().draw();
     }
 
@@ -42,12 +42,12 @@ public class RenderItemM40 extends ItemRenderer
 
         if (firstPersonRenderCheck(data[1]))
         {
-            GlStateManager.translate(0.4F, 0.6F, 0.2F);
-            GlStateManager.rotate(95.0F, 1.0F, 0.0F, 0.0F);
-            GlStateManager.rotate(120.0F, 0.0F, 1.0F, 0.0F);
-            GlStateManager.rotate(79.0F, 0.0F, 0.0F, 1.0F);
-            GlStateManager.disable(GL11.GL_CULL_FACE);
-            GlStateManager.scale(glScale, glScale, glScale);
+            OpenGL.translate(0.4F, 0.6F, 0.2F);
+            OpenGL.rotate(95.0F, 1.0F, 0.0F, 0.0F);
+            OpenGL.rotate(120.0F, 0.0F, 1.0F, 0.0F);
+            OpenGL.rotate(79.0F, 0.0F, 0.0F, 1.0F);
+            OpenGL.disable(GL11.GL_CULL_FACE);
+            OpenGL.scale(glScale, glScale, glScale);
             this.getModelTexMap().draw();
         }
     }
@@ -56,11 +56,11 @@ public class RenderItemM40 extends ItemRenderer
     public void renderInInventory(ItemStack item, Object... data)
     {
         float glScale = 19F;
-        GlStateManager.translate(8F, 5F, 0F);
-        GlStateManager.translate(1.4F, 0F, 0.7F);
-        GlStateManager.rotate(-180F, 0.0F, 1.0F, 0.0F);
-        GlStateManager.disable(GL11.GL_CULL_FACE);
-        GlStateManager.scale(glScale, glScale, glScale);
+        OpenGL.translate(8F, 5F, 0F);
+        OpenGL.translate(1.4F, 0F, 0.7F);
+        OpenGL.rotate(-180F, 0.0F, 1.0F, 0.0F);
+        OpenGL.disable(GL11.GL_CULL_FACE);
+        OpenGL.scale(glScale, glScale, glScale);
         this.getModelTexMap().draw();
     }
 
@@ -68,10 +68,10 @@ public class RenderItemM40 extends ItemRenderer
     public void renderInWorld(ItemStack item, Object... data)
     {
         super.renderInWorld(item, data);
-        GlStateManager.scale(1F, -1F, 1F);
-        GlStateManager.translate(0F, -0.5F, 0F);
-        GlStateManager.rotate(Minecraft.getMinecraft().thePlayer.worldObj.getWorldTime() % 360 * 6, 0.0F, 1.0F, 0.0F);
-        GlStateManager.disable(GL11.GL_CULL_FACE);
+        OpenGL.scale(1F, -1F, 1F);
+        OpenGL.translate(0F, -0.5F, 0F);
+        OpenGL.rotate(Game.minecraft().thePlayer.worldObj.getWorldTime() % 360 * 6, 0.0F, 1.0F, 0.0F);
+        OpenGL.disable(GL11.GL_CULL_FACE);
         this.getModelTexMap().draw();
     }
 }

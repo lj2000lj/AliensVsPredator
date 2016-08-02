@@ -1,6 +1,6 @@
 package org.avp;
 
-import com.arisux.airi.lib.interfaces.IInitializable;
+import com.arisux.amdxlib.lib.game.IInitEvent;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import net.minecraft.block.material.MapColor;
@@ -10,7 +10,7 @@ import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraftforge.common.util.EnumHelper;
 
-public class MaterialHandler implements IInitializable
+public class MaterialHandler implements IInitEvent
 {
     public static MaterialHandler instance = new MaterialHandler();
     private Armors armors = new Armors();
@@ -44,7 +44,7 @@ public class MaterialHandler implements IInitializable
     }
 
     @Override
-    public void initialize(FMLInitializationEvent event)
+    public void init(FMLInitializationEvent event)
     {
         ;
     }

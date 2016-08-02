@@ -5,8 +5,8 @@ import java.util.List;
 import org.avp.AliensVsPredator;
 import org.avp.entities.EntityFlame;
 
-import com.arisux.airi.lib.ItemTypes.HookedItem;
-import com.arisux.airi.lib.WorldUtil.Entities.Players;
+import com.arisux.amdxlib.lib.world.entity.player.inventory.Inventories;
+import com.arisux.amdxlib.lib.world.item.HookedItem;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -69,7 +69,7 @@ public abstract class ItemFlamethrower extends HookedItem
     {
         if (playerIn.inventory.hasItem(this.ammo))
         {
-            ItemStack ammoStack = playerIn.inventory.getStackInSlot(Players.Inventories.getSlotForItemIn(this.ammo, playerIn.inventory));
+            ItemStack ammoStack = playerIn.inventory.getStackInSlot(Inventories.getSlotForItemIn(this.ammo, playerIn.inventory));
 
             if (ammoStack != null && ammoStack.getItem() != null)
             {

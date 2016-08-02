@@ -3,7 +3,7 @@ package org.avp.items;
 import org.avp.AliensVsPredator;
 import org.avp.entities.mob.model.ModelDrone;
 
-import com.arisux.airi.lib.RenderUtil;
+import com.arisux.amdxlib.lib.client.render.Draw;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -31,13 +31,13 @@ public class ItemArmorXeno extends ItemArmor
 		switch (slot)
 		{
 			case 0:
-				return RenderUtil.getResourcePath(AliensVsPredator.resources().XENO1);
+				return Draw.getResourcePath(AliensVsPredator.resources().XENO1);
 			case 1:
-				return RenderUtil.getResourcePath(AliensVsPredator.resources().XENO1);
+				return Draw.getResourcePath(AliensVsPredator.resources().XENO1);
 			case 2:
-				return RenderUtil.getResourcePath(AliensVsPredator.resources().XENO2);
+				return Draw.getResourcePath(AliensVsPredator.resources().XENO2);
 			default:
-				return RenderUtil.getResourcePath(AliensVsPredator.resources().XENO1);
+				return Draw.getResourcePath(AliensVsPredator.resources().XENO1);
 		}
 	}
 

@@ -3,10 +3,10 @@ package org.avp.items.render;
 import org.avp.AliensVsPredator;
 import org.lwjgl.opengl.GL11;
 
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.client.ItemRenderer;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
+import com.arisux.amdxlib.lib.client.render.ItemRenderer;
+import com.arisux.amdxlib.lib.game.Game;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 
 public class RenderItemMotionTracker extends ItemRenderer
@@ -29,11 +29,11 @@ public class RenderItemMotionTracker extends ItemRenderer
     {
         float glScale = 1.6F;
 
-        GlStateManager.rotate(10F, 0F, 0F, 1F);
-        GlStateManager.rotate(12F, 0F, 1F, 0F);
-        GlStateManager.translate(0.4F, -0.1F, 0F);
-        GlStateManager.disable(GL11.GL_CULL_FACE);
-        GlStateManager.scale(glScale, -glScale, glScale);
+        OpenGL.rotate(10F, 0F, 0F, 1F);
+        OpenGL.rotate(12F, 0F, 1F, 0F);
+        OpenGL.translate(0.4F, -0.1F, 0F);
+        OpenGL.disable(GL11.GL_CULL_FACE);
+        OpenGL.scale(glScale, -glScale, glScale);
         this.getModelTexMap().draw();
         this.drawDisplay();
     }
@@ -45,13 +45,13 @@ public class RenderItemMotionTracker extends ItemRenderer
 
         if (firstPersonRenderCheck(data[1]))
         {
-            GlStateManager.translate(-0.1F, 0.6F, -1.4F);
-            GlStateManager.rotate(102F, 1.0F, 0.0F, 0.0F);
-            GlStateManager.rotate(115.0F, 0.0F, 1.0F, 0.0F);
-            GlStateManager.rotate(79F, 0.0F, 0.0F, 1.0F);
-            GlStateManager.translate(0.027F, 0F, 0F);
-            GlStateManager.disable(GL11.GL_CULL_FACE);
-            GlStateManager.scale(glScale, glScale, glScale);
+            OpenGL.translate(-0.1F, 0.6F, -1.4F);
+            OpenGL.rotate(102F, 1.0F, 0.0F, 0.0F);
+            OpenGL.rotate(115.0F, 0.0F, 1.0F, 0.0F);
+            OpenGL.rotate(79F, 0.0F, 0.0F, 1.0F);
+            OpenGL.translate(0.027F, 0F, 0F);
+            OpenGL.disable(GL11.GL_CULL_FACE);
+            OpenGL.scale(glScale, glScale, glScale);
             this.getModelTexMap().draw();
             this.drawDisplay();
         }
@@ -61,33 +61,33 @@ public class RenderItemMotionTracker extends ItemRenderer
     public void renderInInventory(ItemStack item, Object... data)
     {
         float glScale = 20F;
-        GlStateManager.translate(8F, 8F, 0F);
-        GlStateManager.translate(0F, 0F, -5F);
-        GlStateManager.scale(glScale, glScale, glScale);
-        GlStateManager.disable(GL11.GL_CULL_FACE);
+        OpenGL.translate(8F, 8F, 0F);
+        OpenGL.translate(0F, 0F, -5F);
+        OpenGL.scale(glScale, glScale, glScale);
+        OpenGL.disable(GL11.GL_CULL_FACE);
         this.getModelTexMap().draw();
     }
 
     private void drawDisplay()
     {
         float displayScale = 0.004F;
-        GlStateManager.disable(GL11.GL_LIGHTING);
-        GlStateManager.scale(displayScale, displayScale, displayScale);
-        GlStateManager.rotate(90F, 0F, 1F, 0F);
-        GlStateManager.translate(-89.122F, -35F, 21F);
-        GlStateManager.rotate(-90F, 0F, 1F, 0F);
-        GlStateManager.scale(0.4F, 0.4F, 0.4F);
-        GlStateManager.disableLight();
+        OpenGL.disable(GL11.GL_LIGHTING);
+        OpenGL.scale(displayScale, displayScale, displayScale);
+        OpenGL.rotate(90F, 0F, 1F, 0F);
+        OpenGL.translate(-89.122F, -35F, 21F);
+        OpenGL.rotate(-90F, 0F, 1F, 0F);
+        OpenGL.scale(0.4F, 0.4F, 0.4F);
+        OpenGL.disableLight();
         motionTracker.draw(0, 0, 128, 96);
-        GlStateManager.enableLight();
+        OpenGL.enableLight();
     }
 
     @Override
     public void renderInWorld(ItemStack item, Object... data)
     {
         super.renderInWorld(item, data);
-        GlStateManager.rotate(Minecraft.getMinecraft().thePlayer.worldObj.getWorldTime() % 360 * 6, 0.0F, 1.0F, 0.0F);
-        GlStateManager.disable(GL11.GL_CULL_FACE);
+        OpenGL.rotate(Game.minecraft().thePlayer.worldObj.getWorldTime() % 360 * 6, 0.0F, 1.0F, 0.0F);
+        OpenGL.disable(GL11.GL_CULL_FACE);
         this.getModelTexMap().draw();
     }
 }

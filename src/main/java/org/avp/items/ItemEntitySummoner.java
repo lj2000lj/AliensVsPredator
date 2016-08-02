@@ -3,8 +3,9 @@ package org.avp.items;
 import org.avp.AliensVsPredator;
 import org.avp.packets.server.PacketSpawnEntity;
 
-import com.arisux.airi.lib.ItemTypes.HookedItem;
-import com.arisux.airi.lib.WorldUtil;
+import com.arisux.amdxlib.lib.world.entity.Entities;
+import com.arisux.amdxlib.lib.world.entity.player.inventory.Inventories;
+import com.arisux.amdxlib.lib.world.item.HookedItem;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -18,19 +19,19 @@ public class ItemEntitySummoner extends HookedItem
 {
     private Class<? extends Entity> c;
 
-    public ItemEntitySummoner(String domain, Class<? extends Entity> c)
+    public ItemEntitySummoner(Class<? extends Entity> c)
     {
         super();
         this.c = c;
         this.setDescription("Summoner for " + c.getSimpleName().replace("Entity", ""));
-        this.setUnlocalizedName(domain + "summon." + c.getSimpleName());
+        this.setUnlocalizedName(AliensVsPredator.properties().DOMAIN + "summon." + c.getSimpleName());
     }
 
     @Override
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
         Entity entity = createNewEntity(par2World);
-        WorldUtil.Entities.Players.Inventories.consumeItem(par3EntityPlayer, this);
+        Inventories.consumeItem(par3EntityPlayer, this);
 
         if (par2World.isRemote && entity != null)
         {
@@ -48,7 +49,7 @@ public class ItemEntitySummoner extends HookedItem
 
     public Entity createNewEntity(World worldObj)
     {
-        return WorldUtil.Entities.constructEntity(worldObj, c);
+        return Entities.constructEntity(worldObj, c);
     }
 
     @Override

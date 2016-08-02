@@ -3,7 +3,7 @@ package org.avp.items;
 import org.avp.AliensVsPredator;
 import org.avp.entities.EntitySpear;
 
-import com.arisux.airi.lib.WorldUtil;
+import com.arisux.amdxlib.lib.world.entity.player.inventory.Inventories;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
@@ -44,7 +44,7 @@ public class ItemSpear extends ItemSword
 
                 if (!entityplayer.capabilities.isCreativeMode)
                 {
-                    WorldUtil.Entities.Players.Inventories.consumeItem(entityplayer, AliensVsPredator.items().itemSpear, true);
+                    Inventories.consumeItem(entityplayer, AliensVsPredator.items().itemSpear, true);
                 }
             }
         }

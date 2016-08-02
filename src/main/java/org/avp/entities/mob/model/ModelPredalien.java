@@ -1,10 +1,10 @@
 package org.avp.entities.mob.model;
 
-import com.arisux.airi.lib.client.ModelBaseWrapper;
+import com.arisux.amdxlib.lib.client.Model;
 
 import net.minecraft.client.model.ModelRenderer;
 
-public class ModelPredalien extends ModelBaseWrapper
+public class ModelPredalien extends Model
 {
     public ModelRenderer leftFootToe2, leftFootBackToe, LeftThigh, leftFootToe1, leftFoot, leftFootToe3, leftShin, topTorso, abdomin, backSpikes, rightLowerSpike, rightTopSpike, leftTopSpike, leftLowerSpike, neck, rightFootToe3, rightFootToe2, rightFootBackToe, rightShin, RightThigh, rightFootToe1, rightFoot, leftFinger4, leftForearm, leftBicep, leftFinger3, leftFinger2, leftFinger1, leftShoulder, rightFinger4, rightShoulder, rightBicep, rightForearm, rightFinger2, rightFinger3, rightFinger1, tailBase, tail1, tail2, tail3, tail4, tailStabber, headTop, dread7, midHeadSpike, dread8, dread6, dread5, dread4, faceMid, dread3, rightLowerMandible, dread2, leftLowerMandible, dread1, rightLowerMandible2, headTopRidge, leftLowerMandible2, rightInnerJawWebbing, faceTop, rightJawWebbing, rightUpperTooth, leftLowerTooth, leftUpperTooth, rightLowerTooth, leftUpperMandible, leftJawWebbing, bottomTeeth, leftInnerJawWebbing, midJaw, rightUpperMandible, topTeeth;
 

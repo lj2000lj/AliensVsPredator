@@ -2,11 +2,12 @@ package org.avp.packets.client;
 
 import org.avp.entities.mob.EntitySpeciesAlien;
 
+import com.arisux.amdxlib.lib.game.Game;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
 
 public class PacketJellyLevelUpdate implements IMessage, IMessageHandler<PacketJellyLevelUpdate, PacketJellyLevelUpdate>
 {
@@ -40,7 +41,7 @@ public class PacketJellyLevelUpdate implements IMessage, IMessageHandler<PacketJ
     @Override
     public PacketJellyLevelUpdate onMessage(PacketJellyLevelUpdate packet, MessageContext ctx)
     {
-        EntitySpeciesAlien alien = ((EntitySpeciesAlien) Minecraft.getMinecraft().thePlayer.worldObj.getEntityByID(packet.uuid));
+        EntitySpeciesAlien alien = ((EntitySpeciesAlien) Game.minecraft().thePlayer.worldObj.getEntityByID(packet.uuid));
 
         if (alien != null)
         {

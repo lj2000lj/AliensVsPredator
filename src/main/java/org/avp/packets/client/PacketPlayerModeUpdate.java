@@ -3,11 +3,12 @@ package org.avp.packets.client;
 import org.avp.entities.extended.ExtendedEntityPlayer;
 import org.avp.util.PlayerMode;
 
+import com.arisux.amdxlib.lib.game.Game;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
 
 public class PacketPlayerModeUpdate implements IMessage, IMessageHandler<PacketPlayerModeUpdate, PacketPlayerModeUpdate>
 {
@@ -38,7 +39,7 @@ public class PacketPlayerModeUpdate implements IMessage, IMessageHandler<PacketP
     @Override
     public PacketPlayerModeUpdate onMessage(PacketPlayerModeUpdate packet, MessageContext ctx)
     {
-        ExtendedEntityPlayer playerExtension = (ExtendedEntityPlayer) Minecraft.getMinecraft().thePlayer.getExtendedProperties(ExtendedEntityPlayer.IDENTIFIER);
+        ExtendedEntityPlayer playerExtension = (ExtendedEntityPlayer) Game.minecraft().thePlayer.getExtendedProperties(ExtendedEntityPlayer.IDENTIFIER);
         playerExtension.setPlayerMode(PlayerMode.get(packet.mode));
 
         return null;

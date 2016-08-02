@@ -1,6 +1,6 @@
 package org.avp.entities.pathfinding;
 
-import com.arisux.airi.lib.WorldUtil.Blocks.CoordData;
+import com.arisux.amdxlib.lib.world.CoordData;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.world.IBlockAccess;

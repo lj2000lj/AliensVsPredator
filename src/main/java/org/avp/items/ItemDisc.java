@@ -3,8 +3,8 @@ package org.avp.items;
 import org.avp.AliensVsPredator;
 import org.avp.entities.EntitySmartDisc;
 
-import com.arisux.airi.lib.ItemTypes.HookedItem;
-import com.arisux.airi.lib.WorldUtil;
+import com.arisux.amdxlib.lib.world.entity.player.inventory.Inventories;
+import com.arisux.amdxlib.lib.world.item.HookedItem;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
@@ -36,7 +36,7 @@ public class ItemDisc extends HookedItem
                 }
 
                 world.playSoundAtEntity(entityplayer, "random.bow", 0.6F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.0F));
-                WorldUtil.Entities.Players.Inventories.consumeItem(entityplayer, this);
+                Inventories.consumeItem(entityplayer, this);
             }
         }
     }

@@ -2,7 +2,7 @@ package org.avp.items;
 
 import org.avp.AliensVsPredator;
 
-import com.arisux.airi.lib.RenderUtil;
+import com.arisux.amdxlib.lib.client.render.Draw;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,15 +25,15 @@ public class ItemArmorMarine extends ItemArmor
         switch (slot)
         {
             case 0:
-                return RenderUtil.getResourcePath(AliensVsPredator.resources().MARINE1);
+                return Draw.getResourcePath(AliensVsPredator.resources().MARINE1);
             case 1:
-                return RenderUtil.getResourcePath(AliensVsPredator.resources().MARINE1);
+                return Draw.getResourcePath(AliensVsPredator.resources().MARINE1);
             case 2:
-                return RenderUtil.getResourcePath(AliensVsPredator.resources().MARINE2);
+                return Draw.getResourcePath(AliensVsPredator.resources().MARINE2);
             case 3:
-                return RenderUtil.getResourcePath(AliensVsPredator.resources().MARINE1);
+                return Draw.getResourcePath(AliensVsPredator.resources().MARINE1);
             default:
-                return RenderUtil.getResourcePath(AliensVsPredator.resources().MARINE1);
+                return Draw.getResourcePath(AliensVsPredator.resources().MARINE1);
         }
     }
 

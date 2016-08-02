@@ -1,13 +1,13 @@
 package org.avp.entities.tile.model;
 
-import com.arisux.airi.lib.AccessWrapper;
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.client.ModelBaseWrapper;
+import com.arisux.amdxlib.lib.client.Model;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
+import com.arisux.amdxlib.lib.game.Game;
 
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.tileentity.TileEntity;
 
-public class ModelRepulsionGenerator extends ModelBaseWrapper
+public class ModelRepulsionGenerator extends Model
 {
     ModelRenderer base;
     ModelRenderer motor;
@@ -113,12 +113,12 @@ public class ModelRepulsionGenerator extends ModelBaseWrapper
 
         if (tile != null)
         {
-            GlStateManager.pushMatrix();
+            OpenGL.pushMatrix();
             {
-                GlStateManager.rotate(tile.getWorld().getWorldTime() % 360 * 48 * AccessWrapper.getRenderPartialTicks(), 0F, 1F, 0F);
+                OpenGL.rotate(tile.getWorld().getWorldTime() % 360 * 48 * Game.partialTicks(), 0F, 1F, 0F);
                 dualMagnet.render(boxTranslation);
             }
-            GlStateManager.popMatrix();
+            OpenGL.popMatrix();
         }
         else
         {

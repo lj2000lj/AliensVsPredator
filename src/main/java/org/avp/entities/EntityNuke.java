@@ -2,8 +2,8 @@ package org.avp.entities;
 
 import org.avp.AliensVsPredator;
 
-import com.arisux.airi.lib.WorldUtil;
-import com.arisux.airi.lib.client.Sound;
+import com.arisux.amdxlib.lib.client.Sound;
+import com.arisux.amdxlib.lib.world.Worlds;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.EntityThrowable;
@@ -48,7 +48,7 @@ public class EntityNuke extends EntityThrowable
         {
             if (AliensVsPredator.settings().areExplosionsEnabled())
             {
-                WorldUtil.createCustomExplosion((Entity) null, worldObj, (int) this.posX, (int) this.posY, (int) this.posZ, 47F);
+                Worlds.createCustomExplosion((Entity) null, worldObj, (int) this.posX, (int) this.posY, (int) this.posZ, 47F);
             }
 
             this.setDead();

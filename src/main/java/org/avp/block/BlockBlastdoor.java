@@ -3,9 +3,10 @@ package org.avp.block;
 import org.avp.entities.tile.TileEntityBlastdoor;
 import org.avp.items.ItemMaintenanceJack;
 
+import com.arisux.amdxlib.lib.game.Game;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -84,7 +85,7 @@ public class BlockBlastdoor extends Block
 
             if (world.isRemote)
             {
-                Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentText("\u00A77 Blast door \u00A7a" + percentOpen + "% open."));
+                Game.minecraft().thePlayer.addChatComponentMessage(new ChatComponentText("\u00A77 Blast door \u00A7a" + percentOpen + "% open."));
             }
         }
         else
@@ -93,7 +94,7 @@ public class BlockBlastdoor extends Block
 
             if (world.isRemote)
             {
-                Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentText("\u00A77 Blast door \u00A7a" + (blastdoor.isOpen() ? "opened" : "closed") + "."));
+                Game.minecraft().thePlayer.addChatComponentMessage(new ChatComponentText("\u00A77 Blast door \u00A7a" + (blastdoor.isOpen() ? "opened" : "closed") + "."));
             }
         }
     }

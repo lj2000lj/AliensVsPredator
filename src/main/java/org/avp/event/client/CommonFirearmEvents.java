@@ -4,13 +4,15 @@ import org.avp.AliensVsPredator;
 import org.avp.items.ItemFirearm;
 import org.avp.packets.server.PacketReloadFirearm;
 
+import com.arisux.amdxlib.lib.game.Game;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import net.minecraft.client.Minecraft;
 
 public class CommonFirearmEvents
 {
-    private Minecraft mc = Minecraft.getMinecraft();
+    private Minecraft mc = Game.minecraft();
     private int lastReload = 0;
 
     @SubscribeEvent

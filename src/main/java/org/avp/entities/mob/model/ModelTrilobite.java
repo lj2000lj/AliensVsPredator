@@ -1,12 +1,12 @@
 package org.avp.entities.mob.model;
 
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.client.ModelBaseWrapper;
+import com.arisux.amdxlib.lib.client.Model;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.MathHelper;
 
-public class ModelTrilobite extends ModelBaseWrapper
+public class ModelTrilobite extends Model
 {
     public ModelRenderer bodyFront;
     public ModelRenderer LFrontTentacle2;
@@ -350,7 +350,7 @@ public class ModelTrilobite extends ModelBaseWrapper
         float legMovementLeft = (MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1F * o.swingProgressPrev * 0.25F) * 90;
         float legMovementRight = -(MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1F * o.swingProgressPrev * 0.25F) * 90;
         
-        GlStateManager.translate(0, 0.45F + this.RMiddleTentacle1.rotateAngleZ, 0F);
+        OpenGL.translate(0, 0.45F + this.RMiddleTentacle1.rotateAngleZ, 0F);
 
         /** Inner Tentacles **/
         // this.TailGrossTentacle.render(boxTranslation);
@@ -362,65 +362,65 @@ public class ModelTrilobite extends ModelBaseWrapper
         // this.RBackGrossTentacle.render(boxTranslation);
 
         /** Render All 7 Tentacles**/
-        GlStateManager.pushMatrix();
+        OpenGL.pushMatrix();
         {
-            GlStateManager.translate(0, 0, 0.4F);
-            GlStateManager.rotate(90, 0, 1, 0);
-            GlStateManager.rotate((MathHelper.sin(o.idleProgress * 0.1F) * 0.4F) * 20 + legMovementLeft, 0, 1, 0);
+            OpenGL.translate(0, 0, 0.4F);
+            OpenGL.rotate(90, 0, 1, 0);
+            OpenGL.rotate((MathHelper.sin(o.idleProgress * 0.1F) * 0.4F) * 20 + legMovementLeft, 0, 1, 0);
             this.RMiddleTentacle1.render(boxTranslation);
         }
-        GlStateManager.popMatrix();
-        GlStateManager.pushMatrix();
+        OpenGL.popMatrix();
+        OpenGL.pushMatrix();
         {
-            GlStateManager.translate(0, 0, 0F);
-            GlStateManager.rotate(0, 0, 1, 0);
-            GlStateManager.rotate((MathHelper.sin(o.idleProgress * 0.1F) * 0.4F) * 20 + legMovementLeft, 0, 1, 0);
+            OpenGL.translate(0, 0, 0F);
+            OpenGL.rotate(0, 0, 1, 0);
+            OpenGL.rotate((MathHelper.sin(o.idleProgress * 0.1F) * 0.4F) * 20 + legMovementLeft, 0, 1, 0);
             this.RMiddleTentacle1.render(boxTranslation);
         }
-        GlStateManager.popMatrix();
-        GlStateManager.pushMatrix();
+        OpenGL.popMatrix();
+        OpenGL.pushMatrix();
         {
-            GlStateManager.translate(0, 0, 0.2F);
-            GlStateManager.rotate(35, 0, 1, 0);
-            GlStateManager.rotate((MathHelper.sin(o.idleProgress * 0.1F) * 0.4F) * 20 + legMovementRight, 0, 1, 0);
+            OpenGL.translate(0, 0, 0.2F);
+            OpenGL.rotate(35, 0, 1, 0);
+            OpenGL.rotate((MathHelper.sin(o.idleProgress * 0.1F) * 0.4F) * 20 + legMovementRight, 0, 1, 0);
             this.RMiddleTentacle1.render(boxTranslation);
         }
-        GlStateManager.popMatrix();
-        GlStateManager.pushMatrix();
+        OpenGL.popMatrix();
+        OpenGL.pushMatrix();
         {
-            GlStateManager.translate(0.2, 0, -0.1F);
-            GlStateManager.rotate(-45, 0, 1, 0);
-            GlStateManager.rotate((MathHelper.sin(o.idleProgress * 0.1F) * 0.4F) * 20 + legMovementRight, 0, 1, 0);
+            OpenGL.translate(0.2, 0, -0.1F);
+            OpenGL.rotate(-45, 0, 1, 0);
+            OpenGL.rotate((MathHelper.sin(o.idleProgress * 0.1F) * 0.4F) * 20 + legMovementRight, 0, 1, 0);
             this.RMiddleTentacle1.render(boxTranslation);
         }
-        GlStateManager.popMatrix();
-        GlStateManager.pushMatrix();
+        OpenGL.popMatrix();
+        OpenGL.pushMatrix();
         {
-            GlStateManager.scale(-1, 1, 1);
-            GlStateManager.translate(-0.4, 0, 0F);
-            GlStateManager.rotate(0, 0, 1, 0);
-            GlStateManager.rotate((MathHelper.sin(o.idleProgress * 0.1F) * 0.4F) * 20 + legMovementLeft, 0, 1, 0);
+            OpenGL.scale(-1, 1, 1);
+            OpenGL.translate(-0.4, 0, 0F);
+            OpenGL.rotate(0, 0, 1, 0);
+            OpenGL.rotate((MathHelper.sin(o.idleProgress * 0.1F) * 0.4F) * 20 + legMovementLeft, 0, 1, 0);
             this.RMiddleTentacle1.render(boxTranslation);
         }
-        GlStateManager.popMatrix();
-        GlStateManager.pushMatrix();
+        OpenGL.popMatrix();
+        OpenGL.pushMatrix();
         {
-            GlStateManager.scale(-1, 1, 1);
-            GlStateManager.translate(-0.4, 0, 0.2F);
-            GlStateManager.rotate(35, 0, 1, 0);
-            GlStateManager.rotate((MathHelper.sin(o.idleProgress * 0.1F) * 0.4F) * 20 + legMovementRight, 0, 1, 0);
+            OpenGL.scale(-1, 1, 1);
+            OpenGL.translate(-0.4, 0, 0.2F);
+            OpenGL.rotate(35, 0, 1, 0);
+            OpenGL.rotate((MathHelper.sin(o.idleProgress * 0.1F) * 0.4F) * 20 + legMovementRight, 0, 1, 0);
             this.RMiddleTentacle1.render(boxTranslation);
         }
-        GlStateManager.popMatrix();
-        GlStateManager.pushMatrix();
+        OpenGL.popMatrix();
+        OpenGL.pushMatrix();
         {
-            GlStateManager.scale(-1, 1, 1);
-            GlStateManager.translate(-0.2, 0, -0.1F);
-            GlStateManager.rotate(-45, 0, 1, 0);
-            GlStateManager.rotate((MathHelper.sin(o.idleProgress * 0.1F) * 0.4F) * 20 + legMovementRight, 0, 1, 0);
+            OpenGL.scale(-1, 1, 1);
+            OpenGL.translate(-0.2, 0, -0.1F);
+            OpenGL.rotate(-45, 0, 1, 0);
+            OpenGL.rotate((MathHelper.sin(o.idleProgress * 0.1F) * 0.4F) * 20 + legMovementRight, 0, 1, 0);
             this.RMiddleTentacle1.render(boxTranslation);
         }
-        GlStateManager.popMatrix();
+        OpenGL.popMatrix();
 
         this.RMiddleTentacle1.rotateAngleZ = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1F * o.swingProgressPrev * 0.25F;
         this.RMiddleTentacle2.rotateAngleZ = -0.1F;

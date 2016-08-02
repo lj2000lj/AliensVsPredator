@@ -1,10 +1,11 @@
 package org.avp.packets.client;
 
+import com.arisux.amdxlib.lib.game.Game;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
@@ -38,7 +39,7 @@ public class PacketVardaStormMoveEntity implements IMessage, IMessageHandler<Pac
     @Override
     public PacketVardaStormMoveEntity onMessage(PacketVardaStormMoveEntity packet, MessageContext ctx)
     {
-        Entity entity = (Minecraft.getMinecraft().thePlayer.worldObj.getEntityByID(packet.uuid));
+        Entity entity = (Game.minecraft().thePlayer.worldObj.getEntityByID(packet.uuid));
 
         if (entity != null)
         {

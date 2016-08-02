@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import org.avp.AliensVsPredator;
 import org.avp.packets.client.PacketOvamorphContainsFacehugger;
 
-import com.arisux.airi.lib.WorldUtil;
-import com.arisux.airi.lib.WorldUtil.Blocks.CoordData;
+import com.arisux.amdxlib.lib.world.CoordData;
+import com.arisux.amdxlib.lib.world.entity.Entities;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -133,7 +133,7 @@ public class EntityOvamorph extends EntitySpeciesAlien implements IMob
             {
                 int hatchAcceleration = this.acceleratedHatching ? 8 : 1;
                 EntityPlayer closestPlayer = this.worldObj.getClosestPlayerToEntity(this, 15.0D);
-                ArrayList<Entity> entities = (ArrayList<Entity>) WorldUtil.Entities.getEntitiesInCoordsRange(this.worldObj, EntityLiving.class, new CoordData(this), 15);
+                ArrayList<Entity> entities = (ArrayList<Entity>) Entities.getEntitiesInCoordsRange(this.worldObj, EntityLiving.class, new CoordData(this), 15);
 
                 for (Entity entity : new ArrayList<Entity>(entities))
                 {

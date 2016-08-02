@@ -2,11 +2,12 @@ package org.avp.packets.client;
 
 import org.avp.entities.tile.TileEntityBlastdoor;
 
+import com.arisux.amdxlib.lib.game.Game;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -51,7 +52,7 @@ public class PacketOpenBlastdoor implements IMessage, IMessageHandler<PacketOpen
     @Override
     public PacketOpenBlastdoor onMessage(PacketOpenBlastdoor packet, MessageContext ctx)
     {
-        World world = Minecraft.getMinecraft().thePlayer.worldObj;
+        World world = Game.minecraft().thePlayer.worldObj;
         TileEntity tile = world.getTileEntity(packet.x, packet.y, packet.z);
 
         if (world != null && tile != null && tile instanceof TileEntityBlastdoor)

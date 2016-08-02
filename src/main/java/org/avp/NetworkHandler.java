@@ -28,7 +28,7 @@ import org.avp.packets.server.PacketSyncEEPS;
 import org.avp.packets.server.PacketTurretTargetUpdate;
 import org.avp.packets.server.PacketWriteToDataDevice;
 
-import com.arisux.airi.lib.interfaces.IInitializable;
+import com.arisux.amdxlib.lib.game.IInitEvent;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
@@ -36,7 +36,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
 
-public class NetworkHandler extends SimpleNetworkWrapper implements IInitializable
+public class NetworkHandler extends SimpleNetworkWrapper implements IInitEvent
 {
     public static final NetworkHandler instance = new NetworkHandler();
     private int descriminator = 0;
@@ -47,7 +47,7 @@ public class NetworkHandler extends SimpleNetworkWrapper implements IInitializab
     }
 
     @Override
-    public void initialize(FMLInitializationEvent event)
+    public void init(FMLInitializationEvent event)
     {
         this.registerMessage(Side.SERVER, PacketAssembleCurrentSchematic.class);
         this.registerMessage(Side.SERVER, PacketOpenWristbracerContainer.class);

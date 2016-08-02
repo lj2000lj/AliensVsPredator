@@ -3,8 +3,8 @@ package org.avp.util;
 import org.avp.AliensVsPredator;
 import org.avp.items.ItemFirearm;
 
-import com.arisux.airi.lib.client.ModelBaseWrapper;
-import com.arisux.airi.lib.client.ModelTexMap;
+import com.arisux.amdxlib.lib.client.Model;
+import com.arisux.amdxlib.lib.client.TexturedModel;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -51,7 +51,7 @@ public enum MarineTypes
     }
 
     @SideOnly(Side.CLIENT)
-    public ModelTexMap<? extends ModelBaseWrapper> getFirearmModelTexMap()
+    public TexturedModel<? extends Model> getFirearmModelTexMap()
     {
         switch (this)
         {

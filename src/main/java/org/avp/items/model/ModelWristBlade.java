@@ -2,12 +2,12 @@ package org.avp.items.model;
 
 import org.avp.AliensVsPredator;
 
-import com.arisux.airi.lib.client.ModelBaseWrapper;
+import com.arisux.amdxlib.lib.client.Model;
+import com.arisux.amdxlib.lib.game.Game;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelRenderer;
 
-public class ModelWristBlade extends ModelBaseWrapper
+public class ModelWristBlade extends Model
 {
     public ModelRenderer bBase;
     public ModelRenderer b1;
@@ -129,7 +129,7 @@ public class ModelWristBlade extends ModelBaseWrapper
         this.b10.render(boxTranslation);
         this.b11.render(boxTranslation);
 
-        if (Minecraft.getMinecraft().thePlayer.inventory.hasItem(AliensVsPredator.items().swordTitanium))
+        if (Game.minecraft().thePlayer.inventory.hasItem(AliensVsPredator.items().swordTitanium))
         {
             this.b6.render(boxTranslation);
             this.bladeLeft.render(boxTranslation);

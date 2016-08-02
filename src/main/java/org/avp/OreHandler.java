@@ -1,15 +1,15 @@
 package org.avp;
 
-import com.arisux.airi.lib.interfaces.IInitializable;
+import com.arisux.amdxlib.lib.game.IInitEvent;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class OreHandler implements IInitializable
+public class OreHandler implements IInitEvent
 {
     public static OreHandler instance = new OreHandler();
 
-    public void initialize(FMLInitializationEvent event)
+    public void init(FMLInitializationEvent event)
     {
         OreDictionary.registerOre("oreCopper", AliensVsPredator.blocks().oreCopper);
         OreDictionary.registerOre("ingotCopper", AliensVsPredator.items().itemIngotCopper);

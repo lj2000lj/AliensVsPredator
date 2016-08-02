@@ -2,7 +2,9 @@ package org.avp.event.client;
 
 import org.avp.items.ItemFirearm;
 
-import com.arisux.airi.lib.RenderUtil;
+import com.arisux.amdxlib.lib.client.render.Draw;
+import com.arisux.amdxlib.lib.client.render.Screen;
+import com.arisux.amdxlib.lib.game.Game;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.client.Minecraft;
@@ -11,7 +13,7 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 public class AmmoIndicatorRenderEvent
 {
-    private Minecraft mc = Minecraft.getMinecraft();
+    private Minecraft mc = Game.minecraft();
     public ItemStack helmSlot, chestplateSlot, leggingsSlot, bootsSlot;
 
     @SubscribeEvent
@@ -33,21 +35,21 @@ public class AmmoIndicatorRenderEvent
                 if (!mc.thePlayer.capabilities.isCreativeMode && isWearingArmor())
                 {
                     barWidth = 90;
-                    RenderUtil.drawProgressBar(displayStatus, itemFireArm.getMaxAmmoCount(), itemFireArm.getAmmoCount(), (RenderUtil.scaledDisplayResolution().getScaledWidth() / 2), RenderUtil.scaledDisplayResolution().getScaledHeight() - 48, barWidth, 1, 0, 0xFFFF0000, false);
-                    RenderUtil.drawItemIcon(itemFireArm.getAmmoType(), (RenderUtil.scaledDisplayResolution().getScaledWidth() / 2) + barWidth / 2 - RenderUtil.getStringRenderWidth(displayStatus) - 2, RenderUtil.scaledDisplayResolution().getScaledHeight() - 53, 16, 16);
+                    Draw.drawProgressBar(displayStatus, itemFireArm.getMaxAmmoCount(), itemFireArm.getAmmoCount(), (Screen.scaledDisplayResolution().getScaledWidth() / 2), Screen.scaledDisplayResolution().getScaledHeight() - 48, barWidth, 1, 0, 0xFFFF0000, false);
+                    Draw.drawItemIcon(itemFireArm.getAmmoType(), (Screen.scaledDisplayResolution().getScaledWidth() / 2) + barWidth / 2 - Draw.getStringRenderWidth(displayStatus) - 2, Screen.scaledDisplayResolution().getScaledHeight() - 53, 16, 16);
                 }
                 else if (!mc.thePlayer.capabilities.isCreativeMode && !isWearingArmor())
                 {
                     barWidth = 182;
-                    RenderUtil.drawProgressBar(displayStatus, itemFireArm.getMaxAmmoCount(), itemFireArm.getAmmoCount(), (RenderUtil.scaledDisplayResolution().getScaledWidth() / 2) - (182 / 2), RenderUtil.scaledDisplayResolution().getScaledHeight() - 48, barWidth, 1, 0, 0xFF00DDFF, false);
-                    RenderUtil.drawItemIcon(itemFireArm.getAmmoType(), (RenderUtil.scaledDisplayResolution().getScaledWidth() / 2) - (barWidth / 2) + barWidth / 2 - RenderUtil.getStringRenderWidth(displayStatus) - 2, RenderUtil.scaledDisplayResolution().getScaledHeight() - 53, 16, 16);
+                    Draw.drawProgressBar(displayStatus, itemFireArm.getMaxAmmoCount(), itemFireArm.getAmmoCount(), (Screen.scaledDisplayResolution().getScaledWidth() / 2) - (182 / 2), Screen.scaledDisplayResolution().getScaledHeight() - 48, barWidth, 1, 0, 0xFF00DDFF, false);
+                    Draw.drawItemIcon(itemFireArm.getAmmoType(), (Screen.scaledDisplayResolution().getScaledWidth() / 2) - (barWidth / 2) + barWidth / 2 - Draw.getStringRenderWidth(displayStatus) - 2, Screen.scaledDisplayResolution().getScaledHeight() - 53, 16, 16);
                 }
                 else
                 {
                     barWidth = 182;
                     displayStatus = "\u221e";
-                    RenderUtil.drawProgressBar("", 1, 1, (RenderUtil.scaledDisplayResolution().getScaledWidth() / 2) - (barWidth / 2), RenderUtil.scaledDisplayResolution().getScaledHeight() - 35, barWidth, 1, 0, 0xFF00DDFF, false);
-                    RenderUtil.drawItemIcon(itemFireArm.getAmmoType(), (RenderUtil.scaledDisplayResolution().getScaledWidth() / 2) - (barWidth / 2) + barWidth / 2 - RenderUtil.getStringRenderWidth(displayStatus), RenderUtil.scaledDisplayResolution().getScaledHeight() - 40, 16, 16);
+                    Draw.drawProgressBar("", 1, 1, (Screen.scaledDisplayResolution().getScaledWidth() / 2) - (barWidth / 2), Screen.scaledDisplayResolution().getScaledHeight() - 35, barWidth, 1, 0, 0xFF00DDFF, false);
+                    Draw.drawItemIcon(itemFireArm.getAmmoType(), (Screen.scaledDisplayResolution().getScaledWidth() / 2) - (barWidth / 2) + barWidth / 2 - Draw.getStringRenderWidth(displayStatus), Screen.scaledDisplayResolution().getScaledHeight() - 40, 16, 16);
                 }
             }
         }

@@ -4,7 +4,7 @@ import org.avp.event.BucketHandlingEvent;
 import org.avp.fluids.FluidBlackGoo;
 import org.avp.fluids.FluidMist;
 
-import com.arisux.airi.lib.interfaces.IInitializable;
+import com.arisux.amdxlib.lib.game.IInitEvent;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import net.minecraft.init.Items;
@@ -13,7 +13,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 
-public class FluidHandler implements IInitializable
+public class FluidHandler implements IInitEvent
 {
     public static FluidHandler instance = new FluidHandler();
 
@@ -21,7 +21,7 @@ public class FluidHandler implements IInitializable
     public Fluid fluidMist = new FluidMist().setUnlocalizedName("mist");
 
     @Override
-    public void initialize(FMLInitializationEvent event)
+    public void init(FMLInitializationEvent event)
     {
         this.registerFluids(event);
         this.registerFluidContainers(event);

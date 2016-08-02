@@ -2,11 +2,12 @@ package org.avp.packets.client;
 
 import org.avp.entities.tile.TileEntityTransformer;
 
+import com.arisux.amdxlib.lib.game.Game;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -52,7 +53,7 @@ public class PacketRotateTransformer implements IMessage, IMessageHandler<Packet
     @Override
     public PacketRotateTransformer onMessage(PacketRotateTransformer packet, MessageContext ctx)
     {
-        World world = Minecraft.getMinecraft().thePlayer.worldObj;
+        World world = Game.minecraft().thePlayer.worldObj;
 
         if (world != null)
         {

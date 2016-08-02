@@ -1,10 +1,10 @@
 package org.avp.items.render;
 
-import com.arisux.airi.lib.AccessWrapper;
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.RenderUtil;
-import com.arisux.airi.lib.client.ItemRenderer;
-import com.arisux.airi.lib.client.Texture;
+import com.arisux.amdxlib.lib.client.Model;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
+import com.arisux.amdxlib.lib.client.render.ItemRenderer;
+import com.arisux.amdxlib.lib.client.render.Texture;
+import com.arisux.amdxlib.lib.world.entity.Entities;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.Render;
@@ -65,12 +65,12 @@ public class RenderItemSummoner extends ItemRenderer
         {
             if (modelCache == null)
             {
-                modelCache = AccessWrapper.getMainModel((RendererLivingEntity) renderCache);
+                modelCache = Model.getMainModel((RendererLivingEntity) renderCache);
             }
 
             if (textureCache == null)
             {
-                textureCache = new Texture(AccessWrapper.getEntityTexture(renderCache, null));
+                textureCache = new Texture(Entities.getEntityTexture(renderCache, null));
             }
         }
     }
@@ -79,18 +79,18 @@ public class RenderItemSummoner extends ItemRenderer
     {
         if (modelCache != null && textureCache != null)
         {
-            GlStateManager.pushMatrix();
+            OpenGL.pushMatrix();
             {
-                GlStateManager.enableLighting();
-                GlStateManager.scale(1F, -1F, 1F);
-                GlStateManager.translate(0F, -1F, 0F);
-                GlStateManager.rotate(180F, 0F, 0F, 1F);
-                GlStateManager.rotate(-45F, 0F, 1F, 0F);
+                OpenGL.enableLighting();
+                OpenGL.scale(1F, -1F, 1F);
+                OpenGL.translate(0F, -1F, 0F);
+                OpenGL.rotate(180F, 0F, 0F, 1F);
+                OpenGL.rotate(-45F, 0F, 1F, 0F);
                 textureCache.bind();
-                modelCache.render(null, 0F, 0F, 0F, 0F, 0F, RenderUtil.DEFAULT_BOX_TRANSLATION);
-                GlStateManager.disableLighting();
+                modelCache.render(null, 0F, 0F, 0F, 0F, 0F, Model.DEFAULT_BOX_TRANSLATION);
+                OpenGL.disableLighting();
             }
-            GlStateManager.popMatrix();
+            OpenGL.popMatrix();
         }
     }
 
@@ -98,22 +98,22 @@ public class RenderItemSummoner extends ItemRenderer
     public void renderThirdPerson(ItemStack item, Object... data)
     {
         scale = 0.5F;
-        GlStateManager.rotate(195F, 1.0F, 0.0F, 0.0F);
-        GlStateManager.rotate(180F, 0.0F, 1.0F, 0.0F);
-        GlStateManager.rotate(30F, 0.0F, 0.0F, 1.0F);
-        GlStateManager.translate(-0.5F, 0F, 0F);
-        GlStateManager.scale(scale, scale, scale);
+        OpenGL.rotate(195F, 1.0F, 0.0F, 0.0F);
+        OpenGL.rotate(180F, 0.0F, 1.0F, 0.0F);
+        OpenGL.rotate(30F, 0.0F, 0.0F, 1.0F);
+        OpenGL.translate(-0.5F, 0F, 0F);
+        OpenGL.scale(scale, scale, scale);
         this.renderCachedModel();
     }
 
     @Override
     public void renderFirstPerson(ItemStack item, Object... data)
     {
-        GlStateManager.rotate(195F, 1.0F, 0.0F, 0.0F);
-        GlStateManager.rotate(180F, 0.0F, 1.0F, 0.0F);
-        GlStateManager.rotate(30F, 0.0F, 0.0F, 1.0F);
-        GlStateManager.translate(-25F, 0F + y, 20.85F);
-        GlStateManager.scale(scale, scale, scale);
+        OpenGL.rotate(195F, 1.0F, 0.0F, 0.0F);
+        OpenGL.rotate(180F, 0.0F, 1.0F, 0.0F);
+        OpenGL.rotate(30F, 0.0F, 0.0F, 1.0F);
+        OpenGL.translate(-25F, 0F + y, 20.85F);
+        OpenGL.scale(scale, scale, scale);
         this.renderCachedModel();
     }
 
@@ -121,17 +121,17 @@ public class RenderItemSummoner extends ItemRenderer
     public void renderInInventory(ItemStack item, Object... data)
     {
         scale = 7.5F;
-        GlStateManager.translate(8F + x, -1.77F + y, -4F);
-        GlStateManager.rotate(0F, 1.0F, 0.0F, 0.0F);
-        GlStateManager.scale(scale, scale, scale);
+        OpenGL.translate(8F + x, -1.77F + y, -4F);
+        OpenGL.rotate(0F, 1.0F, 0.0F, 0.0F);
+        OpenGL.scale(scale, scale, scale);
         this.renderCachedModel();
     }
 
     @Override
     public void renderInWorld(ItemStack item, Object... data)
     {
-        GlStateManager.rotate(180F, 0.0F, 0.0F, 1F);
-        GlStateManager.rotate(90F, 0.0F, 1F, 0F);
+        OpenGL.rotate(180F, 0.0F, 0.0F, 1F);
+        OpenGL.rotate(90F, 0.0F, 1F, 0F);
 
         this.renderCachedModel();
     }

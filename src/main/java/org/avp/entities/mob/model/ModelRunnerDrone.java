@@ -1,10 +1,10 @@
 package org.avp.entities.mob.model;
 
-import com.arisux.airi.lib.client.ModelBaseWrapper;
+import com.arisux.amdxlib.lib.client.Model;
 
 import net.minecraft.client.model.ModelRenderer;
 
-public class ModelRunnerDrone extends ModelBaseWrapper
+public class ModelRunnerDrone extends Model
 {
     public ModelRenderer chest;
     public ModelRenderer abdomen;

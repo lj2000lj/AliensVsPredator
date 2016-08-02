@@ -9,19 +9,19 @@ import org.avp.items.ItemFlamethrower;
 import org.avp.items.ItemM240IncineratorUnit;
 import org.avp.items.ItemNostromoFlamethrower;
 
-import com.arisux.airi.lib.WorldUtil;
-import com.arisux.airi.lib.WorldUtil.Blocks.CoordData;
+import com.arisux.amdxlib.lib.game.Game;
+import com.arisux.amdxlib.lib.world.CoordData;
+import com.arisux.amdxlib.lib.world.block.Blocks;
+import com.arisux.amdxlib.lib.world.entity.Entities;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFlameFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
@@ -87,7 +87,7 @@ public class EntityFlame extends EntityThrowable
 
         if (!this.worldObj.isRemote)
         {
-            Entity entityHit = WorldUtil.Entities.getEntityInCoordsRange(worldObj, EntityLiving.class, new CoordData(this), flameSpread, flameSpread);
+            Entity entityHit = Entities.getEntityInCoordsRange(worldObj, EntityLiving.class, new CoordData(this), flameSpread, flameSpread);
 
             if (entityHit != null && !entityHit.isImmuneToFire())
             {
@@ -129,7 +129,7 @@ public class EntityFlame extends EntityThrowable
     @SideOnly(Side.CLIENT)
     public void spawnFlameParticle(double flameX, double flameY, double flameZ, float flameGravity)
     {
-        Minecraft.getMinecraft().effectRenderer.addEffect(new EntityFlameFX(this.worldObj, this.posX - (flameX / 2), this.posY - (flameY / 2), this.posZ - (flameZ / 2), this.rand.nextGaussian() * flameTailWidth, -this.motionY * (flameGravity * this.ticksExisted) - this.rand.nextGaussian() * flameTailWidth, this.rand.nextGaussian() * flameTailWidth));
+        Game.minecraft().effectRenderer.addEffect(new EntityFlameFX(this.worldObj, this.posX - (flameX / 2), this.posY - (flameY / 2), this.posZ - (flameZ / 2), this.rand.nextGaussian() * flameTailWidth, -this.motionY * (flameGravity * this.ticksExisted) - this.rand.nextGaussian() * flameTailWidth, this.rand.nextGaussian() * flameTailWidth));
     }
 
     @Override
@@ -170,7 +170,7 @@ public class EntityFlame extends EntityThrowable
 
         if (rand.nextInt(10) == 0)
         {
-            ArrayList<CoordData> list = WorldUtil.Blocks.getCoordDataInRangeForBlocks(movingObjectPosition.blockX, movingObjectPosition.blockY, movingObjectPosition.blockZ, 1, this.worldObj, AliensVsPredator.blocks().blockCryostasisTube);
+            ArrayList<CoordData> list = Blocks.getCoordDataInRangeForBlocks(movingObjectPosition.blockX, movingObjectPosition.blockY, movingObjectPosition.blockZ, 1, this.worldObj, AliensVsPredator.blocks().blockCryostasisTube);
 
             for (CoordData coord : list)
             {
@@ -218,9 +218,9 @@ public class EntityFlame extends EntityThrowable
     {
         Block block = this.worldObj.getBlock(posX, posY, posZ);
 
-        if (block == Blocks.air)
+        if (block == net.minecraft.init.Blocks.air)
         {
-            this.worldObj.setBlock(posX, posY, posZ, Blocks.fire);
+            this.worldObj.setBlock(posX, posY, posZ, net.minecraft.init.Blocks.fire);
         }
     }
 }

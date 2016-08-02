@@ -3,8 +3,8 @@ package org.avp.entities.render;
 import org.avp.entities.EntityNuke;
 import org.avp.entities.model.ModelPlasma;
 
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.client.render.Color;
+import com.arisux.amdxlib.lib.client.render.Color;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
@@ -31,46 +31,46 @@ public class RenderNuke extends Render
             scale = (float) ((float) (0.3F * (nuke.getDetonationTicks() - nuke.ticksExisted) * 2048) / (0.2F * (nuke.getDetonationTicks())));
         }
 
-        GlStateManager.pushMatrix();
+        OpenGL.pushMatrix();
         {
-            GlStateManager.translate(posX, posY, posZ);
-            GlStateManager.rotate(entity.rotationYaw - 90.0F, 0.0F, 1.0F, 0.0F);
-            GlStateManager.rotate(entity.rotationPitch - 90.0F, 0.0F, 0.0F, 1.0F);
-            GlStateManager.scale(scale, scale, scale);
+            OpenGL.translate(posX, posY, posZ);
+            OpenGL.rotate(entity.rotationYaw - 90.0F, 0.0F, 1.0F, 0.0F);
+            OpenGL.rotate(entity.rotationPitch - 90.0F, 0.0F, 0.0F, 1.0F);
+            OpenGL.scale(scale, scale, scale);
 
-            GlStateManager.pushMatrix();
+            OpenGL.pushMatrix();
             {
-                GlStateManager.rotate(rotation, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(rotation, 0.0F, 1.0F, 0.0F);
                 this.model.setScale(0.1F);
                 this.model.render();
 
-                GlStateManager.pushMatrix();
+                OpenGL.pushMatrix();
                 {
-                    GlStateManager.rotate(rotation, 0.0F, 1.0F, 0.0F);
+                    OpenGL.rotate(rotation, 0.0F, 1.0F, 0.0F);
                     this.model.setScale(0.2F);
                     this.model.render();
 
-                    GlStateManager.pushMatrix();
+                    OpenGL.pushMatrix();
                     {
-                        GlStateManager.rotate(rotation, 0.0F, 1.0F, 0.0F);
+                        OpenGL.rotate(rotation, 0.0F, 1.0F, 0.0F);
                         this.model.setScale(0.3F);
                         this.model.render();
 
-                        GlStateManager.pushMatrix();
+                        OpenGL.pushMatrix();
                         {
-                            GlStateManager.rotate(rotation, 0.0F, 1.0F, 0.0F);
+                            OpenGL.rotate(rotation, 0.0F, 1.0F, 0.0F);
                             this.model.setScale(0.35F);
                             this.model.render();
                         }
-                        GlStateManager.popMatrix();
+                        OpenGL.popMatrix();
                     }
-                    GlStateManager.popMatrix();
+                    OpenGL.popMatrix();
                 }
-                GlStateManager.popMatrix();
+                OpenGL.popMatrix();
             }
-            GlStateManager.popMatrix();
+            OpenGL.popMatrix();
         }
-        GlStateManager.popMatrix();
+        OpenGL.popMatrix();
     }
 
     @Override

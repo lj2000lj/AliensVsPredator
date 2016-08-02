@@ -5,7 +5,7 @@ import org.avp.ItemHandler;
 import org.avp.entities.EntityBullet;
 import org.avp.util.IFacehugSelector;
 
-import com.arisux.airi.lib.WorldUtil.Entities.Players.Inventories;
+import com.arisux.amdxlib.lib.world.entity.player.inventory.Inventories;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;

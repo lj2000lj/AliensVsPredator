@@ -5,13 +5,13 @@ import org.avp.dimension.varda.WorldGeneratorVarda;
 import org.avp.world.WorldGenerator;
 import org.avp.world.WorldGeneratorDerelict;
 
-import com.arisux.airi.lib.interfaces.IInitializable;
+import com.arisux.amdxlib.lib.game.IInitEvent;
 
 import cpw.mods.fml.common.IWorldGenerator;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-public class WorldHandler implements IInitializable
+public class WorldHandler implements IInitEvent
 {
     public static final WorldHandler instance = new WorldHandler();
     private SaveHandler saveHandler;
@@ -25,7 +25,7 @@ public class WorldHandler implements IInitializable
     }
 
     @Override
-    public void initialize(FMLInitializationEvent event)
+    public void init(FMLInitializationEvent event)
     {
         GameRegistry.registerWorldGenerator(new WorldGenerator(), 1);
         GameRegistry.registerWorldGenerator(this.worldGeneratorVarda = new WorldGeneratorVarda(), 1);

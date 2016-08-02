@@ -4,9 +4,9 @@ import org.avp.AliensVsPredator;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import com.arisux.airi.lib.GlStateManager;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
+import com.arisux.amdxlib.lib.game.Game;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -47,46 +47,46 @@ public class RenderItemSpear implements IItemRenderer
         switch (type)
         {
             case EQUIPPED:
-                GlStateManager.rotate(175.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotate(55.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.translate(-0.25F, 0.75F, 0.065F);
-                GlStateManager.scale(1F, 1F, 1F);
-                GlStateManager.enable(GL11.GL_CULL_FACE);
+                OpenGL.rotate(175.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(55.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(-0.25F, 0.75F, 0.065F);
+                OpenGL.scale(1F, 1F, 1F);
+                OpenGL.enable(GL11.GL_CULL_FACE);
                 if (Mouse.isButtonDown(1))
                 {
-                    GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                    GlStateManager.translate(0.25F, -0.2F, 0F);
+                    OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                    OpenGL.translate(0.25F, -0.2F, 0F);
                 }
                 AliensVsPredator.resources().models().SPEAR.draw();
                 break;
 
             case EQUIPPED_FIRST_PERSON:
-                GlStateManager.rotate(170.0F, 1.0F, 0.0F, 0.0F);
-                GlStateManager.rotate(10.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(170.0F, 1.0F, 0.0F, 0.0F);
+                OpenGL.rotate(10.0F, 0.0F, 0.0F, 1.0F);
 
-                if ((EntityPlayer) data[1] == Minecraft.getMinecraft().renderViewEntity && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0 && (!(Minecraft.getMinecraft().currentScreen instanceof GuiInventory) && !(Minecraft.getMinecraft().currentScreen instanceof GuiContainerCreative) || RenderManager.instance.playerViewY != 180.0F))
+                if ((EntityPlayer) data[1] == Game.minecraft().renderViewEntity && Game.minecraft().gameSettings.thirdPersonView == 0 && (!(Game.minecraft().currentScreen instanceof GuiInventory) && !(Game.minecraft().currentScreen instanceof GuiContainerCreative) || RenderManager.instance.playerViewY != 180.0F))
                 {
-                    GlStateManager.translate(0.2F, -0.4F, -0.5F);
-                    GlStateManager.rotate(270.0F, 1.0F, 0.0F, 0.0F);
-                    GlStateManager.rotate(50.0F, 0.0F, 1.0F, 0.0F);
-                    GlStateManager.rotate(9.0F, 0.0F, 0.0F, 1.0F);
+                    OpenGL.translate(0.2F, -0.4F, -0.5F);
+                    OpenGL.rotate(270.0F, 1.0F, 0.0F, 0.0F);
+                    OpenGL.rotate(50.0F, 0.0F, 1.0F, 0.0F);
+                    OpenGL.rotate(9.0F, 0.0F, 0.0F, 1.0F);
                 }
                 else
                 {
-                    GlStateManager.translate(0.45F, 0.0F, 0.0F);
+                    OpenGL.translate(0.45F, 0.0F, 0.0F);
                 }
 
-                GlStateManager.scale(1.6F, 1.6F, 1.6F);
+                OpenGL.scale(1.6F, 1.6F, 1.6F);
                 AliensVsPredator.resources().models().SPEAR.draw();
                 break;
 
             case INVENTORY:
-                GlStateManager.disable(GL11.GL_CULL_FACE);
-                GlStateManager.enable(GL11.GL_BLEND);
-                GlStateManager.translate(8.5F, 0F, 0F);
-                GlStateManager.rotate(-45, 0.0F, 0.0F, 1.0F);
-                GlStateManager.translate(-6F, 5F, 0F);
-                GlStateManager.scale(7F, 7F, 7F);
+                OpenGL.disable(GL11.GL_CULL_FACE);
+                OpenGL.enable(GL11.GL_BLEND);
+                OpenGL.translate(8.5F, 0F, 0F);
+                OpenGL.rotate(-45, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(-6F, 5F, 0F);
+                OpenGL.scale(7F, 7F, 7F);
                 AliensVsPredator.resources().models().SPEAR.draw();
                 break;
 

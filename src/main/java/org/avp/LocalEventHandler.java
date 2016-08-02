@@ -24,12 +24,11 @@ import org.avp.event.client.RenderEntityInMedpodEvent;
 import org.avp.event.client.RenderPlayerAPCEvent;
 import org.avp.event.client.RenderPlayerHotbarAPCEvent;
 import org.avp.event.client.TacticalHUDRenderEvent;
-import org.avp.event.client.UserInterfaceEvents;
 import org.avp.event.client.VisionModeRenderEvent;
 import org.avp.event.client.WristBracerEvents;
 import org.avp.items.render.RenderMotionTrackerScreen;
 
-import com.arisux.airi.lib.interfaces.IInitializable;
+import com.arisux.amdxlib.lib.game.IInitEvent;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -37,13 +36,13 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraftforge.common.MinecraftForge;
 
-public class LocalEventHandler implements IInitializable
+public class LocalEventHandler implements IInitEvent
 {
     public static final LocalEventHandler instance = new LocalEventHandler();
     public ArrayList<Object> events = new ArrayList<Object>();
 
     @Override
-    public void initialize(FMLInitializationEvent event)
+    public void init(FMLInitializationEvent event)
     {
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
         {
@@ -61,7 +60,6 @@ public class LocalEventHandler implements IInitializable
             this.registerEvent(new RenderMotionTrackerScreen());
             this.registerEvent(new LightmapUpdateEvent());
             this.registerEvent(new RenderPlayerAPCEvent());
-            this.registerEvent(new UserInterfaceEvents());
             this.registerEvent(new PulseRifleEvents());
             this.registerEvent(new WristBracerEvents());
             this.registerEvent(new BossBarEvent());

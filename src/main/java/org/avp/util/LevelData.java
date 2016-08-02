@@ -1,7 +1,7 @@
 package org.avp.util;
 
-import com.arisux.airi.lib.client.ModelBaseWrapper;
-import com.arisux.airi.lib.client.ModelTexMap;
+import com.arisux.amdxlib.lib.client.Model;
+import com.arisux.amdxlib.lib.client.TexturedModel;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -14,7 +14,7 @@ public class LevelData
     private Achievement achievement;
 
     @SideOnly(Side.CLIENT)
-    private ModelTexMap<? extends ModelBaseWrapper> modelTexMap;
+    private TexturedModel<? extends Model> modelTexMap;
 
     public LevelData(int level)
     {
@@ -42,7 +42,7 @@ public class LevelData
         return level;
     }
 
-    public ModelTexMap<? extends ModelBaseWrapper> getModelTexMap()
+    public TexturedModel<? extends Model> getModelTexMap()
     {
         return modelTexMap;
     }
@@ -53,7 +53,7 @@ public class LevelData
     }
 
     @SideOnly(Side.CLIENT)
-    public LevelData setModelTexMap(ModelTexMap<? extends ModelBaseWrapper> modelTexMap)
+    public LevelData setModelTexMap(TexturedModel<? extends Model> modelTexMap)
     {
         this.modelTexMap = modelTexMap;
         return this;

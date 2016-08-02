@@ -3,10 +3,10 @@ package org.avp.entities.render;
 import org.avp.AliensVsPredator;
 import org.lwjgl.opengl.GL11;
 
-import com.arisux.airi.lib.GlStateManager;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
+import com.arisux.amdxlib.lib.game.Game;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
@@ -21,12 +21,12 @@ public class RenderAcidPool extends Render
     @Override
     public void doRender(Entity entity, double posX, double posY, double posZ, float yaw, float renderPartialTicks)
     {
-        GlStateManager.pushMatrix();
+        OpenGL.pushMatrix();
         {
-            GlStateManager.disable(GL11.GL_LIGHTING);
-            GlStateManager.enable(GL11.GL_BLEND);
-            GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-            GlStateManager.disableLightMapping();
+            OpenGL.disable(GL11.GL_LIGHTING);
+            OpenGL.enable(GL11.GL_BLEND);
+            OpenGL.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+            OpenGL.disableLightMapping();
             AliensVsPredator.resources().ACID_POOL.bind();
             float offset = 1.4F;
             double renderX = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * renderPartialTicks;
@@ -44,7 +44,7 @@ public class RenderAcidPool extends Render
                 {
                     for (int blockZ = MathHelper.floor_double(renderZ - offset); blockZ <= MathHelper.floor_double(renderZ + offset); ++blockZ)
                     {
-                        Block block = Minecraft.getMinecraft().thePlayer.worldObj.getBlock(blockX, blockY - 1, blockZ);
+                        Block block = Game.minecraft().thePlayer.worldObj.getBlock(blockX, blockY - 1, blockZ);
 
                         if (block != Blocks.air)
                         {
@@ -55,11 +55,11 @@ public class RenderAcidPool extends Render
             }
 
             tessellator.draw();
-            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            GlStateManager.disable(GL11.GL_BLEND);
-            GlStateManager.enable(GL11.GL_LIGHTING);
+            OpenGL.color(1.0F, 1.0F, 1.0F, 1.0F);
+            OpenGL.disable(GL11.GL_BLEND);
+            OpenGL.enable(GL11.GL_LIGHTING);
         }
-        GlStateManager.popMatrix();
+        OpenGL.popMatrix();
     }
 
     private void renderImageOnBlock(Block block, double posX, double posY, double posZ, int blockX, int blockY, int blockZ, float yaw, float offset, double partialX, double partialY, double partialZ, float opacity)
@@ -76,15 +76,15 @@ public class RenderAcidPool extends Render
             float v1 = (float) ((posZ - z1) / 2.0D / offset + 0.5D);
             float v2 = (float) ((posZ - z2) / 2.0D / offset + 0.5D);
 
-            GlStateManager.pushMatrix();
+            OpenGL.pushMatrix();
             {
-                GlStateManager.rotate(yaw, 0F, 1F, 0F);
+                OpenGL.rotate(yaw, 0F, 1F, 0F);
                 tessellator.addVertexWithUV(x1, y, z1, u1, v1);
                 tessellator.addVertexWithUV(x1, y, z2, u1, v2);
                 tessellator.addVertexWithUV(x2, y, z2, u2, v2);
                 tessellator.addVertexWithUV(x2, y, z1, u2, v1);
             }
-            GlStateManager.popMatrix();
+            OpenGL.popMatrix();
         }
     }
 

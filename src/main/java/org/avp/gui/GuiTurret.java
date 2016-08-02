@@ -12,16 +12,17 @@ import org.avp.packets.server.PacketWriteToDataDevice;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.GuiElements.GuiCustomButton;
-import com.arisux.airi.lib.GuiElements.GuiCustomSlider;
-import com.arisux.airi.lib.RenderUtil;
-import com.arisux.airi.lib.WorldUtil;
-import com.arisux.airi.lib.interfaces.IActionPerformed;
+import com.arisux.amdxlib.lib.client.gui.GuiCustomButton;
+import com.arisux.amdxlib.lib.client.gui.GuiCustomSlider;
+import com.arisux.amdxlib.lib.client.gui.IAction;
+import com.arisux.amdxlib.lib.client.render.Color;
+import com.arisux.amdxlib.lib.client.render.Draw;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
+import com.arisux.amdxlib.lib.game.Game;
+import com.arisux.amdxlib.lib.world.entity.Entities;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -62,7 +63,7 @@ public class GuiTurret extends GuiContainer
             try
             {
                 Constructor<?> ctor = c.getConstructor(new Class[] { World.class });
-                entity = (Entity) ctor.newInstance(new Object[] { Minecraft.getMinecraft().theWorld });
+                entity = (Entity) ctor.newInstance(new Object[] { Game.minecraft().theWorld });
             }
             catch (Exception e)
             {
@@ -107,7 +108,7 @@ public class GuiTurret extends GuiContainer
 
         for (Class<? extends Entity> c : this.tile.getDangerousTargets())
         {
-            AliensVsPredator.network().sendToServer(new PacketAddTuretTarget(this.tile.xCoord, this.tile.yCoord, this.tile.zCoord, EntityList.getEntityID(WorldUtil.Entities.constructEntity(this.tile.getWorld(), c))));
+            AliensVsPredator.network().sendToServer(new PacketAddTuretTarget(this.tile.xCoord, this.tile.yCoord, this.tile.zCoord, EntityList.getEntityID(Entities.constructEntity(this.tile.getWorld(), c))));
         }
     }
 
@@ -130,8 +131,8 @@ public class GuiTurret extends GuiContainer
             stacksCurrent += stack.stackSize;
         }
 
-        RenderUtil.drawProgressBar("Magazine " + (this.tile.getCurAmmo() <= 0 ? 0 : this.tile.getCurAmmo()) + "/" + this.tile.getMaxAmmo(), this.tile.getMaxAmmo(), this.tile.getCurAmmo() < 0 ? 1 : this.tile.getCurAmmo(), this.guiLeft + 7, this.guiTop + 20, this.xSize - 100, 3, 1, this.tile.getCurAmmo() < this.tile.getMaxAmmo() / 2 ? -22016 : this.tile.getCurAmmo() < this.tile.getMaxAmmo() / 6 ? -65536 : -16733441, false);
-        RenderUtil.drawProgressBar("Total " + stacksCurrent + "/" + stacksTotal, stacksTotal, stacksCurrent, this.guiLeft + 7, this.guiTop + 30, this.xSize - 100, 3, 1, stacksCurrent < stacksTotal / 2 ? -22016 : stacksCurrent < stacksTotal / 6 ? -65536 : -16733441, false);
+        Draw.drawProgressBar("Magazine " + (this.tile.getCurAmmo() <= 0 ? 0 : this.tile.getCurAmmo()) + "/" + this.tile.getMaxAmmo(), this.tile.getMaxAmmo(), this.tile.getCurAmmo() < 0 ? 1 : this.tile.getCurAmmo(), this.guiLeft + 7, this.guiTop + 20, this.xSize - 100, 3, 1, this.tile.getCurAmmo() < this.tile.getMaxAmmo() / 2 ? -22016 : this.tile.getCurAmmo() < this.tile.getMaxAmmo() / 6 ? -65536 : -16733441, false);
+        Draw.drawProgressBar("Total " + stacksCurrent + "/" + stacksTotal, stacksTotal, stacksCurrent, this.guiLeft + 7, this.guiTop + 30, this.xSize - 100, 3, 1, stacksCurrent < stacksTotal / 2 ? -22016 : stacksCurrent < stacksTotal / 6 ? -65536 : -16733441, false);
     }
 
     @Override
@@ -140,8 +141,8 @@ public class GuiTurret extends GuiContainer
         if ((getCurrentSelectedEntity() instanceof EntityLivingBase))
         {
             int modelScale = 25;
-            RenderUtil.drawEntity(-40, 100, getCurrentSelectedEntity().height >= 4.0F ? modelScale / 2 : getCurrentSelectedEntity().height >= 8.0F ? modelScale / 4 : modelScale, this.modelRotation += 1F, 0.0F, getCurrentSelectedEntity());
-            GlStateManager.disableLight();
+            Draw.drawEntity(-40, 100, getCurrentSelectedEntity().height >= 4.0F ? modelScale / 2 : getCurrentSelectedEntity().height >= 8.0F ? modelScale / 4 : modelScale, this.modelRotation += 1F, 0.0F, getCurrentSelectedEntity());
+            OpenGL.disableLight();
         }
 
         for (int x = 0; x < this.entityLivingList.size(); x++)
@@ -153,8 +154,8 @@ public class GuiTurret extends GuiContainer
 
             if (entity != null && yEntryPos <= yPos + 50)
             {
-                RenderUtil.drawRectWithOutline(3, yEntryPos - 4, 134, 12, 1, 0x00000000, 0xFF444444);
-                RenderUtil.drawString(entity.getCommandSenderName(), 6, yEntryPos - 2, !this.tile.isSafe(entity) ? (getCurrentSelectedEntity() == entity ? 0xFFFF8800 : 0xFFFF0000) : (getCurrentSelectedEntity() == entity ? 0xFFFFFFFF : 0xFF444444), false);
+                Draw.drawRectWithOutline(3, yEntryPos - 4, 134, 12, 1, 0x00000000, 0xFF444444);
+                Draw.drawString(entity.getCommandSenderName(), 6, yEntryPos - 2, !this.tile.isSafe(entity) ? (getCurrentSelectedEntity() == entity ? 0xFFFF8800 : 0xFFFF0000) : (getCurrentSelectedEntity() == entity ? 0xFFFFFFFF : 0xFF444444), false);
             }
         }
 
@@ -190,17 +191,17 @@ public class GuiTurret extends GuiContainer
         this.sliderColorB.width = 219;
         this.sliderColorB.drawButton();
 
-        this.tile.beamColor = RenderUtil.createHexRGBA((int) (sliderColorA.sliderValue * sliderColorA.sliderMaxValue), (int) (sliderColorR.sliderValue * sliderColorR.sliderMaxValue), (int) (sliderColorG.sliderValue * sliderColorG.sliderMaxValue), (int) (sliderColorB.sliderValue * sliderColorB.sliderMaxValue));
+        this.tile.beamColor = Color.createHexadecimal((int) (sliderColorA.sliderValue * sliderColorA.sliderMaxValue), (int) (sliderColorR.sliderValue * sliderColorR.sliderMaxValue), (int) (sliderColorG.sliderValue * sliderColorG.sliderMaxValue), (int) (sliderColorB.sliderValue * sliderColorB.sliderMaxValue));
 
         this.buttonScrollUp.xPosition = this.guiLeft + xSize + 5;
         this.buttonScrollUp.yPosition = this.guiTop + 42;
         this.buttonScrollUp.displayString = "\u21e7";
         this.buttonScrollUp.baseColor = this.getScroll() == 0 ? 0x22000000 : 0xAA000000;
         this.buttonScrollUp.drawButton();
-        this.buttonScrollUp.setAction(new IActionPerformed()
+        this.buttonScrollUp.setAction(new IAction()
         {
             @Override
-            public void actionPerformed(GuiCustomButton button)
+            public void perform(GuiCustomButton button)
             {
                 scrollDown();
             }
@@ -211,10 +212,10 @@ public class GuiTurret extends GuiContainer
         this.buttonScrollDown.displayString = "\u21e9";
         this.buttonScrollDown.baseColor = this.getScroll() >= this.entityLivingList.size() - 1 ? 0x22000000 : 0xAA000000;
         this.buttonScrollDown.drawButton();
-        this.buttonScrollDown.setAction(new IActionPerformed()
+        this.buttonScrollDown.setAction(new IAction()
         {
             @Override
-            public void actionPerformed(GuiCustomButton button)
+            public void perform(GuiCustomButton button)
             {
                 scrollUp();
             }
@@ -224,10 +225,10 @@ public class GuiTurret extends GuiContainer
         this.buttonAddAsTarget.yPosition = this.guiTop + 65;
         this.buttonAddAsTarget.width = 20;
         this.buttonAddAsTarget.drawButton();
-        this.buttonAddAsTarget.setAction(new IActionPerformed()
+        this.buttonAddAsTarget.setAction(new IAction()
         {
             @Override
-            public void actionPerformed(GuiCustomButton button)
+            public void perform(GuiCustomButton button)
             {
                 if (tile != null)
                 {
@@ -249,10 +250,10 @@ public class GuiTurret extends GuiContainer
         this.buttonSave.displayString = "S";
         this.buttonSave.width = 14;
         this.buttonSave.drawButton();
-        this.buttonSave.setAction(new IActionPerformed()
+        this.buttonSave.setAction(new IAction()
         {
             @Override
-            public void actionPerformed(GuiCustomButton button)
+            public void perform(GuiCustomButton button)
             {
                 AliensVsPredator.network().sendToServer(new PacketWriteToDataDevice(tile.xCoord, tile.yCoord, tile.zCoord, 0));
                 tile.writeToOtherDevice(0);
@@ -264,10 +265,10 @@ public class GuiTurret extends GuiContainer
         this.buttonLoad.displayString = "L";
         this.buttonLoad.width = 14;
         this.buttonLoad.drawButton();
-        this.buttonLoad.setAction(new IActionPerformed()
+        this.buttonLoad.setAction(new IAction()
         {
             @Override
-            public void actionPerformed(GuiCustomButton button)
+            public void perform(GuiCustomButton button)
             {
                 tile.getDangerousTargets().clear();
                 AliensVsPredator.network().sendToServer(new PacketReadFromDataDevice(tile.xCoord, tile.yCoord, tile.zCoord, 0));

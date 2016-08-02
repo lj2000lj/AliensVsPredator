@@ -1,17 +1,16 @@
 package org.avp.items.render;
 
-import static com.arisux.airi.lib.RenderUtil.downloadResource;
-
 import org.avp.AliensVsPredator;
 import org.avp.URLs;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import com.arisux.airi.lib.AccessWrapper;
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.client.ItemRenderer;
-import com.arisux.airi.lib.client.PlayerResource;
-import com.arisux.airi.lib.client.Texture;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
+import com.arisux.amdxlib.lib.client.render.ItemRenderer;
+import com.arisux.amdxlib.lib.client.render.PlayerResource;
+import com.arisux.amdxlib.lib.client.render.Texture;
+import com.arisux.amdxlib.lib.game.Game;
+import com.arisux.amdxlib.lib.util.Remote;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -33,26 +32,26 @@ public class RenderItemAK47 extends ItemRenderer
     public void renderInWorld(ItemStack item, Object... data)
     {
         super.renderInWorld(item, data);
-        GlStateManager.translate(-0.1F, 0.5F, -0.5F);
-        GlStateManager.scale(1F, -1F, 1F);
-        GlStateManager.disable(GL11.GL_CULL_FACE);
+        OpenGL.translate(-0.1F, 0.5F, -0.5F);
+        OpenGL.scale(1F, -1F, 1F);
+        OpenGL.disable(GL11.GL_CULL_FACE);
         this.getModelTexMap().draw();
     }
 
     @Override
     public void renderThirdPerson(ItemStack item, Object... data)
     {
-        PlayerResource player = resourceManager.createPlayerResource(((EntityPlayer) data[1]).getCommandSenderName());
+        PlayerResource player = resourceStorage.create(((EntityPlayer) data[1]).getCommandSenderName());
 
         if (player != null)
         {
-            GlStateManager.translate(0.2F, 0.3F, -0.17F);
-            GlStateManager.rotate(97.0F, 1.0F, 0.0F, 0.0F);
-            GlStateManager.rotate(130.0F, 0.0F, 1.0F, 0.0F);
-            GlStateManager.rotate(80.0F, 0.0F, 0.0F, 1.0F);
-            GlStateManager.disable(GL11.GL_CULL_FACE);
-            GlStateManager.scale(1.3F, 1.3F, 1.3F);
-            new Texture(downloadResource(String.format(URLs.urlSkinAk47, player.getUUID()), this.getModelTexMap().getTexture())).bind();
+            OpenGL.translate(0.2F, 0.3F, -0.17F);
+            OpenGL.rotate(97.0F, 1.0F, 0.0F, 0.0F);
+            OpenGL.rotate(130.0F, 0.0F, 1.0F, 0.0F);
+            OpenGL.rotate(80.0F, 0.0F, 0.0F, 1.0F);
+            OpenGL.disable(GL11.GL_CULL_FACE);
+            OpenGL.scale(1.3F, 1.3F, 1.3F);
+            new Texture(Remote.downloadResource(String.format(URLs.urlSkinAk47, player.playerUUID()), this.getModelTexMap().getTexture())).bind();
             this.getModelTexMap().getModel().render();
         }
     }
@@ -64,24 +63,24 @@ public class RenderItemAK47 extends ItemRenderer
         {
             if (Mouse.isButtonDown(0) && mc.inGameHasFocus)
             {
-                GlStateManager.translate(-0.5F, 0.44F, -1.23F);
-                GlStateManager.rotate(101.3F, 1.0F, 0.0F, 0.0F);
-                GlStateManager.rotate(117.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotate(80.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.disable(GL11.GL_CULL_FACE);
+                OpenGL.translate(-0.5F, 0.44F, -1.23F);
+                OpenGL.rotate(101.3F, 1.0F, 0.0F, 0.0F);
+                OpenGL.rotate(117.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(80.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.disable(GL11.GL_CULL_FACE);
             }
             else
             {
-                GlStateManager.translate(0.1F, 0.35F, -0.1F);
-                GlStateManager.rotate(95.0F, 1.0F, 0.0F, 0.0F);
-                GlStateManager.rotate(120.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotate(80.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.disable(GL11.GL_CULL_FACE);
+                OpenGL.translate(0.1F, 0.35F, -0.1F);
+                OpenGL.rotate(95.0F, 1.0F, 0.0F, 0.0F);
+                OpenGL.rotate(120.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(80.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.disable(GL11.GL_CULL_FACE);
             }
 
             float glScale = 2.0F;
-            GlStateManager.scale(glScale, glScale, glScale);
-            new Texture(downloadResource(String.format(URLs.urlSkinAk47, AccessWrapper.getSession().getPlayerID()), this.getModelTexMap().getTexture())).bind();
+            OpenGL.scale(glScale, glScale, glScale);
+            new Texture(Remote.downloadResource(String.format(URLs.urlSkinAk47, Game.session().getPlayerID()), this.getModelTexMap().getTexture())).bind();
             this.getModelTexMap().getModel().render();
         }
     }
@@ -89,14 +88,14 @@ public class RenderItemAK47 extends ItemRenderer
     @Override
     public void renderInInventory(ItemStack item, Object... data)
     {
-        GlStateManager.disable(GL11.GL_CULL_FACE);
-        GlStateManager.rotate(0F, 1.0F, 0.0F, 0.0F);
-        GlStateManager.rotate(-40F, 0.0F, 1.0F, 0.0F);
-        GlStateManager.rotate(0F, 0.0F, 0.0F, 1.0F);
-        GlStateManager.translate(0F, 5.77F, -20.85F);
+        OpenGL.disable(GL11.GL_CULL_FACE);
+        OpenGL.rotate(0F, 1.0F, 0.0F, 0.0F);
+        OpenGL.rotate(-40F, 0.0F, 1.0F, 0.0F);
+        OpenGL.rotate(0F, 0.0F, 0.0F, 1.0F);
+        OpenGL.translate(0F, 5.77F, -20.85F);
         float glScale = 20F;
-        GlStateManager.scale(glScale, glScale, glScale);
-        new Texture(downloadResource(String.format(URLs.urlSkinAk47, AccessWrapper.getSession().getPlayerID()), this.getModelTexMap().getTexture())).bind();
+        OpenGL.scale(glScale, glScale, glScale);
+        new Texture(Remote.downloadResource(String.format(URLs.urlSkinAk47, Game.session().getPlayerID()), this.getModelTexMap().getTexture())).bind();
         this.getModelTexMap().getModel().render();
     }
 }

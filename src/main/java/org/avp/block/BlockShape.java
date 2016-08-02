@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.avp.AliensVsPredator;
 
-import com.arisux.airi.lib.client.render.Matrix3;
-import com.arisux.airi.lib.client.render.Vertex;
+import com.arisux.amdxlib.lib.client.render.Matrix3;
+import com.arisux.amdxlib.lib.client.render.Vertex;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

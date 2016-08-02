@@ -2,8 +2,8 @@ package org.avp.entities.tile.render;
 
 import org.lwjgl.opengl.GL11;
 
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.RenderUtil;
+import com.arisux.amdxlib.lib.client.render.Draw;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -13,22 +13,22 @@ public class RenderSatelliteModem extends TileEntitySpecialRenderer
     @Override
     public void renderTileEntityAt(TileEntity tileEntity, double posX, double posY, double posZ, float renderPartialTicks)
     {
-        GlStateManager.pushMatrix();
+        OpenGL.pushMatrix();
         {
-            GlStateManager.disable(GL11.GL_CULL_FACE);
-            GlStateManager.translate(posX, posY, posZ);
-            RenderUtil.drawRect(0, 0, 1, 1, 0xFFFF0000);
-            GlStateManager.translate(0, 0, 1);
-            RenderUtil.drawRect(0, 0, 1, 1, 0xFFFF0000);
-            GlStateManager.rotate(90, 1, 0, 0);
-            RenderUtil.drawRect(0, 0, 1, -1, 0xFFFF0000);
-            GlStateManager.translate(0, 0, -1);
-            RenderUtil.drawRect(0, 0, 1, -1, 0xFFFF0000);
-            GlStateManager.rotate(90, 0, 1, 0);
-            RenderUtil.drawRect(0, 0, -1, -1, 0xFFFF0000);
-            GlStateManager.translate(0, 0, 1);
-            RenderUtil.drawRect(0, 0, -1, -1, 0xFFFF0000);
+            OpenGL.disable(GL11.GL_CULL_FACE);
+            OpenGL.translate(posX, posY, posZ);
+            Draw.drawRect(0, 0, 1, 1, 0xFFFF0000);
+            OpenGL.translate(0, 0, 1);
+            Draw.drawRect(0, 0, 1, 1, 0xFFFF0000);
+            OpenGL.rotate(90, 1, 0, 0);
+            Draw.drawRect(0, 0, 1, -1, 0xFFFF0000);
+            OpenGL.translate(0, 0, -1);
+            Draw.drawRect(0, 0, 1, -1, 0xFFFF0000);
+            OpenGL.rotate(90, 0, 1, 0);
+            Draw.drawRect(0, 0, -1, -1, 0xFFFF0000);
+            OpenGL.translate(0, 0, 1);
+            Draw.drawRect(0, 0, -1, -1, 0xFFFF0000);
         }
-        GlStateManager.popMatrix();
+        OpenGL.popMatrix();
     }
 }

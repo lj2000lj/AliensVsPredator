@@ -10,7 +10,7 @@ import org.avp.AliensVsPredator;
 import org.avp.entities.tile.TileEntityRepulsionGenerator;
 import org.lwjgl.opengl.GL12;
 
-import com.arisux.airi.lib.GlStateManager;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -22,18 +22,18 @@ public class RenderRepulsionGenerator extends TileEntitySpecialRenderer
     {
         TileEntityRepulsionGenerator tile = (TileEntityRepulsionGenerator) tileEntity;
 
-        GlStateManager.pushMatrix();
+        OpenGL.pushMatrix();
         {
-            GlStateManager.disable(GL_CULL_FACE);
-            GlStateManager.enable(GL_BLEND);
-            GlStateManager.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            GlStateManager.translate(posX + 0.5F, posY + 1.5F, posZ + 0.5F);
-            GlStateManager.rotate(tile.rotation * (-90F), 0F, 1F, 0F);
-            GlStateManager.enable(GL12.GL_RESCALE_NORMAL);
-            GlStateManager.scale(1.0F, -1.0F, 1.0F);
-            GlStateManager.enable(GL_ALPHA_TEST);
+            OpenGL.disable(GL_CULL_FACE);
+            OpenGL.enable(GL_BLEND);
+            OpenGL.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            OpenGL.translate(posX + 0.5F, posY + 1.5F, posZ + 0.5F);
+            OpenGL.rotate(tile.rotation * (-90F), 0F, 1F, 0F);
+            OpenGL.enable(GL12.GL_RESCALE_NORMAL);
+            OpenGL.scale(1.0F, -1.0F, 1.0F);
+            OpenGL.enable(GL_ALPHA_TEST);
             AliensVsPredator.resources().models().REPULSION_GENERATOR.draw(tile);
         }
-        GlStateManager.popMatrix();
+        OpenGL.popMatrix();
     }
 }

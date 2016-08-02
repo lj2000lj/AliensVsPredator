@@ -11,11 +11,9 @@ import net.minecraft.world.World;
 
 public class BlockLightPanel extends Block
 {
-    public BlockLightPanel(Material material, boolean isLightOn)
+    public BlockLightPanel(Material material)
     {
         super(material);
-        this.setLightOpacity(2);
-        this.setLightLevel(isLightOn ? 1 : 0);
     }
 
     @Override
@@ -39,10 +37,6 @@ public class BlockLightPanel extends Block
     @Override
     public int onBlockPlaced(World world, int posX, int posY, int posZ, int side, float subX, float subY, float subZ, int meta)
     {
-        this.setLightLevel(0);
-        world.setLightValue(EnumSkyBlock.Block, posX, posY, posZ, 7);
-        world.markBlockForRenderUpdate(posX, posY, posZ);
-
         return super.onBlockPlaced(world, posX, posY, posZ, side, subX, subY, subZ, meta);
     }
 

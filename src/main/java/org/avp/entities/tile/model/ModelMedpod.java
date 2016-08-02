@@ -2,11 +2,11 @@ package org.avp.entities.tile.model;
 
 import org.avp.entities.tile.TileEntityMedpod;
 
-import com.arisux.airi.lib.client.ModelBaseWrapper;
+import com.arisux.amdxlib.lib.client.Model;
 
 import net.minecraft.client.model.ModelRenderer;
 
-public class ModelMedpod extends ModelBaseWrapper
+public class ModelMedpod extends Model
 {
     public ModelRenderer base;
     public ModelRenderer baseRod1;

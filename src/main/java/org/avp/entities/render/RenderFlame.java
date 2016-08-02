@@ -1,6 +1,6 @@
 package org.avp.entities.render;
 
-import com.arisux.airi.lib.GlStateManager;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
@@ -11,11 +11,11 @@ public class RenderFlame extends Render
     @Override
     public void doRender(Entity entity, double posX, double posY, double posZ, float yaw, float renderPartialTicks)
     {
-        GlStateManager.pushMatrix();
+        OpenGL.pushMatrix();
         {
-            GlStateManager.translate((float) posX, (float) posY, (float) posZ);
+            OpenGL.translate((float) posX, (float) posY, (float) posZ);
         }
-        GlStateManager.popMatrix();
+        OpenGL.popMatrix();
     }
 
     @Override

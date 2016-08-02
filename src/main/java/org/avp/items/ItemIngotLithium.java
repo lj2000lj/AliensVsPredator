@@ -1,8 +1,9 @@
 package org.avp.items;
 
-import com.arisux.airi.lib.ItemTypes.HookedItem;
-import com.arisux.airi.lib.WorldUtil;
-import com.arisux.airi.lib.WorldUtil.Blocks;
+import com.arisux.amdxlib.lib.world.CoordData;
+import com.arisux.amdxlib.lib.world.Worlds;
+import com.arisux.amdxlib.lib.world.entity.player.inventory.Inventories;
+import com.arisux.amdxlib.lib.world.item.HookedItem;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,8 +29,8 @@ public class ItemIngotLithium extends HookedItem
 
 		if (itemstack.getCurrentDurability() >= itemstack.getMaxDurability())
 		{
-			WorldUtil.createExplosion(entity, worldObj, new Blocks.CoordData(entity), 1F, true, true, true);
-			WorldUtil.Entities.Players.Inventories.consumeItem((EntityPlayer) entity, this, true);
+			Worlds.createExplosion(entity, worldObj, new CoordData(entity), 1F, true, true, true);
+			Inventories.consumeItem((EntityPlayer) entity, this, true);
 		}
 	}
 }

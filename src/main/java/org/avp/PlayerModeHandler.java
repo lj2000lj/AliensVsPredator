@@ -4,11 +4,11 @@ import org.avp.entities.extended.ExtendedEntityPlayer;
 import org.avp.util.LevelData;
 import org.avp.util.PlayerMode;
 
-import com.arisux.airi.lib.WorldUtil.Entities.Players;
-import com.arisux.airi.lib.client.ModelBaseWrapper;
-import com.arisux.airi.lib.client.ModelTexMap;
-import com.arisux.airi.lib.client.Texture;
-import com.arisux.airi.lib.interfaces.IInitializable;
+import com.arisux.amdxlib.lib.client.Model;
+import com.arisux.amdxlib.lib.client.TexturedModel;
+import com.arisux.amdxlib.lib.client.render.Texture;
+import com.arisux.amdxlib.lib.game.IInitEvent;
+import com.arisux.amdxlib.lib.world.entity.player.Players;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -21,12 +21,12 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
 
-public class PlayerModeHandler implements IInitializable
+public class PlayerModeHandler implements IInitEvent
 {
     public static final PlayerModeHandler instance = new PlayerModeHandler();
 
     @Override
-    public void initialize(FMLInitializationEvent event)
+    public void init(FMLInitializationEvent event)
     {
         FMLCommonHandler.instance().bus().register(this);
         MinecraftForge.EVENT_BUS.register(this);
@@ -127,13 +127,13 @@ public class PlayerModeHandler implements IInitializable
     }
 
     @SideOnly(Side.CLIENT)
-    public ModelTexMap<? extends ModelBaseWrapper> getModelTexMapForPlayer(EntityPlayer player)
+    public TexturedModel<? extends Model> getModelTexMapForPlayer(EntityPlayer player)
     {
         return getLevelMappingForPlayer(player).getModelTexMap();
     }
 
     @SideOnly(Side.CLIENT)
-    public ModelBaseWrapper getModelForPlayer(EntityPlayer player)
+    public Model getModelForPlayer(EntityPlayer player)
     {
         return getModelTexMapForPlayer(player).getModel();
     }

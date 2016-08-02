@@ -1,6 +1,6 @@
 package org.avp.packets.server;
 
-import com.arisux.airi.lib.WorldUtil;
+import com.arisux.amdxlib.lib.world.entity.Entities;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
@@ -50,7 +50,7 @@ public class PacketSpawnEntity implements IMessage, IMessageHandler<PacketSpawnE
     {
         if (ctx.getServerHandler().playerEntity != null && ctx.getServerHandler().playerEntity.worldObj != null)
         {
-            Entity entity = WorldUtil.Entities.constructEntity(ctx.getServerHandler().playerEntity.worldObj, EntityList.getClassFromID(message.globalID));
+            Entity entity = Entities.constructEntity(ctx.getServerHandler().playerEntity.worldObj, EntityList.getClassFromID(message.globalID));
 
             if (entity != null)
             {

@@ -6,16 +6,16 @@ import org.avp.entities.mob.EntityMarine;
 import org.avp.entities.mob.render.RenderFacehugger.FaceMountRenderer;
 import org.avp.entities.mob.render.RenderFacehugger.IFaceMountable;
 
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.client.ModelBaseWrapper;
-import com.arisux.airi.lib.client.ModelTexMap;
-import com.arisux.airi.lib.client.RenderLivingWrapper;
+import com.arisux.amdxlib.lib.client.Model;
+import com.arisux.amdxlib.lib.client.TexturedModel;
+import com.arisux.amdxlib.lib.client.RenderLivingWrapper;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.entity.EntityLivingBase;
 
 public class RenderYautja extends RenderLivingWrapper implements IFaceMountable
 {
-    public RenderYautja(ModelTexMap<? extends ModelBaseWrapper> model)
+    public RenderYautja(TexturedModel<? extends Model> model)
     {
         super(model);
     }
@@ -28,7 +28,7 @@ public class RenderYautja extends RenderLivingWrapper implements IFaceMountable
     @Override
     protected void preRenderCallback(EntityLivingBase entityliving, float renderPartialTicks)
     {
-        GlStateManager.scale(0.85F, 0.85F, 0.85F);
+        OpenGL.scale(0.85F, 0.85F, 0.85F);
     }
 
     @Override
@@ -39,10 +39,10 @@ public class RenderYautja extends RenderLivingWrapper implements IFaceMountable
             @Override
             public void render(EntityFacehugger facehugger, float renderPartialTicks)
             {
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.rotate(110.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                GlStateManager.translate(0F, 0F, 0.5F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(110.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, 0F, 0.5F);
             }
         };
     }

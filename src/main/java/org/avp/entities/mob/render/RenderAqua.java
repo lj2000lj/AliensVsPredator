@@ -4,8 +4,8 @@ import org.avp.AliensVsPredator;
 import org.avp.entities.mob.EntityAqua;
 import org.lwjgl.opengl.GL11;
 
-import com.arisux.airi.lib.GlStateManager;
-import com.arisux.airi.lib.client.RenderLivingWrapper;
+import com.arisux.amdxlib.lib.client.RenderLivingWrapper;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.EntityLivingBase;
@@ -21,7 +21,7 @@ public class RenderAqua extends RenderLivingWrapper
     @Override
     protected void preRenderCallback(EntityLivingBase entityliving, float partialTicks)
     {
-        GlStateManager.scale(0.8F, 0.8F, 0.8F);
+        OpenGL.scale(0.8F, 0.8F, 0.8F);
     }
 
     @Override
@@ -52,8 +52,8 @@ public class RenderAqua extends RenderLivingWrapper
                 f1 = 0.0F;
             }
 
-            GlStateManager.enable(GL11.GL_BLEND);
-            GlStateManager.blendFunc(GL11.GL_ONE, GL11.GL_ONE);
+            OpenGL.enable(GL11.GL_BLEND);
+            OpenGL.blendFunc(GL11.GL_ONE, GL11.GL_ONE);
 
             if (entity.isInvisible())
             {
@@ -68,8 +68,8 @@ public class RenderAqua extends RenderLivingWrapper
             int j = c0 % 65536;
             int k = c0 / 65536;
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j / 1.0F, k / 1.0F);
-            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            GlStateManager.color(1.0F, 1.0F, 1.0F, f1);
+            OpenGL.color(1.0F, 1.0F, 1.0F, 1.0F);
+            OpenGL.color(1.0F, 1.0F, 1.0F, f1);
 
             return 1;
         }

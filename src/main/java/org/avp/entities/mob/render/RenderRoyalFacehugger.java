@@ -3,7 +3,7 @@ package org.avp.entities.mob.render;
 import org.avp.AliensVsPredator;
 import org.avp.entities.mob.EntityFacehugger;
 
-import com.arisux.airi.lib.GlStateManager;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.entity.EntityLivingBase;
 
@@ -20,7 +20,7 @@ public class RenderRoyalFacehugger extends RenderFacehugger
         super.preRenderCallback(entityliving, partialTicks);
 
         float glScale = 1.5F;
-        GlStateManager.scale(glScale, glScale, glScale);
+        OpenGL.scale(glScale, glScale, glScale);
     }
 
     @Override
