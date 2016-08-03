@@ -13,6 +13,10 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIAttackOnCollide;
+import net.minecraft.entity.ai.EntityAIHurtByTarget;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.monster.EntityGolem;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.item.Item;
@@ -24,13 +28,19 @@ import net.minecraft.world.World;
 
 public class EntityCombatSynthetic extends EntityCreature implements IMob, IRangedAttackMob, IFacehugSelector
 {
-    public EntityCombatSynthetic(World par1World)
+    public EntityCombatSynthetic(World word)
     {
-        super(par1World);
+        super(word);
         this.experienceValue = 40;
         this.dataWatcher.addObject(18, new Integer(15));
         this.dataWatcher.addObject(17, "");
         this.dataWatcher.addObject(16, Byte.valueOf((byte) 0));
+        this.targetTasks.addTask(3, new EntityAIAttackOnCollide(this, 0.8D, true));
+        this.targetTasks.addTask(0, new EntityAIHurtByTarget(this, true));
+        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityGolem.class, /** targetChance **/
+            0, /** shouldCheckSight **/
+            false, /** nearbyOnly **/
+            false));
     }
 
     @Override
