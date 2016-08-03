@@ -6,6 +6,7 @@ import org.avp.AliensVsPredator;
 import org.avp.entities.EntityAcidPool;
 import org.avp.entities.ai.alien.EntityAIQueenIdentificationTask;
 import org.avp.entities.ai.alien.EntitySelectorXenomorph;
+import org.avp.entities.extended.ExtendedEntityLivingBase;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -88,6 +89,16 @@ public abstract class EntityXenomorph extends EntitySpeciesAlien implements IMob
     {
         super.onUpdate();
 
+//        if (this.getAttackTarget() != null)
+//        {
+//            ExtendedEntityLivingBase targetProperties = ExtendedEntityLivingBase.get(this.getAttackTarget());
+//            
+//            if (targetProperties.doesEntityContainEmbryo())
+//            {
+//                this.setAttackTarget(null);
+//            }
+//        }
+        
         this.fallDistance = 0F;
 
         // temp fix for EntityAIClimb
@@ -146,9 +157,10 @@ public abstract class EntityXenomorph extends EntitySpeciesAlien implements IMob
     {
         if (this.getAttackTarget() != null)
         {
-            Entity targetEntity = this.getAttackTarget();
+            EntityLivingBase targetEntity = this.getAttackTarget();
+            ExtendedEntityLivingBase targetProperties = ExtendedEntityLivingBase.get(targetEntity);
 
-            if (targetEntity != null && !(targetEntity instanceof EntityAcidPool) && !(targetEntity instanceof EntitySpeciesAlien))
+            if (targetEntity != null && !(targetEntity instanceof EntityAcidPool) && !(targetEntity instanceof EntitySpeciesAlien) && !targetProperties.doesEntityContainEmbryo())
             {
                 if (targetEntity instanceof EntityPlayer)
                 {
