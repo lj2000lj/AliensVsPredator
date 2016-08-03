@@ -70,12 +70,12 @@ public class EntityExtendedLookHelper extends EntityLookHelper
             double d3 = (double) MathHelper.sqrt_double(d0 * d0 + d2 * d2);
             float f = (float) (Math.atan2(d2, d0) * 180.0D / Math.PI) - 90.0F;
             float f1 = (float) (-(Math.atan2(d1, d3) * 180.0D / Math.PI));
-            this.entity.rotationPitch = updateRotation(this.entity.rotationPitch, f1, this.deltaLookPitch);
-            this.entity.rotationYawHead = updateRotation(this.entity.rotationYawHead, f, this.deltaLookYaw);
+            this.entity.rotationPitch = updateRotationNew(this.entity.rotationPitch, f1, this.deltaLookPitch);
+            this.entity.rotationYawHead = updateRotationNew(this.entity.rotationYawHead, f, this.deltaLookYaw);
         }
         else
         {
-            this.entity.rotationYawHead = updateRotation(this.entity.rotationYawHead, this.entity.renderYawOffset, 10.0F);
+            this.entity.rotationYawHead = updateRotationNew(this.entity.rotationYawHead, this.entity.renderYawOffset, 10.0F);
         }
 
         float angle = MathHelper.wrapAngleTo180_float(this.entity.rotationYawHead - this.entity.renderYawOffset);
@@ -94,7 +94,7 @@ public class EntityExtendedLookHelper extends EntityLookHelper
         }
     }
 
-    public static float updateRotation(float angle1, float angle2, float angle3)
+    public static float updateRotationNew(float angle1, float angle2, float angle3)
     {
         float wrappedAngle = MathHelper.wrapAngleTo180_float(angle2 - angle1);
 

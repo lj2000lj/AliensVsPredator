@@ -57,6 +57,12 @@ Windows systems in place of any 'gradle' command.
 
 We use [Gradle] for AliensVsPredator.
 
+Before you can build this mod, you must first create gradle.properties in the repositories root directory and create
+the following entry:
+curseForgeApiKey=00000-00000-00000-00000-00000
+
+If the above entry is not added, the build process will fail.
+
 In order to build AliensVsPredator you simply need to run the `gradle` command.
 You can find the compiled JAR file in `./build/libs` labeled similarly to 'AliensVsPredator-x.x.jar'.
 

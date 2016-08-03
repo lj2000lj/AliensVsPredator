@@ -283,7 +283,7 @@ public class EntityDeaconShark extends EntitySpeciesAlien
                 double velocity = posX * posX + posY * posY + posZ * posZ;
                 velocity = (double) MathHelper.sqrt_double(velocity);
                 posY /= velocity;
-                this.shark.rotationYaw = EntityExtendedLookHelper.updateRotation(this.shark.rotationYaw, (float) (Math.atan2(posZ, posX) * 180.0D / Math.PI) - 90.0F, 5.0F);
+                this.shark.rotationYaw = EntityExtendedLookHelper.updateRotationNew(this.shark.rotationYaw, (float) (Math.atan2(posZ, posX) * 180.0D / Math.PI) - 90.0F, 5.0F);
                 this.shark.renderYawOffset = this.shark.rotationYaw;
                 float speed = (float) (this.speed * this.shark.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getAttributeValue());
                 this.shark.setAIMoveSpeed(this.shark.getAIMoveSpeed() + (speed - this.shark.getAIMoveSpeed()) * 0.125F);
