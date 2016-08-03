@@ -32,7 +32,7 @@ public class ExtendedEntityLivingBase implements IExtendedEntityProperties
     @Override
     public void init(Entity entity, World world)
     {
-        ;
+        this.embryo = null;
     }
 
     @Override
@@ -53,9 +53,7 @@ public class ExtendedEntityLivingBase implements IExtendedEntityProperties
 
         if (embryoType != -1)
         {
-            this.setEmbryo(new Embryo(EmbryoType.get(embryoType))
-            {
-            });
+            this.embryo = null;
         }
 
         if (this.getEmbryo() != null)
