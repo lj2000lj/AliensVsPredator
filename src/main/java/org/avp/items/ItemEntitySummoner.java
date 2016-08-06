@@ -7,9 +7,10 @@ import com.arisux.amdxlib.lib.world.entity.Entities;
 import com.arisux.amdxlib.lib.world.entity.player.inventory.Inventories;
 import com.arisux.amdxlib.lib.world.item.HookedItem;
 
+import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.common.registry.EntityRegistry.EntityRegistration;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
@@ -28,18 +29,20 @@ public class ItemEntitySummoner extends HookedItem
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
     {
-        Entity entity = createNewEntity(par2World);
-        Inventories.consumeItem(par3EntityPlayer, this);
+        Entity entity = createNewEntity(world);
+        Inventories.consumeItem(player, this);
 
-        if (par2World.isRemote && entity != null)
+        if (world.isRemote && entity != null)
         {
-            MovingObjectPosition ray = par3EntityPlayer.rayTrace(50D, 1F);
-            AliensVsPredator.network().sendToServer(new PacketSpawnEntity(ray.blockX, ray.blockY, ray.blockZ, EntityList.getEntityID(entity)));
+            MovingObjectPosition ray = player.rayTrace(50D, 1F);
+            EntityRegistration registration = EntityRegistry.instance().lookupModSpawn(c, true);
+            
+            AliensVsPredator.network().sendToServer(new PacketSpawnEntity(ray.blockX, ray.blockY, ray.blockZ, registration.getModEntityId()));
         }
 
-        return super.onItemRightClick(par1ItemStack, par2World, par3EntityPlayer);
+        return super.onItemRightClick(stack, world, player);
     }
 
     public Class<? extends Entity> getEntityClass()
