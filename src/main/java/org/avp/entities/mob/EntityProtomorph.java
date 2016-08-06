@@ -1,6 +1,6 @@
 package org.avp.entities.mob;
 
-import org.avp.AliensVsPredator;
+import org.avp.Sounds;
 
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAISwimming;
@@ -41,19 +41,19 @@ public class EntityProtomorph extends EntityXenomorph
     @Override
     protected String getHurtSound()
     {
-        return AliensVsPredator.properties().SOUND_ALIEN_HURT;
+        return Sounds.SOUND_ALIEN_HURT.getKey();
     }
 
     @Override
     protected String getLivingSound()
     {
-        return AliensVsPredator.properties().SOUND_ALIEN_LIVING;
+        return Sounds.SOUND_ALIEN_LIVING.getKey();
     }
 
     @Override
     protected String getDeathSound()
     {
-        return AliensVsPredator.properties().SOUND_ALIEN_DEATH;
+        return Sounds.SOUND_ALIEN_DEATH.getKey();
     }
 
     @Override

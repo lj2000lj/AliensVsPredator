@@ -5,6 +5,7 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import org.avp.AliensVsPredator;
+import org.avp.Sounds;
 import org.avp.entities.EntityAcidPool;
 import org.avp.entities.EntityBullet;
 import org.avp.util.MarineTypes;
@@ -134,13 +135,13 @@ public class EntityMarine extends EntityCreature implements IMob, IRangedAttackM
     @Override
     protected String getHurtSound()
     {
-        return AliensVsPredator.properties().SOUND_MARINE_HURT;
+        return Sounds.SOUND_MARINE_HURT.getKey();
     }
 
     @Override
     protected String getDeathSound()
     {
-        return AliensVsPredator.properties().SOUND_MARINE_DEATH;
+        return Sounds.SOUND_MARINE_DEATH.getKey();
     }
 
     @Override

@@ -3,6 +3,7 @@ package org.avp.entities.mob;
 import java.util.Random;
 
 import org.avp.AliensVsPredator;
+import org.avp.Sounds;
 import org.avp.entities.EntityAcidProjectile;
 
 import net.minecraft.entity.Entity;
@@ -44,19 +45,19 @@ public class EntitySpitter extends EntityXenomorph implements IRangedAttackMob
     @Override
     protected String getHurtSound()
     {
-        return AliensVsPredator.properties().SOUND_SPITTER_HURT;
+        return Sounds.SOUND_SPITTER_HURT.getKey();
     }
 
     @Override
     protected String getLivingSound()
     {
-        return AliensVsPredator.properties().SOUND_SPITTER_LIVING;
+        return Sounds.SOUND_SPITTER_LIVING.getKey();
     }
 
     @Override
     protected String getDeathSound()
     {
-        return AliensVsPredator.properties().SOUND_SPITTER_DEATH;
+        return Sounds.SOUND_SPITTER_DEATH.getKey();
     }
 
     @Override

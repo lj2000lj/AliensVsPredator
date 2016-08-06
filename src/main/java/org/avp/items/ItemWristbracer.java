@@ -1,6 +1,7 @@
 package org.avp.items;
 
 import org.avp.AliensVsPredator;
+import org.avp.Sounds;
 import org.avp.inventory.container.ContainerWristbracer;
 
 import com.arisux.amdxlib.lib.world.item.HookedItem;
@@ -18,7 +19,7 @@ public class ItemWristbracer extends HookedItem
     @Override
     public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity)
     {
-        player.playSound(AliensVsPredator.properties().SOUND_WEAPON_WRISTBLADES, 1F, 1F);
+        Sounds.SOUND_WEAPON_WRISTBLADES.playSound(entity);
 
         if (playersWristbracerContainsBlades(player))
         {

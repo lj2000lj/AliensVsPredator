@@ -3,6 +3,7 @@ package org.avp.entities.mob;
 import java.util.ArrayList;
 
 import org.avp.AliensVsPredator;
+import org.avp.Sounds;
 import org.avp.entities.EntityAcidPool;
 
 import com.arisux.amdxlib.lib.world.CoordData;
@@ -126,18 +127,16 @@ public class EntityHammerpede extends EntitySpeciesAlien implements IMob
         }
     }
 
-    // temporary sound override until ender23 has new sounds. the ticking is annoying
     @Override
     protected String getDeathSound()
     {
-        return AliensVsPredator.properties().SOUND_CHESTBURSTER_ATTACK;
+        return Sounds.SOUND_CHESTBURSTER_ATTACK.getKey();
     }
 
-    // temporary sound override until ender23 has new sounds. the ticking is annoying
     @Override
     protected String getHurtSound()
     {
-        return AliensVsPredator.properties().SOUND_CHESTBURSTER_HURT;
+        return Sounds.SOUND_CHESTBURSTER_HURT.getKey();
     }
 
     @Override

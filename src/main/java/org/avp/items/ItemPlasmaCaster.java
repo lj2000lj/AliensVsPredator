@@ -1,6 +1,6 @@
 package org.avp.items;
 
-import org.avp.AliensVsPredator;
+import org.avp.Sounds;
 import org.avp.entities.EntityPlasma;
 
 import net.minecraft.entity.Entity;
@@ -40,7 +40,7 @@ public class ItemPlasmaCaster extends Item
             plasma.motionY = -MathHelper.sin((plasma.rotationPitch) / 180.0F * (float) Math.PI) * speed;
             plasma.release();
             world.spawnEntityInWorld(plasma);
-            world.playSoundEffect(player.posX, player.posY, player.posZ, AliensVsPredator.properties().SOUND_WEAPON_PLASMACASTER, 0.5F, 0.5F);
+            Sounds.SOUND_WEAPON_PLASMACASTER.playSound(player);
         }
 
         return super.onItemRightClick(stack, world, player);

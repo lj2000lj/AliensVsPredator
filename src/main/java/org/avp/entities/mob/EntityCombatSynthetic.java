@@ -2,6 +2,7 @@ package org.avp.entities.mob;
 
 import org.avp.AliensVsPredator;
 import org.avp.ItemHandler;
+import org.avp.Sounds;
 import org.avp.entities.EntityBullet;
 import org.avp.util.IFacehugSelector;
 
@@ -63,13 +64,13 @@ public class EntityCombatSynthetic extends EntityCreature implements IMob, IRang
     @Override
     protected String getHurtSound()
     {
-        return AliensVsPredator.properties().SOUND_MARINE_HURT;
+        return Sounds.SOUND_MARINE_HURT.getKey();
     }
 
     @Override
     protected String getDeathSound()
     {
-        return AliensVsPredator.properties().SOUND_MARINE_DEATH;
+        return Sounds.SOUND_MARINE_DEATH.getKey();
     }
 
     @Override

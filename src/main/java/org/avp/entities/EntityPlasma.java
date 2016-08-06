@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.avp.AliensVsPredator;
 
+import com.arisux.amdxlib.lib.game.GameSounds;
 import com.arisux.amdxlib.lib.world.CoordData;
 import com.arisux.amdxlib.lib.world.Worlds;
 import com.arisux.amdxlib.lib.world.entity.Entities;
@@ -99,7 +100,7 @@ public class EntityPlasma extends EntityThrowable
         if (!this.worldObj.isRemote)
         {
             Worlds.createExplosion(null, worldObj, new CoordData(this), 1.5F * size, false, true, AliensVsPredator.settings().areExplosionsEnabled());
-            this.worldObj.playSoundAtEntity(this, "random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+            GameSounds.fxPop.playSound(this,  0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 
             @SuppressWarnings("unchecked")
             List<Entity> entitiesInRange = (List<Entity>) Entities.getEntitiesInCoordsRange(worldObj, EntityLivingBase.class, new CoordData(this.posX, this.posY, this.posZ), (int) Math.ceil(1.5F * size));

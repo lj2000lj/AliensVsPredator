@@ -5,6 +5,8 @@ import java.util.List;
 import org.avp.AliensVsPredator;
 import org.avp.DamageSources;
 
+import com.arisux.amdxlib.lib.game.GameSounds;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import net.minecraft.block.Block;
@@ -221,14 +223,14 @@ public class EntityShuriken extends Entity
                 movingobjectposition = new MovingObjectPosition(entity);
             }
 
-            float var20;
+            float velocity;
 
             if (movingobjectposition != null)
             {
                 if (movingobjectposition.entityHit != null)
                 {
-                    var20 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
-                    int var23 = (int) Math.ceil(var20 * 2.0D);
+                    velocity = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
+                    int var23 = (int) Math.ceil(velocity * 2.0D);
 
                     if (this.arrowCritical)
                     {
@@ -253,7 +255,7 @@ public class EntityShuriken extends Entity
                             ++((EntityLivingBase) movingobjectposition.entityHit).arrowHitTimer;
                         }
 
-                        this.worldObj.playSoundAtEntity(this, "random.bowhit", 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
+                        GameSounds.fxBowHit.playSound(this, 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
                     }
                     else
                     {
@@ -275,11 +277,11 @@ public class EntityShuriken extends Entity
                     this.motionX = ((float) (movingobjectposition.hitVec.xCoord - this.posX));
                     this.motionY = ((float) (movingobjectposition.hitVec.yCoord - this.posY));
                     this.motionZ = ((float) (movingobjectposition.hitVec.zCoord - this.posZ));
-                    var20 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
-                    this.posX -= this.motionX / var20 * 0.05000000074505806D;
-                    this.posY -= this.motionY / var20 * 0.05000000074505806D;
-                    this.posZ -= this.motionZ / var20 * 0.05000000074505806D;
-                    this.worldObj.playSoundAtEntity(this, "random.bowhit", 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
+                    velocity = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
+                    this.posX -= this.motionX / velocity * 0.05000000074505806D;
+                    this.posY -= this.motionY / velocity * 0.05000000074505806D;
+                    this.posZ -= this.motionZ / velocity * 0.05000000074505806D;
+                    GameSounds.fxBowHit.playSound(this, 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
                     this.inGround = true;
                     this.arrowShake = 7;
                     this.arrowCritical = false;
@@ -297,10 +299,10 @@ public class EntityShuriken extends Entity
             this.posX += this.motionX;
             this.posY += this.motionY;
             this.posZ += this.motionZ;
-            var20 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
+            velocity = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
             this.rotationYaw = (float) (Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
 
-            for (this.rotationPitch = (float) (Math.atan2(this.motionY, var20) * 180.0D / Math.PI); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
+            for (this.rotationPitch = (float) (Math.atan2(this.motionY, velocity) * 180.0D / Math.PI); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
             {
                 ;
             }
@@ -377,7 +379,7 @@ public class EntityShuriken extends Entity
             {
                 if (entityplayer.inventory.addItemStackToInventory(new ItemStack(AliensVsPredator.items().itemShuriken, 1)))
                 {
-                    this.worldObj.playSoundAtEntity(this, "random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                    GameSounds.fxPop.playSound(this, 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                     entityplayer.onItemPickup(this, 1);
                     this.setDead();
                 }

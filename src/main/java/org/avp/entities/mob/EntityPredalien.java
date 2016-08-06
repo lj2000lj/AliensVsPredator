@@ -1,6 +1,6 @@
 package org.avp.entities.mob;
 
-import org.avp.AliensVsPredator;
+import org.avp.Sounds;
 import org.avp.entities.EntityAcidPool;
 
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -50,19 +50,19 @@ public class EntityPredalien extends EntityXenomorph implements IMob
     @Override
     protected String getHurtSound()
     {
-        return AliensVsPredator.properties().SOUND_PRAETORIAN_HURT;
+        return Sounds.SOUND_PRAETORIAN_HURT.getKey();
     }
 
     @Override
     protected String getLivingSound()
     {
-        return AliensVsPredator.properties().SOUND_PRAETORIAN_LIVING;
+        return Sounds.SOUND_PRAETORIAN_LIVING.getKey();
     }
 
     @Override
     protected String getDeathSound()
     {
-        return AliensVsPredator.properties().SOUND_PRAETORIAN_DEATH;
+        return Sounds.SOUND_PRAETORIAN_DEATH.getKey();
     }
 
     @Override

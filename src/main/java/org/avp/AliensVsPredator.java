@@ -1,12 +1,20 @@
 /** AliensVsPredator Minecraft Mod - Copyright (C) 2012-2016 Arisux Technology Group **/
 package org.avp;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import org.avp.api.AssemblerAPI;
 import org.avp.api.WristbracerAPI;
 
 import com.arisux.amdxlib.AMDXLib;
 import com.arisux.amdxlib.lib.game.Game;
 import com.arisux.amdxlib.lib.game.IMod;
+import com.google.common.collect.Lists;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -18,16 +26,21 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.audio.SoundCategory;
+import net.minecraft.client.audio.SoundHandler;
+import net.minecraft.client.audio.SoundList;
+import net.minecraft.client.audio.SoundList.SoundEntry;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.util.ResourceLocation;
 
 @Mod(modid = AliensVsPredator.ID, acceptedMinecraftVersions = "1.7.10", canBeDeactivated = true, dependencies = "required-after:amdxlib")
 public class AliensVsPredator implements IMod
 {
-    protected static final String ID = "avp";
+    protected static final String   ID = "avp";
 
     @Mod.Instance(AliensVsPredator.ID)
     private static AliensVsPredator instance;
-    private ModContainer container;
+    private ModContainer            container;
 
     @Override
     public ModContainer container()
@@ -117,6 +130,12 @@ public class AliensVsPredator implements IMod
     public static Resources resources()
     {
         return Resources.instance;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static Sounds sounds()
+    {
+        return Sounds.instance;
     }
 
     public static GuiHandler interfaces()
@@ -238,6 +257,45 @@ public class AliensVsPredator implements IMod
 
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
         {
+//            System.out.println("REGISTERING SOUND USING REFLECTION ===============================================");
+//            // SoundHandler.loadSoundResource(new ResourceLocation(s, (String)entry.getKey()), (SoundList)entry.getValue());
+//
+//            try
+//            {
+//
+//                ResourceLocation soundResource = new ResourceLocation("avp", "weapon.pulserifle");
+//                SoundList soundList = new SoundList();
+//
+//                SoundEntry soundEntry = new SoundEntry();
+//                soundEntry.setSoundEntryName("items/weapons/pulserifle/original");
+//
+//                ArrayList<SoundEntry> sounds = Lists.newArrayList();
+//                sounds.add(soundEntry);
+//
+//                // TODO: USE ACCESS TRANSFORMER
+//                Field field_148577_a = SoundList.class.getDeclaredField("field_148577_a");
+//                field_148577_a.setAccessible(true);
+//                field_148577_a.set(soundList, sounds);
+//
+//                soundList.setReplaceExisting(false);
+//                soundList.setSoundCategory(SoundCategory.MASTER);
+//
+//                //None of these variables are null. Everything returns what looks like the correct values.
+//                System.out.println("VERIFYING SOUND LIST ARRAYLIST: " + soundList.getSoundList() + " : " + ((SoundEntry) soundList.getSoundList().get(0)).getSoundEntryName() + " : " + soundList.getSoundCategory());
+//
+//                // TODO: USE ACCESS TRANSFORMER
+//                //Method loadSoundResource = SoundHandler.class.getDeclaredMethod("loadSoundResource", new Class[] { ResourceLocation.class, SoundList.class });
+//                //loadSoundResource.setAccessible(true);
+//                //loadSoundResource.invoke(Game.minecraft().getSoundHandler(), soundResource, soundList);
+//                
+//                Game.minecraft().getSoundHandler().loadSoundResource(soundResource, soundList);
+//            }
+//            catch (Exception e)
+//            {
+//                e.printStackTrace();
+//            }
+
+            sounds().post(event);
             renderers().post(event);
             keybinds().post(event);
         }

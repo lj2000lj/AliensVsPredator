@@ -1,5 +1,7 @@
 package org.avp.entities.ai;
 
+import com.arisux.amdxlib.lib.game.GameSounds;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Blocks;
@@ -56,7 +58,7 @@ public class EntityAIMeltBlock extends EntityAIYOffsetBlockInteract
 
         if (this.theEntity.getRNG().nextInt(20) == 0)
         {
-            this.theEntity.worldObj.playSoundEffect(this.theEntity.posX, this.theEntity.posY, this.theEntity.posZ, "minecraft:random.fizz", 0.3F, 1F);
+            GameSounds.fxMinecraftFizz.playSound(this.theEntity.worldObj, this.theEntity.posX, this.theEntity.posY, this.theEntity.posZ);
         }
 
         ++this.breakingTime;

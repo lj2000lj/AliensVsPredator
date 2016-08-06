@@ -3,6 +3,7 @@ package org.avp.items;
 import org.avp.AliensVsPredator;
 import org.avp.entities.EntitySmartDisc;
 
+import com.arisux.amdxlib.lib.game.GameSounds;
 import com.arisux.amdxlib.lib.world.entity.player.inventory.Inventories;
 import com.arisux.amdxlib.lib.world.item.HookedItem;
 
@@ -35,7 +36,7 @@ public class ItemDisc extends HookedItem
                     world.spawnEntityInWorld(entity);
                 }
 
-                world.playSoundAtEntity(entityplayer, "random.bow", 0.6F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.0F));
+                GameSounds.fxBow.playSound(entityplayer, 0.6F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.0F));
                 Inventories.consumeItem(entityplayer, this);
             }
         }

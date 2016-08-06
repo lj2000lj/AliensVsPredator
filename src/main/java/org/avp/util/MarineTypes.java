@@ -29,7 +29,7 @@ public enum MarineTypes
 
     public String getGunfireSound()
     {
-        return itemFirearm.getFireSound();
+        return itemFirearm.getFireSound().getKey();
     }
 
     public ItemFirearm getFirearmItem()

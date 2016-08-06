@@ -6,6 +6,7 @@ import org.avp.AliensVsPredator;
 import org.avp.packets.server.PacketReloadFirearm;
 import org.avp.packets.server.PacketShootEntity;
 
+import com.arisux.amdxlib.lib.client.Sound;
 import com.arisux.amdxlib.lib.game.Game;
 import com.arisux.amdxlib.lib.world.entity.Entities;
 import com.arisux.amdxlib.lib.world.entity.player.inventory.Inventories;
@@ -34,11 +35,11 @@ public class ItemFirearm extends HookedItem
     private int reloadRate;
     private int reload;
     private int ammoConsumptionRate;
-    private String sound;
+    private Sound sound;
     private double soundLength;
     private long lastSoundPlayed;
 
-    public ItemFirearm(int maxAmmoCount, float recoil, double fireRate, int reloadRate, ItemAmmo item, String sound)
+    public ItemFirearm(int maxAmmoCount, float recoil, double fireRate, int reloadRate, ItemAmmo item, Sound sound)
     {
         super();
         this.setMaxStackSize(1);
@@ -145,7 +146,7 @@ public class ItemFirearm extends HookedItem
         return this.maxAmmoCount;
     }
 
-    public String getFireSound()
+    public Sound getFireSound()
     {
         return this.sound;
     }

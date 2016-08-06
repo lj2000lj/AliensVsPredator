@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.avp.entities.mob.EntityMarine;
 
+import com.arisux.amdxlib.lib.game.GameSounds;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -53,7 +55,7 @@ public class EntityBullet extends Entity
         this.setSize(0.5F, 0.5F);
     }
 
-    public EntityBullet(World world, double d, double d1, double d2)
+    public EntityBullet(World world, double x, double y, double z)
     {
         super(world);
         this.xTile = -1;
@@ -67,7 +69,7 @@ public class EntityBullet extends Entity
         this.ticksInAir = 0;
         this.arrowCritical = true;
         this.setSize(0.5F, 0.5F);
-        this.setPosition(d, d1, d2);
+        this.setPosition(x, y, z);
         this.yOffset = 0.0F;
     }
 
@@ -146,6 +148,12 @@ public class EntityBullet extends Entity
         }
     }
 
+    @Override
+    protected void entityInit()
+    {
+        ;
+    }
+
     public void setThrowableHeading(double posX, double posY, double posZ, float velocity, double damage)
     {
         float f2 = MathHelper.sqrt_double(posX * posX + posY * posY + posZ * posZ);
@@ -167,45 +175,39 @@ public class EntityBullet extends Entity
         this.ticksInGround = 0;
     }
 
-    @Override
-    protected void entityInit()
+    public void setArrowHeading(double motionX, double motionY, double motionZ, float velocity, float damage)
     {
-        ;
-    }
-
-    public void setArrowHeading(double d, double d1, double d2, float f, float f1)
-    {
-        float f2 = MathHelper.sqrt_double(d * d + d1 * d1 + d2 * d2);
-        d /= f2;
-        d1 /= f2;
-        d2 /= f2;
-        d += this.rand.nextGaussian() * 0.007499999832361937D * f1;
-        d1 += this.rand.nextGaussian() * 0.007499999832361937D * f1;
-        d2 += this.rand.nextGaussian() * 0.007499999832361937D * f1;
-        d *= f;
-        d1 *= f;
-        d2 *= f;
-        this.motionX = d;
-        this.motionY = d1;
-        this.motionZ = d2;
-        float f3 = MathHelper.sqrt_double(d * d + d2 * d2);
-        this.prevRotationYaw = this.rotationYaw = (float) (Math.atan2(d, d2) * 180.0D / Math.PI);
-        this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(d1, f3) * 180.0D / Math.PI);
+        float f2 = MathHelper.sqrt_double(motionX * motionX + motionY * motionY + motionZ * motionZ);
+        motionX /= f2;
+        motionY /= f2;
+        motionZ /= f2;
+        motionX += this.rand.nextGaussian() * 0.007499999832361937D * damage;
+        motionY += this.rand.nextGaussian() * 0.007499999832361937D * damage;
+        motionZ += this.rand.nextGaussian() * 0.007499999832361937D * damage;
+        motionX *= velocity;
+        motionY *= velocity;
+        motionZ *= velocity;
+        this.motionX = motionX;
+        this.motionY = motionY;
+        this.motionZ = motionZ;
+        float f3 = MathHelper.sqrt_double(motionX * motionX + motionZ * motionZ);
+        this.prevRotationYaw = this.rotationYaw = (float) (Math.atan2(motionX, motionZ) * 180.0D / Math.PI);
+        this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(motionY, f3) * 180.0D / Math.PI);
         this.ticksInGround = 0;
     }
 
     @Override
-    public void setVelocity(double d, double d1, double d2)
+    public void setVelocity(double motionX, double motionY, double motionZ)
     {
-        this.motionX = d;
-        this.motionY = d1;
-        this.motionZ = d2;
+        this.motionX = motionX;
+        this.motionY = motionY;
+        this.motionZ = motionZ;
 
         if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F)
         {
-            float f = MathHelper.sqrt_double(d * d + d2 * d2);
-            this.prevRotationYaw = this.rotationYaw = (float) (Math.atan2(d, d2) * 180.0D / Math.PI);
-            this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(d1, f) * 180.0D / Math.PI);
+            float velocity = MathHelper.sqrt_double(motionX * motionX + motionZ * motionZ);
+            this.prevRotationYaw = this.rotationYaw = (float) (Math.atan2(motionX, motionZ) * 180.0D / Math.PI);
+            this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(motionY, velocity) * 180.0D / Math.PI);
             this.prevRotationPitch = this.rotationPitch;
             this.prevRotationYaw = this.rotationYaw;
             this.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
@@ -224,17 +226,17 @@ public class EntityBullet extends Entity
 
         if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F)
         {
-            float i = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
+            float velocity = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
             this.prevRotationYaw = this.rotationYaw = (float) (Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
-            this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(this.motionY, i) * 180.0D / Math.PI);
+            this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(this.motionY, velocity) * 180.0D / Math.PI);
         }
 
-        Block var16 = this.worldObj.getBlock(this.xTile, this.yTile, this.zTile);
+        Block block = this.worldObj.getBlock(this.xTile, this.yTile, this.zTile);
 
-        if (var16 != Blocks.air)
+        if (block != Blocks.air)
         {
-            var16.setBlockBoundsBasedOnState(this.worldObj, this.xTile, this.yTile, this.zTile);
-            AxisAlignedBB vec3d = var16.getCollisionBoundingBoxFromPool(this.worldObj, this.xTile, this.yTile, this.zTile);
+            block.setBlockBoundsBasedOnState(this.worldObj, this.xTile, this.yTile, this.zTile);
+            AxisAlignedBB vec3d = block.getCollisionBoundingBoxFromPool(this.worldObj, this.xTile, this.yTile, this.zTile);
 
             if (vec3d != null && vec3d.isVecInside(Vec3.createVectorHelper(this.posX, this.posY, this.posZ)))
             {
@@ -254,17 +256,16 @@ public class EntityBullet extends Entity
 
         if (this.inGround)
         {
-            Block var18 = this.worldObj.getBlock(this.xTile, this.yTile, this.zTile);
-            int var19 = this.worldObj.getBlockMetadata(this.xTile, this.yTile, this.zTile);
+            int meta = this.worldObj.getBlockMetadata(this.xTile, this.yTile, this.zTile);
 
-            if (var18 == Blocks.glass_pane)
+            if (block == Blocks.glass_pane)
             {
                 this.worldObj.setBlockToAir(this.xTile, this.yTile, this.zTile);
-                this.worldObj.playSoundEffect(this.xTile + 0.5D, this.yTile + 0.5D, this.zTile + 0.5D, "random.glass3", 1.0F, 1.0F);
-                this.shootingEntity.playSound("random.glass1", 1.0F, 1.0F);
+                GameSounds.fxMinecraftGlassShatter3.playSound(this.worldObj, this.xTile, this.yTile, this.zTile);
+                GameSounds.fxMinecraftGlassShatter1.playSound(this.shootingEntity);
             }
 
-            if (var18 == this.inTile && var19 == this.inData)
+            if (block == this.inTile && meta == this.inData)
             {
                 ++this.ticksInGround;
 
@@ -291,39 +292,39 @@ public class EntityBullet extends Entity
         else
         {
             ++this.ticksInAir;
-            Vec3 var17 = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
-            Vec3 vec3d1 = Vec3.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-            MovingObjectPosition movingobjectposition = this.worldObj.rayTraceBlocks(var17, vec3d1, false, true, false);
-            var17 = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
-            vec3d1 = Vec3.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+            Vec3 vecAt = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
+            Vec3 vecNext = Vec3.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+            MovingObjectPosition movingobjectposition = this.worldObj.rayTraceBlocks(vecAt, vecNext, false, true, false);
+            vecAt = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
+            vecNext = Vec3.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
             if (movingobjectposition != null)
             {
-                vec3d1 = Vec3.createVectorHelper(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord, movingobjectposition.hitVec.zCoord);
+                vecNext = Vec3.createVectorHelper(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord, movingobjectposition.hitVec.zCoord);
             }
 
             Entity entity = null;
             List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
             double d = 0.0D;
-            float f6;
+            float radius;
 
-            for (int f3 = 0; f3 < list.size(); ++f3)
+            for (int index = 0; index < list.size(); ++index)
             {
-                Entity f4 = list.get(f3);
+                Entity e = list.get(index);
 
-                if (f4.canBeCollidedWith() && (f4 != this.shootingEntity || this.ticksInAir >= 5))
+                if (e.canBeCollidedWith() && (e != this.shootingEntity || this.ticksInAir >= 5))
                 {
-                    f6 = 0.3F;
-                    AxisAlignedBB k1 = f4.boundingBox.expand(f6, f6, f6);
-                    MovingObjectPosition f7 = k1.calculateIntercept(var17, vec3d1);
+                    radius = 0.3F;
+                    AxisAlignedBB bounds = e.boundingBox.expand(radius, radius, radius);
+                    MovingObjectPosition intercept = bounds.calculateIntercept(vecAt, vecNext);
 
-                    if (f7 != null)
+                    if (intercept != null)
                     {
-                        double d1 = var17.distanceTo(f7.hitVec);
+                        double d1 = vecAt.distanceTo(intercept.hitVec);
 
                         if (d1 < d || d == 0.0D)
                         {
-                            entity = f4;
+                            entity = e;
                             d = d1;
                         }
                     }
@@ -335,7 +336,7 @@ public class EntityBullet extends Entity
                 movingobjectposition = new MovingObjectPosition(entity);
             }
 
-            float var20;
+            float velocity;
 
             if (movingobjectposition != null)
             {
@@ -357,8 +358,8 @@ public class EntityBullet extends Entity
                         return;
                     }
 
-                    var20 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
-                    int attackDamage = (int) Math.ceil(var20 * damage);
+                    velocity = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
+                    int attackDamage = (int) Math.ceil(velocity * damage);
 
                     if (this.arrowCritical)
                     {
@@ -385,10 +386,10 @@ public class EntityBullet extends Entity
                     this.motionX = ((float) (movingobjectposition.hitVec.xCoord - this.posX));
                     this.motionY = ((float) (movingobjectposition.hitVec.yCoord - this.posY));
                     this.motionZ = ((float) (movingobjectposition.hitVec.zCoord - this.posZ));
-                    var20 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
-                    this.posX -= this.motionX / var20 * 0.05000000074505806D;
-                    this.posY -= this.motionY / var20 * 0.05000000074505806D;
-                    this.posZ -= this.motionZ / var20 * 0.05000000074505806D;
+                    velocity = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
+                    this.posX -= this.motionX / velocity * 0.05000000074505806D;
+                    this.posY -= this.motionY / velocity * 0.05000000074505806D;
+                    this.posZ -= this.motionZ / velocity * 0.05000000074505806D;
                     this.inGround = true;
                     this.arrowShake = 7;
                     this.arrowCritical = false;
@@ -398,10 +399,10 @@ public class EntityBullet extends Entity
             this.posX += this.motionX;
             this.posY += this.motionY;
             this.posZ += this.motionZ;
-            var20 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
+            velocity = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
             this.rotationYaw = (float) (Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
 
-            for (this.rotationPitch = (float) (Math.atan2(this.motionY, var20) * 180.0D / Math.PI); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
+            for (this.rotationPitch = (float) (Math.atan2(this.motionY, velocity) * 180.0D / Math.PI); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
             {
                 ;
             }
@@ -423,34 +424,34 @@ public class EntityBullet extends Entity
 
             this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.2F;
             this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
-            float var22 = 0.99F;
-            f6 = 0.05F;
+            float newVelocity = 0.99F;
+            radius = 0.05F;
 
             if (!this.isDead)
             {
-                for (int var24 = 0; var24 < 5; ++var24)
+                for (int particles = 0; particles < 5; ++particles)
                 {
                     this.worldObj.spawnParticle("largesmoke", this.posX, this.posY, this.posZ, this.motionX, this.motionY, this.motionZ);
                 }
 
-                var22 = 0.8F;
+                newVelocity = 0.8F;
             }
 
             if (this.isInWater())
             {
-                for (int var24 = 0; var24 < 5; ++var24)
+                for (int particles = 0; particles < 5; ++particles)
                 {
                     this.worldObj.spawnParticle("bubble", this.posX, this.posY, this.posZ, this.motionX, this.motionY, this.motionZ);
                 }
 
-                var22 = 0.8F;
+                newVelocity = 0.8F;
             }
 
             if (this.physics)
             {
-                this.motionX *= var22;
-                this.motionY *= var22;
-                this.motionZ *= var22;
+                this.motionX *= newVelocity;
+                this.motionY *= newVelocity;
+                this.motionZ *= newVelocity;
                 this.motionY -= 0.05F;
             }
             this.setPosition(this.posX, this.posY, this.posZ);

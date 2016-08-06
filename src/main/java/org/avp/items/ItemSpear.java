@@ -3,6 +3,7 @@ package org.avp.items;
 import org.avp.AliensVsPredator;
 import org.avp.entities.EntitySpear;
 
+import com.arisux.amdxlib.lib.game.GameSounds;
 import com.arisux.amdxlib.lib.world.entity.player.inventory.Inventories;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -39,7 +40,7 @@ public class ItemSpear extends ItemSword
             {
                 EntitySpear entityspear = new EntitySpear(world, entityplayer, itemstack);
                 entityspear.setThrowableHeading(entityspear.motionX, entityspear.motionY, entityspear.motionZ, 0.8F * charge, 0.1F);
-                world.playSoundAtEntity(entityplayer, "random.pop", 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + charge * 0.5F);
+                GameSounds.fxPop.playSound(entityplayer, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + charge * 0.5F);
                 world.spawnEntityInWorld(entityspear);
 
                 if (!entityplayer.capabilities.isCreativeMode)

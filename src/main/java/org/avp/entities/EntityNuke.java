@@ -1,6 +1,7 @@
 package org.avp.entities;
 
 import org.avp.AliensVsPredator;
+import org.avp.Sounds;
 
 import com.arisux.amdxlib.lib.client.Sound;
 import com.arisux.amdxlib.lib.world.Worlds;
@@ -41,7 +42,7 @@ public class EntityNuke extends EntityThrowable
 
         if (this.worldObj.getWorldTime() % 20 == 0)
         {
-            new Sound("avp:weapon.blades.alarm").playSound(this, 10F, 1F);
+            Sounds.fxWristbracerAlarm.playSound(this, 15F, 1F);
         }
 
         if (this.ticksExisted >= this.getDetonationTicks())

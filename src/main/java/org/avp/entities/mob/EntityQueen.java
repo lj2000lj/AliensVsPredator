@@ -2,7 +2,7 @@ package org.avp.entities.mob;
 
 import java.util.ArrayList;
 
-import org.avp.AliensVsPredator;
+import org.avp.Sounds;
 import org.avp.util.IHiveSignature;
 
 import com.arisux.amdxlib.lib.world.CoordData;
@@ -130,19 +130,19 @@ public class EntityQueen extends EntityXenomorph implements IHiveSignature
     @Override
     protected String getHurtSound()
     {
-        return AliensVsPredator.properties().SOUND_QUEEN_HURT;
+        return Sounds.SOUND_QUEEN_HURT.getKey();
     }
 
     @Override
     protected String getLivingSound()
     {
-        return this.getHealth() > this.getMaxHealth() / 4 ? AliensVsPredator.properties().SOUND_QUEEN_LIVING + ".constant" : AliensVsPredator.properties().SOUND_QUEEN_LIVING;
+        return this.getHealth() > this.getMaxHealth() / 4 ? Sounds.SOUND_QUEEN_LIVING.getKey() + ".constant" : Sounds.SOUND_QUEEN_LIVING.getKey();
     }
 
     @Override
     protected String getDeathSound()
     {
-        return AliensVsPredator.properties().SOUND_QUEEN_DEATH;
+        return Sounds.SOUND_QUEEN_DEATH.getKey();
     }
 
     @Override

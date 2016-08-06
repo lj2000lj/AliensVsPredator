@@ -3,6 +3,7 @@ package org.avp.items.render;
 import java.util.ArrayList;
 
 import org.avp.AliensVsPredator;
+import org.avp.Sounds;
 import org.lwjgl.opengl.GL11;
 
 import com.arisux.amdxlib.lib.client.render.Draw;
@@ -157,7 +158,7 @@ public class RenderMotionTrackerScreen
         else if (this.shouldPing)
         {
             this.shouldPing = false;
-            this.mc.thePlayer.playSound(AliensVsPredator.properties().SOUND_MOTIONTRACKER_PING, 1F, 1F);
+            Sounds.SOUND_MOTIONTRACKER_PING.playSound(this.mc.thePlayer);
         }
 
         if (pingTime != 0)
@@ -197,7 +198,7 @@ public class RenderMotionTrackerScreen
 
             if (this.pingCount > 0)
             {
-                this.mc.thePlayer.playSound(AliensVsPredator.properties().SOUND_MOTIONTRACKER_PONG, 1F, this.pitch[this.minDistance]);
+                Sounds.SOUND_MOTIONTRACKER_PONG.setPitch(this.pitch[this.minDistance]).playSound(this.mc.thePlayer);
             }
         }
     }

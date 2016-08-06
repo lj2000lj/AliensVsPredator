@@ -3,7 +3,7 @@ package org.avp.entities.mob;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import org.avp.AliensVsPredator;
+import org.avp.Sounds;
 import org.avp.entities.ai.alien.EntitySelectorXenomorph;
 import org.avp.entities.extended.ExtendedEntityLivingBase;
 import org.avp.util.Embryo;
@@ -275,7 +275,7 @@ public class EntityFacehugger extends EntitySpeciesAlien implements IMob
     @Override
     protected String getDeathSound()
     {
-        return AliensVsPredator.properties().SOUND_FACEHUGGER_DEATH;
+        return Sounds.SOUND_FACEHUGGER_DEATH.getKey();
     }
 
     @Override

@@ -3,6 +3,7 @@ package org.avp.entities.tile;
 import java.util.ArrayList;
 
 import org.avp.AliensVsPredator;
+import org.avp.Sounds;
 import org.avp.entities.EntityBullet;
 import org.avp.entities.EntityTurret;
 import org.avp.entities.mob.EntityAqua;
@@ -314,7 +315,7 @@ public class TileEntityTurret extends TileEntityElectrical implements IDataDevic
         entity.setLocationAndAngles(entity.posX - 0.5, entity.posY + 0.0, entity.posZ - 0.5, entity.rotationYaw, entity.rotationPitch);
         this.worldObj.spawnEntityInWorld(entity);
         this.worldObj.spawnParticle("largesmoke", xCoord, yCoord, zCoord, 1, 1, 1);
-        this.getEntity().playSound(AliensVsPredator.properties().SOUND_WEAPON_M56SG, 1F, 1F);
+        Sounds.SOUND_WEAPON_M56SG.playSound(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
     }
 
     public void turnTurretToPoint(CoordData coord)

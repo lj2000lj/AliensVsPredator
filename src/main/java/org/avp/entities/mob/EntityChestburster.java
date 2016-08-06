@@ -1,6 +1,6 @@
 package org.avp.entities.mob;
 
-import org.avp.AliensVsPredator;
+import org.avp.Sounds;
 import org.avp.util.EmbryoType;
 import org.avp.util.EvolutionType;
 
@@ -136,13 +136,13 @@ public class EntityChestburster extends EntitySpeciesAlien implements IMob
     @Override
     protected String getDeathSound()
     {
-        return AliensVsPredator.properties().SOUND_CHESTBURSTER_DEATH;
+        return Sounds.SOUND_CHESTBURSTER_DEATH.getKey();
     }
 
     @Override
     protected String getHurtSound()
     {
-        return AliensVsPredator.properties().SOUND_CHESTBURSTER_HURT;
+        return Sounds.SOUND_CHESTBURSTER_HURT.getKey();
     }
 
     @Override

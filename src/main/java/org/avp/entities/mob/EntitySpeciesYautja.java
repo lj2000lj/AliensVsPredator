@@ -1,6 +1,7 @@
 package org.avp.entities.mob;
 
 import org.avp.AliensVsPredator;
+import org.avp.Sounds;
 import org.avp.entities.ai.yautja.EntitySelectorYautja;
 import org.avp.util.IFacehugSelector;
 
@@ -140,19 +141,19 @@ public abstract class EntitySpeciesYautja extends EntityMob implements IFacehugS
     @Override
     protected String getLivingSound()
     {
-        return AliensVsPredator.properties().SOUND_YAUTJA_LIVING;
+        return Sounds.SOUND_YAUTJA_LIVING.getKey();
     }
 
     @Override
     protected String getHurtSound()
     {
-        return AliensVsPredator.properties().SOUND_YAUTJA_HURT;
+        return Sounds.SOUND_YAUTJA_HURT.getKey();
     }
 
     @Override
     protected String getDeathSound()
     {
-        return AliensVsPredator.properties().SOUND_YAUTJA_DEATH;
+        return Sounds.SOUND_YAUTJA_DEATH.getKey();
     }
 
     @Override
@@ -165,15 +166,6 @@ public abstract class EntitySpeciesYautja extends EntityMob implements IFacehugS
             this.entityDropItem(new ItemStack(AliensVsPredator.items().itemArtifactTech), 0.0F);
         }
     }
-
-    // the predator items are now craftable in the assembler using the Yautja artifact
-    /*
-     * @Override protected void dropFewItems(boolean flag, int i) { if ((new Random()).nextInt(6) == 1) { this.entityDropItem(new ItemStack(AliensVsPredator.items().itemSpear), 0.0F); // 0.0F is the proper way to get 1 item } }
-     */
-
-    /*
-     * @Override protected void dropRareDrop(int par1) { this.entityDropItem(new ItemStack(AliensVsPredator.items().helmTitanium), 0.0F); this.entityDropItem(new ItemStack(AliensVsPredator.items().plateTitanium), 0.0F); this.entityDropItem(new ItemStack(AliensVsPredator.items().legsTitanium), 0.0F); this.entityDropItem(new ItemStack(AliensVsPredator.items().bootsTitanium), 0.0F); this.entityDropItem(new ItemStack(AliensVsPredator.items().itemWristBlade), 0.0F); this.entityDropItem(new ItemStack(AliensVsPredator.items().itemPlasmaCaster), 0.0F); }
-     */
 
     @Override
     public boolean canDespawn()

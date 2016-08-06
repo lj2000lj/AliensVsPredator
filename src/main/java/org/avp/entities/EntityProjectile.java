@@ -2,6 +2,7 @@ package org.avp.entities;
 
 import java.util.List;
 
+import com.arisux.amdxlib.lib.game.GameSounds;
 import com.arisux.amdxlib.lib.world.entity.Entities;
 
 import cpw.mods.fml.common.registry.IThrowableEntity;
@@ -456,7 +457,7 @@ public abstract class EntityProjectile extends EntityArrow implements IThrowable
 
                     if (item != null && entityplayer.inventory.addItemStackToInventory(item))
                     {
-                        this.worldObj.playSoundAtEntity(this, "random.pop", 0.2F, ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                        GameSounds.fxPop.playSound(this, 0.2F, ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                         this.onItemPickup(entityplayer);
                         this.setDead();
                     }

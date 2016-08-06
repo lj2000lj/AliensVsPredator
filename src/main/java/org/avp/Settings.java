@@ -8,24 +8,26 @@ import net.minecraftforge.common.config.Configuration;
 
 public class Settings
 {
-    public static final Settings instance = new Settings();
-    private File configFile;
-    private Configuration config;
+    public static final Settings instance        = new Settings();
 
-    private final String CATEGORY_OTHER = "ETC";
-    private final String CATEGORY_DIM = "DIMENSIONS";
-    private final String CATEGORY_BIOMES = "BIOMES";
+    private File                 configFile;
+    private Configuration        config;
 
-    private boolean explosionsEnabled;
-    private boolean updaterEnabled;
-    private boolean debugToolsEnabled;
-    private boolean nukesEnabled;
-    private boolean overworldSpawnsEnabled;
-    private boolean autoSpawnsEnabled;
-    private int dimVarda;
-    private int dimAcheron;
-    private int biomeVarda;
-    private int biomeAcheron;
+    private final String         CATEGORY_OTHER  = "ETC";
+    private final String         CATEGORY_DIM    = "DIMENSIONS";
+    private final String         CATEGORY_BIOMES = "BIOMES";
+
+    private boolean              explosionsEnabled;
+    private boolean              updaterEnabled;
+    private boolean              debugToolsEnabled;
+    private boolean              nukesEnabled;
+    private boolean              overworldSpawnsEnabled;
+    private boolean              autoSpawnsEnabled;
+    private int                  dimVarda;
+    private int                  dimAcheron;
+    private int                  biomeVarda;
+    private int                  biomeAcheron;
+    private int                  globalSoundVolume;
 
     @EventHandler
     public void preInitialize(FMLPreInitializationEvent evt)
@@ -49,6 +51,7 @@ public class Settings
             autoSpawnsEnabled = config.get(CATEGORY_OTHER, "AUTO_MOB_SPAWNING", true).getBoolean(true);
             updaterEnabled = config.get(CATEGORY_OTHER, "UPDATER_ENABLED", true, "Toggle the mod's updater.").getBoolean(true);
             debugToolsEnabled = config.get(CATEGORY_OTHER, "DEBUG_TOOLS", false, "Toggle the debugging tools.").getBoolean(false);
+            globalSoundVolume = config.get(CATEGORY_OTHER, "GLOBAL_SOUND_VOLUME", 100, "Change the volume of this mod's sounds. EXAMPLES: 100 = 100% Volume, 50 = 50% Volume, 150 = 150% Volume").getInt();
         }
         finally
         {
@@ -65,12 +68,12 @@ public class Settings
     {
         return config;
     }
-    
+
     public boolean areOverworldSpawnsEnabled()
     {
         return overworldSpawnsEnabled;
     }
-    
+
     public boolean areAutoSpawnsEnabled()
     {
         return autoSpawnsEnabled;
@@ -114,5 +117,10 @@ public class Settings
     public boolean areNukesEnabled()
     {
         return this.nukesEnabled;
+    }
+
+    public float globalSoundVolume()
+    {
+        return this.globalSoundVolume * 1.0F / 100;
     }
 }

@@ -1,6 +1,6 @@
 package org.avp.entities.mob;
 
-import org.avp.AliensVsPredator;
+import org.avp.Sounds;
 import org.avp.entities.ai.alien.EntitySelectorXenomorph;
 
 import net.minecraft.entity.Entity;
@@ -19,7 +19,6 @@ import net.minecraft.world.World;
 
 public class EntityTrilobite extends EntitySpeciesAlien implements IMob
 {
-    // it took down an Engineer in the movie Prometheus, welcome to the new Trilobite!
     public EntityTrilobite(World world)
     {
         super(world);
@@ -61,32 +60,30 @@ public class EntityTrilobite extends EntitySpeciesAlien implements IMob
     {
         super.onUpdate();
 
-        // disabled as they are sliding off of surfaces instead of climbing
-        /*
-         * if (this.isCollidedHorizontally) { this.motionY += 0.25F; }
-         */
+        if (this.isCollidedHorizontally)
+        {
+            this.motionY += 0.25F;
+        }
 
         this.fallDistance = 0F;
     }
 
-    // temporary sound override until ender23 has new sounds. the ticking is annoying
     @Override
     protected String getHurtSound()
     {
-        return AliensVsPredator.properties().SOUND_FACEHUGGER_HURT;
+        return Sounds.SOUND_FACEHUGGER_HURT.getKey();
     }
 
-    // temporary sound override until ender23 has new sounds. the ticking is annoying
     @Override
     protected String getDeathSound()
     {
-        return AliensVsPredator.properties().SOUND_CHESTBURSTER_BURST;
+        return Sounds.SOUND_CHESTBURSTER_BURST.getKey();
     }
 
     @Override
     protected String getLivingSound()
     {
-        return AliensVsPredator.properties().SOUND_FACEHUGGER_LIVING;
+        return Sounds.SOUND_FACEHUGGER_LIVING.getKey();
     }
 
     @Override

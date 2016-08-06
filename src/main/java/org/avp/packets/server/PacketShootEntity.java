@@ -25,7 +25,7 @@ public class PacketShootEntity implements IMessage, IMessageHandler<PacketShootE
     {
         this.entityId = entity != null ? entity.getEntityId() : -1;
         this.damage = itemFirearm.getAmmoType().getInflictionDamage();
-        this.sound = itemFirearm.getFireSound();
+        this.sound = itemFirearm.getFireSound().getKey();
     }
 
     @Override
@@ -53,7 +53,7 @@ public class PacketShootEntity implements IMessage, IMessageHandler<PacketShootE
 
             if (itemFirearm != null && itemFirearm.canSoundPlay())
             {
-                ctx.getServerHandler().playerEntity.worldObj.playSoundAtEntity(ctx.getServerHandler().playerEntity, packet.sound, 1F, 1F);
+                ctx.getServerHandler().playerEntity.worldObj.playSoundAtEntity(ctx.getServerHandler().playerEntity, packet.sound, 0.5F, 1F);
                 itemFirearm.setLastSoundPlayed(System.currentTimeMillis());
             }
 

@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.avp.DamageSources;
 
+import com.arisux.amdxlib.lib.game.GameSounds;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import net.minecraft.block.Block;
@@ -180,7 +182,7 @@ public class EntitySpear extends EntityItemStackProjectile
                             ++((EntityLivingBase) movingobjectposition.entityHit).arrowHitTimer;
                         }
 
-                        this.worldObj.playSoundAtEntity(this, "random.bowhit", 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
+                        GameSounds.fxBowHit.playSound(this, 1.0F, 1.2F / (this.rand.nextFloat() * 0.4F + 0.9F));
                     }
                     else
                     {
@@ -206,7 +208,7 @@ public class EntitySpear extends EntityItemStackProjectile
                     this.posX -= this.motionX / var20 * 0.05000000074505806D;
                     this.posY -= this.motionY / var20 * 0.05000000074505806D;
                     this.posZ -= this.motionZ / var20 * 0.05000000074505806D;
-                    this.worldObj.playSoundAtEntity(this, "random.bowhit", 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
+                    GameSounds.fxBowHit.playSound(this, 1.0F, 1.2F / (this.rand.nextFloat() * 0.4F + 0.9F));
                     this.inGround = true;
                     this.arrowShake = 7;
                 }
@@ -310,7 +312,7 @@ public class EntitySpear extends EntityItemStackProjectile
     @Override
     public void playHitSound()
     {
-        worldObj.playSoundAtEntity(this, "random.bowhit", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.9F));
+        GameSounds.fxBowHit.playSound(this, 1.0F, 1.0F / (this.rand.nextFloat() * 0.4F + 0.9F));
     }
 
     @Override

@@ -3,6 +3,7 @@ package org.avp.entities.mob;
 import java.util.Random;
 
 import org.avp.AliensVsPredator;
+import org.avp.Sounds;
 
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAISwimming;
@@ -55,19 +56,19 @@ public class EntityPraetorian extends EntityXenomorph
     @Override
     protected String getHurtSound()
     {
-        return AliensVsPredator.properties().SOUND_PRAETORIAN_HURT;
+        return Sounds.SOUND_PRAETORIAN_HURT.getKey();
     }
 
     @Override
     protected String getLivingSound()
     {
-        return AliensVsPredator.properties().SOUND_PRAETORIAN_LIVING;
+        return Sounds.SOUND_PRAETORIAN_LIVING.getKey();
     }
 
     @Override
     protected String getDeathSound()
     {
-        return AliensVsPredator.properties().SOUND_PRAETORIAN_DEATH;
+        return Sounds.SOUND_PRAETORIAN_DEATH.getKey();
     }
 
     @Override

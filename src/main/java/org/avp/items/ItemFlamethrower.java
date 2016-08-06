@@ -2,7 +2,7 @@ package org.avp.items;
 
 import java.util.List;
 
-import org.avp.AliensVsPredator;
+import org.avp.Sounds;
 import org.avp.entities.EntityFlame;
 
 import com.arisux.amdxlib.lib.world.entity.player.inventory.Inventories;
@@ -37,7 +37,7 @@ public abstract class ItemFlamethrower extends HookedItem
                 EntityFlame entity = new EntityFlame(worldObj, entityPlayer);
                 entity.setLocationAndAngles(entity.posX, entity.posY - 0.35, entity.posZ, entity.rotationYaw, entity.rotationPitch);
                 worldObj.spawnEntityInWorld(entity);
-                worldObj.playSoundEffect(entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ, AliensVsPredator.properties().SOUND_WEAPON_FLAMETHROWER, 0.5F, 0.5F);
+                Sounds.SOUND_WEAPON_FLAMETHROWER.playSound(entityPlayer, 1.0F, 1.0F);
             }
         }
 

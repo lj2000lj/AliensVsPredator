@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import org.avp.AliensVsPredator;
+import org.avp.Sounds;
 import org.avp.entities.tile.TileEntityHiveResin;
 
 import com.arisux.amdxlib.lib.world.CoordData;
@@ -76,19 +77,19 @@ public class EntityDrone extends EntityXenomorph
     @Override
     protected String getHurtSound()
     {
-        return AliensVsPredator.properties().SOUND_ALIEN_HURT;
+        return Sounds.SOUND_ALIEN_HURT.getKey();
     }
 
     @Override
     protected String getLivingSound()
     {
-        return AliensVsPredator.properties().SOUND_ALIEN_LIVING;
+        return Sounds.SOUND_ALIEN_LIVING.getKey();
     }
 
     @Override
     protected String getDeathSound()
     {
-        return AliensVsPredator.properties().SOUND_ALIEN_DEATH;
+        return Sounds.SOUND_ALIEN_DEATH.getKey();
     }
 
     @Override
