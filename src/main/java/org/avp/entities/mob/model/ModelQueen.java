@@ -584,11 +584,6 @@ public class ModelQueen extends Model
 
             if (queen.isInStasis)
             {
-                ModelOvamorph ovamorph = new ModelOvamorph();
-
-                AliensVsPredator.resources().models().OVAMORPH.bindTexture();
-                ovamorph.render();
-
                 OpenGL.pushMatrix();
                 {
                     OpenGL.translate(0, -0.05F, 1F - queen.getOvipositorSize());
