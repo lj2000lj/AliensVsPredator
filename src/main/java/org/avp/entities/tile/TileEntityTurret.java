@@ -314,7 +314,7 @@ public class TileEntityTurret extends TileEntityElectrical implements IDataDevic
         this.firingTimeout = this.maxFiringTimeout;
         EntityBullet entity = new EntityBullet(this.worldObj, this.getEntity(), this.targetEntity, 2F, 0.55D);
         entity.setPhysics(false);
-        entity.setLocationAndAngles(entity.posX - 0.5, entity.posY + 0.0, entity.posZ - 0.5, entity.rotationYaw, entity.rotationPitch);
+        entity.setLocationAndAngles(entity.posX - 0.5, entity.posY - 0.4, entity.posZ - 0.5, entity.rotationYaw, entity.rotationPitch);
         this.worldObj.spawnEntityInWorld(entity);
         this.worldObj.spawnParticle("largesmoke", xCoord, yCoord, zCoord, 1, 1, 1);
         Sounds.SOUND_WEAPON_M56SG.playSound(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
