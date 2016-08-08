@@ -1,10 +1,12 @@
 package org.avp.entities.ai.alien;
 
-import org.avp.entities.EntityAcidPool;
+import org.avp.entities.EntityLiquidPool;
+import org.avp.entities.extended.ExtendedEntityLivingBase;
 import org.avp.entities.mob.EntitySpeciesAlien;
 
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 
 public class EntitySelectorXenomorph implements IEntitySelector
 {
@@ -13,6 +15,23 @@ public class EntitySelectorXenomorph implements IEntitySelector
     @Override
     public boolean isEntityApplicable(Entity entity)
     {
-        return !(entity instanceof EntitySpeciesAlien) && !(entity instanceof EntityAcidPool);
+        if (entity instanceof EntitySpeciesAlien)
+            return false;
+        
+        if (entity instanceof EntityLiquidPool)
+            return false;
+        
+        if (entity instanceof EntityLivingBase)
+        {
+            EntityLivingBase livingBase = (EntityLivingBase) entity;
+            ExtendedEntityLivingBase properties = ExtendedEntityLivingBase.get(livingBase);
+            
+            if (properties.doesEntityContainEmbryo())
+            {
+                return false;
+            }
+        }
+        
+        return true;
     }
 }

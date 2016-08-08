@@ -16,6 +16,7 @@ import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
@@ -34,12 +35,11 @@ public abstract class EntityXenomorph extends EntitySpeciesAlien implements IMob
     {
         super(world);
         this.hitRange = 1;
-        this.jumpMovementFactor = 0.015F;
-        this.canClimb = false; // until EntityAIClimb can be re-worked, using isCollidedHorizontally code below for all Xenos
+        this.jumpMovementFactor = 0.045F;
+        this.canClimb = false;
         this.isDependant = true;
-        // this.getNavigator().setCanSwim(true);
-        // this.getNavigator().setAvoidsWater(true);
-        // this.tasks.addTask(0, new EntityAISwimming(this));
+        this.getNavigator().setCanSwim(true);
+        this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIQueenIdentificationTask(this));
         // this.tasks.addTask(1, new EntityAIClimb(this, 0.03F));
         this.tasks.addTask(8, new EntityAIWander(this, 0.8D));
@@ -89,19 +89,8 @@ public abstract class EntityXenomorph extends EntitySpeciesAlien implements IMob
     {
         super.onUpdate();
 
-//        if (this.getAttackTarget() != null)
-//        {
-//            ExtendedEntityLivingBase targetProperties = ExtendedEntityLivingBase.get(this.getAttackTarget());
-//            
-//            if (targetProperties.doesEntityContainEmbryo())
-//            {
-//                this.setAttackTarget(null);
-//            }
-//        }
-        
         this.fallDistance = 0F;
 
-        // temp fix for EntityAIClimb
         if (this.isCollidedHorizontally)
         {
             this.motionY += 0.25F;

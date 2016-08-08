@@ -99,7 +99,7 @@ public class EntityBullet extends Entity
         this.motionX = -MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
         this.motionZ = MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
         this.motionY = (-MathHelper.sin(this.rotationPitch / 180.0F * (float) Math.PI));
-        this.setArrowHeading(this.motionX, this.motionY, this.motionZ, velocity * 1.5F, 1.0F);
+        this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, velocity * 1.5F, 1.0F);
     }
 
     public EntityBullet(World world, Entity entity, Entity targetEntity, float velocity, double damage)
@@ -130,20 +130,20 @@ public class EntityBullet extends Entity
         this.motionZ = MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
         this.motionY = (-MathHelper.sin(this.rotationPitch / 180.0F * (float) Math.PI));
 
-        double d0 = targetEntity.posX - entity.posX;
-        double d1 = targetEntity.boundingBox.maxY - 0.2F - this.posY;
-        double d2 = targetEntity.posZ - entity.posZ;
-        double d3 = MathHelper.sqrt_double(d0 * d0 + d2 * d2);
+        double x = targetEntity.posX - entity.posX;
+        double y = targetEntity.boundingBox.maxY - this.posY;
+        double z = targetEntity.posZ - entity.posZ;
+        double v = MathHelper.sqrt_double(x * x + z * z);
 
-        if (d3 >= 1.0E-7D)
+        if (v >= 1.0E-7D)
         {
-            float f2 = (float) (Math.atan2(d2, d0) * 180.0D / Math.PI) - 90.0F;
-            float f3 = (float) (-(Math.atan2(d1, d3) * 180.0D / Math.PI));
-            double d4 = d0 / d3;
-            double d5 = d2 / d3;
-            this.setLocationAndAngles(entity.posX + d4, this.posY, entity.posZ + d5, f2, f3);
+            float yaw = (float) (Math.atan2(z, x) * 180.0D / Math.PI) - 90.0F;
+            float pitch = (float) (-(Math.atan2(y, v) * 180.0D / Math.PI));
+            double xOffset = x / v;
+            double zOffset = z / v;
+            this.setLocationAndAngles(entity.posX + xOffset, this.posY, entity.posZ + zOffset, yaw, pitch);
             this.yOffset = 0.0F;
-            this.setThrowableHeading(d0, d1, d2, velocity, damage);
+            this.setThrowableHeading(x, y, z, velocity, damage);
         }
     }
 
@@ -155,10 +155,10 @@ public class EntityBullet extends Entity
 
     public void setThrowableHeading(double posX, double posY, double posZ, float velocity, double damage)
     {
-        float f2 = MathHelper.sqrt_double(posX * posX + posY * posY + posZ * posZ);
-        posX /= f2;
-        posY /= f2;
-        posZ /= f2;
+        float v = MathHelper.sqrt_double(posX * posX + posY * posY + posZ * posZ);
+        posX /= v;
+        posY /= v;
+        posZ /= v;
         posX += this.rand.nextGaussian() * (this.rand.nextBoolean() ? -1 : 1) * 0.007499999832361937D * damage;
         posY += this.rand.nextGaussian() * (this.rand.nextBoolean() ? -1 : 1) * 0.007499999832361937D * damage;
         posZ += this.rand.nextGaussian() * (this.rand.nextBoolean() ? -1 : 1) * 0.007499999832361937D * damage;
@@ -168,30 +168,9 @@ public class EntityBullet extends Entity
         this.motionX = posX;
         this.motionY = posY;
         this.motionZ = posZ;
-        float f3 = MathHelper.sqrt_double(posX * posX + posZ * posZ);
+        float v2 = MathHelper.sqrt_double(posX * posX + posZ * posZ);
         this.prevRotationYaw = this.rotationYaw = (float) (Math.atan2(posX, posZ) * 180.0D / Math.PI);
-        this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(posY, f3) * 180.0D / Math.PI);
-        this.ticksInGround = 0;
-    }
-
-    public void setArrowHeading(double motionX, double motionY, double motionZ, float velocity, float damage)
-    {
-        float f2 = MathHelper.sqrt_double(motionX * motionX + motionY * motionY + motionZ * motionZ);
-        motionX /= f2;
-        motionY /= f2;
-        motionZ /= f2;
-        motionX += this.rand.nextGaussian() * 0.007499999832361937D * damage;
-        motionY += this.rand.nextGaussian() * 0.007499999832361937D * damage;
-        motionZ += this.rand.nextGaussian() * 0.007499999832361937D * damage;
-        motionX *= velocity;
-        motionY *= velocity;
-        motionZ *= velocity;
-        this.motionX = motionX;
-        this.motionY = motionY;
-        this.motionZ = motionZ;
-        float f3 = MathHelper.sqrt_double(motionX * motionX + motionZ * motionZ);
-        this.prevRotationYaw = this.rotationYaw = (float) (Math.atan2(motionX, motionZ) * 180.0D / Math.PI);
-        this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(motionY, f3) * 180.0D / Math.PI);
+        this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(posY, v2) * 180.0D / Math.PI);
         this.ticksInGround = 0;
     }
 

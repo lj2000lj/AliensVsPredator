@@ -32,6 +32,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
+//TODO: Add IEntitySelector
 public class EntityFacehugger extends EntitySpeciesAlien implements IMob
 {
     private Sorter facehugTargetSorter;
@@ -44,6 +45,7 @@ public class EntityFacehugger extends EntitySpeciesAlien implements IMob
         super(world);
         this.setSize(0.8F, 0.8F);
         this.experienceValue = 10;
+        this.jumpMovementFactor = 0.045F;
         this.getNavigator().setCanSwim(true);
         this.getNavigator().setAvoidsWater(true);
         this.facehugTargetSorter = new EntityAINearestAttackableTarget.Sorter(this);
@@ -136,7 +138,7 @@ public class EntityFacehugger extends EntitySpeciesAlien implements IMob
     {
         if (this.isCollidedHorizontally && this.isFertile())
         {
-            this.motionY += 0.15F;
+//            this.motionY += 0.12F;
         }
     }
 
@@ -174,6 +176,7 @@ public class EntityFacehugger extends EntitySpeciesAlien implements IMob
     public void onUpdate()
     {
         super.onUpdate();
+        this.jumpMovementFactor = 0.2F;
 
         this.findTargets();
         this.negateFallDamage();

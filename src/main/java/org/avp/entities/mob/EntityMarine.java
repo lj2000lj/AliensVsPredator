@@ -5,8 +5,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.avp.AliensVsPredator;
 import org.avp.Sounds;
-import org.avp.entities.EntityAcidPool;
 import org.avp.entities.EntityBullet;
+import org.avp.entities.EntityLiquidPool;
 import org.avp.util.MarineTypes;
 
 import net.minecraft.command.IEntitySelector;
@@ -73,7 +73,7 @@ public class EntityMarine extends EntityCreature implements IMob, IRangedAttackM
         if (entity instanceof EntityXenomorph)
             return true;
 
-        if (entity instanceof EntityAcidPool)
+        if (entity instanceof EntityLiquidPool)
             return false;
 
         if (entity instanceof EntityPlayer)

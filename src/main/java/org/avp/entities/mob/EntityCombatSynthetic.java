@@ -3,10 +3,9 @@ package org.avp.entities.mob;
 import org.avp.AliensVsPredator;
 import org.avp.ItemHandler;
 import org.avp.Sounds;
-import org.avp.entities.EntityAcidPool;
 import org.avp.entities.EntityBullet;
 import org.avp.entities.EntityLiquidLatexPool;
-import org.avp.items.ItemFirearm;
+import org.avp.entities.EntityLiquidPool;
 import org.avp.util.IFacehugSelector;
 
 import com.arisux.amdxlib.lib.world.entity.player.inventory.Inventories;
@@ -41,8 +40,9 @@ public class EntityCombatSynthetic extends EntityCreature implements IMob, IRang
     public EntityCombatSynthetic(World word)
     {
         super(word);
+        this.setSize(1, 2);
         this.experienceValue = 40;
-        this.aiRangedAttack = new EntityAIArrowAttack(this, 0.4D, (int)((ItemFirearm) AliensVsPredator.items().itemM41A).getFireRate(), 24);
+        this.aiRangedAttack = new EntityAIArrowAttack(this, 0.4D, 8, 24);
         this.dataWatcher.addObject(18, new Integer(15));
         this.dataWatcher.addObject(17, "");
         this.dataWatcher.addObject(16, Byte.valueOf((byte) 0));
@@ -105,13 +105,18 @@ public class EntityCombatSynthetic extends EntityCreature implements IMob, IRang
     @Override
     public int getTotalArmorValue()
     {
-        return 20;
+        return 5;
     }
 
     @Override
     public void onUpdate()
     {
         super.onUpdate();
+
+        if (this.getAttackTarget() != null && this.worldObj.getWorldTime() % 20 == 0 && this.aiRangedAttack.shouldExecute() && this.canEntityBeSeen(this.getAttackTarget()))
+        {
+            Sounds.SOUND_WEAPON_PULSERIFLE.playSound(this);
+        }
     }
 
     @Override
@@ -127,7 +132,6 @@ public class EntityCombatSynthetic extends EntityCreature implements IMob, IRang
         {
             EntityBullet entityBullet = new EntityBullet(this.worldObj, this, targetEntity, 10F, 0.0000001F);
             this.worldObj.spawnEntityInWorld(entityBullet);
-            Sounds.fxPulserifle.playSound(this);
             this.worldObj.spawnParticle("largesmoke", this.posX, this.posY + this.getEyeHeight(), this.posZ, 1, 1, 1);
         }
     }
@@ -175,7 +179,7 @@ public class EntityCombatSynthetic extends EntityCreature implements IMob, IRang
         if (entity instanceof EntityXenomorph)
             return true;
 
-        if (entity instanceof EntityAcidPool)
+        if (entity instanceof EntityLiquidPool)
             return false;
 
         if (entity instanceof EntityPlayer)
