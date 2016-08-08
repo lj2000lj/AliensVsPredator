@@ -55,7 +55,7 @@ public class VardaStormHandler
 
                         AliensVsPredator.network().sendToAll(new PacketVardaStormMoveEntity(Integer.valueOf(entity.getEntityId())));
 
-                        entity.attackEntityFrom(DamageSources.causeSilicaStormDamage(entity), 0.5F);
+                        entity.attackEntityFrom(DamageSources.silicaStorm, 0.5F);
                     }
                 }
             }

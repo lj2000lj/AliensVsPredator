@@ -92,7 +92,7 @@ public class EntityFlame extends EntityThrowable
             if (entityHit != null && !entityHit.isImmuneToFire())
             {
                 entityHit.setFire(10);
-                entityHit.attackEntityFrom(DamageSources.causeFlamethrowerDamage(this, entityHit), 4F);
+                entityHit.attackEntityFrom(DamageSources.flamethrower, 4F);
             }
         }
 

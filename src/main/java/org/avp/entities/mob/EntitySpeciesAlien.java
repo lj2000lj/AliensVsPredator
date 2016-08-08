@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import org.avp.AliensVsPredator;
+import org.avp.DamageSources;
 import org.avp.entities.EntityAcidPool;
 import org.avp.packets.client.PacketJellyLevelUpdate;
 import org.avp.util.EvolutionType;
@@ -24,7 +25,7 @@ import net.minecraft.world.World;
 public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IHiveSignature
 {
     private UUID signature;
-    private int jellyLevel;
+    private int  jellyLevel;
 
     public EntitySpeciesAlien(World world)
     {
@@ -94,10 +95,14 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IHiv
 
         if (!this.worldObj.isRemote)
         {
-            EntityAcidPool entity = new EntityAcidPool(this.worldObj);
-            entity.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
-            this.worldObj.spawnEntityInWorld(entity);
-
+            if (damagesource != DamageSource.onFire && damagesource != DamageSource.inFire && damagesource != DamageSources.flamethrower)
+            {
+                System.out.println(damagesource);
+                EntityAcidPool entity = new EntityAcidPool(this.worldObj);
+                entity.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
+                this.worldObj.spawnEntityInWorld(entity);
+            }
+            
             if (this instanceof EntityQueen)
             {
                 int randomJelly = this.rand.nextInt(196);
@@ -163,7 +168,7 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IHiv
             }
         }
     }
-    
+
     public boolean canMoveToJelly()
     {
         return true;

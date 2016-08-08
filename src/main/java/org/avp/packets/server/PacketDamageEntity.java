@@ -52,7 +52,7 @@ public class PacketDamageEntity implements IMessage, IMessageHandler<PacketDamag
             if (entity != null)
             {
                 entity.hurtResistantTime = 0;
-                entity.attackEntityFrom(DamageSources.causeLaserMineDamage(entitySource, entity), packet.damage);
+                entity.attackEntityFrom(DamageSources.causeLaserMineDamage(entitySource, entitySource), packet.damage);
             }
         }
 

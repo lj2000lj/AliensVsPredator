@@ -2,7 +2,6 @@ package org.avp;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
 
 public class DamageSources extends DamageSource
@@ -25,19 +24,9 @@ public class DamageSources extends DamageSource
         super(source);
     }
 
-    public static DamageSource causeSilicaStormDamage(Entity entity)
-    {
-        return (new EntityDamageSource("silicaStorm", entity)).setDifficultyScaled().setDamageBypassesArmor().setDamageIsAbsolute();
-    }
-
     public static DamageSource causeLaserMineDamage(Entity entityLaserMine, Entity entity)
     {
         return (new EntityDamageSourceIndirect(laserMine.getDamageType(), entityLaserMine, entity)).setProjectile().setExplosion();
-    }
-
-    public static DamageSource causeFlamethrowerDamage(Entity entityFlame, Entity entity)
-    {
-        return (new EntityDamageSourceIndirect(flamethrower.getDamageType(), entityFlame, entity)).setProjectile();
     }
 
     public static DamageSource causePlasmaCasterDamage(Entity sourceEntity, Entity entity)
@@ -65,22 +54,12 @@ public class DamageSources extends DamageSource
         return (new EntityDamageSourceIndirect(bullet.getDamageType(), sourceEntity, entity)).setProjectile();
     }
 
-    public static DamageSource causeVardaAtmosphereDamage(Entity entity)
-    {
-        return new EntityDamageSource(vardaAtmosphere.getDamageType(), entity).setDamageBypassesArmor();
-    }
-
     public static DamageSource causeChestbursterDamage(Entity sourceEntity, Entity entity)
     {
         return (new EntityDamageSourceIndirect(chestburster.getDamageType(), sourceEntity, entity)).setDamageIsAbsolute().setDamageBypassesArmor();
     }
 
-    public static DamageSource causeAcidicDamage(Entity sourceEntity, Entity entity)
-    {
-        return (new EntityDamageSourceIndirect(acid.getDamageType(), sourceEntity, entity)).setDamageBypassesArmor();
-    }
-
-    public static DamageSource causeAcidicProjectile(Entity sourceEntity, Entity entity)
+    public static DamageSource causeAcidicProjectileDamage(Entity sourceEntity, Entity entity)
     {
         return (new EntityDamageSourceIndirect(acidProjectile.getDamageType(), sourceEntity, entity)).setProjectile();
     }

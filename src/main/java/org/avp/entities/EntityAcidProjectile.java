@@ -306,11 +306,11 @@ public class EntityAcidProjectile extends Entity implements IProjectile
 
                     if (this.shootingEntity == null)
                     {
-                        damagesource = DamageSources.causeAcidicDamage(this, this);
+                        damagesource = DamageSources.acidProjectile;
                     }
                     else
                     {
-                        damagesource = DamageSources.causeAcidicDamage(this, this.shootingEntity);
+                        damagesource = DamageSources.causeAcidicProjectileDamage(this, this.shootingEntity);
                     }
 
                     if (this.isBurning() && !(movingobjectposition.entityHit instanceof EntityEnderman))
