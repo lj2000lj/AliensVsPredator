@@ -31,7 +31,7 @@ public class EntityAcidPool extends EntityCreature implements IMob
         this.tasks.addTask(0, new EntityAIMeltBlock(this, -1));
         this.applyTargets();
     }
-
+    
     private void applyTargets()
     {
         safeList.add(EntitySpeciesAlien.class);
@@ -112,6 +112,9 @@ public class EntityAcidPool extends EntityCreature implements IMob
     public void onUpdate()
     {
         super.onUpdate();
+        
+        this.motionX = 0;
+        this.motionZ = 0;
 
         if (!this.worldObj.isRemote)
         {
