@@ -27,6 +27,8 @@ import com.arisux.amdxlib.lib.world.CoordData;
 import com.arisux.amdxlib.lib.world.entity.Entities;
 import com.arisux.amdxlib.lib.world.storage.NBTStorage;
 
+import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.common.registry.EntityRegistry.EntityRegistration;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -51,35 +53,35 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityTurret extends TileEntityElectrical implements IDataDevice, IVoltageReceiver
 {
-    private long fireRate;
-    private boolean ammoDisplayEnabled;
-    private boolean isFiring;
-    private int range;
-    private int defaultRunCycles;
-    private int runCycles;
-    private int curAmmo;
-    private int maxAmmo;
-    private int curRounds;
-    private int maxRounds;
-    private int direction;
-    private int firingTimeout;
-    private int maxFiringTimeout;
-    private float deltaLookYaw;
-    private float deltaLookPitch;
-    private float focusPitch;
-    private float focusYaw;
-    private float rotationYaw;
-    private float rotationPitch;
+    private long                               fireRate;
+    private boolean                            ammoDisplayEnabled;
+    private boolean                            isFiring;
+    private int                                range;
+    private int                                defaultRunCycles;
+    private int                                runCycles;
+    private int                                curAmmo;
+    private int                                maxAmmo;
+    private int                                curRounds;
+    private int                                maxRounds;
+    private int                                direction;
+    private int                                firingTimeout;
+    private int                                maxFiringTimeout;
+    private float                              deltaLookYaw;
+    private float                              deltaLookPitch;
+    private float                              focusPitch;
+    private float                              focusYaw;
+    private float                              rotationYaw;
+    private float                              rotationPitch;
     private ArrayList<Class<? extends Entity>> dangerousTargets = new ArrayList<Class<? extends Entity>>();
-    public InventoryBasic inventoryAmmo;
-    public InventoryBasic inventoryExpansion;
-    public InventoryBasic inventoryDrive;
-    private Entity targetEntity;
-    private Entity turretEntity;
-    private ContainerTurret container;
-    private CoordData focusPoint;
-    private Item itemAmmo;
-    public int beamColor = 0xFFFF0000;
+    public InventoryBasic                      inventoryAmmo;
+    public InventoryBasic                      inventoryExpansion;
+    public InventoryBasic                      inventoryDrive;
+    private Entity                             targetEntity;
+    private Entity                             turretEntity;
+    private ContainerTurret                    container;
+    private CoordData                          focusPoint;
+    private Item                               itemAmmo;
+    public int                                 beamColor        = 0xFFFF0000;
 
     public TileEntityTurret()
     {
@@ -123,7 +125,7 @@ public class TileEntityTurret extends TileEntityElectrical implements IDataDevic
             this.getEntity().setLocationAndAngles(this.xCoord + getEntity().width / 2, this.yCoord + 1, this.zCoord + getEntity().width / 2, this.rotationYaw, this.rotationPitch);
         }
 
-        if (this.getSourceVoltage() > 0)
+        if (this.getVoltage() > 0)
         {
             this.firingTimeout = this.firingTimeout > 0 ? this.firingTimeout - 1 : this.firingTimeout;
             this.pickupItemstacks();
@@ -481,7 +483,15 @@ public class TileEntityTurret extends TileEntityElectrical implements IDataDevic
 
         for (Class<? extends Entity> c : this.getDangerousTargets())
         {
-            entityIDs.add(String.valueOf(EntityList.getEntityID(Entities.constructEntity(worldObj, c))));
+            if (c != null)
+            {
+                EntityRegistration er = EntityRegistry.instance().lookupModSpawn(c, true);
+
+                if (er != null)
+                {
+                    entityIDs.add(String.valueOf(er.getEntityName()));
+                }
+            }
         }
 
         nbt.setTag("Targets", NBTStorage.newStringNBTList(entityIDs));
@@ -496,9 +506,9 @@ public class TileEntityTurret extends TileEntityElectrical implements IDataDevic
 
         for (int i = 0; i < nbttaglist.tagCount(); i++)
         {
-            int id = Integer.valueOf(nbttaglist.getStringTagAt(i));
+            String id = nbttaglist.getStringTagAt(i);
 
-            Class<? extends Entity> c = EntityList.getClassFromID(id);
+            Class<? extends Entity> c = (Class<? extends Entity>) EntityList.stringToClassMapping.get(id);
             this.setDangerous(c);
             builder.append(id + "-");
         }
@@ -510,9 +520,9 @@ public class TileEntityTurret extends TileEntityElectrical implements IDataDevic
 
         for (int i = 0; i < nbttaglist.tagCount(); i++)
         {
-            int id = Integer.valueOf(nbttaglist.getStringTagAt(i));
+            String id = nbttaglist.getStringTagAt(i);
 
-            Class<? extends Entity> c = EntityList.getClassFromID(id);
+            Class<? extends Entity> c = (Class<? extends Entity>) EntityList.stringToClassMapping.get(id);
             this.setDangerous(c);
             builder.append(id + "-");
         }
@@ -786,7 +796,15 @@ public class TileEntityTurret extends TileEntityElectrical implements IDataDevic
 
                 for (Class<? extends Entity> c : this.getDangerousTargets())
                 {
-                    entityIDs.add(String.valueOf(EntityList.getEntityID(Entities.constructEntity(worldObj, c))));
+                    if (c != null)
+                    {
+                        EntityRegistration er = EntityRegistry.instance().lookupModSpawn(c, true);
+
+                        if (er != null)
+                        {
+                            entityIDs.add(String.valueOf(er.getEntityName()));
+                        }
+                    }
                 }
 
                 nbt.setTag("Targets", NBTStorage.newStringNBTList(entityIDs));
