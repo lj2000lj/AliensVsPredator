@@ -37,8 +37,9 @@ public abstract class ItemFlamethrower extends HookedItem
                 EntityFlame entity = new EntityFlame(worldObj, entityPlayer);
                 entity.setLocationAndAngles(entity.posX, entity.posY - 0.35, entity.posZ, entity.rotationYaw, entity.rotationPitch);
                 worldObj.spawnEntityInWorld(entity);
-                Sounds.SOUND_WEAPON_FLAMETHROWER.playSound(entityPlayer, 1.0F, 1.0F);
             }
+
+            Sounds.SOUND_WEAPON_FLAMETHROWER.playSound(entityPlayer);
         }
 
         return itemstack;
