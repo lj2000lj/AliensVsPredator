@@ -168,11 +168,11 @@ public class EntitySpear extends EntityItemStackProjectile
 
                     if (this.shootingEntity == null)
                     {
-                        damagesource = DamageSources.causeShurikenDamage(this, this);
+                        damagesource = DamageSources.causeShurikenDamage(this);
                     }
                     else
                     {
-                        damagesource = DamageSources.causeShurikenDamage(this, this.shootingEntity);
+                        damagesource = DamageSources.causeShurikenDamage(this.shootingEntity);
                     }
 
                     if (movingobjectposition.entityHit.attackEntityFrom(damagesource, var23))
@@ -272,11 +272,11 @@ public class EntitySpear extends EntityItemStackProjectile
 
             if (shootingEntity == null)
             {
-                damagesource = DamageSources.causeSpearDamage(this, this);
+                damagesource = DamageSources.causeSpearDamage(this);
             }
             else
             {
-                damagesource = DamageSources.causeSpearDamage(this, shootingEntity);
+                damagesource = DamageSources.causeSpearDamage(this.shootingEntity);
             }
 
             if (entity.attackEntityFrom(damagesource, damage + 1))

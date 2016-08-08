@@ -2,6 +2,7 @@ package org.avp.entities;
 
 import java.util.List;
 
+import org.avp.DamageSources;
 import org.avp.entities.mob.EntityMarine;
 
 import com.arisux.amdxlib.lib.game.GameSounds;
@@ -11,7 +12,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
@@ -36,7 +36,6 @@ public class EntityBullet extends Entity
     private boolean arrowCritical;
     private boolean physics;
     public Entity shootingEntity;
-    public EntityArrow entityarrow;
     public double damage;
 
     public EntityBullet(World world)
@@ -366,7 +365,7 @@ public class EntityBullet extends Entity
                         attackDamage += this.rand.nextInt(attackDamage / 2 + 2);
                     }
 
-                    DamageSource damagesource = this.shootingEntity == null ? DamageSource.causeArrowDamage(this.entityarrow, this) : DamageSource.causeArrowDamage(this.entityarrow, this.shootingEntity);
+                    DamageSource damagesource = this.shootingEntity == null ? DamageSources.causeBulletDamage(this) : DamageSources.bullet;
                     movingobjectposition.entityHit.hurtResistantTime = 0;
 
                     if (movingobjectposition.entityHit instanceof EntityLivingBase)

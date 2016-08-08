@@ -1,5 +1,6 @@
 package org.avp.packets.server;
 
+import org.avp.DamageSources;
 import org.avp.items.ItemFirearm;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
@@ -8,7 +9,6 @@ import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.DamageSource;
 
 public class PacketShootEntity implements IMessage, IMessageHandler<PacketShootEntity, PacketShootEntity>
 {
@@ -64,7 +64,7 @@ public class PacketShootEntity implements IMessage, IMessageHandler<PacketShootE
                 if (entity != null)
                 {
                     entity.hurtResistantTime = 0;
-                    entity.attackEntityFrom(DamageSource.generic, (float) packet.damage);
+                    entity.attackEntityFrom(DamageSources.causeBulletDamage(ctx.getServerHandler().playerEntity), (float) packet.damage);
                 }
             }
         }

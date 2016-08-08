@@ -127,11 +127,11 @@ public class EntitySmartDisc extends EntityProjectile
 
                 if (this.shootingEntity == null)
                 {
-                    damagesource = DamageSources.causeSmartDiscDamage(this, this);
+                    damagesource = DamageSources.causeSmartDiscDamage(this);
                 }
                 else
                 {
-                    damagesource = DamageSources.causeSmartDiscDamage(this, this.shootingEntity);
+                    damagesource = DamageSources.causeSmartDiscDamage(this.shootingEntity);
                 }
 
                 if (entity.attackEntityFrom(damagesource, 5.0F))
