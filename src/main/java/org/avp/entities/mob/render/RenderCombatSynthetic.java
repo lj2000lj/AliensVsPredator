@@ -9,9 +9,9 @@ import org.lwjgl.opengl.GL11;
 
 import com.arisux.amdxlib.lib.client.Model;
 import com.arisux.amdxlib.lib.client.RenderLivingWrapper;
+import com.arisux.amdxlib.lib.client.SpecialModelBiped;
 import com.arisux.amdxlib.lib.client.render.OpenGL;
 
-import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.EntityLivingBase;
 
 public class RenderCombatSynthetic extends RenderLivingWrapper implements IFaceMountable
@@ -22,9 +22,9 @@ public class RenderCombatSynthetic extends RenderLivingWrapper implements IFaceM
     }
 
     @Override
-    protected void preRenderCallback(EntityLivingBase par1EntityLivingBase, float partialTicks)
+    protected void preRenderCallback(EntityLivingBase base, float partialTicks)
     {
-        super.preRenderCallback(par1EntityLivingBase, partialTicks);
+        super.preRenderCallback(base, partialTicks);
     }
 
     @Override
@@ -34,9 +34,9 @@ public class RenderCombatSynthetic extends RenderLivingWrapper implements IFaceM
 
         float glScale = 1.2F;
 
-        if (this.mainModel != null && this.mainModel instanceof ModelBiped)
+        if (this.mainModel != null && this.mainModel instanceof SpecialModelBiped)
         {
-            ModelBiped model = (ModelBiped) this.mainModel;
+            SpecialModelBiped model = (SpecialModelBiped) this.mainModel;
 
             OpenGL.pushMatrix();
             {

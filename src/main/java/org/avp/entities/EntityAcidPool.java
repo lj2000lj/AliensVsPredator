@@ -1,27 +1,19 @@
 package org.avp.entities;
 
-import java.util.ArrayList;
-
-import org.avp.DamageSources;
 import org.avp.entities.ai.EntityAIMeltBlock;
-import org.avp.entities.mob.EntitySpeciesAlien;
 
+import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
-public class EntityAcidPool extends EntityCreature implements IMob
+public class EntityAcidPool extends EntityLiquidPool implements IMob, IEntitySelector
 {
-    private int lifetime = 600;
-    private ArrayList<Class<? extends Entity>> targetList = new ArrayList<Class<? extends Entity>>();
-    private ArrayList<Class<? extends Entity>> safeList = new ArrayList<Class<? extends Entity>>();
-
     public EntityAcidPool(World world)
     {
         super(world);
@@ -29,33 +21,15 @@ public class EntityAcidPool extends EntityCreature implements IMob
         this.ignoreFrustumCheck = true;
         this.setSize(0.08F, 0.08F);
         this.tasks.addTask(0, new EntityAIMeltBlock(this, -1));
-        this.applyTargets();
+        this.targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, Entity.class, /** targetChance **/ 0, /** shouldCheckSight **/ false, /** nearbyOnly **/ false, this));
     }
     
-    private void applyTargets()
+    @Override
+    public boolean isEntityApplicable(Entity entity)
     {
-        safeList.add(EntitySpeciesAlien.class);
-        safeList.add(EntityAcidPool.class);
-    }
-
-    public boolean isAcceptableTarget(Entity entity)
-    {
-        for (Class<? extends Entity> entityClass : safeList)
-        {
-            if (entityClass.isInstance(entity))
-            {
-                return false;
-            }
-        }
-
-        for (Class<? extends Entity> entityClass : targetList)
-        {
-            if (entityClass.isInstance(entity))
-            {
-                return true;
-            }
-        }
-
+        if (entity instanceof EntityLiquidPool)
+            return false;
+        
         return true;
     }
 
@@ -98,7 +72,7 @@ public class EntityAcidPool extends EntityCreature implements IMob
     }
 
     @Override
-    public boolean isInRangeToRenderDist(double var1)
+    public boolean isInRangeToRenderDist(double range)
     {
         return true;
     }
@@ -116,18 +90,6 @@ public class EntityAcidPool extends EntityCreature implements IMob
         this.motionX = 0;
         this.motionZ = 0;
 
-        if (!this.worldObj.isRemote)
-        {
-            double range = 1.2;
-            EntityLivingBase target = (EntityLivingBase) (this.worldObj.findNearestEntityWithinAABB(EntityLivingBase.class, this.boundingBox.expand(range, 0.1D, range), this));
-
-            if (target != null && isAcceptableTarget(target))
-            {
-                this.setAttackTarget(target);
-                target.attackEntityFrom(DamageSources.causeAcidicDamage(this, target), 4F);
-            }
-        }
-
         if (worldObj.isRemote && worldObj.getWorldTime() % 4 <= 0)
         {
             this.worldObj.spawnParticle("smoke", this.posX + this.rand.nextDouble(), this.posY + this.rand.nextDouble(), this.posZ + this.rand.nextDouble(), 0.0D, 0.0D, 0.0D);
@@ -143,19 +105,19 @@ public class EntityAcidPool extends EntityCreature implements IMob
     }
 
     @Override
-    public void onCollideWithPlayer(EntityPlayer var1)
+    public void onCollideWithPlayer(EntityPlayer player)
     {
         if (!this.worldObj.isRemote)
         {
-            byte b0 = 14;
-            var1.addPotionEffect(new PotionEffect(Potion.poison.id, b0 * 20, 0));
+            byte ticks = 14;
+            player.addPotionEffect(new PotionEffect(Potion.poison.id, ticks * 20, 0));
         }
     }
 
     @Override
-    protected void attackEntity(Entity entity, float f)
+    protected void attackEntity(Entity entity, float damage)
     {
-        super.attackEntity(entity, f);
+        super.attackEntity(entity, damage);
     }
 
     public int getLifetime()

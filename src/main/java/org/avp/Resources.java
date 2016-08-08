@@ -154,7 +154,7 @@ public class Resources
         public final TexturedModel<SpecialModelBiped>         BIPED                          = new TexturedModel(new SpecialModelBiped(), new Texture(AbstractClientPlayer.locationStevePng));
         public final TexturedModel<ModelLaserMine>            LASER_MINE                     = new TexturedModel(new ModelLaserMine(), new Texture(AliensVsPredator.ID, "textures/misc/proximity-mine.png"));
         public final TexturedModel<ModelDNASynthesizer>       DNA_SYNTHESIZER                = new TexturedModel(new ModelDNASynthesizer(), new Texture(AliensVsPredator.ID, "textures/tile/dna-synthesizer.png"));
-        public final TriangulatedWavefrontModel             M577_APC                       = AMDXLib.loadWavefrontModel(AliensVsPredator.class, AliensVsPredator.ID, "m577apc", "/assets/avp/models/m577apc");
+        public final TriangulatedWavefrontModel               M577_APC                       = AMDXLib.loadWavefrontModel(AliensVsPredator.class, AliensVsPredator.ID, "m577apc", "/assets/avp/models/m577apc");
     }
 
     public final Texture SKY_VARDA_CLOUDS         = new Texture(AliensVsPredator.ID, "textures/misc/varda-clouds.png");
@@ -170,7 +170,8 @@ public class Resources
     public final Texture XENO2                    = new Texture(AliensVsPredator.ID, "textures/armor/xeno_2.png");
     public final Texture MARINE1                  = new Texture(AliensVsPredator.ID, "textures/armor/marine_1.png");
     public final Texture MARINE2                  = new Texture(AliensVsPredator.ID, "textures/armor/marine_2.png");
-    public final Texture ACID_POOL                = new Texture(AliensVsPredator.ID, "textures/misc/renderacid.png");
+    public final Texture ACID_POOL                = new Texture(AliensVsPredator.ID, "textures/misc/acidpool.png");
+    public final Texture LIQUID_POOL              = new Texture(AliensVsPredator.ID, "textures/misc/liquidpool.png");
     public final Texture DISC                     = new Texture(AliensVsPredator.ID, "textures/misc/disc.png");
     public final Texture SHURIKEN                 = new Texture(AliensVsPredator.ID, "textures/misc/shuriken.png");
     public final Texture BLUR_CELTIC_HUD          = new Texture(AliensVsPredator.ID, "textures/misc/celtic-helm-overlay.png");

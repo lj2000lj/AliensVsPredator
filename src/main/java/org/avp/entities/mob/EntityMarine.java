@@ -1,6 +1,5 @@
 package org.avp.entities.mob;
 
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -10,15 +9,13 @@ import org.avp.entities.EntityAcidPool;
 import org.avp.entities.EntityBullet;
 import org.avp.util.MarineTypes;
 
-import com.arisux.amdxlib.lib.world.entity.Entities;
-
+import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIArrowAttack;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
@@ -33,11 +30,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class EntityMarine extends EntityCreature implements IMob, IRangedAttackMob
+public class EntityMarine extends EntityCreature implements IMob, IRangedAttackMob, IEntitySelector
 {
     private MarineTypes marineType;
-    private ArrayList<Class<? extends Entity>> targetList = new ArrayList<Class<? extends Entity>>();
-    private ArrayList<Class<? extends Entity>> safeList = new ArrayList<Class<? extends Entity>>();
     private EntityAIBase aiRangedAttack;
     private boolean isFiring;
     private long lastShotFired;
@@ -56,14 +51,49 @@ public class EntityMarine extends EntityCreature implements IMob, IRangedAttackM
         this.tasks.addTask(3, new EntityAISwimming(this));
         this.tasks.addTask(4, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
         this.tasks.addTask(5, new EntityAILookIdle(this));
-        this.targetTasks.addTask(0, new EntityAIAttackOnCollide(this, 0.8D, true));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityGolem.class, /** targetChance **/
-            0, /** shouldCheckSight **/
-            false, /** nearbyOnly **/
-            false));
-        this.applyTargets();
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, Entity.class, /** targetChance **/ 0, /** shouldCheckSight **/ false, /** nearbyOnly **/ false, this));
     }
+
+    @Override
+    public boolean isEntityApplicable(Entity entity)
+    {
+        if (entity instanceof EntitySpeciesAlien)
+            return true;
+
+        if (entity instanceof EntityMob)
+            return true;
+
+        if (entity instanceof EntityYautja)
+            return true;
+
+        if (entity instanceof EntityGolem)
+            return true;
+
+        if (entity instanceof EntityXenomorph)
+            return true;
+
+        if (entity instanceof EntityAcidPool)
+            return false;
+
+        if (entity instanceof EntityPlayer)
+            return false;
+
+        if (entity instanceof EntityMarine)
+            return false;
+
+        if (entity instanceof EntityCombatSynthetic)
+            return false;
+        
+        return false;
+    }
+
+    @Override
+    protected boolean isAIEnabled()
+    {
+        return true;
+    }
+    
 
     public MarineTypes getMarineType()
     {
@@ -76,37 +106,6 @@ public class EntityMarine extends EntityCreature implements IMob, IRangedAttackM
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.6499999761581421D);
-    }
-
-    private void applyTargets()
-    {
-        targetList.add(EntitySpeciesAlien.class);
-        targetList.add(EntityMob.class);
-        targetList.add(EntityYautja.class);
-        safeList.add(EntityAcidPool.class);
-        safeList.add(EntityPlayer.class);
-        safeList.add(EntityMarine.class);
-    }
-
-    public boolean isAcceptableTarget(Entity entity)
-    {
-        for (Class<? extends Entity> entityClass : safeList)
-        {
-            if (entityClass.isInstance(entity))
-            {
-                return false;
-            }
-        }
-
-        for (Class<? extends Entity> entityClass : targetList)
-        {
-            if (entityClass.isInstance(entity))
-            {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     @Override
@@ -151,12 +150,6 @@ public class EntityMarine extends EntityCreature implements IMob, IRangedAttackM
     }
 
     @Override
-    protected boolean isAIEnabled()
-    {
-        return true;
-    }
-
-    @Override
     protected void updateAITick()
     {
         super.updateAITick();
@@ -184,35 +177,6 @@ public class EntityMarine extends EntityCreature implements IMob, IRangedAttackM
         if (this.worldObj.isRemote)
         {
             this.isFiring = Boolean.parseBoolean(getDataWatcher().getWatchableObjectString(17));
-        }
-
-        if (this.getAttackTarget() != null && (this.getAttackTarget().isDead || !isAcceptableTarget(this.getAttackTarget()) || this.getNavigator().tryMoveToEntityLiving(this.getAttackTarget(), this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getAttributeValue()) || !Entities.canEntityBeSeenBy(this.getAttackTarget(), this)))
-        {
-            this.setAttackTarget(null);
-        }
-
-        if (this.getAttackTarget() == null)
-        {
-            // TODO: This is bad. Lots of lag is induced by this. This needs to be redone.
-            // @SuppressWarnings("all")
-            // ArrayList<EntityLivingBase> possibleTargets = (ArrayList<EntityLivingBase>) Entities.getEntitiesInCoordsRange(this.worldObj, EntityLivingBase.class, new CoordData(this), 16);
-            // EntityLivingBase target = null;
-            //
-            // for (EntityLivingBase possibleTarget : possibleTargets)
-            // {
-            // if (possibleTarget != null && isAcceptableTarget(possibleTarget) && this.getNavigator().tryMoveToEntityLiving(possibleTarget, 0.65D))
-            // {
-            // if (this.getEntitySenses().canSee(possibleTarget))
-            // {
-            // target = possibleTarget;
-            // }
-            // }
-            // }
-            //
-            // if (target != null)
-            // {
-            // this.setAttackTarget(target);
-            // }
         }
     }
 

@@ -10,6 +10,7 @@ import org.avp.entities.EntityAcidProjectile;
 import org.avp.entities.EntityFlame;
 import org.avp.entities.EntityGrenade;
 import org.avp.entities.EntityLaserMine;
+import org.avp.entities.EntityLiquidLatexPool;
 import org.avp.entities.EntityMechanism;
 import org.avp.entities.EntityMedpod;
 import org.avp.entities.EntityNuke;
@@ -155,6 +156,7 @@ public class EntityHandler implements IInitEvent
         Game.register(EntityGrenade.class, "Grenade", entityId++, AliensVsPredator.instance(), 250, 4, true);
         Game.register(EntityFlame.class, "Flamethrower", entityId++, AliensVsPredator.instance(), 250, 4, true);
         Game.register(EntityAcidPool.class, "AcidPool", entityId++, AliensVsPredator.instance(), 250, 16, true);
+        Game.register(EntityLiquidLatexPool.class, "LiquidLatexPool", entityId++, AliensVsPredator.instance(), 250, 16, true);
         Game.register(EntityAcidProjectile.class, "AcidSpit", entityId++, AliensVsPredator.instance(), 250, 4, true);
         Game.register(EntitySmartDisc.class, "EntityDisc", entityId++, AliensVsPredator.instance(), 250, 4, true);
         Game.register(EntityShuriken.class, "EntityShuriken", entityId++, AliensVsPredator.instance(), 250, 4, true);
