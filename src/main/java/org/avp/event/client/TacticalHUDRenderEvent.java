@@ -52,6 +52,7 @@ public class TacticalHUDRenderEvent
     public TacticalHUDRenderEvent()
     {
         this.clientPlayerProperties = getProperties();
+        this.buttonMarineHelmConfig = new GuiCustomButton(0, 0, 0, 50, 20, "", null);
     }
 
     @SubscribeEvent
