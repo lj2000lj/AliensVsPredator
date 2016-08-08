@@ -41,7 +41,7 @@ public class EntityAIMeltBlock extends EntityAIYOffsetBlockInteract
     @Override
     public boolean continueExecuting()
     {
-        return this.breakingTime <= 240 && this.theEntity.getDistanceSq((int) this.theEntity.posX, (int) this.theEntity.posY + yOffset, (int) this.theEntity.posZ) < 4.0D && block != Blocks.air;
+        return this.breakingTime <= 240 && this.theEntity.getDistanceSq((int) this.theEntity.posX, (int) this.theEntity.posY + yOffset, (int) this.theEntity.posZ) < 4.0D && block != Blocks.air && block != Blocks.bedrock;
     }
 
     @Override
