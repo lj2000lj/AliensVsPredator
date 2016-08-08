@@ -24,7 +24,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntitySupplyCrate extends TileEntity implements IOpenable, IRotatable
 {
-	public IInventory inventory;
+	public InventoryBasic inventory;
 	private ForgeDirection direction;
 	public Container container;
 	private boolean isOpen;
@@ -119,6 +119,8 @@ public class TileEntitySupplyCrate extends TileEntity implements IOpenable, IRot
 	@Override
 	public Packet getDescriptionPacket()
 	{
+	    //WHY IS THIS BEING CALLED SO MUCH
+	    
 		NBTTagCompound nbtTag = new NBTTagCompound();
 		this.writeToNBT(nbtTag);
 		return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbtTag);

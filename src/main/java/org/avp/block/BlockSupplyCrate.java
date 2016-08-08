@@ -12,6 +12,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -26,7 +27,7 @@ public class BlockSupplyCrate extends BlockFalling
     {
         super(Material.iron);
     }
-    
+
     @Override
     public void registerIcons(IIconRegister reg)
     {
@@ -85,20 +86,6 @@ public class BlockSupplyCrate extends BlockFalling
                     world.spawnEntityInWorld(crate);
                 }
             }
-            else
-            {
-                world.setBlockToAir(posX, posY, posZ);
-
-                while (canFallBelow(world, posX, posY - 1, posZ) && posY > 0)
-                {
-                    --posY;
-                }
-
-                if (posY > 0)
-                {
-                    world.setBlock(posX, posY, posZ, this);
-                }
-            }
         }
     }
 
@@ -136,6 +123,28 @@ public class BlockSupplyCrate extends BlockFalling
         }
     }
 
+    @Override
+    public void onBlockPreDestroy(World worldIn, int x, int y, int z, int meta)
+    {
+        super.onBlockPreDestroy(worldIn, x, y, z, meta);
+        
+        TileEntitySupplyCrate crate = (TileEntitySupplyCrate) worldIn.getTileEntity(x, y, z);
+        
+        if (crate != null)
+        {
+            for (int i = crate.inventory.getSizeInventory(); i > 0; i--)
+            {
+                ItemStack stack = crate.inventory.getStackInSlot(i);
+                
+                if (stack != null)
+                {
+                    EntityItem entityItem = new EntityItem(worldIn, x, y, z, stack);
+                    worldIn.spawnEntityInWorld(entityItem);
+                }
+            }
+        }
+    }
+    
     public static ForgeDirection getFacing(Entity entity)
     {
         int dir = MathHelper.floor_double((entity.rotationYaw / 90) + 0.5) & 3;

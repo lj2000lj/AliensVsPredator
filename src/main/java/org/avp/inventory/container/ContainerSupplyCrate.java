@@ -10,13 +10,11 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerSupplyCrate extends Container
 {
-    public IInventory inventory;
     public EntityPlayer player;
     public TileEntitySupplyCrate supplyCrate;
 
     public ContainerSupplyCrate(EntityPlayer player, TileEntitySupplyCrate supplyCrate)
     {
-        this.inventory = supplyCrate.inventory;
         this.player = player;
         this.supplyCrate = supplyCrate;
         this.initialize();
@@ -29,9 +27,10 @@ public class ContainerSupplyCrate extends Container
 
         for (byte x = 0; x < 8; x++)
         {
-            for (byte y = 0; y < this.inventory.getSizeInventory() / 8; y++)
+            for (byte y = 0; y < this.supplyCrate.inventory.getSizeInventory() / 8; y++)
             {
-                addSlotToContainer(new Slot(inventory, index++, 14 + (18 * x), 26 + (18 * y)));
+                int index2 = index++;
+                addSlotToContainer(new Slot(this.supplyCrate.inventory, index2, 14 + (18 * x), 26 + (18 * y)));
             }
         }
 
@@ -48,12 +47,13 @@ public class ContainerSupplyCrate extends Container
     }
 
     @Override
-    public void onContainerClosed(EntityPlayer par1EntityPlayer)
+    public void onContainerClosed(EntityPlayer player)
     {
-        super.onContainerClosed(par1EntityPlayer);
+        super.onContainerClosed(player);
+        
+        System.out.println(this.supplyCrate.inventory.getStackInSlot(0));
 
-        this.supplyCrate.inventory = this.inventory;
-        this.supplyCrate.setOpen(!this.supplyCrate.isOpen());
+        this.supplyCrate.setOpen(false);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class ContainerSupplyCrate extends Container
 
                 }
             }
-            else if (i != 36 || !this.mergeItemStack(stack, 36, 36 + (this.inventory.getSizeInventory() - 1), false))
+            else if (i != 36 || !this.mergeItemStack(stack, 36, 36 + (this.supplyCrate.inventory.getSizeInventory() - 1), false))
             {
                 return null;
 
