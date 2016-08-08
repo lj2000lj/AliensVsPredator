@@ -107,6 +107,17 @@ public class ContainerTurret extends Container
     }
 
     @Override
+    public ItemStack slotClick(int slotId, int clickedButton, int mode, EntityPlayer player)
+    {
+        if (mode != 1)
+        {
+            return super.slotClick(slotId, clickedButton, mode, player);
+        }
+
+        return null;
+    }
+
+    @Override
     public boolean canInteractWith(EntityPlayer player)
     {
         return true;
