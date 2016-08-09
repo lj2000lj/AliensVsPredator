@@ -77,4 +77,16 @@ public class EmbryoTickEvent
             livingProperties.setEmbryo(null);
         }
     }
+    
+    @SubscribeEvent
+    public void despawnEvent(net.minecraftforge.event.entity.living.LivingSpawnEvent.AllowDespawn event)
+    {
+       EntityLivingBase living = (EntityLivingBase) event.entityLiving;
+       ExtendedEntityLivingBase livingProperties = (ExtendedEntityLivingBase) living.getExtendedProperties(ExtendedEntityLivingBase.IDENTIFIER);
+       
+       if (livingProperties.doesEntityContainEmbryo())
+       {
+           event.setCanceled(true);
+       }
+    }
 }
