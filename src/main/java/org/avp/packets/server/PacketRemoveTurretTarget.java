@@ -2,27 +2,30 @@ package org.avp.packets.server;
 
 import org.avp.entities.tile.TileEntityTurret;
 
+import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 
 public class PacketRemoveTurretTarget implements IMessage, IMessageHandler<PacketRemoveTurretTarget, PacketRemoveTurretTarget>
 {
-    public int x, y, z, globalID;
+    public int x, y, z;
+    public String entityIdentifier;
 
     public PacketRemoveTurretTarget()
     {
         ;
     }
 
-    public PacketRemoveTurretTarget(int x, int y, int z, int globalID)
+    public PacketRemoveTurretTarget(int x, int y, int z, String entityIdentifier)
     {
         this.x = x;
         this.y = y;
         this.z = z;
-        this.globalID = globalID;
+        this.entityIdentifier = entityIdentifier;
     }
 
     @Override
@@ -31,7 +34,7 @@ public class PacketRemoveTurretTarget implements IMessage, IMessageHandler<Packe
         this.x = buf.readInt();
         this.y = buf.readInt();
         this.z = buf.readInt();
-        this.globalID = buf.readInt();
+        this.entityIdentifier = ByteBufUtils.readUTF8String(buf);
     }
 
     @Override
@@ -40,7 +43,7 @@ public class PacketRemoveTurretTarget implements IMessage, IMessageHandler<Packe
         buf.writeInt(x);
         buf.writeInt(y);
         buf.writeInt(z);
-        buf.writeInt(globalID);
+        ByteBufUtils.writeUTF8String(buf, this.entityIdentifier);
     }
 
     @SuppressWarnings("unchecked")
@@ -51,7 +54,7 @@ public class PacketRemoveTurretTarget implements IMessage, IMessageHandler<Packe
 
         if (tile != null)
         {
-            tile.setSafe(EntityList.getClassFromID(packet.globalID));
+            tile.setSafe((Class<? extends Entity>) EntityList.stringToClassMapping.get(packet.entityIdentifier));
         }
         return null;
     }

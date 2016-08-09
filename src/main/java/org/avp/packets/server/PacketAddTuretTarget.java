@@ -2,28 +2,30 @@ package org.avp.packets.server;
 
 import org.avp.entities.tile.TileEntityTurret;
 
+import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 
 public class PacketAddTuretTarget implements IMessage, IMessageHandler<PacketAddTuretTarget, PacketAddTuretTarget>
 {
     public int x, y, z;
-    public int globalID;
+    public String entityIdentifier;
 
     public PacketAddTuretTarget()
     {
         ;
     }
 
-    public PacketAddTuretTarget(int x, int y, int z, int globalID)
+    public PacketAddTuretTarget(int x, int y, int z, String globalID)
     {
         this.x = x;
         this.y = y;
         this.z = z;
-        this.globalID = globalID;
+        this.entityIdentifier = globalID;
     }
 
     @Override
@@ -32,7 +34,7 @@ public class PacketAddTuretTarget implements IMessage, IMessageHandler<PacketAdd
         this.x = buf.readInt();
         this.y = buf.readInt();
         this.z = buf.readInt();
-        this.globalID = buf.readInt();
+        this.entityIdentifier = ByteBufUtils.readUTF8String(buf);
     }
 
     @Override
@@ -41,7 +43,7 @@ public class PacketAddTuretTarget implements IMessage, IMessageHandler<PacketAdd
         buf.writeInt(x);
         buf.writeInt(y);
         buf.writeInt(z);
-        buf.writeInt(globalID);
+        ByteBufUtils.writeUTF8String(buf, this.entityIdentifier);
     }
 
     @SuppressWarnings("unchecked")
@@ -52,7 +54,7 @@ public class PacketAddTuretTarget implements IMessage, IMessageHandler<PacketAdd
 
         if (tile != null)
         {
-            tile.setDangerous(EntityList.getClassFromID(packet.globalID));
+            tile.setDangerous((Class<? extends Entity>) EntityList.stringToClassMapping.get(packet.entityIdentifier));
         }
 
         return null;

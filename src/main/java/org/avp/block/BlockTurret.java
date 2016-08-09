@@ -12,7 +12,6 @@ import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -98,7 +97,9 @@ public class BlockTurret extends Block
                 for (int i = 0; i < tile.getDangerousTargets().size(); i++)
                 {
                     if (tile.getDangerousTargets().get(i) != null)
-                        AliensVsPredator.network().sendToAll(new PacketAddTuretTarget(xCoord, yCoord, zCoord, EntityList.getEntityID(Entities.constructEntity(worldObj, tile.getDangerousTargets().get(i)))));
+                    {
+                        AliensVsPredator.network().sendToAll(new PacketAddTuretTarget(xCoord, yCoord, zCoord, Entities.getEntityRegistrationId(tile.getDangerousTargets().get(i))));
+                    }
                 }
             }
         }

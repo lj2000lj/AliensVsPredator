@@ -21,6 +21,8 @@ import com.arisux.amdxlib.lib.client.render.OpenGL;
 import com.arisux.amdxlib.lib.game.Game;
 import com.arisux.amdxlib.lib.world.entity.Entities;
 
+import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.common.registry.EntityRegistry.EntityRegistration;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -108,7 +110,7 @@ public class GuiTurret extends GuiContainer
 
         for (Class<? extends Entity> c : this.tile.getDangerousTargets())
         {
-            AliensVsPredator.network().sendToServer(new PacketAddTuretTarget(this.tile.xCoord, this.tile.yCoord, this.tile.zCoord, EntityList.getEntityID(Entities.constructEntity(this.tile.getWorld(), c))));
+            AliensVsPredator.network().sendToServer(new PacketAddTuretTarget(this.tile.xCoord, this.tile.yCoord, this.tile.zCoord, Entities.getEntityRegistrationId(c)));
         }
     }
 
@@ -235,11 +237,12 @@ public class GuiTurret extends GuiContainer
                     if (tile.isSafe(getCurrentSelectedEntity()))
                     {
                         tile.setDangerous(getCurrentSelectedEntity());
+                        AliensVsPredator.network().sendToServer(new PacketAddTuretTarget(tile.xCoord, tile.yCoord, tile.zCoord, Entities.getEntityRegistrationId(getCurrentSelectedEntity())));
                     }
                     else
                     {
                         tile.setSafe(getCurrentSelectedEntity());
-                        AliensVsPredator.network().sendToServer(new PacketRemoveTurretTarget(tile.xCoord, tile.yCoord, tile.zCoord, EntityList.getEntityID(getCurrentSelectedEntity())));
+                        AliensVsPredator.network().sendToServer(new PacketRemoveTurretTarget(tile.xCoord, tile.yCoord, tile.zCoord, Entities.getEntityRegistrationId(getCurrentSelectedEntity())));
                     }
                 }
             }

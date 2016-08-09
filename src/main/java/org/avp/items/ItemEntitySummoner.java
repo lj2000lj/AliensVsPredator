@@ -7,8 +7,6 @@ import com.arisux.amdxlib.lib.world.entity.Entities;
 import com.arisux.amdxlib.lib.world.entity.player.inventory.Inventories;
 import com.arisux.amdxlib.lib.world.item.HookedItem;
 
-import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.EntityRegistry.EntityRegistration;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,9 +35,7 @@ public class ItemEntitySummoner extends HookedItem
         if (world.isRemote && entity != null)
         {
             MovingObjectPosition ray = player.rayTrace(50D, 1F);
-            EntityRegistration registration = EntityRegistry.instance().lookupModSpawn(c, true);
-            
-            AliensVsPredator.network().sendToServer(new PacketSpawnEntity(ray.blockX, ray.blockY, ray.blockZ, registration.getModEntityId()));
+            AliensVsPredator.network().sendToServer(new PacketSpawnEntity(ray.blockX, ray.blockY, ray.blockZ, Entities.getEntityRegistrationId(c)));
         }
 
         return super.onItemRightClick(stack, world, player);
