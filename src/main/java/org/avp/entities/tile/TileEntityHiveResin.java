@@ -12,7 +12,7 @@ import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityHiveResin extends TileEntity implements IHiveSignature
 {
-    private UUID signature;
+    private UUID  signature;
     private Block blockCovering;
 
     @Override
@@ -42,22 +42,26 @@ public class TileEntityHiveResin extends TileEntity implements IHiveSignature
     {
         return this.blockCovering;
     }
-    
+
     @Override
     public void readFromNBT(NBTTagCompound compound)
     {
         super.readFromNBT(compound);
-        
+
         String[] identifier = compound.getString("BlockCovered").split(":");
         this.blockCovering = GameRegistry.findBlock(identifier[0], identifier[1]);
     }
-    
+
     @Override
     public void writeToNBT(NBTTagCompound compound)
     {
         super.writeToNBT(compound);
-        
+
         UniqueIdentifier identifier = GameRegistry.findUniqueIdentifierFor(this.blockCovering);
-        compound.setString("BlockCovered", String.format("%s:%s", identifier.modId, identifier.name));
+
+        if (identifier != null)
+        {
+            compound.setString("BlockCovered", String.format("%s:%s", identifier.modId, identifier.name));
+        }
     }
 }
