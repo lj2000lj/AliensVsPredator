@@ -22,7 +22,7 @@ import net.minecraft.world.World;
 
 public class EntityDrone extends EntityXenomorph
 {
-    public int mobType;
+    public int  mobType;
     private int resinMultiplier;
     private int resinLevel;
 
@@ -135,7 +135,8 @@ public class EntityDrone extends EntityXenomorph
         {
             if (this.getHiveSignature() != null && this.worldObj.getWorldTime() % 40 == 0)
             {
-                if (this.resinLevel >= 128)
+                this.resinLevel = 64;
+                if (this.resinLevel >= 64)
                 {
                     ArrayList<CoordData> data = Blocks.getCoordDataInRangeForBlocksExcluding((int) posX, (int) posY, (int) posZ, this.resinMultiplier, this.worldObj, AliensVsPredator.blocks().terrainHiveResin, net.minecraft.init.Blocks.air);
 
@@ -145,23 +146,27 @@ public class EntityDrone extends EntityXenomorph
 
                         if (coord != null)
                         {
-                            Block block = coord.getBlock(this.worldObj);
+                            Block block = this.worldObj.getBlock((int) coord.posX, (int) coord.posY, (int) coord.posZ);
 
-                            if (Entities.canCoordBeSeenBy(this, coord) && block.isOpaqueCube())
+//                            if (Entities.canCoordBeSeenBy(this, coord))
                             {
                                 this.getNavigator().setPath(this.worldObj.getEntityPathToXYZ(this, (int) coord.posX, (int) coord.posY, (int) coord.posZ, 128, true, true, true, true), 0.8D);
-                                this.worldObj.setBlock((int) coord.posX, (int) coord.posY, (int) coord.posZ, AliensVsPredator.blocks().terrainHiveResin);
 
-                                TileEntity tileEntity = coord.getTileEntity(this.worldObj);
-
-                                if (tileEntity != null && tileEntity instanceof TileEntityHiveResin)
+                                if (!this.worldObj.isRemote)
                                 {
-                                    TileEntityHiveResin resin = (TileEntityHiveResin) tileEntity;
-                                    resin.setHiveSignature(this.getHiveSignature());
-                                    resin.setBlockCovering(block);
+                                    this.worldObj.setBlock((int) coord.posX, (int) coord.posY, (int) coord.posZ, AliensVsPredator.blocks().terrainHiveResin);
+
+                                    TileEntity tileEntity = coord.getTileEntity(this.worldObj);
+
+                                    if (tileEntity != null && tileEntity instanceof TileEntityHiveResin)
+                                    {
+                                        TileEntityHiveResin resin = (TileEntityHiveResin) tileEntity;
+                                        resin.setHiveSignature(this.getHiveSignature());
+                                        resin.setBlockCovering(block);
+                                    }
                                 }
 
-                                this.resinLevel -= 250;
+                                this.resinLevel -= 64;
                             }
                         }
                     }

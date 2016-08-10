@@ -4,7 +4,10 @@ import java.util.UUID;
 
 import org.avp.util.IHiveSignature;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import net.minecraft.block.Block;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityHiveResin extends TileEntity implements IHiveSignature
@@ -38,5 +41,23 @@ public class TileEntityHiveResin extends TileEntity implements IHiveSignature
     public Block getBlockCovering()
     {
         return this.blockCovering;
+    }
+    
+    @Override
+    public void readFromNBT(NBTTagCompound compound)
+    {
+        super.readFromNBT(compound);
+        
+        String[] identifier = compound.getString("BlockCovered").split(":");
+        this.blockCovering = GameRegistry.findBlock(identifier[0], identifier[1]);
+    }
+    
+    @Override
+    public void writeToNBT(NBTTagCompound compound)
+    {
+        super.writeToNBT(compound);
+        
+        UniqueIdentifier identifier = GameRegistry.findUniqueIdentifierFor(this.blockCovering);
+        compound.setString("BlockCovered", String.format("%s:%s", identifier.modId, identifier.name));
     }
 }

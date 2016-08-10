@@ -7,6 +7,7 @@ import org.avp.event.EmbryoTickEvent;
 import org.avp.event.EntityTrackingEvent;
 import org.avp.event.ExtendedPropertiesEvents;
 import org.avp.event.FarmlandRegistry;
+import org.avp.event.HiveHandler;
 import org.avp.event.VardaStormHandler;
 import org.avp.event.WorldInfoEvent;
 import org.avp.event.client.AlienArmorEvents;
@@ -28,13 +29,13 @@ import org.avp.event.client.VisionModeRenderEvent;
 import org.avp.event.client.WristBracerEvents;
 import org.avp.items.render.RenderMotionTrackerScreen;
 
+import com.arisux.amdxlib.lib.game.Game;
 import com.arisux.amdxlib.lib.game.IInitEvent;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraftforge.common.MinecraftForge;
 
 public class LocalEventHandler implements IInitEvent
 {
@@ -78,13 +79,13 @@ public class LocalEventHandler implements IInitEvent
         this.registerEvent(VardaStormHandler.INSTANCE);
         this.registerEvent(FarmlandRegistry.INSTANCE);
         this.registerEvent(BucketHandlingEvent.INSTANCE);
+        this.registerEvent(HiveHandler.INSTANCE);
     }
 
     public void registerEvent(Object event)
     {
         this.events.add(event);
-        FMLCommonHandler.instance().bus().register(event);
-        MinecraftForge.EVENT_BUS.register(event);
+        Game.registerEventHandler(event);
     }
 
     public Object getEvent(Class<?> c)

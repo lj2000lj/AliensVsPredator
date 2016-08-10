@@ -14,6 +14,7 @@ public class BlockHiveResin extends Block
     public BlockHiveResin(Material material)
     {
         super(material);
+        this.setTickRandomly(true);
     }
 
     @Override
@@ -45,21 +46,10 @@ public class BlockHiveResin extends Block
     {
         super.onBlockPreDestroy(world, posX, posY, posZ, oldMetadata);
     }
-
+    
     @Override
     public void onBlockDestroyedByPlayer(World world, int posX, int posY, int posZ, int metadata)
     {
-        TileEntity tileEntity = world.getTileEntity(posX, posY, posZ);
-
-        if (tileEntity != null && tileEntity instanceof TileEntityHiveResin)
-        {
-            TileEntityHiveResin resin = (TileEntityHiveResin) tileEntity;
-
-            if (resin.getBlockCovering() != null)
-            {
-                Block block = resin.getBlockCovering();
-                world.setBlock(posX, posY, posZ, block);
-            }
-        }
+        super.onBlockDestroyedByPlayer(world, posX, posY, posZ, metadata);
     }
 }
