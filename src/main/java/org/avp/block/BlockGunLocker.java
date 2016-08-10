@@ -1,7 +1,6 @@
 package org.avp.block;
 
 import org.avp.entities.tile.TileEntityGunLocker;
-import org.avp.entities.tile.TileEntityLocker;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;

@@ -21,8 +21,6 @@ import com.arisux.amdxlib.lib.client.render.OpenGL;
 import com.arisux.amdxlib.lib.game.Game;
 import com.arisux.amdxlib.lib.world.entity.Entities;
 
-import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.EntityRegistry.EntityRegistration;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.inventory.GuiContainer;

@@ -487,8 +487,6 @@ public class TileEntityTurret extends TileEntityElectrical implements IDataDevic
             }
         }
 
-        System.out.println(entityIDs);
-
         nbt.setTag("Targets", NBTStorage.newStringNBTList(entityIDs));
     }
 
@@ -525,7 +523,6 @@ public class TileEntityTurret extends TileEntityElectrical implements IDataDevic
 
         if (builder != null && builder.toString() != null)
         {
-            System.out.println(builder.toString());
             AliensVsPredator.network().sendToAll(new PacketTurretInit(this.xCoord, this.yCoord, this.zCoord, builder.toString()));
         }
     }
@@ -757,7 +754,7 @@ public class TileEntityTurret extends TileEntityElectrical implements IDataDevic
         if (devicePort != null)
         {
             NBTTagCompound nbt = devicePort.getTagCompound();
-            System.out.println(nbt);
+
             if (nbt != null)
             {
                 NBTTagList list = nbt.getTagList("Targets", NBT.TAG_STRING);
@@ -770,7 +767,6 @@ public class TileEntityTurret extends TileEntityElectrical implements IDataDevic
 
                         Class<? extends Entity> c = (Class<? extends Entity>) EntityList.stringToClassMapping.get(id);
                         this.setDangerous(c);
-                        System.out.println(c);
                         builder.append(id + "-");
                     }
                 }
@@ -801,8 +797,6 @@ public class TileEntityTurret extends TileEntityElectrical implements IDataDevic
                 }
 
                 nbt.setTag("Targets", NBTStorage.newStringNBTList(entityIDs));
-
-                System.out.println(this.worldObj.isRemote + " : " + nbt);
 
                 devicePort.setTagCompound(nbt);
                 devicePort.setStackDisplayName("NBT Drive - " + this.getEntity().getUniqueID());
