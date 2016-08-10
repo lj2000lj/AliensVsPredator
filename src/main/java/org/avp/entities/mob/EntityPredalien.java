@@ -5,7 +5,6 @@ import org.avp.entities.EntityAcidPool;
 
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.util.DamageSource;
@@ -18,14 +17,13 @@ public class EntityPredalien extends EntityXenomorph implements IMob
         super(world);
         this.jumpMovementFactor = 0.025F;
         this.experienceValue = 225;
-        this.setSize(1.0F, 4.0F);
+        this.setSize(1.0F, 2.5F);
         this.ignoreFrustumCheck = true;
         this.getNavigator().setAvoidsWater(true);
         this.getNavigator().setBreakDoors(true);
         this.getNavigator().setCanSwim(true);
         this.getNavigator().setAvoidsWater(true);
         this.tasks.addTask(0, new EntityAIWatchClosest(this, EntityLiving.class, 16F));
-        this.tasks.addTask(0, new EntityAISwimming(this));
     }
 
     @Override
@@ -33,7 +31,7 @@ public class EntityPredalien extends EntityXenomorph implements IMob
     {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(200.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.4500000238418579D);
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.45D);
         this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(5.0D);
         this.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(1F);
     }
