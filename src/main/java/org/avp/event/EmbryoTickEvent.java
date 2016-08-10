@@ -5,6 +5,7 @@ import org.avp.entities.extended.ExtendedEntityLivingBase;
 import org.avp.entities.mob.EntityChestburster;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -86,7 +87,7 @@ public class EmbryoTickEvent
        
        if (livingProperties.doesEntityContainEmbryo())
        {
-           event.setCanceled(true);
+           event.setResult(Result.DENY);
        }
     }
 }
