@@ -135,10 +135,9 @@ public class EntityDrone extends EntityXenomorph
         {
             if (this.getHiveSignature() != null && this.worldObj.getWorldTime() % 40 == 0)
             {
-                this.resinLevel = 64;
                 if (this.resinLevel >= 64)
                 {
-                    ArrayList<CoordData> data = Blocks.getCoordDataInRangeForBlocksExcluding((int) posX, (int) posY, (int) posZ, this.resinMultiplier, this.worldObj, AliensVsPredator.blocks().terrainHiveResin, net.minecraft.init.Blocks.air);
+                    ArrayList<CoordData> data = Blocks.getCoordDataInRangeExcluding((int) posX, (int) posY, (int) posZ, this.resinMultiplier, this.worldObj, AliensVsPredator.blocks().terrainHiveResin, net.minecraft.init.Blocks.air);
 
                     if (data.size() > 0)
                     {
@@ -163,6 +162,7 @@ public class EntityDrone extends EntityXenomorph
                                         TileEntityHiveResin resin = (TileEntityHiveResin) tileEntity;
                                         resin.setHiveSignature(this.getHiveSignature());
                                         resin.setBlockCovering(block);
+                                        data.clear();
                                     }
                                 }
 

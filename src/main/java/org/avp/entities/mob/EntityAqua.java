@@ -83,7 +83,7 @@ public class EntityAqua extends EntityXenomorph
                 if (this.worldObj.getBlock((int) this.posX, (int) this.posY, (int) this.posZ) != net.minecraft.init.Blocks.water)
                 {
                     double range = this.getEntityAttribute(SharedMonsterAttributes.followRange).getAttributeValue() / 2;
-                    ArrayList<CoordData> coordData = Blocks.getCoordDataInRangeForBlocks((int) this.posX, (int) this.posY, (int) this.posZ, (int) range, this.worldObj, net.minecraft.init.Blocks.water);
+                    ArrayList<CoordData> coordData = Blocks.getCoordDataInRangeIncluding((int) this.posX, (int) this.posY, (int) this.posZ, (int) range, this.worldObj, net.minecraft.init.Blocks.water);
 
                     if (coordData.size() > 0)
                     {

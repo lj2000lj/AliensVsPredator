@@ -115,7 +115,7 @@ public class EntityHammerpede extends EntitySpeciesAlien implements IMob
                 if (this.worldObj.getBlock((int) this.posX, (int) this.posY, (int) this.posZ) != AliensVsPredator.blocks().blockBlackGoo)
                 {
                     double range = this.getEntityAttribute(SharedMonsterAttributes.followRange).getAttributeValue() / 2;
-                    ArrayList<CoordData> coordData = Blocks.getCoordDataInRangeForBlocks((int) this.posX, (int) this.posY, (int) this.posZ, (int) range, this.worldObj, AliensVsPredator.blocks().blockBlackGoo);
+                    ArrayList<CoordData> coordData = Blocks.getCoordDataInRangeIncluding((int) this.posX, (int) this.posY, (int) this.posZ, (int) range, this.worldObj, AliensVsPredator.blocks().blockBlackGoo);
 
                     if (coordData.size() > 0)
                     {

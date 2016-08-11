@@ -97,7 +97,6 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IHiv
         {
             if (damagesource != DamageSource.onFire && damagesource != DamageSource.inFire && damagesource != DamageSources.flamethrower)
             {
-                System.out.println(damagesource.getDamageType());
                 EntityAcidPool entity = new EntityAcidPool(this.worldObj);
                 entity.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
                 this.worldObj.spawnEntityInWorld(entity);

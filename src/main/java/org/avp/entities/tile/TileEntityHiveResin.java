@@ -48,8 +48,13 @@ public class TileEntityHiveResin extends TileEntity implements IHiveSignature
     {
         super.readFromNBT(compound);
 
-        String[] identifier = compound.getString("BlockCovered").split(":");
-        this.blockCovering = GameRegistry.findBlock(identifier[0], identifier[1]);
+        String blockString = compound.getString("BlockCovered");
+
+        if (blockString != null && blockString.contains(":"))
+        {
+            String[] identifier = blockString.split(":");
+            this.blockCovering = GameRegistry.findBlock(identifier[0], identifier[1]);
+        }
     }
 
     @Override
@@ -57,11 +62,14 @@ public class TileEntityHiveResin extends TileEntity implements IHiveSignature
     {
         super.writeToNBT(compound);
 
-        UniqueIdentifier identifier = GameRegistry.findUniqueIdentifierFor(this.blockCovering);
-
-        if (identifier != null)
+        if (blockCovering != null)
         {
-            compound.setString("BlockCovered", String.format("%s:%s", identifier.modId, identifier.name));
+            UniqueIdentifier identifier = GameRegistry.findUniqueIdentifierFor(this.blockCovering);
+
+            if (identifier != null)
+            {
+                compound.setString("BlockCovered", String.format("%s:%s", identifier.modId, identifier.name));
+            }
         }
     }
 }

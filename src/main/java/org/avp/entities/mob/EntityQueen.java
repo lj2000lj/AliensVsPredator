@@ -24,7 +24,7 @@ public class EntityQueen extends EntityXenomorph implements IHiveSignature
         this.setSize(2.0F, 4.0F);
         this.isInStasis = true;
         this.experienceValue = 40000;
-        this.jumpMovementFactor = 0.4F;
+        this.jumpMovementFactor = 0.1F;
         this.hurtResistantTime = 0;
         this.ignoreFrustumCheck = true;
         this.setHiveSignature(this.getUniqueID());
@@ -53,11 +53,7 @@ public class EntityQueen extends EntityXenomorph implements IHiveSignature
     @Override
     public void onUpdate()
     {
-        double prevMotionY = this.motionY;
         super.onUpdate();
-
-        if (this.motionY < prevMotionY)
-            this.motionY += -0.08F;
 
         if ((this.getAttackTarget() != null || this.getLastAttacker() != null) && this.worldObj.getWorldTime() % 40 == 0)
         {
