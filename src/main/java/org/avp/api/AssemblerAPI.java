@@ -7,19 +7,20 @@ import com.arisux.amdxlib.lib.game.IInitEvent;
 import com.arisux.amdxlib.lib.world.entity.player.inventory.Inventories;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class AssemblerAPI implements IInitEvent
 {
-    public static final AssemblerAPI instance = new AssemblerAPI();
+    public static final AssemblerAPI      instance             = new AssemblerAPI();
     private ArrayList<AssemblerSchematic> registeredSchematics = new ArrayList<AssemblerSchematic>();
 
     public static class AssemblerSchematic
     {
-        private String schematicId;
-        private ItemStack item;
+        private String      schematicId;
+        private ItemStack   item;
         private ItemStack[] items;
 
         public AssemblerSchematic(String schematicId, ItemStack item, ItemStack... items)
@@ -132,28 +133,31 @@ public class AssemblerAPI implements IInitEvent
     {
         if (schematic != null && isSchematicComplete(schematic, player))
         {
-            if (player.inventory.addItemStackToInventory(schematic.getItemStackAssembled().copy()))
+            for (ItemStack requirement : schematic.getItemsRequired())
             {
-                for (ItemStack stack : schematic.getItemsRequired())
+                if (Inventories.getAmountOfItemPlayerHas(requirement.getItem(), player) >= requirement.stackSize || player.capabilities.isCreativeMode)
                 {
-                    if (Inventories.getAmountOfItemPlayerHas(stack.getItem(), player) >= stack.stackSize || player.capabilities.isCreativeMode)
+                    for (int x = 0; x < requirement.stackSize; x++)
                     {
-                        for (int x = 0; x < stack.stackSize; x++)
+                        if (!Inventories.consumeItem(player, requirement.getItem()))
                         {
-                            if (!Inventories.consumeItem(player, stack.getItem()))
-                            {
-                                return false;
-                            }
+                            return false;
                         }
                     }
                 }
             }
+
+            if (player.inventory.addItemStackToInventory(schematic.getItemStackAssembled().copy()))
+            {
+                return true;
+            }
             else
             {
-                return false;
+                new EntityItem(player.worldObj, player.posX, player.posY, player.posZ, schematic.getItemStackAssembled().copy());
+                return true;
             }
         }
 
-        return true;
+        return false;
     }
 }
