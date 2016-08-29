@@ -369,7 +369,7 @@ public class SkyProviderVarda extends IRenderHandler
                     if (minY != maxY)
                     {
                         float movement = 0F;
-                        movement = ((VardaStormHandler.INSTANCE.getStormUpdateCount() + vX * vX * 3121 + vX * 45238971 + vZ * vZ * 418711 + vZ * 13761 & 31) + renderPartialTicks) / 16.0F;
+                        movement = ((VardaStormHandler.instance.getStormUpdateCount() + vX * vX * 3121 + vX * 45238971 + vZ * vZ * 418711 + vZ * 13761 & 31) + renderPartialTicks) / 16.0F;
                         movement = movement * windSpeed;
                         tessellator.startDrawingQuads();
                         tessellator.setBrightness(worldclient.getLightBrightnessForSkyBlocks(vX, vY, vZ, 0));

@@ -88,7 +88,8 @@ public class BossBarEvent
                 for (EntityLivingBase boss : bosses)
                 {
                     int index = bosses.indexOf(boss);
-                    this.drawBossBar(boss, index, 0, 0);
+                    //TODO: Optimize this. It's inefficient.
+//                    this.drawBossBar(boss, index, 0, 0);
                 }
             }
             OpenGL.popMatrix();

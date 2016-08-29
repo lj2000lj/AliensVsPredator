@@ -42,7 +42,7 @@ public class FluidHandler implements IInitEvent
 
     private void registerBucketEvents(FMLInitializationEvent event)
     {
-        BucketHandlingEvent.INSTANCE.buckets.put(AliensVsPredator.blocks().blockBlackGoo, AliensVsPredator.items().blackGooBucket);
-        BucketHandlingEvent.INSTANCE.buckets.put(AliensVsPredator.blocks().blockMist, AliensVsPredator.items().mistBucket);
+        BucketHandlingEvent.instance.buckets.put(AliensVsPredator.blocks().blockBlackGoo, AliensVsPredator.items().blackGooBucket);
+        BucketHandlingEvent.instance.buckets.put(AliensVsPredator.blocks().blockMist, AliensVsPredator.items().mistBucket);
     }
 }

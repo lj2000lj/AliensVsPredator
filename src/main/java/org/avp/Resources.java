@@ -31,6 +31,7 @@ import org.avp.entities.tile.model.ModelBlastdoor;
 import org.avp.entities.tile.model.ModelCable;
 import org.avp.entities.tile.model.ModelCryostasisTube;
 import org.avp.entities.tile.model.ModelDNASynthesizer;
+import org.avp.entities.tile.model.ModelHiveResin;
 import org.avp.entities.tile.model.ModelLightPanel;
 import org.avp.entities.tile.model.ModelLocker;
 import org.avp.entities.tile.model.ModelMedpod;
@@ -154,6 +155,7 @@ public class Resources
         public final TexturedModel<SpecialModelBiped>         BIPED                          = new TexturedModel(new SpecialModelBiped(), new Texture(AbstractClientPlayer.locationStevePng));
         public final TexturedModel<ModelLaserMine>            LASER_MINE                     = new TexturedModel(new ModelLaserMine(), new Texture(AliensVsPredator.ID, "textures/misc/proximity-mine.png"));
         public final TexturedModel<ModelDNASynthesizer>       DNA_SYNTHESIZER                = new TexturedModel(new ModelDNASynthesizer(), new Texture(AliensVsPredator.ID, "textures/tile/dna-synthesizer.png"));
+        public final TexturedModel<ModelHiveResin>            HIVE_RESIN                     = new TexturedModel(new ModelHiveResin(), new Texture(AliensVsPredator.ID, "textures/tile/hive-resin.png"));
         public final TriangulatedWavefrontModel               M577_APC                       = AMDXLib.loadWavefrontModel(AliensVsPredator.class, AliensVsPredator.ID, "m577apc", "/assets/avp/models/m577apc");
     }
 

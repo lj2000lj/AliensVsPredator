@@ -5,6 +5,7 @@ import static cpw.mods.fml.client.registry.RenderingRegistry.registerBlockHandle
 import static cpw.mods.fml.client.registry.RenderingRegistry.registerEntityRenderingHandler;
 import static net.minecraftforge.client.MinecraftForgeClient.registerItemRenderer;
 
+import org.avp.block.render.RenderResin;
 import org.avp.block.render.RenderShape;
 import org.avp.entities.EntityAPC;
 import org.avp.entities.EntityAcidPool;
@@ -84,6 +85,7 @@ import org.avp.entities.tile.TileEntityAssembler;
 import org.avp.entities.tile.TileEntityBlastdoor;
 import org.avp.entities.tile.TileEntityCryostasisTube;
 import org.avp.entities.tile.TileEntityGunLocker;
+import org.avp.entities.tile.TileEntityHiveResin;
 import org.avp.entities.tile.TileEntityLightPanel;
 import org.avp.entities.tile.TileEntityLocker;
 import org.avp.entities.tile.TileEntityMedpod;
@@ -106,6 +108,7 @@ import org.avp.entities.tile.render.RenderAssembler;
 import org.avp.entities.tile.render.RenderBlastdoor;
 import org.avp.entities.tile.render.RenderCryostasisTube;
 import org.avp.entities.tile.render.RenderGunLocker;
+import org.avp.entities.tile.render.RenderHiveResin;
 import org.avp.entities.tile.render.RenderLightPanel;
 import org.avp.entities.tile.render.RenderLocker;
 import org.avp.entities.tile.render.RenderMedpod;
@@ -373,10 +376,12 @@ public class Renderers implements IPostInitEvent
         bindTileEntitySpecialRenderer(TileEntityMedpod.class, new RenderMedpod());
         bindTileEntitySpecialRenderer(TileEntitySatelliteDish.class, new RenderSatelliteDish());
         bindTileEntitySpecialRenderer(TileEntitySupplyCrate.class, new RenderSupplyCrate());
+        bindTileEntitySpecialRenderer(TileEntityHiveResin.class, new RenderHiveResin());
     }
 
     public void registerSimpleBlockRenderingHandlers()
     {
         registerBlockHandler(new RenderShape(AliensVsPredator.renderTypes().RENDER_TYPE_SHAPED));
+        registerBlockHandler(new RenderResin(AliensVsPredator.renderTypes().RENDER_TYPE_RESIN));
     }
 }

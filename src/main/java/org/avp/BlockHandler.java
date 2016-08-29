@@ -51,6 +51,7 @@ public class BlockHandler implements IInitEvent
     public static BlockHandler instance                   = new BlockHandler();
 
     public Block               terrainHiveResin           = (new BlockHiveResin(Material.wood)).setHardness(5F).setResistance(10.0F).setLightOpacity(255);
+    public Block               blockStandardHiveResin     = (new BlockMaterial(Material.wood)).setHardness(5F).setResistance(10.0F).setLightOpacity(255);
     public Block               blockOvamorph              = (new BlockMaterial(Material.rock));
     public Block               blockShipMetal1            = (new BlockMaterial(Material.iron).setHardness(5F).setResistance(30.0F).setLightOpacity(255));
     public Block               blockShipMetal2            = (new BlockMaterial(Material.iron).setHardness(5F).setResistance(30.0F).setLightOpacity(255));
@@ -265,7 +266,8 @@ public class BlockHandler implements IInitEvent
         ShapedBlockUtil.register(AliensVsPredator.ID, blockVerticalMetal, "metalpanel1");
         ShapedBlockUtil.register(AliensVsPredator.ID, blockColumnMetal1, "metalpanel2");
         ShapedBlockUtil.register(AliensVsPredator.ID, blockColumnMetal2, "metalpanel3");
-        ShapedBlockUtil.register(AliensVsPredator.ID, terrainHiveResin, "hiveresin");
+        Game.register(AliensVsPredator.ID, terrainHiveResin, "hiveresin");
+        ShapedBlockUtil.register(AliensVsPredator.ID, blockStandardHiveResin, "hiveresin.standard");
         ShapedBlockUtil.register(AliensVsPredator.ID, blockShipMetal1, "shippanel");
         ShapedBlockUtil.register(AliensVsPredator.ID, blockShipMetal2, "shippannelyautja");
         ShapedBlockUtil.register(AliensVsPredator.ID, blockOvamorph, "tileovamorphdesign");

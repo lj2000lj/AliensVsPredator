@@ -2,6 +2,7 @@ package org.avp.block;
 
 import java.util.Random;
 
+import org.avp.AliensVsPredator;
 import org.avp.entities.tile.TileEntityHiveResin;
 
 import net.minecraft.block.Block;
@@ -14,13 +15,19 @@ public class BlockHiveResin extends Block
     public BlockHiveResin(Material material)
     {
         super(material);
-        this.setTickRandomly(true);
+        this.setLightLevel(0.1F);
+    }
+    
+    @Override
+    public boolean isOpaqueCube()
+    {
+        return false;
     }
 
     @Override
     public boolean renderAsNormalBlock()
     {
-        return true;
+        return false;
     }
 
     @Override
@@ -51,5 +58,11 @@ public class BlockHiveResin extends Block
     public void onBlockDestroyedByPlayer(World world, int posX, int posY, int posZ, int metadata)
     {
         super.onBlockDestroyedByPlayer(world, posX, posY, posZ, metadata);
+    }
+    
+    @Override
+    public int getRenderType()
+    {
+        return AliensVsPredator.renderTypes().RENDER_TYPE_RESIN;
     }
 }

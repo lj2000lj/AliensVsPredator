@@ -4,7 +4,6 @@ import java.util.Random;
 
 import org.avp.AliensVsPredator;
 import org.avp.entities.EntityAcidPool;
-import org.avp.entities.ai.alien.EntityAIQueenIdentificationTask;
 import org.avp.entities.ai.alien.EntitySelectorXenomorph;
 import org.avp.entities.extended.ExtendedEntityLivingBase;
 
@@ -26,9 +25,8 @@ import net.minecraft.world.World;
 
 public abstract class EntityXenomorph extends EntitySpeciesAlien implements IMob
 {
-    public int        targetQueenId;
     protected boolean canClimb;
-    protected boolean isDependant;
+    protected boolean canBelongToHive;
     public int        hitRange;
 
     public EntityXenomorph(World world)
@@ -37,19 +35,15 @@ public abstract class EntityXenomorph extends EntitySpeciesAlien implements IMob
         this.hitRange = 1;
         this.jumpMovementFactor = 0.045F;
         this.canClimb = false;
-        this.isDependant = true;
+        this.canBelongToHive = true;
         this.getNavigator().setCanSwim(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIQueenIdentificationTask(this));
         // this.tasks.addTask(1, new EntityAIClimb(this, 0.03F));
         this.tasks.addTask(8, new EntityAIWander(this, 0.8D));
         this.targetTasks.addTask(0, new EntityAIHurtByTarget(this, true));
         this.targetTasks.addTask(2, new EntityAILeapAtTarget(this, 0.6F));
         this.targetTasks.addTask(3, new EntityAIAttackOnCollide(this, 0.8D, true));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, Entity.class, /** targetChance **/
-            0, /** shouldCheckSight **/
-            false, /** nearbyOnly **/
-            false, EntitySelectorXenomorph.instance));
+        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, Entity.class, 0, true, false, EntitySelectorXenomorph.instance));
     }
 
     @Override
@@ -93,7 +87,7 @@ public abstract class EntityXenomorph extends EntitySpeciesAlien implements IMob
 
         if (this.isCollidedHorizontally)
         {
-            this.motionY += 0.25F;
+            // this.motionY += 0.25F;
         }
 
         if (this.getAttackTarget() != null && this.getAttackTarget().isDead)
@@ -187,8 +181,8 @@ public abstract class EntityXenomorph extends EntitySpeciesAlien implements IMob
         }
     }
 
-    public boolean isDependant()
+    public boolean canBelongToHive()
     {
-        return this.isDependant;
+        return this.canBelongToHive;
     }
 }

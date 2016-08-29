@@ -6,14 +6,17 @@ import java.util.UUID;
 import org.avp.AliensVsPredator;
 import org.avp.DamageSources;
 import org.avp.entities.EntityAcidPool;
+import org.avp.event.HiveHandler;
 import org.avp.packets.client.PacketJellyLevelUpdate;
 import org.avp.util.EvolutionType;
-import org.avp.util.IHiveSignature;
+import org.avp.util.XenomorphHive;
 
 import com.arisux.amdxlib.lib.world.CoordData;
+import com.arisux.amdxlib.lib.world.Worlds;
 import com.arisux.amdxlib.lib.world.entity.Entities;
 
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.IMob;
@@ -22,15 +25,23 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
-public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IHiveSignature
+public abstract class EntitySpeciesAlien extends EntityMob implements IMob
 {
-    private UUID signature;
-    private int  jellyLevel;
+    protected int           jellyLevel;
+    protected XenomorphHive hive;
+    private UUID            signature;
 
     public EntitySpeciesAlien(World world)
     {
         super(world);
         this.jumpMovementFactor = 0.2F;
+    }
+
+    @Override
+    protected void applyEntityAttributes()
+    {
+        super.applyEntityAttributes();
+        this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(32D);
     }
 
     @Override
@@ -44,8 +55,8 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IHiv
     {
         super.writeEntityToNBT(nbt);
 
+        nbt.setString("HiveSignature", signature != null ? this.signature.toString() : "");
         nbt.setInteger("jellyLevel", this.jellyLevel);
-        nbt.setString("hiveSignature", signature != null ? this.signature.toString() : "");
     }
 
     @Override
@@ -53,20 +64,10 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IHiv
     {
         super.readEntityFromNBT(nbt);
 
+        this.signature = Worlds.uuidFromNBT(nbt, "HiveSignature");
         this.jellyLevel = nbt.getInteger("jellyLevel");
-        this.signature = this.uuidFromNBT(nbt);
-    }
 
-    private UUID uuidFromNBT(NBTTagCompound nbt)
-    {
-        String signature = nbt.getString("hiveSignature");
-
-        if (signature != null && signature.matches("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[34][0-9a-fA-F]{3}-[89ab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}"))
-        {
-            return UUID.fromString(signature);
-        }
-
-        return null;
+        System.out.println(this.signature);
     }
 
     @Override
@@ -101,7 +102,7 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IHiv
                 entity.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
                 this.worldObj.spawnEntityInWorld(entity);
             }
-            
+
             if (this instanceof EntityQueen)
             {
                 int randomJelly = this.rand.nextInt(196);
@@ -140,7 +141,7 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IHiv
     @SuppressWarnings("unchecked")
     protected void tickJellyPickupAI()
     {
-        if (!this.worldObj.isRemote && !(this instanceof EntityOvamorph))
+        if (!this.worldObj.isRemote && !(this instanceof EntityOvamorph) && this.worldObj.getWorldTime() % 20 == 0)
         {
             ArrayList<EntityItem> entityItemList = (ArrayList<EntityItem>) Entities.getEntitiesInCoordsRange(worldObj, EntityItem.class, new CoordData(this), 8);
 
@@ -168,6 +169,16 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IHiv
         }
     }
 
+    public UUID getHiveSignature()
+    {
+        return this.signature;
+    }
+
+    public void setHiveSignature(UUID signature)
+    {
+        this.signature = signature;
+    }
+
     public boolean canMoveToJelly()
     {
         return true;
@@ -185,7 +196,29 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IHiv
         super.onUpdate();
 
         this.tickEvolution();
+        this.tickHiveIdentificationAI();
         this.tickJellyPickupAI();
+    }
+
+    public XenomorphHive getHive()
+    {
+        return hive;
+    }
+
+    public void tickHiveIdentificationAI()
+    {
+        if (!(this instanceof EntityQueen))
+        {
+            if (this.signature != null)
+            {
+                this.hive = HiveHandler.instance.getHiveForUUID(this.signature);
+            }
+
+            if (this.hive != null)
+            {
+                this.hive.addMemberToHive(this);
+            }
+        }
     }
 
     public int getJellyLevel()
@@ -201,17 +234,5 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IHiv
         {
             AliensVsPredator.network().sendToAll(new PacketJellyLevelUpdate(jellyLevel, Integer.valueOf(this.getEntityId())));
         }
-    }
-
-    @Override
-    public UUID getHiveSignature()
-    {
-        return this.signature;
-    }
-
-    @Override
-    public void setHiveSignature(UUID signature)
-    {
-        this.signature = signature;
     }
 }

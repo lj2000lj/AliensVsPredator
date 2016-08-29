@@ -17,7 +17,8 @@ public class LightmapUpdateEvent
     @SubscribeEvent
     public void renderTick(RenderTickEvent event)
     {
-        this.updateLightmap(event.renderTickTime);
+        //TODO: Optimize this. It's inefficient.
+//        this.updateLightmap(event.renderTickTime);
     }
 
     public void updateLightmap(float partialTicks)

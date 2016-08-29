@@ -17,7 +17,7 @@ public class EntityProtomorph extends EntityXenomorph
         this.experienceValue = 100;
         this.setSize(0.8F, 1.8F);
         this.canClimb = false;
-        this.isDependant = false;
+        this.canBelongToHive = false;
         this.getNavigator().setCanSwim(true);
         this.getNavigator().setAvoidsWater(true);
         this.tasks.addTask(0, new EntityAISwimming(this));

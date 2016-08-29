@@ -1,55 +1,69 @@
 package org.avp;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
 
-import org.avp.world.DedicatedWorldInfo;
+import org.avp.event.HiveHandler;
+import org.avp.util.IDataSaveHandler;
 
 import com.arisux.amdxlib.AMDXLib;
 import com.arisux.amdxlib.lib.world.storage.NBTStorage;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.event.world.WorldEvent;
 
 public class SaveHandler
 {
-    private DedicatedWorldInfo worldInfo;
+    public static SaveHandler           instance = new SaveHandler();
+    private ArrayList<IDataSaveHandler> dataHandlers;
 
     public SaveHandler()
     {
-        ;
+        this.dataHandlers = new ArrayList<IDataSaveHandler>();
+        this.addDataHandlers();
     }
 
-    public DedicatedWorldInfo getWorldInfo()
+    public void addDataHandlers()
     {
-        return worldInfo == null ? worldInfo = new DedicatedWorldInfo(new NBTTagCompound()) : worldInfo;
+        // this.dataHandlers.add(DerelictWorldData.instance);
+        this.dataHandlers.add(HiveHandler.instance);
     }
 
-    public File getWorldFile(World world)
+    public File getSaveFile(World world)
     {
-        return new File(world.getSaveHandler().getWorldDirectory(), this.getFileName());
+        return new File(world.getSaveHandler().getWorldDirectory(), String.format(this.getSaveFilename(), world.provider.dimensionId));
     }
 
-    public String getFileName()
+    public String getSaveFilename()
     {
-        return "aliensvspredator.dat";
+        return "aliensvspredator_%s.dat";
     }
 
-    public void saveData(World world)
+    @SubscribeEvent
+    public void onWorldSave(WorldEvent.Save event)
     {
-        File file = this.getWorldFile(world);
+        World world = event.world;
+        File worldSave = this.getSaveFile(world);
         NBTTagCompound tag = new NBTTagCompound();
 
         try
         {
-            if (this.getWorldInfo() != null)
+            for (IDataSaveHandler dataHandler : this.dataHandlers)
             {
-                if (!this.getWorldInfo().save(tag))
+                if (dataHandler != null)
                 {
-                    AMDXLib.log().info(String.format("Unable to save world data: ", this.getFileName()));
+                    if (!dataHandler.saveData(world, tag))
+                    {
+                        AMDXLib.log().info(String.format("Unable to save world data: ", this.getSaveFilename()));
+                    }
                 }
             }
 
-            NBTStorage.writeCompressed(tag, file);
+            NBTStorage.writeCompressed(tag, worldSave);
         }
         catch (Exception e)
         {
@@ -61,28 +75,40 @@ public class SaveHandler
         }
     }
 
-    public NBTTagCompound loadData(World world)
+    @SubscribeEvent
+    public void onWorldLoad(WorldEvent.Load event)
     {
+        World world = event.world;
         NBTTagCompound tag = new NBTTagCompound();
-        File file = this.getWorldFile(world);
+        File worldSave = this.getSaveFile(world);
 
-        try
+        if (world.getSaveHandler().getWorldDirectory() != null)
         {
-            if (!file.exists())
+            try
             {
-                NBTStorage.writeCompressed(tag, file);
+                NBTTagCompound read = NBTStorage.readCompressed(worldSave);
+                tag = read == null ? tag : read;
+
+                for (IDataSaveHandler dataHandler : this.dataHandlers)
+                {
+                    if (dataHandler != null)
+                    {
+                        if (!dataHandler.loadData(world, tag))
+                        {
+                            AMDXLib.log().info(String.format("Unable to load world data: ", this.getSaveFilename()));
+                        }
+                    }
+                }
             }
-
-            NBTTagCompound read = NBTStorage.readCompressed(file);
-            tag = read == null ? tag : read;
-
-            this.worldInfo = new DedicatedWorldInfo(tag);
+            catch (FileNotFoundException f)
+            {
+                System.out.println(String.format("Error loading data from: %s", worldSave.getAbsolutePath()));
+                f.printStackTrace();
+            }
+            catch (IOException io)
+            {
+                io.printStackTrace();
+            }
         }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
-        return tag;
     }
 }

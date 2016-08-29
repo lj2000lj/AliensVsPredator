@@ -5,19 +5,21 @@ import java.util.Random;
 
 import org.avp.AliensVsPredator;
 import org.avp.Sounds;
+import org.avp.block.BlockHiveResin;
 import org.avp.entities.tile.TileEntityHiveResin;
 
 import com.arisux.amdxlib.lib.world.CoordData;
-import com.arisux.amdxlib.lib.world.block.Blocks;
 import com.arisux.amdxlib.lib.world.entity.Entities;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 public class EntityDrone extends EntityXenomorph
@@ -36,7 +38,6 @@ public class EntityDrone extends EntityXenomorph
         this.mobType = this.rand.nextInt(2);
         this.getNavigator().setCanSwim(true);
         this.getNavigator().setAvoidsWater(true);
-        this.tasks.addTask(0, new EntityAISwimming(this));
     }
 
     @Override
@@ -99,6 +100,37 @@ public class EntityDrone extends EntityXenomorph
 
         this.tickResinLevelAI();
         this.tickHiveBuildingAI();
+
+        if (this.hive != null)
+        {
+            if (!this.hive.isEntityWithinRange(this))
+            {
+                PathEntity path = this.getNavigator().getPathToXYZ(this.hive.xCoord(), this.hive.yCoord(), this.hive.zCoord());
+
+                if (path != null)
+                {
+                    this.getNavigator().setPath(path, 0.8D);
+                }
+            }
+        }
+    }
+
+    @Override
+    protected void attackEntity(Entity entity, float damage)
+    {
+        super.attackEntity(entity, damage);
+    }
+
+    @Override
+    public boolean attackEntityAsMob(Entity entity)
+    {
+        return super.attackEntityAsMob(entity);
+    }
+
+    @Override
+    public void attackAI()
+    {
+        ;
     }
 
     @SuppressWarnings("unchecked")
@@ -106,7 +138,7 @@ public class EntityDrone extends EntityXenomorph
     {
         this.resinLevel += 1;
 
-        ArrayList<EntityItem> entityItemList = (ArrayList<EntityItem>) Entities.getEntitiesInCoordsRange(worldObj, EntityItem.class, new CoordData(this), 8);
+        ArrayList<EntityItem> entityItemList = (ArrayList<EntityItem>) Entities.getEntitiesInCoordsRange(worldObj, EntityItem.class, new CoordData(this), 12);
 
         for (EntityItem entityItem : entityItemList)
         {
@@ -131,43 +163,41 @@ public class EntityDrone extends EntityXenomorph
 
     public void tickHiveBuildingAI()
     {
-        if (this.getAttackTarget() == null)
+        if (!this.worldObj.isRemote)
         {
-            if (this.getHiveSignature() != null && this.worldObj.getWorldTime() % 40 == 0)
+            if (this.getHive() != null && this.worldObj.getWorldTime() % 10 == 0 && rand.nextInt(3) == 0)
             {
                 if (this.resinLevel >= 64)
                 {
-                    ArrayList<CoordData> data = Blocks.getCoordDataInRangeExcluding((int) posX, (int) posY, (int) posZ, this.resinMultiplier, this.worldObj, AliensVsPredator.blocks().terrainHiveResin, net.minecraft.init.Blocks.air);
+                    CoordData coord = findNextSuitableResinLocation(2);
 
-                    if (data.size() > 0)
+                    if (coord != null)
                     {
-                        CoordData coord = data.get(this.rand.nextInt(data.size()));
+                        Block block = coord.getBlock(this.worldObj);
 
-                        if (coord != null)
+                        if (block != null)
                         {
-                            Block block = this.worldObj.getBlock((int) coord.posX, (int) coord.posY, (int) coord.posZ);
+                            PathEntity path = this.worldObj.getEntityPathToXYZ(this, (int) coord.posX, (int) coord.posY, (int) coord.posZ, 12, true, false, true, false);
 
-//                            if (Entities.canCoordBeSeenBy(this, coord))
+                            if (path == null)
                             {
-                                this.getNavigator().setPath(this.worldObj.getEntityPathToXYZ(this, (int) coord.posX, (int) coord.posY, (int) coord.posZ, 128, true, true, true, true), 0.8D);
-
-                                if (!this.worldObj.isRemote)
-                                {
-                                    this.worldObj.setBlock((int) coord.posX, (int) coord.posY, (int) coord.posZ, AliensVsPredator.blocks().terrainHiveResin);
-
-                                    TileEntity tileEntity = coord.getTileEntity(this.worldObj);
-
-                                    if (tileEntity != null && tileEntity instanceof TileEntityHiveResin)
-                                    {
-                                        TileEntityHiveResin resin = (TileEntityHiveResin) tileEntity;
-                                        resin.setHiveSignature(this.getHiveSignature());
-                                        resin.setBlockCovering(block);
-                                        data.clear();
-                                    }
-                                }
-
-                                this.resinLevel -= 64;
+                                return;
                             }
+                            System.out.println("building " + this.hive.getDistanceFromHive(this));
+
+                            this.getNavigator().setPath(path, 0.8D);
+                            this.worldObj.setBlock((int) coord.posX, (int) coord.posY, (int) coord.posZ, AliensVsPredator.blocks().terrainHiveResin);
+
+                            TileEntity tileEntity = coord.getTileEntity(this.worldObj);
+
+                            if (tileEntity != null && tileEntity instanceof TileEntityHiveResin)
+                            {
+                                TileEntityHiveResin resin = (TileEntityHiveResin) tileEntity;
+                                resin.setHiveSignature(this.getHive().getUniqueIdentifier());
+                                resin.setBlockCovering(block);
+                            }
+
+                            this.resinLevel -= 64;
                         }
                     }
                 }
@@ -175,24 +205,31 @@ public class EntityDrone extends EntityXenomorph
         }
     }
 
-    public CoordData findValidResinLocation(int attempt)
+    public CoordData findNextSuitableResinLocation(int range)
     {
-        attempt++;
-        CoordData coord = new CoordData(this).add(-this.resinMultiplier + this.rand.nextInt(this.resinMultiplier * 2), -this.resinMultiplier + this.rand.nextInt(this.resinMultiplier * 2), -this.resinMultiplier + this.rand.nextInt(this.resinMultiplier * 2));
-        Block coordBlock = coord.getBlock(this.worldObj);
+        ArrayList<CoordData> data = new ArrayList<CoordData>();
 
-        if (coordBlock != AliensVsPredator.blocks().terrainHiveResin && coordBlock != net.minecraft.init.Blocks.air && coord.isAnySurfaceVisible(this.worldObj))
+        for (int x = (int) (posX - range); x < posX + range * 2; x++)
         {
-            return coord;
+            for (int y = (int) (posY - range); y < posY + range * 2; y++)
+            {
+                for (int z = (int) (posZ - range); z < posZ + range * 2; z++)
+                {
+                    CoordData location = new CoordData(x, y, z);
+                    Block block = location.getBlock(this.worldObj);
+
+                    if (!(block == net.minecraft.init.Blocks.air) && !(block instanceof BlockHiveResin) && block.isOpaqueCube())
+                    {
+                        if (location.isAnySurfaceVisible(this.worldObj) && (this.worldObj.rayTraceBlocks(Vec3.createVectorHelper(this.posX, this.posY + (double) this.getEyeHeight(), this.posZ), Vec3.createVectorHelper(x, y, z)) == null))
+                        {
+                            data.add(location);
+                        }
+                    }
+                }
+            }
         }
 
-        if (attempt > 5)
-        {
-            this.resinMultiplier += 3;
-            return null;
-        }
-
-        return this.findValidResinLocation(attempt);
+        return data.size() > 0 ? data.get(this.rand.nextInt(data.size())) : null;
     }
 
     @Override

@@ -9,7 +9,6 @@ import org.avp.event.ExtendedPropertiesEvents;
 import org.avp.event.FarmlandRegistry;
 import org.avp.event.HiveHandler;
 import org.avp.event.VardaStormHandler;
-import org.avp.event.WorldInfoEvent;
 import org.avp.event.client.AlienArmorEvents;
 import org.avp.event.client.AmmoIndicatorRenderEvent;
 import org.avp.event.client.BossBarEvent;
@@ -75,11 +74,11 @@ public class LocalEventHandler implements IInitEvent
         this.registerEvent(new EntityTrackingEvent());
         this.registerEvent(new EmbryoTickEvent());
         this.registerEvent(new ExtendedPropertiesEvents());
-        this.registerEvent(new WorldInfoEvent());
-        this.registerEvent(VardaStormHandler.INSTANCE);
-        this.registerEvent(FarmlandRegistry.INSTANCE);
-        this.registerEvent(BucketHandlingEvent.INSTANCE);
-        this.registerEvent(HiveHandler.INSTANCE);
+        this.registerEvent(SaveHandler.instance);
+        this.registerEvent(VardaStormHandler.instance);
+        this.registerEvent(FarmlandRegistry.instance);
+        this.registerEvent(BucketHandlingEvent.instance);
+        this.registerEvent(HiveHandler.instance);
     }
 
     public void registerEvent(Object event)

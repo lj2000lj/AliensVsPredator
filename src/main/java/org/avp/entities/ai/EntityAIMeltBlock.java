@@ -1,5 +1,7 @@
 package org.avp.entities.ai;
 
+import org.avp.AliensVsPredator;
+
 import com.arisux.amdxlib.lib.game.GameSounds;
 
 import net.minecraft.block.Block;
@@ -41,7 +43,7 @@ public class EntityAIMeltBlock extends EntityAIYOffsetBlockInteract
     @Override
     public boolean continueExecuting()
     {
-        return this.breakingTime <= 240 && this.theEntity.getDistanceSq((int) this.theEntity.posX, (int) this.theEntity.posY + yOffset, (int) this.theEntity.posZ) < 4.0D && block != Blocks.air && block != Blocks.bedrock;
+        return this.breakingTime <= 240 && this.theEntity.getDistanceSq((int) this.theEntity.posX, (int) this.theEntity.posY + yOffset, (int) this.theEntity.posZ) < 4.0D && block != Blocks.air && block != AliensVsPredator.blocks().terrainHiveResin && block != Blocks.bedrock;
     }
 
     @Override

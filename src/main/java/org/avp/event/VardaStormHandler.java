@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 
 public class VardaStormHandler
 {
-    public static VardaStormHandler INSTANCE = new VardaStormHandler();
+    public static VardaStormHandler instance = new VardaStormHandler();
     private int stormUpdateCount = 0;
     private int cloudTickCounter = 0;
 

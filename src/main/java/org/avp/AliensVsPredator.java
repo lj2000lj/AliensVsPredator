@@ -3,6 +3,7 @@ package org.avp;
 
 import org.avp.api.AssemblerAPI;
 import org.avp.api.WristbracerAPI;
+import org.avp.event.HiveHandler;
 
 import com.arisux.amdxlib.AMDXLib;
 import com.arisux.amdxlib.lib.game.Game;
@@ -16,6 +17,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;
@@ -86,7 +88,7 @@ public class AliensVsPredator implements IMod
         return DimensionHandler.instance;
     }
 
-    public static WorldHandler worldgen()
+    public static WorldHandler world()
     {
         return WorldHandler.instance;
     }
@@ -220,7 +222,7 @@ public class AliensVsPredator implements IMod
         blocks().init(event);
         ores().init(event);
         dimensions().init(event);
-        worldgen().init(event);
+        world().init(event);
         crafting().init(event);
         interfaces().init(event);
         events().init(event);
@@ -254,6 +256,12 @@ public class AliensVsPredator implements IMod
     public void onServerStarting(FMLServerStartingEvent event)
     {
         commands().onServerStarting(event);
+    }
+    
+    @EventHandler
+    public void onServerStopped(FMLServerStoppedEvent event)
+    {
+        HiveHandler.instance.clearCaches();
     }
 
     public boolean isDevCopy()

@@ -149,7 +149,7 @@ public class ProviderVarda extends WorldProvider
 
     public VardaStormHandler getStormHandler()
     {
-        return VardaStormHandler.INSTANCE;
+        return VardaStormHandler.instance;
     }
 
     @Override

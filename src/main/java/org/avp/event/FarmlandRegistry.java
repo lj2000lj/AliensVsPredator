@@ -12,7 +12,7 @@ import net.minecraftforge.event.entity.player.UseHoeEvent;
 
 public class FarmlandRegistry
 {
-    public static FarmlandRegistry INSTANCE = new FarmlandRegistry();
+    public static FarmlandRegistry instance = new FarmlandRegistry();
     private ArrayList<Block> farmlandRegistry = new ArrayList<Block>();
 
     private FarmlandRegistry()

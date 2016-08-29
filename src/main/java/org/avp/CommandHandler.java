@@ -2,6 +2,7 @@ package org.avp;
 
 import org.avp.command.CommandGenerate;
 import org.avp.command.CommandPlayerMode;
+import org.avp.command.CommandSettings;
 
 import com.arisux.amdxlib.lib.game.IInitEvent;
 
@@ -15,6 +16,7 @@ public class CommandHandler implements IInitEvent
     public static final CommandHandler instance = new CommandHandler();
     public CommandPlayerMode commandPlayerMode;
     public CommandGenerate commandGenerate;
+    public CommandSettings commandSettings;
 
     @Override
     public void init(FMLInitializationEvent event)
@@ -27,5 +29,6 @@ public class CommandHandler implements IInitEvent
     {
         event.registerServerCommand(this.commandPlayerMode = new CommandPlayerMode());
         event.registerServerCommand(this.commandGenerate = new CommandGenerate());
+        event.registerServerCommand(this.commandSettings = new CommandSettings());
     }
 }
