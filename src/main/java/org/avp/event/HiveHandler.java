@@ -86,7 +86,7 @@ public class HiveHandler implements IDataSaveHandler
     {
         if (event.world.provider.dimensionId == 0 && event.world.getWorldTime() % (20 * 5) == 0)
         {
-            System.out.println(HiveHandler.instance.getHives().size() + " HIVES: " + HiveHandler.instance.getHives());
+            System.out.println(hives.size() + " HIVES: " + hives);
         }
 
 //        for (XenomorphHive hive : (ArrayList<XenomorphHive>) this.hives.clone())

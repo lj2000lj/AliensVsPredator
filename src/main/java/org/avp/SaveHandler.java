@@ -46,69 +46,69 @@ public class SaveHandler
     @SubscribeEvent
     public void onWorldSave(WorldEvent.Save event)
     {
-        World world = event.world;
-        File worldSave = this.getSaveFile(world);
-        NBTTagCompound tag = new NBTTagCompound();
-
-        try
-        {
-            for (IDataSaveHandler dataHandler : this.dataHandlers)
-            {
-                if (dataHandler != null)
-                {
-                    if (!dataHandler.saveData(world, tag))
-                    {
-                        AMDXLib.log().info(String.format("Unable to save world data: ", this.getSaveFilename()));
-                    }
-                }
-            }
-
-            NBTStorage.writeCompressed(tag, worldSave);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            System.gc();
-        }
+//        World world = event.world;
+//        File worldSave = this.getSaveFile(world);
+//        NBTTagCompound tag = new NBTTagCompound();
+//
+//        try
+//        {
+//            for (IDataSaveHandler dataHandler : this.dataHandlers)
+//            {
+//                if (dataHandler != null)
+//                {
+//                    if (!dataHandler.saveData(world, tag))
+//                    {
+//                        AMDXLib.log().info(String.format("Unable to save world data: ", this.getSaveFilename()));
+//                    }
+//                }
+//            }
+//
+//            NBTStorage.writeCompressed(tag, worldSave);
+//        }
+//        catch (Exception e)
+//        {
+//            e.printStackTrace();
+//        }
+//        finally
+//        {
+//            System.gc();
+//        }
     }
 
     @SubscribeEvent
     public void onWorldLoad(WorldEvent.Load event)
     {
-        World world = event.world;
-        NBTTagCompound tag = new NBTTagCompound();
-        File worldSave = this.getSaveFile(world);
-
-        if (world.getSaveHandler().getWorldDirectory() != null)
-        {
-            try
-            {
-                NBTTagCompound read = NBTStorage.readCompressed(worldSave);
-                tag = read == null ? tag : read;
-
-                for (IDataSaveHandler dataHandler : this.dataHandlers)
-                {
-                    if (dataHandler != null)
-                    {
-                        if (!dataHandler.loadData(world, tag))
-                        {
-                            AMDXLib.log().info(String.format("Unable to load world data: ", this.getSaveFilename()));
-                        }
-                    }
-                }
-            }
-            catch (FileNotFoundException f)
-            {
-                System.out.println(String.format("Error loading data from: %s", worldSave.getAbsolutePath()));
-                f.printStackTrace();
-            }
-            catch (IOException io)
-            {
-                io.printStackTrace();
-            }
-        }
+//        World world = event.world;
+//        NBTTagCompound tag = new NBTTagCompound();
+//        File worldSave = this.getSaveFile(world);
+//
+//        if (world.getSaveHandler().getWorldDirectory() != null)
+//        {
+//            try
+//            {
+//                NBTTagCompound read = NBTStorage.readCompressed(worldSave);
+//                tag = read == null ? tag : read;
+//
+//                for (IDataSaveHandler dataHandler : this.dataHandlers)
+//                {
+//                    if (dataHandler != null)
+//                    {
+//                        if (!dataHandler.loadData(world, tag))
+//                        {
+//                            AMDXLib.log().info(String.format("Unable to load world data: ", this.getSaveFilename()));
+//                        }
+//                    }
+//                }
+//            }
+//            catch (FileNotFoundException f)
+//            {
+//                System.out.println(String.format("Error loading data from: %s", worldSave.getAbsolutePath()));
+//                f.printStackTrace();
+//            }
+//            catch (IOException io)
+//            {
+//                io.printStackTrace();
+//            }
+//        }
     }
 }
