@@ -93,7 +93,7 @@ public class HiveHandler implements IDataSaveHandler
         {
             if (hive != null && hive.getDimensionId() == event.world.provider.dimensionId)
             {
-                hive.update(event.world);
+                //hive.update(event.world);
             }
         }
     }

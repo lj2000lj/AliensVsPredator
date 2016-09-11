@@ -65,7 +65,7 @@ public class ItemWorldSelectionExporter extends HookedItem
 
         if (lastPos1 != null && lastPos2 != null)
         {
-            stack.setStackDisplayName(String.format("World Selector - Pos1(%s, %s, %s) - Pos2(%s, %s, %s)", lastPos1.posX, lastPos1.posY, lastPos1.posZ, lastPos2.posX, lastPos2.posY, lastPos2.posZ));
+            stack.setStackDisplayName(String.format("World Selector - Pos1(%s, %s, %s) - Pos2(%s, %s, %s)", lastPos1.x, lastPos1.y, lastPos1.z, lastPos2.x, lastPos2.y, lastPos2.z));
         }
     }
 

@@ -59,9 +59,9 @@ public class DerelictLocation
     {
         NBTTagCompound tagLocation = new NBTTagCompound();
         tagLocation.setBoolean("Generated", this.generated);
-        tagLocation.setInteger("PosX", (int) this.getCoord().posX);
-        tagLocation.setInteger("PosY", (int) this.getCoord().posY);
-        tagLocation.setInteger("PosZ", (int) this.getCoord().posZ);
+        tagLocation.setInteger("PosX", (int) this.getCoord().x);
+        tagLocation.setInteger("PosY", (int) this.getCoord().y);
+        tagLocation.setInteger("PosZ", (int) this.getCoord().z);
         tag.setTag("Location" + this.getIndex(), tagLocation);
     }
 

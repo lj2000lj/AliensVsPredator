@@ -88,7 +88,7 @@ public class EntityAqua extends EntityXenomorph
                     if (coordData.size() > 0)
                     {
                         CoordData selectedCoord = coordData.get(this.rand.nextInt(coordData.size()));
-                        this.getNavigator().tryMoveToXYZ((double) selectedCoord.posX, (double) selectedCoord.posY, (double) selectedCoord.posZ, this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getAttributeValue());
+                        this.getNavigator().tryMoveToXYZ((double) selectedCoord.x, (double) selectedCoord.y, (double) selectedCoord.z, this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getAttributeValue());
                     }
                 }
             }

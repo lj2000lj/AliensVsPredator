@@ -177,7 +177,7 @@ public class EntityDrone extends EntityXenomorph
 
                         if (block != null)
                         {
-                            PathEntity path = this.worldObj.getEntityPathToXYZ(this, (int) coord.posX, (int) coord.posY, (int) coord.posZ, 12, true, false, true, false);
+                            PathEntity path = this.worldObj.getEntityPathToXYZ(this, (int) coord.x, (int) coord.y, (int) coord.z, 12, true, false, true, false);
 
                             if (path == null)
                             {
@@ -186,7 +186,7 @@ public class EntityDrone extends EntityXenomorph
                             System.out.println("building " + this.hive.getDistanceFromHive(this));
 
                             this.getNavigator().setPath(path, 0.8D);
-                            this.worldObj.setBlock((int) coord.posX, (int) coord.posY, (int) coord.posZ, AliensVsPredator.blocks().terrainHiveResin);
+                            this.worldObj.setBlock((int) coord.x, (int) coord.y, (int) coord.z, AliensVsPredator.blocks().terrainHiveResin);
 
                             TileEntity tileEntity = coord.getTileEntity(this.worldObj);
 

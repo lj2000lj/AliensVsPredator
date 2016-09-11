@@ -92,7 +92,7 @@ public class DimensionHandler implements IInitEvent
             }
             else
             {
-                player.setLocationAndAngles(safePos.posX, safePos.posY, safePos.posZ, player.rotationYaw, player.rotationPitch);
+                player.setLocationAndAngles(safePos.x, safePos.y, safePos.z, player.rotationYaw, player.rotationPitch);
             }
         }
         else if (player.dimension == dimensionId)
@@ -109,7 +109,7 @@ public class DimensionHandler implements IInitEvent
             }
             else
             {
-                player.setLocationAndAngles(safePos.posX, safePos.posY, safePos.posZ, player.rotationYaw, player.rotationPitch);
+                player.setLocationAndAngles(safePos.x, safePos.y, safePos.z, player.rotationYaw, player.rotationPitch);
             }
         }
         else
@@ -126,7 +126,7 @@ public class DimensionHandler implements IInitEvent
             }
             else
             {
-                player.setLocationAndAngles(safePos.posX, safePos.posY, safePos.posZ, player.rotationYaw, player.rotationPitch);
+                player.setLocationAndAngles(safePos.x, safePos.y, safePos.z, player.rotationYaw, player.rotationPitch);
             }
         }
     }

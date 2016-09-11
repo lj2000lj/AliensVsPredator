@@ -322,9 +322,9 @@ public class TileEntityTurret extends TileEntityElectrical implements IDataDevic
     {
         this.focusPoint = coord;
 
-        double d0 = coord.posX - getEntity().posX;
-        double d1 = coord.posY - getEntity().posY;
-        double d2 = coord.posZ - getEntity().posZ;
+        double d0 = coord.x - getEntity().posX;
+        double d1 = coord.y - getEntity().posY;
+        double d2 = coord.z - getEntity().posZ;
         double d3 = MathHelper.sqrt_double(d0 * d0 + d2 * d2);
 
         float f = (float) (Math.atan2(d2, d0) * 180.0D / Math.PI) - 90.0F;

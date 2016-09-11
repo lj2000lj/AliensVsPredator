@@ -16,21 +16,21 @@ public class ModelPlasma extends Model
     private float scale;
     public boolean drawInternalVertices = true;
 
-    private Vertex t1 = new Vertex(1.0F, 0.0F, 0.0F).smooth(),
-        t2 = new Vertex(0.0F, 1.0F, 0.0F).smooth(),
-        t3 = new Vertex(0.0F, 0.0F, 1.0F).smooth(),
-        t4 = new Vertex(0.5F, 0.5F, 0.0F).smooth(),
-        t5 = new Vertex(0.0F, 0.5F, 0.5F).smooth(),
-        t6 = new Vertex(0.5F, 0.0F, 0.5F).smooth(),
-        t7 = new Vertex(0.75F, 0.25F, 0.0F).smooth(),
-        t8 = new Vertex(0.5F, 0.25F, 0.25F).smooth(),
-        t9 = new Vertex(0.75F, 0.0F, 0.25F).smooth(),
-        t10 = new Vertex(0.0F, 0.75F, 0.25F).smooth(),
-        t11 = new Vertex(0.25F, 0.5F, 0.25F).smooth(),
-        t12 = new Vertex(0.25F, 0.75F, 0.0F).smooth(),
-        t13 = new Vertex(0.25F, 0.0F, 0.75F).smooth(),
-        t14 = new Vertex(0.25F, 0.25F, 0.5F).smooth(),
-        t15 = new Vertex(0.0F, 0.25F, 0.75F).smooth();
+    private Vertex t1 = new Vertex(1.0F, 0.0F, 0.0F).normalize(),
+        t2 = new Vertex(0.0F, 1.0F, 0.0F).normalize(),
+        t3 = new Vertex(0.0F, 0.0F, 1.0F).normalize(),
+        t4 = new Vertex(0.5F, 0.5F, 0.0F).normalize(),
+        t5 = new Vertex(0.0F, 0.5F, 0.5F).normalize(),
+        t6 = new Vertex(0.5F, 0.0F, 0.5F).normalize(),
+        t7 = new Vertex(0.75F, 0.25F, 0.0F).normalize(),
+        t8 = new Vertex(0.5F, 0.25F, 0.25F).normalize(),
+        t9 = new Vertex(0.75F, 0.0F, 0.25F).normalize(),
+        t10 = new Vertex(0.0F, 0.75F, 0.25F).normalize(),
+        t11 = new Vertex(0.25F, 0.5F, 0.25F).normalize(),
+        t12 = new Vertex(0.25F, 0.75F, 0.0F).normalize(),
+        t13 = new Vertex(0.25F, 0.0F, 0.75F).normalize(),
+        t14 = new Vertex(0.25F, 0.25F, 0.5F).normalize(),
+        t15 = new Vertex(0.0F, 0.25F, 0.75F).normalize();
 
     private void addTri(Vertex vertex1, Vertex vertex2, Vertex vertex3)
     {

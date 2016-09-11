@@ -27,7 +27,7 @@ public class PathFinder
 
     public PathEntity createEntityPathTo(IBlockAccess blockAccess, Entity entity, CoordData targetCoord, float maxDistance)
     {
-        return this.createEntityPathTo(blockAccess, entity, (double) ((float) targetCoord.posX + 0.5F), (double) ((float) targetCoord.posY + 0.5F), (double) ((float) targetCoord.posZ + 0.5F), maxDistance);
+        return this.createEntityPathTo(blockAccess, entity, (double) ((float) targetCoord.x + 0.5F), (double) ((float) targetCoord.y + 0.5F), (double) ((float) targetCoord.z + 0.5F), maxDistance);
     }
 
     private PathEntity createEntityPathTo(IBlockAccess blockAccess, Entity entity, double posX, double posY, double posZ, float maxDistance)

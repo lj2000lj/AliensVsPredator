@@ -186,7 +186,7 @@ public class EntityOvamorph extends EntitySpeciesAlien implements IMob
             EntityFacehugger facehugger = new EntityFacehugger(this.worldObj);
             CoordData pos = new CoordData(this).findSafePosAround(this.worldObj);
 
-            facehugger.setLocationAndAngles(pos.posX, pos.posY, pos.posZ, 0F, 0F);
+            facehugger.setLocationAndAngles(pos.x, pos.y, pos.z, 0F, 0F);
             worldObj.spawnEntityInWorld(facehugger);
             facehugger.motionY = 0.75F;
 
