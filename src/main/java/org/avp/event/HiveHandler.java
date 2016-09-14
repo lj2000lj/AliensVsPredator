@@ -89,13 +89,13 @@ public class HiveHandler implements IDataSaveHandler
             System.out.println(hives.size() + " HIVES: " + hives);
         }
 
-//        for (XenomorphHive hive : (ArrayList<XenomorphHive>) this.hives.clone())
-//        {
-//            if (hive != null && hive.getDimensionId() == event.world.provider.dimensionId)
-//            {
-//                //hive.update(event.world);
-//            }
-//        }
+        for (XenomorphHive hive : (ArrayList<XenomorphHive>) this.hives.clone())
+        {
+            if (hive != null && hive.getDimensionId() == event.world.provider.dimensionId)
+            {
+                hive.update(event.world);
+            }
+        }
     }
 
     public void clearCaches()
