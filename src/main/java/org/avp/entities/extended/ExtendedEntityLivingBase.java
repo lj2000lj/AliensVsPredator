@@ -51,9 +51,14 @@ public class ExtendedEntityLivingBase implements IExtendedEntityProperties
     {
         int embryoType = nbt.getInteger("EmbryoType");
 
+        this.embryo = null;
+
         if (embryoType != -1)
         {
-            this.embryo = null;
+            // This may cause a bug where players join the world impregnated. Revert changes if this happens.
+            this.embryo = new Embryo(EmbryoType.get(embryoType))
+            {
+            };
         }
 
         if (this.getEmbryo() != null)

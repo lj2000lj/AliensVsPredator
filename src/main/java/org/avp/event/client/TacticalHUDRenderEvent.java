@@ -79,7 +79,7 @@ public class TacticalHUDRenderEvent
                             {
                                 ExtendedEntityLivingBase livingProperties = ExtendedEntityLivingBase.get((EntityLivingBase) entity);
 
-                                if (livingProperties.getEmbryo() != null)
+                                if (livingProperties.doesEntityContainEmbryo())
                                 {
                                     int lifeTimeTicks = livingProperties.getEmbryo().getGestationPeriod() - livingProperties.getEmbryo().getTicksExisted();
                                     int lifeTimeSeconds = lifeTimeTicks / 20;
