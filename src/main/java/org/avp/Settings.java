@@ -81,7 +81,7 @@ public class Settings
     private int             biomeVarda;
     private int             biomeAcheron;
     private int             globalSoundVolume;
-    private GraphicsSetting hiveTesselation;
+    private GraphicsSetting hiveTesselation = GraphicsSetting.ULTRA;
 
     @EventHandler
     public void preInitialize(FMLPreInitializationEvent evt)
