@@ -26,14 +26,14 @@ import net.minecraftforge.client.IRenderHandler;
 
 public class SkyProviderVarda extends IRenderHandler
 {
-    private Tessellator tessellator = Tessellator.instance;
-    private Color skyColor = new Color(0.11F, 0.225F, 0.265F, 1F);
-    protected Color cloudColor = new Color(0.075F, 0.1F, 0.15F, 0.75F);
-    private float[] stormXCoords = null;
-    private float[] stormZCoords = null;
+    private Tessellator tessellator    = Tessellator.instance;
+    private Color       skyColor       = new Color(0.11F, 0.225F, 0.265F, 1F);
+    protected Color     cloudColor     = new Color(0.075F, 0.1F, 0.15F, 0.75F);
+    private float[]     stormXCoords   = null;
+    private float[]     stormZCoords   = null;
 
-    public int starGLCallList = GLAllocation.generateDisplayLists(3);
-    public int glSkyList;
+    public int          starGLCallList = GLAllocation.generateDisplayLists(3);
+    public int          glSkyList;
 
     public SkyProviderVarda()
     {
@@ -67,84 +67,87 @@ public class SkyProviderVarda extends IRenderHandler
     @Override
     public void render(float renderPartialTicks, WorldClient world, Minecraft mc)
     {
-        ProviderVarda provider = (ProviderVarda) world.provider;
-
-        if (provider.getStormHandler().isStormActive(world))
+        if (world.provider instanceof ProviderVarda)
         {
-            this.renderStorm(renderPartialTicks);
-        }
+            ProviderVarda provider = (ProviderVarda) world.provider;
 
-        OpenGL.disable(GL11.GL_TEXTURE_2D);
-        GL11.glColor3f(1.0F, 1.0F, 1.0F);
-        GL11.glDepthMask(false);
-        OpenGL.enable(GL11.GL_FOG);
-        GL11.glColor3f(skyColor.r, skyColor.g, skyColor.b);
+            if (provider.getStormHandler().isStormActive(world))
+            {
+                this.renderStorm(renderPartialTicks);
+            }
 
-        /** Render Sky **/
-        GL11.glCallList(this.glSkyList);
-        OpenGL.disable(GL11.GL_FOG);
-        OpenGL.disable(GL11.GL_ALPHA_TEST);
-        OpenGL.enable(GL11.GL_BLEND);
-        OpenGL.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        OpenGL.color(1.0F, 1.0F, 1.0F, provider.getStarBrightness(renderPartialTicks) * 2);
+            OpenGL.disable(GL11.GL_TEXTURE_2D);
+            GL11.glColor3f(1.0F, 1.0F, 1.0F);
+            GL11.glDepthMask(false);
+            OpenGL.enable(GL11.GL_FOG);
+            GL11.glColor3f(skyColor.r, skyColor.g, skyColor.b);
 
-        /** Render Stars **/
-        GL11.glCallList(this.starGLCallList);
-        OpenGL.enable(GL11.GL_TEXTURE_2D);
-        OpenGL.blendFunc(GL11.GL_SRC_ALPHA, 1);
+            /** Render Sky **/
+            GL11.glCallList(this.glSkyList);
+            OpenGL.disable(GL11.GL_FOG);
+            OpenGL.disable(GL11.GL_ALPHA_TEST);
+            OpenGL.enable(GL11.GL_BLEND);
+            OpenGL.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            OpenGL.color(1.0F, 1.0F, 1.0F, provider.getStarBrightness(renderPartialTicks) * 2);
 
-        OpenGL.pushMatrix();
-        {
-            float scale = 30.0F;
-            OpenGL.rotate(-90.0F, 0.0F, 1.0F, 0.0F);
-            OpenGL.color(1.0F, 1.0F, 1.0F, 1.0F);
-            OpenGL.rotate(world.getCelestialAngle(renderPartialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
-            Draw.bindTexture(GameResources.SKY_SUN);
-            tessellator.startDrawingQuads();
-            tessellator.addVertexWithUV(-scale, 150.0D, -scale, 0.0D, 0.0D);
-            tessellator.addVertexWithUV(scale, 150.0D, -scale, 1.0D, 0.0D);
-            tessellator.addVertexWithUV(scale, 150.0D, scale, 1.0D, 1.0D);
-            tessellator.addVertexWithUV(-scale, 150.0D, scale, 0.0D, 1.0D);
-            tessellator.draw();
-        }
-        OpenGL.popMatrix();
+            /** Render Stars **/
+            GL11.glCallList(this.starGLCallList);
+            OpenGL.enable(GL11.GL_TEXTURE_2D);
+            OpenGL.blendFunc(GL11.GL_SRC_ALPHA, 1);
 
-        OpenGL.pushMatrix();
-        {
-            float scale = 275.0F;
-            OpenGL.translate(30F, 0F, 0F);
-            OpenGL.rotate(DimensionUtil.calculateCelestialAngle(world.getWorldTime(), renderPartialTicks) * 360.0F, 0.0F, 1.0F, 0.0F);
-            OpenGL.color(1.0F, 1.0F, 1.0F, 1.0F);
-            OpenGL.rotate(DimensionUtil.calculateCelestialAngle(world.getWorldTime(), renderPartialTicks) * 360.0F, 10.0F, -6.0F, -20.0F);
-            OpenGL.rotate(135F, 0.0F, 1.0F, 0.0F);
-            Draw.bindTexture(AliensVsPredator.resources().SKY_CALPAMOS);
-            tessellator.startDrawingQuads();
-            tessellator.addVertexWithUV(-scale, 150.0D, -scale, 0.0D, 0.0D);
-            tessellator.addVertexWithUV(scale, 150.0D, -scale, 1.0D, 0.0D);
-            tessellator.addVertexWithUV(scale, 150.0D, scale, 1.0D, 1.0D);
-            tessellator.addVertexWithUV(-scale, 150.0D, scale, 0.0D, 1.0D);
-            tessellator.draw();
-        }
-        OpenGL.popMatrix();
-
-        OpenGL.disable(GL11.GL_BLEND);
-        OpenGL.enable(GL11.GL_ALPHA_TEST);
-        OpenGL.enable(GL11.GL_TEXTURE_2D);
-        GL11.glDepthMask(true);
-
-        if (Game.minecraft().gameSettings.shouldRenderClouds())
-        {
             OpenGL.pushMatrix();
             {
-                if (Game.minecraft().gameSettings.fancyGraphics)
-                {
-                    OpenGL.enable(GL11.GL_FOG);
-                }
-
-                this.renderClouds(renderPartialTicks);
-                OpenGL.disable(GL11.GL_FOG);
+                float scale = 30.0F;
+                OpenGL.rotate(-90.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.color(1.0F, 1.0F, 1.0F, 1.0F);
+                OpenGL.rotate(world.getCelestialAngle(renderPartialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
+                Draw.bindTexture(GameResources.SKY_SUN);
+                tessellator.startDrawingQuads();
+                tessellator.addVertexWithUV(-scale, 150.0D, -scale, 0.0D, 0.0D);
+                tessellator.addVertexWithUV(scale, 150.0D, -scale, 1.0D, 0.0D);
+                tessellator.addVertexWithUV(scale, 150.0D, scale, 1.0D, 1.0D);
+                tessellator.addVertexWithUV(-scale, 150.0D, scale, 0.0D, 1.0D);
+                tessellator.draw();
             }
             OpenGL.popMatrix();
+
+            OpenGL.pushMatrix();
+            {
+                float scale = 275.0F;
+                OpenGL.translate(30F, 0F, 0F);
+                OpenGL.rotate(DimensionUtil.calculateCelestialAngle(world.getWorldTime(), renderPartialTicks) * 360.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.color(1.0F, 1.0F, 1.0F, 1.0F);
+                OpenGL.rotate(DimensionUtil.calculateCelestialAngle(world.getWorldTime(), renderPartialTicks) * 360.0F, 10.0F, -6.0F, -20.0F);
+                OpenGL.rotate(135F, 0.0F, 1.0F, 0.0F);
+                Draw.bindTexture(AliensVsPredator.resources().SKY_CALPAMOS);
+                tessellator.startDrawingQuads();
+                tessellator.addVertexWithUV(-scale, 150.0D, -scale, 0.0D, 0.0D);
+                tessellator.addVertexWithUV(scale, 150.0D, -scale, 1.0D, 0.0D);
+                tessellator.addVertexWithUV(scale, 150.0D, scale, 1.0D, 1.0D);
+                tessellator.addVertexWithUV(-scale, 150.0D, scale, 0.0D, 1.0D);
+                tessellator.draw();
+            }
+            OpenGL.popMatrix();
+
+            OpenGL.disable(GL11.GL_BLEND);
+            OpenGL.enable(GL11.GL_ALPHA_TEST);
+            OpenGL.enable(GL11.GL_TEXTURE_2D);
+            GL11.glDepthMask(true);
+
+            if (Game.minecraft().gameSettings.shouldRenderClouds())
+            {
+                OpenGL.pushMatrix();
+                {
+                    if (Game.minecraft().gameSettings.fancyGraphics)
+                    {
+                        OpenGL.enable(GL11.GL_FOG);
+                    }
+
+                    this.renderClouds(renderPartialTicks);
+                    OpenGL.disable(GL11.GL_FOG);
+                }
+                OpenGL.popMatrix();
+            }
         }
     }
 
