@@ -27,7 +27,7 @@ public class Settings
                 }
             }
             
-            return null;
+            return GraphicsSetting.MEDIUM;
         }
         
         public int level()
