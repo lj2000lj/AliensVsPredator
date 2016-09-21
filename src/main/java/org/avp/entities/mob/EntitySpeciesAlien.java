@@ -16,6 +16,7 @@ import com.arisux.amdxlib.lib.world.Worlds;
 import com.arisux.amdxlib.lib.world.entity.Entities;
 
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
@@ -234,5 +235,11 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob
         {
             AliensVsPredator.network().sendToAll(new PacketJellyLevelUpdate(jellyLevel, Integer.valueOf(this.getEntityId())));
         }
+    }
+    
+    @Override
+    public boolean isCreatureType(EnumCreatureType type, boolean forSpawnCount)
+    {
+        return type == EnumCreatureType.monster ? true : false;
     }
 }
