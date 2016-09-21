@@ -54,7 +54,7 @@ public class RenderEntityInMedpodEvent
                 renderY = renderY - clientY;
                 renderZ = renderZ - clientZ;
 
-                renderLiving.render((EntityLivingBase) event.entity, event.renderer, renderX, renderY, renderZ, Game.partialTicks());
+                renderLiving.render((EntityLivingBase) event.entity, event.renderer, renderX, renderY, renderZ, event.partialRenderTick);
             }
         }
     }
@@ -104,7 +104,7 @@ public class RenderEntityInMedpodEvent
                 OpenGL.translate(0F, -1.45F, 0F);
             }
         }
-        
+
         float medpodRotation = (float) medpod.getTileEntity().getDoorProgress() * 45 / medpod.getTileEntity().getMaxDoorProgress();
         OpenGL.translate(0F, 1.5F, -0F);
         OpenGL.rotate(medpodRotation, 1F, 0F, 0F);
@@ -151,11 +151,11 @@ public class RenderEntityInMedpodEvent
                 this.mainModel = Model.getMainModel(renderer);
             }
 
-            GL11.glPushMatrix();
+            OpenGL.pushMatrix();
             {
                 this.mainModel.isRiding = false;
-                this.mainModel.swingProgress = this.handleRotationFloat(entity, renderPartialTicks);
                 this.mainModel.isChild = entity.isChild();
+                this.mainModel.swingProgress = 0F;
 
                 if (this.renderPassModel != null)
                 {
@@ -167,49 +167,40 @@ public class RenderEntityInMedpodEvent
                     this.renderPassModel.isChild = this.mainModel.isChild;
                 }
 
-                GL11.glDisable(GL11.GL_CULL_FACE);
-                try
+                float rotationYaw = com.arisux.amdxlib.lib.util.Math.interpolateRotation(entity.prevRenderYawOffset, entity.renderYawOffset, renderPartialTicks);
+                float rotationYawHead = com.arisux.amdxlib.lib.util.Math.interpolateRotation(entity.prevRotationYawHead, entity.rotationYawHead, renderPartialTicks);
+                float rotationPitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * renderPartialTicks;
+                float swingProgressPrev = entity.prevLimbSwingAmount + (entity.limbSwingAmount - entity.prevLimbSwingAmount) * renderPartialTicks;
+                float swingProgress = entity.limbSwing - entity.limbSwingAmount * (1.0F - renderPartialTicks);
+                float idleProgress = (float) Math.toRadians(10F);
+
+                if (entity.isChild())
                 {
-                    float rotationYaw = com.arisux.amdxlib.lib.util.Math.interpolateRotation(entity.prevRenderYawOffset, entity.renderYawOffset, renderPartialTicks);
-                    float rotationYawHead = com.arisux.amdxlib.lib.util.Math.interpolateRotation(entity.prevRotationYawHead, entity.rotationYawHead, renderPartialTicks);
-                    float rotationPitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * Game.partialTicks();
-                    float swingProgressPrev = entity.prevLimbSwingAmount + (entity.limbSwingAmount - entity.prevLimbSwingAmount) * Game.partialTicks();
-                    float swingProgress = entity.limbSwing - entity.limbSwingAmount * (1.0F - renderPartialTicks);
-                    float idleProgress = (float) Math.toRadians(10F);
-
-                    if (entity.isChild())
-                    {
-                        swingProgress *= 3.0F;
-                    }
-
-                    if (swingProgressPrev > 1.0F)
-                    {
-                        swingProgressPrev = 1.0F;
-                    }
-
-                    this.renderLivingAt(entity, posX, posY, posZ);
-                    OpenGL.rotate(medpod.getTileEntity());
-                    GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-                    GL11.glScalef(-1.0F, -1.0F, 1.0F);
-
-                    this.preRenderCallback(entity, renderPartialTicks);
-                    GL11.glTranslatef(0.0F, -24.0F * Model.DEFAULT_BOX_TRANSLATION - 0.0078125F, 0.0F);
-                    transformMedpodEntity(medpod, entity);
-
-                    GL11.glEnable(GL11.GL_ALPHA_TEST);
-                    this.mainModel.setLivingAnimations(entity, swingProgress, swingProgressPrev, renderPartialTicks);
-                    this.renderModel(entity, swingProgress, swingProgressPrev, idleProgress, rotationYawHead - rotationYaw, rotationPitch, Model.DEFAULT_BOX_TRANSLATION);
-                    GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+                    swingProgress *= 3.0F;
                 }
-                catch (Exception exception)
+
+                if (swingProgressPrev > 1.0F)
                 {
-                    FMLLog.getLogger().error("Couldn\'t render entity", exception);
+                    swingProgressPrev = 1.0F;
                 }
+                
+                OpenGL.disableCullFace();
+                this.renderLivingAt(entity, posX, posY, posZ);
+                OpenGL.rotate(medpod.getTileEntity());
+                OpenGL.scale(-1.0F, -1.0F, 1.0F);
+
+                this.preRenderCallback(entity, renderPartialTicks);
+                OpenGL.translate(0.0F, -24.0F * Model.DEFAULT_BOX_TRANSLATION - 0.0078125F, 0.0F);
+                transformMedpodEntity(medpod, entity);
+
+                OpenGL.enableAlphaTest();
+                this.mainModel.setLivingAnimations(entity, swingProgress, swingProgressPrev, renderPartialTicks);
+                this.renderModel(entity, swingProgress, swingProgressPrev, idleProgress, rotationYawHead - rotationYaw, rotationPitch, Model.DEFAULT_BOX_TRANSLATION);
 
                 OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
-                GL11.glEnable(GL11.GL_TEXTURE_2D);
+                OpenGL.enableTexture2d();
                 OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
-                GL11.glEnable(GL11.GL_CULL_FACE);
+                OpenGL.enableCullFace();
             }
             GL11.glPopMatrix();
             this.passSpecialRender(entity, posX, posY, posZ);
@@ -225,17 +216,17 @@ public class RenderEntityInMedpodEvent
             }
             else if (!living.isInvisibleToPlayer(Game.minecraft().thePlayer))
             {
-                GL11.glPushMatrix();
-                GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.15F);
-                GL11.glDepthMask(false);
-                GL11.glEnable(GL11.GL_BLEND);
-                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+                OpenGL.pushMatrix();
+                OpenGL.color(1.0F, 1.0F, 1.0F, 0.15F);
+                OpenGL.depthMask(false);
+                OpenGL.enableBlend();
+                OpenGL.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                 GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
                 this.mainModel.render(living, swingProgress, swingProgressPrev, idleProgress, rotationYawHead, rotationPitch, boxTranslation);
-                GL11.glDisable(GL11.GL_BLEND);
+                OpenGL.disableBlend();
                 GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
-                GL11.glPopMatrix();
-                GL11.glDepthMask(true);
+                OpenGL.depthMask(true);
+                OpenGL.popMatrix();
             }
             else
             {

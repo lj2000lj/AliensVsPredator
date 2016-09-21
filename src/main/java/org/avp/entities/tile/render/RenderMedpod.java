@@ -1,7 +1,5 @@
 package org.avp.entities.tile.render;
 
-import static org.lwjgl.opengl.GL11.GL_BLEND;
-
 import org.avp.AliensVsPredator;
 import org.avp.entities.tile.TileEntityMedpod;
 
@@ -28,6 +26,7 @@ public class RenderMedpod extends TileEntitySpecialRenderer
             OpenGL.rotateOpposite(tile);
             AliensVsPredator.resources().models().MEDPOD.draw(tile);
 
+            OpenGL.enableBlend();
             OpenGL.blendClear();
 
             if (tile.getVoltage() > 0)
@@ -36,11 +35,10 @@ public class RenderMedpod extends TileEntitySpecialRenderer
                 OpenGL.disableLightMapping();
             }
 
-            OpenGL.enableBlend();
             AliensVsPredator.resources().models().MEDPOD_MASK.draw(tile);
             OpenGL.enableLight();
             OpenGL.enableLightMapping();
-            OpenGL.disable(GL_BLEND);
+            OpenGL.disableBlend();
         }
         OpenGL.popMatrix();
     }
