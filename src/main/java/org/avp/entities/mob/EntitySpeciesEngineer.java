@@ -47,11 +47,11 @@ public abstract class EntitySpeciesEngineer extends EntityMob
     public void onDeath(DamageSource damagesource)
     {
         super.onDeath(damagesource);
-        if (new Random().nextInt(20) == 0) // 5% chance of dropping NBT drive, a crafting ingredient of the assembler (creation theme - play on NBT..)
+        if (new Random().nextInt(1) == 0) // 5% chance of dropping NBT drive, a crafting ingredient of the assembler (creation theme - play on NBT..)
             this.entityDropItem(new ItemStack(AliensVsPredator.items().itemFlashDrive), 0.0F);
-        if (new Random().nextInt(20) == 0) // thematic drop, allowing the player to understand the source of the black goo
+        if (new Random().nextInt(2) == 0) // thematic drop, allowing the player to understand the source of the black goo
             this.entityDropItem(new ItemStack(AliensVsPredator.items().itemPhial), 0.0F);
-        if (new Random().nextInt(20) == 0)
+        if (new Random().nextInt(2) == 0)
             this.entityDropItem(new ItemStack(AliensVsPredator.items().itemPhialEmpty), 0.0F);
     }
 

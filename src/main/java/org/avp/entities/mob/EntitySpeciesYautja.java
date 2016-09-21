@@ -161,7 +161,7 @@ public abstract class EntitySpeciesYautja extends EntityMob implements IFacehugS
     {
         super.onDeath(damagesource);
 
-        if (this.rand.nextInt(4) == 0)
+        if (this.rand.nextInt(1) == 0)
         {
             this.entityDropItem(new ItemStack(AliensVsPredator.items().itemArtifactTech), 0.0F);
         }
