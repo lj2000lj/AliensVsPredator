@@ -72,7 +72,7 @@ public class RenderEntityInMedpodEvent
 
                 if (extendedPlayer != null && extendedPlayer.getPlayer() != null && extendedPlayer.getPlayer().ridingEntity instanceof EntityMedpod)
                 {
-                    event.setCanceled(true);
+                    // event.setCanceled(true);
                 }
             }
         }
@@ -158,54 +158,33 @@ public class RenderEntityInMedpodEvent
 
             OpenGL.pushMatrix();
             {
+                float rotationYaw = com.arisux.amdxlib.lib.util.Math.interpolateRotation(entity.prevRenderYawOffset, entity.renderYawOffset, renderPartialTicks);
+                float rotationYawHead = com.arisux.amdxlib.lib.util.Math.interpolateRotation(entity.prevRotationYawHead, entity.rotationYawHead, renderPartialTicks);
+                float rotationPitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * renderPartialTicks;
+                float idleProgress = 0.17453292F;
+
                 this.mainModel.isRiding = false;
                 this.mainModel.isChild = entity.isChild();
-                this.mainModel.swingProgress = 0F;
-
-                if (this.renderPassModel != null)
-                {
-                    this.renderPassModel.swingProgress = this.renderPassModel != null ? this.mainModel.swingProgress : this.renderPassModel.swingProgress;
-                }
 
                 if (this.renderPassModel != null)
                 {
                     this.renderPassModel.isChild = this.mainModel.isChild;
                 }
 
-                float rotationYaw = com.arisux.amdxlib.lib.util.Math.interpolateRotation(entity.prevRenderYawOffset, entity.renderYawOffset, renderPartialTicks);
-                float rotationYawHead = com.arisux.amdxlib.lib.util.Math.interpolateRotation(entity.prevRotationYawHead, entity.rotationYawHead, renderPartialTicks);
-                float rotationPitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * renderPartialTicks;
-                float swingProgressPrev = entity.prevLimbSwingAmount + (entity.limbSwingAmount - entity.prevLimbSwingAmount) * renderPartialTicks;
-                float swingProgress = entity.limbSwing - entity.limbSwingAmount * (1.0F - renderPartialTicks);
-                float idleProgress = (float) Math.toRadians(10F);
-
-                if (entity.isChild())
-                {
-                    swingProgress *= 3.0F;
-                }
-
-                if (swingProgressPrev > 1.0F)
-                {
-                    swingProgressPrev = 1.0F;
-                }
-
                 OpenGL.disableCullFace();
                 OpenGL.translate(posX, posY, posZ);
                 OpenGL.rotate(medpod.getTileEntity());
                 OpenGL.scale(-1.0F, -1.0F, 1.0F);
-
-                // this.preRenderCallback(entity, renderPartialTicks);
+                this.preRenderCallback(entity, renderPartialTicks);
+                OpenGL.enableAlphaTest();
                 OpenGL.translate(0.0F, -24.0F * Model.DEFAULT_BOX_TRANSLATION - 0.0078125F, 0.0F);
                 transformMedpodEntity(medpod, entity);
-
-                // OpenGL.enableAlphaTest();
-                // this.mainModel.setLivingAnimations(entity, swingProgress, swingProgressPrev, renderPartialTicks);
-                this.renderModel(entity, swingProgress, swingProgressPrev, idleProgress, rotationYawHead - rotationYaw, rotationPitch, Model.DEFAULT_BOX_TRANSLATION);
-
-                // OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
-                // OpenGL.enableTexture2d();
-                // OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
-                // OpenGL.enableCullFace();
+                this.mainModel.setLivingAnimations(entity, 0F, 0F, renderPartialTicks);
+                this.renderModel(entity, 0F, 0F, idleProgress, rotationYawHead - rotationYaw, rotationPitch, Model.DEFAULT_BOX_TRANSLATION);
+                OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
+                OpenGL.enableTexture2d();
+                OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
+                OpenGL.enableCullFace();
             }
             GL11.glPopMatrix();
             this.passSpecialRender(entity, posX, posY, posZ);
