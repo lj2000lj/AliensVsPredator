@@ -3,7 +3,6 @@ package org.avp.event.client;
 import org.avp.entities.EntityMedpod;
 import org.avp.entities.extended.ExtendedEntityPlayer;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 import com.arisux.amdxlib.lib.client.Model;
 import com.arisux.amdxlib.lib.client.render.Draw;
@@ -11,8 +10,8 @@ import com.arisux.amdxlib.lib.client.render.OpenGL;
 import com.arisux.amdxlib.lib.game.Game;
 import com.arisux.amdxlib.lib.world.entity.Entities;
 
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -32,29 +31,32 @@ public class RenderEntityInMedpodEvent
     @SubscribeEvent
     public void renderPlayerTickPre(RenderPlayerEvent.Pre event)
     {
-        if (event.entity instanceof EntityPlayer)
+        if (event.entity != null)
         {
-            ExtendedEntityPlayer extendedPlayer = (ExtendedEntityPlayer) event.entity.getExtendedProperties(ExtendedEntityPlayer.IDENTIFIER);
-
-            if (event.entity != null && extendedPlayer != null && extendedPlayer.getPlayer() != null && extendedPlayer.getPlayer().ridingEntity instanceof EntityMedpod)
+            if (event.entity instanceof AbstractClientPlayer)
             {
-                event.setCanceled(true);
+                ExtendedEntityPlayer extendedPlayer = (ExtendedEntityPlayer) event.entity.getExtendedProperties(ExtendedEntityPlayer.IDENTIFIER);
 
-                EntityPlayer client = Game.minecraft().thePlayer;
+                if (extendedPlayer != null && extendedPlayer.getPlayer() != null && extendedPlayer.getPlayer().ridingEntity instanceof EntityMedpod)
+                {
+                    event.setCanceled(true);
 
-                double renderX = event.entity.lastTickPosX + (event.entity.posX - event.entity.lastTickPosX) * (double) event.partialRenderTick;
-                double renderY = event.entity.lastTickPosY + (event.entity.posY - event.entity.lastTickPosY) * (double) event.partialRenderTick;
-                double renderZ = event.entity.lastTickPosZ + (event.entity.posZ - event.entity.lastTickPosZ) * (double) event.partialRenderTick;
+                    EntityPlayer client = Game.minecraft().thePlayer;
 
-                double clientX = client.lastTickPosX + (client.posX - client.lastTickPosX) * (double) event.partialRenderTick;
-                double clientY = client.lastTickPosY + (client.posY - client.lastTickPosY) * (double) event.partialRenderTick;
-                double clientZ = client.lastTickPosZ + (client.posZ - client.lastTickPosZ) * (double) event.partialRenderTick;
+                    double renderX = event.entity.lastTickPosX + (event.entity.posX - event.entity.lastTickPosX) * (double) event.partialRenderTick;
+                    double renderY = event.entity.lastTickPosY + (event.entity.posY - event.entity.lastTickPosY) * (double) event.partialRenderTick;
+                    double renderZ = event.entity.lastTickPosZ + (event.entity.posZ - event.entity.lastTickPosZ) * (double) event.partialRenderTick;
 
-                renderX = renderX - clientX;
-                renderY = renderY - clientY;
-                renderZ = renderZ - clientZ;
+                    double clientX = client.lastTickPosX + (client.posX - client.lastTickPosX) * (double) event.partialRenderTick;
+                    double clientY = client.lastTickPosY + (client.posY - client.lastTickPosY) * (double) event.partialRenderTick;
+                    double clientZ = client.lastTickPosZ + (client.posZ - client.lastTickPosZ) * (double) event.partialRenderTick;
 
-                renderLiving.render((EntityLivingBase) event.entity, event.renderer, renderX, renderY, renderZ, event.partialRenderTick);
+                    renderX = renderX - clientX;
+                    renderY = renderY - clientY;
+                    renderZ = renderZ - clientZ;
+
+                    renderLiving.render((EntityLivingBase) event.entity, event.renderer, renderX, renderY, renderZ, event.partialRenderTick);
+                }
             }
         }
     }
@@ -62,13 +64,16 @@ public class RenderEntityInMedpodEvent
     @SubscribeEvent
     public void renderPlayerTickPost(RenderPlayerEvent.Post event)
     {
-        if (event.entity instanceof EntityPlayer)
+        if (event.entity != null)
         {
-            ExtendedEntityPlayer extendedPlayer = (ExtendedEntityPlayer) event.entity.getExtendedProperties(ExtendedEntityPlayer.IDENTIFIER);
-
-            if (event.entity != null && extendedPlayer != null && extendedPlayer.getPlayer() != null && extendedPlayer.getPlayer().ridingEntity instanceof EntityMedpod)
+            if (event.entity instanceof AbstractClientPlayer)
             {
-                event.setCanceled(true);
+                ExtendedEntityPlayer extendedPlayer = (ExtendedEntityPlayer) event.entity.getExtendedProperties(ExtendedEntityPlayer.IDENTIFIER);
+
+                if (extendedPlayer != null && extendedPlayer.getPlayer() != null && extendedPlayer.getPlayer().ridingEntity instanceof EntityMedpod)
+                {
+                    event.setCanceled(true);
+                }
             }
         }
     }
@@ -183,24 +188,24 @@ public class RenderEntityInMedpodEvent
                 {
                     swingProgressPrev = 1.0F;
                 }
-                
+
                 OpenGL.disableCullFace();
-                this.renderLivingAt(entity, posX, posY, posZ);
+                OpenGL.translate(posX, posY, posZ);
                 OpenGL.rotate(medpod.getTileEntity());
                 OpenGL.scale(-1.0F, -1.0F, 1.0F);
 
-                this.preRenderCallback(entity, renderPartialTicks);
+                // this.preRenderCallback(entity, renderPartialTicks);
                 OpenGL.translate(0.0F, -24.0F * Model.DEFAULT_BOX_TRANSLATION - 0.0078125F, 0.0F);
                 transformMedpodEntity(medpod, entity);
 
-                OpenGL.enableAlphaTest();
-                this.mainModel.setLivingAnimations(entity, swingProgress, swingProgressPrev, renderPartialTicks);
+                // OpenGL.enableAlphaTest();
+                // this.mainModel.setLivingAnimations(entity, swingProgress, swingProgressPrev, renderPartialTicks);
                 this.renderModel(entity, swingProgress, swingProgressPrev, idleProgress, rotationYawHead - rotationYaw, rotationPitch, Model.DEFAULT_BOX_TRANSLATION);
 
-                OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
-                OpenGL.enableTexture2d();
-                OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
-                OpenGL.enableCullFace();
+                // OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
+                // OpenGL.enableTexture2d();
+                // OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
+                // OpenGL.enableCullFace();
             }
             GL11.glPopMatrix();
             this.passSpecialRender(entity, posX, posY, posZ);
