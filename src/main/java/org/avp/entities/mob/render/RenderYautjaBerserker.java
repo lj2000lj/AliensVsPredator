@@ -1,13 +1,12 @@
 package org.avp.entities.mob.render;
 
 import org.avp.AliensVsPredator;
-import org.avp.entities.mob.render.RenderFacehugger.IFaceMountable;
 
 import com.arisux.amdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.entity.EntityLivingBase;
 
-public class RenderYautjaBerserker extends RenderYautja implements IFaceMountable
+public class RenderYautjaBerserker extends RenderYautja
 {
     public RenderYautjaBerserker()
     {

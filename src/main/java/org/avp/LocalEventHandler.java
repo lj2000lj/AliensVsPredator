@@ -20,7 +20,7 @@ import org.avp.event.client.LightmapUpdateEvent;
 import org.avp.event.client.PlayerModeRenderEvent;
 import org.avp.event.client.PressureHUDRenderEvent;
 import org.avp.event.client.PulseRifleEvents;
-import org.avp.event.client.RenderEntityInMedpodEvent;
+import org.avp.event.client.RenderMedpodEvent;
 import org.avp.event.client.RenderPlayerAPCEvent;
 import org.avp.event.client.RenderPlayerHotbarAPCEvent;
 import org.avp.event.client.TacticalHUDRenderEvent;
@@ -63,7 +63,7 @@ public class LocalEventHandler implements IInitEvent
             this.registerEvent(new PulseRifleEvents());
             this.registerEvent(new WristBracerEvents());
             this.registerEvent(new BossBarEvent());
-            this.registerEvent(new RenderEntityInMedpodEvent());
+            this.registerEvent(RenderMedpodEvent.instance);
         }
 
         if (FMLCommonHandler.instance().getSide() == Side.SERVER)

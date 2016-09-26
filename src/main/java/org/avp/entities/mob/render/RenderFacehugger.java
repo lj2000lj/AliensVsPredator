@@ -1,63 +1,39 @@
 package org.avp.entities.mob.render;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import org.avp.AliensVsPredator;
 import org.avp.entities.EntityMedpod;
 import org.avp.entities.mob.EntityFacehugger;
-import org.avp.entities.mob.render.facemountrender.VanillaFaceMountRenderers;
+import org.avp.entities.mob.render.facehugger.LocalFaceTransforms;
+import org.avp.entities.mob.render.facehugger.VanillaFaceTransforms;
 import org.avp.entities.tile.TileEntityCryostasisTube;
 import org.avp.entities.tile.render.RenderCryostasisTube;
 import org.avp.entities.tile.render.RenderCryostasisTube.CryostasisTubeRenderer;
 import org.avp.entities.tile.render.RenderCryostasisTube.ICustomCryostasisRenderer;
-import org.avp.event.client.RenderEntityInMedpodEvent;
+import org.avp.event.client.RenderMedpodEvent;
+import org.avp.util.EntityRenderTransforms;
 
 import com.arisux.amdxlib.lib.client.Model;
-import com.arisux.amdxlib.lib.client.TexturedModel;
 import com.arisux.amdxlib.lib.client.RenderLivingWrapper;
+import com.arisux.amdxlib.lib.client.TexturedModel;
 import com.arisux.amdxlib.lib.client.render.OpenGL;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 
 public class RenderFacehugger extends RenderLivingWrapper implements ICustomCryostasisRenderer
 {
-    public static ArrayList<FaceMountRenderer> mountRenderers = new ArrayList<FaceMountRenderer>();
-
-    @SideOnly(Side.CLIENT)
-    public static interface IFaceMountable
-    {
-        @SideOnly(Side.CLIENT)
-        public FaceMountRenderer getFaceMountRenderer();
-    }
-
-    @SideOnly(Side.CLIENT)
-    public static abstract class FaceMountRenderer
-    {
-        private Class<?>[] handledHosts;
-
-        public FaceMountRenderer(Class<?>... handledHosts)
-        {
-            this.handledHosts = handledHosts;
-        }
-
-        public Class<?>[] getHandledHosts()
-        {
-            return this.handledHosts;
-        }
-
-        public abstract void render(EntityFacehugger facehugger, float renderPartialTicks);
-    }
+    public static ArrayList<EntityRenderTransforms> transforms = new ArrayList<EntityRenderTransforms>();
 
     public RenderFacehugger(TexturedModel<? extends Model> model)
     {
         super(model);
-        new VanillaFaceMountRenderers();
+        new LocalFaceTransforms();
+        new VanillaFaceTransforms();
     }
 
     public RenderFacehugger()
@@ -92,30 +68,17 @@ public class RenderFacehugger extends RenderLivingWrapper implements ICustomCryo
             EntityMedpod medpod = (EntityMedpod) entity.ridingEntity;
 
             OpenGL.rotate(medpod.getTileEntity());
-            RenderEntityInMedpodEvent.transformMedpodEntity(medpod, entity);
+            RenderMedpodEvent.instance.getRenderer().transformEntity(medpod, entity, partialTicks);
         }
 
         if (facehugger.ridingEntity != null && facehugger.ridingEntity instanceof EntityLivingBase)
         {
-            Render render = (Render) RenderManager.instance.getEntityRenderObject(facehugger.ridingEntity);
-
-            if (render instanceof IFaceMountable)
+            for (EntityRenderTransforms transform : transforms)
             {
-                IFaceMountable fmr = (IFaceMountable) render;
-                fmr.getFaceMountRenderer().render(facehugger, partialTicks);
-            }
-            else
-            {
-                for (FaceMountRenderer mountRenderer : mountRenderers)
+                if (transform.isApplicable(facehugger.ridingEntity))
                 {
-                    @SuppressWarnings("all")
-                    ArrayList<?> hosts = new ArrayList(Arrays.asList(mountRenderer.getHandledHosts()));
-
-                    if (hosts.contains(facehugger.ridingEntity.getClass()))
-                    {
-                        mountRenderer.render(facehugger, partialTicks);
-                        break;
-                    }
+                    transform.post(facehugger, partialTicks);
+                    break;
                 }
             }
         }

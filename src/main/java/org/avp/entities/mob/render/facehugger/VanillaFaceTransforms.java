@@ -1,12 +1,13 @@
-package org.avp.entities.mob.render.facemountrender;
+package org.avp.entities.mob.render.facehugger;
 
 import org.avp.entities.mob.EntityFacehugger;
 import org.avp.entities.mob.render.RenderFacehugger;
-import org.avp.entities.mob.render.RenderFacehugger.FaceMountRenderer;
+import org.avp.util.EntityRenderTransforms;
 
 import com.arisux.amdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.monster.EntityCaveSpider;
 import net.minecraft.entity.monster.EntityCreeper;
@@ -33,14 +34,20 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 
-public class VanillaFaceMountRenderers
+public class VanillaFaceTransforms
 {
-    public VanillaFaceMountRenderers()
+    public VanillaFaceTransforms()
     {
-        RenderFacehugger.mountRenderers.add(new FaceMountRenderer(EntityVillager.class, EntityWitch.class)
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntityVillager.class, EntityWitch.class)
         {
             @Override
-            public void render(EntityFacehugger facehugger, float renderPartialTicks)
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
             {
                 OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
                 OpenGL.rotate(110.0F, 0.0F, 1.0F, 0.0F);
@@ -49,11 +56,18 @@ public class VanillaFaceMountRenderers
             }
         });
 
-        RenderFacehugger.mountRenderers.add(new FaceMountRenderer(EntityPlayer.class, EntityPigZombie.class, EntityZombie.class)
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntityPlayer.class, EntityPigZombie.class, EntityZombie.class)
         {
             @Override
-            public void render(EntityFacehugger facehugger, float renderPartialTicks)
+            public void pre(Entity entity, float partialTicks)
             {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
+            {
+                EntityFacehugger facehugger = (EntityFacehugger) entity;
                 OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
                 OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
                 OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
@@ -71,25 +85,38 @@ public class VanillaFaceMountRenderers
             }
         });
 
-        RenderFacehugger.mountRenderers.add(new FaceMountRenderer(EntityClientPlayerMP.class)
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntityClientPlayerMP.class)
         {
             @Override
-            public void render(EntityFacehugger facehugger, float renderPartialTicks)
+            public void pre(Entity entity, float partialTicks)
             {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
+            {
+                EntityFacehugger facehugger = (EntityFacehugger) entity;
                 EntityClientPlayerMP player = (EntityClientPlayerMP) facehugger.ridingEntity;
                 OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
                 OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
                 OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
                 OpenGL.translate(0F, -0.0F, 2.05F);
                 OpenGL.rotate(-player.rotationPitch, 1, 0, 0);
-                OpenGL.translate(0F, -0.1F, -0.15F);
+                OpenGL.translate(0F, -0.1F, -0.15F);                
             }
         });
 
-        RenderFacehugger.mountRenderers.add(new FaceMountRenderer(EntityCow.class, EntityMooshroom.class)
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntityCow.class, EntityMooshroom.class)
         {
             @Override
-            public void render(EntityFacehugger facehugger, float renderPartialTicks)
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
             {
                 OpenGL.rotate(180.0F, 0.0F, 1.0F, 0.0F);
                 OpenGL.rotate(-110.0F, 1.0F, 0.0F, 0.0F);
@@ -98,10 +125,16 @@ public class VanillaFaceMountRenderers
             }
         });
 
-        RenderFacehugger.mountRenderers.add(new FaceMountRenderer(EntityPig.class)
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntityPig.class)
         {
             @Override
-            public void render(EntityFacehugger facehugger, float renderPartialTicks)
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
             {
                 OpenGL.rotate(180.0F, 0.0F, 1.0F, 0.0F);
                 OpenGL.rotate(-100.0F, 1.0F, 0.0F, 0.0F);
@@ -110,10 +143,16 @@ public class VanillaFaceMountRenderers
             }
         });
 
-        RenderFacehugger.mountRenderers.add(new FaceMountRenderer(EntityHorse.class)
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntityHorse.class)
         {
             @Override
-            public void render(EntityFacehugger facehugger, float renderPartialTicks)
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
             {
                 OpenGL.rotate(180.0F, 0.0F, 1.0F, 0.0F);
                 OpenGL.rotate(-150.0F, 1.0F, 0.0F, 0.0F);
@@ -121,10 +160,16 @@ public class VanillaFaceMountRenderers
             }
         });
 
-        RenderFacehugger.mountRenderers.add(new FaceMountRenderer(EntityCreeper.class)
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntityCreeper.class)
         {
             @Override
-            public void render(EntityFacehugger facehugger, float renderPartialTicks)
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
             {
                 OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
                 OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
@@ -133,10 +178,16 @@ public class VanillaFaceMountRenderers
             }
         });
 
-        RenderFacehugger.mountRenderers.add(new FaceMountRenderer(EntitySkeleton.class)
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntitySkeleton.class)
         {
             @Override
-            public void render(EntityFacehugger facehugger, float renderPartialTicks)
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
             {
                 OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
                 OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
@@ -145,10 +196,16 @@ public class VanillaFaceMountRenderers
             }
         });
 
-        RenderFacehugger.mountRenderers.add(new FaceMountRenderer(EntitySpider.class)
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntitySpider.class)
         {
             @Override
-            public void render(EntityFacehugger facehugger, float renderPartialTicks)
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
             {
                 OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
                 OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
@@ -157,11 +214,18 @@ public class VanillaFaceMountRenderers
             }
         });
 
-        RenderFacehugger.mountRenderers.add(new FaceMountRenderer(EntitySlime.class, EntityMagmaCube.class)
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntitySlime.class, EntityMagmaCube.class)
         {
             @Override
-            public void render(EntityFacehugger facehugger, float renderPartialTicks)
+            public void pre(Entity entity, float partialTicks)
             {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
+            {
+                EntityFacehugger facehugger = (EntityFacehugger) entity;
                 EntitySlime slime = (EntitySlime) facehugger.ridingEntity;
                 OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
                 OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
@@ -170,10 +234,16 @@ public class VanillaFaceMountRenderers
             }
         });
 
-        RenderFacehugger.mountRenderers.add(new FaceMountRenderer(EntityGhast.class)
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntityGhast.class)
         {
             @Override
-            public void render(EntityFacehugger facehugger, float renderPartialTicks)
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
             {
                 OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
                 OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
@@ -181,10 +251,16 @@ public class VanillaFaceMountRenderers
             }
         });
 
-        RenderFacehugger.mountRenderers.add(new FaceMountRenderer(EntityEnderman.class)
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntityEnderman.class)
         {
             @Override
-            public void render(EntityFacehugger facehugger, float renderPartialTicks)
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
             {
                 OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
                 OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
@@ -193,10 +269,16 @@ public class VanillaFaceMountRenderers
             }
         });
 
-        RenderFacehugger.mountRenderers.add(new FaceMountRenderer(EntityCaveSpider.class)
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntityCaveSpider.class)
         {
             @Override
-            public void render(EntityFacehugger facehugger, float renderPartialTicks)
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
             {
                 OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
                 OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
@@ -205,10 +287,16 @@ public class VanillaFaceMountRenderers
             }
         });
 
-        RenderFacehugger.mountRenderers.add(new FaceMountRenderer(EntitySilverfish.class)
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntitySilverfish.class)
         {
             @Override
-            public void render(EntityFacehugger facehugger, float renderPartialTicks)
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
             {
                 OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
                 OpenGL.rotate(180.0F, 0.0F, 1.0F, 0.0F);
@@ -218,10 +306,16 @@ public class VanillaFaceMountRenderers
             }
         });
 
-        RenderFacehugger.mountRenderers.add(new FaceMountRenderer(EntityBlaze.class)
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntityBlaze.class)
         {
             @Override
-            public void render(EntityFacehugger facehugger, float renderPartialTicks)
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
             {
                 OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
                 OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
@@ -230,10 +324,16 @@ public class VanillaFaceMountRenderers
             }
         });
 
-        RenderFacehugger.mountRenderers.add(new FaceMountRenderer(EntityBat.class)
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntityBat.class)
         {
             @Override
-            public void render(EntityFacehugger facehugger, float renderPartialTicks)
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
             {
                 OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
                 OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
@@ -242,10 +342,16 @@ public class VanillaFaceMountRenderers
             }
         });
 
-        RenderFacehugger.mountRenderers.add(new FaceMountRenderer(EntitySheep.class)
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntitySheep.class)
         {
             @Override
-            public void render(EntityFacehugger facehugger, float renderPartialTicks)
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
             {
                 OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
                 OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
@@ -254,10 +360,16 @@ public class VanillaFaceMountRenderers
             }
         });
 
-        RenderFacehugger.mountRenderers.add(new FaceMountRenderer(EntityChicken.class)
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntityChicken.class)
         {
             @Override
-            public void render(EntityFacehugger facehugger, float renderPartialTicks)
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
             {
                 OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
                 OpenGL.rotate(50.0F, 0.0F, 1.0F, 0.0F);
@@ -266,10 +378,16 @@ public class VanillaFaceMountRenderers
             }
         });
 
-        RenderFacehugger.mountRenderers.add(new FaceMountRenderer(EntitySquid.class)
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntitySquid.class)
         {
             @Override
-            public void render(EntityFacehugger facehugger, float renderPartialTicks)
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
             {
                 OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
                 OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
@@ -278,10 +396,16 @@ public class VanillaFaceMountRenderers
             }
         });
 
-        RenderFacehugger.mountRenderers.add(new FaceMountRenderer(EntityWolf.class)
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntityWolf.class)
         {
             @Override
-            public void render(EntityFacehugger facehugger, float renderPartialTicks)
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
             {
                 OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
                 OpenGL.rotate(140.0F, 0.0F, 1.0F, 0.0F);
@@ -290,10 +414,16 @@ public class VanillaFaceMountRenderers
             }
         });
 
-        RenderFacehugger.mountRenderers.add(new FaceMountRenderer(EntityOcelot.class)
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntityOcelot.class)
         {
             @Override
-            public void render(EntityFacehugger facehugger, float renderPartialTicks)
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
             {
                 OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
                 OpenGL.rotate(140.0F, 0.0F, 1.0F, 0.0F);
