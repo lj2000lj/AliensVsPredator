@@ -5,35 +5,54 @@ import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
 
+import java.util.ArrayList;
+
 import org.avp.AliensVsPredator;
 import org.avp.entities.tile.TileEntityCryostasisTube;
-import org.avp.entities.tile.model.ModelCryostasisTube;
+import org.avp.util.EntityRenderTransforms;
 import org.lwjgl.opengl.GL12;
 
+import com.arisux.amdxlib.lib.client.TexturedModel;
 import com.arisux.amdxlib.lib.client.render.OpenGL;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 
 @SideOnly(Side.CLIENT)
 public class RenderCryostasisTube extends TileEntitySpecialRenderer
 {
-    public ModelCryostasisTube model = new ModelCryostasisTube();
-    public static CryostasisTubeRenderer cryostasisRenderer = new CryostasisTubeRenderer();
+    public static ArrayList<CryostasisEntityRenderer> renderers = new ArrayList<CryostasisEntityRenderer>();
+    private static final CryostasisEntityRenderer     renderer  = new CryostasisEntityRenderer()
+                                                                {
+                                                                    public boolean isApplicable(Entity entity)
+                                                                    {
+                                                                        return true;
+                                                                    };
+                                                                };
 
-    @SideOnly(Side.CLIENT)
-    public interface ICustomCryostasisRenderer
+    public static abstract class CryostasisEntityRenderer extends EntityRenderTransforms
     {
-        @SideOnly(Side.CLIENT)
-        public CryostasisTubeRenderer getCustomCryostasisRenderer();
-    }
+        public CryostasisEntityRenderer(Class<?>... entities)
+        {
+            super(entities);
+        }
 
-    public static class CryostasisTubeRenderer
-    {
+        @Override
+        public void pre(Entity entity, float partialTicks)
+        {
+            ;
+        }
+
+        @Override
+        public void post(Entity entity, float partialTicks)
+        {
+            ;
+        }
+
         public void renderChassis(RenderCryostasisTube renderer, TileEntityCryostasisTube tile, double posX, double posY, double posZ)
         {
             OpenGL.enable(GL_BLEND);
@@ -50,6 +69,21 @@ public class RenderCryostasisTube extends TileEntitySpecialRenderer
 
         public void renderTube(RenderCryostasisTube renderer, TileEntityCryostasisTube tile, double posX, double posY, double posZ)
         {
+            TexturedModel<?> mask = null;
+
+            if (tile.isShattered())
+            {
+                mask = AliensVsPredator.resources().models().CRYOSTASIS_TUBE_MASK_SHATTERED;
+            }
+            else if (tile.isCracked())
+            {
+                mask = AliensVsPredator.resources().models().CRYOSTASIS_TUBE_MASK_CRACKED;
+            }
+            else
+            {
+                mask = AliensVsPredator.resources().models().CRYOSTASIS_TUBE_MASK;
+            }
+
             if (tile.getVoltage() > 0)
             {
                 OpenGL.disableLightMapping();
@@ -57,20 +91,7 @@ public class RenderCryostasisTube extends TileEntitySpecialRenderer
             }
 
             OpenGL.enableCullFace();
-            
-            if (tile.isShattered())
-            {
-                AliensVsPredator.resources().models().CRYOSTASIS_TUBE_MASK_SHATTERED.draw();
-            }
-            else if (tile.isCracked())
-            {
-                AliensVsPredator.resources().models().CRYOSTASIS_TUBE_MASK_CRACKED.draw();
-            }
-            else
-            {
-                AliensVsPredator.resources().models().CRYOSTASIS_TUBE_MASK.draw();
-            }
-            
+            mask.draw();
             OpenGL.enableLightMapping();
             OpenGL.enableLight();
             OpenGL.enableDepthTest();
@@ -81,46 +102,52 @@ public class RenderCryostasisTube extends TileEntitySpecialRenderer
             if (tile.stasisEntity != null)
             {
                 OpenGL.pushMatrix();
-                {
-                    if (tile.getVoltage() > 0)
-                    {
-                        OpenGL.disableLight();
-                    }
 
-                    RenderManager.instance.renderEntityWithPosYaw(tile.stasisEntity, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
+                if (tile.getVoltage() > 0)
+                {
+                    OpenGL.disableLight();
                 }
+
+                RenderManager.instance.renderEntityWithPosYaw(tile.stasisEntity, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
                 OpenGL.popMatrix();
             }
         }
     }
 
     @Override
-    public void renderTileEntityAt(TileEntity tileEntity, double posX, double posY, double posZ, float renderPartialTicks)
+    public void renderTileEntityAt(TileEntity tileEntity, double posX, double posY, double posZ, float partialTicks)
     {
         TileEntityCryostasisTube tile = (TileEntityCryostasisTube) tileEntity;
 
         OpenGL.pushMatrix();
         {
-            CryostasisTubeRenderer tubeRenderer = null;
+            CryostasisEntityRenderer cachedRenderer = null;
 
             if (tile != null && tile.stasisEntity != null)
             {
-                Render entityRenderer = RenderManager.instance.getEntityRenderObject(tile.stasisEntity);
-
-                if (entityRenderer != null && entityRenderer instanceof ICustomCryostasisRenderer)
+                for (CryostasisEntityRenderer renderer : renderers)
                 {
-                    ICustomCryostasisRenderer customRenderer = (ICustomCryostasisRenderer) entityRenderer;
-                    tubeRenderer = customRenderer.getCustomCryostasisRenderer();
+                    if (renderer.isApplicable(tile.stasisEntity))
+                    {
+                        cachedRenderer = renderer;
+                        break;
+                    }
                 }
             }
 
-            tubeRenderer = tubeRenderer == null ? cryostasisRenderer : tubeRenderer;
+            if (cachedRenderer == null)
+            {
+                cachedRenderer = renderer;
+            }
 
-            tubeRenderer.renderChassis(this, tile, posX, posY, posZ);
-            tubeRenderer.renderEntity(this, tile, posX, posY, posZ);
-            tubeRenderer.renderTube(this, tile, posX, posY, posZ);
+            if (cachedRenderer != null)
+            {
+                cachedRenderer.renderChassis(this, tile, posX, posY, posZ);
+                cachedRenderer.renderEntity(this, tile, posX, posY, posZ);
+                cachedRenderer.renderTube(this, tile, posX, posY, posZ);
+            }
 
-            OpenGL.disable(GL_BLEND);
+            OpenGL.disableBlend();
             OpenGL.enableLight();
             OpenGL.enableLightMapping();
         }

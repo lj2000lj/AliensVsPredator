@@ -1,7 +1,10 @@
 package org.avp.entities.tile.render;
 
+import java.util.ArrayList;
+
 import org.avp.AliensVsPredator;
 import org.avp.entities.tile.TileEntityMedpod;
+import org.avp.util.EntityRenderTransforms;
 
 import com.arisux.amdxlib.lib.client.render.OpenGL;
 
@@ -10,6 +13,8 @@ import net.minecraft.tileentity.TileEntity;
 
 public class RenderMedpod extends TileEntitySpecialRenderer
 {
+    public static ArrayList<EntityRenderTransforms> transforms = new ArrayList<EntityRenderTransforms>();
+    
     @Override
     public void renderTileEntityAt(TileEntity tileEntity, double posX, double posY, double posZ, float renderPartialTicks)
     {

@@ -1,10 +1,7 @@
 package org.avp.event.client;
 
-import java.util.ArrayList;
-
 import org.avp.entities.EntityMedpod;
-import org.avp.entities.mob.EntityMarine;
-import org.avp.entities.mob.EntitySpeciesYautja;
+import org.avp.entities.tile.render.RenderMedpod;
 import org.avp.util.EntityRenderTransforms;
 import org.lwjgl.opengl.GL11;
 
@@ -16,64 +13,19 @@ import com.arisux.amdxlib.lib.world.entity.Entities;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.entity.EntityClientPlayerMP;
-import net.minecraft.client.entity.EntityOtherPlayerMP;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderLivingEvent;
 
 public class RenderMedpodEvent
 {
-    public static final RenderMedpodEvent           instance = new RenderMedpodEvent();
-    private RenderLiving                            renderer = new RenderLiving();
-    public static ArrayList<EntityRenderTransforms> transforms;
-
-    public RenderMedpodEvent()
-    {
-        transforms = new ArrayList<EntityRenderTransforms>();
-        
-        transforms.add(new EntityRenderTransforms(EntityPlayerSP.class, EntityPlayerMP.class, EntityClientPlayerMP.class, EntityOtherPlayerMP.class, AbstractClientPlayer.class, EntityPlayer.class)
-        {
-            @Override
-            public void pre(Entity entity, float partialTicks)
-            {
-                ;
-            }
-
-            @Override
-            public void post(Entity entity, float partialTicks)
-            {
-                OpenGL.translate(0F, -0.5F, 0F);
-                OpenGL.rotate(90F, 1F, 0F, 0);
-                OpenGL.rotate(180F, 0F, 1F, 0);
-                OpenGL.translate(0F, -0.75F, 0F);
-            }
-        });
-
-        transforms.add(new EntityRenderTransforms(EntityVillager.class, EntityMarine.class, EntitySpeciesYautja.class)
-        {
-            @Override
-            public void pre(Entity entity, float partialTicks)
-            {
-                ;
-            }
-
-            @Override
-            public void post(Entity entity, float partialTicks)
-            {
-                OpenGL.rotate(90F, 1F, 0F, 0);
-            }
-        });
-    }
-
+    public static final RenderMedpodEvent           instance   = new RenderMedpodEvent();
+    private RenderLiving                            renderer   = new RenderLiving();
+    
     @SubscribeEvent
     public void entityRenderEventPre(RenderLivingEvent.Pre event)
     {
@@ -198,7 +150,7 @@ public class RenderMedpodEvent
         {
             float rotation = (float) medpod.getTileEntity().getDoorProgress() * 45 / medpod.getTileEntity().getMaxDoorProgress();
 
-            for (EntityRenderTransforms transform : transforms)
+            for (EntityRenderTransforms transform : RenderMedpod.transforms)
             {
                 if (transform.isApplicable(inMedpod))
                 {
@@ -214,7 +166,7 @@ public class RenderMedpodEvent
             OpenGL.translate(0F, -0.5F, 0F);
             OpenGL.rotate(180F, 0F, 1F, 0);
 
-            for (EntityRenderTransforms transform : transforms)
+            for (EntityRenderTransforms transform : RenderMedpod.transforms)
             {
                 if (transform.isApplicable(inMedpod))
                 {

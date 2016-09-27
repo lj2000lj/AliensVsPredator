@@ -4,6 +4,9 @@ import static cpw.mods.fml.client.registry.ClientRegistry.bindTileEntitySpecialR
 import static cpw.mods.fml.client.registry.RenderingRegistry.registerBlockHandler;
 import static cpw.mods.fml.client.registry.RenderingRegistry.registerEntityRenderingHandler;
 import static net.minecraftforge.client.MinecraftForgeClient.registerItemRenderer;
+import static org.lwjgl.opengl.GL11.GL_ALPHA_TEST;
+import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
 
 import org.avp.block.render.RenderResin;
 import org.avp.block.render.RenderShape;
@@ -42,9 +45,11 @@ import org.avp.entities.mob.EntityRoyalFacehugger;
 import org.avp.entities.mob.EntityRunnerDrone;
 import org.avp.entities.mob.EntityRunnerWarrior;
 import org.avp.entities.mob.EntitySpaceJockey;
+import org.avp.entities.mob.EntitySpeciesYautja;
 import org.avp.entities.mob.EntitySpitter;
 import org.avp.entities.mob.EntityTrilobite;
 import org.avp.entities.mob.EntityWarrior;
+import org.avp.entities.mob.EntityXenomorph;
 import org.avp.entities.mob.EntityYautja;
 import org.avp.entities.mob.EntityYautjaBerserker;
 import org.avp.entities.mob.render.RenderAqua;
@@ -107,6 +112,7 @@ import org.avp.entities.tile.render.RenderAmpule;
 import org.avp.entities.tile.render.RenderAssembler;
 import org.avp.entities.tile.render.RenderBlastdoor;
 import org.avp.entities.tile.render.RenderCryostasisTube;
+import org.avp.entities.tile.render.RenderCryostasisTube.CryostasisEntityRenderer;
 import org.avp.entities.tile.render.RenderGunLocker;
 import org.avp.entities.tile.render.RenderHiveResin;
 import org.avp.entities.tile.render.RenderLightPanel;
@@ -185,13 +191,49 @@ import org.avp.items.render.parts.RenderItemSniperBarrel;
 import org.avp.items.render.parts.RenderItemSniperPeripherals;
 import org.avp.items.render.parts.RenderItemSniperScope;
 import org.avp.items.render.parts.RenderItemSniperStock;
+import org.avp.util.EntityRenderTransforms;
+import org.lwjgl.opengl.GL12;
 
 import com.arisux.amdxlib.lib.client.TexturedModel;
+import com.arisux.amdxlib.lib.client.render.Draw;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
 import com.arisux.amdxlib.lib.game.IPostInitEvent;
 
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.entity.EntityOtherPlayerMP;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.monster.EntityBlaze;
+import net.minecraft.entity.monster.EntityCaveSpider;
+import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntityEnderman;
+import net.minecraft.entity.monster.EntityGhast;
+import net.minecraft.entity.monster.EntityMagmaCube;
+import net.minecraft.entity.monster.EntityPigZombie;
+import net.minecraft.entity.monster.EntitySilverfish;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntitySlime;
+import net.minecraft.entity.monster.EntitySpider;
+import net.minecraft.entity.monster.EntityWitch;
+import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.passive.EntityBat;
+import net.minecraft.entity.passive.EntityChicken;
+import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.entity.passive.EntityHorse;
+import net.minecraft.entity.passive.EntityMooshroom;
+import net.minecraft.entity.passive.EntityOcelot;
+import net.minecraft.entity.passive.EntityPig;
+import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.entity.passive.EntitySquid;
+import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.entity.passive.EntityWolf;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 
 @SideOnly(Side.CLIENT)
@@ -207,9 +249,12 @@ public class Renderers implements IPostInitEvent
         registerItemRenderers(AliensVsPredator.items());
         registerLivingEntityRenderers();
         registerStandardEntityRenderers();
+        registerCryostasisTubeRenderers();
+        registerMedpodTransformations();
+        registerEntityFaceTransformations();
     }
 
-    public void registerLivingEntityRenderers()
+    private void registerLivingEntityRenderers()
     {
         registerEntityRenderingHandler(EntityEngineer.class, new RenderEngineer());
         registerEntityRenderingHandler(EntitySpaceJockey.class, new RenderEngineer(AliensVsPredator.resources().models().SPACE_JOCKEY));
@@ -237,7 +282,7 @@ public class Renderers implements IPostInitEvent
         registerEntityRenderingHandler(EntityDeaconShark.class, new RenderDeaconShark());
     }
 
-    public void registerStandardEntityRenderers()
+    private void registerStandardEntityRenderers()
     {
         registerEntityRenderingHandler(EntitySpear.class, new RenderSpear());
         registerEntityRenderingHandler(EntityLaserMine.class, new RenderLaserMine());
@@ -257,7 +302,7 @@ public class Renderers implements IPostInitEvent
         registerEntityRenderingHandler(EntitySupplyChute.class, new RenderSupplyChute());
     }
 
-    public void registerItemRenderers(ItemHandler items)
+    private void registerItemRenderers(ItemHandler items)
     {
         registerItemRenderer(Item.getItemFromBlock(AliensVsPredator.blocks().blockTurret), new RenderItemTurret());
         registerItemRenderer(Item.getItemFromBlock(AliensVsPredator.blocks().blockWorkstation), new RenderItemWorkstation());
@@ -352,7 +397,7 @@ public class Renderers implements IPostInitEvent
         registerItemRenderer(items.itemSniperPeripherals, new RenderItemSniperPeripherals(SNIPER, SNIPER.getModel().getPeripherals()));
     }
 
-    public void registerTileEntitySpecialRenderers()
+    private void registerTileEntitySpecialRenderers()
     {
         bindTileEntitySpecialRenderer(TileEntityTurret.class, new RenderTurret());
         bindTileEntitySpecialRenderer(TileEntityWorkstation.class, new RenderWorkstation());
@@ -379,9 +424,675 @@ public class Renderers implements IPostInitEvent
         bindTileEntitySpecialRenderer(TileEntityHiveResin.class, new RenderHiveResin());
     }
 
-    public void registerSimpleBlockRenderingHandlers()
+    private void registerSimpleBlockRenderingHandlers()
     {
         registerBlockHandler(new RenderShape(AliensVsPredator.renderTypes().RENDER_TYPE_SHAPED));
         registerBlockHandler(new RenderResin(AliensVsPredator.renderTypes().RENDER_TYPE_RESIN));
+    }
+
+    private void registerCryostasisTubeRenderers()
+    {
+        RenderCryostasisTube.renderers.add(new CryostasisEntityRenderer(EntityChestburster.class)
+        {
+            @Override
+            public boolean isApplicable(Entity entity)
+            {
+                return entity instanceof EntityChestburster;
+            }
+
+            @Override
+            public void renderEntity(RenderCryostasisTube renderer, TileEntityCryostasisTube tile, double posX, double posY, double posZ)
+            {
+                if (tile.stasisEntity != null)
+                {
+                    OpenGL.pushMatrix();
+                    if (tile.getVoltage() > 0)
+                        OpenGL.disableLight();
+                    OpenGL.translate(0F, -0.5F, 0F);
+                    OpenGL.rotate(90F, 1F, 0F, 0F);
+                    RenderManager.instance.renderEntityWithPosYaw(tile.stasisEntity, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
+                    OpenGL.popMatrix();
+                }
+            }
+        });
+
+        RenderCryostasisTube.renderers.add(new CryostasisEntityRenderer(EntityFacehugger.class)
+        {
+            @Override
+            public boolean isApplicable(Entity entity)
+            {
+                return entity instanceof EntityFacehugger;
+            }
+
+            @Override
+            public void renderEntity(RenderCryostasisTube renderer, TileEntityCryostasisTube tile, double posX, double posY, double posZ)
+            {
+                if (tile.stasisEntity != null)
+                {
+                    OpenGL.pushMatrix();
+                    if (tile.getVoltage() > 0)
+                        OpenGL.disableLight();
+                    OpenGL.translate(0F, -0.5F, 0F);
+                    OpenGL.rotate(90F, 1F, 0F, 0F);
+                    RenderManager.instance.renderEntityWithPosYaw(tile.stasisEntity, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
+                    OpenGL.popMatrix();
+                }
+            }
+        });
+
+        RenderCryostasisTube.renderers.add(new CryostasisEntityRenderer(EntityOvamorph.class)
+        {
+            @Override
+            public void renderEntity(RenderCryostasisTube renderer, TileEntityCryostasisTube tile, double posX, double posY, double posZ)
+            {
+                if (tile.stasisEntity != null)
+                {
+                    OpenGL.pushMatrix();
+                    if (tile.getVoltage() > 0)
+                        OpenGL.disableLight();
+                    OpenGL.translate(0F, 0.5F, 0F);
+                    OpenGL.rotate(180F, 1F, 0F, 0F);
+                    RenderManager.instance.renderEntityWithPosYaw(tile.stasisEntity, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
+                    OpenGL.popMatrix();
+                }
+            }
+        });
+
+        RenderCryostasisTube.renderers.add(new CryostasisEntityRenderer(EntityXenomorph.class)
+        {
+            @Override
+            public boolean isApplicable(Entity entity)
+            {
+                return entity instanceof EntityXenomorph;
+            }
+
+            @Override
+            public void renderChassis(RenderCryostasisTube renderer, TileEntityCryostasisTube tile, double posX, double posY, double posZ)
+            {
+                OpenGL.disableCullFace();
+                OpenGL.enableBlend();
+                OpenGL.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+                OpenGL.translate(posX + 0.5F, posY + 1.7F, posZ + 0.5F);
+                OpenGL.rotate(tile);
+                OpenGL.enable(GL12.GL_RESCALE_NORMAL);
+                OpenGL.scale(0.75F, -0.75F, 0.75F);
+                OpenGL.enable(GL_ALPHA_TEST);
+                OpenGL.pushMatrix();
+                OpenGL.scale(4, 3, 4);
+                OpenGL.translate(0F, -0.75F, 0F);
+                AliensVsPredator.resources().models().CRYOSTASIS_TUBE.draw();
+                OpenGL.popMatrix();
+            }
+
+            @Override
+            public void renderEntity(RenderCryostasisTube renderer, TileEntityCryostasisTube tile, double posX, double posY, double posZ)
+            {
+                if (tile.stasisEntity != null && !(tile.stasisEntity instanceof EntityQueen))
+                {
+                    double depth = tile.stasisEntity instanceof EntityPraetorian ? -1.95 : tile.stasisEntity instanceof EntityDrone ? -1.0 : -1.5F;
+
+                    OpenGL.pushMatrix();
+                    if (tile.getVoltage() > 0)
+                        OpenGL.disableLight();
+                    OpenGL.translate(0F, -2.75F, depth);
+                    OpenGL.rotate(90F, 1F, 0F, 0F);
+                    RenderManager.instance.renderEntityWithPosYaw(tile.stasisEntity, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
+                    OpenGL.popMatrix();
+                }
+                else if (tile.stasisEntity instanceof EntityQueen)
+                {
+                    OpenGL.pushMatrix();
+                    OpenGL.disableLight();
+                    OpenGL.scale(0.25, 0.25, 0.25);
+                    OpenGL.translate(-3.25, -16, 0);
+                    Draw.drawString("\u26A0", 0, 0, 0xFFFF0000, false);
+                    OpenGL.enableLight();
+                    OpenGL.popMatrix();
+                }
+            }
+
+            @Override
+            public void renderTube(RenderCryostasisTube renderer, TileEntityCryostasisTube tile, double posX, double posY, double posZ)
+            {
+                TexturedModel<?> mask = null;
+
+                if (tile.isShattered())
+                {
+                    mask = AliensVsPredator.resources().models().CRYOSTASIS_TUBE_MASK_SHATTERED;
+                }
+                else if (tile.isCracked())
+                {
+                    mask = AliensVsPredator.resources().models().CRYOSTASIS_TUBE_MASK_CRACKED;
+                }
+                else
+                {
+                    mask = AliensVsPredator.resources().models().CRYOSTASIS_TUBE_MASK;
+                }
+
+                if (tile.getVoltage() > 0)
+                {
+                    OpenGL.disableLightMapping();
+                    OpenGL.disableLight();
+                }
+
+                OpenGL.disableCullFace();
+                OpenGL.scale(4, 3, 4);
+                OpenGL.translate(0F, -0.75F, 0F);
+                mask.draw();
+                OpenGL.scale(0.5, 0.5, 0.5);
+                OpenGL.enableLightMapping();
+                OpenGL.enableLight();
+            }
+        });
+    }
+
+    private void registerMedpodTransformations()
+    {
+        RenderMedpod.transforms.add(new EntityRenderTransforms(EntityPlayerSP.class, EntityPlayerMP.class, EntityClientPlayerMP.class, EntityOtherPlayerMP.class, AbstractClientPlayer.class, EntityPlayer.class)
+        {
+            @Override
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+
+            @Override
+            public void post(Entity entity, float partialTicks)
+            {
+                OpenGL.translate(0F, -0.5F, 0F);
+                OpenGL.rotate(90F, 1F, 0F, 0);
+                OpenGL.rotate(180F, 0F, 1F, 0);
+                OpenGL.translate(0F, -0.75F, 0F);
+            }
+        });
+
+        RenderMedpod.transforms.add(new EntityRenderTransforms(EntityVillager.class, EntityMarine.class, EntitySpeciesYautja.class)
+        {
+            @Override
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+
+            @Override
+            public void post(Entity entity, float partialTicks)
+            {
+                OpenGL.rotate(90F, 1F, 0F, 0);
+            }
+        });
+    }
+    
+    private void registerEntityFaceTransformations()
+    {
+        this.registerVanillaFaceTransoformations();
+        
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntityCombatSynthetic.class)
+        {
+            @Override
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+
+            @Override
+            public void post(Entity entity, float partialTicks)
+            {
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, -0.2F, 0F);
+            }
+        });
+
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntityEngineer.class)
+        {
+            @Override
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+
+            @Override
+            public void post(Entity entity, float partialTicks)
+            {
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(115.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, -0.2F, 0.2F);
+            }
+        });
+
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntityMarine.class)
+        {
+            @Override
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+
+            @Override
+            public void post(Entity entity, float partialTicks)
+            {
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, -0.2F, 0F);
+            }
+        });
+
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntitySpeciesYautja.class)
+        {
+            @Override
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+
+            @Override
+            public void post(Entity entity, float partialTicks)
+            {
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(110.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, 0F, 0.5F);
+            }
+        });
+    }
+    
+    private void registerVanillaFaceTransoformations()
+    {
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntityVillager.class, EntityWitch.class)
+        {
+            @Override
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
+            {
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(110.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, -0.1F, 0.15F);
+            }
+        });
+
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntityPlayer.class, EntityPigZombie.class, EntityZombie.class)
+        {
+            @Override
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
+            {
+                EntityFacehugger facehugger = (EntityFacehugger) entity;
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, -0.2F, 0F);
+
+                if (facehugger.ridingEntity instanceof EntityZombie)
+                {
+                    EntityZombie zombie = (EntityZombie) facehugger.ridingEntity;
+
+                    if (zombie.isChild())
+                    {
+                        OpenGL.translate(0F, 0F, 0.85F);
+                    }
+                }
+            }
+        });
+
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntityClientPlayerMP.class)
+        {
+            @Override
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
+            {
+                EntityFacehugger facehugger = (EntityFacehugger) entity;
+                EntityClientPlayerMP player = (EntityClientPlayerMP) facehugger.ridingEntity;
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, -0.0F, 2.05F);
+                OpenGL.rotate(-player.rotationPitch, 1, 0, 0);
+                OpenGL.translate(0F, -0.1F, -0.15F);                
+            }
+        });
+
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntityCow.class, EntityMooshroom.class)
+        {
+            @Override
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
+            {
+                OpenGL.rotate(180.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(-110.0F, 1.0F, 0.0F, 0.0F);
+                OpenGL.rotate(5F, 1F, 0F, 0F);
+                OpenGL.translate(0F, -0.8F, -0.15F);
+            }
+        });
+
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntityPig.class)
+        {
+            @Override
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
+            {
+                OpenGL.rotate(180.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(-100.0F, 1.0F, 0.0F, 0.0F);
+                OpenGL.rotate(5F, 1F, 0F, 0F);
+                OpenGL.translate(0F, -0.85F, 0.25F);
+            }
+        });
+
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntityHorse.class)
+        {
+            @Override
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
+            {
+                OpenGL.rotate(180.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(-150.0F, 1.0F, 0.0F, 0.0F);
+                OpenGL.translate(0F, -0.6F, -1.0F);
+            }
+        });
+
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntityCreeper.class)
+        {
+            @Override
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
+            {
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, -0.1F, 0.25F);
+            }
+        });
+
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntitySkeleton.class)
+        {
+            @Override
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
+            {
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, -0.1F, -0.1F);
+            }
+        });
+
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntitySpider.class)
+        {
+            @Override
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
+            {
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, -0.60F, 0.45F);
+            }
+        });
+
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntitySlime.class, EntityMagmaCube.class)
+        {
+            @Override
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
+            {
+                EntityFacehugger facehugger = (EntityFacehugger) entity;
+                EntitySlime slime = (EntitySlime) facehugger.ridingEntity;
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, slime.getSlimeSize() * -0.25F, 0.75F);
+            }
+        });
+
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntityGhast.class)
+        {
+            @Override
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
+            {
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+            }
+        });
+
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntityEnderman.class)
+        {
+            @Override
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
+            {
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, -0.1F, 0.0F);
+            }
+        });
+
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntityCaveSpider.class)
+        {
+            @Override
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
+            {
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, -0.3F, 0.4F);
+            }
+        });
+
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntitySilverfish.class)
+        {
+            @Override
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
+            {
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(180.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(-30.0F, 1.0F, 0.0F, 0.0F);
+                OpenGL.translate(0F, 0.7F, 0.55F);
+            }
+        });
+
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntityBlaze.class)
+        {
+            @Override
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
+            {
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, -0.15F, 0.25F);
+            }
+        });
+
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntityBat.class)
+        {
+            @Override
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
+            {
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, -0.1F, 0.25F);
+            }
+        });
+
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntitySheep.class)
+        {
+            @Override
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
+            {
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, -0.8F, 0.25F);
+            }
+        });
+
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntityChicken.class)
+        {
+            @Override
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
+            {
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(50.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, -0.3F, -0.45F);
+            }
+        });
+
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntitySquid.class)
+        {
+            @Override
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
+            {
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(270.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, -0.7F, 0.55F);
+            }
+        });
+
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntityWolf.class)
+        {
+            @Override
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
+            {
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(140.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, -0.15F, 0.75F);
+            }
+        });
+
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntityOcelot.class)
+        {
+            @Override
+            public void pre(Entity entity, float partialTicks)
+            {
+                ;
+            }
+            
+            @Override
+            public void post(Entity entity, float partialTicks)
+            {
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.rotate(140.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(0F, -0.15F, 0.9F);
+            }
+        });
     }
 }
