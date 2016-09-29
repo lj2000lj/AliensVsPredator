@@ -53,7 +53,7 @@ public class GuiAssembler extends GuiContainer
     public void initGui()
     {
         super.initGui();
-        this.guiTop = 20;
+        this.guiTop = 5;
 
         this.buttonScrollUp = new GuiCustomButton(0, 0, 0, 20, 20, "", null);
         this.buttonScrollDown = new GuiCustomButton(1, 0, 0, 20, 20, "", null);
@@ -83,7 +83,7 @@ public class GuiAssembler extends GuiContainer
                     curStack++;
                     int amountOfStack = Inventories.getAmountOfItemPlayerHas(stack.getItem(), Game.minecraft().thePlayer);
                     boolean playerHasItemstack = amountOfStack > 0;
-                    int stackY = this.ySize + (curStack * 12);
+                    int stackY = this.ySize + 12 + (curStack * 12);
                     int curStackSize = (amountOfStack > stack.stackSize ? stack.stackSize : amountOfStack);
                     Draw.drawRect(2, stackY - 2, this.xSize - 4, 12, 0x11FFFFFF);
                     Draw.drawString(curStackSize + "/" + stack.stackSize, 220, stackY, curStackSize >= stack.stackSize ? 0xFF00AAFF : curStackSize < stack.stackSize && curStackSize > 0 ? 0xFFFFAA00 : 0xFF888888);
@@ -99,7 +99,7 @@ public class GuiAssembler extends GuiContainer
                 }
 
                 int percentComplete = (progress * 100 / maxProgress);
-                Draw.drawProgressBar("Materials (" + progress + " of " + maxProgress + ") - " + percentComplete + "% Complete", maxProgress, progress, 0, -12, this.xSize, 7, 3, percentComplete < 25 ? 0xFFFF2222 : percentComplete < 50 ? 0xFFFFAA00 : (percentComplete == 100 ? 0xFF00AAFF : 0xFFFFAA00), false);
+                Draw.drawProgressBar("" + progress + " of " + maxProgress + " Materials / " + percentComplete + "% Complete", maxProgress, progress, 0, this.ySize - 4, this.xSize, 7, 3, percentComplete < 25 ? 0xFFFF2222 : percentComplete < 50 ? 0xFFFFAA00 : (percentComplete == 100 ? 0xFF00AAFF : 0xFFFFAA00), false);
 
                 if (percentComplete == 100)
                 {
@@ -111,6 +111,9 @@ public class GuiAssembler extends GuiContainer
                 }
             }
 
+            /**
+             * Draw the schematics in the assembler
+             */
             int curItem = -1;
 
             for (AssemblerSchematic schematic : schematics)
@@ -124,14 +127,13 @@ public class GuiAssembler extends GuiContainer
                         curItem++;
                         int numberRendered = curItem - (getScroll());
                         int entryX = 4;
-                        int entryY = 4 + (numberRendered + 1) * 13;
+                        int entryY = 20 + (numberRendered) * 11;
 
-                        if (numberRendered >= 0 && numberRendered <= 8)
+                        if (numberRendered >= 0 && numberRendered <= 10)
                         {
                             OpenGL.enableBlend();
-                            Draw.drawRect(entryX, entryY, this.xSize - 8, 12, 0xAA000000);
                             OpenGL.disableBlend();
-                            Draw.drawString(StatCollector.translateToLocal(item.getUnlocalizedName() + ".name"), entryX + 13, entryY + 2, curItem == this.scroll ? 0xFF00AAFF : 0xFF555555);
+                            Draw.drawString((curItem + 1) + " " + StatCollector.translateToLocal(item.getUnlocalizedName() + ".name"), entryX + 13, entryY + 2, curItem == this.scroll ? 0xFF00AAFF : 0xFF555555, false);
                             Draw.drawItemIcon(item, entryX + 2, entryY + 2, 8, 8);
                         }
                     }
@@ -161,11 +163,14 @@ public class GuiAssembler extends GuiContainer
     {
         super.drawScreen(mouseX, mouseY, renderPartial);
         
+        int buttonWidth = 38;
+        int buttonOffsetX = buttonWidth + 9;
         int offset = 0;
 
-        this.buttonScrollUp.xPosition = this.guiLeft + xSize + 5;
-        this.buttonScrollUp.yPosition = this.guiTop + 0;
-        this.buttonScrollUp.width = 40;
+        this.buttonScrollUp.xPosition = this.guiLeft + xSize + 5 - buttonOffsetX;
+        this.buttonScrollUp.yPosition = this.guiTop + 4;
+        this.buttonScrollUp.width = buttonWidth;
+        this.buttonScrollUp.height = 19;
         this.buttonScrollUp.displayString = "\u21e7";
         this.buttonScrollUp.baseColor = this.getScroll() == 0 ? 0x22000000 : 0xAA000000;
         this.buttonScrollUp.drawButton();
@@ -178,10 +183,10 @@ public class GuiAssembler extends GuiContainer
             }
         });
 
-        this.buttonAssemble.xPosition = (this.guiLeft + this.xSize + 5);
-        this.buttonAssemble.yPosition = this.guiTop + (offset += 20);
+        this.buttonAssemble.xPosition = (this.guiLeft + this.xSize + 5) - buttonOffsetX;
+        this.buttonAssemble.yPosition = this.guiTop + 3 + (offset += 20);
         this.buttonAssemble.displayString = "\u2692 x1";
-        this.buttonAssemble.width = 40;
+        this.buttonAssemble.width = buttonWidth;
         this.buttonAssemble.baseColor = this.hasMaterials ? 0xAA000000 : 0x22000000;
         this.buttonAssemble.drawButton();
         this.buttonAssemble.setAction(new IAction()
@@ -195,10 +200,10 @@ public class GuiAssembler extends GuiContainer
             }
         });
 
-        this.buttonAssemble4.xPosition = (this.guiLeft + this.xSize + 5);
-        this.buttonAssemble4.yPosition = this.guiTop + (offset += 20);
+        this.buttonAssemble4.xPosition = (this.guiLeft + this.xSize + 5) - buttonOffsetX;
+        this.buttonAssemble4.yPosition = this.guiTop + 3 + (offset += 20);
         this.buttonAssemble4.displayString = "\u2692 x4";
-        this.buttonAssemble4.width = 40;
+        this.buttonAssemble4.width = buttonWidth;
         this.buttonAssemble4.baseColor = this.hasMaterials ? 0xAA000000 : 0x22000000;
         this.buttonAssemble4.drawButton();
         this.buttonAssemble4.setAction(new IAction()
@@ -207,16 +212,15 @@ public class GuiAssembler extends GuiContainer
             public void perform(GuiCustomButton button)
             {
                 AssemblerSchematic selectedSchematic = schematics.get(getScroll());
-                System.out.println(getScroll());
                 AliensVsPredator.assembler().assembleSchematicAsPlayer(selectedSchematic, Game.minecraft().thePlayer);
                 AliensVsPredator.network().sendToServer(new PacketAssembleCurrentSchematic(selectedSchematic.getSchematicId(), 4));
             }
         });
 
-        this.buttonAssemble8.xPosition = (this.guiLeft + this.xSize + 5);
-        this.buttonAssemble8.yPosition = this.guiTop + (offset += 20);
+        this.buttonAssemble8.xPosition = (this.guiLeft + this.xSize + 5) - buttonOffsetX;
+        this.buttonAssemble8.yPosition = this.guiTop + 3 + (offset += 20);
         this.buttonAssemble8.displayString = "\u2692 x8";
-        this.buttonAssemble8.width = 40;
+        this.buttonAssemble8.width = buttonWidth;
         this.buttonAssemble8.baseColor = this.hasMaterials ? 0xAA000000 : 0x22000000;
         this.buttonAssemble8.drawButton();
         this.buttonAssemble8.setAction(new IAction()
@@ -230,10 +234,10 @@ public class GuiAssembler extends GuiContainer
             }
         });
 
-        this.buttonAssemble16.xPosition = (this.guiLeft + this.xSize + 5);
-        this.buttonAssemble16.yPosition = this.guiTop + (offset += 20);
+        this.buttonAssemble16.xPosition = (this.guiLeft + this.xSize + 5) - buttonOffsetX;
+        this.buttonAssemble16.yPosition = this.guiTop + 3 + (offset += 20);
         this.buttonAssemble16.displayString = "\u2692 x16";
-        this.buttonAssemble16.width = 40;
+        this.buttonAssemble16.width = buttonWidth;
         this.buttonAssemble16.baseColor = this.hasMaterials ? 0xAA000000 : 0x22000000;
         this.buttonAssemble16.drawButton();
         this.buttonAssemble16.setAction(new IAction()
@@ -247,10 +251,10 @@ public class GuiAssembler extends GuiContainer
             }
         });
 
-        this.buttonAssemble32.xPosition = (this.guiLeft + this.xSize + 5);
-        this.buttonAssemble32.yPosition = this.guiTop + (offset += 20);
+        this.buttonAssemble32.xPosition = (this.guiLeft + this.xSize + 5) - buttonOffsetX;
+        this.buttonAssemble32.yPosition = this.guiTop + 3 + (offset += 20);
         this.buttonAssemble32.displayString = "\u2692 x32";
-        this.buttonAssemble32.width = 40;
+        this.buttonAssemble32.width = buttonWidth;
         this.buttonAssemble32.baseColor = this.hasMaterials ? 0xAA000000 : 0x22000000;
         this.buttonAssemble32.drawButton();
         this.buttonAssemble32.setAction(new IAction()
@@ -264,10 +268,10 @@ public class GuiAssembler extends GuiContainer
             }
         });
 
-        this.buttonAssembleStack.xPosition = (this.guiLeft + this.xSize + 5);
-        this.buttonAssembleStack.yPosition = this.guiTop + (offset += 20);
+        this.buttonAssembleStack.xPosition = (this.guiLeft + this.xSize + 5) - buttonOffsetX;
+        this.buttonAssembleStack.yPosition = this.guiTop + 3 + (offset += 20);
         this.buttonAssembleStack.displayString = "\u2692 x64";
-        this.buttonAssembleStack.width = 40;
+        this.buttonAssembleStack.width = buttonWidth;
         this.buttonAssembleStack.baseColor = this.hasMaterials ? 0xAA000000 : 0x22000000;
         this.buttonAssembleStack.drawButton();
         this.buttonAssembleStack.setAction(new IAction()
@@ -281,9 +285,10 @@ public class GuiAssembler extends GuiContainer
             }
         });
 
-        this.buttonScrollDown.xPosition = this.guiLeft + this.xSize + 5;
-        this.buttonScrollDown.yPosition = this.guiTop + (offset += 20);
-        this.buttonScrollDown.width = 40;
+        this.buttonScrollDown.xPosition = this.guiLeft + this.xSize + 5 - buttonOffsetX;
+        this.buttonScrollDown.yPosition = this.guiTop + 3 + (offset += 20);
+        this.buttonScrollDown.width = buttonWidth;
+        this.buttonScrollDown.height = 19;
         this.buttonScrollDown.displayString = "\u21e9";
         this.buttonScrollDown.baseColor = this.getScroll() >= (this.schematics.size() - 1) ? 0x22000000 : 0xAA000000;
         this.buttonScrollDown.drawButton();
