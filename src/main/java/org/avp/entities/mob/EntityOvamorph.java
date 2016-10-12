@@ -33,10 +33,10 @@ public class EntityOvamorph extends EntitySpeciesAlien implements IMob
     {
         super(par1World);
         this.setSize(0.5F, 0.5F);
-        this.hatchingTime = 20 * 30;
+        this.hatchingTime = 20 * 30 + (10 * rand.nextInt(24));
         this.experienceValue = 10;
         this.openProgress = -maxOpenProgress;
-        this.hatchWaitTimer = 20 * 5;
+        this.hatchWaitTimer = 20 * 5 + (20 * rand.nextInt(3));
         this.containsFacehugger = true;
         this.sendUpdates = true;
     }
@@ -133,7 +133,7 @@ public class EntityOvamorph extends EntitySpeciesAlien implements IMob
             {
                 int hatchAcceleration = this.acceleratedHatching ? 8 : 1;
                 EntityPlayer closestPlayer = this.worldObj.getClosestPlayerToEntity(this, 15.0D);
-                ArrayList<Entity> entities = (ArrayList<Entity>) Entities.getEntitiesInCoordsRange(this.worldObj, EntityLiving.class, new CoordData(this), 15);
+                ArrayList<Entity> entities = (ArrayList<Entity>) Entities.getEntitiesInCoordsRange(this.worldObj, EntityLiving.class, new CoordData(this), 8);
 
                 for (Entity entity : new ArrayList<Entity>(entities))
                 {
