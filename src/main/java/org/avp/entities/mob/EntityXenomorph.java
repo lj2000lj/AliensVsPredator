@@ -95,8 +95,6 @@ public abstract class EntityXenomorph extends EntitySpeciesAlien implements IMob
             this.setAttackTarget(null);
         }
 
-        this.attackAI();
-
         if (this.getAttackTarget() != null)
         {
             if (this.getDistanceToEntity(this.getAttackTarget()) <= hitRange)
@@ -134,51 +132,6 @@ public abstract class EntityXenomorph extends EntitySpeciesAlien implements IMob
     public boolean attackEntityAsMob(Entity entity)
     {
         return super.attackEntityAsMob(entity);
-    }
-
-    public void attackAI()
-    {
-        if (this.getAttackTarget() != null)
-        {
-            EntityLivingBase targetEntity = this.getAttackTarget();
-            ExtendedEntityLivingBase targetProperties = ExtendedEntityLivingBase.get(targetEntity);
-
-            if (targetEntity != null && !(targetEntity instanceof EntityAcidPool) && !(targetEntity instanceof EntitySpeciesAlien) && !targetProperties.doesEntityContainEmbryo())
-            {
-                if (targetEntity instanceof EntityPlayer)
-                {
-                    EntityPlayer player = (EntityPlayer) targetEntity;
-
-                    if (!(player.capabilities.isCreativeMode))
-                    {
-                        this.setAttackTarget(player);
-                        this.getNavigator().tryMoveToEntityLiving(targetEntity, this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getAttributeValue() * 2.5D);
-                    }
-                    else
-                    {
-                        this.setAttackTarget(null);
-                    }
-                }
-                else
-                {
-                    this.setAttackTarget((EntityLivingBase) targetEntity);
-                    this.getNavigator().tryMoveToEntityLiving(targetEntity, this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getAttributeValue() * 2.5D);
-                }
-            }
-            else
-            {
-                this.setAttackTarget(null);
-            }
-        }
-        else
-        {
-            if (worldObj.getWorldInfo().getWorldTime() % 70 == 0)
-            {
-                double range = this.getEntityAttribute(SharedMonsterAttributes.followRange).getAttributeValue();
-                this.setAttackTarget((EntityLivingBase) (this.worldObj.findNearestEntityWithinAABB(EntityLiving.class, this.boundingBox.expand(range * 10, 64.0D, range * 10), this)));
-                this.setAttackTarget((EntityPlayer) (this.worldObj.findNearestEntityWithinAABB(EntityPlayer.class, this.boundingBox.expand(range * 10, 64.0D, range * 10), this)));
-            }
-        }
     }
 
     public boolean canBelongToHive()

@@ -9,10 +9,14 @@ import org.avp.util.IDataSaveHandler;
 import org.avp.util.XenomorphHive;
 
 import com.arisux.amdxlib.AMDXLib;
+import com.arisux.amdxlib.lib.game.Game;
+import com.arisux.amdxlib.lib.world.CoordData;
 import com.arisux.amdxlib.lib.world.Worlds;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
@@ -24,10 +28,12 @@ public class HiveHandler implements IDataSaveHandler
 {
     public static final HiveHandler  instance = new HiveHandler();
     private ArrayList<XenomorphHive> hives    = null;
+    public ArrayList<CoordData>      burntResin;
 
     public HiveHandler()
     {
         this.hives = new ArrayList<XenomorphHive>();
+        this.burntResin = new ArrayList<CoordData>();
     }
 
     public ArrayList<XenomorphHive> getHives()
@@ -84,9 +90,24 @@ public class HiveHandler implements IDataSaveHandler
     @SubscribeEvent
     public void updateHives(TickEvent.WorldTickEvent event)
     {
-        if (event.world.provider.dimensionId == 0 && event.world.getWorldTime() % (20 * 5) == 0)
+        // TODO: Murder annoying slimes if this is a dev environment.
+        if (Game.isDevEnvironment())
         {
-            System.out.println(hives.size() + " HIVES: " + hives);
+            for (Object o : new ArrayList(event.world.loadedEntityList))
+            {
+                Entity entity = (Entity) o;
+
+                if (o instanceof EntitySlime)
+                {
+                    entity.setDead();
+                }
+            }
+        }
+
+        for (CoordData coord : new ArrayList<CoordData>(this.burntResin))
+        {
+            event.world.setBlock((int) coord.x, (int) coord.y, (int) coord.z, coord.getBlock(event.world));
+            this.burntResin.remove(coord);
         }
 
         for (XenomorphHive hive : (ArrayList<XenomorphHive>) this.hives.clone())
@@ -100,13 +121,14 @@ public class HiveHandler implements IDataSaveHandler
 
     public void clearCaches()
     {
+        System.out.println("Cleared hive cache.");
         this.hives.clear();
     }
 
     @Override
     public boolean saveData(World world, NBTTagCompound nbt)
     {
-        AMDXLib.log().info(String.format("Saving %s hives for level '%s'/%s", this.hives.size(), world.getSaveHandler().getWorldDirectoryName(), world.provider.getDimensionName()));
+        int hiveCount = 0;
 
         if (nbt != null)
         {
@@ -118,6 +140,7 @@ public class HiveHandler implements IDataSaveHandler
                 {
                     if (hive.getDimensionId() == world.provider.dimensionId)
                     {
+                        hiveCount++;
                         NBTTagCompound tagHive = new NBTTagCompound();
                         hive.save(world, tagHive);
                         tagHives.appendTag(tagHive);
@@ -132,19 +155,21 @@ public class HiveHandler implements IDataSaveHandler
             return false;
         }
 
+        AMDXLib.log().info(String.format("Saved %s hives for level '%s'/%s", hiveCount, world.getSaveHandler().getWorldDirectoryName(), world.provider.getDimensionName()));
+
         return true;
     }
 
     @Override
     public boolean loadData(World world, NBTTagCompound nbt)
     {
-        AMDXLib.log().info(String.format("Loading %s hives for level '%s'/%s", this.hives.size(), world.getSaveHandler().getWorldDirectoryName(), world.provider.getDimensionName()));
+        int hiveCount = 0;
 
         if (nbt != null)
         {
-            NBTTagList tagHives = nbt.getTagList("XenomorphHives_" + world.provider.dimensionId, NBT.TAG_COMPOUND);
+            NBTTagList tagHives = nbt.getTagList("XenomorphHives", NBT.TAG_COMPOUND);
 
-            if (tagHives.tagCount() > 0)
+            if ((tagHives.tagCount()) > 0)
             {
                 for (int i = 0; i < tagHives.tagCount(); i++)
                 {
@@ -164,7 +189,8 @@ public class HiveHandler implements IDataSaveHandler
 
                     if (hive != null)
                     {
-                        hive.load(world, tagHive);
+                        hiveCount++;
+                        hive.load(world, uniqueIdentifier, tagHive);
                     }
                 }
             }
@@ -173,6 +199,9 @@ public class HiveHandler implements IDataSaveHandler
         {
             return false;
         }
+
+        AMDXLib.log().info(String.format("%s hives have been loaded for level '%s'/%s. %s hives are globally accessable.", hiveCount, world.getSaveHandler().getWorldDirectoryName(), world.provider.getDimensionName(), this.hives.size()));
+        System.out.println(this.hives);
 
         return true;
     }

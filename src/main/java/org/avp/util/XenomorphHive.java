@@ -13,7 +13,11 @@ import com.arisux.amdxlib.lib.world.Worlds;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants.NBT;
 
 public class XenomorphHive
 {
@@ -34,9 +38,9 @@ public class XenomorphHive
         this.aliens = new ArrayList<EntitySpeciesAlien>();
         this.resinInHive = new ArrayList<TileEntityHiveResin>();
 
-        if (this.queen != null)
+        if (this.getQueen() != null)
         {
-            this.dimensionId = this.queen.worldObj.provider.dimensionId;
+            this.dimensionId = this.getQueen().worldObj.provider.dimensionId;
         }
     }
 
@@ -99,7 +103,7 @@ public class XenomorphHive
 
     public EntityQueen getQueen()
     {
-        return queen;
+        return this.queen == null && world != null ? this.queen = (EntityQueen) Worlds.getEntityByUUID(world, this.uuid) : this.queen;
     }
 
     public int getDimensionId()
@@ -126,14 +130,14 @@ public class XenomorphHive
     {
         this.world = world;
 
-        if (this.queen == null || this.queen != null && this.queen.isDead)
+        if (this.getQueen() != null && this.getQueen().isDead)
         {
             HiveHandler.instance.getHives().remove(this);
         }
 
-        if (this.queen != null)
+        if (this.getQueen() != null)
         {
-            this.dimensionId = this.queen.worldObj.provider.dimensionId;
+            this.dimensionId = this.getQueen().worldObj.provider.dimensionId;
         }
 
         if (world.getWorldTime() % (20 * 5) == 0)
@@ -150,7 +154,7 @@ public class XenomorphHive
 
     public void destroy()
     {
-        for (TileEntityHiveResin resin : (ArrayList<TileEntityHiveResin>) this.getResinInHive().clone())
+        for (TileEntityHiveResin resin : new ArrayList<TileEntityHiveResin>(this.getResinInHive()))
         {
             if (resin != null)
             {
@@ -158,26 +162,46 @@ public class XenomorphHive
             }
         }
 
-        for (EntitySpeciesAlien alien : (ArrayList<EntitySpeciesAlien>) this.getAliensInHive().clone())
+        for (EntitySpeciesAlien alien : new ArrayList<EntitySpeciesAlien>(this.getAliensInHive()))
         {
             if (alien != null)
             {
                 alien.setDead();
             }
         }
+
         this.getAliensInHive().clear();
         this.getResinInHive().clear();
         HiveHandler.instance.getHives().remove(this);
     }
 
-    public void load(World world, NBTTagCompound nbt)
+    public void load(World world, UUID uniqueIdentifier, NBTTagCompound nbt)
     {
-        this.uuid = Worlds.uuidFromNBT(nbt, "UUID");
         this.queen = (EntityQueen) Worlds.getEntityByUUID(world, this.uuid);
         this.dimensionId = nbt.getInteger("DimID");
         this.xCoord = nbt.getInteger("X");
         this.yCoord = nbt.getInteger("Y");
         this.zCoord = nbt.getInteger("Z");
+
+        NBTTagList list = nbt.getTagList("Resin", NBT.TAG_STRING);
+
+        for (int i = 0; i < list.tagCount(); i++)
+        {
+            String key = list.getStringTagAt(i);
+            String[] coordSet = key.split(",");
+
+            int x = Integer.parseInt(coordSet[0].trim());
+            int y = Integer.parseInt(coordSet[1].trim());
+            int z = Integer.parseInt(coordSet[2].trim());
+
+            TileEntity tile = world.getTileEntity(x, y, z);
+
+            if (tile instanceof TileEntityHiveResin)
+            {
+                TileEntityHiveResin resin = (TileEntityHiveResin) tile;
+                this.addResin(resin);
+            }
+        }
     }
 
     public void save(World world, NBTTagCompound nbt)
@@ -187,17 +211,26 @@ public class XenomorphHive
         nbt.setInteger("X", this.xCoord);
         nbt.setInteger("Y", this.yCoord);
         nbt.setInteger("Z", this.zCoord);
+
+        NBTTagList list = new NBTTagList();
+
+        for (TileEntityHiveResin resin : this.resinInHive)
+        {
+            list.appendTag(new NBTTagString(String.format("%s, %s, %s", resin.xCoord, resin.yCoord, resin.zCoord)));
+        }
+
+        nbt.setTag("Resin", list);
     }
 
     @Override
     public String toString()
     {
-        return String.format("[Dimension %s, %s Aliens, %s Resin, HIVE UUID: %s, QUEEN UUID: %s, XYZ(%s, %s, %s)]", this.dimensionId, this.getAliensInHive().size(), this.getResinInHive().size(), this.getUniqueIdentifier(), this.queen != null ? this.queen.getUniqueID() : null, this.xCoord, this.yCoord, this.zCoord);
+        return String.format("[Dimension %s, %s Aliens, %s Resin, HIVE UUID: %s, QUEEN UUID: %s, XYZ(%s, %s, %s)]", this.dimensionId, this.getAliensInHive().size(), this.getResinInHive().size(), this.getUniqueIdentifier(), this.getQueen() != null ? this.getQueen().getUniqueID() : null, this.xCoord, this.yCoord, this.zCoord);
     }
 
     public boolean isQueenAtCore()
     {
-        return this.queen.getDistance(this.xCoord(), this.yCoord(), this.zCoord()) < this.getCoreRange();
+        return this.getQueen().getDistance(this.xCoord(), this.yCoord(), this.zCoord()) < this.getCoreRange();
     }
 
     public boolean isPointWithinHive(CoordData coord)
@@ -207,12 +240,12 @@ public class XenomorphHive
 
     public boolean isPointWithinHive(int x, int y, int z)
     {
-        return this.queen.getDistance(x, y, z) < this.getMaxHiveRadius();
+        return this.getQueen().getDistance(x, y, z) < this.getMaxHiveRadius();
     }
 
     public double getDistanceFromHive(Entity entity)
     {
-        return this.queen.getDistance(entity.posX, entity.posY, entity.posZ);
+        return this.getQueen().getDistance(entity.posX, entity.posY, entity.posZ);
     }
 
     public boolean isEntityWithinRange(Entity entity)

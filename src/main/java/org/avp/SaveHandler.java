@@ -82,16 +82,20 @@ public class SaveHandler
         {
             try
             {
-                NBTTagCompound read = NBTStorage.readCompressed(worldSave);
-                tag = read == null ? tag : read;
-
-                for (IDataSaveHandler dataHandler : this.dataHandlers)
+                if (worldSave.getAbsoluteFile().exists())
                 {
-                    if (dataHandler != null)
+                    AMDXLib.log().info(String.format("Loading world data: ", worldSave.getAbsolutePath()));
+                    NBTTagCompound read = NBTStorage.readCompressed(worldSave.getAbsoluteFile());
+                    tag = read == null ? tag : read;
+
+                    for (IDataSaveHandler dataHandler : this.dataHandlers)
                     {
-                        if (!dataHandler.loadData(world, tag))
+                        if (dataHandler != null)
                         {
-                            AMDXLib.log().info(String.format("Unable to load world data: ", this.getSaveFilename()));
+                            if (!dataHandler.loadData(world, tag))
+                            {
+                                AMDXLib.log().info(String.format("Unable to load world data: ", this.getSaveFilename()));
+                            }
                         }
                     }
                 }

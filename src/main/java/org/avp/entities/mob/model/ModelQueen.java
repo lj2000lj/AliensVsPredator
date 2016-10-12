@@ -582,7 +582,7 @@ public class ModelQueen extends Model
         {
             EntityQueen queen = (EntityQueen) o.getEntity();
 
-            if (queen.isInStasis)
+            if (queen.growingOvipositor)
             {
                 OpenGL.pushMatrix();
                 {

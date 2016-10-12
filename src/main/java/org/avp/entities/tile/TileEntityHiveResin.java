@@ -85,16 +85,8 @@ public class TileEntityHiveResin extends TileEntity
     @Override
     public void updateEntity()
     {
-        if (Game.minecraft().theWorld != null && this.worldObj.getWorldTime() % 40 == 0)
+        if (Game.minecraft().theWorld != null && this.worldObj.getWorldTime() % 20 == 0)
         {
-            for (XenomorphHive hive : HiveHandler.instance.getHives())
-            {
-                if (hive != null && hive.owns(this))
-                {
-                    hive.addResin(this);
-                }
-            }
-
             if (variant != null)
             {
                 bottomBlock = Game.minecraft().theWorld.getBlock(this.xCoord, this.yCoord - 1, this.zCoord);

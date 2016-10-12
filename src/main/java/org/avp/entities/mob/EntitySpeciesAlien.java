@@ -42,7 +42,7 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(32D);
+        this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(32);
     }
 
     @Override
@@ -67,8 +67,6 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob
 
         this.signature = Worlds.uuidFromNBT(nbt, "HiveSignature");
         this.jellyLevel = nbt.getInteger("jellyLevel");
-
-        System.out.println(this.signature);
     }
 
     @Override

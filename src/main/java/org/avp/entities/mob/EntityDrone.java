@@ -127,12 +127,6 @@ public class EntityDrone extends EntityXenomorph
         return super.attackEntityAsMob(entity);
     }
 
-    @Override
-    public void attackAI()
-    {
-        ;
-    }
-
     @SuppressWarnings("unchecked")
     public void tickResinLevelAI()
     {
@@ -183,7 +177,6 @@ public class EntityDrone extends EntityXenomorph
                             {
                                 return;
                             }
-                            System.out.println("building " + this.hive.getDistanceFromHive(this));
 
                             this.getNavigator().setPath(path, 0.8D);
                             this.worldObj.setBlock((int) coord.x, (int) coord.y, (int) coord.z, AliensVsPredator.blocks().terrainHiveResin);
@@ -195,6 +188,7 @@ public class EntityDrone extends EntityXenomorph
                                 TileEntityHiveResin resin = (TileEntityHiveResin) tileEntity;
                                 resin.setHiveSignature(this.getHive().getUniqueIdentifier());
                                 resin.setBlockCovering(block);
+                                this.hive.addResin(resin);
                             }
 
                             this.resinLevel -= 64;
@@ -220,7 +214,7 @@ public class EntityDrone extends EntityXenomorph
 
                     if (!(block == net.minecraft.init.Blocks.air) && !(block instanceof BlockHiveResin) && block.isOpaqueCube())
                     {
-                        if (location.isAnySurfaceVisible(this.worldObj) && (this.worldObj.rayTraceBlocks(Vec3.createVectorHelper(this.posX, this.posY + (double) this.getEyeHeight(), this.posZ), Vec3.createVectorHelper(x, y, z)) == null))
+                        if (location.isAnySurfaceEmpty(this.worldObj) && (this.worldObj.rayTraceBlocks(Vec3.createVectorHelper(this.posX, this.posY + (double) this.getEyeHeight(), this.posZ), Vec3.createVectorHelper(x, y, z)) == null))
                         {
                             data.add(location);
                         }
