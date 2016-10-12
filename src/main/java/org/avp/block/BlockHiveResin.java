@@ -4,11 +4,17 @@ import java.util.Random;
 
 import org.avp.AliensVsPredator;
 import org.avp.entities.tile.TileEntityHiveResin;
+import org.avp.event.HiveHandler;
+
+import com.arisux.amdxlib.lib.world.CoordData;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockHiveResin extends Block
 {
@@ -17,7 +23,19 @@ public class BlockHiveResin extends Block
         super(material);
         this.setLightLevel(0.1F);
     }
-    
+
+    @Override
+    public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face)
+    {
+        return 5;
+    }
+
+    @Override
+    public int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face)
+    {
+        return 5;
+    }
+
     @Override
     public boolean isOpaqueCube()
     {
@@ -51,6 +69,24 @@ public class BlockHiveResin extends Block
     @Override
     public void onBlockPreDestroy(World world, int posX, int posY, int posZ, int oldMetadata)
     {
+        TileEntity tile = world.getTileEntity(posX, posY, posZ);
+
+        if (tile instanceof TileEntityHiveResin)
+        {
+            CoordData coord = new CoordData(posX, posY, posZ);
+            TileEntityHiveResin resin = (TileEntityHiveResin) tile;
+            
+            if (coord.isAnySurfaceNextTo(world, Blocks.fire))
+            {
+                if (resin != null && resin.getBlockCovering() != null)
+                {
+                    HiveHandler.instance.burntResin.add(new CoordData(posX, posY, posZ, resin.getBlockCovering()));
+                }
+            }
+
+            resin.getHive().getResinInHive().remove(resin);
+        }
+
         super.onBlockPreDestroy(world, posX, posY, posZ, oldMetadata);
     }
     
@@ -59,7 +95,7 @@ public class BlockHiveResin extends Block
     {
         super.onBlockDestroyedByPlayer(world, posX, posY, posZ, metadata);
     }
-    
+
     @Override
     public int getRenderType()
     {

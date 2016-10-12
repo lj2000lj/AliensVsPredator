@@ -50,7 +50,7 @@ public class BlockHandler implements IInitEvent
 {
     public static BlockHandler instance                   = new BlockHandler();
 
-    public Block               terrainHiveResin           = (new BlockHiveResin(Material.wood)).setHardness(5F).setResistance(10.0F).setLightOpacity(255);
+    public Block               terrainHiveResin           = (new BlockHiveResin(Material.wood)).setLightOpacity(255);
     public Block               blockStandardHiveResin     = (new BlockMaterial(Material.wood)).setHardness(5F).setResistance(10.0F).setLightOpacity(255);
     public Block               blockOvamorph              = (new BlockMaterial(Material.rock));
     public Block               blockShipMetal1            = (new BlockMaterial(Material.iron).setHardness(5F).setResistance(30.0F).setLightOpacity(255));
