@@ -61,7 +61,7 @@ public class HiveHandler implements IDataSaveHandler
     {
         for (XenomorphHive hive : this.hives)
         {
-            if (hive != null && hive.getUniqueIdentifier().equals(uuid))
+            if (hive != null && hive.getUniqueIdentifier() != null && hive.getUniqueIdentifier().equals(uuid))
             {
                 return hive;
             }
