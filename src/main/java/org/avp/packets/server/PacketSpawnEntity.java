@@ -11,7 +11,7 @@ import net.minecraft.entity.Entity;
 
 public class PacketSpawnEntity implements IMessage, IMessageHandler<PacketSpawnEntity, PacketSpawnEntity>
 {
-    public int x, y, z;
+    public double x, y, z;
     public String entityId;
 
     public PacketSpawnEntity()
@@ -19,29 +19,29 @@ public class PacketSpawnEntity implements IMessage, IMessageHandler<PacketSpawnE
         ;
     }
 
-    public PacketSpawnEntity(int x, int y, int z, String entityId)
+    public PacketSpawnEntity(double x, double y, double z, String entityId)
     {
         this.x = x;
         this.y = y;
         this.z = z;
-        this.entityId = entityId;
+        this.entityId = entityId.trim();
     }
 
     @Override
     public void toBytes(ByteBuf buffer)
     {
-        buffer.writeInt(x);
-        buffer.writeInt(y);
-        buffer.writeInt(z);
+        buffer.writeDouble(x);
+        buffer.writeDouble(y);
+        buffer.writeDouble(z);
         ByteBufUtils.writeUTF8String(buffer, entityId);
     }
 
     @Override
     public void fromBytes(ByteBuf buffer)
     {
-        this.x = buffer.readInt();
-        this.y = buffer.readInt();
-        this.z = buffer.readInt();
+        this.x = buffer.readDouble();
+        this.y = buffer.readDouble();
+        this.z = buffer.readDouble();
         this.entityId = ByteBufUtils.readUTF8String(buffer);
     }
 
@@ -54,7 +54,7 @@ public class PacketSpawnEntity implements IMessage, IMessageHandler<PacketSpawnE
 
             if (entity != null)
             {
-                entity.setLocationAndAngles(message.x + 0.5D, message.y + 1D, message.z + 0.5D, 0.0F, 0.0F);
+                entity.setLocationAndAngles(message.x, message.y, message.z, 0.0F, 0.0F);
                 ctx.getServerHandler().playerEntity.worldObj.spawnEntityInWorld(entity);
             }
         }
