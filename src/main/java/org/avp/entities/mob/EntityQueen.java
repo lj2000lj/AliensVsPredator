@@ -106,7 +106,7 @@ public class EntityQueen extends EntityXenomorph implements IMob
                 double ovamorphX = (this.posX + (ovipositorDist * (Math.cos(rotationYawRadians))));
                 double ovamorphZ = (this.posZ + (ovipositorDist * (Math.sin(rotationYawRadians))));
 
-                AliensVsPredator.network().sendToServer(new PacketSpawnEntity((int)ovamorphX, (int)this.posY, (int)ovamorphZ, Entities.getEntityRegistrationId(EntityOvamorph.class)));
+                AliensVsPredator.network().sendToServer(new PacketSpawnEntity(ovamorphX, this.posY, ovamorphZ, Entities.getEntityRegistrationId(EntityOvamorph.class)));
 
                 System.out.println(String.format("ovamorph laid at %s, %s, %s from queen at %s, %s, %s", (int) ovamorph.posX, (int) ovamorph.posY, (int) ovamorph.posZ, (int) this.posX, (int) this.posY, (int) this.posZ));
             }
