@@ -97,7 +97,7 @@ public class EntityQueen extends EntityXenomorph implements IMob
                 this.targetTasks.taskEntries.clear();
             }
 
-            if (this.worldObj.isRemote && this.worldObj.getWorldTime() % (20 * 6) == 0)
+            if (this.worldObj.isRemote && this.worldObj.getWorldTime() % (20 * 120) == 0)
             {
                 EntityOvamorph ovamorph = new EntityOvamorph(this.worldObj);
 
