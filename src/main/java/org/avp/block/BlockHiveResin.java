@@ -75,21 +75,27 @@ public class BlockHiveResin extends Block
         {
             CoordData coord = new CoordData(posX, posY, posZ);
             TileEntityHiveResin resin = (TileEntityHiveResin) tile;
-            
-            if (coord.isAnySurfaceNextTo(world, Blocks.fire))
+
+            if (resin != null)
             {
-                if (resin != null && resin.getBlockCovering() != null)
+                if (coord.isAnySurfaceNextTo(world, Blocks.fire))
                 {
-                    HiveHandler.instance.burntResin.add(new CoordData(posX, posY, posZ, resin.getBlockCovering()));
+                    if (resin != null && resin.getBlockCovering() != null)
+                    {
+                        HiveHandler.instance.burntResin.add(new CoordData(posX, posY, posZ, resin.getBlockCovering()));
+                    }
+                }
+
+                if (resin.getHive() != null)
+                {
+                    resin.getHive().getResinInHive().remove(resin);
                 }
             }
-
-            resin.getHive().getResinInHive().remove(resin);
         }
 
         super.onBlockPreDestroy(world, posX, posY, posZ, oldMetadata);
     }
-    
+
     @Override
     public void onBlockDestroyedByPlayer(World world, int posX, int posY, int posZ, int metadata)
     {
