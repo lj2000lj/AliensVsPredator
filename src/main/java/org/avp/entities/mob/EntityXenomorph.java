@@ -3,13 +3,9 @@ package org.avp.entities.mob;
 import java.util.Random;
 
 import org.avp.AliensVsPredator;
-import org.avp.entities.EntityAcidPool;
 import org.avp.entities.ai.alien.EntitySelectorXenomorph;
-import org.avp.entities.extended.ExtendedEntityLivingBase;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -18,7 +14,6 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
@@ -82,6 +77,25 @@ public abstract class EntityXenomorph extends EntitySpeciesAlien implements IMob
     public void onUpdate()
     {
         super.onUpdate();
+
+        if (this.hive != null && !this.worldObj.isRemote)
+        {
+            if (this.hive.getQueen() != null && !this.hive.getQueen().isDead && !(this instanceof EntityQueen))
+            {
+                if (this.hive.getQueen().getOvipositorSize() < EntityQueen.OVIPOSITOR_THRESHOLD_SIZE || this.hive.getQueen().reproducing)
+                {
+                    if (this.hive.getQueen().getJellyLevel() < EntityQueen.OVIPOSITOR_JELLYLEVEL_THRESHOLD * 2)
+                    {
+                        this.hive.getQueen().jellyLevel++;
+                        this.jellyLevel--;
+                    }
+                }
+            }
+            else
+            {
+                this.hive = null;
+            }
+        }
 
         this.fallDistance = 0F;
 

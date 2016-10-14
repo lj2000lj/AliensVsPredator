@@ -25,14 +25,12 @@ import net.minecraft.world.World;
 public class EntityDrone extends EntityXenomorph
 {
     public int  mobType;
-    private int resinMultiplier;
     private int resinLevel;
 
     public EntityDrone(World world)
     {
         super(world);
 
-        this.resinMultiplier = 3;
         this.experienceValue = 100;
         this.setSize(0.8F, 1.8F);
         this.mobType = this.rand.nextInt(2);

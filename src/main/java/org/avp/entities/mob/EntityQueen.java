@@ -15,7 +15,6 @@ import com.arisux.amdxlib.lib.world.CoordData;
 import com.arisux.amdxlib.lib.world.entity.Entities;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -23,7 +22,6 @@ import net.minecraft.entity.ai.EntityAILeapAtTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
@@ -31,28 +29,30 @@ import net.minecraft.world.World;
 
 public class EntityQueen extends EntityXenomorph implements IMob
 {
+    public static final float    OVIPOSITOR_THRESHOLD_SIZE          = 1.3F;
+    public static final float    OVIPOSITOR_PROGRESSIVE_GROWTH_SIZE = 0.00225F;
+    public static final int      OVIPOSITOR_UNHEALTHY_THRESHOLD     = 50;
+    public static final int      OVIPOSITOR_JELLYLEVEL_THRESHOLD    = 1000;
+    public static final int      OVIPOSITOR_JELLYLEVEL_GROWTH_USE   = 1;
+
     public boolean               growingOvipositor;
     public boolean               reproducing;
 
-    private ArrayList<CoordData> pathPoints = new ArrayList<CoordData>();
+    private ArrayList<CoordData> pathPoints                         = new ArrayList<CoordData>();
 
     public EntityQueen(World world)
     {
         super(world);
         this.setSize(2.0F, 5.0F);
-        this.growingOvipositor = true;
+        this.growingOvipositor = false;
         this.experienceValue = 40000;
-        this.jumpMovementFactor = 0.1F;
+        this.jellyLevel = OVIPOSITOR_JELLYLEVEL_THRESHOLD;
+        this.jumpMovementFactor = 0.2F;
         this.hurtResistantTime = 0;
         this.ignoreFrustumCheck = true;
         this.getNavigator().setCanSwim(true);
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(8, new EntityAIWander(this, 0.8D));
-        this.tasks.addTask(3, new EntityAIAttackOnCollide(this, 0.8D, true));
-        this.targetTasks.addTask(0, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(2, new EntityAILeapAtTarget(this, 1.6F));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, Entity.class, 0, false, false, EntitySelectorXenomorph.instance));
         this.dataWatcher.addObject(14, 0F);
+        this.addAI();
     }
 
     public float getOvipositorSize()
@@ -81,61 +81,32 @@ public class EntityQueen extends EntityXenomorph implements IMob
         this.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(1F);
     }
 
-    @Override
-    public void onUpdate()
+    private void removeAI()
     {
-        super.onUpdate();
-        this.jumpMovementFactor = 0.2F;
-//        this.rotationYaw = 0;
-        this.reproducing = this.getOvipositorSize() >= 1.3F;
-
-        if (this.reproducing)
+        if (!this.tasks.taskEntries.isEmpty() || !this.targetTasks.taskEntries.isEmpty())
         {
-            if (!this.tasks.taskEntries.isEmpty() || !this.targetTasks.taskEntries.isEmpty())
-            {
-                this.tasks.taskEntries.clear();
-                this.targetTasks.taskEntries.clear();
-            }
-
-            if (this.worldObj.isRemote && this.worldObj.getWorldTime() % (20 * 120) == 0)
-            {
-                EntityOvamorph ovamorph = new EntityOvamorph(this.worldObj);
-
-                int ovipositorDist = 10;
-                double rotationYawRadians = Math.toRadians(this.rotationYawHead - 90);
-                double ovamorphX = (this.posX + (ovipositorDist * (Math.cos(rotationYawRadians))));
-                double ovamorphZ = (this.posZ + (ovipositorDist * (Math.sin(rotationYawRadians))));
-
-                AliensVsPredator.network().sendToServer(new PacketSpawnEntity(ovamorphX, this.posY, ovamorphZ, Entities.getEntityRegistrationId(EntityOvamorph.class)));
-
-                System.out.println(String.format("ovamorph laid at %s, %s, %s from queen at %s, %s, %s", (int) ovamorph.posX, (int) ovamorph.posY, (int) ovamorph.posZ, (int) this.posX, (int) this.posY, (int) this.posZ));
-            }
+            this.tasks.taskEntries.clear();
+            this.targetTasks.taskEntries.clear();
         }
+    }
 
+    private void addAI()
+    {
+        if (this.tasks.taskEntries.isEmpty() && this.targetTasks.taskEntries.isEmpty())
+        {
+            this.tasks.addTask(0, new EntityAISwimming(this));
+            this.tasks.addTask(8, new EntityAIWander(this, 0.8D));
+            this.tasks.addTask(3, new EntityAIAttackOnCollide(this, 0.8D, true));
+            this.targetTasks.addTask(0, new EntityAIHurtByTarget(this, true));
+            this.targetTasks.addTask(2, new EntityAILeapAtTarget(this, 1.6F));
+            this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, Entity.class, 0, false, false, EntitySelectorXenomorph.instance));
+        }
+    }
+
+    private void constructHive()
+    {
         if (!this.worldObj.isRemote)
         {
-            if (this.hive != null)
-            {
-                this.growingOvipositor = this.hive.getResinInHive().size() > 1000;
-
-                if (this.growingOvipositor)
-                {
-                    if (this.getOvipositorSize() < 1.3F)
-                    {
-                        this.setOvipositorSize(this.getOvipositorSize() + 0.0025F);
-                    }
-                    else
-                    {
-                        this.setOvipositorSize(1.3F);
-                    }
-                }
-            }
-            
-            if (this.posY < -32)
-            {
-                this.setDead();
-            }
-
             if (this.worldObj.getWorldTime() % 20 == 0)
             {
                 this.hive = HiveHandler.instance.getHiveForUUID(this.getUniqueID());
@@ -145,102 +116,118 @@ public class EntityQueen extends EntityXenomorph implements IMob
                     HiveHandler.instance.getHives().add(new XenomorphHive(this.worldObj, this.getUniqueID()).setLocation(this.posX, this.posY, this.posZ));
                 }
             }
+        }
+    }
 
+    private void reproduce()
+    {
+        if (this.reproducing)
+        {
+            if (!this.worldObj.isRemote && this.worldObj.getWorldTime() % (20 * 120) == 0 && this.jellyLevel >= OVIPOSITOR_UNHEALTHY_THRESHOLD)
+            {
+                int ovipositorDist = 10;
+                double rotationYawRadians = Math.toRadians(this.rotationYawHead - 90);
+                double ovamorphX = (this.posX + (ovipositorDist * (Math.cos(rotationYawRadians))));
+                double ovamorphZ = (this.posZ + (ovipositorDist * (Math.sin(rotationYawRadians))));
+
+                this.worldObj.playSoundAtEntity(this, AliensVsPredator.sounds().SOUND_QUEEN_HURT.getKey(), 1F, this.rand.nextInt(10) / 100);
+                AliensVsPredator.network().sendToServer(new PacketSpawnEntity(ovamorphX, this.posY, ovamorphZ, Entities.getEntityRegistrationId(EntityOvamorph.class)));
+                this.jellyLevel -= 100;
+            }
+        }
+    }
+
+    private void handleOvipositorGrowth()
+    {
+        if (!this.worldObj.isRemote)
+        {
+            System.out.println(this.jellyLevel);
             if (this.hive != null)
             {
-                CoordData coordQueen = new CoordData(this);
-                CoordData coordHive = new CoordData(this.hive.xCoord(), this.hive.yCoord(), this.hive.zCoord());
+                boolean ovipositorHealthy = this.jellyLevel >= OVIPOSITOR_UNHEALTHY_THRESHOLD;
 
-                int pathRange = (int) (this.getEntityAttribute(SharedMonsterAttributes.followRange).getBaseValue());
-                int hiveDist = (int) this.getDistance(coordHive.x, coordHive.y, coordHive.z);
-
-                if (hiveDist > this.hive.getMaxHiveRadius() * 0.5 && this.getAttackTarget() == null || this.getAttackTarget() == null && this.getNavigator().tryMoveToXYZ(coordHive.x, coordHive.y, coordHive.z, 1.55D))
+                if (ovipositorHealthy)
                 {
-                    this.pathPoints = CoordData.getPointsBetween(coordQueen, coordHive, hiveDist / 12);
-
-                    if (this.pathPoints != null && !this.pathPoints.isEmpty())
+                    if (this.getOvipositorSize() < OVIPOSITOR_THRESHOLD_SIZE)
                     {
-                        CoordData closestPoint = this.pathPoints.get(0);
+                        this.setOvipositorSize(this.getOvipositorSize() + OVIPOSITOR_PROGRESSIVE_GROWTH_SIZE);
+                        this.jellyLevel -= OVIPOSITOR_JELLYLEVEL_GROWTH_USE;
+                    }
 
-                        for (CoordData point : this.pathPoints)
-                        {
-                            if (closestPoint != null && point.distanceFrom(this) < closestPoint.getLastDistanceCalculated())
-                            {
-                                closestPoint = point;
-                            }
-                        }
+                    this.removeAI();
+                }
+                else if (!ovipositorHealthy)
+                {
+                    this.setOvipositorSize(0F);
+                    this.addAI();
+                }
+            }
+        }
+    }
 
-                        if (!this.getNavigator().tryMoveToXYZ(closestPoint.x, closestPoint.y, closestPoint.z, 1.55D))
+    private void jumpBoost()
+    {
+        if (!this.worldObj.isRemote)
+        {
+            if (isJumping)
+            {
+                this.addVelocity(0, 0.2D, 0);
+            }
+        }
+    }
+
+    private void pathfindToHive()
+    {
+        if (this.hive != null && !this.reproducing)
+        {
+            CoordData coordQueen = new CoordData(this);
+            CoordData coordHive = new CoordData(this.hive.xCoord(), this.hive.yCoord(), this.hive.zCoord());
+
+            int hiveDist = (int) this.getDistance(coordHive.x, coordHive.y, coordHive.z);
+
+            if (hiveDist > this.hive.getMaxHiveRadius() * 0.5 && this.getAttackTarget() == null || this.getAttackTarget() == null && this.getNavigator().tryMoveToXYZ(coordHive.x, coordHive.y, coordHive.z, 1.55D))
+            {
+                this.pathPoints = CoordData.getPointsBetween(coordQueen, coordHive, hiveDist / 12);
+
+                if (this.pathPoints != null && !this.pathPoints.isEmpty())
+                {
+                    CoordData closestPoint = this.pathPoints.get(0);
+
+                    for (CoordData point : this.pathPoints)
+                    {
+                        if (closestPoint != null && point.distanceFrom(this) < closestPoint.getLastDistanceCalculated())
                         {
-                            if (Game.isDevEnvironment() && this.worldObj.getWorldTime() % (20 * 3) == 0)
-                            {
-                                System.out.println("Unable to pathfind to closest point, too far: " + this.pathPoints.size() + " Points, " + ((int) closestPoint.distanceFrom(this)) + " Meters, " + closestPoint);
-                                System.out.println(this.pathPoints);
-                            }
+                            closestPoint = point;
                         }
-                        else
+                    }
+
+                    if (!this.getNavigator().tryMoveToXYZ(closestPoint.x, closestPoint.y, closestPoint.z, 1.55D))
+                    {
+                        if (Game.isDevEnvironment() && this.worldObj.getWorldTime() % (20 * 3) == 0)
                         {
-                            if (this.getDistance(closestPoint.x, closestPoint.y, closestPoint.z) < 1.0D)
+                            System.out.println("Unable to pathfind to closest point, too far: " + this.pathPoints.size() + " Points, " + ((int) closestPoint.distanceFrom(this)) + " Meters, " + closestPoint);
+                            System.out.println(this.pathPoints);
+                        }
+                    }
+                    else
+                    {
+                        if (this.getDistance(closestPoint.x, closestPoint.y, closestPoint.z) < 1.0D)
+                        {
+                            if (Game.isDevEnvironment())
                             {
                                 System.out.println("Arrived at closest point. Moving on to next point.");
-                                this.pathPoints.remove(closestPoint);
                             }
+
+                            this.pathPoints.remove(closestPoint);
                         }
                     }
                 }
             }
-
-            if (this.worldObj.getWorldTime() % 20 == 0)
-            {
-                @SuppressWarnings("unchecked")
-                ArrayList<EntitySpeciesAlien> aliens = (ArrayList<EntitySpeciesAlien>) Entities.getEntitiesInCoordsRange(this.worldObj, EntitySpeciesAlien.class, new CoordData(this), 16);
-
-                if (this.getHive() != null)
-                {
-                    for (EntitySpeciesAlien alien : aliens)
-                    {
-                        if (this.rand.nextInt(3) == 0)
-                        {
-                            if (alien != null && alien.getHive() != null && !(alien instanceof EntityQueen) && alien.getHive() == this.getHive())
-                            {
-                                if ((this.getAttackTarget() != null || this.getLastAttacker() != null))
-                                {
-                                    if (this.rand.nextInt(6) == 0)
-                                    {
-                                        if (alien instanceof EntityOvamorph)
-                                        {
-                                            EntityOvamorph ovamorph = (EntityOvamorph) alien;
-                                            ovamorph.setHatched(true);
-                                        }
-                                    }
-
-                                    EntityLivingBase target = this.getAttackTarget() != null ? this.getAttackTarget() : this.getLastAttacker();
-
-                                    alien.setAttackTarget(target);
-                                    alien.getNavigator().tryMoveToEntityLiving(target, alien.getMoveHelper().getSpeed());
-                                }
-                            }
-
-                            if (alien != null && alien.getHive() == null)
-                            {
-                                System.out.println("Set hive signature on alien with uuid: " + alien.getUniqueID());
-                                alien.setHiveSignature(this.hive.getUniqueIdentifier());
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    System.out.println("Queen hive instance is null, this is impossible.");
-                }
-            }
         }
+    }
 
-        if (isJumping)
-        {
-            this.addVelocity(0, 0.3D, 0);
-        }
-
+    private void heal()
+    {
         if (this.worldObj.getWorldTime() % 10 == 0)
         {
             if (this.getHealth() > this.getMaxHealth() - (this.getMaxHealth() / 4))
@@ -258,8 +245,71 @@ public class EntityQueen extends EntityXenomorph implements IMob
                 this.heal(2F);
             }
         }
+    }
 
-        // System.out.println(this.ovipositorSize);
+    @Override
+    public void onUpdate()
+    {
+        super.onUpdate();
+        this.reproducing = this.getOvipositorSize() >= 1.3F;
+        this.constructHive();
+        this.reproduce();
+        this.handleOvipositorGrowth();
+        this.jumpBoost();
+        this.pathfindToHive();
+        this.heal();
+
+        // this.getHive().destroy();
+        // this.setDead();
+
+        if (!this.worldObj.isRemote)
+        {
+            if (this.posY < -32)
+            {
+                this.setDead();
+            }
+
+            if (this.worldObj.getWorldTime() % 20 == 0)
+            {
+                @SuppressWarnings("unchecked")
+                ArrayList<EntitySpeciesAlien> aliens = (ArrayList<EntitySpeciesAlien>) Entities.getEntitiesInCoordsRange(this.worldObj, EntitySpeciesAlien.class, new CoordData(this), 16);
+
+                if (this.getHive() != null)
+                {
+                    for (EntitySpeciesAlien alien : aliens)
+                    {
+                        if (this.rand.nextInt(3) == 0)
+                        {
+                            // if (alien != null && alien.getHive() != null && !(alien instanceof EntityQueen) && alien.getHive() == this.getHive())
+                            // {
+                            // if ((this.getAttackTarget() != null || this.getLastAttacker() != null))
+                            // {
+                            // if (this.rand.nextInt(6) == 0)
+                            // {
+                            // if (alien instanceof EntityOvamorph)
+                            // {
+                            // EntityOvamorph ovamorph = (EntityOvamorph) alien;
+                            // ovamorph.setHatched(true);
+                            // }
+                            // }
+                            //
+                            // EntityLivingBase target = this.getAttackTarget() != null ? this.getAttackTarget() : this.getLastAttacker();
+                            //
+                            // alien.setAttackTarget(target);
+                            // alien.getNavigator().tryMoveToEntityLiving(target, alien.getMoveHelper().getSpeed());
+                            // }
+                            // }
+
+                            if (alien != null && alien.getHive() == null)
+                            {
+                                System.out.println("Set hive signature on alien with uuid: " + alien.getUniqueID());
+                                alien.setHiveSignature(this.hive.getUniqueIdentifier());
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @Override
