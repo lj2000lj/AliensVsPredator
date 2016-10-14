@@ -520,19 +520,6 @@ public class ModelQueen extends Model
         this.tail2.render(boxTranslation);
         this.tail3.render(boxTranslation);
         this.tail4.render(boxTranslation);
-        this.bStabber0.render(boxTranslation);
-        this.bStabber1.render(boxTranslation);
-        this.bStabber2.render(boxTranslation);
-        this.bStabber3.render(boxTranslation);
-        this.bStabber4.render(boxTranslation);
-        this.bStabber5.render(boxTranslation);
-        this.bSpines0.render(boxTranslation);
-        this.bSpines1.render(boxTranslation);
-        this.bSpines2.render(boxTranslation);
-        this.bSpines3.render(boxTranslation);
-        this.bSpines4.render(boxTranslation);
-        this.bSpines5.render(boxTranslation);
-        this.bSpines6.render(boxTranslation);
         this.lArmMini0.render(boxTranslation);
         this.lArmMini1.render(boxTranslation);
         this.rArmMini0.render(boxTranslation);
@@ -542,6 +529,26 @@ public class ModelQueen extends Model
         this.lClawMini.render(boxTranslation);
         this.rClawMini.render(boxTranslation);
         this.neck.render(boxTranslation);
+        this.bSpines0.render(boxTranslation);
+        this.bSpines1.render(boxTranslation);
+        this.bSpines2.render(boxTranslation);
+        this.bSpines3.render(boxTranslation);
+        this.bSpines4.render(boxTranslation);
+        this.bSpines5.render(boxTranslation);
+        this.bSpines6.render(boxTranslation);
+        
+        OpenGL.disableCullFace();
+        this.bStabber0.render(boxTranslation);
+        this.bStabber1.render(boxTranslation);
+        this.bStabber2.render(boxTranslation);
+        this.bStabber3.rotateAngleX = (float) Math.toRadians(-90);
+        this.bStabber4.rotateAngleX = (float) Math.toRadians(-75);
+        this.bStabber5.rotateAngleX = (float) Math.toRadians(-60);
+        this.bStabber3.render(boxTranslation);
+        this.bStabber4.render(boxTranslation);
+        this.bStabber5.render(boxTranslation);
+        OpenGL.enableCullFace();
+        
 
         OpenGL.pushMatrix();
         OpenGL.disableCullFace();
@@ -582,7 +589,7 @@ public class ModelQueen extends Model
         {
             EntityQueen queen = (EntityQueen) o.getEntity();
 
-            if (queen.growingOvipositor)
+            if (queen.getOvipositorSize() > 0F)
             {
                 OpenGL.pushMatrix();
                 {
@@ -590,7 +597,7 @@ public class ModelQueen extends Model
                     OpenGL.scale(queen.getOvipositorSize(), queen.getOvipositorSize(), queen.getOvipositorSize());
                     OpenGL.enableBlend();
                     OpenGL.disableCullFace();
-                    OpenGL.blendFunc(GL11.GL_ONE, GL11.GL_ONE_MINUS_DST_COLOR);
+//                    OpenGL.blendFunc(GL11.GL_ONE, GL11.GL_ONE_MINUS_DST_COLOR);
                     AliensVsPredator.resources().models().XENOQUEEN_MASK.getTexture().bind();
                     draw(sack0);
                     draw(sack1);
