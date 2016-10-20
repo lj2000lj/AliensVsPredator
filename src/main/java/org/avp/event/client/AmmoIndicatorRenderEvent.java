@@ -7,38 +7,37 @@ import com.arisux.amdxlib.lib.client.render.Screen;
 import com.arisux.amdxlib.lib.game.Game;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 public class AmmoIndicatorRenderEvent
 {
-    private Minecraft mc = Game.minecraft();
+    public static final AmmoIndicatorRenderEvent instance = new AmmoIndicatorRenderEvent();
     public ItemStack helmSlot, chestplateSlot, leggingsSlot, bootsSlot;
 
     @SubscribeEvent
     public void renderTick(RenderGameOverlayEvent.Pre event)
     {
-        if (mc.thePlayer != null && event.type == RenderGameOverlayEvent.ElementType.HOTBAR)
+        if (Game.minecraft().thePlayer != null && event.type == RenderGameOverlayEvent.ElementType.HOTBAR)
         {
-            helmSlot = mc.thePlayer.inventory.armorItemInSlot(3);
-            chestplateSlot = mc.thePlayer.inventory.armorItemInSlot(2);
-            leggingsSlot = mc.thePlayer.inventory.armorItemInSlot(1);
-            bootsSlot = mc.thePlayer.inventory.armorItemInSlot(0);
+            helmSlot = Game.minecraft().thePlayer.inventory.armorItemInSlot(3);
+            chestplateSlot = Game.minecraft().thePlayer.inventory.armorItemInSlot(2);
+            leggingsSlot = Game.minecraft().thePlayer.inventory.armorItemInSlot(1);
+            bootsSlot = Game.minecraft().thePlayer.inventory.armorItemInSlot(0);
 
-            if (mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemFirearm)
+            if (Game.minecraft().thePlayer.getHeldItem() != null && Game.minecraft().thePlayer.getHeldItem().getItem() instanceof ItemFirearm)
             {
-                ItemFirearm itemFireArm = (ItemFirearm) mc.thePlayer.getHeldItem().getItem();
+                ItemFirearm itemFireArm = (ItemFirearm) Game.minecraft().thePlayer.getHeldItem().getItem();
                 String displayStatus = " " + itemFireArm.getAmmoCount() + "/" + itemFireArm.getMaxAmmoCount();
                 int barWidth = 0;
 
-                if (!mc.thePlayer.capabilities.isCreativeMode && isWearingArmor())
+                if (!Game.minecraft().thePlayer.capabilities.isCreativeMode && isWearingArmor())
                 {
                     barWidth = 90;
                     Draw.drawProgressBar(displayStatus, itemFireArm.getMaxAmmoCount(), itemFireArm.getAmmoCount(), (Screen.scaledDisplayResolution().getScaledWidth() / 2), Screen.scaledDisplayResolution().getScaledHeight() - 48, barWidth, 1, 0, 0xFFFF0000, false);
                     Draw.drawItemIcon(itemFireArm.getAmmoType(), (Screen.scaledDisplayResolution().getScaledWidth() / 2) + barWidth / 2 - Draw.getStringRenderWidth(displayStatus) - 2, Screen.scaledDisplayResolution().getScaledHeight() - 53, 16, 16);
                 }
-                else if (!mc.thePlayer.capabilities.isCreativeMode && !isWearingArmor())
+                else if (!Game.minecraft().thePlayer.capabilities.isCreativeMode && !isWearingArmor())
                 {
                     barWidth = 182;
                     Draw.drawProgressBar(displayStatus, itemFireArm.getMaxAmmoCount(), itemFireArm.getAmmoCount(), (Screen.scaledDisplayResolution().getScaledWidth() / 2) - (182 / 2), Screen.scaledDisplayResolution().getScaledHeight() - 48, barWidth, 1, 0, 0xFF00DDFF, false);

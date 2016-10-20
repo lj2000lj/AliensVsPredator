@@ -7,6 +7,8 @@ import net.minecraftforge.client.event.RenderPlayerEvent;
 
 public class RenderPlayerAPCEvent
 {
+    public static final RenderPlayerAPCEvent instance = new RenderPlayerAPCEvent();
+
     @SubscribeEvent
     public void onRenderPlayerEvent(RenderPlayerEvent.Pre event)
     {

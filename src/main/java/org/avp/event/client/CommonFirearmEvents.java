@@ -8,23 +8,22 @@ import com.arisux.amdxlib.lib.game.Game;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
-import net.minecraft.client.Minecraft;
 
 public class CommonFirearmEvents
 {
-    private Minecraft mc = Game.minecraft();
+    public static final CommonFirearmEvents instance = new CommonFirearmEvents();
     private int lastReload = 0;
 
     @SubscribeEvent
     public void tick(TickEvent.ClientTickEvent event)
     {
-        if (mc.thePlayer != null)
+        if (Game.minecraft().thePlayer != null)
         {
             this.lastReload++;
 
-            if (mc.inGameHasFocus && mc.thePlayer.inventory.getCurrentItem() != null && mc.thePlayer.inventory.getCurrentItem().getItem() instanceof ItemFirearm)
+            if (Game.minecraft().inGameHasFocus && Game.minecraft().thePlayer.inventory.getCurrentItem() != null && Game.minecraft().thePlayer.inventory.getCurrentItem().getItem() instanceof ItemFirearm)
             {
-                ItemFirearm fireArm = (ItemFirearm) mc.thePlayer.inventory.getCurrentItem().getItem();
+                ItemFirearm fireArm = (ItemFirearm) Game.minecraft().thePlayer.inventory.getCurrentItem().getItem();
 
                 if (AliensVsPredator.keybinds().KEYBIND_FIREARM_RELOAD.isPressed() && this.lastReload > fireArm.getReloadRate())
                 {

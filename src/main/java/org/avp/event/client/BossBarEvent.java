@@ -17,7 +17,6 @@ import com.arisux.amdxlib.lib.world.entity.Entities;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
@@ -25,7 +24,7 @@ import net.minecraftforge.event.world.WorldEvent;
 
 public class BossBarEvent
 {
-    private Minecraft mc = Game.minecraft();
+    public static final BossBarEvent   instance = new BossBarEvent();
     public ArrayList<EntityLivingBase> bosses;
 
     public BossBarEvent()
@@ -42,7 +41,7 @@ public class BossBarEvent
     @SubscribeEvent
     public void clientTick(ClientTickEvent event)
     {
-        if (mc.thePlayer != null)
+        if (Game.minecraft().thePlayer != null)
         {
             ArrayList<EntityLivingBase> bossesToRemove = new ArrayList<EntityLivingBase>();
 
@@ -59,10 +58,10 @@ public class BossBarEvent
                 this.bosses.remove(boss);
             }
 
-            if (mc.thePlayer.worldObj.getWorldTime() % 40 == 0)
+            if (Game.minecraft().thePlayer.worldObj.getWorldTime() % 40 == 0)
             {
                 @SuppressWarnings("unchecked")
-                ArrayList<EntityQueen> queens = (ArrayList<EntityQueen>) Entities.getEntitiesInCoordsRange(mc.thePlayer.worldObj, EntityQueen.class, new CoordData(mc.thePlayer), 32);
+                ArrayList<EntityQueen> queens = (ArrayList<EntityQueen>) Entities.getEntitiesInCoordsRange(Game.minecraft().thePlayer.worldObj, EntityQueen.class, new CoordData(Game.minecraft().thePlayer), 32);
 
                 for (EntityQueen queen : queens)
                 {
@@ -88,8 +87,8 @@ public class BossBarEvent
                 for (EntityLivingBase boss : bosses)
                 {
                     int index = bosses.indexOf(boss);
-                    //TODO: Optimize this. It's inefficient.
-//                    this.drawBossBar(boss, index, 0, 0);
+                    // TODO: Optimize this. It's inefficient.
+                    // this.drawBossBar(boss, index, 0, 0);
                 }
             }
             OpenGL.popMatrix();

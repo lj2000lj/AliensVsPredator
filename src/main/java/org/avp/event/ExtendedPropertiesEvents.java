@@ -16,6 +16,8 @@ import net.minecraftforge.event.world.WorldEvent;
 
 public class ExtendedPropertiesEvents
 {
+    public static final ExtendedPropertiesEvents instance = new ExtendedPropertiesEvents();
+    
     @SubscribeEvent
     public void onEntityTrackEvent(PlayerEvent.StartTracking event)
     {

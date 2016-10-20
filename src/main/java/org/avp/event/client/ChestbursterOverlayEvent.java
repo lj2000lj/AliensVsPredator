@@ -7,22 +7,21 @@ import com.arisux.amdxlib.lib.client.render.Draw;
 import com.arisux.amdxlib.lib.game.Game;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.Pre;
 
 public class ChestbursterOverlayEvent
 {
-    private Minecraft mc = Game.minecraft();
+    public static final ChestbursterOverlayEvent instance = new ChestbursterOverlayEvent();
 
     @SubscribeEvent
     public void renderTickOverlay(Pre event)
     {
-        if (mc.thePlayer != null)
+        if (Game.minecraft().thePlayer != null)
         {
             if (event.type == RenderGameOverlayEvent.ElementType.HOTBAR)
             {
-                ExtendedEntityLivingBase livingBaseProperties = (ExtendedEntityLivingBase) mc.thePlayer.getExtendedProperties(ExtendedEntityLivingBase.IDENTIFIER);
+                ExtendedEntityLivingBase livingBaseProperties = (ExtendedEntityLivingBase) Game.minecraft().thePlayer.getExtendedProperties(ExtendedEntityLivingBase.IDENTIFIER);
 
                 if (livingBaseProperties.doesEntityContainEmbryo())
                 {

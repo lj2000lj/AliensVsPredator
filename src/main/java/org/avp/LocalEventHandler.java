@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.avp.event.BucketHandlingEvent;
 import org.avp.event.EmbryoTickEvent;
-import org.avp.event.EntityTrackingEvent;
 import org.avp.event.ExtendedPropertiesEvents;
 import org.avp.event.FarmlandRegistry;
 import org.avp.event.HiveHandler;
@@ -34,35 +33,34 @@ import com.arisux.amdxlib.lib.game.IInitEvent;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class LocalEventHandler implements IInitEvent
 {
     public static final LocalEventHandler instance = new LocalEventHandler();
-    public ArrayList<Object> events = new ArrayList<Object>();
+    public ArrayList<Object>              events   = new ArrayList<Object>();
 
     @Override
     public void init(FMLInitializationEvent event)
     {
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
         {
-            this.registerEvent(new AlienArmorEvents());
-            this.registerEvent(new FireAPCEvent());
-            this.registerEvent(new RenderPlayerHotbarAPCEvent());
-            this.registerEvent(new ChestbursterOverlayEvent());
-            this.registerEvent(new CommonFirearmEvents());
-            this.registerEvent(new PlayerModeRenderEvent());
-            this.registerEvent(new AmmoIndicatorRenderEvent());
-            this.registerEvent(new TacticalHUDRenderEvent());
-            this.registerEvent(new PressureHUDRenderEvent());
-            this.registerEvent(new FacehuggerRenderEvent());
-            this.registerEvent(new VisionModeRenderEvent());
-            this.registerEvent(new RenderMotionTrackerScreen());
-            this.registerEvent(new LightmapUpdateEvent());
-            this.registerEvent(new RenderPlayerAPCEvent());
-            this.registerEvent(new PulseRifleEvents());
-            this.registerEvent(new WristBracerEvents());
-            this.registerEvent(new BossBarEvent());
+            this.registerEvent(AlienArmorEvents.instance);
+            this.registerEvent(FireAPCEvent.instance);
+            this.registerEvent(RenderPlayerHotbarAPCEvent.instance);
+            this.registerEvent(ChestbursterOverlayEvent.instance);
+            this.registerEvent(CommonFirearmEvents.instance);
+            this.registerEvent(PlayerModeRenderEvent.instance);
+            this.registerEvent(AmmoIndicatorRenderEvent.instance);
+            this.registerEvent(TacticalHUDRenderEvent.instance);
+            this.registerEvent(PressureHUDRenderEvent.instance);
+            this.registerEvent(FacehuggerRenderEvent.instance);
+            this.registerEvent(VisionModeRenderEvent.instance);
+            this.registerEvent(RenderMotionTrackerScreen.instance);
+            this.registerEvent(LightmapUpdateEvent.instance);
+            this.registerEvent(RenderPlayerAPCEvent.instance);
+            this.registerEvent(PulseRifleEvents.instance);
+            this.registerEvent(WristBracerEvents.instance);
+            this.registerEvent(BossBarEvent.instance);
             this.registerEvent(RenderMedpodEvent.instance);
         }
 
@@ -71,9 +69,8 @@ public class LocalEventHandler implements IInitEvent
             this.registerEvent(new DimensionHandler());
         }
 
-        this.registerEvent(new EntityTrackingEvent());
-        this.registerEvent(new EmbryoTickEvent());
-        this.registerEvent(new ExtendedPropertiesEvents());
+        this.registerEvent(EmbryoTickEvent.instance);
+        this.registerEvent(ExtendedPropertiesEvents.instance);
         this.registerEvent(SaveHandler.instance);
         this.registerEvent(VardaStormHandler.instance);
         this.registerEvent(FarmlandRegistry.instance);
@@ -85,26 +82,5 @@ public class LocalEventHandler implements IInitEvent
     {
         this.events.add(event);
         Game.registerEventHandler(event);
-    }
-
-    public Object getEvent(Class<?> c)
-    {
-        Object event = null;
-
-        for (Object e : events)
-        {
-            if (e.getClass() == c)
-            {
-                event = e;
-            }
-        }
-
-        return event;
-    }
-
-    @SideOnly(Side.CLIENT)
-    public LightmapUpdateEvent getLightmapUpdateEvent()
-    {
-        return (LightmapUpdateEvent) AliensVsPredator.events().getEvent(LightmapUpdateEvent.class);
     }
 }

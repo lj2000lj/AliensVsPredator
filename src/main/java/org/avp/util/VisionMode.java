@@ -10,6 +10,7 @@ import static org.lwjgl.opengl.GL11.GL_ZERO;
 import org.avp.AliensVsPredator;
 import org.avp.entities.mob.EntitySpeciesAlien;
 import org.avp.entities.mob.EntityXenomorph;
+import org.avp.event.client.LightmapUpdateEvent;
 
 import com.arisux.amdxlib.lib.client.render.Draw;
 import com.arisux.amdxlib.lib.client.render.OpenGL;
@@ -28,7 +29,7 @@ public enum VisionMode
         @Override
         public void render(Object... data)
         {
-            AliensVsPredator.events().getLightmapUpdateEvent().gammaValue = 0F;
+            LightmapUpdateEvent.instance.gammaValue = 0F;
             Draw.drawOverlay(AliensVsPredator.resources().BLUR_CELTIC_HUD, 1F, 0F, 0F, 1F);
         }
 
@@ -66,7 +67,7 @@ public enum VisionMode
             }
             OpenGL.popMatrix();
 
-            AliensVsPredator.events().getLightmapUpdateEvent().gammaValue = AliensVsPredator.events().getLightmapUpdateEvent().gammaValue < 0F ? AliensVsPredator.events().getLightmapUpdateEvent().gammaValue + 0.03F : AliensVsPredator.events().getLightmapUpdateEvent().gammaValue;
+            LightmapUpdateEvent.instance.gammaValue = LightmapUpdateEvent.instance.gammaValue < 0F ? LightmapUpdateEvent.instance.gammaValue + 0.03F : LightmapUpdateEvent.instance.gammaValue;
             Draw.drawOverlay(AliensVsPredator.resources().BLUR_CELTIC_HUD, 1F, 1F, 1F, 1F);
         }
 
@@ -128,7 +129,7 @@ public enum VisionMode
             }
             OpenGL.popMatrix();
 
-            AliensVsPredator.events().getLightmapUpdateEvent().gammaValue = AliensVsPredator.events().getLightmapUpdateEvent().gammaValue < 0F ? AliensVsPredator.events().getLightmapUpdateEvent().gammaValue + 0.03F : AliensVsPredator.events().getLightmapUpdateEvent().gammaValue;
+            LightmapUpdateEvent.instance.gammaValue = LightmapUpdateEvent.instance.gammaValue < 0F ? LightmapUpdateEvent.instance.gammaValue + 0.03F : LightmapUpdateEvent.instance.gammaValue;
             Draw.drawOverlay(AliensVsPredator.resources().BLUR_CELTIC_HUD, 0F, 0.8F, 0.1F, 1F);
         }
 

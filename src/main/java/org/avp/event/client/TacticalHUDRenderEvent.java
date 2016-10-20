@@ -28,7 +28,6 @@ import com.arisux.amdxlib.lib.world.entity.player.inventory.Inventories;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.RenderTickEvent;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.inventory.GuiInventory;
@@ -42,7 +41,7 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 
 public class TacticalHUDRenderEvent
 {
-    private Minecraft mc = Game.minecraft();
+    public static final TacticalHUDRenderEvent instance = new TacticalHUDRenderEvent();
     private ArrayList<EntityPlayer> playersInHUD = new ArrayList<EntityPlayer>();
     private ExtendedEntityPlayer clientPlayerProperties;
     private GuiCustomButton buttonMarineHelmConfig = new GuiCustomButton(0, 0, 0, 50, 20, "", null);
@@ -58,9 +57,9 @@ public class TacticalHUDRenderEvent
     @SubscribeEvent
     public void renderWorldLastEvent(RenderWorldLastEvent event)
     {
-        if (mc.gameSettings.thirdPersonView == 0)
+        if (Game.minecraft().gameSettings.thirdPersonView == 0)
         {
-            if (Inventories.getHelmSlotItemStack(mc.thePlayer) != null && Inventories.getHelmSlotItemStack(mc.thePlayer).getItem() == AliensVsPredator.items().helmMarine)
+            if (Inventories.getHelmSlotItemStack(Game.minecraft().thePlayer) != null && Inventories.getHelmSlotItemStack(Game.minecraft().thePlayer).getItem() == AliensVsPredator.items().helmMarine)
             {
                 ArrayList<Entity> entities = (ArrayList<Entity>) Entities.getEntitiesInCoordsRange(Game.minecraft().thePlayer.worldObj, Entity.class, new CoordData(Game.minecraft().thePlayer), 30, 30);
                 Vec3 p = Game.minecraft().thePlayer.getLookVec();
@@ -127,7 +126,7 @@ public class TacticalHUDRenderEvent
                                             OpenGL.scale(textScale, -textScale, textScale);
 
                                             // RenderUtil.drawString(livingProperties.getEntityLivingBase().getCommandSenderName(), textX, textY += textMultiplier, color, false);
-                                            Draw.drawString(((int) livingProperties.getEntityLivingBase().getDistanceToEntity(mc.thePlayer)) + "m", textX, textY += textMultiplier, color, false);
+                                            Draw.drawString(((int) livingProperties.getEntityLivingBase().getDistanceToEntity(Game.minecraft().thePlayer)) + "m", textX, textY += textMultiplier, color, false);
 
                                             if (livingProperties.doesEntityContainEmbryo())
                                             {
@@ -162,16 +161,16 @@ public class TacticalHUDRenderEvent
     @SubscribeEvent
     public void renderTickOverlay(RenderGameOverlayEvent.Pre event)
     {
-        if (mc.thePlayer != null)
+        if (Game.minecraft().thePlayer != null)
         {
             if (event.type == RenderGameOverlayEvent.ElementType.HOTBAR)
             {
-                if (Inventories.getHelmSlotItemStack(mc.thePlayer) != null && mc.gameSettings.thirdPersonView == 0 && Inventories.getHelmSlotItemStack(mc.thePlayer).getItem() == AliensVsPredator.items().helmMarine)
+                if (Inventories.getHelmSlotItemStack(Game.minecraft().thePlayer) != null && Game.minecraft().gameSettings.thirdPersonView == 0 && Inventories.getHelmSlotItemStack(Game.minecraft().thePlayer).getItem() == AliensVsPredator.items().helmMarine)
                 {
                     ExtendedEntityPlayer playerProperties = ExtendedEntityPlayer.get(Game.minecraft().thePlayer);
 
                     this.gammaRestored = false;
-                    AliensVsPredator.events().getLightmapUpdateEvent().gammaValue = playerProperties.isNightvisionEnabled() ? 8F : 0F;
+                    LightmapUpdateEvent.instance.gammaValue = playerProperties.isNightvisionEnabled() ? 8F : 0F;
                     this.scanForNearbyPlayers();
                     OpenGL.disableLight();
                     OpenGL.disableLightMapping();
@@ -197,7 +196,7 @@ public class TacticalHUDRenderEvent
                 else if (!gammaRestored)
                 {
                     this.gammaRestored = true;
-                    AliensVsPredator.events().getLightmapUpdateEvent().gammaValue = 0F;
+                    LightmapUpdateEvent.instance.gammaValue = 0F;
                 }
             }
         }
@@ -206,7 +205,7 @@ public class TacticalHUDRenderEvent
     @SubscribeEvent
     public void renderTick(RenderTickEvent event)
     {
-        if (mc.thePlayer != null)
+        if (Game.minecraft().thePlayer != null)
         {
             this.renderInventoryElements();
         }
@@ -214,9 +213,9 @@ public class TacticalHUDRenderEvent
 
     public void renderInventoryElements()
     {
-        if (Inventories.getHelmSlotItemStack(mc.thePlayer) != null && Inventories.getHelmSlotItemStack(mc.thePlayer).getItem() == AliensVsPredator.items().helmMarine)
+        if (Inventories.getHelmSlotItemStack(Game.minecraft().thePlayer) != null && Inventories.getHelmSlotItemStack(Game.minecraft().thePlayer).getItem() == AliensVsPredator.items().helmMarine)
         {
-            if (mc.currentScreen instanceof GuiInventory || mc.currentScreen instanceof GuiChat)
+            if (Game.minecraft().currentScreen instanceof GuiInventory || Game.minecraft().currentScreen instanceof GuiChat)
             {
                 buttonMarineHelmConfig.displayString = "Configure";
                 buttonMarineHelmConfig.tooltip = "Click to configure the Tactical HUD.";
@@ -230,7 +229,7 @@ public class TacticalHUDRenderEvent
                     @Override
                     public void perform(GuiCustomButton button)
                     {
-                        Game.minecraft().displayGuiScreen(new GuiTacticalHUDSettings(mc.currentScreen));
+                        Game.minecraft().displayGuiScreen(new GuiTacticalHUDSettings(Game.minecraft().currentScreen));
                     }
                 });
             }
@@ -239,7 +238,7 @@ public class TacticalHUDRenderEvent
 
     public ExtendedEntityPlayer getProperties()
     {
-        return this.mc != null ? this.mc.thePlayer != null ? this.clientPlayerProperties = ExtendedEntityPlayer.get(Game.minecraft().thePlayer) : null : null;
+        return Game.minecraft() != null ? Game.minecraft().thePlayer != null ? this.clientPlayerProperties = ExtendedEntityPlayer.get(Game.minecraft().thePlayer) : null : null;
     }
 
     public void changeChannel(String channel)
@@ -259,7 +258,7 @@ public class TacticalHUDRenderEvent
         int minuteOfMinecraftDay = (int) (60 * Math.floor(Game.minecraft().thePlayer.worldObj.getWorldTime() % 1000) / 1000);
 
         String timeString = String.format("%02dH%02dM", hourOfMinecraftDay, minuteOfMinecraftDay);
-        String fpsString = mc.debug.substring(0, mc.debug.indexOf(" fps")) + " FPS";
+        String fpsString = Game.minecraft().debug.substring(0, Game.minecraft().debug.indexOf(" fps")) + " FPS";
         String barString = timeString + " [" + fpsString + "]";
 
         OpenGL.pushMatrix();
@@ -272,7 +271,7 @@ public class TacticalHUDRenderEvent
             {
                 float nameScale = 1.5F;
                 OpenGL.scale(nameScale, nameScale, nameScale);
-                Draw.drawString("[" + batteryPercent + "%%] " + mc.thePlayer.getCommandSenderName(), (int) ((barPadding) / nameScale), (int) (30 / nameScale), 0xFF00AAFF, false);
+                Draw.drawString("[" + batteryPercent + "%%] " + Game.minecraft().thePlayer.getCommandSenderName(), (int) ((barPadding) / nameScale), (int) (30 / nameScale), 0xFF00AAFF, false);
             }
             OpenGL.popMatrix();
 
@@ -334,7 +333,7 @@ public class TacticalHUDRenderEvent
 
     public void scanForNearbyPlayers()
     {
-        EntityPlayer playerFound = (EntityPlayer) mc.thePlayer.worldObj.findNearestEntityWithinAABB(EntityPlayer.class, mc.thePlayer.boundingBox.expand(this.getProperties().getBroadcastRadius(), 128.0D, this.getProperties().getBroadcastRadius()), mc.thePlayer);
+        EntityPlayer playerFound = (EntityPlayer) Game.minecraft().thePlayer.worldObj.findNearestEntityWithinAABB(EntityPlayer.class, Game.minecraft().thePlayer.boundingBox.expand(this.getProperties().getBroadcastRadius(), 128.0D, this.getProperties().getBroadcastRadius()), Game.minecraft().thePlayer);
 
         if (playerFound != null)
         {
@@ -362,14 +361,14 @@ public class TacticalHUDRenderEvent
             if (x <= viewportThreshold && player != null)
             {
                 int barSpace = 15;
-                int signal = (int) this.mc.thePlayer.getDistanceToEntity(player);
+                int signal = (int) Game.minecraft().thePlayer.getDistanceToEntity(player);
                 int maxSignal = extendedPlayer.getBroadcastRadius() <= this.clientPlayerProperties.getBroadcastRadius() ? extendedPlayer.getBroadcastRadius() : this.clientPlayerProperties.getBroadcastRadius();
                 int pxMultiplier = signal >= maxSignal / 1.3 ? 5 : signal >= maxSignal / 2 ? 4 : signal >= maxSignal / 3 ? 3 : signal >= maxSignal / 4 ? 2 : signal >= maxSignal / 5 ? 1 : signal >= maxSignal / 6 ? 0 : 0;
 
                 Draw.drawRect(Screen.scaledDisplayResolution().getScaledWidth() - 111, 40 + barSpace * x - 5, 120, 2, 0xAA00AAFF);
                 Draw.drawRect(Screen.scaledDisplayResolution().getScaledWidth() - 111, 42 + barSpace * x - 5, 2, 9, 0xAA00AAFF);
 
-                if (mc.thePlayer.getDistanceToEntity(player) <= this.clientPlayerProperties.getBroadcastRadius() && signal <= maxSignal / 1.3)
+                if (Game.minecraft().thePlayer.getDistanceToEntity(player) <= this.clientPlayerProperties.getBroadcastRadius() && signal <= maxSignal / 1.3)
                 {
                     OpenGL.color(1F, 1F, 1F, 1F);
                     Draw.bindTexture(Gui.icons);

@@ -8,22 +8,21 @@ import com.arisux.amdxlib.lib.client.render.OpenGL;
 import com.arisux.amdxlib.lib.game.Game;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 
 public class FacehuggerRenderEvent
 {
-    private Minecraft mc = Game.minecraft();
+    public static final FacehuggerRenderEvent instance = new FacehuggerRenderEvent();
 
     @SubscribeEvent
     public void renderTickOverlay(RenderGameOverlayEvent.Pre event)
     {
-        if (mc.thePlayer != null)
+        if (Game.minecraft().thePlayer != null)
         {
             if (event.type == RenderGameOverlayEvent.ElementType.HOTBAR)
             {
-                if (mc.gameSettings.thirdPersonView == 0 && mc.thePlayer.riddenByEntity != null && mc.thePlayer.riddenByEntity instanceof EntityFacehugger)
+                if (Game.minecraft().gameSettings.thirdPersonView == 0 && Game.minecraft().thePlayer.riddenByEntity != null && Game.minecraft().thePlayer.riddenByEntity instanceof EntityFacehugger)
                 {
                     OpenGL.pushMatrix();
                     {

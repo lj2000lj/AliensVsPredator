@@ -12,6 +12,7 @@ import net.minecraft.util.MathHelper;
 
 public class LightmapUpdateEvent
 {
+    public static final LightmapUpdateEvent instance = new LightmapUpdateEvent();
     public float gammaValue = 0F;
 
     @SubscribeEvent

@@ -7,18 +7,17 @@ import com.arisux.amdxlib.lib.game.Game;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
-import net.minecraft.client.Minecraft;
 
 public class PulseRifleEvents
 {
-    private Minecraft mc = Game.minecraft();
+    public static final PulseRifleEvents instance = new PulseRifleEvents();
 
     @SubscribeEvent
     public void onItemUse(ClientTickEvent event)
     {
-        if (mc.thePlayer != null)
+        if (Game.minecraft().thePlayer != null)
         {
-            if (mc.thePlayer.getCurrentEquippedItem() != null && mc.thePlayer.getCurrentEquippedItem().getItem() == AliensVsPredator.items().itemM41A)
+            if (Game.minecraft().thePlayer.getCurrentEquippedItem() != null && Game.minecraft().thePlayer.getCurrentEquippedItem().getItem() == AliensVsPredator.items().itemM41A)
             {
                 if (AliensVsPredator.keybinds().KEYBIND_ITEM_ACTION.isPressed())
                 {

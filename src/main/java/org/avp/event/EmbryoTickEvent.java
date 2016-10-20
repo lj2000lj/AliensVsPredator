@@ -15,6 +15,8 @@ import net.minecraft.potion.PotionEffect;
 
 public class EmbryoTickEvent
 {
+    public static final EmbryoTickEvent instance = new EmbryoTickEvent();
+
     @SubscribeEvent
     public void tick(TickEvent.WorldTickEvent event)
     {

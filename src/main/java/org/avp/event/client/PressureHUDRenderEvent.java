@@ -35,7 +35,6 @@ import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.RenderTickEvent;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -49,7 +48,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class PressureHUDRenderEvent
 {
-    private Minecraft mc = Game.minecraft();
+    public static final PressureHUDRenderEvent instance = new PressureHUDRenderEvent();
     private boolean gammaRestored = true;
 
     @SubscribeEvent
@@ -61,16 +60,16 @@ public class PressureHUDRenderEvent
     @SubscribeEvent
     public void renderTickOverlay(RenderGameOverlayEvent.Pre event)
     {
-        if (mc.thePlayer != null)
+        if (Game.minecraft().thePlayer != null)
         {
             if (event.type == RenderGameOverlayEvent.ElementType.HOTBAR)
             {
-                if (Inventories.getHelmSlotItemStack(mc.thePlayer) != null && mc.gameSettings.thirdPersonView == 0 && Inventories.getHelmSlotItemStack(mc.thePlayer).getItem() == AliensVsPredator.items().pressureMask)
+                if (Inventories.getHelmSlotItemStack(Game.minecraft().thePlayer) != null && Game.minecraft().gameSettings.thirdPersonView == 0 && Inventories.getHelmSlotItemStack(Game.minecraft().thePlayer).getItem() == AliensVsPredator.items().pressureMask)
                 {
                     ExtendedEntityPlayer playerProperties = ExtendedEntityPlayer.get(Game.minecraft().thePlayer);
 
                     this.gammaRestored = false;
-                    AliensVsPredator.events().getLightmapUpdateEvent().gammaValue = playerProperties.isNightvisionEnabled() ? 8F : 0F;
+                    LightmapUpdateEvent.instance.gammaValue = playerProperties.isNightvisionEnabled() ? 8F : 0F;
                     OpenGL.disableLight();
                     OpenGL.disableLightMapping();
 
@@ -94,7 +93,7 @@ public class PressureHUDRenderEvent
                 else if (!gammaRestored)
                 {
                     this.gammaRestored = true;
-                    AliensVsPredator.events().getLightmapUpdateEvent().gammaValue = 0F;
+                    LightmapUpdateEvent.instance.gammaValue = 0F;
                 }
             }
         }
@@ -103,7 +102,7 @@ public class PressureHUDRenderEvent
     @SubscribeEvent
     public void renderTick(RenderTickEvent event)
     {
-        if (mc.thePlayer != null)
+        if (Game.minecraft().thePlayer != null)
         {
             this.renderInventoryElements();
         }
@@ -111,7 +110,7 @@ public class PressureHUDRenderEvent
 
     public void renderInventoryElements()
     {
-        if (Inventories.getHelmSlotItemStack(mc.thePlayer) != null && Inventories.getHelmSlotItemStack(mc.thePlayer).getItem() == AliensVsPredator.items().pressureMask)
+        if (Inventories.getHelmSlotItemStack(Game.minecraft().thePlayer) != null && Inventories.getHelmSlotItemStack(Game.minecraft().thePlayer).getItem() == AliensVsPredator.items().pressureMask)
         {
             ;
         }
@@ -119,7 +118,7 @@ public class PressureHUDRenderEvent
 
     public ExtendedEntityPlayer getProperties()
     {
-        return this.mc != null ? this.mc.thePlayer != null ? ExtendedEntityPlayer.get(Game.minecraft().thePlayer) : null : null;
+        return Game.minecraft() != null ? Game.minecraft().thePlayer != null ? ExtendedEntityPlayer.get(Game.minecraft().thePlayer) : null : null;
     }
 
     public void drawInfoBar()
@@ -133,12 +132,12 @@ public class PressureHUDRenderEvent
         int minuteOfMinecraftDay = (int) (60 * Math.floor(Game.minecraft().thePlayer.worldObj.getWorldTime() % 1000) / 1000);
 
         String timeString = String.format("%02dH%02dM", hourOfMinecraftDay, minuteOfMinecraftDay);
-        String fpsString = mc.debug.substring(0, mc.debug.indexOf(" fps")) + " FPS";
+        String fpsString = Game.minecraft().debug.substring(0, Game.minecraft().debug.indexOf(" fps")) + " FPS";
         String barString = timeString + " [" + fpsString + "]";
 
         OpenGL.pushMatrix();
         {
-            FontRenderer fontrenderer = mc.fontRendererObj;
+            FontRenderer fontrenderer = Game.minecraft().fontRendererObj;
             OpenGL.scale(scale, scale, scale);
             OpenGL.enable(GL_BLEND);
             OpenGL.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_CONSTANT_ALPHA);
@@ -147,7 +146,7 @@ public class PressureHUDRenderEvent
             {
                 float nameScale = 1.5F;
                 OpenGL.scale(nameScale, nameScale, nameScale);
-                Draw.drawString("[" + 100 + "%%] " + mc.thePlayer.getCommandSenderName(), (int) ((barPadding) / nameScale), (int) (10 / nameScale), 0xFFFFAA00, false);
+                Draw.drawString("[" + 100 + "%%] " + Game.minecraft().thePlayer.getCommandSenderName(), (int) ((barPadding) / nameScale), (int) (10 / nameScale), 0xFFFFAA00, false);
             }
             OpenGL.popMatrix();
             OpenGL.color4i(0xFFFFFFFF);
@@ -205,9 +204,9 @@ public class PressureHUDRenderEvent
                 }
             }
 
-            if (mc.thePlayer != null)
+            if (Game.minecraft().thePlayer != null)
             {
-                if (mc.objectMouseOver != null)
+                if (Game.minecraft().objectMouseOver != null)
                 {
                     /** GUI Drawing Information **/
                     int subMenuX = (int) (Screen.scaledDisplayResolution().getScaledWidth() - (200 * scale));
@@ -217,9 +216,9 @@ public class PressureHUDRenderEvent
                     int subEntrySpacing = 10;
                     int curEntry = 0;
 
-                    if (mc.objectMouseOver.typeOfHit == MovingObjectType.ENTITY)
+                    if (Game.minecraft().objectMouseOver.typeOfHit == MovingObjectType.ENTITY)
                     {
-                        Entity entity = mc.objectMouseOver.entityHit;
+                        Entity entity = Game.minecraft().objectMouseOver.entityHit;
 
                         if (entity != null)
                         {
@@ -328,12 +327,12 @@ public class PressureHUDRenderEvent
                         }
                     }
 
-                    if (mc.objectMouseOver.typeOfHit == MovingObjectType.BLOCK)
+                    if (Game.minecraft().objectMouseOver.typeOfHit == MovingObjectType.BLOCK)
                     {
                         /** Block Information **/
-                        CoordData coord = new CoordData(mc.objectMouseOver.blockX, mc.objectMouseOver.blockY, mc.objectMouseOver.blockZ);
-                        Block block = mc.theWorld.getBlock((int) coord.x(), (int) coord.y(), (int) coord.z());
-                        BlockSide side = BlockSide.getSide(mc.objectMouseOver.sideHit);
+                        CoordData coord = new CoordData(Game.minecraft().objectMouseOver.blockX, Game.minecraft().objectMouseOver.blockY, Game.minecraft().objectMouseOver.blockZ);
+                        Block block = Game.minecraft().theWorld.getBlock((int) coord.x(), (int) coord.y(), (int) coord.z());
+                        BlockSide side = BlockSide.getSide(Game.minecraft().objectMouseOver.sideHit);
                         TileEntity tile = coord.getTileEntity(Game.minecraft().thePlayer.worldObj);
 
                         Draw.drawBlockSide(block, side.getId(), subMenuX + subMenuPadding - 56, 0, 48, 48);

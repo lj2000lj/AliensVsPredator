@@ -8,18 +8,17 @@ import com.arisux.amdxlib.lib.game.Game;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
-import net.minecraft.client.Minecraft;
 
 public class FireAPCEvent
 {
-    private Minecraft mc = Game.minecraft();
+    public static final FireAPCEvent instance = new FireAPCEvent();
 
     @SubscribeEvent
     public void tick(TickEvent.ClientTickEvent event)
     {
-        if (mc.thePlayer != null)
+        if (Game.minecraft().thePlayer != null)
         {
-            if (mc.thePlayer.isRiding() && mc.thePlayer.ridingEntity instanceof EntityAPC)
+            if (Game.minecraft().thePlayer.isRiding() && Game.minecraft().thePlayer.ridingEntity instanceof EntityAPC)
             {
                 if (AliensVsPredator.keybinds().KEYBIND_FIRE_APC.isPressed())
                 {

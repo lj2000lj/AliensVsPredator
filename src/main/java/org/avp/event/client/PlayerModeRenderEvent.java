@@ -24,6 +24,7 @@ import net.minecraftforge.client.event.RenderPlayerEvent;
 
 public class PlayerModeRenderEvent
 {
+    public static final PlayerModeRenderEvent instance = new PlayerModeRenderEvent();
     private RenderPlayer renderLiving = new RenderPlayer();
 
     private class RenderPlayer extends RendererLivingEntity

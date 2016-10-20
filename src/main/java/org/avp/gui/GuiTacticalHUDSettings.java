@@ -1,6 +1,5 @@
 package org.avp.gui;
 
-import org.avp.AliensVsPredator;
 import org.avp.entities.extended.ExtendedEntityPlayer;
 import org.avp.event.client.TacticalHUDRenderEvent;
 
@@ -19,7 +18,6 @@ import net.minecraft.client.gui.GuiScreen;
 public class GuiTacticalHUDSettings extends GuiCustomScreen
 {
     protected final ExtendedEntityPlayer properties;
-    protected TacticalHUDRenderEvent event;
     private GuiCustomTextbox textboxChannel;
     private GuiCustomButton buttonSave;
     private GuiCustomButton buttonNightvisionToggle;
@@ -30,7 +28,6 @@ public class GuiTacticalHUDSettings extends GuiCustomScreen
     public GuiTacticalHUDSettings(GuiScreen parent)
     {
         this.properties = ExtendedEntityPlayer.get(Game.minecraft().thePlayer);
-        this.event = ((TacticalHUDRenderEvent) AliensVsPredator.events().getEvent(TacticalHUDRenderEvent.class));
         this.textboxChannel = new GuiCustomTextbox(this, 0, 0, 100, 15);
         this.buttonSave = new GuiCustomButton(0, 0, 0, 100, 15, "", null);
         this.buttonNightvisionToggle = new GuiCustomButton(0, 0, 0, 100, 15, "", null);
@@ -48,7 +45,7 @@ public class GuiTacticalHUDSettings extends GuiCustomScreen
         this.sliderTxPower.sliderValue = properties.getBroadcastRadius() / sliderTxPower.sliderMaxValue;
         this.sliderTxPower.displayString = "Transmit Power: " + (int) (sliderTxPower.sliderValue * sliderTxPower.sliderMaxValue);
 
-        this.sliderViewportThreshold.sliderValue = event.getViewportThreshold() / sliderViewportThreshold.sliderMaxValue;
+        this.sliderViewportThreshold.sliderValue = TacticalHUDRenderEvent.instance.getViewportThreshold() / sliderViewportThreshold.sliderMaxValue;
         this.sliderViewportThreshold.displayString = "Threshold: " + (int) (sliderViewportThreshold.sliderValue * sliderViewportThreshold.sliderMaxValue);
 
         this.buttonNightvisionToggle.setAction(new IAction()
@@ -76,17 +73,15 @@ public class GuiTacticalHUDSettings extends GuiCustomScreen
             @Override
             public void perform(GuiCustomButton button)
             {
-                TacticalHUDRenderEvent event = ((TacticalHUDRenderEvent) AliensVsPredator.events().getEvent(TacticalHUDRenderEvent.class));
-
                 String newChannel = textboxChannel.getText();
                 int newRadius = (int) (sliderTxPower.sliderValue * sliderTxPower.sliderMaxValue);
                 int newThreshold = (int) (sliderViewportThreshold.sliderValue * sliderViewportThreshold.sliderMaxValue);
 
-                if (properties.getBroadcastChannel() != newChannel || properties.getBroadcastRadius() != newRadius || event.getViewportThreshold() != newThreshold)
+                if (properties.getBroadcastChannel() != newChannel || properties.getBroadcastRadius() != newRadius || TacticalHUDRenderEvent.instance.getViewportThreshold() != newThreshold)
                 {
                     properties.setBroadcastRadius(newRadius);
                     properties.setBroadcastChannel(newChannel);
-                    event.setViewportThreshold(newThreshold);
+                    TacticalHUDRenderEvent.instance.setViewportThreshold(newThreshold);
                     properties.syncServer();
                 }
 

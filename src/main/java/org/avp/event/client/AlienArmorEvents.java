@@ -11,6 +11,7 @@ import net.minecraft.client.Minecraft;
 
 public class AlienArmorEvents
 {
+    public static final AlienArmorEvents instance = new AlienArmorEvents();
     private Minecraft mc = Game.minecraft();
 
     @SubscribeEvent
