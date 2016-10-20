@@ -11,6 +11,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class AssemblerAPI implements IInitEvent
 {
@@ -135,14 +136,43 @@ public class AssemblerAPI implements IInitEvent
         {
             for (ItemStack requirement : schematic.getItemsRequired())
             {
-                if (Inventories.getAmountOfItemPlayerHas(requirement.getItem(), player) >= requirement.stackSize || player.capabilities.isCreativeMode)
+                int[] matchingIDs = OreDictionary.getOreIDs(requirement);
+                boolean checkOreDictionary = matchingIDs.length > 0;
+
+                if (checkOreDictionary)
                 {
-                    for (int x = 0; x < requirement.stackSize; x++)
+                    int id = matchingIDs[0];
+                    String sharedName = OreDictionary.getOreName(id);
+
+                    for (ItemStack potentialMatch : OreDictionary.getOres(sharedName))
                     {
-                        if (!Inventories.consumeItem(player, requirement.getItem()))
+                        if (Inventories.getAmountOfItemPlayerHas(potentialMatch.getItem(), player) >= requirement.stackSize || player.capabilities.isCreativeMode)
                         {
-                            return false;
+                            for (int x = 0; x < requirement.stackSize; x++)
+                            {
+                                if (!Inventories.consumeItem(player, requirement.getItem()))
+                                {
+                                    return false;
+                                }
+                            }
+
+                            break;
                         }
+                    }
+                }
+                else
+                {
+                    if (Inventories.getAmountOfItemPlayerHas(requirement.getItem(), player) >= requirement.stackSize || player.capabilities.isCreativeMode)
+                    {
+                        for (int x = 0; x < requirement.stackSize; x++)
+                        {
+                            if (!Inventories.consumeItem(player, requirement.getItem()))
+                            {
+                                return false;
+                            }
+                        }
+
+                        break;
                     }
                 }
             }
