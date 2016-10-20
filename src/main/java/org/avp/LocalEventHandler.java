@@ -66,7 +66,7 @@ public class LocalEventHandler implements IInitEvent
 
         if (FMLCommonHandler.instance().getSide() == Side.SERVER)
         {
-            this.registerEvent(new DimensionHandler());
+            this.registerEvent(DimensionHandler.instance);
         }
 
         this.registerEvent(EmbryoTickEvent.instance);
