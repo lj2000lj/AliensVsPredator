@@ -34,9 +34,9 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.relauncher.Side;
 
-public class LocalEventHandler implements IInitEvent
+public class EventHandlers implements IInitEvent
 {
-    public static final LocalEventHandler instance = new LocalEventHandler();
+    public static final EventHandlers instance = new EventHandlers();
     public ArrayList<Object>              events   = new ArrayList<Object>();
 
     @Override

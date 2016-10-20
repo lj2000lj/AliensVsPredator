@@ -73,9 +73,9 @@ public class AliensVsPredator implements IMod
         return MaterialHandler.instance;
     }
 
-    public static LocalEventHandler events()
+    public static EventHandlers events()
     {
-        return LocalEventHandler.instance;
+        return EventHandlers.instance;
     }
 
     public static NetworkHandler network()
