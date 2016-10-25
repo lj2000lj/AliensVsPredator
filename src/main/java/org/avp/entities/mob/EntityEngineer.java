@@ -52,7 +52,7 @@ public class EntityEngineer extends EntitySpeciesEngineer
     }
 
     @Override
-    protected void dropRareDrop(int par1)
+    protected void dropRareDrop(int rate)
     {
         ;
     }
