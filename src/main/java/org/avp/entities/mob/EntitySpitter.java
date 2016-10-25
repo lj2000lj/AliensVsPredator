@@ -19,7 +19,6 @@ public class EntitySpitter extends EntityXenomorph implements IRangedAttackMob
     public EntitySpitter(World par1World)
     {
         super(par1World);
-        this.hitRange = 8;
         this.experienceValue = 275;
         this.setSize(1.0F, 3.0F);
         this.getNavigator().setCanSwim(true);
