@@ -28,9 +28,9 @@ import net.minecraft.world.World;
 
 public abstract class EntitySpeciesAlien extends EntityMob implements IMob
 {
-    protected int           jellyLevel;
     protected XenomorphHive hive;
     private UUID            signature;
+    protected int           jellyLevel;
 
     public EntitySpeciesAlien(World world)
     {
@@ -132,13 +132,16 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob
                 EntitySpeciesAlien alien = (EntitySpeciesAlien) Entities.constructEntity(this.worldObj, evolution.getEvolution());
                 alien.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
                 this.worldObj.spawnEntityInWorld(alien);
+                NBTTagCompound tag = new NBTTagCompound();
+                this.writeEntityToNBT(tag);
+                alien.readEntityFromNBT(tag);
                 this.setDead();
             }
         }
     }
 
     @SuppressWarnings("unchecked")
-    protected void tickJellyPickupAI()
+    protected void findRoyalJelly()
     {
         if (!this.worldObj.isRemote && !(this instanceof EntityOvamorph) && this.worldObj.getWorldTime() % 20 == 0)
         {
@@ -195,8 +198,8 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob
         super.onUpdate();
 
         this.tickEvolution();
-        this.tickHiveIdentificationAI();
-        this.tickJellyPickupAI();
+        this.identifyHive();
+        this.findRoyalJelly();
     }
 
     public XenomorphHive getHive()
@@ -204,7 +207,7 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob
         return hive;
     }
 
-    public void tickHiveIdentificationAI()
+    public void identifyHive()
     {
         if (!(this instanceof EntityQueen))
         {
@@ -234,7 +237,7 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob
             AliensVsPredator.network().sendToAll(new PacketJellyLevelUpdate(jellyLevel, Integer.valueOf(this.getEntityId())));
         }
     }
-    
+
     @Override
     public boolean isCreatureType(EnumCreatureType type, boolean forSpawnCount)
     {
