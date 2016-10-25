@@ -14,10 +14,10 @@ import org.avp.util.XenomorphHive;
 import com.arisux.amdxlib.lib.world.CoordData;
 import com.arisux.amdxlib.lib.world.Worlds;
 import com.arisux.amdxlib.lib.world.entity.Entities;
+import com.arisux.amdxlib.lib.world.entity.ItemDrop;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.IMob;
@@ -39,19 +39,6 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob
     }
 
     @Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(32);
-    }
-
-    @Override
-    protected void entityInit()
-    {
-        super.entityInit();
-    }
-
-    @Override
     public void writeEntityToNBT(NBTTagCompound nbt)
     {
         super.writeEntityToNBT(nbt);
@@ -70,16 +57,16 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob
     }
 
     @Override
-    public void onKillEntity(EntityLivingBase par1EntityLivingBase)
+    public void onKillEntity(EntityLivingBase entity)
     {
-        super.onKillEntity(par1EntityLivingBase);
-        this.setJellyLevel(this.getJellyLevel() + 1);
+        super.onKillEntity(entity);
+        this.setJellyLevel(this.getJellyLevel() + 20);
     }
 
     @Override
     protected boolean canDespawn()
     {
-        return this.getJellyLevel() < 1;
+        return this.getJellyLevel() < 40;
     }
 
     @Override
@@ -102,23 +89,8 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob
                 this.worldObj.spawnEntityInWorld(entity);
             }
 
-            if (this instanceof EntityQueen)
-            {
-                int randomJelly = this.rand.nextInt(196);
-                this.dropItem(AliensVsPredator.items().itemRoyalJelly, 32 + (randomJelly / 2 + randomJelly));
-            }
-
-            if (this.rand.nextInt(4) == 0)
-            {
-                this.dropItem(AliensVsPredator.items().itemRoyalJelly, 1 + this.rand.nextInt(5));
-            }
+            new ItemDrop(new ItemStack(AliensVsPredator.items().itemRoyalJelly, this.jellyLevel / 4), 100).tryDrop(this);
         }
-    }
-
-    @Override
-    protected void dropRareDrop(int rate)
-    {
-        this.dropItem(AliensVsPredator.items().itemRoyalJelly, 4);
     }
 
     protected void tickEvolution()

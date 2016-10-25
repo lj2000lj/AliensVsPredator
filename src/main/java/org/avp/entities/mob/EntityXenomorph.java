@@ -1,9 +1,19 @@
 package org.avp.entities.mob;
 
 import org.avp.EntityItemDrops;
+import org.avp.entities.ai.alien.EntitySelectorXenomorph;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.ai.EntityAIAttackOnCollide;
+import net.minecraft.entity.ai.EntityAIHurtByTarget;
+import net.minecraft.entity.ai.EntityAILeapAtTarget;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.ai.EntityAISwimming;
+import net.minecraft.entity.ai.EntityAIWander;
+import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.IMob;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
@@ -17,6 +27,8 @@ public abstract class EntityXenomorph extends EntitySpeciesAlien implements IMob
     private static final float MOUTH_PROGRESS_INCR           = 0.175F;
     public static final float  MOUTH_PROGRESS_MAX            = 1.0F;
 
+    private static final int   CRAWLING_DATAWATCHER_ID       = 20;
+
     private boolean            startBite                     = false;
     private boolean            retractMouth                  = false;
     protected boolean          ableToClimb;
@@ -29,19 +41,40 @@ public abstract class EntityXenomorph extends EntitySpeciesAlien implements IMob
         this.ableToClimb = false;
         this.isDependant = true;
         this.getNavigator().setCanSwim(true);
-        // this.tasks.addTask(0, new EntityAISwimming(this));
-        // this.tasks.addTask(1, new EntityAIClimb(this, 0.03F));
-        // this.tasks.addTask(8, new EntityAIWander(this, 0.8D));
-        // this.tasks.addTask(2, new EntityAILeapAtTarget(this, 0.6F));
-        // this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
-        // this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, Entity.class, 1000, true, false, EntitySelectorXenomorph.instance));
 
-        this.dataWatcher.addObject(20, 0 /** Crawling **/
-        );
-        this.dataWatcher.addObject(JAW_PROGRESS_DATAWATCHER_ID, 0F /** Outer Jaw Progress **/
-        );
-        this.dataWatcher.addObject(MOUTH_PROGRESS_DATAWATCHER_ID, 0F /** Inner Jaw Progress **/
-        );
+        this.dataWatcher.addObject(CRAWLING_DATAWATCHER_ID, 0);
+        this.dataWatcher.addObject(JAW_PROGRESS_DATAWATCHER_ID, 0F);
+        this.dataWatcher.addObject(MOUTH_PROGRESS_DATAWATCHER_ID, 0F);
+    }
+
+    protected void addStandardXenomorphAISet()
+    {
+        this.tasks.addTask(0, new EntityAISwimming(this));
+        this.tasks.addTask(1, new EntityAIAttackOnCollide(this, EntityPlayer.class, 0.8D, true));
+        this.tasks.addTask(2, new EntityAIWatchClosest(this, EntityLivingBase.class, 16F));
+        this.tasks.addTask(2, new EntityAIWander(this, 0.8D));
+        this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.6F));
+        this.targetTasks.addTask(0, new EntityAIHurtByTarget(this, true));
+        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityLivingBase.class, 0, false, false, EntitySelectorXenomorph.instance));
+    }
+
+    @Override
+    public void onUpdate()
+    {
+        super.onUpdate();
+
+        /** Fall Damage Negation **/
+        this.fallDistance = 0F;
+
+        this.updateInnerMouth();
+        this.ocassionallyOpenMouth();
+        this.shareJelly();
+    }
+
+    @Override
+    protected boolean isAIEnabled()
+    {
+        return true;
     }
 
     public boolean isCrawling()
@@ -56,32 +89,14 @@ public abstract class EntityXenomorph extends EntitySpeciesAlien implements IMob
 
     protected void setCrawling()
     {
-        this.dataWatcher.updateObject(20, 1);
+        this.dataWatcher.updateObject(CRAWLING_DATAWATCHER_ID, 1);
     }
 
     protected void setStanding()
     {
-        this.dataWatcher.updateObject(20, 1);
+        this.dataWatcher.updateObject(CRAWLING_DATAWATCHER_ID, 0);
     }
 
-    @Override
-    protected void entityInit()
-    {
-        super.entityInit();
-    }
-
-    @Override
-    protected boolean canDespawn()
-    {
-        return false;
-    }
-
-    @Override
-    protected boolean isAIEnabled()
-    {
-        return true;
-    }
-    
     public float getOuterJawProgress()
     {
         return this.dataWatcher.getWatchableObjectFloat(JAW_PROGRESS_DATAWATCHER_ID);
@@ -132,18 +147,23 @@ public abstract class EntityXenomorph extends EntitySpeciesAlien implements IMob
         }
     }
 
-    @Deprecated
-    protected void resetInnerJawProgress()
-    {
-        this.dataWatcher.updateObject(MOUTH_PROGRESS_DATAWATCHER_ID, MOUTH_PROGRESS_MAX);
-    }
-
     public void bite()
     {
         this.startBite = true;
     }
 
-    protected void updateJaws()
+    protected void ocassionallyOpenMouth()
+    {
+        if (!this.worldObj.isRemote)
+        {
+            if (this.worldObj.getWorldTime() % ((20 * 4) + (20 * this.rand.nextInt(32))) == 0)
+            {
+                this.bite();
+            }
+        }
+    }
+
+    protected void updateInnerMouth()
     {
         if (!this.worldObj.isRemote)
         {
@@ -188,18 +208,6 @@ public abstract class EntityXenomorph extends EntitySpeciesAlien implements IMob
                 }
             }
         }
-    }
-
-    @Override
-    public void onUpdate()
-    {
-        super.onUpdate();
-
-        /** Fall Damage Negation **/
-        this.fallDistance = 0F;
-
-        this.updateJaws();
-        this.shareJelly();
     }
 
     private void shareJelly()
@@ -251,5 +259,4 @@ public abstract class EntityXenomorph extends EntitySpeciesAlien implements IMob
     {
         return this.ableToClimb;
     }
-
 }

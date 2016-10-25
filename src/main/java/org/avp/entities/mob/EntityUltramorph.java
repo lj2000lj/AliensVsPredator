@@ -1,22 +1,13 @@
 package org.avp.entities.mob;
 
 import org.avp.Sounds;
-import org.avp.entities.ai.alien.EntitySelectorXenomorph;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAILeapAtTarget;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWander;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.monster.IMob;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-public class EntityUltramorph extends EntityXenomorph
+public class EntityUltramorph extends EntityXenomorph implements IMob
 {
     public EntityUltramorph(World world)
     {
@@ -29,13 +20,7 @@ public class EntityUltramorph extends EntityXenomorph
         this.isDependant = false;
         this.getNavigator().setCanSwim(true);
         this.getNavigator().setAvoidsWater(true);
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIWatchClosest(this, EntityLivingBase.class, 16F));
-        this.tasks.addTask(1, new EntityAIWander(this, 0.8D));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(1, new EntityAILeapAtTarget(this, 0.6F));
-        this.targetTasks.addTask(1, new EntityAIAttackOnCollide(this, 0.8D, true));
-        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, Entity.class, 1000, true, false, EntitySelectorXenomorph.instance));
+        this.addStandardXenomorphAISet();
     }
 
     @Override
