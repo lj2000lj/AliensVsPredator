@@ -141,7 +141,6 @@ public class EntityQueen extends EntityXenomorph implements IMob
     {
         if (!this.worldObj.isRemote)
         {
-            System.out.println(this.jellyLevel);
             if (this.hive != null)
             {
                 boolean ovipositorHealthy = this.jellyLevel >= OVIPOSITOR_UNHEALTHY_THRESHOLD;

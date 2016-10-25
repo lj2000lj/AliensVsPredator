@@ -19,6 +19,7 @@ import org.avp.entities.mob.model.ModelRunnerDrone;
 import org.avp.entities.mob.model.ModelRunnerWarrior;
 import org.avp.entities.mob.model.ModelSpitter;
 import org.avp.entities.mob.model.ModelTrilobite;
+import org.avp.entities.mob.model.ModelUltramorph;
 import org.avp.entities.mob.model.ModelWarrior;
 import org.avp.entities.mob.model.ModelYautja;
 import org.avp.entities.mob.model.ModelYautjaBerserker;
@@ -157,6 +158,9 @@ public class Resources
         public final TexturedModel<ModelDNASynthesizer>       DNA_SYNTHESIZER                = new TexturedModel(new ModelDNASynthesizer(), new Texture(AliensVsPredator.ID, "textures/tile/dna-synthesizer.png"));
         public final TexturedModel<ModelHiveResin>            HIVE_RESIN                     = new TexturedModel(new ModelHiveResin(), new Texture(AliensVsPredator.ID, "textures/tile/hive-resin.png"));
         public final TriangulatedWavefrontModel               M577_APC                       = AMDXLib.loadWavefrontModel(AliensVsPredator.class, AliensVsPredator.ID, "m577apc", "/assets/avp/models/m577apc");
+
+        // Xenomorph models with the new universal format
+        public final TexturedModel<ModelUltramorph>           ULTRAMORPH                     = new TexturedModel(new ModelUltramorph(), new Texture(AliensVsPredator.ID, "textures/mob/ultramorph.png"));
     }
 
     public final Texture SKY_VARDA_CLOUDS         = new Texture(AliensVsPredator.ID, "textures/misc/varda-clouds.png");

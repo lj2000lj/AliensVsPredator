@@ -121,15 +121,15 @@ public abstract class EntitySpeciesYautja extends EntityMob implements IFacehugS
     }
 
     @Override
-    protected void collideWithEntity(Entity par1Entity)
+    protected void collideWithEntity(Entity entity)
     {
-        if (par1Entity instanceof IMob && this.getRNG().nextInt(20) == 0 && !(par1Entity instanceof EntitySpeciesYautja))
+        if (entity instanceof IMob && this.getRNG().nextInt(20) == 0 && !(entity instanceof EntitySpeciesYautja))
         {
-            this.setAttackTarget((EntityLivingBase) par1Entity);
-            this.setRevengeTarget((EntityLivingBase) par1Entity);
+            this.setAttackTarget((EntityLivingBase) entity);
+            this.setRevengeTarget((EntityLivingBase) entity);
         }
 
-        super.collideWithEntity(par1Entity);
+        super.collideWithEntity(entity);
     }
 
     @Override

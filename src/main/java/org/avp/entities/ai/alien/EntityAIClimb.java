@@ -19,7 +19,7 @@ public class EntityAIClimb extends EntityAIBase
     @Override
     public boolean shouldExecute()
     {
-        return xenomorph.canClimb();
+        return xenomorph.isAbleToClimb();
     }
 
     @Override
@@ -31,7 +31,7 @@ public class EntityAIClimb extends EntityAIBase
     @Override
     public boolean continueExecuting()
     {
-        return xenomorph.canClimb() && xenomorph.isCollidedHorizontally;
+        return xenomorph.isAbleToClimb() && xenomorph.isCollidedHorizontally;
     }
 
     @Override

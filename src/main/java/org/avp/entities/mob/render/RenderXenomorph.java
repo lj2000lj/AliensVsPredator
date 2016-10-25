@@ -27,7 +27,6 @@ public class RenderXenomorph extends RenderLivingWrapper
     @Override
     protected void preRenderCallback(EntityLivingBase entity, float renderPartialTicks)
     {
-        this.renderScale = 1F;
         OpenGL.scale(this.renderScale, this.renderScale, this.renderScale);
         super.preRenderCallback(entity, renderPartialTicks);
     }
