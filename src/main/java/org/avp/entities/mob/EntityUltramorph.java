@@ -15,7 +15,7 @@ public class EntityUltramorph extends EntityXenomorph implements IMob
 
         this.jumpMovementFactor = 0.02F;
         this.experienceValue = 100;
-        this.setSize(1F, 3F);
+        this.setSize(1.5F, 4F);
         this.ableToClimb = false;
         this.isDependant = false;
         this.getNavigator().setCanSwim(true);
