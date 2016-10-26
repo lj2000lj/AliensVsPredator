@@ -28,6 +28,7 @@ import org.avp.entities.mob.EntityDeaconShark;
 import org.avp.entities.mob.EntityDrone;
 import org.avp.entities.mob.EntityEngineer;
 import org.avp.entities.mob.EntityFacehugger;
+import org.avp.entities.mob.EntityGooMutant;
 import org.avp.entities.mob.EntityHammerpede;
 import org.avp.entities.mob.EntityMarine;
 import org.avp.entities.mob.EntityOvamorph;
@@ -196,6 +197,7 @@ public class EntityHandler implements IInitEvent
         Game.register(EntityYautjaBerserker.class, "YautjaBerserker", entityId++, AliensVsPredator.instance(), 250, 1, true);
         Game.register(EntityDeaconShark.class, "DeaconShark", entityId++, AliensVsPredator.instance(), 250, 1, true);
         Game.register(EntityUltramorph.class, "Ultramorph", entityId++, AliensVsPredator.instance(), 250, 1, true);
+        Game.register(EntityGooMutant.class, "GooMutant", entityId++, AliensVsPredator.instance(), 250, 1, true);
     }
 
     private void registerSpawns()

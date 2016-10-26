@@ -8,6 +8,7 @@ import org.avp.entities.mob.EntityDeaconShark;
 import org.avp.entities.mob.EntityDrone;
 import org.avp.entities.mob.EntityEngineer;
 import org.avp.entities.mob.EntityFacehugger;
+import org.avp.entities.mob.EntityGooMutant;
 import org.avp.entities.mob.EntityHammerpede;
 import org.avp.entities.mob.EntityMarine;
 import org.avp.entities.mob.EntityOvamorph;
@@ -190,6 +191,7 @@ public class ItemHandler implements IInitEvent
     public ItemEntitySummoner       itemSummonerRunnerDrone     = (new ItemEntitySummoner(EntityRunnerDrone.class));
     public ItemEntitySummoner       itemSummonerRunnerWarrior   = (new ItemEntitySummoner(EntityRunnerWarrior.class));
     public ItemEntitySummoner       itemSummonerUltramorph      = (new ItemEntitySummoner(EntityUltramorph.class));
+    public ItemEntitySummoner       itemSummonerGooMutant       = (new ItemEntitySummoner(EntityGooMutant.class));
 
     @Override
     public void init(FMLInitializationEvent event)
@@ -219,7 +221,8 @@ public class ItemHandler implements IInitEvent
         Game.register(AliensVsPredator.ID, itemSummonerCombatSynthetic, "summon.synthetic.combat").setCreativeTab(AliensVsPredator.tabEntities());
         Game.register(AliensVsPredator.ID, itemSummonerAqua, "summon.aqua").setCreativeTab(AliensVsPredator.tabEntities());
         Game.register(AliensVsPredator.ID, itemSummonerUltramorph, "summon.ultramorph").setCreativeTab(AliensVsPredator.tabEntities());
-        
+        Game.register(AliensVsPredator.ID, itemSummonerGooMutant, "summon.goomutant").setCreativeTab(AliensVsPredator.tabEntities());
+
         Game.register(AliensVsPredator.ID, pressureMask, "helm.pressure").setCreativeTab(AliensVsPredator.tabMain());
         Game.register(AliensVsPredator.ID, pressureChest, "body.pressure").setCreativeTab(AliensVsPredator.tabMain());
         Game.register(AliensVsPredator.ID, pressurePants, "legwear.pressure").setCreativeTab(AliensVsPredator.tabMain());
@@ -270,7 +273,7 @@ public class ItemHandler implements IInitEvent
         Game.register(AliensVsPredator.ID, itemDoritosCoolRanch, "food.doritos.coolranch").setCreativeTab(AliensVsPredator.tabMain());
         Game.register(AliensVsPredator.ID, itemFlashDrive, "device.nbtdrive").setCreativeTab(AliensVsPredator.tabMain());
         Game.register(AliensVsPredator.ID, itemSupplyChute, "device.supplychute").setCreativeTab(AliensVsPredator.tabMain());
-        
+
         Game.register(AliensVsPredator.ID, itemPistolStock, "part.pistol.stock").setCreativeTab(AliensVsPredator.tabGunComponents());
         Game.register(AliensVsPredator.ID, itemPistolBarrel, "part.pistol.barrel").setCreativeTab(AliensVsPredator.tabGunComponents());
         Game.register(AliensVsPredator.ID, itemPistolAction, "part.pistol.action").setCreativeTab(AliensVsPredator.tabGunComponents());

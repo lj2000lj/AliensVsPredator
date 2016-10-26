@@ -34,6 +34,7 @@ import org.avp.entities.mob.EntityDeaconShark;
 import org.avp.entities.mob.EntityDrone;
 import org.avp.entities.mob.EntityEngineer;
 import org.avp.entities.mob.EntityFacehugger;
+import org.avp.entities.mob.EntityGooMutant;
 import org.avp.entities.mob.EntityHammerpede;
 import org.avp.entities.mob.EntityMarine;
 import org.avp.entities.mob.EntityOvamorph;
@@ -59,6 +60,7 @@ import org.avp.entities.mob.render.RenderCombatSynthetic;
 import org.avp.entities.mob.render.RenderDeaconShark;
 import org.avp.entities.mob.render.RenderEngineer;
 import org.avp.entities.mob.render.RenderFacehugger;
+import org.avp.entities.mob.render.RenderGooMutant;
 import org.avp.entities.mob.render.RenderHammerpede;
 import org.avp.entities.mob.render.RenderMarine;
 import org.avp.entities.mob.render.RenderOvamorph;
@@ -282,6 +284,7 @@ public class Renderers implements IPostInitEvent
         registerEntityRenderingHandler(EntityOvamorph.class, new RenderOvamorph());
         registerEntityRenderingHandler(EntityDeaconShark.class, new RenderDeaconShark());
         registerEntityRenderingHandler(EntityUltramorph.class,  new RenderXenomorph(AliensVsPredator.resources().models().ULTRAMORPH, 1.5F));
+        registerEntityRenderingHandler(EntityGooMutant.class, new RenderGooMutant());
     }
 
     private void registerStandardEntityRenderers()
@@ -338,6 +341,7 @@ public class Renderers implements IPostInitEvent
         registerItemRenderer(items.itemAPC, new RenderItemAPC());
         registerItemRenderer(items.itemGrenade, new RenderItemM40());
         registerItemRenderer(items.itemIncendiaryGrenade, new RenderItemM40());
+        
         registerItemRenderer(items.itemSummonerDrone, (new RenderItemSummoner(EntityDrone.class)).setScale(7.5F).setY(6F));
         registerItemRenderer(items.itemSummonerProtomorph, (new RenderItemSummoner(EntityProtomorph.class)).setScale(7.5F).setY(6F));
         registerItemRenderer(items.itemSummonerWarrior, (new RenderItemSummoner(EntityWarrior.class)).setScale(7.5F).setY(9F));
@@ -363,6 +367,7 @@ public class Renderers implements IPostInitEvent
         registerItemRenderer(items.itemSummonerYautjaBerserker, (new RenderItemSummoner(EntityYautjaBerserker.class)).setScale(7.5F).setY(8F));
         registerItemRenderer(items.itemSummonerDeaconShark, (new RenderItemSummoner(EntityDeaconShark.class)).setScale(7.5F).setY(8F));
         registerItemRenderer(items.itemSummonerUltramorph, (new RenderItemSummoner(EntityUltramorph.class)).setScale(7.5F).setY(6F));
+        registerItemRenderer(items.itemSummonerGooMutant, (new RenderItemSummoner(EntityGooMutant.class)).setScale(7.5F).setY(6F));
 
         TexturedModel<Model88MOD4> _88MOD4 = AliensVsPredator.resources().models()._88MOD4;
         registerItemRenderer(items.itemPistolBarrel, new RenderItem88Mod4Barrel(_88MOD4, _88MOD4.getModel().getBarrel()));

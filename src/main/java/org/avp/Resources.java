@@ -7,6 +7,7 @@ import org.avp.entities.mob.model.ModelDeaconShark;
 import org.avp.entities.mob.model.ModelDrone;
 import org.avp.entities.mob.model.ModelEngineer;
 import org.avp.entities.mob.model.ModelFacehugger;
+import org.avp.entities.mob.model.ModelGooMutant;
 import org.avp.entities.mob.model.ModelHammerpede;
 import org.avp.entities.mob.model.ModelMarine;
 import org.avp.entities.mob.model.ModelOvamorph;
@@ -157,6 +158,7 @@ public class Resources
         public final TexturedModel<ModelLaserMine>            LASER_MINE                     = new TexturedModel(new ModelLaserMine(), new Texture(AliensVsPredator.ID, "textures/misc/proximity-mine.png"));
         public final TexturedModel<ModelDNASynthesizer>       DNA_SYNTHESIZER                = new TexturedModel(new ModelDNASynthesizer(), new Texture(AliensVsPredator.ID, "textures/tile/dna-synthesizer.png"));
         public final TexturedModel<ModelHiveResin>            HIVE_RESIN                     = new TexturedModel(new ModelHiveResin(), new Texture(AliensVsPredator.ID, "textures/tile/hive-resin.png"));
+        public final TexturedModel<ModelGooMutant>            GOO_MUTANT                     = new TexturedModel(new ModelGooMutant(), new Texture(AliensVsPredator.ID, "textures/mob/goomutant.png"));
         public final TriangulatedWavefrontModel               M577_APC                       = AMDXLib.loadWavefrontModel(AliensVsPredator.class, AliensVsPredator.ID, "m577apc", "/assets/avp/models/m577apc");
 
         // Xenomorph models with the new universal format
