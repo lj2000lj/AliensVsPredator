@@ -5,6 +5,7 @@ import org.avp.entities.ai.alien.EntitySelectorXenomorph;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
@@ -56,6 +57,13 @@ public abstract class EntityXenomorph extends EntitySpeciesAlien implements IMob
         this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.6F));
         this.targetTasks.addTask(0, new EntityAIHurtByTarget(this, true));
         this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityLivingBase.class, 0, false, false, EntitySelectorXenomorph.instance));
+    }
+    
+    @Override
+    protected void applyEntityAttributes()
+    {
+        super.applyEntityAttributes();
+        this.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(0.75D);
     }
 
     @Override

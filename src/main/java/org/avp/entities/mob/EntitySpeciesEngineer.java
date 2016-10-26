@@ -65,7 +65,7 @@ public abstract class EntitySpeciesEngineer extends EntityMob
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(160.0D);
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.5199999761581421D);
         this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(8.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(1F);
+        this.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(0.85D);
     }
 
     @Override
