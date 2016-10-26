@@ -4,6 +4,7 @@ import org.avp.EntityItemDrops;
 import org.avp.entities.ai.alien.EntitySelectorXenomorph;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
@@ -51,12 +52,12 @@ public abstract class EntityXenomorph extends EntitySpeciesAlien implements IMob
     protected void addStandardXenomorphAISet()
     {
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIAttackOnCollide(this, EntityPlayer.class, 0.8D, true));
+        this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityCreature.class, 1.0D, false));
         this.tasks.addTask(2, new EntityAIWatchClosest(this, EntityLivingBase.class, 16F));
         this.tasks.addTask(2, new EntityAIWander(this, 0.8D));
         this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.6F));
         this.targetTasks.addTask(0, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityLivingBase.class, 0, false, false, EntitySelectorXenomorph.instance));
+        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityCreature.class, 0, false, false, EntitySelectorXenomorph.instance));
     }
     
     @Override
