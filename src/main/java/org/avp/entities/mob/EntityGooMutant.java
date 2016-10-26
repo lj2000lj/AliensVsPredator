@@ -45,6 +45,12 @@ public class EntityGooMutant extends EntityMob implements IMob
         this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(2.0D);
         this.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(0.3D);
     }
+    
+    @Override
+    protected boolean isAIEnabled()
+    {
+        return true;
+    }
 
     @Override
     public int getTotalArmorValue()
