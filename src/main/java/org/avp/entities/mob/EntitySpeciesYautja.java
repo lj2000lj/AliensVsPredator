@@ -40,10 +40,7 @@ public abstract class EntitySpeciesYautja extends EntityMob implements IFacehugS
         this.tasks.addTask(9, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
         this.targetTasks.addTask(0, new EntityAIHurtByTarget(this, true));
         this.targetTasks.addTask(2, new EntityAILeapAtTarget(this, 0.4F));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, Entity.class, /** targetChance **/
-            0, /** shouldCheckSight **/
-            false, /** nearbyOnly **/
-            false, EntitySelectorYautja.instance));
+        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, Entity.class, 0, false, false, EntitySelectorYautja.instance));
     }
 
     @Override
