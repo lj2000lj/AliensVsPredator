@@ -2,11 +2,17 @@ package org.avp.entities.mob;
 
 import org.avp.AliensVsPredator;
 import org.avp.Sounds;
-import org.avp.entities.ai.yautja.EntitySelectorYautja;
+import org.avp.items.ItemDisc;
+import org.avp.items.ItemFirearm;
+import org.avp.items.ItemPlasmaCaster;
+import org.avp.items.ItemShuriken;
+import org.avp.items.ItemWristbracer;
 import org.avp.util.IFacehugSelector;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
@@ -19,15 +25,20 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public abstract class EntitySpeciesYautja extends EntityMob implements IFacehugSelector
+public abstract class EntitySpeciesYautja extends EntityMob implements IFacehugSelector, IEntitySelector
 {
+    public static int WEARING_MASK_DATAWATCHER_ID = 17;
+
     public EntitySpeciesYautja(World world)
     {
         super(world);
@@ -35,12 +46,13 @@ public abstract class EntitySpeciesYautja extends EntityMob implements IFacehugS
         this.setSize(1.0F, 2.5F);
         this.getNavigator().setCanSwim(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIAttackOnCollide(this, 0.800000011920929D, true));
-        this.tasks.addTask(8, new EntityAIWander(this, 0.800000011920929D));
-        this.tasks.addTask(9, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
+        this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityCreature.class, 1.0D, false));
+        this.tasks.addTask(2, new EntityAIWatchClosest(this, EntityMob.class, 16F));
+        this.tasks.addTask(2, new EntityAIWander(this, 0.8D));
+        this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
         this.targetTasks.addTask(0, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(2, new EntityAILeapAtTarget(this, 0.4F));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, Entity.class, 0, false, false, EntitySelectorYautja.instance));
+        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityCreature.class, 0, true, false, this));
+        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true, false, this));
     }
 
     @Override
@@ -57,7 +69,37 @@ public abstract class EntitySpeciesYautja extends EntityMob implements IFacehugS
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(17, String.valueOf(this.rand.nextBoolean()));
+        this.dataWatcher.addObject(WEARING_MASK_DATAWATCHER_ID, String.valueOf(this.rand.nextBoolean()));
+    }
+
+    @Override
+    public boolean isEntityApplicable(Entity entity)
+    {
+        if (entity instanceof EntityPlayer)
+        {
+            EntityPlayer player = (EntityPlayer) entity;
+            ItemStack stack = player.getCurrentEquippedItem();
+
+            if (stack != null)
+            {
+                Item item = stack.getItem();
+
+                if (stack != null)
+                {
+                    if (item instanceof ItemSword || item instanceof ItemFirearm || item instanceof ItemWristbracer || item instanceof ItemPlasmaCaster || item instanceof ItemBow || item instanceof ItemDisc || item instanceof ItemShuriken)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        if ((entity instanceof EntitySpeciesAlien) || (entity instanceof EntitySpeciesEngineer) || (entity instanceof EntityMarine))
+        {
+            return true;
+        }
+
+        return false;
     }
 
     @Override
@@ -120,7 +162,7 @@ public abstract class EntitySpeciesYautja extends EntityMob implements IFacehugS
     @Override
     protected void collideWithEntity(Entity entity)
     {
-        if (entity instanceof IMob && this.getRNG().nextInt(20) == 0 && !(entity instanceof EntitySpeciesYautja))
+        if (entity instanceof IMob && this.rand.nextInt(20) == 0 && !(entity instanceof EntitySpeciesYautja))
         {
             this.setAttackTarget((EntityLivingBase) entity);
             this.setRevengeTarget((EntityLivingBase) entity);
@@ -186,14 +228,14 @@ public abstract class EntitySpeciesYautja extends EntityMob implements IFacehugS
 
     public boolean isWearingMask()
     {
-        return Boolean.parseBoolean(this.dataWatcher.getWatchableObjectString(17));
+        return Boolean.parseBoolean(this.dataWatcher.getWatchableObjectString(WEARING_MASK_DATAWATCHER_ID));
     }
 
     public void setWearingMask(boolean wearingMask)
     {
         if (!this.worldObj.isRemote)
         {
-            this.dataWatcher.updateObject(17, String.valueOf(wearingMask));
+            this.dataWatcher.updateObject(WEARING_MASK_DATAWATCHER_ID, String.valueOf(wearingMask));
         }
     }
 

@@ -43,7 +43,7 @@ public class EntityAIMeltBlock extends EntityAIYOffsetBlockInteract
     @Override
     public boolean continueExecuting()
     {
-        return this.breakingTime <= 240 && this.theEntity.getDistanceSq((int) this.theEntity.posX, (int) this.theEntity.posY + yOffset, (int) this.theEntity.posZ) < 4.0D && block != Blocks.air && block != AliensVsPredator.blocks().terrainHiveResin && block != Blocks.bedrock;
+        return this.breakingTime <= (12 * 20) && this.theEntity.getDistanceSq((int) this.theEntity.posX, (int) this.theEntity.posY + yOffset, (int) this.theEntity.posZ) < 4.0D && block != Blocks.air && block != AliensVsPredator.blocks().terrainHiveResin && block != Blocks.bedrock;
     }
 
     @Override
@@ -63,13 +63,14 @@ public class EntityAIMeltBlock extends EntityAIYOffsetBlockInteract
             GameSounds.fxMinecraftFizz.playSound(this.theEntity.worldObj, this.theEntity.posX, this.theEntity.posY, this.theEntity.posZ);
         }
 
-        ++this.breakingTime;
-        int i = (int) (this.breakingTime / 240.0F * 10.0F);
+        this.breakingTime++;
+        
+        int progress = (int) (this.breakingTime / 240.0F * 10.0F);
 
-        if (i != this.breakProgress)
+        if (progress != this.breakProgress)
         {
-            this.theEntity.worldObj.destroyBlockInWorldPartially(this.theEntity.getEntityId(), (int) Math.floor(this.theEntity.posX), (int) this.theEntity.posY + yOffset, (int) Math.floor(this.theEntity.posZ), i);
-            this.breakProgress = i;
+            this.theEntity.worldObj.destroyBlockInWorldPartially(this.theEntity.getEntityId(), (int) Math.floor(this.theEntity.posX), (int) this.theEntity.posY + yOffset, (int) Math.floor(this.theEntity.posZ), progress);
+            this.breakProgress = progress;
         }
 
         if (this.breakingTime == 240 && (this.theEntity.worldObj.difficultySetting == EnumDifficulty.NORMAL || this.theEntity.worldObj.difficultySetting == EnumDifficulty.HARD))

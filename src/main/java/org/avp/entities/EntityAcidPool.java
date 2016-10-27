@@ -28,7 +28,9 @@ public class EntityAcidPool extends EntityLiquidPool implements IMob, IEntitySel
     public boolean isEntityApplicable(Entity entity)
     {
         if (entity instanceof EntityLiquidPool)
+        {
             return false;
+        }
         
         return true;
     }
@@ -87,20 +89,9 @@ public class EntityAcidPool extends EntityLiquidPool implements IMob, IEntitySel
     {
         super.onUpdate();
         
-        this.motionX = 0;
-        this.motionZ = 0;
-
         if (worldObj.isRemote && worldObj.getWorldTime() % 4 <= 0)
         {
             this.worldObj.spawnParticle("smoke", this.posX + this.rand.nextDouble(), this.posY + this.rand.nextDouble(), this.posZ + this.rand.nextDouble(), 0.0D, 0.0D, 0.0D);
-        }
-
-        if (!this.worldObj.isRemote)
-        {
-            if (this.ticksExisted > this.lifetime)
-            {
-                this.setDead();
-            }
         }
     }
 
@@ -109,8 +100,7 @@ public class EntityAcidPool extends EntityLiquidPool implements IMob, IEntitySel
     {
         if (!this.worldObj.isRemote)
         {
-            byte ticks = 14;
-            player.addPotionEffect(new PotionEffect(Potion.poison.id, ticks * 20, 0));
+            player.addPotionEffect(new PotionEffect(Potion.poison.id, (14 * 20), 0));
         }
     }
 
