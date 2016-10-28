@@ -8,6 +8,7 @@ public class EntityRunnerWarrior extends EntityWarrior
     public EntityRunnerWarrior(World world)
     {
         super(world);
+        this.addStandardXenomorphAISet();
     }
 
     @Override

@@ -3,9 +3,7 @@ package org.avp.entities.mob;
 import org.avp.Sounds;
 import org.avp.entities.EntityAcidPool;
 
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
@@ -23,7 +21,8 @@ public class EntityPredalien extends EntityXenomorph implements IMob
         this.getNavigator().setBreakDoors(true);
         this.getNavigator().setCanSwim(true);
         this.getNavigator().setAvoidsWater(true);
-        this.tasks.addTask(0, new EntityAIWatchClosest(this, EntityLiving.class, 16F));
+        
+        this.addStandardXenomorphAISet();
     }
 
     @Override

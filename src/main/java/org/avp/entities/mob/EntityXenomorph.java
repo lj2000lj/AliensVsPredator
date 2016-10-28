@@ -46,6 +46,8 @@ public abstract class EntityXenomorph extends EntitySpeciesAlien implements IMob
         this.dataWatcher.addObject(CRAWLING_DATAWATCHER_ID, 0);
         this.dataWatcher.addObject(JAW_PROGRESS_DATAWATCHER_ID, 0F);
         this.dataWatcher.addObject(MOUTH_PROGRESS_DATAWATCHER_ID, 0F);
+        
+        this.addStandardXenomorphAISet();
     }
 
     protected void addStandardXenomorphAISet()

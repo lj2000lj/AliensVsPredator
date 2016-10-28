@@ -51,8 +51,8 @@ public abstract class EntitySpeciesYautja extends EntityMob implements IFacehugS
         this.tasks.addTask(2, new EntityAIWander(this, 0.8D));
         this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
         this.targetTasks.addTask(0, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityCreature.class, 0, true, false, this));
         this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true, false, this));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityCreature.class, 0, true, false, this));
     }
 
     @Override
@@ -216,14 +216,14 @@ public abstract class EntitySpeciesYautja extends EntityMob implements IFacehugS
     public void readEntityFromNBT(NBTTagCompound tag)
     {
         super.readEntityFromNBT(tag);
-        this.setWearingMask(tag.getBoolean("wearingMask"));
+        this.setWearingMask(tag.getBoolean("WearingMask"));
     }
 
     @Override
     public void writeEntityToNBT(NBTTagCompound tag)
     {
         super.writeEntityToNBT(tag);
-        tag.setBoolean("wearingMask", this.isWearingMask());
+        tag.setBoolean("WearingMask", this.isWearingMask());
     }
 
     public boolean isWearingMask()

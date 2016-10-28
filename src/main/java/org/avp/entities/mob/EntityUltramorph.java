@@ -20,7 +20,6 @@ public class EntityUltramorph extends EntityXenomorph implements IMob
         this.isDependant = false;
         this.getNavigator().setCanSwim(true);
         this.getNavigator().setAvoidsWater(true);
-        this.addStandardXenomorphAISet();
     }
 
     @Override

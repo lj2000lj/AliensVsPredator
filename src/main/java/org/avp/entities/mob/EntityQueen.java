@@ -52,7 +52,7 @@ public class EntityQueen extends EntityXenomorph implements IMob
         this.ignoreFrustumCheck = true;
         this.getNavigator().setCanSwim(true);
         this.dataWatcher.addObject(14, 0F);
-        this.addAI();
+        this.addStandardXenomorphAISet();
     }
 
     public float getOvipositorSize()
@@ -90,7 +90,7 @@ public class EntityQueen extends EntityXenomorph implements IMob
         }
     }
 
-    private void addAI()
+    protected void addStandardXenomorphAISet()
     {
         if (this.tasks.taskEntries.isEmpty() && this.targetTasks.taskEntries.isEmpty())
         {
@@ -158,7 +158,7 @@ public class EntityQueen extends EntityXenomorph implements IMob
                 else if (!ovipositorHealthy)
                 {
                     this.setOvipositorSize(0F);
-                    this.addAI();
+                    this.addStandardXenomorphAISet();
                 }
             }
         }

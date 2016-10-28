@@ -24,6 +24,7 @@ public class EntitySpitter extends EntityXenomorph implements IRangedAttackMob
         this.getNavigator().setCanSwim(true);
         this.getNavigator().setAvoidsWater(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
+        this.addStandardXenomorphAISet();
     }
 
     @Override

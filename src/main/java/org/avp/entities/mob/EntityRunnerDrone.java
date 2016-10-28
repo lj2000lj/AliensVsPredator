@@ -8,6 +8,7 @@ public class EntityRunnerDrone extends EntityDrone
     public EntityRunnerDrone(World world)
     {
         super(world);
+        this.addStandardXenomorphAISet();
     }
 
     @Override
