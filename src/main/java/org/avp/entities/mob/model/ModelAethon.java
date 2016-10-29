@@ -472,6 +472,7 @@ public class ModelAethon extends Model
             float wingSpeed = isFlying ? 1.75F : 20F;
             float neckSpeed = isFlying ? 8F : 18F;
             float tailSpeed = isFlying ? 4F : 18F;
+            long ticks = aethon.ticksExisted;
 
             if (isFlying)
             {
@@ -480,30 +481,30 @@ public class ModelAethon extends Model
                 this.rArm.rotateAngleX = (float) Math.toRadians(-18F);
                 this.lArm.rotateAngleX = (float) Math.toRadians(-18F);
                 
-                this.neck1.rotateAngleX = (float) Math.toRadians((Math.sin((aethon.worldObj.getWorldTime() + Game.partialTicks()) / (neckSpeed)) * 3F));
-                this.neck2.rotateAngleX = (float) Math.toRadians((Math.sin((aethon.worldObj.getWorldTime() + Game.partialTicks()) / (neckSpeed)) * 3F));
-                this.neck3.rotateAngleX = (float) Math.toRadians((Math.sin((aethon.worldObj.getWorldTime() + Game.partialTicks()) / (neckSpeed)) * 3F));
-                this.neck4.rotateAngleX = (float) Math.toRadians((Math.sin((aethon.worldObj.getWorldTime() + Game.partialTicks()) / (neckSpeed)) * 3F));
+                this.neck1.rotateAngleX = (float) Math.toRadians((Math.sin((ticks + Game.partialTicks()) / (neckSpeed)) * 3F));
+                this.neck2.rotateAngleX = (float) Math.toRadians((Math.sin((ticks + Game.partialTicks()) / (neckSpeed)) * 3F));
+                this.neck3.rotateAngleX = (float) Math.toRadians((Math.sin((ticks + Game.partialTicks()) / (neckSpeed)) * 3F));
+                this.neck4.rotateAngleX = (float) Math.toRadians((Math.sin((ticks + Game.partialTicks()) / (neckSpeed)) * 3F));
 
-                this.tail1.rotateAngleX = (float) Math.toRadians(-82F + (Math.sin((aethon.worldObj.getWorldTime() + Game.partialTicks()) / (tailSpeed)) * 3F));
-                this.tail2.rotateAngleX = (float) Math.toRadians(-12F + (Math.sin((aethon.worldObj.getWorldTime() + Game.partialTicks()) / (tailSpeed)) * 3F));
-                this.tail3.rotateAngleX = (float) Math.toRadians(0F + (Math.sin((aethon.worldObj.getWorldTime() + Game.partialTicks()) / (tailSpeed)) * 3F));
-                this.tail4.rotateAngleX = (float) Math.toRadians(0F + (Math.sin((aethon.worldObj.getWorldTime() + Game.partialTicks()) / (tailSpeed)) * 3F));
-                this.tail5.rotateAngleX = (float) Math.toRadians(0F + (Math.sin((aethon.worldObj.getWorldTime() + Game.partialTicks()) / (tailSpeed)) * 3F));
+                this.tail1.rotateAngleX = (float) Math.toRadians(-82F + (Math.sin((ticks + Game.partialTicks()) / (tailSpeed)) * 3F));
+                this.tail2.rotateAngleX = (float) Math.toRadians(-12F + (Math.sin((ticks + Game.partialTicks()) / (tailSpeed)) * 3F));
+                this.tail3.rotateAngleX = (float) Math.toRadians(0F + (Math.sin((ticks + Game.partialTicks()) / (tailSpeed)) * 3F));
+                this.tail4.rotateAngleX = (float) Math.toRadians(0F + (Math.sin((ticks + Game.partialTicks()) / (tailSpeed)) * 3F));
+                this.tail5.rotateAngleX = (float) Math.toRadians(0F + (Math.sin((ticks + Game.partialTicks()) / (tailSpeed)) * 3F));
 
-                this.lWingArm.rotateAngleY = (float) Math.toRadians((40F + (Math.sin((aethon.worldObj.getWorldTime() + Game.partialTicks()) / (wingSpeed)) * 3F) * wingDistMulti));
-                this.lWingArm.rotateAngleZ = (float) Math.toRadians((40F + (Math.sin((aethon.worldObj.getWorldTime() + Game.partialTicks()) / (wingSpeed)) * 2F) * wingDistMulti));
-                this.lWingArm.rotateAngleZ = (float) Math.toRadians((40F + (Math.sin((aethon.worldObj.getWorldTime() + Game.partialTicks()) / (wingSpeed)) * 10F) * wingDistMulti));
-                this.lWingArm2.rotateAngleX = (float) Math.toRadians((100F + (Math.sin((aethon.worldObj.getWorldTime() + Game.partialTicks()) / (wingSpeed)) * 6F) * wingDistMulti));
-                this.lWingArm2.rotateAngleY = (float) -Math.toRadians((30F + (Math.cos((aethon.worldObj.getWorldTime() + Game.partialTicks()) / (wingSpeed)) * 4F) * wingDistMulti));
-                this.lWingArm2.rotateAngleZ = (float) Math.toRadians((40F + (Math.sin((aethon.worldObj.getWorldTime() + Game.partialTicks()) / (wingSpeed)) * 4F) * wingDistMulti));
+                this.lWingArm.rotateAngleY = (float) Math.toRadians((40F + (Math.sin((ticks + Game.partialTicks()) / (wingSpeed)) * 3F) * wingDistMulti));
+                this.lWingArm.rotateAngleZ = (float) Math.toRadians((40F + (Math.sin((ticks + Game.partialTicks()) / (wingSpeed)) * 2F) * wingDistMulti));
+                this.lWingArm.rotateAngleZ = (float) Math.toRadians((40F + (Math.sin((ticks + Game.partialTicks()) / (wingSpeed)) * 10F) * wingDistMulti));
+                this.lWingArm2.rotateAngleX = (float) Math.toRadians((100F + (Math.sin((ticks + Game.partialTicks()) / (wingSpeed)) * 6F) * wingDistMulti));
+                this.lWingArm2.rotateAngleY = (float) -Math.toRadians((30F + (Math.cos((ticks + Game.partialTicks()) / (wingSpeed)) * 4F) * wingDistMulti));
+                this.lWingArm2.rotateAngleZ = (float) Math.toRadians((40F + (Math.sin((ticks + Game.partialTicks()) / (wingSpeed)) * 4F) * wingDistMulti));
 
-                this.rWingArm.rotateAngleY = (float) -Math.toRadians((40F + (Math.sin((aethon.worldObj.getWorldTime() + Game.partialTicks()) / (wingSpeed)) * 3F) * wingDistMulti));
-                this.rWingArm.rotateAngleZ = (float) -Math.toRadians((40F + (Math.sin((aethon.worldObj.getWorldTime() + Game.partialTicks()) / (wingSpeed)) * 2F) * wingDistMulti));
-                this.rWingArm.rotateAngleZ = (float) -Math.toRadians((40F + (Math.sin((aethon.worldObj.getWorldTime() + Game.partialTicks()) / (wingSpeed)) * 10F) * wingDistMulti));
-                this.rWingArm2.rotateAngleX = (float) Math.toRadians((100F + (Math.sin((aethon.worldObj.getWorldTime() + Game.partialTicks()) / (wingSpeed)) * 6F) * wingDistMulti));
-                this.rWingArm2.rotateAngleY = (float) Math.toRadians((30F + (Math.cos((aethon.worldObj.getWorldTime() + Game.partialTicks()) / (wingSpeed)) * 4F) * wingDistMulti));
-                this.rWingArm2.rotateAngleZ = (float) -Math.toRadians((40F + (Math.sin((aethon.worldObj.getWorldTime() + Game.partialTicks()) / (wingSpeed)) * 4F) * wingDistMulti));
+                this.rWingArm.rotateAngleY = (float) -Math.toRadians((40F + (Math.sin((ticks + Game.partialTicks()) / (wingSpeed)) * 3F) * wingDistMulti));
+                this.rWingArm.rotateAngleZ = (float) -Math.toRadians((40F + (Math.sin((ticks + Game.partialTicks()) / (wingSpeed)) * 2F) * wingDistMulti));
+                this.rWingArm.rotateAngleZ = (float) -Math.toRadians((40F + (Math.sin((ticks + Game.partialTicks()) / (wingSpeed)) * 10F) * wingDistMulti));
+                this.rWingArm2.rotateAngleX = (float) Math.toRadians((100F + (Math.sin((ticks + Game.partialTicks()) / (wingSpeed)) * 6F) * wingDistMulti));
+                this.rWingArm2.rotateAngleY = (float) Math.toRadians((30F + (Math.cos((ticks + Game.partialTicks()) / (wingSpeed)) * 4F) * wingDistMulti));
+                this.rWingArm2.rotateAngleZ = (float) -Math.toRadians((40F + (Math.sin((ticks + Game.partialTicks()) / (wingSpeed)) * 4F) * wingDistMulti));
             }
             else
             {
@@ -512,16 +513,16 @@ public class ModelAethon extends Model
                 this.rArm.rotateAngleX = (float) (Math.toRadians(-18F) + MathHelper.cos(swingProgress * 0.3662F) * 0.6F * swingProgressPrev + 0.6665191F);
                 this.lArm.rotateAngleX = (float) (Math.toRadians(-18F) + MathHelper.sin(swingProgress * 0.3662F) * 0.6F * swingProgressPrev + 0.6665191F);
                 
-                this.neck1.rotateAngleX = (float) Math.toRadians((Math.sin((aethon.worldObj.getWorldTime() + Game.partialTicks()) / (neckSpeed)) * 3F));
-                this.neck2.rotateAngleX = (float) Math.toRadians(16F + (Math.sin((aethon.worldObj.getWorldTime() + Game.partialTicks()) / (neckSpeed)) * 3F));
-                this.neck3.rotateAngleX = (float) Math.toRadians(16F + (Math.sin((aethon.worldObj.getWorldTime() + Game.partialTicks()) / (neckSpeed)) * 3F));
-                this.neck4.rotateAngleX = (float) Math.toRadians(19F + (Math.sin((aethon.worldObj.getWorldTime() + Game.partialTicks()) / (neckSpeed)) * 3F));
+                this.neck1.rotateAngleX = (float) Math.toRadians((Math.sin((ticks + Game.partialTicks()) / (neckSpeed)) * 3F));
+                this.neck2.rotateAngleX = (float) Math.toRadians(16F + (Math.sin((ticks + Game.partialTicks()) / (neckSpeed)) * 3F));
+                this.neck3.rotateAngleX = (float) Math.toRadians(16F + (Math.sin((ticks + Game.partialTicks()) / (neckSpeed)) * 3F));
+                this.neck4.rotateAngleX = (float) Math.toRadians(19F + (Math.sin((ticks + Game.partialTicks()) / (neckSpeed)) * 3F));
 
-                this.tail1.rotateAngleX = (float) Math.toRadians(-72F + (Math.sin((aethon.worldObj.getWorldTime() + Game.partialTicks()) / (tailSpeed)) * 3F));
-                this.tail2.rotateAngleX = (float) Math.toRadians(16F + (Math.sin((aethon.worldObj.getWorldTime() + Game.partialTicks()) / (tailSpeed)) * 3F));
-                this.tail3.rotateAngleX = (float) Math.toRadians(16F + (Math.sin((aethon.worldObj.getWorldTime() + Game.partialTicks()) / (tailSpeed)) * 3F));
-                this.tail4.rotateAngleX = (float) Math.toRadians(19F + (Math.sin((aethon.worldObj.getWorldTime() + Game.partialTicks()) / (tailSpeed)) * 3F));
-                this.tail5.rotateAngleX = (float) Math.toRadians(19F + (Math.sin((aethon.worldObj.getWorldTime() + Game.partialTicks()) / (tailSpeed)) * 3F));
+                this.tail1.rotateAngleX = (float) Math.toRadians(-72F + (Math.sin((ticks + Game.partialTicks()) / (tailSpeed)) * 3F));
+                this.tail2.rotateAngleX = (float) Math.toRadians(16F + (Math.sin((ticks + Game.partialTicks()) / (tailSpeed)) * 3F));
+                this.tail3.rotateAngleX = (float) Math.toRadians(16F + (Math.sin((ticks + Game.partialTicks()) / (tailSpeed)) * 3F));
+                this.tail4.rotateAngleX = (float) Math.toRadians(19F + (Math.sin((ticks + Game.partialTicks()) / (tailSpeed)) * 3F));
+                this.tail5.rotateAngleX = (float) Math.toRadians(19F + (Math.sin((ticks + Game.partialTicks()) / (tailSpeed)) * 3F));
 
                 this.lWingArm.rotateAngleX = (float) Math.toRadians(-41.74F);
                 this.lWingArm.rotateAngleY = (float) Math.toRadians(0F);
