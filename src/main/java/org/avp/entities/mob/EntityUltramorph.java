@@ -32,12 +32,6 @@ public class EntityUltramorph extends EntityXenomorph implements IMob
     }
 
     @Override
-    protected void dropRareDrop(int chance)
-    {
-        super.dropRareDrop(chance);
-    }
-
-    @Override
     protected String getHurtSound()
     {
         return Sounds.SOUND_ALIEN_HURT.getKey();

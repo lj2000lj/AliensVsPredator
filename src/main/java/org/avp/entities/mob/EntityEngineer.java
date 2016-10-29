@@ -1,6 +1,9 @@
 package org.avp.entities.mob;
 
+import org.avp.EntityItemDrops;
+
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
 public class EntityEngineer extends EntitySpeciesEngineer
@@ -19,6 +22,14 @@ public class EntityEngineer extends EntitySpeciesEngineer
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.5199999761581421D);
         this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(8.0D);
         this.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(1F);
+    }
+    
+    @Override
+    public void onDeath(DamageSource damagesource)
+    {
+        super.onDeath(damagesource);
+        
+        EntityItemDrops.SKULL_ENGINEER.tryDrop(this);
     }
 
     @Override
@@ -43,18 +54,6 @@ public class EntityEngineer extends EntitySpeciesEngineer
     protected String getDeathSound()
     {
         return null;
-    }
-
-    @Override
-    protected void dropFewItems(boolean flag, int i)
-    {
-        ;
-    }
-
-    @Override
-    protected void dropRareDrop(int rate)
-    {
-        ;
     }
 
     @Override

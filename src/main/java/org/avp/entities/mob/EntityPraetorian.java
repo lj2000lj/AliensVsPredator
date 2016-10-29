@@ -1,13 +1,9 @@
 package org.avp.entities.mob;
 
-import java.util.Random;
-
-import org.avp.AliensVsPredator;
 import org.avp.Sounds;
 
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class EntityPraetorian extends EntityXenomorph
@@ -32,21 +28,6 @@ public class EntityPraetorian extends EntityXenomorph
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.5D);
         this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(5.0D);
         this.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(1F);
-    }
-
-    @Override
-    protected void dropRareDrop(int par1)
-    {
-        if (new Random().nextInt(4) == 1)
-            this.entityDropItem(new ItemStack(AliensVsPredator.items().helmXeno), 1);
-        if (new Random().nextInt(4) == 1)
-            this.entityDropItem(new ItemStack(AliensVsPredator.items().plateXeno), 1);
-        if (new Random().nextInt(4) == 1)
-            this.entityDropItem(new ItemStack(AliensVsPredator.items().legsXeno), 1);
-        if (new Random().nextInt(4) == 1)
-            this.entityDropItem(new ItemStack(AliensVsPredator.items().bootsXeno), 1);
-
-        super.dropRareDrop(par1);
     }
 
     @Override

@@ -89,7 +89,8 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob
                 this.worldObj.spawnEntityInWorld(entity);
             }
 
-            new ItemDrop(new ItemStack(AliensVsPredator.items().itemRoyalJelly, this.jellyLevel / 4), 100).tryDrop(this);
+            ItemDrop dynamicJelly = new ItemDrop(100, new ItemStack(AliensVsPredator.items().itemRoyalJelly, this.jellyLevel / 4));
+            dynamicJelly.tryDrop(this);
         }
     }
 

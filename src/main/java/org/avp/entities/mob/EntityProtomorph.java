@@ -35,12 +35,6 @@ public class EntityProtomorph extends EntityXenomorph
     }
 
     @Override
-    protected void dropRareDrop(int par1)
-    {
-        super.dropRareDrop(par1);
-    }
-
-    @Override
     protected String getHurtSound()
     {
         return Sounds.SOUND_ALIEN_HURT.getKey();

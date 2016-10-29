@@ -1,6 +1,6 @@
 package org.avp.entities.mob;
 
-import org.avp.AliensVsPredator;
+import org.avp.EntityItemDrops;
 import org.avp.Sounds;
 import org.avp.items.ItemDisc;
 import org.avp.items.ItemFirearm;
@@ -200,10 +200,8 @@ public abstract class EntitySpeciesYautja extends EntityMob implements IFacehugS
     {
         super.onDeath(damagesource);
 
-        if (this.rand.nextInt(1) == 0)
-        {
-            this.entityDropItem(new ItemStack(AliensVsPredator.items().itemArtifactTech), 0.0F);
-        }
+        EntityItemDrops.PREDATOR_ARTIFACT.tryDrop(this);
+        EntityItemDrops.SKULL_PREDATOR.tryDrop(this);
     }
 
     @Override

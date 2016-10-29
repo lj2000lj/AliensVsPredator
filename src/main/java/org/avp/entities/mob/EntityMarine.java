@@ -4,6 +4,7 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import org.avp.AliensVsPredator;
+import org.avp.EntityItemDrops;
 import org.avp.Sounds;
 import org.avp.entities.EntityBullet;
 import org.avp.entities.EntityLiquidPool;
@@ -28,14 +29,15 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
 public class EntityMarine extends EntityCreature implements IMob, IRangedAttackMob, IEntitySelector
 {
-    private MarineTypes marineType;
+    private MarineTypes  marineType;
     private EntityAIBase aiRangedAttack;
-    private boolean isFiring;
-    private long lastShotFired;
+    private boolean      isFiring;
+    private long         lastShotFired;
 
     public EntityMarine(World world)
     {
@@ -52,7 +54,10 @@ public class EntityMarine extends EntityCreature implements IMob, IRangedAttackM
         this.tasks.addTask(4, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
         this.tasks.addTask(5, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, Entity.class, /** targetChance **/ 0, /** shouldCheckSight **/ false, /** nearbyOnly **/ false, this));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, Entity.class, /** targetChance **/
+            0, /** shouldCheckSight **/
+            false, /** nearbyOnly **/
+            false, this));
     }
 
     @Override
@@ -84,7 +89,7 @@ public class EntityMarine extends EntityCreature implements IMob, IRangedAttackM
 
         if (entity instanceof EntityCombatSynthetic)
             return false;
-        
+
         return false;
     }
 
@@ -93,7 +98,6 @@ public class EntityMarine extends EntityCreature implements IMob, IRangedAttackM
     {
         return true;
     }
-    
 
     public MarineTypes getMarineType()
     {
@@ -106,17 +110,6 @@ public class EntityMarine extends EntityCreature implements IMob, IRangedAttackM
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.6499999761581421D);
-    }
-
-    @Override
-    protected void dropFewItems(boolean hitByPlayer, int lootingLevel)
-    {
-        super.dropFewItems(hitByPlayer, lootingLevel);
-
-        if (hitByPlayer)
-        {
-            this.entityDropItem(new ItemStack(this.getMarineType().getFirearmItem().getAmmoType()), this.rand.nextInt(3));
-        }
     }
 
     @Override
@@ -178,6 +171,14 @@ public class EntityMarine extends EntityCreature implements IMob, IRangedAttackM
         {
             this.isFiring = Boolean.parseBoolean(getDataWatcher().getWatchableObjectString(17));
         }
+    }
+    
+    @Override
+    public void onDeath(DamageSource source)
+    {
+        super.onDeath(source);
+        
+        EntityItemDrops.AMMUNITION.tryDrop(this);
     }
 
     @Override

@@ -1,8 +1,5 @@
 package org.avp.entities.mob;
 
-import java.util.Random;
-
-import org.avp.AliensVsPredator;
 import org.avp.Sounds;
 import org.avp.entities.EntityAcidProjectile;
 
@@ -11,7 +8,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class EntitySpitter extends EntityXenomorph implements IRangedAttackMob
@@ -74,39 +70,25 @@ public class EntitySpitter extends EntityXenomorph implements IRangedAttackMob
     }
 
     @Override
-    public void attackEntityWithRangedAttack(EntityLivingBase par1EntityLivingBase, float f)
+    public void attackEntityWithRangedAttack(EntityLivingBase living, float damage)
     {
-        if (!par1EntityLivingBase.isDead)
+        if (!living.isDead)
         {
-            this.getLookHelper().setLookPosition(par1EntityLivingBase.posX, par1EntityLivingBase.posY + par1EntityLivingBase.getEyeHeight(), par1EntityLivingBase.posZ, 10.0F, this.getVerticalFaceSpeed());
+            this.getLookHelper().setLookPosition(living.posX, living.posY + living.getEyeHeight(), living.posZ, 10.0F, this.getVerticalFaceSpeed());
 
-            if (this.canEntityBeSeen(par1EntityLivingBase))
+            if (this.canEntityBeSeen(living))
             {
                 int attackDamage = 2;
 
-                EntityAcidProjectile entityacid = new EntityAcidProjectile(this.worldObj, this, par1EntityLivingBase, 1.6F, 14 - attackDamage * 4);
-                entityacid.setDamage(f * 2.0F + this.rand.nextGaussian() * 0.25D + attackDamage * 0.11F);
+                EntityAcidProjectile entityacid = new EntityAcidProjectile(this.worldObj, this, living, 1.6F, 14 - attackDamage * 4);
+                entityacid.setDamage(damage * 2.0F + this.rand.nextGaussian() * 0.25D + attackDamage * 0.11F);
+                
                 if (this.worldObj.getWorldTime() % 30 == 0)
                 {
                     this.worldObj.spawnEntityInWorld(entityacid);
                 }
             }
         }
-    }
-
-    @Override
-    protected void dropRareDrop(int par1)
-    {
-        if (new Random().nextInt(4) == 1)
-            this.entityDropItem(new ItemStack(AliensVsPredator.items().helmXeno), 1);
-        if (new Random().nextInt(4) == 1)
-            this.entityDropItem(new ItemStack(AliensVsPredator.items().plateXeno), 1);
-        if (new Random().nextInt(4) == 1)
-            this.entityDropItem(new ItemStack(AliensVsPredator.items().legsXeno), 1);
-        if (new Random().nextInt(4) == 1)
-            this.entityDropItem(new ItemStack(AliensVsPredator.items().bootsXeno), 1);
-
-        super.dropRareDrop(par1);
     }
 
     @Override

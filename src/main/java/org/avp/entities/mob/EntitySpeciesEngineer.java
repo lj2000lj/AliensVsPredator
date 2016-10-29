@@ -162,18 +162,6 @@ public abstract class EntitySpeciesEngineer extends EntityMob
     }
 
     @Override
-    protected void dropFewItems(boolean flag, int i)
-    {
-        ;
-    }
-
-    @Override
-    protected void dropRareDrop(int par1)
-    {
-        ;
-    }
-
-    @Override
     public boolean canDespawn()
     {
         return false;

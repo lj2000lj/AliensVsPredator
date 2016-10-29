@@ -63,9 +63,6 @@ public class EntityChestburster extends EntitySpeciesAlien implements IMob
         this.dataWatcher.addObject(16, new Byte((byte) 0));
     }
 
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
     @Override
     protected boolean isAIEnabled()
     {

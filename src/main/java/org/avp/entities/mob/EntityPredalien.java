@@ -1,9 +1,11 @@
 package org.avp.entities.mob;
 
+import org.avp.EntityItemDrops;
 import org.avp.Sounds;
 import org.avp.entities.EntityAcidPool;
 
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
@@ -66,21 +68,9 @@ public class EntityPredalien extends EntityXenomorph implements IMob
     }
 
     @Override
-    protected void dropRareDrop(int par1)
-    {
-        ;
-    }
-
-    @Override
     public void onDeath(DamageSource damageSource)
     {
         super.onDeath(damageSource);
-
-        if (this.worldObj.isRemote)
-        {
-            EntityAcidPool entity = new EntityAcidPool(this.worldObj);
-            entity.setLocationAndAngles(posX, posY, posZ, 0.0F, 0.0F);
-            this.worldObj.spawnEntityInWorld(entity);
-        }
+        EntityItemDrops.SKULL_PREDATOR.tryDrop(this);
     }
 }

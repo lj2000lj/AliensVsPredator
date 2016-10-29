@@ -87,6 +87,7 @@ public class RenderItemSummoner extends ItemRenderer
                 OpenGL.rotate(180F, 0F, 0F, 1F);
                 OpenGL.rotate(-45F, 0F, 1F, 0F);
                 textureCache.bind();
+                OpenGL.disableCullFace();
                 modelCache.render(null, 0F, 0F, 0F, 0F, 0F, Model.DEFAULT_BOX_TRANSLATION);
                 OpenGL.disableLighting();
             }

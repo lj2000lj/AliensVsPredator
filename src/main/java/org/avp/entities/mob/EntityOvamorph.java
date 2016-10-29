@@ -3,6 +3,7 @@ package org.avp.entities.mob;
 import java.util.ArrayList;
 
 import org.avp.AliensVsPredator;
+import org.avp.EntityItemDrops;
 import org.avp.packets.client.PacketOvamorphContainsFacehugger;
 
 import com.arisux.amdxlib.lib.world.CoordData;
@@ -77,6 +78,14 @@ public class EntityOvamorph extends EntitySpeciesAlien implements IMob
     {
         super.onLivingUpdate();
     }
+    
+    @Override
+    public void onDeath(DamageSource damagesource)
+    {
+        super.onDeath(damagesource);
+        
+        EntityItemDrops.ROYAL_JELLY_GENERIC.tryDrop(this);
+    }
 
     @Override
     protected boolean isAIEnabled()
@@ -94,12 +103,6 @@ public class EntityOvamorph extends EntitySpeciesAlien implements IMob
     protected boolean canDespawn()
     {
         return false;
-    }
-
-    @Override
-    protected void dropRareDrop(int rate)
-    {
-        this.dropItem(AliensVsPredator.items().itemRoyalJelly, 1);
     }
 
     @Override
@@ -177,6 +180,8 @@ public class EntityOvamorph extends EntitySpeciesAlien implements IMob
     protected void damageEntity(DamageSource source, float amount)
     {
         super.damageEntity(source, amount);
+        
+        EntityItemDrops.ROYAL_JELLY_SINGLE.tryDrop(this);
     }
 
     private void hatch()

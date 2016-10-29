@@ -1,14 +1,12 @@
 package org.avp.entities.mob;
 
 import org.avp.AliensVsPredator;
-import org.avp.ItemHandler;
+import org.avp.EntityItemDrops;
 import org.avp.Sounds;
 import org.avp.entities.EntityBullet;
 import org.avp.entities.EntityLiquidLatexPool;
 import org.avp.entities.EntityLiquidPool;
 import org.avp.util.IFacehugSelector;
-
-import com.arisux.amdxlib.lib.world.entity.player.inventory.Inventories;
 
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
@@ -28,7 +26,6 @@ import net.minecraft.entity.monster.EntityGolem;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
@@ -61,15 +58,6 @@ public class EntityCombatSynthetic extends EntityCreature implements IMob, IRang
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(80.0D);
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.5499999761581421D);
-    }
-
-    @Override
-    protected void dropFewItems(boolean rare, int chance)
-    {
-        super.dropFewItems(rare, chance);
-
-        ItemHandler items = AliensVsPredator.items();
-        this.entityDropItem(Inventories.randomItemStackFromArray(new Item[] { items.itemAmmoAC, items.itemAmmoAR, items.itemAmmoPistol, items.itemAmmoSMG }, rand), rand.nextInt(6));
     }
 
     @Override
@@ -152,6 +140,8 @@ public class EntityCombatSynthetic extends EntityCreature implements IMob, IRang
     public void onDeath(DamageSource damagesource)
     {
         super.onDeath(damagesource);
+        
+        EntityItemDrops.AMMUNITION.tryDrop(this);
 
         if (!this.worldObj.isRemote)
         {
