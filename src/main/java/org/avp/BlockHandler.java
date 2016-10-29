@@ -36,6 +36,11 @@ import org.avp.block.BlockUnidentifiedTreeSapling;
 import org.avp.block.BlockUnidentifiedTreeTendon;
 import org.avp.block.BlockWall;
 import org.avp.block.BlockWorkstation;
+import org.avp.block.skulls.BlockSkullEngineer;
+import org.avp.block.skulls.BlockSkullSpaceJockey;
+import org.avp.block.skulls.BlockSkullXenomorph;
+import org.avp.block.skulls.BlockSkullXenomorphWarrior;
+import org.avp.block.skulls.BlockSkullYautja;
 
 import com.arisux.amdxlib.lib.game.Game;
 import com.arisux.amdxlib.lib.game.IInitEvent;
@@ -217,9 +222,21 @@ public class BlockHandler implements IInitEvent
                                                           }).setHardness(5F).setResistance(30.0F).setLightOpacity(0);
     public Block               blockIndustrialGlassStairs = (new BlockCustomStairs(blockIndustrialGlass)).setHardness(5F).setResistance(30.0F).setLightOpacity(0);
 
+    public Block blockSkullEngineer = new BlockSkullEngineer();
+    public Block blockSkullSpaceJockey = new BlockSkullSpaceJockey();
+    public Block blockSkullXenomorph = new BlockSkullXenomorph();
+    public Block blockSkullXenomorphWarrior = new BlockSkullXenomorphWarrior();
+    public Block blockSkullYautja = new BlockSkullYautja();
+
     @Override
     public void init(FMLInitializationEvent event)
     {
+        Game.register(AliensVsPredator.ID, blockSkullEngineer, "skull.engineer").setCreativeTab(AliensVsPredator.tabMain());
+        Game.register(AliensVsPredator.ID, blockSkullSpaceJockey, "skull.spacejockey").setCreativeTab(AliensVsPredator.tabMain());
+        Game.register(AliensVsPredator.ID, blockSkullXenomorph, "skull.xenomorph").setCreativeTab(AliensVsPredator.tabMain());
+        Game.register(AliensVsPredator.ID, blockSkullXenomorphWarrior, "skull.xenomorph.warrior").setCreativeTab(AliensVsPredator.tabMain());
+        Game.register(AliensVsPredator.ID, blockSkullYautja, "skull.yautja").setCreativeTab(AliensVsPredator.tabMain());
+        
         ShapedBlockUtil.register(AliensVsPredator.ID, terrainUniDirt, "unidirt");
         ShapedBlockUtil.register(AliensVsPredator.ID, terrainUniStone, "unistone");
         ShapedBlockUtil.register(AliensVsPredator.ID, terrainUniSand, "unisand");

@@ -20,6 +20,7 @@ import org.avp.entities.EntitySmartDisc;
 import org.avp.entities.EntitySpear;
 import org.avp.entities.EntitySupplyChute;
 import org.avp.entities.EntityTurret;
+import org.avp.entities.mob.EntityAethon;
 import org.avp.entities.mob.EntityAqua;
 import org.avp.entities.mob.EntityChestburster;
 import org.avp.entities.mob.EntityCombatSynthetic;
@@ -63,6 +64,7 @@ import org.avp.entities.tile.TileEntityR2PConverter;
 import org.avp.entities.tile.TileEntityRepulsionGenerator;
 import org.avp.entities.tile.TileEntitySatelliteDish;
 import org.avp.entities.tile.TileEntitySatelliteModem;
+import org.avp.entities.tile.TileEntitySkull;
 import org.avp.entities.tile.TileEntitySolarPanel;
 import org.avp.entities.tile.TileEntityStasisMechanism;
 import org.avp.entities.tile.TileEntitySupplyCrate;
@@ -120,6 +122,7 @@ public class EntityHandler implements IInitEvent
         GameRegistry.registerTileEntity(TileEntityGunLocker.class, "tileEntityGunLocker");
         GameRegistry.registerTileEntity(TileEntityMedpod.class, "tileEntityMedpod");
         GameRegistry.registerTileEntity(TileEntitySupplyCrate.class, "tileEntitySupplyCrate");
+        GameRegistry.registerTileEntity(TileEntitySkull.class, "tile.avp.skull");
     }
 
     private void registerRemappedEntities()
@@ -198,6 +201,7 @@ public class EntityHandler implements IInitEvent
         Game.register(EntityDeaconShark.class, "DeaconShark", entityId++, AliensVsPredator.instance(), 250, 1, true);
         Game.register(EntityUltramorph.class, "Ultramorph", entityId++, AliensVsPredator.instance(), 250, 1, true);
         Game.register(EntityGooMutant.class, "GooMutant", entityId++, AliensVsPredator.instance(), 250, 1, true);
+        Game.register(EntityAethon.class, "Aethon", entityId++, AliensVsPredator.instance(), 250, 1, true);
     }
 
     private void registerSpawns()

@@ -26,6 +26,7 @@ import org.avp.entities.EntityShuriken;
 import org.avp.entities.EntitySmartDisc;
 import org.avp.entities.EntitySpear;
 import org.avp.entities.EntitySupplyChute;
+import org.avp.entities.mob.EntityAethon;
 import org.avp.entities.mob.EntityAqua;
 import org.avp.entities.mob.EntityChestburster;
 import org.avp.entities.mob.EntityCombatSynthetic;
@@ -54,6 +55,7 @@ import org.avp.entities.mob.EntityWarrior;
 import org.avp.entities.mob.EntityXenomorph;
 import org.avp.entities.mob.EntityYautja;
 import org.avp.entities.mob.EntityYautjaBerserker;
+import org.avp.entities.mob.render.RenderAethon;
 import org.avp.entities.mob.render.RenderAqua;
 import org.avp.entities.mob.render.RenderChestburster;
 import org.avp.entities.mob.render.RenderCombatSynthetic;
@@ -105,6 +107,7 @@ import org.avp.entities.tile.TileEntityR2PConverter;
 import org.avp.entities.tile.TileEntityRepulsionGenerator;
 import org.avp.entities.tile.TileEntitySatelliteDish;
 import org.avp.entities.tile.TileEntitySatelliteModem;
+import org.avp.entities.tile.TileEntitySkull;
 import org.avp.entities.tile.TileEntitySolarPanel;
 import org.avp.entities.tile.TileEntityStasisMechanism;
 import org.avp.entities.tile.TileEntitySupplyCrate;
@@ -128,6 +131,7 @@ import org.avp.entities.tile.render.RenderR2PConverter;
 import org.avp.entities.tile.render.RenderRepulsionGenerator;
 import org.avp.entities.tile.render.RenderSatelliteDish;
 import org.avp.entities.tile.render.RenderSatelliteModem;
+import org.avp.entities.tile.render.RenderSkull;
 import org.avp.entities.tile.render.RenderSolarPanel;
 import org.avp.entities.tile.render.RenderStasisMechanism;
 import org.avp.entities.tile.render.RenderSupplyCrate;
@@ -161,6 +165,7 @@ import org.avp.items.render.RenderItemPowercell;
 import org.avp.items.render.RenderItemPowerline;
 import org.avp.items.render.RenderItemRepulsionGenerator;
 import org.avp.items.render.RenderItemSatelliteDish;
+import org.avp.items.render.RenderItemSkull;
 import org.avp.items.render.RenderItemSniper;
 import org.avp.items.render.RenderItemSolarPanel;
 import org.avp.items.render.RenderItemSpear;
@@ -264,13 +269,13 @@ public class Renderers implements IPostInitEvent
         registerEntityRenderingHandler(EntityYautjaBerserker.class, new RenderYautjaBerserker());
         registerEntityRenderingHandler(EntityTrilobite.class, new RenderTrilobite());
         registerEntityRenderingHandler(EntityHammerpede.class, new RenderHammerpede());
-        registerEntityRenderingHandler(EntityProtomorph.class, new RenderXenomorph(AliensVsPredator.resources().models().PROTOMORPH).setScale(1.4F));
-        registerEntityRenderingHandler(EntityDrone.class, new RenderXenomorph(AliensVsPredator.resources().models().DRONE_ADVANCED, 0.75F));
-        registerEntityRenderingHandler(EntityWarrior.class, new RenderXenomorph(AliensVsPredator.resources().models().WARRIOR, 0.75F));
+        registerEntityRenderingHandler(EntityProtomorph.class, new RenderXenomorph(AliensVsPredator.resources().models().PROTOMORPH, 1.4F));
+        registerEntityRenderingHandler(EntityDrone.class, new RenderXenomorph(AliensVsPredator.resources().models().DRONE_ADVANCED, 0.9F));
+        registerEntityRenderingHandler(EntityWarrior.class, new RenderXenomorph(AliensVsPredator.resources().models().WARRIOR, 1F));
         registerEntityRenderingHandler(EntityPraetorian.class, new RenderXenomorph(AliensVsPredator.resources().models().PRAETORIAN, 1.4F));
-        registerEntityRenderingHandler(EntityRunnerDrone.class, new RenderXenomorph(AliensVsPredator.resources().models().RUNNER_DRONE, 0.85F));
-        registerEntityRenderingHandler(EntityRunnerWarrior.class, new RenderXenomorph(AliensVsPredator.resources().models().RUNNER_WARRIOR, 0.95F));
-        registerEntityRenderingHandler(EntityCrusher.class, new RenderXenomorph(AliensVsPredator.resources().models().CRUSHER, 0.5F));
+        registerEntityRenderingHandler(EntityRunnerDrone.class, new RenderXenomorph(AliensVsPredator.resources().models().RUNNER_DRONE, 0.9F));
+        registerEntityRenderingHandler(EntityRunnerWarrior.class, new RenderXenomorph(AliensVsPredator.resources().models().RUNNER_WARRIOR, 1F));
+        registerEntityRenderingHandler(EntityCrusher.class, new RenderXenomorph(AliensVsPredator.resources().models().CRUSHER, 1F));
         registerEntityRenderingHandler(EntityAqua.class, new RenderAqua());
         registerEntityRenderingHandler(EntityPredalien.class, new RenderPredalien());
         registerEntityRenderingHandler(EntitySpitter.class, new RenderSpitter());
@@ -285,6 +290,7 @@ public class Renderers implements IPostInitEvent
         registerEntityRenderingHandler(EntityDeaconShark.class, new RenderDeaconShark());
         registerEntityRenderingHandler(EntityUltramorph.class,  new RenderXenomorph(AliensVsPredator.resources().models().ULTRAMORPH, 1.5F));
         registerEntityRenderingHandler(EntityGooMutant.class, new RenderGooMutant());
+        registerEntityRenderingHandler(EntityAethon.class, new RenderAethon());
     }
 
     private void registerStandardEntityRenderers()
@@ -309,6 +315,12 @@ public class Renderers implements IPostInitEvent
 
     private void registerItemRenderers(ItemHandler items)
     {
+        registerItemRenderer(Item.getItemFromBlock(AliensVsPredator.blocks().blockSkullEngineer), new RenderItemSkull());
+        registerItemRenderer(Item.getItemFromBlock(AliensVsPredator.blocks().blockSkullSpaceJockey), new RenderItemSkull());
+        registerItemRenderer(Item.getItemFromBlock(AliensVsPredator.blocks().blockSkullXenomorph), new RenderItemSkull());
+        registerItemRenderer(Item.getItemFromBlock(AliensVsPredator.blocks().blockSkullXenomorphWarrior), new RenderItemSkull());
+        registerItemRenderer(Item.getItemFromBlock(AliensVsPredator.blocks().blockSkullYautja), new RenderItemSkull());
+        
         registerItemRenderer(Item.getItemFromBlock(AliensVsPredator.blocks().blockTurret), new RenderItemTurret());
         registerItemRenderer(Item.getItemFromBlock(AliensVsPredator.blocks().blockWorkstation), new RenderItemWorkstation());
         registerItemRenderer(Item.getItemFromBlock(AliensVsPredator.blocks().blockStasisMechanism), new RenderItemStasisMechanism());
@@ -368,6 +380,7 @@ public class Renderers implements IPostInitEvent
         registerItemRenderer(items.itemSummonerDeaconShark, (new RenderItemSummoner(EntityDeaconShark.class)).setScale(7.5F).setY(8F));
         registerItemRenderer(items.itemSummonerUltramorph, (new RenderItemSummoner(EntityUltramorph.class)).setScale(7.5F).setY(6F));
         registerItemRenderer(items.itemSummonerGooMutant, (new RenderItemSummoner(EntityGooMutant.class)).setScale(7.5F).setY(6F));
+        registerItemRenderer(items.itemSummonerAethon, (new RenderItemSummoner(EntityAethon.class)).setScale(7.5F).setY(6F));
 
         TexturedModel<Model88MOD4> _88MOD4 = AliensVsPredator.resources().models()._88MOD4;
         registerItemRenderer(items.itemPistolBarrel, new RenderItem88Mod4Barrel(_88MOD4, _88MOD4.getModel().getBarrel()));
@@ -430,6 +443,7 @@ public class Renderers implements IPostInitEvent
         bindTileEntitySpecialRenderer(TileEntitySatelliteDish.class, new RenderSatelliteDish());
         bindTileEntitySpecialRenderer(TileEntitySupplyCrate.class, new RenderSupplyCrate());
         bindTileEntitySpecialRenderer(TileEntityHiveResin.class, new RenderHiveResin());
+        bindTileEntitySpecialRenderer(TileEntitySkull.class, new RenderSkull());
     }
 
     private void registerSimpleBlockRenderingHandlers()

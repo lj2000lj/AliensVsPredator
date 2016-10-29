@@ -1,5 +1,6 @@
 package org.avp;
 
+import org.avp.entities.mob.model.ModelAethon;
 import org.avp.entities.mob.model.ModelAqua;
 import org.avp.entities.mob.model.ModelChestburster;
 import org.avp.entities.mob.model.ModelCrusher;
@@ -61,9 +62,9 @@ import com.arisux.amdxlib.AMDXLib;
 import com.arisux.amdxlib.lib.client.SpecialModelBiped;
 import com.arisux.amdxlib.lib.client.TexturedModel;
 import com.arisux.amdxlib.lib.client.render.IconSet;
-import com.arisux.amdxlib.lib.client.render.Texture;
 import com.arisux.amdxlib.lib.client.render.IconSet.BlockIconSet;
 import com.arisux.amdxlib.lib.client.render.IconSet.LiquidIconSet;
+import com.arisux.amdxlib.lib.client.render.Texture;
 import com.arisux.amdxlib.lib.client.render.wavefront.TriangulatedWavefrontModel;
 
 import cpw.mods.fml.relauncher.Side;
@@ -85,6 +86,7 @@ public class Resources
     @SuppressWarnings("all")
     public static class Models
     {
+        public final TexturedModel<ModelAethon>               AETHON                         = new TexturedModel(new ModelAethon(), new Texture(AliensVsPredator.ID, "textures/mob/aethon.png"));
         public final TexturedModel<ModelRunnerDrone>          RUNNER_DRONE                   = new TexturedModel(new ModelRunnerDrone(), new Texture(AliensVsPredator.ID, "textures/mob/runner_drone.png"));
         public final TexturedModel<ModelRunnerWarrior>        RUNNER_WARRIOR                 = new TexturedModel(new ModelRunnerWarrior(), new Texture(AliensVsPredator.ID, "textures/mob/runner_warrior.png"));
         public final TexturedModel<Model88MOD4>               _88MOD4                        = new TexturedModel(new Model88MOD4(), new Texture(AliensVsPredator.ID, "textures/items/models/88mod4.png"));
@@ -160,6 +162,9 @@ public class Resources
         public final TexturedModel<ModelHiveResin>            HIVE_RESIN                     = new TexturedModel(new ModelHiveResin(), new Texture(AliensVsPredator.ID, "textures/tile/hive-resin.png"));
         public final TexturedModel<ModelGooMutant>            GOO_MUTANT                     = new TexturedModel(new ModelGooMutant(), new Texture(AliensVsPredator.ID, "textures/mob/goomutant.png"));
         public final TriangulatedWavefrontModel               M577_APC                       = AMDXLib.loadWavefrontModel(AliensVsPredator.class, AliensVsPredator.ID, "m577apc", "/assets/avp/models/m577apc");
+        public final TexturedModel<ModelWarrior>              DRONE_SKULL                    = new TexturedModel(new ModelWarrior(), new Texture(AliensVsPredator.ID, "textures/mob/xenomorphskullgiger.png"));
+        public final TexturedModel<ModelWarrior>              WARRIOR_SKULL                  = new TexturedModel(new ModelWarrior(), new Texture(AliensVsPredator.ID, "textures/mob/xenomorphskullwarrior.png"));
+        public final TexturedModel<ModelYautja>               YAUTJA_SKULL                   = new TexturedModel(new ModelYautja(), new Texture(AliensVsPredator.ID, "textures/mob/yautjaskull.png"));
 
         // Xenomorph models with the new universal format
         public final TexturedModel<ModelUltramorph>           ULTRAMORPH                     = new TexturedModel(new ModelUltramorph(), new Texture(AliensVsPredator.ID, "textures/mob/ultramorph.png"));
