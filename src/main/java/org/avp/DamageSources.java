@@ -16,6 +16,7 @@ public class DamageSources extends DamageSource
     public static DamageSource bullet = (new DamageSource("bullet")).setProjectile();
     public static DamageSource smartdisc = (new DamageSource("smartdisc")).setProjectile();
     public static DamageSource shuriken = (new DamageSource("shuriken")).setProjectile();
+    public static DamageSource wristbracer = (new DamageSource("wristbracer"));
     public static DamageSource spear = (new DamageSource("spear")).setProjectile();
     public static DamageSource plasmacaster = (new DamageSource("plasmacaster")).setProjectile().setMagicDamage().setDamageBypassesArmor();
     public static DamageSource flamethrower = (new DamageSource("flamethrower")).setProjectile().setFireDamage().setDifficultyScaled();
@@ -40,6 +41,11 @@ public class DamageSources extends DamageSource
     public static DamageSource causeSpearDamage(Entity sourceEntity)
     {
         return (new EntityDamageSource(spear.getDamageType(), sourceEntity)).setProjectile();
+    }
+
+    public static DamageSource causeWristbracerDamage(Entity sourceEntity)
+    {
+        return wristbracer;
     }
 
     public static DamageSource causeShurikenDamage(Entity sourceEntity)

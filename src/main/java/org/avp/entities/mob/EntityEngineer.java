@@ -1,5 +1,6 @@
 package org.avp.entities.mob;
 
+import org.avp.DamageSources;
 import org.avp.EntityItemDrops;
 
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -29,7 +30,14 @@ public class EntityEngineer extends EntitySpeciesEngineer
     {
         super.onDeath(damagesource);
         
-        EntityItemDrops.SKULL_ENGINEER.tryDrop(this);
+        if (damagesource == DamageSources.wristbracer)
+        {
+            EntityItemDrops.SKULL_ENGINEER.tryDrop(this, 25);
+        }
+        else
+        {
+            EntityItemDrops.SKULL_ENGINEER.tryDrop(this);
+        }
     }
 
     @Override

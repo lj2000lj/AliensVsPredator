@@ -1,5 +1,6 @@
 package org.avp.entities.mob;
 
+import org.avp.DamageSources;
 import org.avp.EntityItemDrops;
 import org.avp.entities.ai.alien.EntitySelectorXenomorph;
 
@@ -251,8 +252,15 @@ public abstract class EntityXenomorph extends EntitySpeciesAlien implements IMob
         EntityItemDrops.XENO_HELM.tryDrop(this);
         EntityItemDrops.XENO_LEGS.tryDrop(this);
         EntityItemDrops.XENO_TORSO.tryDrop(this);
-        EntityItemDrops.SKULL_XENO_DRONE.tryDrop(this);
-        EntityItemDrops.SKULL_XENO_WARRIOR.tryDrop(this);
+
+        if (damagesource == DamageSources.wristbracer)
+        {
+            EntityItemDrops.SKULLS_XENO.tryDrop(this, 25);
+        }
+        else
+        {
+            EntityItemDrops.SKULLS_XENO.tryDrop(this);
+        }
     }
 
     @Override

@@ -1,5 +1,6 @@
 package org.avp.entities.mob;
 
+import org.avp.DamageSources;
 import org.avp.EntityItemDrops;
 import org.avp.Sounds;
 import org.avp.items.ItemDisc;
@@ -201,7 +202,15 @@ public abstract class EntitySpeciesYautja extends EntityMob implements IFacehugS
         super.onDeath(damagesource);
 
         EntityItemDrops.PREDATOR_ARTIFACT.tryDrop(this);
-        EntityItemDrops.SKULL_PREDATOR.tryDrop(this);
+
+        if (damagesource == DamageSources.wristbracer)
+        {
+            EntityItemDrops.SKULL_PREDATOR.tryDrop(this, 25);
+        }
+        else
+        {
+            EntityItemDrops.SKULL_PREDATOR.tryDrop(this);
+        }
     }
 
     @Override

@@ -1,6 +1,7 @@
 package org.avp.items;
 
 import org.avp.AliensVsPredator;
+import org.avp.DamageSources;
 import org.avp.Sounds;
 import org.avp.inventory.container.ContainerWristbracer;
 
@@ -11,7 +12,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.util.Constants;
 
 public class ItemWristbracer extends HookedItem
@@ -19,11 +19,10 @@ public class ItemWristbracer extends HookedItem
     @Override
     public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity)
     {
-        Sounds.SOUND_WEAPON_WRISTBLADES.playSound(entity);
-
         if (playersWristbracerContainsBlades(player))
         {
-            entity.attackEntityFrom(DamageSource.causePlayerDamage(player), getDamageToApply());
+            Sounds.SOUND_WEAPON_WRISTBLADES.playSound(entity, 1.0F, 1.0F );
+            entity.attackEntityFrom(DamageSources.causeWristbracerDamage(player), getDamageToApply());
 
             if (!player.worldObj.isRemote && !player.capabilities.isCreativeMode)
             {
