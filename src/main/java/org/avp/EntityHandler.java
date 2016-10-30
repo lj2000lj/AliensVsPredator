@@ -111,7 +111,6 @@ public class EntityHandler implements IInitEvent
         GameRegistry.registerTileEntity(TileEntityLightPanel.class, "tileEntityLightPanel");
         GameRegistry.registerTileEntity(TileEntitySatelliteModem.class, "tileEntitySatelliteModem");
         GameRegistry.registerTileEntity(TileEntitySatelliteDish.class, "tileEntitySatelliteDish");
-        GameRegistry.registerTileEntity(TileEntitySolarPanel.class, "tileEntitySolarPanel");
         GameRegistry.registerTileEntity(TileEntityTransformer.class, "tileEntityTransformer");
         GameRegistry.registerTileEntity(TileEntityNegativeTransformer.class, "tileEntityNegativeTransformer");
         GameRegistry.registerTileEntity(TileEntityR2PConverter.class, "tileEntityR2PConverter");
@@ -122,6 +121,7 @@ public class EntityHandler implements IInitEvent
         GameRegistry.registerTileEntity(TileEntityGunLocker.class, "tileEntityGunLocker");
         GameRegistry.registerTileEntity(TileEntityMedpod.class, "tileEntityMedpod");
         GameRegistry.registerTileEntity(TileEntitySupplyCrate.class, "tileEntitySupplyCrate");
+        GameRegistry.registerTileEntity(TileEntitySolarPanel.class, "tile.avp.solarpanel");
         GameRegistry.registerTileEntity(TileEntitySkull.class, "tile.avp.skull");
     }
 
