@@ -59,6 +59,12 @@ public class EntityCombatSynthetic extends EntityCreature implements IMob, IRang
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(80.0D);
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.5499999761581421D);
     }
+    
+    @Override
+    protected boolean canDespawn()
+    {
+        return false;
+    }
 
     @Override
     protected String getHurtSound()
