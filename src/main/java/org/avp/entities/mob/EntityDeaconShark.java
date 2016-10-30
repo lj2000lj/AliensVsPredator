@@ -31,17 +31,17 @@ import net.minecraft.world.World;
 
 public class EntityDeaconShark extends EntitySpeciesAlien
 {
-    private EntityAIWander wander;
+    private EntityAIWander                 wander;
     private EntityAIMoveTowardsRestriction moveTowardsRestriction;
-    private double distanceToTargetLastTick;
-    private IEntitySelector entitySelector = new IEntitySelector()
-    {
-        @Override
-        public boolean isEntityApplicable(Entity target)
-        {
-            return !(target instanceof EntityDeaconShark) && EntityDeaconShark.this.canEntityBeSeen(target);
-        }
-    };
+    private double                         distanceToTargetLastTick;
+    private IEntitySelector                entitySelector = new IEntitySelector()
+                                                          {
+                                                              @Override
+                                                              public boolean isEntityApplicable(Entity target)
+                                                              {
+                                                                  return !(target instanceof EntityDeaconShark) && EntityDeaconShark.this.canEntityBeSeen(target);
+                                                              }
+                                                          };
 
     public EntityDeaconShark(World worldIn)
     {
@@ -187,8 +187,17 @@ public class EntityDeaconShark extends EntitySpeciesAlien
     @Override
     public boolean getCanSpawnHere()
     {
-        AxisAlignedBB box = this.boundingBox.copy().expand(5, 10, 5);
-        return this.worldObj.checkNoEntityCollision(box) && this.worldObj.getCollidingBoundingBoxes(this, box).isEmpty();
+        AxisAlignedBB box = this.boundingBox.copy().expand(4, 10, 4);
+
+        if (this.worldObj.checkNoEntityCollision(box) && this.worldObj.getCollidingBoundingBoxes(this, box).isEmpty())
+        {
+            List<? extends Entity> entities = Entities.getEntitiesInCoordsRange(worldObj, EntityDeaconShark.class, new CoordData(this), 5, 32);
+            
+            System.out.println("attempted spawn: " + entities.isEmpty());
+            return entities.isEmpty();
+        }
+
+        return false;
     }
 
     @Override
@@ -254,10 +263,10 @@ public class EntityDeaconShark extends EntitySpeciesAlien
     class DeaconSharkMoveHelper extends EntityMoveHelper
     {
         private EntityDeaconShark shark = EntityDeaconShark.this;
-        private double posX;
-        private double posY;
-        private double posZ;
-        private double speed;
+        private double            posX;
+        private double            posY;
+        private double            posZ;
+        private double            speed;
 
         public DeaconSharkMoveHelper()
         {
