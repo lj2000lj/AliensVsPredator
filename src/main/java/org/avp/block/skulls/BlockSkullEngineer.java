@@ -14,18 +14,21 @@ import net.minecraft.client.model.ModelRenderer;
 public class BlockSkullEngineer extends BlockSkull
 {
     @SideOnly(Side.CLIENT)
-    private static final TexturedModel<ModelEngineer> model = AliensVsPredator.resources().models().ENGINEER;
+    private static class Resources
+    {
+        private static final TexturedModel<ModelEngineer> model = AliensVsPredator.resources().models().ENGINEER;
+    }
 
     @Override
     public ModelRenderer[] getSkullModelRenderers()
     {
-        ModelEngineer m = model.getModel();
+        ModelEngineer m = Resources.model.getModel();
         return new ModelRenderer[] { m.head1, m.head2, m.hose, m.rJaw, m.lJaw, m.nozzle1, m.nozzle2, m.nozzle3a, m.nozzle3b, m.nozzle3c, m.nozzle3d };
     }
 
     @Override
     public Texture getSkullTexture()
     {
-        return model.getTexture();
+        return Resources.model.getTexture();
     }
 }

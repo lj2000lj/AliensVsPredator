@@ -15,15 +15,18 @@ import net.minecraft.client.model.ModelRenderer;
 public class BlockSkullXenomorphWarrior extends BlockSkull
 {
     @SideOnly(Side.CLIENT)
-    private static final TexturedModel<ModelWarrior> model = AliensVsPredator.resources().models().WARRIOR_SKULL;
+    private static class Resources
+    {
+        private static final TexturedModel<ModelWarrior> model = AliensVsPredator.resources().models().WARRIOR_SKULL;
+    }
 
     @Override
     public ModelRenderer[] getSkullModelRenderers()
     {
-        ModelWarrior m = model.getModel();
+        ModelWarrior m = Resources.model.getModel();
         return new ModelRenderer[] { m.headBase, m.headSpine1, m.headSpine2, m.headTop, m.lHead, m.rHead, m.jaw, m.jaw2 };
     }
-    
+
     @Override
     public void preRenderTransforms()
     {
@@ -35,6 +38,6 @@ public class BlockSkullXenomorphWarrior extends BlockSkull
     @Override
     public Texture getSkullTexture()
     {
-        return model.getTexture();
+        return Resources.model.getTexture();
     }
 }
