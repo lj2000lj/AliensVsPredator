@@ -30,6 +30,11 @@ public class EntityGooMutant extends EntityMob implements IMob
                 return false;
             }
             
+            if (target instanceof EntitySpeciesAlien)
+            {
+                return false;
+            }
+            
             return true;
         }
     };
