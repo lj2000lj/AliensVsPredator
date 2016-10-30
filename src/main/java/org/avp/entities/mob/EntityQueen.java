@@ -227,21 +227,18 @@ public class EntityQueen extends EntityXenomorph implements IMob
 
     private void heal()
     {
-        if (this.worldObj.getWorldTime() % 10 == 0)
+        if (!this.worldObj.isRemote)
         {
-            if (this.getHealth() > this.getMaxHealth() - (this.getMaxHealth() / 4))
+            if (this.worldObj.getWorldTime() % 20 == 0)
             {
-                this.heal(2F);
-            }
-
-            if (this.getHealth() > 0 && this.getHealth() < this.getMaxHealth() / 4 * 3)
-            {
-                this.heal(2F);
-            }
-
-            if (this.getHealth() > 0 && this.getHealth() < this.getMaxHealth() / 4 * 2)
-            {
-                this.heal(2F);
+                if (this.getHealth() > this.getMaxHealth() / 4)
+                {
+                    this.heal(6F);
+                }
+                else if (this.worldObj.getWorldTime() % (20 * 2) == 0)
+                {
+                    this.heal(2F);
+                }
             }
         }
     }
