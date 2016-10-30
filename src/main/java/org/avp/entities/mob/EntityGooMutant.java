@@ -41,6 +41,7 @@ public class EntityGooMutant extends EntityMob implements IMob
         this.getNavigator().setBreakDoors(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityCreature.class, 1.0D, false));
+        this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
 //        this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityMob.class, 1.0D, false));
         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));
         this.tasks.addTask(6, new EntityAIMoveThroughVillage(this, 1.0D, false));
@@ -49,6 +50,7 @@ public class EntityGooMutant extends EntityMob implements IMob
         this.tasks.addTask(8, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityCreature.class, 0, true, false, mobSelector));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true, false, mobSelector));
     }
 
     @Override
