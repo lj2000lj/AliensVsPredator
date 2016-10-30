@@ -193,7 +193,6 @@ public class EntityDeaconShark extends EntitySpeciesAlien
         {
             List<? extends Entity> entities = Entities.getEntitiesInCoordsRange(worldObj, EntityDeaconShark.class, new CoordData(this), 5, 32);
             
-            System.out.println("attempted spawn: " + entities.isEmpty());
             return entities.isEmpty();
         }
 

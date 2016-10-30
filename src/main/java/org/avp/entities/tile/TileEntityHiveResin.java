@@ -130,7 +130,7 @@ public class TileEntityHiveResin extends TileEntity
         this.signature = signature;
     }
 
-    public void setBlockCovering(Block blockCovering)
+    public void setBlockCovering(Block blockCovering, int meta)
     {
         this.blockCovering = blockCovering;
     }
@@ -139,7 +139,7 @@ public class TileEntityHiveResin extends TileEntity
     {
         return this.blockCovering;
     }
-
+    
     @Override
     public Packet getDescriptionPacket()
     {

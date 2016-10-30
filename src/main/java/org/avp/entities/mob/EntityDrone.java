@@ -141,6 +141,7 @@ public class EntityDrone extends EntityXenomorph
                     if (coord != null)
                     {
                         Block block = coord.getBlock(this.worldObj);
+                        int meta = coord.getBlockMetadata(this.worldObj);
 
                         if (block != null)
                         {
@@ -160,7 +161,8 @@ public class EntityDrone extends EntityXenomorph
                             {
                                 TileEntityHiveResin resin = (TileEntityHiveResin) tileEntity;
                                 resin.setHiveSignature(this.getHive().getUniqueIdentifier());
-                                resin.setBlockCovering(block);
+                                resin.setBlockCovering(block, 0);
+                                this.worldObj.setBlockMetadataWithNotify((int)coord.x, (int)coord.y, (int)coord.z, meta, 3);
                                 this.hive.addResin(resin);
                             }
 
