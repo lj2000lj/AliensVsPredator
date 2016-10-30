@@ -25,6 +25,7 @@ import net.minecraft.entity.ai.EntityLookHelper;
 import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
@@ -186,7 +187,8 @@ public class EntityDeaconShark extends EntitySpeciesAlien
     @Override
     public boolean getCanSpawnHere()
     {
-        return false;
+        AxisAlignedBB box = this.boundingBox.copy().expand(5, 10, 5);
+        return this.worldObj.checkNoEntityCollision(box) && this.worldObj.getCollidingBoundingBoxes(this, box).isEmpty();
     }
 
     @Override
