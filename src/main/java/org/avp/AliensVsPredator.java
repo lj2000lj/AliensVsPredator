@@ -121,7 +121,6 @@ public class AliensVsPredator implements IMod
         return Resources.instance;
     }
 
-    @SideOnly(Side.CLIENT)
     public static Sounds sounds()
     {
         return Sounds.instance;

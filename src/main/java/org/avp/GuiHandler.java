@@ -6,6 +6,7 @@ import org.avp.entities.tile.TileEntitySupplyCrate;
 import org.avp.entities.tile.TileEntityTurret;
 import org.avp.gui.GuiAssembler;
 import org.avp.gui.GuiLocker;
+import org.avp.gui.GuiModSettings;
 import org.avp.gui.GuiSupplyCrate;
 import org.avp.gui.GuiTurret;
 import org.avp.gui.GuiWristbracer;
@@ -17,6 +18,7 @@ import com.arisux.amdxlib.lib.game.IInitEvent;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
@@ -68,11 +70,16 @@ public class GuiHandler implements IGuiHandler, IInitEvent
     @Override
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
     {
+        System.out.println("TRIED TO OPEN CLIENT GUI");
         if (ID == AliensVsPredator.properties().GUI_ASSEMBLER)
+        {
             return new GuiAssembler(player.inventory, (TileEntityAssembler) world.getTileEntity(x, y, z), world, x, y, z);
+        }
 
         if (ID == AliensVsPredator.properties().GUI_TURRET)
+        {
             return new GuiTurret(player, (TileEntityTurret) world.getTileEntity(x, y, z), world, x, y, z);
+        }
 
         if (ID == AliensVsPredator.properties().GUI_WRISTBRACER)
         {
@@ -92,6 +99,11 @@ public class GuiHandler implements IGuiHandler, IInitEvent
         if (ID == AliensVsPredator.properties().GUI_SUPPLYCRATE)
         {
             return new GuiSupplyCrate(player, (TileEntitySupplyCrate) (world.getTileEntity(x, y, z)));
+        }
+        
+        if (ID == AliensVsPredator.properties().GUI_GRAPHICSSETTINGS)
+        {
+            return new GuiModSettings(Minecraft.getMinecraft().currentScreen);
         }
 
         return null;

@@ -1,7 +1,7 @@
 package org.avp.event.client;
 
 import org.avp.AliensVsPredator;
-import org.avp.packets.server.PacketOpenWristbracerContainer;
+import org.avp.packets.server.PacketOpenContainer;
 
 import com.arisux.amdxlib.lib.game.Game;
 
@@ -19,7 +19,7 @@ public class WristBracerEvents
         {
             if (Game.minecraft().thePlayer.getCurrentEquippedItem().getItem() == AliensVsPredator.items().itemWristBlade && AliensVsPredator.keybinds().KEYBIND_ITEM_ACTION.isPressed())
             {
-                AliensVsPredator.network().sendToServer(new PacketOpenWristbracerContainer());
+                AliensVsPredator.network().sendToServer(new PacketOpenContainer(AliensVsPredator.properties().GUI_WRISTBRACER));
             }
         }
     }

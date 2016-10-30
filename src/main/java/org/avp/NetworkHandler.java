@@ -16,7 +16,8 @@ import org.avp.packets.server.PacketAssembleCurrentSchematic;
 import org.avp.packets.server.PacketDamageEntity;
 import org.avp.packets.server.PacketFireAPC;
 import org.avp.packets.server.PacketLaunchGrenade;
-import org.avp.packets.server.PacketOpenWristbracerContainer;
+import org.avp.packets.server.PacketOpenContainer;
+import org.avp.packets.server.PacketOpenGui;
 import org.avp.packets.server.PacketReadFromDataDevice;
 import org.avp.packets.server.PacketReloadFirearm;
 import org.avp.packets.server.PacketRemoveTurretTarget;
@@ -50,7 +51,7 @@ public class NetworkHandler extends SimpleNetworkWrapper implements IInitEvent
     public void init(FMLInitializationEvent event)
     {
         this.registerMessage(Side.SERVER, PacketAssembleCurrentSchematic.class);
-        this.registerMessage(Side.SERVER, PacketOpenWristbracerContainer.class);
+        this.registerMessage(Side.SERVER, PacketOpenContainer.class);
         this.registerMessage(Side.SERVER, PacketReloadFirearm.class);
         this.registerMessage(Side.SERVER, PacketLaunchGrenade.class);
         this.registerMessage(Side.SERVER, PacketFireAPC.class);
@@ -76,6 +77,7 @@ public class NetworkHandler extends SimpleNetworkWrapper implements IInitEvent
         this.registerMessage(Side.SERVER, PacketSyncEEPS.class);
         this.registerMessage(Side.SERVER, PacketSyncEEPPS.class);
         this.registerMessage(Side.CLIENT, PacketRotateTransformer.class);
+        this.registerMessage(Side.CLIENT, PacketOpenGui.class);
     }
 
     @SuppressWarnings("unchecked")
