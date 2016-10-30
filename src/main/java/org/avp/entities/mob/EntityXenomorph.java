@@ -232,7 +232,7 @@ public abstract class EntityXenomorph extends EntitySpeciesAlien implements IMob
             {
                 if (this.hive.getQueen().getOvipositorSize() < EntityQueen.OVIPOSITOR_THRESHOLD_SIZE || this.hive.getQueen().reproducing)
                 {
-                    if (this.hive.getQueen().getJellyLevel() < EntityQueen.OVIPOSITOR_JELLYLEVEL_THRESHOLD * 2)
+                    if (this.hive.getQueen().getJellyLevel() < EntityQueen.OVIPOSITOR_JELLYLEVEL_THRESHOLD * 2 && this.jellyLevel >= 80)
                     {
                         this.hive.getQueen().jellyLevel++;
                         this.jellyLevel--;

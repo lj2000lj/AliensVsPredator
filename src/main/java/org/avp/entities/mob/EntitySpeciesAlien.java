@@ -66,7 +66,7 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob
     @Override
     protected boolean canDespawn()
     {
-        return this.getJellyLevel() < 40;
+        return this.getJellyLevel() < 20;
     }
 
     @Override
@@ -96,7 +96,7 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob
 
     protected void tickEvolution()
     {
-        if (this.worldObj.getWorldTime() % 40 == 0)
+        if (this.worldObj.getWorldTime() % 10 == 0)
         {
             EvolutionType evolution = EvolutionType.getEvolutionMappingFor(this.getClass());
 
@@ -108,6 +108,7 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob
                 NBTTagCompound tag = new NBTTagCompound();
                 this.writeEntityToNBT(tag);
                 alien.readEntityFromNBT(tag);
+                alien.setJellyLevel(this.getJellyLevel() - evolution.getLevel());
                 this.setDead();
             }
         }
@@ -170,6 +171,19 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob
     {
         super.onUpdate();
 
+        if (this.worldObj.getWorldTime() % 40 == 0)
+        {
+            if (!this.worldObj.isRemote)
+            {
+                AliensVsPredator.network().sendToAll(new PacketJellyLevelUpdate(jellyLevel, Integer.valueOf(this.getEntityId())));
+            }
+        }
+
+        if (this.worldObj.getWorldTime() % (20 * 8) == 0)
+        {
+            this.jellyLevel++;
+        }
+
         this.tickEvolution();
         this.identifyHive();
         this.findRoyalJelly();
@@ -204,11 +218,6 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob
     public void setJellyLevel(int jellyLevel)
     {
         this.jellyLevel = jellyLevel;
-
-        if (!this.worldObj.isRemote)
-        {
-            AliensVsPredator.network().sendToAll(new PacketJellyLevelUpdate(jellyLevel, Integer.valueOf(this.getEntityId())));
-        }
     }
 
     @Override

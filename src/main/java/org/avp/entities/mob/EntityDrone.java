@@ -8,13 +8,10 @@ import org.avp.block.BlockHiveResin;
 import org.avp.entities.tile.TileEntityHiveResin;
 
 import com.arisux.amdxlib.lib.world.CoordData;
-import com.arisux.amdxlib.lib.world.entity.Entities;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -24,7 +21,6 @@ import net.minecraft.world.World;
 public class EntityDrone extends EntityXenomorph
 {
     public int  mobType;
-    private int resinLevel;
 
     public EntityDrone(World world)
     {
@@ -71,7 +67,6 @@ public class EntityDrone extends EntityXenomorph
     {
         super.onUpdate();
 
-        this.tickResinLevelAI();
         this.tickHiveBuildingAI();
 
         if (this.hive != null)
@@ -100,41 +95,15 @@ public class EntityDrone extends EntityXenomorph
         return super.attackEntityAsMob(entity);
     }
 
-    @SuppressWarnings("unchecked")
-    public void tickResinLevelAI()
-    {
-        this.resinLevel += 1;
-
-        ArrayList<EntityItem> entityItemList = (ArrayList<EntityItem>) Entities.getEntitiesInCoordsRange(worldObj, EntityItem.class, new CoordData(this), 12);
-
-        for (EntityItem entityItem : entityItemList)
-        {
-            if (entityItem.delayBeforeCanPickup <= 0)
-            {
-                ItemStack stack = entityItem.getDataWatcher().getWatchableObjectItemStack(10);
-
-                if (stack != null && stack.getItem() == AliensVsPredator.items().itemRoyalJelly)
-                {
-                    this.getNavigator().setPath(this.getNavigator().getPathToEntityLiving(entityItem), this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getAttributeValue());
-
-                    if (this.getDistanceToEntity(entityItem) < 1)
-                    {
-                        this.resinLevel += 1000;
-                        entityItem.setDead();
-                    }
-                    break;
-                }
-            }
-        }
-    }
-
     public void tickHiveBuildingAI()
     {
         if (!this.worldObj.isRemote)
         {
+            System.out.println(this.jellyLevel);
+            
             if (this.getHive() != null && this.worldObj.getWorldTime() % 10 == 0 && rand.nextInt(3) == 0)
             {
-                if (this.resinLevel >= 64)
+                if (this.jellyLevel >= 16)
                 {
                     CoordData coord = findNextSuitableResinLocation(2);
 
@@ -166,7 +135,7 @@ public class EntityDrone extends EntityXenomorph
                                 this.hive.addResin(resin);
                             }
 
-                            this.resinLevel -= 64;
+                            this.jellyLevel -= 16;
                         }
                     }
                 }
@@ -205,20 +174,11 @@ public class EntityDrone extends EntityXenomorph
     public void readEntityFromNBT(NBTTagCompound nbt)
     {
         super.readEntityFromNBT(nbt);
-
-        this.resinLevel = nbt.getInteger("resinLevel");
     }
 
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt)
     {
         super.writeEntityToNBT(nbt);
-
-        nbt.setInteger("resinLevel", this.resinLevel);
-    }
-
-    public int getResinLevel()
-    {
-        return resinLevel;
     }
 }

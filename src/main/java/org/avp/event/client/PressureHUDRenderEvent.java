@@ -12,10 +12,8 @@ import org.avp.dimension.varda.ProviderVarda;
 import org.avp.entities.extended.ExtendedEntityLivingBase;
 import org.avp.entities.extended.ExtendedEntityPlayer;
 import org.avp.entities.mob.EntityChestburster;
-import org.avp.entities.mob.EntityDrone;
 import org.avp.entities.mob.EntityMarine;
 import org.avp.entities.mob.EntitySpeciesAlien;
-import org.avp.entities.mob.EntityXenomorph;
 import org.avp.entities.tile.TileEntityPowercell;
 import org.avp.entities.tile.TileEntityStasisMechanism;
 import org.avp.util.IVoltageReceiver;
@@ -282,16 +280,6 @@ public class PressureHUDRenderEvent
                             if (entity instanceof EntitySpeciesAlien)
                             {
                                 fontrenderer.drawString("Jelly Level: " + ((EntitySpeciesAlien) entity).getJellyLevel(), subMenuX + subMenuPadding, subMenuStartY + (curEntry++ * subEntrySpacing), 0x666666);
-                            }
-
-                            if (entity instanceof EntityXenomorph)
-                            {
-                                ;
-                            }
-
-                            if (entity instanceof EntityDrone)
-                            {
-                                fontrenderer.drawString("Resin Level: " + ((EntityDrone) entity).getResinLevel(), subMenuX + subMenuPadding, subMenuStartY + (curEntry++ * subEntrySpacing), 0x666666);
                             }
 
                             if (entity instanceof EntityChestburster)
