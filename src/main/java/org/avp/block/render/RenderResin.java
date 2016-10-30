@@ -27,23 +27,26 @@ public class RenderResin implements ISimpleBlockRenderingHandler
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
     {
-        GraphicsSetting hiveTessellation = AliensVsPredator.settings().getHiveTesselation();
-        Block renderBlock = AliensVsPredator.blocks().blockStandardHiveResin;
-        TileEntityHiveResin resin = (TileEntityHiveResin) world.getTileEntity(x, y, z);
-
-        if (hiveTessellation != GraphicsSetting.LOW)
+        if (world != null)
         {
-            if (resin != null && resin.getBlockCovering() != null)
+            GraphicsSetting hiveTessellation = AliensVsPredator.settings().getHiveTesselation();
+            Block renderBlock = AliensVsPredator.blocks().blockStandardHiveResin;
+            TileEntityHiveResin resin = (TileEntityHiveResin) world.getTileEntity(x, y, z);
+
+            if (hiveTessellation != GraphicsSetting.LOW)
             {
-                renderBlock = resin.getBlockCovering();
+                if (resin != null && resin.getBlockCovering() != null)
+                {
+                    renderBlock = resin.getBlockCovering();
+                }
             }
-        }
 
-        if (resin != null && renderBlock != null)
-        {
-            RenderBlocks.getInstance().blockAccess = world;
-            RenderBlocks.getInstance().renderBlockAllFaces(renderBlock, x, y, z);
-            RenderBlocks.getInstance().blockAccess = null;
+            if (resin != null && renderBlock != null)
+            {
+                RenderBlocks.getInstance().blockAccess = world;
+                RenderBlocks.getInstance().renderBlockAllFaces(renderBlock, x, y, z);
+                RenderBlocks.getInstance().blockAccess = null;
+            }
         }
 
         return false;

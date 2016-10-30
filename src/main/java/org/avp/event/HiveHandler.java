@@ -81,7 +81,9 @@ public class HiveHandler implements IDataSaveHandler
 
             if (resin != null && resin.getBlockCovering() != null)
             {
+                int meta = event.world.getBlockMetadata(event.x, event.y, event.z);
                 event.world.setBlock(event.x, event.y, event.z, resin.getBlockCovering());
+                event.world.setBlockMetadataWithNotify(event.x, event.y, event.z,  meta, 3);
                 event.setCanceled(true);
             }
         }
@@ -106,7 +108,9 @@ public class HiveHandler implements IDataSaveHandler
 
         for (CoordData coord : new ArrayList<CoordData>(this.burntResin))
         {
+            int meta = event.world.getBlockMetadata((int) coord.x, (int) coord.y, (int) coord.z);
             event.world.setBlock((int) coord.x, (int) coord.y, (int) coord.z, coord.getBlock(event.world));
+            event.world.setBlockMetadataWithNotify((int) coord.x, (int) coord.y, (int) coord.z,  meta, 3);
             this.burntResin.remove(coord);
         }
 
