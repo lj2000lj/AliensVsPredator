@@ -74,11 +74,29 @@ public class BlockHandler implements IInitEvent
     public Block               blockTempleWall2           = (new BlockMaterial(Material.rock).setHardness(5F).setResistance(30.0F).setLightOpacity(255));
     public Block               blockWall                  = (new BlockMaterial(Material.iron)).setHardness(5F).setResistance(30.0F).setLightOpacity(255);
     public Block               blockCeiling               = (new BlockMaterial(Material.iron)).setHardness(5F).setResistance(30.0F).setLightOpacity(0);
-    public Block               blockCeilingFan            = (new BlockMaterial(Material.iron)).setHardness(5F).setResistance(30.0F);
+    public Block               blockCeilingFan            = (new BlockMaterial(Material.iron)
+                                                          {
+                                                              public boolean isOpaqueCube()
+                                                              {
+                                                                  return false;
+                                                              };
+                                                          }).setHardness(5F).setResistance(30.0F);
     public Block               blockCeiliingVent          = (new BlockMaterial(Material.iron)).setHardness(5F).setResistance(30.0F).setLightOpacity(0);
-    public Block               blockCeilingGrill          = ((new BlockMaterial(Material.iron)).setHardness(5F).setResistance(30.0F)).setLightOpacity(4);
+    public Block               blockCeilingGrill          = ((new BlockMaterial(Material.iron)
+                                                          {
+                                                              public boolean isOpaqueCube()
+                                                              {
+                                                                  return false;
+                                                              };
+                                                          }).setHardness(5F).setResistance(30.0F)).setLightOpacity(4);
     public Block               blockSkulls                = (new BlockMaterial(Material.rock));
-    public Block               blockFloorGrill            = ((new BlockMaterial(Material.iron)).setHardness(5F).setResistance(30.0F)).setLightOpacity(4);
+    public Block               blockFloorGrill            = ((new BlockMaterial(Material.iron)
+                                                          {
+                                                              public boolean isOpaqueCube()
+                                                              {
+                                                                  return false;
+                                                              };
+                                                          }).setHardness(5F).setResistance(30.0F)).setLightOpacity(4);
     public Block               blockIronBricks            = (new BlockMaterial(Material.iron).setHardness(5F).setResistance(30.0F).setLightOpacity(255));
     public Block               blockVerticalMetal         = (new BlockMaterial(Material.iron).setHardness(5F).setResistance(30.0F).setLightOpacity(255));
     public Block               blockColumnMetal1          = (new BlockMaterial(Material.iron).setHardness(5F).setResistance(30.0F).setLightOpacity(255));
@@ -222,11 +240,11 @@ public class BlockHandler implements IInitEvent
                                                           }).setHardness(5F).setResistance(30.0F).setLightOpacity(0);
     public Block               blockIndustrialGlassStairs = (new BlockCustomStairs(blockIndustrialGlass)).setHardness(5F).setResistance(30.0F).setLightOpacity(0);
 
-    public Block blockSkullEngineer = new BlockSkullEngineer();
-    public Block blockSkullSpaceJockey = new BlockSkullSpaceJockey();
-    public Block blockSkullXenomorph = new BlockSkullXenomorph();
-    public Block blockSkullXenomorphWarrior = new BlockSkullXenomorphWarrior();
-    public Block blockSkullYautja = new BlockSkullYautja();
+    public Block               blockSkullEngineer         = new BlockSkullEngineer();
+    public Block               blockSkullSpaceJockey      = new BlockSkullSpaceJockey();
+    public Block               blockSkullXenomorph        = new BlockSkullXenomorph();
+    public Block               blockSkullXenomorphWarrior = new BlockSkullXenomorphWarrior();
+    public Block               blockSkullYautja           = new BlockSkullYautja();
 
     @Override
     public void init(FMLInitializationEvent event)
@@ -236,7 +254,7 @@ public class BlockHandler implements IInitEvent
         Game.register(AliensVsPredator.ID, blockSkullXenomorph, "skull.xenomorph").setCreativeTab(AliensVsPredator.tabMain());
         Game.register(AliensVsPredator.ID, blockSkullXenomorphWarrior, "skull.xenomorph.warrior").setCreativeTab(AliensVsPredator.tabMain());
         Game.register(AliensVsPredator.ID, blockSkullYautja, "skull.yautja").setCreativeTab(AliensVsPredator.tabMain());
-        
+
         ShapedBlockUtil.register(AliensVsPredator.ID, terrainUniDirt, "unidirt");
         ShapedBlockUtil.register(AliensVsPredator.ID, terrainUniStone, "unistone");
         ShapedBlockUtil.register(AliensVsPredator.ID, terrainUniSand, "unisand");
