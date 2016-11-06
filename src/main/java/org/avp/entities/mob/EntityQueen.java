@@ -298,7 +298,10 @@ public class EntityQueen extends EntityXenomorph implements IMob
 
                             if (alien != null && alien.getHive() == null)
                             {
-                                System.out.println("Set hive signature on alien with uuid: " + alien.getUniqueID());
+                                if (Game.isDevEnvironment())
+                                {
+                                    System.out.println("Set hive signature on alien with uuid: " + alien.getUniqueID());
+                                }
                                 alien.setHiveSignature(this.hive.getUniqueIdentifier());
                             }
                         }
