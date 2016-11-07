@@ -15,7 +15,7 @@ import net.minecraft.entity.Entity;
 @SuppressWarnings("all")
 public enum EvolutionType
 {
-    CHESTBURSTER(0, 12, EntityChestburster.class, null), DRONE(1, 12, EntityDrone.class, EntityWarrior.class), WARRIOR(2, 32, EntityWarrior.class, EntityPraetorian.class), PRAETORIAN(3, 100, EntityPraetorian.class, EntityQueen.class), RUNNER_DRONE(4, 12, EntityRunnerDrone.class, EntityRunnerWarrior.class), RUNNER_WARRIOR(5, 32, EntityRunnerWarrior.class, EntityCrusher.class), CRUSHER(5, 32, EntityCrusher.class, EntityQueen.class);
+    CHESTBURSTER(0, 32, EntityChestburster.class, null), DRONE(1, 512, EntityDrone.class, EntityWarrior.class), WARRIOR(2, 1024, EntityWarrior.class, EntityPraetorian.class), PRAETORIAN(3, 4096, EntityPraetorian.class, EntityQueen.class), RUNNER_DRONE(4, 512, EntityRunnerDrone.class, EntityRunnerWarrior.class), RUNNER_WARRIOR(5, 1024, EntityRunnerWarrior.class, EntityCrusher.class), CRUSHER(5, 4096, EntityCrusher.class, EntityQueen.class);
 
     public int id;
     private int level;
