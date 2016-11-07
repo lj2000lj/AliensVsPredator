@@ -89,14 +89,15 @@ public class EntityQueen extends EntityXenomorph implements IMob
             this.targetTasks.taskEntries.clear();
         }
     }
-
+    
+    @Override
     protected void addStandardXenomorphAISet()
     {
         if (this.tasks.taskEntries.isEmpty() && this.targetTasks.taskEntries.isEmpty())
         {
             this.tasks.addTask(0, new EntityAISwimming(this));
-            this.tasks.addTask(8, new EntityAIWander(this, 0.8D));
-            this.tasks.addTask(3, new EntityAIAttackOnCollide(this, 0.8D, true));
+//            this.tasks.addTask(2, new EntityAIAttackOnCollide(this, 0.8D, false));
+            this.tasks.addTask(3, new EntityAIWander(this, 0.8D));
             this.targetTasks.addTask(0, new EntityAIHurtByTarget(this, true));
             this.targetTasks.addTask(2, new EntityAILeapAtTarget(this, 1.6F));
             this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, Entity.class, 0, false, false, EntitySelectorXenomorph.instance));
