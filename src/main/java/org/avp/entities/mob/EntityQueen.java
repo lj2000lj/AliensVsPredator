@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.avp.AliensVsPredator;
 import org.avp.Sounds;
+import org.avp.entities.ai.EntityAICustomAttackOnCollide;
 import org.avp.entities.ai.alien.EntitySelectorXenomorph;
 import org.avp.event.HiveHandler;
 import org.avp.packets.server.PacketSpawnEntity;
@@ -16,7 +17,6 @@ import com.arisux.amdxlib.lib.world.entity.Entities;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
@@ -97,7 +97,7 @@ public class EntityQueen extends EntityXenomorph implements IMob
         {
             this.tasks.addTask(0, new EntityAISwimming(this));
             this.tasks.addTask(1, new EntityAIWander(this, 0.8D));
-            this.tasks.addTask(4, new EntityAIAttackOnCollide(this, 0.8D, true));
+            this.tasks.addTask(4, new EntityAICustomAttackOnCollide(this, 0.8D, true));
             this.targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, Entity.class, 0, false, false, EntitySelectorXenomorph.instance));
             this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
             this.targetTasks.addTask(2, new EntityAILeapAtTarget(this, 1.6F));
