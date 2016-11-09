@@ -1,19 +1,20 @@
 package org.avp.items.render;
 
-import org.avp.AliensVsPredator;
 import org.lwjgl.opengl.GL11;
 
-import com.arisux.amdxlib.lib.client.render.OpenGL;
+import com.arisux.amdxlib.lib.client.Model;
+import com.arisux.amdxlib.lib.client.TexturedModel;
 import com.arisux.amdxlib.lib.client.render.ItemRenderer;
+import com.arisux.amdxlib.lib.client.render.OpenGL;
 import com.arisux.amdxlib.lib.game.Game;
 
 import net.minecraft.item.ItemStack;
 
 public class RenderItemM40 extends ItemRenderer
 {
-    public RenderItemM40()
+    public RenderItemM40(TexturedModel<? extends Model> model)
     {
-        super(AliensVsPredator.resources().models().M40GRENADE);
+        super(model);
     }
 
     @Override

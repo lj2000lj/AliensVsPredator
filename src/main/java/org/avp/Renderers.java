@@ -351,8 +351,8 @@ public class Renderers implements IPostInitEvent
         registerItemRenderer(items.itemSniper, new RenderItemSniper());
         registerItemRenderer(items.itemMotionTracker, new RenderItemMotionTracker());
         registerItemRenderer(items.itemAPC, new RenderItemAPC());
-        registerItemRenderer(items.itemGrenade, new RenderItemM40());
-        registerItemRenderer(items.itemIncendiaryGrenade, new RenderItemM40());
+        registerItemRenderer(items.itemGrenade, new RenderItemM40(AliensVsPredator.resources().models().M40GRENADE));
+        registerItemRenderer(items.itemIncendiaryGrenade, new RenderItemM40(AliensVsPredator.resources().models().M40GRENADE_INCENDIARY));
         
         registerItemRenderer(items.itemSummonerDrone, (new RenderItemSummoner(EntityDrone.class)).setScale(7.5F).setY(6F));
         registerItemRenderer(items.itemSummonerProtomorph, (new RenderItemSummoner(EntityProtomorph.class)).setScale(7.5F).setY(6F));
