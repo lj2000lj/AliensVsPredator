@@ -90,14 +90,30 @@ public class RenderItemWristbracer extends ItemRenderer
     {
         super.renderInInventory(item, data);
         
-        OpenGL.disable(GL11.GL_CULL_FACE);
         OpenGL.enable(GL11.GL_BLEND);
-        OpenGL.translate(8.5F, 0F, 0F);
-        OpenGL.translate(-10F, 6F, -3F);
+        OpenGL.disable(GL11.GL_CULL_FACE);
+        OpenGL.rotate(-45F, 0.0F, 1.0F, 0.0F);
+        OpenGL.translate(-16F, -7F, -18F);
         OpenGL.scale(33F, 33F, 33F);
         this.getModelTexMap().getTexture().bind();
         this.getModel().render();
         Model.draw(this.getModel().b6);
         Model.draw(this.getModel().bladeLeft);
+    }
+    
+    @Override
+    public void renderInWorld(ItemStack item, Object... data)
+    {
+        super.renderInWorld(item, data);
+        OpenGL.pushMatrix();
+        {
+            OpenGL.rotate((this.mc.theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
+            OpenGL.disable(GL11.GL_CULL_FACE);
+            this.getModelTexMap().getTexture().bind();
+            this.getModel().render();
+            Model.draw(this.getModel().b6);
+            Model.draw(this.getModel().bladeLeft);
+        }
+        OpenGL.popMatrix();
     }
 }

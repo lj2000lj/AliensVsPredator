@@ -4,6 +4,7 @@ import com.arisux.amdxlib.lib.client.Model;
 import com.arisux.amdxlib.lib.client.render.OpenGL;
 import com.arisux.amdxlib.lib.client.render.ItemRenderer;
 import com.arisux.amdxlib.lib.client.render.Texture;
+import com.arisux.amdxlib.lib.game.Game;
 import com.arisux.amdxlib.lib.world.entity.Entities;
 
 import net.minecraft.client.model.ModelBase;
@@ -122,7 +123,7 @@ public class RenderItemSummoner extends ItemRenderer
     public void renderInInventory(ItemStack item, Object... data)
     {
         scale = 7.5F;
-        OpenGL.translate(8F + x, -1.77F + y, -4F);
+        OpenGL.translate(8F + x, -2F + y, 4F);
         OpenGL.rotate(0F, 1.0F, 0.0F, 0.0F);
         OpenGL.scale(scale, scale, scale);
         this.renderCachedModel();
@@ -133,6 +134,8 @@ public class RenderItemSummoner extends ItemRenderer
     {
         OpenGL.rotate(180F, 0.0F, 0.0F, 1F);
         OpenGL.rotate(90F, 0.0F, 1F, 0F);
+        OpenGL.translate(0F, -2.5F, 0F);
+        OpenGL.rotate((this.mc.theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
 
         this.renderCachedModel();
     }

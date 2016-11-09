@@ -44,6 +44,7 @@ public class RenderItemSniper extends ItemRenderer
     {
         super.renderInWorld(item, data);
         OpenGL.translate(-0.1F, 0.5F, 0F);
+        OpenGL.rotate((Game.minecraft().theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
         OpenGL.scale(1F, -1F, 1F);
         OpenGL.disable(GL11.GL_CULL_FACE);
         this.getModelTexMap().draw();
@@ -125,10 +126,8 @@ public class RenderItemSniper extends ItemRenderer
     public void renderInInventory(ItemStack item, Object... data)
     {
         OpenGL.disable(GL11.GL_CULL_FACE);
-        OpenGL.rotate(0F, 1.0F, 0.0F, 0.0F);
-        OpenGL.rotate(-40F, 0.0F, 1.0F, 0.0F);
-        OpenGL.rotate(0F, 0.0F, 0.0F, 1.0F);
-        OpenGL.translate(0F, 5.77F, -10.85F);
+        OpenGL.rotate(45F, 0.0F, 1.0F, 0.0F);
+        OpenGL.translate(12F, 0F, 0F);
         float glScale = 20F;
         OpenGL.scale(glScale, glScale, glScale);
         new Texture(Remote.downloadResource(String.format(URLs.urlSkinSniper, Game.session().getPlayerID()), this.getModelTexMap().getTexture())).bind();;

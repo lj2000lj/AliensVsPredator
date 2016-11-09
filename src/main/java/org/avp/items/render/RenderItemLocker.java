@@ -4,6 +4,7 @@ import org.avp.AliensVsPredator;
 import org.lwjgl.opengl.GL11;
 
 import com.arisux.amdxlib.lib.client.render.OpenGL;
+import com.arisux.amdxlib.lib.game.Game;
 import com.arisux.amdxlib.lib.client.render.ItemRenderer;
 
 import net.minecraft.item.ItemStack;
@@ -49,12 +50,27 @@ public class RenderItemLocker extends ItemRenderer
         {
             float glScale = 8F;
             OpenGL.disable(GL11.GL_CULL_FACE);
-            OpenGL.translate(8F, 4F, 0F);
-            OpenGL.rotate(0F, 1.0F, 0.0F, 0.0F);
+            OpenGL.translate(8F, 8F, 0F);
+            OpenGL.rotate(45F, 0.0F, 1.0F, 0.0F);
             OpenGL.scale(glScale, glScale, glScale);
             OpenGL.enableLight();
             this.getModelTexMap().draw();
             OpenGL.disableLight();
+        }
+        OpenGL.popMatrix();
+    }
+    
+    @Override
+    public void renderInWorld(ItemStack item, Object... data)
+    {
+        super.renderInWorld(item, data);
+        OpenGL.pushMatrix();
+        {
+            OpenGL.scale(1F, -1F, 1F);
+            OpenGL.translate(0F, -1.5F, 0F);
+            OpenGL.rotate((Game.minecraft().theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
+            OpenGL.disable(GL11.GL_CULL_FACE);
+            this.getModelTexMap().draw();
         }
         OpenGL.popMatrix();
     }

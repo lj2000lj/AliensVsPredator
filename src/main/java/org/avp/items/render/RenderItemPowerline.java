@@ -31,11 +31,7 @@ public class RenderItemPowerline extends ItemRenderer
     @Override
     public void renderFirstPerson(ItemStack item, Object... data)
     {
-        OpenGL.pushMatrix();
-        {
-
-        }
-        OpenGL.popMatrix();
+        ;
     }
 
     @Override
@@ -43,15 +39,15 @@ public class RenderItemPowerline extends ItemRenderer
     {
         OpenGL.pushMatrix();
         {
-            float glScale = 12F;
+            float glScale = 14F;
             OpenGL.disable(GL11.GL_TEXTURE_2D);
             OpenGL.scale(glScale, glScale, glScale);
-            OpenGL.translate(1.1, -0.1, 0);
-            OpenGL.rotate(45, 1, 0, 1);
+            OpenGL.translate(1.3, 0, 0);
+            OpenGL.rotate(45, 0, 0, 1);
+            OpenGL.rotate(0, 0, 1, 0);
             OpenGL.color4i(0xFF222222);
-            OpenGL.enableLight();
             this.getModelTexMap().drawStandaloneModel();
-            OpenGL.disableLight();
+            OpenGL.color4i(0xFF222222);
             OpenGL.enable(GL11.GL_TEXTURE_2D);
         }
         OpenGL.popMatrix();
@@ -62,11 +58,11 @@ public class RenderItemPowerline extends ItemRenderer
     {
         super.renderInWorld(item, data);
         OpenGL.disable(GL11.GL_TEXTURE_2D);
-        OpenGL.rotate(Game.minecraft().thePlayer.worldObj.getWorldTime() % 360 * 6, 0.0F, 1.0F, 0.0F);
+        OpenGL.rotate((Game.minecraft().theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
         OpenGL.disable(GL11.GL_CULL_FACE);
-        OpenGL.enableLight();
         OpenGL.color4i(0xFF222222);
         this.getModelTexMap().drawStandaloneModel();
+        OpenGL.color4i(0xFFFFFFFF);
         OpenGL.enable(GL11.GL_TEXTURE_2D);
     }
 }

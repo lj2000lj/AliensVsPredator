@@ -33,7 +33,6 @@ public class RenderItemPowercell extends ItemRenderer
             OpenGL.translate(0F, -1.3F, 0.4F);
             OpenGL.disable(GL11.GL_CULL_FACE);
             this.getModelTexMap().draw();
-            OpenGL.disableLight();
             AliensVsPredator.resources().models().POWERCELL_LIQUID.draw();
             
         }
@@ -53,7 +52,6 @@ public class RenderItemPowercell extends ItemRenderer
                 OpenGL.rotate(45.0F, 0.0F, 0.0F, 1.0F);
                 OpenGL.disable(GL11.GL_CULL_FACE);
                 this.getModelTexMap().draw();
-                OpenGL.disableLight();
                 AliensVsPredator.resources().models().POWERCELL_LIQUID.draw();
             }
         }
@@ -67,14 +65,12 @@ public class RenderItemPowercell extends ItemRenderer
         OpenGL.pushMatrix();
         {
             OpenGL.scale(glScale, -glScale, glScale);
-            OpenGL.translate(0.65F, -1.55F, 0F);
-            OpenGL.rotate(30, 1.0F, 0.0F, 0.0F);
+            OpenGL.translate(0.65F, -1.9F, 0F);
+            OpenGL.rotate(45, 0.0F, 1.0F, 0.0F);
             OpenGL.translate(0F, 0F, 0F);
             OpenGL.disable(GL11.GL_CULL_FACE);
             this.getModelTexMap().draw();
-            OpenGL.disableLight();
             AliensVsPredator.resources().models().POWERCELL_LIQUID.draw();
-            OpenGL.enableLight();
         }
         OpenGL.popMatrix();
     }
@@ -85,12 +81,10 @@ public class RenderItemPowercell extends ItemRenderer
         super.renderInWorld(item, data);
         OpenGL.pushMatrix();
         {
-            OpenGL.rotate(Game.minecraft().thePlayer.worldObj.getWorldTime() % 360 * 6, 0.0F, 1.0F, 0.0F);
+            OpenGL.rotate((Game.minecraft().theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
             OpenGL.disable(GL11.GL_CULL_FACE);
             this.getModelTexMap().draw();
-            OpenGL.disableLight();
             AliensVsPredator.resources().models().POWERCELL_LIQUID.draw();
-            OpenGL.enableLight();
         }
         OpenGL.popMatrix();
     }

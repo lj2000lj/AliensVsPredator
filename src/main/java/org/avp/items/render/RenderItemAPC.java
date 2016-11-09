@@ -67,16 +67,15 @@ public class RenderItemAPC extends ItemRenderer
 
         OpenGL.pushMatrix();
         {
-            float scale = 3.5F;
-            OpenGL.enableLight();
+            float scale = 2.5F;
+            OpenGL.rotate(45F, 0.0F, 1.0F, 0.0F);
+            OpenGL.translate(20F, -7F, -8F);
             OpenGL.scale(scale, -scale, scale);
-            OpenGL.translate(1.5F, -3.5F, 0F);
 
             for (Part p : AliensVsPredator.resources().models().M577_APC.parts.values())
             {
                 p.draw();
             }
-            OpenGL.disableLight();
         }
         OpenGL.popMatrix();
     }
@@ -90,7 +89,7 @@ public class RenderItemAPC extends ItemRenderer
         {
             OpenGL.scale(0.2F, 0.2F, 0.2F);
             OpenGL.translate(0, -1F, 0);
-            OpenGL.rotate(Game.minecraft().thePlayer.worldObj.getWorldTime() % 360 * 6, 0.0F, 1.0F, 0.0F);
+            OpenGL.rotate((Game.minecraft().theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
 
             for (Part p : AliensVsPredator.resources().models().M577_APC.parts.values())
             {

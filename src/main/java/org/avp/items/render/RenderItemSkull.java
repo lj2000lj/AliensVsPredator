@@ -59,9 +59,7 @@ public class RenderItemSkull extends ItemRenderer
             OpenGL.translate(8F, 1F, -16F);
             OpenGL.rotate(0F, 1.0F, 0.0F, 0.0F);
             OpenGL.scale(glScale, glScale, glScale);
-            OpenGL.enableLight();
             this.draw((BlockSkull) Block.getBlockFromItem(item.getItem()));
-            OpenGL.disableLight();
         }
         OpenGL.popMatrix();
     }
@@ -73,12 +71,9 @@ public class RenderItemSkull extends ItemRenderer
         {
             float glScale = 1F;
             OpenGL.disable(GL11.GL_CULL_FACE);
-//            OpenGL.translate(8F, 1F, -16F);
             OpenGL.rotate((this.mc.theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
             OpenGL.scale(glScale, -glScale, glScale);
-            OpenGL.enableLight();
             this.draw((BlockSkull) Block.getBlockFromItem(item.getItem()));
-            OpenGL.disableLight();
         }
         OpenGL.popMatrix();
     }

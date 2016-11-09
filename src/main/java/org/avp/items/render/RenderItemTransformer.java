@@ -62,8 +62,8 @@ public class RenderItemTransformer extends ItemRenderer
         OpenGL.pushMatrix();
         {
             OpenGL.scale(glScale, glScale, glScale);
-            OpenGL.translate(0.72F, -0.15F, 0F);
-            OpenGL.rotate(-30, 1.0F, 0.0F, 0.0F);
+            OpenGL.translate(0.72F, -0.25F, 0F);
+            OpenGL.rotate(-45, 0.0F, -1.0F, 0.0F);
             OpenGL.translate(0F, 0F, 0F);
             OpenGL.disable(GL11.GL_CULL_FACE);
             OpenGL.enable(GL11.GL_BLEND);
@@ -78,10 +78,9 @@ public class RenderItemTransformer extends ItemRenderer
         super.renderInWorld(item, data);
         OpenGL.pushMatrix();
         {
-            OpenGL.rotate(Game.minecraft().thePlayer.worldObj.getWorldTime() % 360 * 6, 0.0F, 1.0F, 0.0F);
+            OpenGL.rotate((this.mc.theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
             OpenGL.disable(GL11.GL_CULL_FACE);
             this.getModelTexMap().draw();
-            OpenGL.enableLight();
         }
         OpenGL.popMatrix();
     }

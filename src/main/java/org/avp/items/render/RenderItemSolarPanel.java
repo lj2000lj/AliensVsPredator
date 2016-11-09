@@ -55,8 +55,8 @@ public class RenderItemSolarPanel extends ItemRenderer
         {
             float glScale = 12F;
             OpenGL.scale(glScale, -glScale, glScale);
-            OpenGL.translate(0.65F, -2F, 0F);
-            OpenGL.rotate(30, 1.0F, 0.0F, 0.0F);
+            OpenGL.translate(0.65F, -2.4F, 0F);
+            OpenGL.rotate(45F, 0F, 1F, 0F);
             OpenGL.translate(0F, 0F, 0F);
             OpenGL.disable(GL11.GL_CULL_FACE);
             this.getModelTexMap().draw();
@@ -69,7 +69,7 @@ public class RenderItemSolarPanel extends ItemRenderer
     {
         super.renderInWorld(item, data);
         OpenGL.translate(0, -1F, 0);
-        OpenGL.rotate(Game.minecraft().thePlayer.worldObj.getWorldTime() % 360 * 6, 0.0F, 1.0F, 0.0F);
+        OpenGL.rotate((Game.minecraft().theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
         OpenGL.disable(GL11.GL_CULL_FACE);
         this.getModelTexMap().draw();
     }

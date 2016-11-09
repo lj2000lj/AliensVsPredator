@@ -4,6 +4,7 @@ import org.avp.AliensVsPredator;
 import org.lwjgl.opengl.GL11;
 
 import com.arisux.amdxlib.lib.client.render.OpenGL;
+import com.arisux.amdxlib.lib.game.Game;
 import com.arisux.amdxlib.lib.client.render.ItemRenderer;
 
 import net.minecraft.item.ItemStack;
@@ -28,6 +29,7 @@ public class RenderItemStasisMechanism extends ItemRenderer
         OpenGL.translate(-0.1F, 0.3F, 0F);
         OpenGL.scale(1F, -1F, 1F);
         OpenGL.disable(GL11.GL_CULL_FACE);
+        OpenGL.rotate((this.mc.theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
         this.getModelTexMap().draw();
     }
 
@@ -65,10 +67,9 @@ public class RenderItemStasisMechanism extends ItemRenderer
     public void renderInInventory(ItemStack item, Object... data)
     {
         float glScale = 13F;
-        OpenGL.translate(8F, 9F, 0F);
-        OpenGL.rotate(90, -1F, 2F, 0F);
+        OpenGL.translate(8F, 12F, 0F);
+        OpenGL.rotate(-10, 1F, 0F, 0F);
         OpenGL.translate(0F, 0F, 0F);
-        OpenGL.rotate(-180F, 0.0F, 1.0F, 0.0F);
         OpenGL.disable(GL11.GL_CULL_FACE);
         OpenGL.scale(glScale, glScale, glScale);
         this.getModelTexMap().draw();

@@ -4,6 +4,7 @@ import org.avp.AliensVsPredator;
 import org.lwjgl.opengl.GL11;
 
 import com.arisux.amdxlib.lib.client.render.OpenGL;
+import com.arisux.amdxlib.lib.game.Game;
 import com.arisux.amdxlib.lib.client.render.ItemRenderer;
 
 import net.minecraft.item.ItemStack;
@@ -33,12 +34,7 @@ public class RenderItemMedpod extends ItemRenderer
         
         OpenGL.pushMatrix();
         {
-            OpenGL.enableAlphaTest();
-            OpenGL.disableLight();
-            OpenGL.disableLightMapping();
             AliensVsPredator.resources().models().MEDPOD_MASK.draw();
-            OpenGL.enableLight();
-            OpenGL.enableLightMapping();
         }
         OpenGL.popMatrix();
     }
@@ -60,12 +56,7 @@ public class RenderItemMedpod extends ItemRenderer
             
             OpenGL.pushMatrix();
             {
-                OpenGL.enableAlphaTest();
-                OpenGL.disableLight();
-                OpenGL.disableLightMapping();
                 AliensVsPredator.resources().models().MEDPOD_MASK.draw();
-                OpenGL.enableLight();
-                OpenGL.enableLightMapping();
             }
             OpenGL.popMatrix();
         }
@@ -86,12 +77,22 @@ public class RenderItemMedpod extends ItemRenderer
         
         OpenGL.pushMatrix();
         {
-            OpenGL.enableAlphaTest();
-            OpenGL.disableLight();
-            OpenGL.disableLightMapping();
             AliensVsPredator.resources().models().MEDPOD_MASK.draw();
-            OpenGL.enableLight();
-            OpenGL.enableLightMapping();
+        }
+        OpenGL.popMatrix();
+    }
+    
+    @Override
+    public void renderInWorld(ItemStack item, Object... data)
+    {
+        super.renderInWorld(item, data);
+        OpenGL.pushMatrix();
+        {
+            OpenGL.scale(1F, -1F, 1F);
+            OpenGL.translate(0F, -1.5F, 0F);
+            OpenGL.rotate((Game.minecraft().theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
+            OpenGL.disable(GL11.GL_CULL_FACE);
+            this.getModelTexMap().draw();
         }
         OpenGL.popMatrix();
     }

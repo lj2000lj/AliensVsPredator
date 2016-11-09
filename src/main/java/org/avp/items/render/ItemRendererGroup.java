@@ -6,6 +6,7 @@ import com.arisux.amdxlib.lib.client.Model;
 import com.arisux.amdxlib.lib.client.TexturedModel;
 import com.arisux.amdxlib.lib.client.render.Draw;
 import com.arisux.amdxlib.lib.client.render.OpenGL;
+import com.arisux.amdxlib.lib.game.Game;
 import com.arisux.amdxlib.lib.client.render.ItemRenderer;
 
 import net.minecraft.client.model.ModelRenderer;
@@ -35,6 +36,7 @@ public class ItemRendererGroup extends ItemRenderer
     @Override
     public void renderInWorld(ItemStack item, Object... data)
     {
+        OpenGL.rotate((Game.minecraft().theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
         this.renderPart();
     }
 
@@ -53,6 +55,8 @@ public class ItemRendererGroup extends ItemRenderer
     @Override
     public void renderInInventory(ItemStack item, Object... data)
     {
+        OpenGL.rotate(45F, 0.0F, 1.0F, 0.0F);
+        OpenGL.translate(0F, 0F, 2F);
         this.renderPart();
     }
 

@@ -4,6 +4,7 @@ import org.avp.AliensVsPredator;
 import org.lwjgl.opengl.GL11;
 
 import com.arisux.amdxlib.lib.client.render.OpenGL;
+import com.arisux.amdxlib.lib.game.Game;
 import com.arisux.amdxlib.lib.client.render.ItemRenderer;
 
 import net.minecraft.item.ItemStack;
@@ -57,17 +58,31 @@ public class RenderItemBlastDoor extends ItemRenderer
     {
         OpenGL.pushMatrix();
         {
-            float glScale = 5F;
-            OpenGL.translate(8F, 7.5F, 0F);
+            float glScale = 4.25F;
+            OpenGL.translate(-6F, 11F, 0F);
             OpenGL.translate(7.5F, 0F, 0F);
-            OpenGL.rotate(-180F, 0.0F, 1.0F, 0.0F);
+            OpenGL.rotate(-10F, 1.0F, 0.0F, 0.0F);
             OpenGL.disable(GL11.GL_CULL_FACE);
             OpenGL.scale(glScale, glScale, glScale);
             OpenGL.enable(GL11.GL_BLEND);
             OpenGL.blendClear();
-            OpenGL.enableLight();
             this.getModelTexMap().draw();
-            OpenGL.disableLight();
+        }
+        OpenGL.popMatrix();
+    }
+    
+    @Override
+    public void renderInWorld(ItemStack item, Object... data)
+    {
+        super.renderInWorld(item, data);
+        OpenGL.pushMatrix();
+        {
+            OpenGL.scale(0.5F, -0.5F, 0.5F);
+            OpenGL.translate(0F, -1.5F, 0F);
+            OpenGL.rotate((Game.minecraft().theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
+            OpenGL.translate(-1.5F, 0F, 0F);
+            OpenGL.disable(GL11.GL_CULL_FACE);
+            this.getModelTexMap().draw();
         }
         OpenGL.popMatrix();
     }

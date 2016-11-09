@@ -83,10 +83,16 @@ public class RenderItemSpear implements IItemRenderer
             case INVENTORY:
                 OpenGL.disable(GL11.GL_CULL_FACE);
                 OpenGL.enable(GL11.GL_BLEND);
-                OpenGL.translate(8.5F, 0F, 0F);
-                OpenGL.rotate(-45, 0.0F, 0.0F, 1.0F);
-                OpenGL.translate(-6F, 5F, 0F);
-                OpenGL.scale(7F, 7F, 7F);
+                OpenGL.translate(0.5F, 0F, 0F);
+                OpenGL.rotate(-135, 0.0F, 0.0F, 1.0F);
+                OpenGL.translate(-12F, 0F, 0F);
+                OpenGL.scale(10F, 10F, 10F);
+                AliensVsPredator.resources().models().SPEAR.draw();
+                break;
+
+            case ENTITY:
+                OpenGL.rotate((Game.minecraft().theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
+                OpenGL.disable(GL11.GL_CULL_FACE);
                 AliensVsPredator.resources().models().SPEAR.draw();
                 break;
 

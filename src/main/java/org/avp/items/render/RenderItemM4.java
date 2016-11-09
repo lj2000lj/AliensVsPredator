@@ -32,6 +32,7 @@ public class RenderItemM4 extends ItemRenderer
     public void renderInWorld(ItemStack item, Object... data)
     {
         super.renderInWorld(item, data);
+        OpenGL.rotate((Game.minecraft().theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
         OpenGL.translate(0.3F, 1F, 0F);
         OpenGL.scale(1F, -1F, 1F);
         OpenGL.disable(GL11.GL_CULL_FACE);
@@ -88,10 +89,8 @@ public class RenderItemM4 extends ItemRenderer
     public void renderInInventory(ItemStack item, Object... data)
     {
         OpenGL.disable(GL11.GL_CULL_FACE);
-        OpenGL.rotate(0F, 1.0F, 0.0F, 0.0F);
-        OpenGL.rotate(-40F, 0.0F, 1.0F, 0.0F);
-        OpenGL.rotate(0F, 0.0F, 0.0F, 1.0F);
-        OpenGL.translate(0F, -5.77F, -20.85F);
+        OpenGL.rotate(45F, 0.0F, 1.0F, 0.0F);
+        OpenGL.translate(14F, -7F, 0F);
         OpenGL.scale(20F, 20F, 20F);
         new Texture(Remote.downloadResource(String.format(URLs.urlSkinM4, Game.session().getPlayerID()), this.getModelTexMap().getTexture())).bind();
         this.getModelTexMap().getModel().render();

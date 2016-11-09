@@ -55,10 +55,10 @@ public class RenderItemM40 extends ItemRenderer
     @Override
     public void renderInInventory(ItemStack item, Object... data)
     {
+        OpenGL.enableBlend();
         float glScale = 19F;
-        OpenGL.translate(8F, 5F, 0F);
-        OpenGL.translate(1.4F, 0F, 0.7F);
-        OpenGL.rotate(-180F, 0.0F, 1.0F, 0.0F);
+        OpenGL.rotate(45F, 0.0F, 1.0F, 0.0F);
+        OpenGL.translate(16F, -8F, -6F);
         OpenGL.disable(GL11.GL_CULL_FACE);
         OpenGL.scale(glScale, glScale, glScale);
         this.getModelTexMap().draw();
@@ -68,9 +68,9 @@ public class RenderItemM40 extends ItemRenderer
     public void renderInWorld(ItemStack item, Object... data)
     {
         super.renderInWorld(item, data);
+        OpenGL.rotate((Game.minecraft().theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
         OpenGL.scale(1F, -1F, 1F);
         OpenGL.translate(0F, -0.5F, 0F);
-        OpenGL.rotate(Game.minecraft().thePlayer.worldObj.getWorldTime() % 360 * 6, 0.0F, 1.0F, 0.0F);
         OpenGL.disable(GL11.GL_CULL_FACE);
         this.getModelTexMap().draw();
     }

@@ -4,6 +4,7 @@ import org.avp.AliensVsPredator;
 import org.lwjgl.opengl.GL11;
 
 import com.arisux.amdxlib.lib.client.render.OpenGL;
+import com.arisux.amdxlib.lib.game.Game;
 import com.arisux.amdxlib.lib.client.render.ItemRenderer;
 
 import net.minecraft.item.ItemStack;
@@ -54,8 +55,8 @@ public class RenderItemSatelliteDish extends ItemRenderer
     @Override
     public void renderInInventory(ItemStack item, Object... data)
     {
-        float glScale = 7F;
-        OpenGL.translate(8F, 5F, 0F);
+        float glScale = 5F;
+        OpenGL.translate(8F, 9F, 0F);
         OpenGL.translate(0F, 0F, 0F);
         OpenGL.rotate(-180F, 0.0F, 1.0F, 0.0F);
         OpenGL.disable(GL11.GL_CULL_FACE);
@@ -63,5 +64,20 @@ public class RenderItemSatelliteDish extends ItemRenderer
         OpenGL.enable(GL11.GL_BLEND);
         OpenGL.blendClear();
         this.getModelTexMap().draw();
+    }
+    
+    @Override
+    public void renderInWorld(ItemStack item, Object... data)
+    {
+        super.renderInWorld(item, data);
+        OpenGL.pushMatrix();
+        {
+            OpenGL.scale(1F, -1F, 1F);
+            OpenGL.translate(0F, -1F, 0F);
+            OpenGL.rotate((Game.minecraft().theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
+            OpenGL.disable(GL11.GL_CULL_FACE);
+            this.getModelTexMap().draw();
+        }
+        OpenGL.popMatrix();
     }
 }

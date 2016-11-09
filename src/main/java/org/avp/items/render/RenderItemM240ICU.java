@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.arisux.amdxlib.lib.client.render.Draw;
 import com.arisux.amdxlib.lib.client.render.OpenGL;
+import com.arisux.amdxlib.lib.game.Game;
 import com.arisux.amdxlib.lib.client.render.ItemRenderer;
 
 import net.minecraft.item.ItemStack;
@@ -28,6 +29,7 @@ public class RenderItemM240ICU extends ItemRenderer
     public void renderInWorld(ItemStack item, Object... data)
     {
         super.renderInWorld(item, data);
+        OpenGL.rotate((Game.minecraft().theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
         OpenGL.translate(0F, 0.5F, 0F);
         OpenGL.scale(1F, -1F, 1F);
         OpenGL.disable(GL11.GL_CULL_FACE);
@@ -96,9 +98,10 @@ public class RenderItemM240ICU extends ItemRenderer
     @Override
     public void renderInInventory(ItemStack item, Object... data)
     {
-        OpenGL.translate(8F, 1F, 0F);
-        OpenGL.translate(0F, 5F, 0F);
-        OpenGL.scale(10F, 10F, 10F);
+        OpenGL.enableBlend();
+        OpenGL.translate(8F, 11F, 0F);
+        OpenGL.rotate(45F, 0F, 1F, 0F);
+        OpenGL.scale(14F, 14F, 14F);
         OpenGL.disable(GL11.GL_CULL_FACE);
         this.getModelTexMap().draw();
     }

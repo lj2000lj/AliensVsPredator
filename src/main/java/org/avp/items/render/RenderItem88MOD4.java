@@ -5,6 +5,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import com.arisux.amdxlib.lib.client.render.OpenGL;
+import com.arisux.amdxlib.lib.game.Game;
 import com.arisux.amdxlib.lib.client.render.ItemRenderer;
 
 import net.minecraft.item.ItemStack;
@@ -27,6 +28,7 @@ public class RenderItem88MOD4 extends ItemRenderer
     {
         super.renderInWorld(item, data);
         OpenGL.translate(0.3F, 1F, 0F);
+        OpenGL.rotate((Game.minecraft().theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
         OpenGL.scale(1F, -1F, 1F);
         OpenGL.disable(GL11.GL_CULL_FACE);
         this.getModelTexMap().draw();
@@ -75,9 +77,9 @@ public class RenderItem88MOD4 extends ItemRenderer
     public void renderInInventory(ItemStack item, Object... data)
     {
         OpenGL.disable(GL11.GL_CULL_FACE);
-        OpenGL.scale(20F, 20F, 20F);
-        OpenGL.translate(0.4F, 0.3F, 0F);
-        OpenGL.translate(0F, 0F, -0.2F);
+        OpenGL.translate(12F, 6F, 0F);
+        OpenGL.scale(26F, 26F, 26F);
+        OpenGL.rotate(220, 0F, 1F, 0F);
         this.getModelTexMap().draw();
     }
 }
