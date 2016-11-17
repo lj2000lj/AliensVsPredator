@@ -212,9 +212,7 @@ public class EntityHandler implements IInitEvent
 
             BiomeGenBase[] predatorBiomes = this.getFilteredBiomeArray(BiomeGenBase.birchForest, BiomeGenBase.birchForestHills, BiomeGenBase.desert, BiomeGenBase.desertHills, BiomeGenBase.extremeHills, BiomeGenBase.extremeHillsEdge, BiomeGenBase.extremeHillsPlus, BiomeGenBase.forest, BiomeGenBase.forestHills, BiomeGenBase.frozenOcean, BiomeGenBase.frozenRiver, BiomeGenBase.icePlains, BiomeGenBase.jungle, BiomeGenBase.jungleEdge, BiomeGenBase.jungleHills, BiomeGenBase.taiga, BiomeGenBase.taigaHills, BiomeLVBase.varda);
 
-            BiomeGenBase[] engineerBiomes = this.getFilteredBiomeArray(BiomeGenBase.iceMountains, // need to get the NBT flash drive as a 5% engineer drop OnDeath to craft the assembler
-                BiomeGenBase.coldTaigaHills, // found at snowy elevations according to the NBT item tip
-                BiomeGenBase.coldTaiga, BiomeGenBase.extremeHills, BiomeLVBase.varda, BiomeLVBase.acheron);
+            BiomeGenBase[] engineerBiomes = this.getFilteredBiomeArray(BiomeGenBase.iceMountains, BiomeGenBase.coldTaigaHills, BiomeGenBase.coldTaiga, BiomeGenBase.extremeHills, BiomeLVBase.varda, BiomeLVBase.acheron);
 
             BiomeGenBase[] aquaXenomorphBiomes = this.getFilteredBiomeArray(BiomeGenBase.river, BiomeGenBase.beach, BiomeGenBase.stoneBeach);
 
