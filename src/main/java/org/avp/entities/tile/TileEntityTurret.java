@@ -21,7 +21,7 @@ import org.avp.inventory.container.ContainerTurret;
 import org.avp.packets.client.PacketTurretInit;
 import org.avp.packets.server.PacketTurretTargetUpdate;
 import org.avp.util.IDataDevice;
-import org.avp.util.IVoltageReceiver;
+import org.avp.util.IPowerAcceptor;
 
 import com.arisux.amdxlib.lib.world.CoordData;
 import com.arisux.amdxlib.lib.world.entity.Entities;
@@ -49,7 +49,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityTurret extends TileEntityElectrical implements IDataDevice, IVoltageReceiver
+public class TileEntityTurret extends TileEntityElectrical implements IDataDevice, IPowerAcceptor
 {
     private long                               fireRate;
     private boolean                            ammoDisplayEnabled;
@@ -83,7 +83,7 @@ public class TileEntityTurret extends TileEntityElectrical implements IDataDevic
 
     public TileEntityTurret()
     {
-        super(false);
+        super();
         this.inventoryAmmo = new InventoryBasic("TurretAmmoBay", true, 9);
         this.inventoryExpansion = new InventoryBasic("TurretExpansionBay", true, 3);
         this.inventoryDrive = new InventoryBasic("TurretDriveBay", true, 1);
@@ -812,19 +812,19 @@ public class TileEntityTurret extends TileEntityElectrical implements IDataDevic
     }
 
     @Override
-    public boolean canConnectPower(ForgeDirection from)
+    public boolean canConnect(ForgeDirection from)
     {
-        return true;
+        return super.canConnect(from);
     }
 
     @Override
-    public double receiveVoltage(ForgeDirection from, double maxReceive, boolean simulate)
+    public double acceptVoltageFrom(ForgeDirection from, double maxReceive, boolean simulate)
     {
-        return super.receiveVoltage(from, maxReceive, simulate);
+        return super.acceptVoltageFrom(from, maxReceive, simulate);
     }
 
     @Override
-    public double getCurrentVoltage(ForgeDirection from)
+    public double getVoltage(ForgeDirection from)
     {
         return this.getVoltage();
     }

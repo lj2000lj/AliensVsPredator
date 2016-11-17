@@ -1,16 +1,16 @@
 package org.avp.entities.tile;
 
-import org.avp.util.IVoltageReceiver;
+import org.avp.util.IPowerAcceptor;
 
 import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityP2RConverter extends TileEntityElectrical implements IVoltageReceiver
+public class TileEntityP2RConverter extends TileEntityElectrical implements IPowerAcceptor
 {
     public TileEntityP2RConverter()
     {
-        super(false);
+        super();
     }
 
     public int rotation;
@@ -105,13 +105,13 @@ public class TileEntityP2RConverter extends TileEntityElectrical implements IVol
     }
 
     @Override
-    public boolean canConnectPower(ForgeDirection from)
+    public boolean canConnect(ForgeDirection from)
     {
-        return false;
+        return super.canConnect(from);
     }
 
     @Override
-    public double getCurrentVoltage(ForgeDirection from)
+    public double getVoltage(ForgeDirection from)
     {
         return this.voltage;
     }

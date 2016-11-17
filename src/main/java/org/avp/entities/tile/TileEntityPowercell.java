@@ -1,32 +1,32 @@
 package org.avp.entities.tile;
 
-import org.avp.util.IVoltageProvider;
-import org.avp.util.IVoltageReceiver;
+import org.avp.util.IPowerProvider;
+import org.avp.util.IPowerAcceptor;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityPowercell extends TileEntityElectrical implements IVoltageReceiver, IVoltageProvider
+public class TileEntityPowercell extends TileEntityElectrical implements IPowerAcceptor, IPowerProvider
 {
-    public long energyStored;
+    public long   ampereHours;
     public double voltageCapacity;
 
     public TileEntityPowercell()
     {
-        super(true);
+        super();
     }
 
     @Override
-    public boolean canConnectPower(ForgeDirection from)
+    public boolean canConnect(ForgeDirection from)
     {
-        return true;
+        return super.canConnect(from);
     }
 
     @Override
     public void updateEntity()
     {
-        super.updateEntity();
+//        super.updateEntity();
 
         for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
         {
@@ -36,35 +36,40 @@ public class TileEntityPowercell extends TileEntityElectrical implements IVoltag
             {
                 TileEntityElectrical electrical = (TileEntityElectrical) tile;
 
-                if (electrical.getVoltage() > this.voltageCapacity)
+                if (electrical.getVoltage() > this.getVoltage())
                 {
-                    this.voltageCapacity = electrical.getVoltage();
+                    this.setVoltage(electrical.getVoltage());
                 }
 
-                if (electrical instanceof IVoltageProvider)
+                if (electrical instanceof IPowerProvider)
                 {
-                    IVoltageProvider provider = (IVoltageProvider) electrical;
+                    IPowerProvider provider = (IPowerProvider) electrical;
 
-                    if (provider.getCurrentVoltage(direction.getOpposite()) > 0)
+                    if (provider.getVoltage(direction.getOpposite()) > 0)
                     {
-                        if (this.energyStored <= this.getMaxEnergyStored())
+                        if (this.ampereHours < this.getMaxEnergyStored())
                         {
-                            this.energyStored++;
+                            //TODO: Take amperage from provider
+                            this.ampereHours++;
                         }
                     }
                 }
             }
         }
+        
+//        if ()
 
-        if (this.energyStored > 0)
-        {
-            this.setVoltage(this.voltageCapacity);
-            this.energyStored = this.energyStored - 2;
-        }
-        else
-        {
-            this.setVoltage(0);
-        }
+        
+        
+        // if (this.ampereHours > 0)
+        // {
+        // this.setVoltage(this.voltageCapacity);
+        // this.ampereHours = this.ampereHours - 1;
+        // }
+        // else
+        // {
+        // this.setVoltage(0);
+        // }
     }
 
     @Override
@@ -72,8 +77,8 @@ public class TileEntityPowercell extends TileEntityElectrical implements IVoltag
     {
         super.readFromNBT(nbt);
 
-        this.energyStored = nbt.getLong("energyStored");
-        this.voltageCapacity = nbt.getDouble("voltageCapacity");
+        this.ampereHours = nbt.getLong("AmpereHours");
+        this.voltageCapacity = nbt.getDouble("VoltageCapacity");
     }
 
     @Override
@@ -81,18 +86,26 @@ public class TileEntityPowercell extends TileEntityElectrical implements IVoltag
     {
         super.writeToNBT(nbt);
 
-        nbt.setLong("energyStored", this.energyStored);
-        nbt.setDouble("voltageCapacity", this.voltageCapacity);
+        nbt.setLong("AmpereHours", this.ampereHours);
+        nbt.setDouble("VoltageCapacity", this.voltageCapacity);
     }
 
     @Override
-    public double receiveVoltage(ForgeDirection from, double maxReceive, boolean simulate)
+    public double acceptVoltageFrom(ForgeDirection from, double maxReceive, boolean simulate)
     {
-        return super.receiveVoltage(from, maxReceive, simulate);
+        return super.acceptVoltageFrom(from, maxReceive, simulate);
     }
 
     @Override
-    public double getCurrentVoltage(ForgeDirection from)
+    public double provideVoltage(ForgeDirection from, double maxExtract, boolean simulate)
+    {
+        this.ampereHours = this.ampereHours - 1;
+
+        return super.provideVoltage(from, maxExtract, simulate);
+    }
+
+    @Override
+    public double getVoltage(ForgeDirection from)
     {
         return this.voltage;
     }
@@ -100,12 +113,12 @@ public class TileEntityPowercell extends TileEntityElectrical implements IVoltag
     @Override
     public double getMaxVoltage(ForgeDirection from)
     {
-        return 10000;
+        return 1000;
     }
 
-    public long getEnergyStored()
+    public long getAmpereHours()
     {
-        return energyStored;
+        return ampereHours;
     }
 
     public long getMaxEnergyStored()

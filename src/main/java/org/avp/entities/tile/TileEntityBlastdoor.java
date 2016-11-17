@@ -6,7 +6,7 @@ import java.util.Random;
 import org.avp.AliensVsPredator;
 import org.avp.packets.client.PacketOpenBlastdoor;
 import org.avp.util.IOpenable;
-import org.avp.util.IVoltageReceiver;
+import org.avp.util.IPowerAcceptor;
 
 import com.arisux.amdxlib.lib.game.Game;
 import com.arisux.amdxlib.lib.world.tile.IRotatable;
@@ -20,7 +20,7 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityBlastdoor extends TileEntityElectrical implements IVoltageReceiver, IRotatable, IOpenable
+public class TileEntityBlastdoor extends TileEntityElectrical implements IPowerAcceptor, IRotatable, IOpenable
 {
     private ForgeDirection direction;
     private float doorProgress;
@@ -36,7 +36,7 @@ public class TileEntityBlastdoor extends TileEntityElectrical implements IVoltag
 
     public TileEntityBlastdoor()
     {
-        super(false);
+        super();
         this.children = new ArrayList<TileEntityBlastdoor>();
         this.identifier = "BD" + (1000 + new Random().nextInt(8999));
         this.password = "";
@@ -169,13 +169,13 @@ public class TileEntityBlastdoor extends TileEntityElectrical implements IVoltag
     }
 
     @Override
-    public boolean canConnectPower(ForgeDirection from)
+    public boolean canConnect(ForgeDirection from)
     {
-        return true;
+        return super.canConnect(from);
     }
 
     @Override
-    public double getCurrentVoltage(ForgeDirection from)
+    public double getVoltage(ForgeDirection from)
     {
         return this.getVoltage();
     }

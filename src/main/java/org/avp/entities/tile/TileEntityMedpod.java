@@ -4,7 +4,7 @@ import org.avp.AliensVsPredator;
 import org.avp.entities.EntityMedpod;
 import org.avp.packets.client.PacketOpenable;
 import org.avp.util.IOpenable;
-import org.avp.util.IVoltageReceiver;
+import org.avp.util.IPowerAcceptor;
 
 import com.arisux.amdxlib.lib.world.tile.IRotatable;
 
@@ -15,7 +15,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityMedpod extends TileEntityElectrical implements IOpenable, IVoltageReceiver, IRotatable
+public class TileEntityMedpod extends TileEntityElectrical implements IOpenable, IPowerAcceptor, IRotatable
 {
     private ForgeDirection direction;
     private boolean isOpen;
@@ -24,7 +24,7 @@ public class TileEntityMedpod extends TileEntityElectrical implements IOpenable,
 
     public TileEntityMedpod()
     {
-        super(false);
+        super();
         this.isOpen = false;
         this.doorProgress = -0.01F;
     }
@@ -166,7 +166,7 @@ public class TileEntityMedpod extends TileEntityElectrical implements IOpenable,
     }
 
     @Override
-    public double getCurrentVoltage(ForgeDirection from)
+    public double getVoltage(ForgeDirection from)
     {
         return this.voltage;
     }
@@ -178,9 +178,9 @@ public class TileEntityMedpod extends TileEntityElectrical implements IOpenable,
     }
 
     @Override
-    public boolean canConnectPower(ForgeDirection from)
+    public boolean canConnect(ForgeDirection from)
     {
-        return true;
+        return super.canConnect(from);
     }
 
     public float getDoorProgress()

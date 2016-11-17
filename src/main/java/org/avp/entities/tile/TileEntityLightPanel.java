@@ -1,30 +1,30 @@
 package org.avp.entities.tile;
 
-import org.avp.util.IVoltageReceiver;
+import org.avp.util.IPowerAcceptor;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityLightPanel extends TileEntityElectrical implements IVoltageReceiver
+public class TileEntityLightPanel extends TileEntityElectrical implements IPowerAcceptor
 {
     public TileEntityLightPanel()
     {
-        super(false);
+        super();
     }
 
     @Override
-    public boolean canConnectPower(ForgeDirection from)
+    public boolean canConnect(ForgeDirection from)
     {
-        return true;
+        return super.canConnect(from);
     }
 
     @Override
-    public double receiveVoltage(ForgeDirection from, double maxReceive, boolean simulate)
+    public double acceptVoltageFrom(ForgeDirection from, double maxReceive, boolean simulate)
     {
         return 0;
     }
 
     @Override
-    public double getCurrentVoltage(ForgeDirection from)
+    public double getVoltage(ForgeDirection from)
     {
         return this.voltage;
     }

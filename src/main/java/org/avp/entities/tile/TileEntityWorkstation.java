@@ -1,7 +1,7 @@
 package org.avp.entities.tile;
 
 import org.avp.util.INetworkDevice;
-import org.avp.util.IVoltageReceiver;
+import org.avp.util.IPowerAcceptor;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -9,14 +9,14 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityWorkstation extends TileEntityElectrical implements INetworkDevice, IVoltageReceiver
+public class TileEntityWorkstation extends TileEntityElectrical implements INetworkDevice, IPowerAcceptor
 {
     public int rotation;
 
     public TileEntityWorkstation()
     {
-        super(false);
-        this.setThresholdVoltage(105);
+        super();
+        this.setOperationVoltage(105);
     }
 
     @Override
@@ -84,13 +84,13 @@ public class TileEntityWorkstation extends TileEntityElectrical implements INetw
     }
 
     @Override
-    public boolean canConnectPower(ForgeDirection from)
+    public boolean canConnect(ForgeDirection from)
     {
-        return true;
+        return super.canConnect(from);
     }
 
     @Override
-    public double getCurrentVoltage(ForgeDirection from)
+    public double getVoltage(ForgeDirection from)
     {
         return this.voltage;
     }

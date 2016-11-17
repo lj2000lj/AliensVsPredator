@@ -1,30 +1,30 @@
 package org.avp.entities.tile;
 
-import org.avp.util.IVoltageReceiver;
+import org.avp.util.IPowerAcceptor;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntitySatelliteDish extends TileEntityElectrical implements IVoltageReceiver
+public class TileEntitySatelliteDish extends TileEntityElectrical implements IPowerAcceptor
 {
     public TileEntitySatelliteDish()
     {
-        super(false);
+        super();
     }
 
     @Override
-    public boolean canConnectPower(ForgeDirection from)
+    public boolean canConnect(ForgeDirection from)
     {
-        return true;
+        return super.canConnect(from);
     }
 
     @Override
-    public double receiveVoltage(ForgeDirection from, double maxReceive, boolean simulate)
+    public double acceptVoltageFrom(ForgeDirection from, double maxReceive, boolean simulate)
     {
         return maxReceive;
     }
 
     @Override
-    public double getCurrentVoltage(ForgeDirection from)
+    public double getVoltage(ForgeDirection from)
     {
         return this.voltage;
     }

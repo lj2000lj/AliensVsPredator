@@ -40,11 +40,16 @@ public class RenderPowerline extends TileEntitySpecialRenderer
 
             OpenGL.translate(posX + 0.5F, posY + 1.5F, posZ + 0.5F);
 
-            if (Game.minecraft().objectMouseOver != null)
+            if (Game.minecraft().objectMouseOver != null || Game.isDevEnvironment())
             {
-                TileEntity tileOver = Game.minecraft().thePlayer.worldObj.getTileEntity(Game.minecraft().objectMouseOver.blockX, Game.minecraft().objectMouseOver.blockY, Game.minecraft().objectMouseOver.blockZ);
+                TileEntity tileOver = null;
+                
+                if (Game.minecraft().objectMouseOver != null)
+                {
+                    tileOver = Game.minecraft().thePlayer.worldObj.getTileEntity(Game.minecraft().objectMouseOver.blockX, Game.minecraft().objectMouseOver.blockY, Game.minecraft().objectMouseOver.blockZ);
+                }
 
-                if (tileOver != null && tileOver == tile)
+                if (tileOver != null && tileOver == tile || Game.isDevEnvironment())
                 {
                     float scale = 0.02F;
                     OpenGL.scale(scale, scale, scale);
@@ -56,11 +61,14 @@ public class RenderPowerline extends TileEntitySpecialRenderer
 
                         OpenGL.pushMatrix();
                         {
+                            OpenGL.translate(-10F, -45F, -5F);
                             OpenGL.rotate(Game.minecraft().thePlayer.rotationPitch + 180, -1F, 0F, 0F);
-                            Draw.drawString(((float) tile.getVoltage()) + "V", -20, 30, tile.getVoltage() <= 0 ? 0xFFFF0000 : 0xFF00FF00);
+                            OpenGL.translate(0F, 0F, -35F);
+                            Draw.drawString(((float) tile.getVoltage()) + "V", 0, 0, tile.getVoltage() <= 0 ? 0xFFFF0000 : 0xFF00FF00);
                             scale = 0.5F;
                             OpenGL.scale(scale, scale, scale);
-                            Draw.drawString((tile + "").replace(tile.getClass().getName(), ""), -20, 80, 0xFF00AAFF);
+                            OpenGL.translate(0F, 20.0F, 0F);
+                            Draw.drawString("~0.0A", 0, 0, 0xFF00FFFF);
                         }
                         OpenGL.popMatrix();
                     }

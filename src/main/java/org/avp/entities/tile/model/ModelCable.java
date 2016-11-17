@@ -83,7 +83,7 @@ public class ModelCable extends Model
             {
                 TileEntityElectrical connection = (TileEntityElectrical) leftTile;
 
-                if (connection.canProvideEnergyToReceiver(ForgeDirection.EAST))
+                if (connection.canConnect(ForgeDirection.EAST))
                     left.render(boxTranslation);
             }
 
@@ -93,7 +93,7 @@ public class ModelCable extends Model
             {
                 TileEntityElectrical connection = (TileEntityElectrical) rightTile;
 
-                if (connection.canProvideEnergyToReceiver(ForgeDirection.WEST))
+                if (connection.canConnect(ForgeDirection.WEST))
                     right.render(boxTranslation);
             }
 
@@ -103,7 +103,7 @@ public class ModelCable extends Model
             {
                 TileEntityElectrical connection = (TileEntityElectrical) topTile;
 
-                if (connection.canProvideEnergyToReceiver(ForgeDirection.UP))
+                if (connection.canConnect(ForgeDirection.UP))
                     up.render(boxTranslation);
             }
 
@@ -113,7 +113,7 @@ public class ModelCable extends Model
             {
                 TileEntityElectrical connection = (TileEntityElectrical) bottomTile;
 
-                if (connection.canProvideEnergyToReceiver(ForgeDirection.DOWN))
+                if (connection.canConnect(ForgeDirection.DOWN))
                     down.render(boxTranslation);
             }
 
@@ -123,7 +123,7 @@ public class ModelCable extends Model
             {
                 TileEntityElectrical connection = (TileEntityElectrical) backTile;
 
-                if (connection.canProvideEnergyToReceiver(ForgeDirection.SOUTH))
+                if (connection.canConnect(ForgeDirection.SOUTH))
                     back.render(boxTranslation);
             }
 
@@ -133,7 +133,7 @@ public class ModelCable extends Model
             {
                 TileEntityElectrical connection = (TileEntityElectrical) frontTile;
 
-                if (connection.canProvideEnergyToReceiver(ForgeDirection.NORTH))
+                if (connection.canConnect(ForgeDirection.NORTH))
                     front.render(boxTranslation);
             }
         }

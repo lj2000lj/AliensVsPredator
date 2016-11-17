@@ -1,25 +1,22 @@
 package org.avp.entities.tile;
 
-import org.avp.util.IVoltageProvider;
+import org.avp.util.IPowerProvider;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityRepulsionGenerator extends TileEntityElectrical implements IVoltageProvider
+public class TileEntityRepulsionGenerator extends TileEntityElectrical implements IPowerProvider
 {
+    public int rotation;
+
     public TileEntityRepulsionGenerator()
     {
-        super(true);
+        super();
     }
-
-    public int rotation;
 
     @Override
     public void updateEntity()
     {
-        if (this.getWorld().getWorldTime() % (1000 / this.getSourceHertz()) == 0)
-        {
-            this.setVoltage(220);
-        }
+        this.setVoltage(220);
     }
 
     public void setDirection(byte direction)
@@ -28,19 +25,19 @@ public class TileEntityRepulsionGenerator extends TileEntityElectrical implement
     }
 
     @Override
-    public boolean canConnectPower(ForgeDirection from)
+    public boolean canConnect(ForgeDirection from)
     {
-        return true;
+        return super.canConnect(from);
     }
 
     @Override
-    public double extractVoltage(ForgeDirection from, double maxExtract, boolean simulate)
+    public double provideVoltage(ForgeDirection from, double maxExtract, boolean simulate)
     {
-        return super.extractVoltage(from, maxExtract, simulate);
+        return super.provideVoltage(from, maxExtract, simulate);
     }
 
     @Override
-    public double getCurrentVoltage(ForgeDirection from)
+    public double getVoltage(ForgeDirection from)
     {
         return this.voltage;
     }

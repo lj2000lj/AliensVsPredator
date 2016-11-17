@@ -1,7 +1,7 @@
 package org.avp.entities.tile;
 
 import org.avp.items.ItemEntitySummoner;
-import org.avp.util.IVoltageReceiver;
+import org.avp.util.IPowerAcceptor;
 
 import com.arisux.amdxlib.lib.world.tile.IRotatable;
 
@@ -15,7 +15,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityCryostasisTube extends TileEntityElectrical implements IVoltageReceiver, IRotatable
+public class TileEntityCryostasisTube extends TileEntityElectrical implements IPowerAcceptor, IRotatable
 {
     private ForgeDirection direction;
     public Entity stasisEntity;
@@ -26,8 +26,8 @@ public class TileEntityCryostasisTube extends TileEntityElectrical implements IV
 
     public TileEntityCryostasisTube()
     {
-        super(false);
-        this.setThresholdVoltage(90);
+        super();
+        this.setOperationVoltage(90);
     }
 
     @Override
@@ -166,13 +166,13 @@ public class TileEntityCryostasisTube extends TileEntityElectrical implements IV
     }
 
     @Override
-    public boolean canConnectPower(ForgeDirection from)
+    public boolean canConnect(ForgeDirection from)
     {
-        return true;
+        return super.canConnect(from);
     }
 
     @Override
-    public double getCurrentVoltage(ForgeDirection from)
+    public double getVoltage(ForgeDirection from)
     {
         return this.getVoltage();
     }

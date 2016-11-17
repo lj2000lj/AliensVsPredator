@@ -1,15 +1,15 @@
 package org.avp.entities.tile;
 
-import org.avp.util.IVoltageProvider;
-import org.avp.util.IVoltageReceiver;
+import org.avp.util.IPowerProvider;
+import org.avp.util.IPowerAcceptor;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityPowerline extends TileEntityElectrical implements IVoltageProvider, IVoltageReceiver
+public class TileEntityPowerline extends TileEntityElectrical implements IPowerProvider, IPowerAcceptor
 {
     public TileEntityPowerline()
     {
-        super(false);
+        super();
     }
 
     @Override
@@ -20,13 +20,13 @@ public class TileEntityPowerline extends TileEntityElectrical implements IVoltag
     }
 
     @Override
-    public boolean canConnectPower(ForgeDirection from)
+    public boolean canConnect(ForgeDirection from)
     {
-        return true;
+        return super.canConnect(from);
     }
 
     @Override
-    public double getCurrentVoltage(ForgeDirection from)
+    public double getVoltage(ForgeDirection from)
     {
         return this.voltage;
     }

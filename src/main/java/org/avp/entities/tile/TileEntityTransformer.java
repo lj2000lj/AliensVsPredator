@@ -1,7 +1,7 @@
 package org.avp.entities.tile;
 
-import org.avp.util.IVoltageProvider;
-import org.avp.util.IVoltageReceiver;
+import org.avp.util.IPowerProvider;
+import org.avp.util.IPowerAcceptor;
 
 import com.arisux.amdxlib.lib.world.tile.IRotatable;
 
@@ -12,13 +12,13 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityTransformer extends TileEntityElectrical implements IVoltageProvider, IVoltageReceiver, IRotatable
+public class TileEntityTransformer extends TileEntityElectrical implements IPowerProvider, IPowerAcceptor, IRotatable
 {
     private ForgeDirection direction;
 
     public TileEntityTransformer()
     {
-        super(false);
+        super();
         this.boost = 24;
         this.direction = ForgeDirection.SOUTH;
     }
@@ -70,7 +70,7 @@ public class TileEntityTransformer extends TileEntityElectrical implements IVolt
             {
                 TileEntityElectrical electrical = (TileEntityElectrical) tile;
 
-                if (electrical instanceof IVoltageProvider)
+                if (electrical instanceof IPowerProvider)
                 {
                     if (electrical.getVoltage() == 0)
                     {
@@ -92,19 +92,19 @@ public class TileEntityTransformer extends TileEntityElectrical implements IVolt
     }
 
     @Override
-    public boolean canConnectPower(ForgeDirection from)
+    public boolean canConnect(ForgeDirection from)
     {
         return from == direction;
     }
 
     @Override
-    public double getCurrentVoltage(ForgeDirection from)
+    public double getVoltage(ForgeDirection from)
     {
         return this.voltage;
     }
 
     @Override
-    public double extractVoltage(ForgeDirection from, double maxExtract, boolean simulate)
+    public double provideVoltage(ForgeDirection from, double maxExtract, boolean simulate)
     {
         TileEntity tile = this.worldObj.getTileEntity(this.xCoord + from.offsetX, this.yCoord + from.offsetY, this.zCoord + from.offsetZ);
 

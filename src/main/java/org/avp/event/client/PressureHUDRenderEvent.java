@@ -16,7 +16,7 @@ import org.avp.entities.mob.EntityMarine;
 import org.avp.entities.mob.EntitySpeciesAlien;
 import org.avp.entities.tile.TileEntityPowercell;
 import org.avp.entities.tile.TileEntityStasisMechanism;
-import org.avp.util.IVoltageReceiver;
+import org.avp.util.IPowerAcceptor;
 
 import com.arisux.amdxlib.lib.client.render.Draw;
 import com.arisux.amdxlib.lib.client.render.OpenGL;
@@ -346,17 +346,17 @@ public class PressureHUDRenderEvent
                             fontrenderer.drawString("Tile Entity: " + true, subMenuX + subMenuPadding, subMenuStartY + (curEntry++ * subEntrySpacing), 0xFFAA00);
                         }
 
-                        if (tile instanceof IVoltageReceiver)
+                        if (tile instanceof IPowerAcceptor)
                         {
-                            IVoltageReceiver poweredTile = (IVoltageReceiver) tile;
-                            fontrenderer.drawString("Voltage: " + ((float) poweredTile.getCurrentVoltage(ForgeDirection.SOUTH)) + "V", subMenuX + subMenuPadding, subMenuStartY + (curEntry++ * subEntrySpacing), 0xFFAA00);
+                            IPowerAcceptor poweredTile = (IPowerAcceptor) tile;
+                            fontrenderer.drawString("Voltage: " + ((float) poweredTile.getVoltage(ForgeDirection.SOUTH)) + "V", subMenuX + subMenuPadding, subMenuStartY + (curEntry++ * subEntrySpacing), 0xFFAA00);
                         }
 
                         if (tile instanceof TileEntityPowercell)
                         {
                             TileEntityPowercell powercell = (TileEntityPowercell) tile;
-                            double percent = (powercell.getEnergyStored() * 100) / powercell.getMaxEnergyStored();
-                            fontrenderer.drawString("Charge: " + percent + "% (" + powercell.getEnergyStored() + "/" + powercell.getMaxEnergyStored() + ")", subMenuX + subMenuPadding, subMenuStartY + (curEntry++ * subEntrySpacing), 0xFFAA00);
+                            double percent = (powercell.getAmpereHours() * 100) / powercell.getMaxEnergyStored();
+                            fontrenderer.drawString("Charge: " + percent + "% (" + powercell.getAmpereHours() + "/" + powercell.getMaxEnergyStored() + ")", subMenuX + subMenuPadding, subMenuStartY + (curEntry++ * subEntrySpacing), 0xFFAA00);
                         }
 
                         if (tile instanceof TileEntityStasisMechanism)
