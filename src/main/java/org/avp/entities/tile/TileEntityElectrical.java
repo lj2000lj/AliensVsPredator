@@ -1,7 +1,8 @@
 package org.avp.entities.tile;
 
+import org.avp.util.IPowerDrain;
 import org.avp.util.IPowerNode;
-import org.avp.util.IPowerProvider;
+import org.avp.util.IPowerSource;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -10,19 +11,17 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public abstract class TileEntityElectrical extends TileEntity implements IPowerNode
+public abstract class TileEntityElectrical extends TileEntity implements IPowerNode, IPowerDrain, IPowerSource
 {
     protected double voltage;
-    protected double operationVoltage;
+    protected double amperage;
     protected double resistance;
-    protected double boost;
+    protected double operationVoltage;
 
     public TileEntityElectrical()
     {
         this.operationVoltage = 110;
-        /** 1000 / 50Hz = 20 Ticks **/
-        this.resistance = 0.1;
-        this.boost = 0;
+        this.resistance = 0.001;
     }
 
     @Override
@@ -47,6 +46,7 @@ public abstract class TileEntityElectrical extends TileEntity implements IPowerN
     {
         super.writeToNBT(nbt);
         nbt.setDouble("voltage", this.voltage);
+        nbt.setDouble("amperage", this.amperage);
     }
 
     /**
@@ -57,6 +57,7 @@ public abstract class TileEntityElectrical extends TileEntity implements IPowerN
     {
         super.readFromNBT(nbt);
         this.voltage = nbt.getDouble("voltage");
+        this.amperage = nbt.getDouble("amperage");
     }
 
     /**
@@ -72,7 +73,7 @@ public abstract class TileEntityElectrical extends TileEntity implements IPowerN
      */
     public double getResistance()
     {
-        return resistance;
+        return this.resistance;
     }
 
     /**
@@ -100,7 +101,10 @@ public abstract class TileEntityElectrical extends TileEntity implements IPowerN
     {
         this.operationVoltage = thresholdVoltage;
     }
-    
+
+    /**
+     * Used to determine if powerlines can connect to this node.
+     */
     @Override
     public boolean canConnect(ForgeDirection from)
     {
@@ -113,13 +117,116 @@ public abstract class TileEntityElectrical extends TileEntity implements IPowerN
      */
     public boolean canProvideEnergyToReceiver(ForgeDirection side)
     {
-        if (this instanceof IPowerProvider)
+        if (this instanceof IPowerSource)
         {
-            IPowerProvider provider = (IPowerProvider) this;
+            IPowerSource provider = (IPowerSource) this;
             return provider.canConnect(side);
         }
-        
+
         return false;
+    }
+
+    /**
+     * @return The Source Direction that a receiver can extract from
+     */
+    public ForgeDirection getSourcePowerDirection()
+    {
+        return null;
+    }
+
+    /**
+     * Updates the voltage of this component based on surrounding components.
+     */
+    public void updateEnergyAsReceiver()
+    {
+        for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+        {
+            TileEntity t = this.worldObj.getTileEntity(this.xCoord + direction.offsetX, this.yCoord + direction.offsetY, this.zCoord + direction.offsetZ);
+
+            if (t != null && t instanceof TileEntityElectrical)
+            {
+                TileEntityElectrical electrical = (TileEntityElectrical) t;
+
+                if (electrical instanceof IPowerSource)
+                {
+                    IPowerSource provider = (IPowerSource) electrical;
+
+                    if (electrical.canProvideEnergyToReceiver(direction))
+                    {
+                        this.drainPower(provider, provider.provideVoltage(this), provider.provideAmperage(this));
+
+                        // if (electrical instanceof TileEntityPowerline && this.getVoltage() <= 0)
+                        // electrical.setVoltage(0);
+                    }
+                }
+            }
+        }
+
+        TileEntity src = null;
+
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+        {
+            TileEntity t = this.worldObj.getTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
+
+            if (t != null && t instanceof TileEntityElectrical)
+            {
+                TileEntityElectrical e = (TileEntityElectrical) t;
+
+                if (t instanceof IPowerSource)
+                {
+                    if (e.getVoltage() > this.getVoltage())
+                    {
+                        src = e;
+                    }
+                }
+            }
+        }
+
+        if (src == null)
+        {
+            this.setVoltage(0);
+            this.setAmperage(0);
+        }
+    }
+
+    @Override
+    public double provideVoltage(IPowerNode to)
+    {
+        TileEntity drain = (TileEntity) to;
+
+        if (drain != null && drain instanceof TileEntityElectrical)
+        {
+            return voltage - this.getResistance();
+        }
+
+        return 0;
+    }
+
+    @Override
+    public double provideAmperage(IPowerNode to)
+    {
+        TileEntity drain = (TileEntity) to;
+
+        if (drain != null && drain instanceof TileEntityElectrical)
+        {
+            return amperage - this.getResistance();
+        }
+
+        return 0;
+    }
+
+    @Override
+    public void drainPower(IPowerNode from, double voltage, double amperage)
+    {
+        if (voltage > (this.getVoltage() + this.getResistance()))
+        {
+            this.setVoltage(voltage - this.getResistance());
+        }
+
+        if (amperage > (this.getAmperage() + this.getResistance()))
+        {
+            this.setAmperage(amperage - this.getResistance());
+        }
     }
 
     /**
@@ -138,123 +245,26 @@ public abstract class TileEntityElectrical extends TileEntity implements IPowerN
         this.voltage = voltage;
     }
 
-    /**
-     * @return The amount of boost this component currently contains.
-     */
-    public double getBoost()
+    @Override
+    public double getVoltageThreshold()
     {
-        return this.boost;
+        return 120;
     }
 
-    /**
-     * @param voltage - The amount of boost this component should contain.
-     */
-    public void setBoost(double boost)
+    @Override
+    public double getAmperage()
     {
-        this.boost = boost;
+        return this.amperage;
     }
 
-    /**
-     * @return The Source Direction that a receiver can extract from
-     */
-    public ForgeDirection getSourcePowerDirection()
+    public void setAmperage(double amperage)
     {
-        return null;
+        this.amperage = amperage;
     }
 
-    /**
-     * Updates the voltage of this component based on surrounding components.
-     */
-    public void updateEnergyAsReceiver()
+    @Override
+    public double getAmperageThreshold()
     {
-        for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
-        {
-            TileEntity tile = this.worldObj.getTileEntity(this.xCoord + direction.offsetX, this.yCoord + direction.offsetY, this.zCoord + direction.offsetZ);
-
-            if (tile != null && tile instanceof TileEntityElectrical)
-            {
-                TileEntityElectrical electrical = (TileEntityElectrical) tile;
-
-                if (electrical instanceof IPowerProvider)
-                {
-                    IPowerProvider provider = (IPowerProvider) electrical;
-
-                    if (electrical.canProvideEnergyToReceiver(direction) && electrical.getVoltage() > this.getVoltage())
-                    {
-                        this.acceptVoltageFrom(direction.getOpposite(), provider.provideVoltage(direction.getOpposite(), electrical.getVoltage() - this.getVoltage(), false), false);
-                    }
-                }
-            }
-        }
-
-        TileEntity surroundingSource = null;
-
-        for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
-        {
-            TileEntity tile = this.worldObj.getTileEntity(this.xCoord + direction.offsetX, this.yCoord + direction.offsetY, this.zCoord + direction.offsetZ);
-
-            if (tile != null && tile instanceof TileEntityElectrical)
-            {
-                TileEntityElectrical electrical = (TileEntityElectrical) tile;
-
-                if (electrical.getBoost() == 0 && electrical.getVoltage() > this.getVoltage() && tile instanceof IPowerProvider)
-                {
-                    surroundingSource = electrical;
-                }
-                
-                if (electrical.getVoltage() > 0 && electrical.getBoost() != 0 && direction == electrical.getSourcePowerDirection())
-                {
-                    surroundingSource = electrical;
-                }
-            }
-        }
-
-        if (surroundingSource == null || this.getVoltage() < 0)
-        {
-            this.setVoltage(0);
-        }
-    }
-
-    /**
-     * Returns the amount of energy to be extracted from this component.
-     * 
-     * @param from - The direction this request was sent from.
-     * @param maxExtract - The amount of energy we're trying to extract.
-     * @param simulate - If true, this request will only be simulated.
-     * @return - The amount of energy to be extracted.
-     */
-    public double provideVoltage(ForgeDirection from, double maxExtract, boolean simulate)
-    {
-        TileEntity tile = this.worldObj.getTileEntity(this.xCoord + from.offsetX, this.yCoord + from.offsetY, this.zCoord + from.offsetZ);
-
-        if (tile != null && tile instanceof TileEntityElectrical)
-        {
-            return maxExtract - this.getResistance();
-        }
-
-        return 0;
-    }
-
-    /**
-     * Returns the amount of energy this component will contain after adding 
-     * the specified amount of energy.
-     * 
-     * @param from - The direction this request was sent from.
-     * @param maxReceive - The amount of energy this component is receiving.
-     * @param simulate - If true, this request will only be simulated.
-     * @return The amount of energy this component will contain after adding 
-     * the specified amount of energy.
-     */
-    public double acceptVoltageFrom(ForgeDirection from, double maxReceive, boolean simulate)
-    {
-        double result = this.getVoltage() + maxReceive;
-
-        if (!simulate)
-        {
-            this.setVoltage(result);
-
-        }
-
-        return result;
+        return 10000;
     }
 }

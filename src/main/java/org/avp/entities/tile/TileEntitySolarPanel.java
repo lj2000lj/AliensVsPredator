@@ -1,10 +1,10 @@
 package org.avp.entities.tile;
 
-import org.avp.util.IPowerProvider;
+import org.avp.util.IPowerSource;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntitySolarPanel extends TileEntityElectrical implements IPowerProvider
+public class TileEntitySolarPanel extends TileEntityElectrical implements IPowerSource
 {
     public TileEntitySolarPanel()
     {
@@ -17,10 +17,12 @@ public class TileEntitySolarPanel extends TileEntityElectrical implements IPower
         if (this.worldObj.getWorldTime() < 12300 || this.worldObj.getWorldTime() > 23850)
         {
             this.setVoltage(120);
+            this.setAmperage(10);
         }
         else
         {
             this.setVoltage(0);
+            this.setAmperage(0);
         }
     }
 
@@ -31,19 +33,13 @@ public class TileEntitySolarPanel extends TileEntityElectrical implements IPower
     }
 
     @Override
-    public double provideVoltage(ForgeDirection from, double maxExtract, boolean simulate)
-    {
-        return super.provideVoltage(from, maxExtract, simulate);
-    }
-
-    @Override
-    public double getVoltage(ForgeDirection from)
+    public double getVoltage()
     {
         return this.voltage;
     }
 
     @Override
-    public double getMaxVoltage(ForgeDirection from)
+    public double getVoltageThreshold()
     {
         return 10000;
     }

@@ -1,12 +1,12 @@
 package org.avp.entities.tile;
 
-import org.avp.util.IPowerProvider;
+import org.avp.util.IPowerSource;
 
 import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityR2PConverter extends TileEntityElectrical implements IPowerProvider
+public class TileEntityR2PConverter extends TileEntityElectrical implements IPowerSource
 {
     public boolean isActiveRedstoneWireAttached;
 
@@ -35,19 +35,13 @@ public class TileEntityR2PConverter extends TileEntityElectrical implements IPow
     }
 
     @Override
-    public double provideVoltage(ForgeDirection from, double maxExtract, boolean simulate)
-    {
-        return super.provideVoltage(from, maxExtract, simulate);
-    }
-
-    @Override
-    public double getVoltage(ForgeDirection from)
+    public double getVoltage()
     {
         return this.voltage;
     }
 
     @Override
-    public double getMaxVoltage(ForgeDirection from)
+    public double getVoltageThreshold()
     {
         return 10000;
     }

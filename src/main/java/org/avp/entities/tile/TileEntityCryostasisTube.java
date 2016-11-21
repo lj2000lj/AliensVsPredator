@@ -1,7 +1,7 @@
 package org.avp.entities.tile;
 
 import org.avp.items.ItemEntitySummoner;
-import org.avp.util.IPowerAcceptor;
+import org.avp.util.IPowerDrain;
 
 import com.arisux.amdxlib.lib.world.tile.IRotatable;
 
@@ -15,7 +15,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityCryostasisTube extends TileEntityElectrical implements IPowerAcceptor, IRotatable
+public class TileEntityCryostasisTube extends TileEntityElectrical implements IPowerDrain, IRotatable
 {
     private ForgeDirection direction;
     public Entity stasisEntity;
@@ -172,13 +172,13 @@ public class TileEntityCryostasisTube extends TileEntityElectrical implements IP
     }
 
     @Override
-    public double getVoltage(ForgeDirection from)
+    public double getVoltage()
     {
         return this.getVoltage();
     }
 
     @Override
-    public double getMaxVoltage(ForgeDirection from)
+    public double getVoltageThreshold()
     {
         return 120;
     }

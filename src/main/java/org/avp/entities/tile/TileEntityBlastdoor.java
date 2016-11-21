@@ -6,7 +6,7 @@ import java.util.Random;
 import org.avp.AliensVsPredator;
 import org.avp.packets.client.PacketOpenBlastdoor;
 import org.avp.util.IOpenable;
-import org.avp.util.IPowerAcceptor;
+import org.avp.util.IPowerDrain;
 
 import com.arisux.amdxlib.lib.game.Game;
 import com.arisux.amdxlib.lib.world.tile.IRotatable;
@@ -20,7 +20,7 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityBlastdoor extends TileEntityElectrical implements IPowerAcceptor, IRotatable, IOpenable
+public class TileEntityBlastdoor extends TileEntityElectrical implements IPowerDrain, IRotatable, IOpenable
 {
     private ForgeDirection direction;
     private float doorProgress;
@@ -175,13 +175,13 @@ public class TileEntityBlastdoor extends TileEntityElectrical implements IPowerA
     }
 
     @Override
-    public double getVoltage(ForgeDirection from)
+    public double getVoltage()
     {
         return this.getVoltage();
     }
 
     @Override
-    public double getMaxVoltage(ForgeDirection from)
+    public double getVoltageThreshold()
     {
         return 220;
     }

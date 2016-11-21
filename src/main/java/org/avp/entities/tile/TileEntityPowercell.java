@@ -1,15 +1,16 @@
 package org.avp.entities.tile;
 
-import org.avp.util.IPowerProvider;
-import org.avp.util.IPowerAcceptor;
+import org.avp.util.IPowerDrain;
+import org.avp.util.IPowerNode;
+import org.avp.util.IPowerSource;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityPowercell extends TileEntityElectrical implements IPowerAcceptor, IPowerProvider
+public class TileEntityPowercell extends TileEntityElectrical implements IPowerDrain, IPowerSource
 {
-    public long   ampereHours;
+    public double ampereHours;
     public double voltageCapacity;
 
     public TileEntityPowercell()
@@ -26,7 +27,7 @@ public class TileEntityPowercell extends TileEntityElectrical implements IPowerA
     @Override
     public void updateEntity()
     {
-//        super.updateEntity();
+        // super.updateEntity();
 
         for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
         {
@@ -38,38 +39,21 @@ public class TileEntityPowercell extends TileEntityElectrical implements IPowerA
 
                 if (electrical.getVoltage() > this.getVoltage())
                 {
-                    this.setVoltage(electrical.getVoltage());
-                }
-
-                if (electrical instanceof IPowerProvider)
-                {
-                    IPowerProvider provider = (IPowerProvider) electrical;
-
-                    if (provider.getVoltage(direction.getOpposite()) > 0)
-                    {
-                        if (this.ampereHours < this.getMaxEnergyStored())
-                        {
-                            //TODO: Take amperage from provider
-                            this.ampereHours++;
-                        }
-                    }
+//                    this.setVoltage(electrical.getVoltage());
+                    this.voltageCapacity = electrical.getVoltage();
                 }
             }
         }
-        
-//        if ()
 
-        
-        
-        // if (this.ampereHours > 0)
-        // {
-        // this.setVoltage(this.voltageCapacity);
-        // this.ampereHours = this.ampereHours - 1;
-        // }
-        // else
-        // {
-        // this.setVoltage(0);
-        // }
+        if (this.ampereHours > 0)
+        {
+            this.setVoltage(this.voltageCapacity);
+//            this.ampereHours = this.ampereHours - 1;
+        }
+        else
+        {
+            this.setVoltage(0);
+        }
     }
 
     @Override
@@ -77,7 +61,7 @@ public class TileEntityPowercell extends TileEntityElectrical implements IPowerA
     {
         super.readFromNBT(nbt);
 
-        this.ampereHours = nbt.getLong("AmpereHours");
+        this.ampereHours = nbt.getDouble("AmpereHours");
         this.voltageCapacity = nbt.getDouble("VoltageCapacity");
     }
 
@@ -86,37 +70,48 @@ public class TileEntityPowercell extends TileEntityElectrical implements IPowerA
     {
         super.writeToNBT(nbt);
 
-        nbt.setLong("AmpereHours", this.ampereHours);
+        nbt.setDouble("AmpereHours", this.ampereHours);
         nbt.setDouble("VoltageCapacity", this.voltageCapacity);
     }
 
     @Override
-    public double acceptVoltageFrom(ForgeDirection from, double maxReceive, boolean simulate)
+    public double provideVoltage(IPowerNode to)
     {
-        return super.acceptVoltageFrom(from, maxReceive, simulate);
+        return super.provideVoltage(to);
     }
 
     @Override
-    public double provideVoltage(ForgeDirection from, double maxExtract, boolean simulate)
+    public double provideAmperage(IPowerNode to)
     {
-        this.ampereHours = this.ampereHours - 1;
+        TileEntityElectrical electrical = (TileEntityElectrical) to;
 
-        return super.provideVoltage(from, maxExtract, simulate);
+        if (electrical instanceof IPowerSource)
+        {
+            if (electrical.getAmperage() > 0)
+            {
+                if (this.ampereHours < this.getMaxEnergyStored())
+                {
+                    this.ampereHours = this.ampereHours + to.getAmperage();
+                }
+            }
+        }
+
+        return this.ampereHours;
     }
 
     @Override
-    public double getVoltage(ForgeDirection from)
+    public double getVoltage()
     {
         return this.voltage;
     }
 
     @Override
-    public double getMaxVoltage(ForgeDirection from)
+    public double getVoltageThreshold()
     {
         return 1000;
     }
 
-    public long getAmpereHours()
+    public double getAmpereHours()
     {
         return ampereHours;
     }

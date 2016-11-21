@@ -1,10 +1,11 @@
 package org.avp.entities.tile;
 
-import org.avp.util.IPowerAcceptor;
+import org.avp.util.IPowerDrain;
+import org.avp.util.IPowerNode;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityLightPanel extends TileEntityElectrical implements IPowerAcceptor
+public class TileEntityLightPanel extends TileEntityElectrical implements IPowerDrain
 {
     public TileEntityLightPanel()
     {
@@ -18,19 +19,19 @@ public class TileEntityLightPanel extends TileEntityElectrical implements IPower
     }
 
     @Override
-    public double acceptVoltageFrom(ForgeDirection from, double maxReceive, boolean simulate)
+    public void drainPower(IPowerNode from, double voltage, double amperage)
     {
-        return 0;
+        super.drainPower(from, voltage, amperage);
     }
 
     @Override
-    public double getVoltage(ForgeDirection from)
+    public double getVoltage()
     {
         return this.voltage;
     }
 
     @Override
-    public double getMaxVoltage(ForgeDirection from)
+    public double getVoltageThreshold()
     {
         return 10000;
     }

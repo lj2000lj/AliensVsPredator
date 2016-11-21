@@ -1,12 +1,12 @@
 package org.avp.entities.tile;
 
-import org.avp.util.IPowerAcceptor;
+import org.avp.util.IPowerDrain;
 
 import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityP2RConverter extends TileEntityElectrical implements IPowerAcceptor
+public class TileEntityP2RConverter extends TileEntityElectrical implements IPowerDrain
 {
     public TileEntityP2RConverter()
     {
@@ -111,13 +111,13 @@ public class TileEntityP2RConverter extends TileEntityElectrical implements IPow
     }
 
     @Override
-    public double getVoltage(ForgeDirection from)
+    public double getVoltage()
     {
         return this.voltage;
     }
 
     @Override
-    public double getMaxVoltage(ForgeDirection from)
+    public double getVoltageThreshold()
     {
         return 10000;
     }

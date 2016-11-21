@@ -1,10 +1,10 @@
 package org.avp.entities.tile;
 
-import org.avp.util.IPowerAcceptor;
+import org.avp.util.IPowerDrain;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntitySatelliteModem extends TileEntityElectrical implements IPowerAcceptor
+public class TileEntitySatelliteModem extends TileEntityElectrical implements IPowerDrain
 {
     public TileEntitySatelliteModem()
     {
@@ -18,19 +18,13 @@ public class TileEntitySatelliteModem extends TileEntityElectrical implements IP
     }
 
     @Override
-    public double acceptVoltageFrom(ForgeDirection from, double maxReceive, boolean simulate)
-    {
-        return maxReceive;
-    }
-
-    @Override
-    public double getVoltage(ForgeDirection from)
+    public double getVoltage()
     {
         return this.voltage;
     }
 
     @Override
-    public double getMaxVoltage(ForgeDirection from)
+    public double getVoltageThreshold()
     {
         return 10000;
     }

@@ -16,7 +16,7 @@ import org.avp.entities.mob.EntityMarine;
 import org.avp.entities.mob.EntitySpeciesAlien;
 import org.avp.entities.tile.TileEntityPowercell;
 import org.avp.entities.tile.TileEntityStasisMechanism;
-import org.avp.util.IPowerAcceptor;
+import org.avp.util.IPowerDrain;
 
 import com.arisux.amdxlib.lib.client.render.Draw;
 import com.arisux.amdxlib.lib.client.render.OpenGL;
@@ -346,10 +346,10 @@ public class PressureHUDRenderEvent
                             fontrenderer.drawString("Tile Entity: " + true, subMenuX + subMenuPadding, subMenuStartY + (curEntry++ * subEntrySpacing), 0xFFAA00);
                         }
 
-                        if (tile instanceof IPowerAcceptor)
+                        if (tile instanceof IPowerDrain)
                         {
-                            IPowerAcceptor poweredTile = (IPowerAcceptor) tile;
-                            fontrenderer.drawString("Voltage: " + ((float) poweredTile.getVoltage(ForgeDirection.SOUTH)) + "V", subMenuX + subMenuPadding, subMenuStartY + (curEntry++ * subEntrySpacing), 0xFFAA00);
+                            IPowerDrain poweredTile = (IPowerDrain) tile;
+                            fontrenderer.drawString("Voltage: " + ((float) poweredTile.getVoltage()) + "V", subMenuX + subMenuPadding, subMenuStartY + (curEntry++ * subEntrySpacing), 0xFFAA00);
                         }
 
                         if (tile instanceof TileEntityPowercell)

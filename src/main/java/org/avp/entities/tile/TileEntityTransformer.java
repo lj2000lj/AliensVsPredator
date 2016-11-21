@@ -1,7 +1,8 @@
 package org.avp.entities.tile;
 
-import org.avp.util.IPowerProvider;
-import org.avp.util.IPowerAcceptor;
+import org.avp.util.IPowerDrain;
+import org.avp.util.IPowerNode;
+import org.avp.util.IPowerSource;
 
 import com.arisux.amdxlib.lib.world.tile.IRotatable;
 
@@ -12,14 +13,13 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityTransformer extends TileEntityElectrical implements IPowerProvider, IPowerAcceptor, IRotatable
+public class TileEntityTransformer extends TileEntityElectrical implements IPowerDrain, IRotatable, IPowerSource
 {
     private ForgeDirection direction;
 
     public TileEntityTransformer()
     {
         super();
-        this.boost = 24;
         this.direction = ForgeDirection.SOUTH;
     }
 
@@ -70,7 +70,7 @@ public class TileEntityTransformer extends TileEntityElectrical implements IPowe
             {
                 TileEntityElectrical electrical = (TileEntityElectrical) tile;
 
-                if (electrical instanceof IPowerProvider)
+                if (electrical instanceof IPowerSource)
                 {
                     if (electrical.getVoltage() == 0)
                     {
@@ -98,19 +98,32 @@ public class TileEntityTransformer extends TileEntityElectrical implements IPowe
     }
 
     @Override
-    public double getVoltage(ForgeDirection from)
+    public double getVoltage()
     {
         return this.voltage;
     }
 
     @Override
-    public double provideVoltage(ForgeDirection from, double maxExtract, boolean simulate)
+    public double provideVoltage(IPowerNode from)
     {
-        TileEntity tile = this.worldObj.getTileEntity(this.xCoord + from.offsetX, this.yCoord + from.offsetY, this.zCoord + from.offsetZ);
+        TileEntity tile = (TileEntity) from;
 
         if (tile != null && tile instanceof TileEntityElectrical)
         {
-            return (maxExtract + this.getBoost()) - this.getResistance();
+            return (this.getVoltage() + 24) - this.getResistance();
+        }
+
+        return 0;
+    }
+    
+    @Override
+    public double provideAmperage(IPowerNode to)
+    {
+        TileEntity drain = (TileEntity) to;
+
+        if (drain != null && drain instanceof TileEntityElectrical)
+        {
+            return 0 - 10;
         }
 
         return 0;
@@ -123,7 +136,7 @@ public class TileEntityTransformer extends TileEntityElectrical implements IPowe
     }
 
     @Override
-    public double getMaxVoltage(ForgeDirection from)
+    public double getVoltageThreshold()
     {
         return 10000;
     }

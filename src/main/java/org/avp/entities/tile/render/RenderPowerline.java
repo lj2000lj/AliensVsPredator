@@ -68,7 +68,7 @@ public class RenderPowerline extends TileEntitySpecialRenderer
                             scale = 0.5F;
                             OpenGL.scale(scale, scale, scale);
                             OpenGL.translate(0F, 20.0F, 0F);
-                            Draw.drawString("~0.0A", 0, 0, 0xFF00FFFF);
+                            Draw.drawString(((float) tile.getAmperage()) + "A", 0, 0, 0xFF00FFFF);
                         }
                         OpenGL.popMatrix();
                     }

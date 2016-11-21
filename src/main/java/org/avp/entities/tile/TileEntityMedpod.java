@@ -4,7 +4,7 @@ import org.avp.AliensVsPredator;
 import org.avp.entities.EntityMedpod;
 import org.avp.packets.client.PacketOpenable;
 import org.avp.util.IOpenable;
-import org.avp.util.IPowerAcceptor;
+import org.avp.util.IPowerDrain;
 
 import com.arisux.amdxlib.lib.world.tile.IRotatable;
 
@@ -15,7 +15,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityMedpod extends TileEntityElectrical implements IOpenable, IPowerAcceptor, IRotatable
+public class TileEntityMedpod extends TileEntityElectrical implements IOpenable, IPowerDrain, IRotatable
 {
     private ForgeDirection direction;
     private boolean isOpen;
@@ -166,13 +166,13 @@ public class TileEntityMedpod extends TileEntityElectrical implements IOpenable,
     }
 
     @Override
-    public double getVoltage(ForgeDirection from)
+    public double getVoltage()
     {
         return this.voltage;
     }
 
     @Override
-    public double getMaxVoltage(ForgeDirection from)
+    public double getVoltageThreshold()
     {
         return 240;
     }

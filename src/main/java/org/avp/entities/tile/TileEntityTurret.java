@@ -21,7 +21,7 @@ import org.avp.inventory.container.ContainerTurret;
 import org.avp.packets.client.PacketTurretInit;
 import org.avp.packets.server.PacketTurretTargetUpdate;
 import org.avp.util.IDataDevice;
-import org.avp.util.IPowerAcceptor;
+import org.avp.util.IPowerDrain;
 
 import com.arisux.amdxlib.lib.world.CoordData;
 import com.arisux.amdxlib.lib.world.entity.Entities;
@@ -49,7 +49,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityTurret extends TileEntityElectrical implements IDataDevice, IPowerAcceptor
+public class TileEntityTurret extends TileEntityElectrical implements IDataDevice, IPowerDrain
 {
     private long                               fireRate;
     private boolean                            ammoDisplayEnabled;
@@ -818,19 +818,13 @@ public class TileEntityTurret extends TileEntityElectrical implements IDataDevic
     }
 
     @Override
-    public double acceptVoltageFrom(ForgeDirection from, double maxReceive, boolean simulate)
+    public double getVoltage()
     {
-        return super.acceptVoltageFrom(from, maxReceive, simulate);
+        return super.getVoltage();
     }
 
     @Override
-    public double getVoltage(ForgeDirection from)
-    {
-        return this.getVoltage();
-    }
-
-    @Override
-    public double getMaxVoltage(ForgeDirection from)
+    public double getVoltageThreshold()
     {
         return 220;
     }
