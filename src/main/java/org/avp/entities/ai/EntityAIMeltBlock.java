@@ -2,7 +2,7 @@ package org.avp.entities.ai;
 
 import org.avp.AliensVsPredator;
 
-import com.arisux.amdxlib.lib.game.GameSounds;
+import com.arisux.mdxlib.lib.game.GameSounds;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;

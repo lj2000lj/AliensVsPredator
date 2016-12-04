@@ -6,8 +6,8 @@ import java.util.UUID;
 import org.avp.event.HiveHandler;
 import org.avp.util.XenomorphHive;
 
-import com.arisux.amdxlib.lib.game.Game;
-import com.arisux.amdxlib.lib.world.Worlds;
+import com.arisux.mdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.world.Worlds;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;

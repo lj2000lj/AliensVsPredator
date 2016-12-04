@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import org.avp.event.HiveHandler;
 import org.avp.util.IDataSaveHandler;
 
-import com.arisux.amdxlib.AMDXLib;
-import com.arisux.amdxlib.lib.world.storage.NBTStorage;
+import com.arisux.mdxlib.AMDXLib;
+import com.arisux.mdxlib.lib.world.storage.NBTStorage;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.nbt.NBTTagCompound;

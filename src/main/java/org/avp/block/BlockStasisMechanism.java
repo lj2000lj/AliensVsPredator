@@ -5,7 +5,7 @@ import java.util.Random;
 import org.avp.entities.tile.TileEntityStasisMechanism;
 import org.avp.items.ItemEntitySummoner;
 
-import com.arisux.amdxlib.lib.world.entity.player.inventory.Inventories;
+import com.arisux.mdxlib.lib.world.entity.player.inventory.Inventories;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

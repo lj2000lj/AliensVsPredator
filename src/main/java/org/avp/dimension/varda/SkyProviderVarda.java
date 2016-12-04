@@ -8,11 +8,11 @@ import org.avp.dimension.DimensionUtil;
 import org.avp.event.VardaStormHandler;
 import org.lwjgl.opengl.GL11;
 
-import com.arisux.amdxlib.lib.client.render.Color;
-import com.arisux.amdxlib.lib.client.render.Draw;
-import com.arisux.amdxlib.lib.client.render.OpenGL;
-import com.arisux.amdxlib.lib.game.Game;
-import com.arisux.amdxlib.lib.game.GameResources;
+import com.arisux.mdxlib.lib.client.render.Color;
+import com.arisux.mdxlib.lib.client.render.Draw;
+import com.arisux.mdxlib.lib.client.render.OpenGL;
+import com.arisux.mdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.game.GameResources;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;

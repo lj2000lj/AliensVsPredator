@@ -2,8 +2,8 @@ package org.avp.entities.mob.render;
 
 import org.avp.AliensVsPredator;
 
-import com.arisux.amdxlib.lib.client.RenderLivingWrapper;
-import com.arisux.amdxlib.lib.client.render.OpenGL;
+import com.arisux.mdxlib.lib.client.RenderLivingWrapper;
+import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.entity.EntityLivingBase;
 

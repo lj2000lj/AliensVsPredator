@@ -8,8 +8,8 @@ import org.avp.entities.mob.EntitySpeciesAlien;
 import org.avp.entities.tile.TileEntityHiveResin;
 import org.avp.event.HiveHandler;
 
-import com.arisux.amdxlib.lib.world.CoordData;
-import com.arisux.amdxlib.lib.world.Worlds;
+import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.Worlds;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;

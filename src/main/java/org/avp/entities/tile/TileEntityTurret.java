@@ -23,9 +23,9 @@ import org.avp.packets.server.PacketTurretTargetUpdate;
 import org.avp.util.IDataDevice;
 import org.avp.util.IVoltageReceiver;
 
-import com.arisux.amdxlib.lib.world.CoordData;
-import com.arisux.amdxlib.lib.world.entity.Entities;
-import com.arisux.amdxlib.lib.world.storage.NBTStorage;
+import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.entity.Entities;
+import com.arisux.mdxlib.lib.world.storage.NBTStorage;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;

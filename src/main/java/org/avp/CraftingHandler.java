@@ -3,8 +3,8 @@ package org.avp;
 import org.avp.api.AssemblerAPI;
 import org.avp.api.AssemblerAPI.AssemblerSchematic;
 
-import com.arisux.amdxlib.lib.game.IInitEvent;
-import com.arisux.amdxlib.lib.world.entity.player.inventory.Inventories;
+import com.arisux.mdxlib.lib.game.IInitEvent;
+import com.arisux.mdxlib.lib.world.entity.player.inventory.Inventories;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;

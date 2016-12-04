@@ -1,6 +1,6 @@
 package org.avp;
 
-import com.arisux.amdxlib.lib.game.IInitEvent;
+import com.arisux.mdxlib.lib.game.IInitEvent;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import net.minecraft.block.material.MapColor;

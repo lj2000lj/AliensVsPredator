@@ -7,9 +7,9 @@ import org.avp.items.ItemFlamethrower;
 import org.avp.util.PlayerMode;
 import org.lwjgl.opengl.GL11;
 
-import com.arisux.amdxlib.lib.client.Model.RenderObject;
-import com.arisux.amdxlib.lib.client.render.OpenGL;
-import com.arisux.amdxlib.lib.util.Math;
+import com.arisux.mdxlib.lib.client.Model.RenderObject;
+import com.arisux.mdxlib.lib.client.render.OpenGL;
+import com.arisux.mdxlib.lib.util.Math;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.client.model.ModelBiped;

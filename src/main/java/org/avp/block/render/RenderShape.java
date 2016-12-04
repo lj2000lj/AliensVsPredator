@@ -3,8 +3,8 @@ package org.avp.block.render;
 import org.avp.block.BlockShape;
 import org.avp.block.BlockShape.ShapeTypes;
 
-import com.arisux.amdxlib.lib.client.render.Matrix3;
-import com.arisux.amdxlib.lib.client.render.Vertex;
+import com.arisux.mdxlib.lib.client.render.Matrix3;
+import com.arisux.mdxlib.lib.client.render.Vertex;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import net.minecraft.block.Block;

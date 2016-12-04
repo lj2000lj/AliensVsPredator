@@ -3,15 +3,15 @@ package org.avp.gui;
 import org.avp.entities.extended.ExtendedEntityPlayer;
 import org.avp.event.client.TacticalHUDRenderEvent;
 
-import com.arisux.amdxlib.lib.client.gui.GuiCustomButton;
-import com.arisux.amdxlib.lib.client.gui.GuiCustomScreen;
-import com.arisux.amdxlib.lib.client.gui.GuiCustomSlider;
-import com.arisux.amdxlib.lib.client.gui.GuiCustomTextbox;
-import com.arisux.amdxlib.lib.client.gui.IAction;
-import com.arisux.amdxlib.lib.client.render.Draw;
-import com.arisux.amdxlib.lib.client.render.ScaledResolution;
-import com.arisux.amdxlib.lib.client.render.Screen;
-import com.arisux.amdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.client.gui.GuiCustomButton;
+import com.arisux.mdxlib.lib.client.gui.GuiCustomScreen;
+import com.arisux.mdxlib.lib.client.gui.GuiCustomSlider;
+import com.arisux.mdxlib.lib.client.gui.GuiCustomTextbox;
+import com.arisux.mdxlib.lib.client.gui.IAction;
+import com.arisux.mdxlib.lib.client.render.Draw;
+import com.arisux.mdxlib.lib.client.render.ScaledResolution;
+import com.arisux.mdxlib.lib.client.render.Screen;
+import com.arisux.mdxlib.lib.game.Game;
 
 import net.minecraft.client.gui.GuiScreen;
 

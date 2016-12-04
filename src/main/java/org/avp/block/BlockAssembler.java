@@ -5,7 +5,7 @@ import java.util.Random;
 import org.avp.AliensVsPredator;
 import org.avp.entities.tile.TileEntityAssembler;
 
-import com.arisux.amdxlib.lib.world.entity.player.inventory.Inventories;
+import com.arisux.mdxlib.lib.world.entity.player.inventory.Inventories;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

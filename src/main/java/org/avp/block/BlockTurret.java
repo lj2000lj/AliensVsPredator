@@ -6,7 +6,7 @@ import org.avp.AliensVsPredator;
 import org.avp.entities.tile.TileEntityTurret;
 import org.avp.packets.server.PacketAddTuretTarget;
 
-import com.arisux.amdxlib.lib.world.entity.Entities;
+import com.arisux.mdxlib.lib.world.entity.Entities;
 
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import net.minecraft.block.Block;

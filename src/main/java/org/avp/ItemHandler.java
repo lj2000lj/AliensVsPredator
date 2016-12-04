@@ -49,11 +49,11 @@ import org.avp.items.ItemStorageDevice;
 import org.avp.items.ItemSupplyChute;
 import org.avp.items.ItemWristbracer;
 
-import com.arisux.amdxlib.lib.game.Game;
-import com.arisux.amdxlib.lib.game.IInitEvent;
-import com.arisux.amdxlib.lib.world.item.HookedItem;
-import com.arisux.amdxlib.lib.world.item.ItemToolMaterialAxe;
-import com.arisux.amdxlib.lib.world.item.ItemToolMaterialPickaxe;
+import com.arisux.mdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.game.IInitEvent;
+import com.arisux.mdxlib.lib.world.item.HookedItem;
+import com.arisux.mdxlib.lib.world.item.ItemToolMaterialAxe;
+import com.arisux.mdxlib.lib.world.item.ItemToolMaterialPickaxe;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import net.minecraft.item.Item;

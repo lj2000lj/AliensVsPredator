@@ -29,7 +29,7 @@ import org.avp.packets.server.PacketSyncEEPS;
 import org.avp.packets.server.PacketTurretTargetUpdate;
 import org.avp.packets.server.PacketWriteToDataDevice;
 
-import com.arisux.amdxlib.lib.game.IInitEvent;
+import com.arisux.mdxlib.lib.game.IInitEvent;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;

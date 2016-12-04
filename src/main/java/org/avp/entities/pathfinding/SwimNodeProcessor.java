@@ -1,6 +1,6 @@
 package org.avp.entities.pathfinding;
 
-import com.arisux.amdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.CoordData;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

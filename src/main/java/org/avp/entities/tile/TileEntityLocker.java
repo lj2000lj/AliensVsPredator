@@ -6,7 +6,7 @@ import org.avp.items.ItemFirearm;
 import org.avp.packets.client.PacketOpenable;
 import org.avp.util.IOpenable;
 
-import com.arisux.amdxlib.lib.world.tile.IRotatable;
+import com.arisux.mdxlib.lib.world.tile.IRotatable;
 
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import net.minecraft.entity.player.EntityPlayer;

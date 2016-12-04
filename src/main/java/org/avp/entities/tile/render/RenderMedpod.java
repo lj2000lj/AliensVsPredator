@@ -6,7 +6,7 @@ import org.avp.AliensVsPredator;
 import org.avp.entities.tile.TileEntityMedpod;
 import org.avp.util.EntityRenderTransforms;
 
-import com.arisux.amdxlib.lib.client.render.OpenGL;
+import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;

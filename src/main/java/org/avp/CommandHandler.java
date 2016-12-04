@@ -4,7 +4,7 @@ import org.avp.command.CommandGenerate;
 import org.avp.command.CommandPlayerMode;
 import org.avp.command.CommandSettings;
 
-import com.arisux.amdxlib.lib.game.IInitEvent;
+import com.arisux.mdxlib.lib.game.IInitEvent;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;

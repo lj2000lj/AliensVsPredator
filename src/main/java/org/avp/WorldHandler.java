@@ -5,7 +5,7 @@ import org.avp.dimension.varda.WorldGeneratorVarda;
 import org.avp.world.WorldGenerator;
 import org.avp.world.WorldGeneratorDerelict;
 
-import com.arisux.amdxlib.lib.game.IInitEvent;
+import com.arisux.mdxlib.lib.game.IInitEvent;
 
 import cpw.mods.fml.common.IWorldGenerator;
 import cpw.mods.fml.common.event.FMLInitializationEvent;

@@ -202,10 +202,10 @@ import org.avp.items.render.parts.RenderItemSniperStock;
 import org.avp.util.EntityRenderTransforms;
 import org.lwjgl.opengl.GL12;
 
-import com.arisux.amdxlib.lib.client.TexturedModel;
-import com.arisux.amdxlib.lib.client.render.Draw;
-import com.arisux.amdxlib.lib.client.render.OpenGL;
-import com.arisux.amdxlib.lib.game.IPostInitEvent;
+import com.arisux.mdxlib.lib.client.TexturedModel;
+import com.arisux.mdxlib.lib.client.render.Draw;
+import com.arisux.mdxlib.lib.client.render.OpenGL;
+import com.arisux.mdxlib.lib.game.IPostInitEvent;
 
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.relauncher.Side;

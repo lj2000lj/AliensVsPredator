@@ -4,10 +4,10 @@ import org.avp.AliensVsPredator;
 import org.avp.entities.EntityAPC;
 import org.lwjgl.opengl.GL11;
 
-import com.arisux.amdxlib.lib.client.render.OpenGL;
-import com.arisux.amdxlib.lib.client.render.wavefront.Part;
-import com.arisux.amdxlib.lib.client.render.wavefront.TriangulatedWavefrontModel;
-import com.arisux.amdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.client.render.OpenGL;
+import com.arisux.mdxlib.lib.client.render.wavefront.Part;
+import com.arisux.mdxlib.lib.client.render.wavefront.TriangulatedWavefrontModel;
+import com.arisux.mdxlib.lib.game.Game;
 
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;

@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.avp.AliensVsPredator;
 
-import com.arisux.amdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.game.Game;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

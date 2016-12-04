@@ -9,10 +9,10 @@ import org.avp.items.ItemFlamethrower;
 import org.avp.items.ItemM240IncineratorUnit;
 import org.avp.items.ItemNostromoFlamethrower;
 
-import com.arisux.amdxlib.lib.game.Game;
-import com.arisux.amdxlib.lib.world.CoordData;
-import com.arisux.amdxlib.lib.world.block.Blocks;
-import com.arisux.amdxlib.lib.world.entity.Entities;
+import com.arisux.mdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.block.Blocks;
+import com.arisux.mdxlib.lib.world.entity.Entities;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

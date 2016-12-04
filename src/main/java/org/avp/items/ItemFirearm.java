@@ -6,11 +6,11 @@ import org.avp.AliensVsPredator;
 import org.avp.packets.server.PacketReloadFirearm;
 import org.avp.packets.server.PacketShootEntity;
 
-import com.arisux.amdxlib.lib.client.Sound;
-import com.arisux.amdxlib.lib.game.Game;
-import com.arisux.amdxlib.lib.world.entity.Entities;
-import com.arisux.amdxlib.lib.world.entity.player.inventory.Inventories;
-import com.arisux.amdxlib.lib.world.item.HookedItem;
+import com.arisux.mdxlib.lib.client.Sound;
+import com.arisux.mdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.world.entity.Entities;
+import com.arisux.mdxlib.lib.world.entity.player.inventory.Inventories;
+import com.arisux.mdxlib.lib.world.item.HookedItem;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;

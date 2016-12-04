@@ -4,8 +4,8 @@ import java.util.Random;
 
 import org.avp.AliensVsPredator;
 
-import com.arisux.amdxlib.lib.world.CoordData;
-import com.arisux.amdxlib.lib.world.Worlds;
+import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.Worlds;
 
 import cpw.mods.fml.common.IWorldGenerator;
 import net.minecraft.world.World;

@@ -11,10 +11,10 @@ import org.avp.packets.client.PacketJellyLevelUpdate;
 import org.avp.util.EvolutionType;
 import org.avp.util.XenomorphHive;
 
-import com.arisux.amdxlib.lib.world.CoordData;
-import com.arisux.amdxlib.lib.world.Worlds;
-import com.arisux.amdxlib.lib.world.entity.Entities;
-import com.arisux.amdxlib.lib.world.entity.ItemDrop;
+import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.Worlds;
+import com.arisux.mdxlib.lib.world.entity.Entities;
+import com.arisux.mdxlib.lib.world.entity.ItemDrop;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;

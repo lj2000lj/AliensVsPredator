@@ -9,10 +9,10 @@ import org.avp.api.WristbracerAPI;
 import org.avp.inventory.container.ContainerWristbracer;
 import org.lwjgl.opengl.GL11;
 
-import com.arisux.amdxlib.lib.client.gui.GuiCustomButton;
-import com.arisux.amdxlib.lib.client.gui.IAction;
-import com.arisux.amdxlib.lib.client.render.Draw;
-import com.arisux.amdxlib.lib.client.render.OpenGL;
+import com.arisux.mdxlib.lib.client.gui.GuiCustomButton;
+import com.arisux.mdxlib.lib.client.gui.IAction;
+import com.arisux.mdxlib.lib.client.render.Draw;
+import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

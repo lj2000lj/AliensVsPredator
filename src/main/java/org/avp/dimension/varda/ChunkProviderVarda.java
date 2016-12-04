@@ -7,8 +7,8 @@ import org.avp.AliensVsPredator;
 import org.avp.dimension.varda.worldgen.VardaGenCaves;
 import org.avp.dimension.varda.worldgen.VardaGenLakes;
 
-import com.arisux.amdxlib.lib.world.CoordData;
-import com.arisux.amdxlib.lib.world.Worlds;
+import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.Worlds;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSand;

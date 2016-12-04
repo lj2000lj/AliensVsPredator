@@ -6,8 +6,8 @@ import org.avp.AliensVsPredator;
 import org.avp.dimension.BiomeLVBase;
 import org.avp.dimension.varda.worldgen.VardaGenSpike;
 
-import com.arisux.amdxlib.lib.world.CoordData;
-import com.arisux.amdxlib.lib.world.Worlds;
+import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.Worlds;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;

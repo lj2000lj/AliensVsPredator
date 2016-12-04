@@ -2,8 +2,8 @@ package org.avp.world;
 
 import org.avp.AliensVsPredator;
 
-import com.arisux.amdxlib.lib.world.CoordData;
-import com.arisux.amdxlib.lib.world.Structure;
+import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.Structure;
 
 import net.minecraft.world.WorldServer;
 

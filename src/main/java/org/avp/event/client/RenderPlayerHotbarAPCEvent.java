@@ -2,7 +2,7 @@ package org.avp.event.client;
 
 import org.avp.entities.EntityAPC;
 
-import com.arisux.amdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.game.Game;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;

@@ -72,9 +72,9 @@ import org.avp.entities.tile.TileEntityTransformer;
 import org.avp.entities.tile.TileEntityTurret;
 import org.avp.entities.tile.TileEntityWorkstation;
 
-import com.arisux.amdxlib.AMDXLib;
-import com.arisux.amdxlib.lib.game.Game;
-import com.arisux.amdxlib.lib.game.IInitEvent;
+import com.arisux.mdxlib.AMDXLib;
+import com.arisux.mdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.game.IInitEvent;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.registry.EntityRegistry;

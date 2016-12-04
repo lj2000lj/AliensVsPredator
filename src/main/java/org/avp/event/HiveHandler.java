@@ -8,10 +8,10 @@ import org.avp.entities.tile.TileEntityHiveResin;
 import org.avp.util.IDataSaveHandler;
 import org.avp.util.XenomorphHive;
 
-import com.arisux.amdxlib.AMDXLib;
-import com.arisux.amdxlib.lib.game.Game;
-import com.arisux.amdxlib.lib.world.CoordData;
-import com.arisux.amdxlib.lib.world.Worlds;
+import com.arisux.mdxlib.AMDXLib;
+import com.arisux.mdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.Worlds;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;

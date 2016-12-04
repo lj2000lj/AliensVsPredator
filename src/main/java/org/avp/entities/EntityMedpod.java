@@ -8,7 +8,7 @@ import org.avp.entities.extended.ExtendedEntityPlayer;
 import org.avp.entities.mob.EntitySpeciesAlien;
 import org.avp.entities.tile.TileEntityMedpod;
 
-import com.arisux.amdxlib.lib.world.Worlds;
+import com.arisux.mdxlib.lib.world.Worlds;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

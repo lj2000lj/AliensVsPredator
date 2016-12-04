@@ -5,7 +5,7 @@ import org.avp.entities.extended.ExtendedEntityPlayer;
 import org.avp.packets.client.PacketPlayerModeUpdate;
 import org.avp.util.PlayerMode;
 
-import com.arisux.amdxlib.lib.world.entity.player.Players;
+import com.arisux.mdxlib.lib.world.entity.player.Players;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;

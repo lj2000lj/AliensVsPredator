@@ -5,9 +5,9 @@ import org.avp.DamageSources;
 import org.avp.dimension.varda.ProviderVarda;
 import org.avp.packets.client.PacketVardaStormMoveEntity;
 
-import com.arisux.amdxlib.lib.game.Game;
-import com.arisux.amdxlib.lib.world.CoordData;
-import com.arisux.amdxlib.lib.world.Worlds;
+import com.arisux.mdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.Worlds;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;

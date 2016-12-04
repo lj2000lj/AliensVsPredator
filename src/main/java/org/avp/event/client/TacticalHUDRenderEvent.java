@@ -15,16 +15,16 @@ import org.avp.entities.extended.ExtendedEntityPlayer;
 import org.avp.gui.GuiTacticalHUDSettings;
 import org.lwjgl.opengl.GL11;
 
-import com.arisux.amdxlib.lib.client.gui.GuiCustomButton;
-import com.arisux.amdxlib.lib.client.gui.IAction;
-import com.arisux.amdxlib.lib.client.render.Draw;
-import com.arisux.amdxlib.lib.client.render.OpenGL;
-import com.arisux.amdxlib.lib.client.render.ScaledResolution;
-import com.arisux.amdxlib.lib.client.render.Screen;
-import com.arisux.amdxlib.lib.game.Game;
-import com.arisux.amdxlib.lib.world.CoordData;
-import com.arisux.amdxlib.lib.world.entity.Entities;
-import com.arisux.amdxlib.lib.world.entity.player.inventory.Inventories;
+import com.arisux.mdxlib.lib.client.gui.GuiCustomButton;
+import com.arisux.mdxlib.lib.client.gui.IAction;
+import com.arisux.mdxlib.lib.client.render.Draw;
+import com.arisux.mdxlib.lib.client.render.OpenGL;
+import com.arisux.mdxlib.lib.client.render.ScaledResolution;
+import com.arisux.mdxlib.lib.client.render.Screen;
+import com.arisux.mdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.entity.Entities;
+import com.arisux.mdxlib.lib.world.entity.player.inventory.Inventories;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.RenderTickEvent;

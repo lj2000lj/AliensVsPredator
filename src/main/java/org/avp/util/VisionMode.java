@@ -12,9 +12,9 @@ import org.avp.entities.mob.EntitySpeciesAlien;
 import org.avp.entities.mob.EntityXenomorph;
 import org.avp.event.client.LightmapUpdateEvent;
 
-import com.arisux.amdxlib.lib.client.render.Draw;
-import com.arisux.amdxlib.lib.client.render.OpenGL;
-import com.arisux.amdxlib.lib.client.render.Screen;
+import com.arisux.mdxlib.lib.client.render.Draw;
+import com.arisux.mdxlib.lib.client.render.OpenGL;
+import com.arisux.mdxlib.lib.client.render.Screen;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;

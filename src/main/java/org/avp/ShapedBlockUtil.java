@@ -3,8 +3,8 @@ package org.avp;
 import org.avp.block.BlockShape;
 import org.avp.block.BlockShape.ShapeTypes;
 
-import com.arisux.amdxlib.lib.game.Game;
-import com.arisux.amdxlib.lib.world.block.Blocks;
+import com.arisux.mdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.world.block.Blocks;
 
 import net.minecraft.block.Block;
 

@@ -1,12 +1,12 @@
 package org.avp.command;
 
-import com.arisux.amdxlib.AMDXLib;
-import com.arisux.amdxlib.lib.game.Chat;
-import com.arisux.amdxlib.lib.world.CoordData;
-import com.arisux.amdxlib.lib.world.Structure;
-import com.arisux.amdxlib.lib.world.StructureGenerationHandler;
-import com.arisux.amdxlib.lib.world.entity.player.Players;
-import com.arisux.amdxlib.lib.world.storage.Schematic;
+import com.arisux.mdxlib.AMDXLib;
+import com.arisux.mdxlib.lib.game.Chat;
+import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.Structure;
+import com.arisux.mdxlib.lib.world.StructureGenerationHandler;
+import com.arisux.mdxlib.lib.world.entity.player.Players;
+import com.arisux.mdxlib.lib.world.storage.Schematic;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;

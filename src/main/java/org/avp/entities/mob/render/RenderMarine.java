@@ -4,11 +4,11 @@ import org.avp.AliensVsPredator;
 import org.avp.entities.mob.EntityMarine;
 import org.lwjgl.opengl.GL11;
 
-import com.arisux.amdxlib.lib.client.Model;
-import com.arisux.amdxlib.lib.client.RenderLivingWrapper;
-import com.arisux.amdxlib.lib.client.SpecialModelBiped;
-import com.arisux.amdxlib.lib.client.TexturedModel;
-import com.arisux.amdxlib.lib.client.render.OpenGL;
+import com.arisux.mdxlib.lib.client.Model;
+import com.arisux.mdxlib.lib.client.RenderLivingWrapper;
+import com.arisux.mdxlib.lib.client.SpecialModelBiped;
+import com.arisux.mdxlib.lib.client.TexturedModel;
+import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.entity.EntityLivingBase;
 

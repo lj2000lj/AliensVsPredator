@@ -18,16 +18,16 @@ import org.avp.entities.tile.TileEntityPowercell;
 import org.avp.entities.tile.TileEntityStasisMechanism;
 import org.avp.util.IVoltageReceiver;
 
-import com.arisux.amdxlib.lib.client.render.Draw;
-import com.arisux.amdxlib.lib.client.render.OpenGL;
-import com.arisux.amdxlib.lib.client.render.ScaledResolution;
-import com.arisux.amdxlib.lib.client.render.Screen;
-import com.arisux.amdxlib.lib.game.Game;
-import com.arisux.amdxlib.lib.world.CoordData;
-import com.arisux.amdxlib.lib.world.Worlds;
-import com.arisux.amdxlib.lib.world.block.BlockSide;
-import com.arisux.amdxlib.lib.world.block.Blocks;
-import com.arisux.amdxlib.lib.world.entity.player.inventory.Inventories;
+import com.arisux.mdxlib.lib.client.render.Draw;
+import com.arisux.mdxlib.lib.client.render.OpenGL;
+import com.arisux.mdxlib.lib.client.render.ScaledResolution;
+import com.arisux.mdxlib.lib.client.render.Screen;
+import com.arisux.mdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.Worlds;
+import com.arisux.mdxlib.lib.world.block.BlockSide;
+import com.arisux.mdxlib.lib.world.block.Blocks;
+import com.arisux.mdxlib.lib.world.entity.player.inventory.Inventories;
 
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;

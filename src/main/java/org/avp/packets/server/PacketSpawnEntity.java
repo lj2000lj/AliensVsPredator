@@ -1,6 +1,6 @@
 package org.avp.packets.server;
 
-import com.arisux.amdxlib.lib.world.entity.Entities;
+import com.arisux.mdxlib.lib.world.entity.Entities;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;

@@ -3,9 +3,9 @@ package org.avp;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import com.arisux.amdxlib.AMDXLib;
-import com.arisux.amdxlib.lib.client.Sound;
-import com.arisux.amdxlib.lib.game.IPostInitEvent;
+import com.arisux.mdxlib.AMDXLib;
+import com.arisux.mdxlib.lib.client.Sound;
+import com.arisux.mdxlib.lib.game.IPostInitEvent;
 
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 

@@ -27,8 +27,8 @@ import org.avp.event.client.VisionModeRenderEvent;
 import org.avp.event.client.WristBracerEvents;
 import org.avp.items.render.RenderMotionTrackerScreen;
 
-import com.arisux.amdxlib.lib.game.Game;
-import com.arisux.amdxlib.lib.game.IInitEvent;
+import com.arisux.mdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.game.IInitEvent;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;

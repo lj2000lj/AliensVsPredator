@@ -6,7 +6,7 @@ import org.avp.AliensVsPredator;
 import org.avp.entities.tile.TileEntityHiveResin;
 import org.avp.event.HiveHandler;
 
-import com.arisux.amdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.CoordData;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

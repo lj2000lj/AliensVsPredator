@@ -6,7 +6,7 @@ import org.avp.packets.client.PacketOpenable;
 import org.avp.util.IOpenable;
 import org.avp.util.IVoltageReceiver;
 
-import com.arisux.amdxlib.lib.world.tile.IRotatable;
+import com.arisux.mdxlib.lib.world.tile.IRotatable;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;

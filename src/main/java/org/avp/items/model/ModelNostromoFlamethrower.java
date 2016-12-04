@@ -2,8 +2,8 @@ package org.avp.items.model;
 
 import org.avp.items.ItemFlamethrower;
 
-import com.arisux.amdxlib.lib.client.Model;
-import com.arisux.amdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.client.Model;
+import com.arisux.mdxlib.lib.game.Game;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelRenderer;

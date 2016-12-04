@@ -4,11 +4,11 @@ import org.avp.entities.extended.ExtendedEntityPlayer;
 import org.avp.util.LevelData;
 import org.avp.util.PlayerMode;
 
-import com.arisux.amdxlib.lib.client.Model;
-import com.arisux.amdxlib.lib.client.TexturedModel;
-import com.arisux.amdxlib.lib.client.render.Texture;
-import com.arisux.amdxlib.lib.game.IInitEvent;
-import com.arisux.amdxlib.lib.world.entity.player.Players;
+import com.arisux.mdxlib.lib.client.Model;
+import com.arisux.mdxlib.lib.client.TexturedModel;
+import com.arisux.mdxlib.lib.client.render.Texture;
+import com.arisux.mdxlib.lib.game.IInitEvent;
+import com.arisux.mdxlib.lib.world.entity.player.Players;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;

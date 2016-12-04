@@ -4,8 +4,8 @@ import org.avp.AliensVsPredator;
 import org.avp.block.BlockSkull;
 import org.avp.entities.mob.model.ModelEngineer;
 
-import com.arisux.amdxlib.lib.client.TexturedModel;
-import com.arisux.amdxlib.lib.client.render.Texture;
+import com.arisux.mdxlib.lib.client.TexturedModel;
+import com.arisux.mdxlib.lib.client.render.Texture;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

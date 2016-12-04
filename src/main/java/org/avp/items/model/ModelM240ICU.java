@@ -1,7 +1,7 @@
 package org.avp.items.model;
 
-import com.arisux.amdxlib.lib.client.Model;
-import com.arisux.amdxlib.lib.client.render.OpenGL;
+import com.arisux.mdxlib.lib.client.Model;
+import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.model.ModelRenderer;
 

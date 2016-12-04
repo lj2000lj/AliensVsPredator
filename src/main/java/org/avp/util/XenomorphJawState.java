@@ -1,6 +1,6 @@
 package org.avp.util;
 
-import com.arisux.amdxlib.lib.util.Math;
+import com.arisux.mdxlib.lib.util.Math;
 
 public enum XenomorphJawState
 {

@@ -5,12 +5,12 @@ import org.avp.URLs;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import com.arisux.amdxlib.lib.client.render.OpenGL;
-import com.arisux.amdxlib.lib.client.render.ItemRenderer;
-import com.arisux.amdxlib.lib.client.render.PlayerResource;
-import com.arisux.amdxlib.lib.client.render.Texture;
-import com.arisux.amdxlib.lib.game.Game;
-import com.arisux.amdxlib.lib.util.Remote;
+import com.arisux.mdxlib.lib.client.render.OpenGL;
+import com.arisux.mdxlib.lib.client.render.ItemRenderer;
+import com.arisux.mdxlib.lib.client.render.PlayerResource;
+import com.arisux.mdxlib.lib.client.render.Texture;
+import com.arisux.mdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.util.Remote;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

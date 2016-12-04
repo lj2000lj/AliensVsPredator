@@ -58,14 +58,14 @@ import org.avp.items.model.ModelNostromoFlamethrower;
 import org.avp.items.model.ModelSniper;
 import org.avp.items.model.ModelWristBlade;
 
-import com.arisux.amdxlib.AMDXLib;
-import com.arisux.amdxlib.lib.client.SpecialModelBiped;
-import com.arisux.amdxlib.lib.client.TexturedModel;
-import com.arisux.amdxlib.lib.client.render.IconSet;
-import com.arisux.amdxlib.lib.client.render.IconSet.BlockIconSet;
-import com.arisux.amdxlib.lib.client.render.IconSet.LiquidIconSet;
-import com.arisux.amdxlib.lib.client.render.Texture;
-import com.arisux.amdxlib.lib.client.render.wavefront.TriangulatedWavefrontModel;
+import com.arisux.mdxlib.AMDXLib;
+import com.arisux.mdxlib.lib.client.SpecialModelBiped;
+import com.arisux.mdxlib.lib.client.TexturedModel;
+import com.arisux.mdxlib.lib.client.render.IconSet;
+import com.arisux.mdxlib.lib.client.render.IconSet.BlockIconSet;
+import com.arisux.mdxlib.lib.client.render.IconSet.LiquidIconSet;
+import com.arisux.mdxlib.lib.client.render.Texture;
+import com.arisux.mdxlib.lib.client.render.wavefront.TriangulatedWavefrontModel;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

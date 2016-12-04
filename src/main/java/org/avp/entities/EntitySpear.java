@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.avp.DamageSources;
 
-import com.arisux.amdxlib.lib.game.GameSounds;
+import com.arisux.mdxlib.lib.game.GameSounds;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;

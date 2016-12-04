@@ -42,9 +42,9 @@ import org.avp.block.skulls.BlockSkullXenomorph;
 import org.avp.block.skulls.BlockSkullXenomorphWarrior;
 import org.avp.block.skulls.BlockSkullYautja;
 
-import com.arisux.amdxlib.lib.game.Game;
-import com.arisux.amdxlib.lib.game.IInitEvent;
-import com.arisux.amdxlib.lib.world.block.BlockMaterial;
+import com.arisux.mdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.game.IInitEvent;
+import com.arisux.mdxlib.lib.world.block.BlockMaterial;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import net.minecraft.block.Block;

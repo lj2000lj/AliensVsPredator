@@ -4,7 +4,7 @@ import org.avp.AliensVsPredator;
 import org.avp.entities.EntityLaserMine;
 import org.lwjgl.opengl.GL11;
 
-import com.arisux.amdxlib.lib.client.render.OpenGL;
+import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;

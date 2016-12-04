@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import org.avp.Sounds;
 import org.avp.entities.EntityAcidPool;
 
-import com.arisux.amdxlib.lib.world.CoordData;
-import com.arisux.amdxlib.lib.world.block.Blocks;
-import com.arisux.amdxlib.lib.world.entity.Entities;
+import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.block.Blocks;
+import com.arisux.mdxlib.lib.world.entity.Entities;
 
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;

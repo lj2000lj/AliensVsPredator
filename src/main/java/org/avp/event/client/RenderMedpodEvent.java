@@ -5,11 +5,11 @@ import org.avp.entities.tile.render.RenderMedpod;
 import org.avp.util.EntityRenderTransforms;
 import org.lwjgl.opengl.GL11;
 
-import com.arisux.amdxlib.lib.client.Model;
-import com.arisux.amdxlib.lib.client.render.Draw;
-import com.arisux.amdxlib.lib.client.render.OpenGL;
-import com.arisux.amdxlib.lib.game.Game;
-import com.arisux.amdxlib.lib.world.entity.Entities;
+import com.arisux.mdxlib.lib.client.Model;
+import com.arisux.mdxlib.lib.client.render.Draw;
+import com.arisux.mdxlib.lib.client.render.OpenGL;
+import com.arisux.mdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.world.entity.Entities;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -78,8 +78,8 @@ public class RenderMedpodEvent
 
             OpenGL.pushMatrix();
             {
-                float rotationYaw = com.arisux.amdxlib.lib.util.Math.interpolateRotation(entity.prevRenderYawOffset, entity.renderYawOffset, partialTicks);
-                float rotationYawHead = com.arisux.amdxlib.lib.util.Math.interpolateRotation(entity.prevRotationYawHead, entity.rotationYawHead, partialTicks);
+                float rotationYaw = com.arisux.mdxlib.lib.util.Math.interpolateRotation(entity.prevRenderYawOffset, entity.renderYawOffset, partialTicks);
+                float rotationYawHead = com.arisux.mdxlib.lib.util.Math.interpolateRotation(entity.prevRotationYawHead, entity.rotationYawHead, partialTicks);
                 float rotationPitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
                 float idleProgress = 0.17453292F;
 

@@ -4,7 +4,7 @@ import org.avp.AliensVsPredator;
 import org.avp.entities.EntityAPC;
 import org.avp.packets.server.PacketFireAPC;
 
-import com.arisux.amdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.game.Game;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;

@@ -1,6 +1,6 @@
 package org.avp;
 
-import com.arisux.amdxlib.lib.game.IPreInitEvent;
+import com.arisux.mdxlib.lib.game.IPreInitEvent;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;

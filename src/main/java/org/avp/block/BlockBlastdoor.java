@@ -3,7 +3,7 @@ package org.avp.block;
 import org.avp.entities.tile.TileEntityBlastdoor;
 import org.avp.items.ItemMaintenanceJack;
 
-import com.arisux.amdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.game.Game;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
