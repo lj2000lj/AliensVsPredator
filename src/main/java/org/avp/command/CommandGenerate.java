@@ -1,6 +1,6 @@
 package org.avp.command;
 
-import com.arisux.mdxlib.AMDXLib;
+import com.arisux.mdxlib.MDX;
 import com.arisux.mdxlib.lib.game.Chat;
 import com.arisux.mdxlib.lib.world.CoordData;
 import com.arisux.mdxlib.lib.world.Structure;
@@ -37,7 +37,7 @@ public class CommandGenerate extends CommandBase
         {
             String schematicTargetName = args[0];
 
-            for (Schematic schematic : AMDXLib.getSchematicRegistry())
+            for (Schematic schematic : MDX.getSchematicRegistry())
             {
                 String schematicFileName = schematic.getFile().getName();
                 final String schematicName = schematicFileName.replace(".schematic", "");

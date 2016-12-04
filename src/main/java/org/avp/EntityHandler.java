@@ -72,7 +72,7 @@ import org.avp.entities.tile.TileEntityTransformer;
 import org.avp.entities.tile.TileEntityTurret;
 import org.avp.entities.tile.TileEntityWorkstation;
 
-import com.arisux.mdxlib.AMDXLib;
+import com.arisux.mdxlib.MDX;
 import com.arisux.mdxlib.lib.game.Game;
 import com.arisux.mdxlib.lib.game.IInitEvent;
 
@@ -127,30 +127,30 @@ public class EntityHandler implements IInitEvent
 
     private void registerRemappedEntities()
     {
-        AMDXLib.registerRemappedEntity(EntityRunnerDrone.class, "RunnerDrone");
-        AMDXLib.registerRemappedEntity(EntityRunnerWarrior.class, "RunnerWarrior");
-        AMDXLib.registerRemappedEntity(EntityDrone.class, "Drone");
-        AMDXLib.registerRemappedEntity(EntityWarrior.class, "Warrior");
-        AMDXLib.registerRemappedEntity(EntitySpitter.class, "Spitter");
-        AMDXLib.registerRemappedEntity(EntityCrusher.class, "Crusher");
-        AMDXLib.registerRemappedEntity(EntityPraetorian.class, "Praetorian");
-        AMDXLib.registerRemappedEntity(EntityMarine.class, "Marine");
-        AMDXLib.registerRemappedEntity(EntityYautja.class, "Yautja");
-        AMDXLib.registerRemappedEntity(EntityQueen.class, "Queen");
-        AMDXLib.registerRemappedEntity(EntityFacehugger.class, "Facehugger");
-        AMDXLib.registerRemappedEntity(EntityChestburster.class, "Chestbuster");
-        AMDXLib.registerRemappedEntity(EntityOvamorph.class, "Ovamorph");
-        AMDXLib.registerRemappedEntity(EntityRoyalFacehugger.class, "RoyalFacehugger");
-        AMDXLib.registerRemappedEntity(EntityAqua.class, "AquaAlien");
-        AMDXLib.registerRemappedEntity(EntityPredalien.class, "Predalien");
-        AMDXLib.registerRemappedEntity(EntityCombatSynthetic.class, "CombatSynthetic");
-        AMDXLib.registerRemappedEntity(EntityProtomorph.class, "Protomorph");
-        AMDXLib.registerRemappedEntity(EntityHammerpede.class, "Hammerpede");
-        AMDXLib.registerRemappedEntity(EntityTrilobite.class, "Trilobite");
-        AMDXLib.registerRemappedEntity(EntitySpaceJockey.class, "SpaceJockey");
-        AMDXLib.registerRemappedEntity(EntityEngineer.class, "Engineer");
-        AMDXLib.registerRemappedEntity(EntityYautjaBerserker.class, "YautjaBerserker");
-        AMDXLib.registerRemappedEntity(EntityDeaconShark.class, "DeaconShark");
+        MDX.registerRemappedEntity(EntityRunnerDrone.class, "RunnerDrone");
+        MDX.registerRemappedEntity(EntityRunnerWarrior.class, "RunnerWarrior");
+        MDX.registerRemappedEntity(EntityDrone.class, "Drone");
+        MDX.registerRemappedEntity(EntityWarrior.class, "Warrior");
+        MDX.registerRemappedEntity(EntitySpitter.class, "Spitter");
+        MDX.registerRemappedEntity(EntityCrusher.class, "Crusher");
+        MDX.registerRemappedEntity(EntityPraetorian.class, "Praetorian");
+        MDX.registerRemappedEntity(EntityMarine.class, "Marine");
+        MDX.registerRemappedEntity(EntityYautja.class, "Yautja");
+        MDX.registerRemappedEntity(EntityQueen.class, "Queen");
+        MDX.registerRemappedEntity(EntityFacehugger.class, "Facehugger");
+        MDX.registerRemappedEntity(EntityChestburster.class, "Chestbuster");
+        MDX.registerRemappedEntity(EntityOvamorph.class, "Ovamorph");
+        MDX.registerRemappedEntity(EntityRoyalFacehugger.class, "RoyalFacehugger");
+        MDX.registerRemappedEntity(EntityAqua.class, "AquaAlien");
+        MDX.registerRemappedEntity(EntityPredalien.class, "Predalien");
+        MDX.registerRemappedEntity(EntityCombatSynthetic.class, "CombatSynthetic");
+        MDX.registerRemappedEntity(EntityProtomorph.class, "Protomorph");
+        MDX.registerRemappedEntity(EntityHammerpede.class, "Hammerpede");
+        MDX.registerRemappedEntity(EntityTrilobite.class, "Trilobite");
+        MDX.registerRemappedEntity(EntitySpaceJockey.class, "SpaceJockey");
+        MDX.registerRemappedEntity(EntityEngineer.class, "Engineer");
+        MDX.registerRemappedEntity(EntityYautjaBerserker.class, "YautjaBerserker");
+        MDX.registerRemappedEntity(EntityDeaconShark.class, "DeaconShark");
     }
 
     private void registerEntities()

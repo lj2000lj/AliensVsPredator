@@ -8,7 +8,7 @@ import org.avp.entities.tile.TileEntityHiveResin;
 import org.avp.util.IDataSaveHandler;
 import org.avp.util.XenomorphHive;
 
-import com.arisux.mdxlib.AMDXLib;
+import com.arisux.mdxlib.MDX;
 import com.arisux.mdxlib.lib.game.Game;
 import com.arisux.mdxlib.lib.world.CoordData;
 import com.arisux.mdxlib.lib.world.Worlds;
@@ -159,7 +159,7 @@ public class HiveHandler implements IDataSaveHandler
             return false;
         }
 
-        AMDXLib.log().info(String.format("Saved %s hives for level '%s'/%s", hiveCount, world.getSaveHandler().getWorldDirectoryName(), world.provider.getDimensionName()));
+        MDX.log().info(String.format("Saved %s hives for level '%s'/%s", hiveCount, world.getSaveHandler().getWorldDirectoryName(), world.provider.getDimensionName()));
 
         return true;
     }
@@ -204,7 +204,7 @@ public class HiveHandler implements IDataSaveHandler
             return false;
         }
 
-        AMDXLib.log().info(String.format("%s hives have been loaded for level '%s'/%s. %s hives are globally accessable.", hiveCount, world.getSaveHandler().getWorldDirectoryName(), world.provider.getDimensionName(), this.hives.size()));
+        MDX.log().info(String.format("%s hives have been loaded for level '%s'/%s. %s hives are globally accessable.", hiveCount, world.getSaveHandler().getWorldDirectoryName(), world.provider.getDimensionName(), this.hives.size()));
         System.out.println(this.hives);
 
         return true;

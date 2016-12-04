@@ -58,7 +58,7 @@ import org.avp.items.model.ModelNostromoFlamethrower;
 import org.avp.items.model.ModelSniper;
 import org.avp.items.model.ModelWristBlade;
 
-import com.arisux.mdxlib.AMDXLib;
+import com.arisux.mdxlib.MDX;
 import com.arisux.mdxlib.lib.client.SpecialModelBiped;
 import com.arisux.mdxlib.lib.client.TexturedModel;
 import com.arisux.mdxlib.lib.client.render.IconSet;
@@ -161,7 +161,7 @@ public class Resources
         public final TexturedModel<ModelDNASynthesizer>       DNA_SYNTHESIZER                = new TexturedModel(new ModelDNASynthesizer(), new Texture(AliensVsPredator.ID, "textures/tile/dna-synthesizer.png"));
         public final TexturedModel<ModelHiveResin>            HIVE_RESIN                     = new TexturedModel(new ModelHiveResin(), new Texture(AliensVsPredator.ID, "textures/tile/hive-resin.png"));
         public final TexturedModel<ModelGooMutant>            GOO_MUTANT                     = new TexturedModel(new ModelGooMutant(), new Texture(AliensVsPredator.ID, "textures/mob/goomutant.png"));
-        public final TriangulatedWavefrontModel               M577_APC                       = AMDXLib.loadWavefrontModel(AliensVsPredator.class, AliensVsPredator.ID, "m577apc", "/assets/avp/models/m577apc");
+        public final TriangulatedWavefrontModel               M577_APC                       = MDX.loadWavefrontModel(AliensVsPredator.class, AliensVsPredator.ID, "m577apc", "/assets/avp/models/m577apc");
         public final TexturedModel<ModelWarrior>              DRONE_SKULL                    = new TexturedModel(new ModelWarrior(), new Texture(AliensVsPredator.ID, "textures/mob/xenomorphskullgiger.png"));
         public final TexturedModel<ModelWarrior>              WARRIOR_SKULL                  = new TexturedModel(new ModelWarrior(), new Texture(AliensVsPredator.ID, "textures/mob/xenomorphskullwarrior.png"));
         public final TexturedModel<ModelYautja>               YAUTJA_SKULL                   = new TexturedModel(new ModelYautja(), new Texture(AliensVsPredator.ID, "textures/mob/yautjaskull.png"));

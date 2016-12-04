@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import org.avp.event.HiveHandler;
 import org.avp.util.IDataSaveHandler;
 
-import com.arisux.mdxlib.AMDXLib;
+import com.arisux.mdxlib.MDX;
 import com.arisux.mdxlib.lib.world.storage.NBTStorage;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -58,7 +58,7 @@ public class SaveHandler
                 {
                     if (!dataHandler.saveData(world, tag))
                     {
-                        AMDXLib.log().info(String.format("Unable to save world data: ", this.getSaveFilename()));
+                        MDX.log().info(String.format("Unable to save world data: ", this.getSaveFilename()));
                     }
                 }
             }
@@ -84,7 +84,7 @@ public class SaveHandler
             {
                 if (worldSave.getAbsoluteFile().exists())
                 {
-                    AMDXLib.log().info(String.format("Loading world data: ", worldSave.getAbsolutePath()));
+                    MDX.log().info(String.format("Loading world data: ", worldSave.getAbsolutePath()));
                     NBTTagCompound read = NBTStorage.readCompressed(worldSave.getAbsoluteFile());
                     tag = read == null ? tag : read;
 
@@ -94,7 +94,7 @@ public class SaveHandler
                         {
                             if (!dataHandler.loadData(world, tag))
                             {
-                                AMDXLib.log().info(String.format("Unable to load world data: ", this.getSaveFilename()));
+                                MDX.log().info(String.format("Unable to load world data: ", this.getSaveFilename()));
                             }
                         }
                     }
