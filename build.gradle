@@ -43,7 +43,7 @@ minecraft {
 }
 
 dependencies {
-    compile 'com.arisux:mdxlib:1.0.0.27'
+    compile 'com.arisux:mdxlib:1.0.0.32'
 }
 
 jar {
