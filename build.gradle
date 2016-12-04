@@ -22,13 +22,13 @@ repositories {
     }
 }
 
-
 apply plugin: 'forge'
 apply plugin: 'curseforge'
+apply plugin: 'maven'
 
 version = "4.0.0.${System.env.BUILD_NUMBER}"
 group= "org.avp"
-archivesBaseName = "AliensVsPredator"
+archivesBaseName = "aliensvspredator"
 
 tasks.withType(JavaCompile) {
 	sourceCompatibility = "1.7"
@@ -42,12 +42,31 @@ minecraft {
     mappings = "stable_12"
 }
 
+println "Minecraft Forge " + minecraft.version + " with mappings " + minecraft.mappings
+
 dependencies {
+    deployerJars 'org.apache.maven.wagon:wagon-ftp:2.2'
     compile 'com.arisux:mdxlib:1.0.0.32'
 }
 
 jar {
 	archiveName = "[${minecraft.getApiVersion()}][${project.version}] ${project.archivesBaseName}.jar"
+}
+
+task srcJar(type: Jar) {
+    from sourceSets.main.allSource
+	archiveName = "[${minecraft.getApiVersion()}][${project.version}] ${project.archivesBaseName}-sources.jar"
+    classifier = 'sources'
+}
+
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+	archiveName = "[${minecraft.getApiVersion()}][${project.version}] ${project.archivesBaseName}-deobf.jar"
+    classifier = 'deobf'
+}
+
+artifacts {
+    archives srcJar, deobfJar
 }
 
 curse {
@@ -72,4 +91,21 @@ processResources {
     }
 }
 
-idea { module { inheritOutputDirs = true } }
+idea {
+    module {
+        inheritOutputDirs = true 
+    }
+}
+
+task("publishToMaven", dependsOn:"build") {
+    description = "Uploads the artifacts generated during the build process to the arisux maven repository"
+
+    uploadArchives {
+        repositories.mavenDeployer {
+            configuration = configurations.deployerJars
+            repository(url: "ftp://arisux.ddns.net/maven/") {
+                authentication(userName: project.mavenUsername, password: project.mavenPassword)
+            }
+        }
+    }
+}
