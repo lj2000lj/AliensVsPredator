@@ -23,18 +23,23 @@ Open your command line, and execute the following commands:
 __Note:__ If [Gradle] is not installed on your system, you may use ./gradlew on Unix based platforms or ./gradlew.bat
 on Windows platforms.
 
+1. Run `gradle setupDecompWorkspace` and wait for it to complete.
+2. Once completed, copy `mdxlib_at.cfg` from the mdxlib jar located in your .gradle cache directory with the following structure `.gradle\caches\modules-2\files-2.1\com.arisux\mdxlib\X.X.X.X\0000000000000000000000000000000000000000\mdxlib-X.X.X.X-deobf.jar`.
+3. Paste `mdxlib_at.cfg` into this repo's `src\main\resources\` directory.
+4. Run `gradle setupDecompWorkspace` once more. This time, it should detect an Access Transformer. If it does not, then you have copied it to the wrong location.
+
+## 3) Setup your IDE ##
+
 __Note:__ If you experience any errors setting up your IDE, please run `gradle setupDecompWorkspace --refresh-dependencies`
 to rule out any dependency related issues.
 
 #### [IntelliJ IDEA]
 
-1. `gradle setupDecompWorkspace`
-2. `gradle idea`
+1. `gradle idea`
 
 #### [Eclipse]
 
-1. `gradle setupDecompWorkspace`
-2. `gradle eclipse`
+1. `gradle eclipse`
 
 ## Updating your Repository ##
 
