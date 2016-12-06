@@ -2,7 +2,6 @@ package org.avp.dimension.varda;
 
 import org.avp.AliensVsPredator;
 import org.avp.dimension.BiomeLVBase;
-import org.avp.dimension.acheron.ChunkProviderAcheron;
 import org.avp.event.VardaStormHandler;
 
 import cpw.mods.fml.relauncher.Side;
@@ -61,7 +60,7 @@ public class ProviderVarda extends WorldProvider
     @Override
     public String getDepartMessage()
     {
-        return "Leaving" + AliensVsPredator.properties().DIMENSION_NAME_VARDA;
+        return "Leaving " + AliensVsPredator.properties().DIMENSION_NAME_VARDA;
     }
 
     @Override
@@ -79,7 +78,7 @@ public class ProviderVarda extends WorldProvider
     @Override
     public IChunkProvider createChunkGenerator()
     {
-        return new ChunkProviderAcheron(this.worldObj, worldObj.getSeed());
+        return new ChunkProviderVarda(this.worldObj, worldObj.getSeed());
     }
 
     @Override
