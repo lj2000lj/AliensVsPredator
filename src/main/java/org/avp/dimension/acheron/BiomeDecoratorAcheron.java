@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeDecorator;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.feature.WorldGenFlowers;
+import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
 public class BiomeDecoratorAcheron extends BiomeDecorator
@@ -49,12 +50,12 @@ public class BiomeDecoratorAcheron extends BiomeDecorator
     {
         this.generateOres();
 
-        Worlds.generateWorldGenInChunk(world, this.stalagmiteGen, this.randomGenerator, 10, new CoordData(chunk_X, 0, chunk_Z));
+        Worlds.generateInChunk(world, this.stalagmiteGen, this.randomGenerator, 10, new CoordData(chunk_X, 0, chunk_Z));
     }
 
     @Override
     protected void generateOres()
     {
-        Worlds.generateBlockInChunk(world, AliensVsPredator.blocks().terrainUniDirt, this.randomGenerator, 20, 32, 0, 128, new CoordData(chunk_X, 0, chunk_Z));
+        Worlds.generateInChunk(world, new WorldGenMinable(AliensVsPredator.blocks().terrainUniDirt, 32), this.randomGenerator, 20, 0, 128, new CoordData(chunk_X, 0, chunk_Z));
     }
 }
