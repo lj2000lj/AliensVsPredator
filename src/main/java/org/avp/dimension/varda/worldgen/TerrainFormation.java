@@ -9,45 +9,45 @@ import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
-public class VardaGenSpike2 extends WorldGenerator
+public class TerrainFormation extends WorldGenerator
 {
-    protected Block[] getSpawnBlocks()
+    protected Block[] getValidTargetBlocks()
     {
         return new Block[] { AliensVsPredator.blocks().terrainUniDirt };
     }
 
     public boolean isLocationValid(World world, int posX, int posY, int posZ)
     {
-        int distanceToAir = 0;
+        int airDist = 0;
         Block checkID = world.getBlock(posX, posY, posZ);
 
         while (checkID != Blocks.air)
         {
-            distanceToAir++;
-            checkID = world.getBlock(posX, posY + distanceToAir, posZ);
+            airDist++;
+            checkID = world.getBlock(posX, posY + airDist, posZ);
         }
 
-        if (distanceToAir > 3)
+        if (airDist > 3)
         {
             return false;
         }
-        posY += distanceToAir - 1;
+        posY += airDist - 1;
 
-        Block blockID = world.getBlock(posX, posY, posZ);
-        Block blockIDAbove = world.getBlock(posX, posY + 1, posZ);
-        Block blockIDBelow = world.getBlock(posX, posY - 1, posZ);
+        Block block = world.getBlock(posX, posY, posZ);
+        Block above = world.getBlock(posX, posY + 1, posZ);
+        Block below = world.getBlock(posX, posY - 1, posZ);
 
-        for (Block x : getSpawnBlocks())
+        for (Block target : getValidTargetBlocks())
         {
-            if (blockIDAbove != Blocks.air)
+            if (above != Blocks.air)
             {
                 return false;
             }
-            if (blockID == x)
+            if (block == target)
             {
                 return true;
             }
-            if ((blockID == Blocks.snow) && (blockIDBelow == x))
+            if ((block == Blocks.snow) && (below == target))
             {
                 return true;
             }
@@ -55,7 +55,6 @@ public class VardaGenSpike2 extends WorldGenerator
         return false;
     }
 
-    @Override
     public boolean generate(World world, Random rand, int posX, int posY, int posZ)
     {
         if ((!isLocationValid(world, posX, posY, posZ)) || (!isLocationValid(world, posX + 2, posY, posZ)) || (!isLocationValid(world, posX + 2, posY, posZ + 2)) || (!isLocationValid(world, posX, posY, posZ + 2)))
@@ -68,17 +67,30 @@ public class VardaGenSpike2 extends WorldGenerator
         world.setBlock(posX + 0, posY + 0, posZ + 1, blockDirt);
         world.setBlock(posX + 0, posY + 1, posZ + 1, blockDirt);
         world.setBlock(posX + 0, posY + 2, posZ + 1, blockDirt);
+        world.setBlock(posX + 0, posY + 3, posZ + 1, blockDirt);
+        world.setBlock(posX + 0, posY + 4, posZ + 1, blockDirt);
         world.setBlock(posX + 1, posY + 0, posZ + 0, blockDirt);
         world.setBlock(posX + 1, posY + 0, posZ + 1, blockDirt);
         world.setBlock(posX + 1, posY + 0, posZ + 2, blockDirt);
         world.setBlock(posX + 1, posY + 1, posZ + 0, blockDirt);
         world.setBlock(posX + 1, posY + 1, posZ + 1, blockDirt);
+        world.setBlock(posX + 1, posY + 1, posZ + 2, blockDirt);
+        world.setBlock(posX + 1, posY + 2, posZ + 0, blockDirt);
         world.setBlock(posX + 1, posY + 2, posZ + 1, blockDirt);
+        world.setBlock(posX + 1, posY + 2, posZ + 2, blockDirt);
+        world.setBlock(posX + 1, posY + 3, posZ + 0, blockDirt);
         world.setBlock(posX + 1, posY + 3, posZ + 1, blockDirt);
+        world.setBlock(posX + 1, posY + 3, posZ + 2, blockDirt);
+        world.setBlock(posX + 1, posY + 4, posZ + 0, blockDirt);
         world.setBlock(posX + 1, posY + 4, posZ + 1, blockDirt);
+        world.setBlock(posX + 1, posY + 5, posZ + 0, blockDirt);
         world.setBlock(posX + 1, posY + 5, posZ + 1, blockDirt);
+        world.setBlock(posX + 1, posY + 6, posZ + 1, blockDirt);
+        world.setBlock(posX + 1, posY + 7, posZ + 1, blockDirt);
+        world.setBlock(posX + 1, posY + 8, posZ + 1, blockDirt);
         world.setBlock(posX + 2, posY + 0, posZ + 1, blockDirt);
         world.setBlock(posX + 2, posY + 1, posZ + 1, blockDirt);
+        world.setBlock(posX + 2, posY + 2, posZ + 1, blockDirt);
 
         return true;
     }
