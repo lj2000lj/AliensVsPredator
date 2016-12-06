@@ -21,6 +21,6 @@ public class Properties
     public final String            DIMENSION_NAME_ACHERON = "LV-426 (Acheron)";
     public final String            DIMENSION_ID_ACHERON   = "DIM_LV426";
 
-    public final String            DIMENSION_NAME_VARDA   = "LV-223 (Varda)";
+    public final String            DIMENSION_NAME_VARDA   = "LV-223.B.1 (Varda Badlands)";
     public final String            DIMENSION_ID_VARDA     = "DIM_LV223";
 }
