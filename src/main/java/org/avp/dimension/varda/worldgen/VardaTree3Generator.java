@@ -1,4 +1,4 @@
-package org.avp.world.generators;
+package org.avp.dimension.varda.worldgen;
 
 import java.util.Random;
 
