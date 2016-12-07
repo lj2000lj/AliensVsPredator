@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.Random;
 
 import org.avp.AliensVsPredator;
-import org.avp.dimension.varda.worldgen.VardaTallTreeGenerator;
-import org.avp.dimension.varda.worldgen.VardaTree2Generator;
-import org.avp.dimension.varda.worldgen.VardaTree3Generator;
-import org.avp.dimension.varda.worldgen.VardaTreeGenerator;
+import org.avp.dimension.varda.gen.VardaTallTreeGenerator;
+import org.avp.dimension.varda.gen.VardaTree2Generator;
+import org.avp.dimension.varda.gen.VardaTree3Generator;
+import org.avp.dimension.varda.gen.VardaTreeGenerator;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSapling;

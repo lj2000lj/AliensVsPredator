@@ -1,4 +1,4 @@
-package org.avp.dimension.varda.worldgen;
+package org.avp.dimension.varda.gen;
 
 import java.util.Random;
 
@@ -14,7 +14,7 @@ public class VardaTallTreeGenerator extends VardaTreeGenerator
     @Override
     public boolean generate(World world, Random rand, int x, int y, int z)
     {
-        if (!isLocationValid(world, x, y, z) || !isLocationValid(world, x + 2, y, z) || !isLocationValid(world, x + 2, y, z + 2) || !isLocationValid(world, x, y, z + 2))
+        if (!isLocationValid(world, x, y, z) || !isLocationValid(world, x + 2, y, z + 2) || !isLocationValid(world, x, y, z + 2) || !isLocationValid(world, x + 2, y, z))
         {
             return false;
         }

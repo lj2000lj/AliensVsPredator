@@ -1,11 +1,11 @@
 package org.avp.dimension.acheron;
 
 import org.avp.AliensVsPredator;
-import org.avp.dimension.BiomeLVBase;
+import org.avp.dimension.BiomeGenLV;
 
 import net.minecraft.world.biome.BiomeGenBase;
 
-public class BiomeAcheron extends BiomeLVBase
+public class BiomeAcheron extends BiomeGenLV
 {
     public BiomeAcheron(int biomeId)
     {

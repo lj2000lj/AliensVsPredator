@@ -3,7 +3,6 @@ package org.avp.dimension.varda;
 import java.util.Random;
 
 import org.avp.AliensVsPredator;
-import org.avp.dimension.BiomeLVBase;
 import org.avp.dimension.DimensionUtil;
 import org.avp.event.VardaStormHandler;
 import org.lwjgl.opengl.GL11;
@@ -341,7 +340,7 @@ public class SkyProviderVarda extends IRenderHandler
                 float rotationZ = stormZCoords[j1] * 0.5F;
                 BiomeGenBase biomegenbase = worldclient.getBiomeGenForCoords(vX, vZ);
 
-                if (biomegenbase == BiomeLVBase.varda)
+                if (biomegenbase == BiomeGenVarda.vardaBadlands)
                 {
                     int stormHeight = worldclient.getPrecipitationHeight(vX, vZ);
                     int minY = posY - (Game.minecraft().gameSettings.fancyGraphics ? 32 : 16);

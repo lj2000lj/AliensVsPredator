@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Random;
 
 import org.avp.AliensVsPredator;
-import org.avp.dimension.varda.worldgen.VardaGenCaves;
-import org.avp.dimension.varda.worldgen.VardaGenLakes;
+import org.avp.dimension.varda.gen.VardaGenCaves;
+import org.avp.dimension.varda.gen.VardaGenLakes;
 
 import com.arisux.mdxlib.lib.world.CoordData;
 import com.arisux.mdxlib.lib.world.Worlds;

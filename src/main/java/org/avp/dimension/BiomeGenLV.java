@@ -2,19 +2,22 @@ package org.avp.dimension;
 
 import org.avp.AliensVsPredator;
 import org.avp.dimension.acheron.BiomeAcheron;
-import org.avp.dimension.varda.BiomeVarda;
 
 import net.minecraft.world.biome.BiomeDecorator;
 import net.minecraft.world.biome.BiomeGenBase;
 
-public abstract class BiomeLVBase extends BiomeGenBase
+public abstract class BiomeGenLV extends BiomeGenBase
 {
-    public static BiomeLVBase varda = new BiomeVarda(AliensVsPredator.settings().biomeIdVarda()).setColor(0x353825);
-    public static BiomeLVBase acheron = new BiomeAcheron(AliensVsPredator.settings().biomeIdAcheron()).setColor(0x353825);
-
-    public BiomeLVBase(int biomeId)
+    public static BiomeGenLV acheron     = new BiomeAcheron(AliensVsPredator.settings().biomeIdAcheron()).setColor(0x353825);
+    
+    public BiomeGenLV(int biomeId)
     {
-        super(biomeId);
+        this(biomeId, true);
+    }
+
+    public BiomeGenLV(int biomeId, boolean register)
+    {
+        super(biomeId, register);
         this.spawnableMonsterList.clear();
         this.spawnableWaterCreatureList.clear();
         this.spawnableCreatureList.clear();

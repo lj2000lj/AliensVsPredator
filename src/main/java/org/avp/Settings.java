@@ -79,6 +79,7 @@ public class Settings
     private int             dimVarda;
     private int             dimAcheron;
     private int             biomeVarda;
+    private int             biomeVardaForest;
     private int             biomeAcheron;
     private int             globalSoundVolume;
     private GraphicsSetting hiveTesselation = GraphicsSetting.ULTRA;
@@ -98,6 +99,7 @@ public class Settings
 
             biomeVarda = config.get(CATEGORY_BIOMES, "VARDA", 223).getInt();
             biomeAcheron = config.get(CATEGORY_BIOMES, "ACHERON", 224).getInt();
+            biomeVardaForest = config.get(CATEGORY_BIOMES, "VARDA_FOREST", 225).getInt();
 
             hiveTesselation = GraphicsSetting.level(config.get(CATEGORY_GRAPHICS, "HIVE_TESSELLATION", GraphicsSetting.ULTRA.ordinal()).getInt());
 
@@ -172,9 +174,14 @@ public class Settings
         return this.dimAcheron;
     }
 
-    public int biomeIdVarda()
+    public int biomeIdVardaBadlands()
     {
         return this.biomeVarda;
+    }
+
+    public int biomeIdVardaForest()
+    {
+        return this.biomeVardaForest;
     }
 
     public int biomeIdAcheron()

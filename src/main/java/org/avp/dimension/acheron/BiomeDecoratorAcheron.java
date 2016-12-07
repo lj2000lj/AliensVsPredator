@@ -3,7 +3,7 @@ package org.avp.dimension.acheron;
 import java.util.Random;
 
 import org.avp.AliensVsPredator;
-import org.avp.dimension.BiomeLVBase;
+import org.avp.dimension.BiomeGenLV;
 
 import com.arisux.mdxlib.lib.world.CoordData;
 import com.arisux.mdxlib.lib.world.Worlds;
@@ -18,10 +18,10 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 public class BiomeDecoratorAcheron extends BiomeDecorator
 {
     protected World world;
-    public BiomeLVBase biome;
+    public BiomeGenLV biome;
     public WorldGenerator stalagmiteGen;
 
-    public BiomeDecoratorAcheron(BiomeLVBase biome)
+    public BiomeDecoratorAcheron(BiomeGenLV biome)
     {
         super();
         this.biome = biome;

@@ -2,7 +2,7 @@ package org.avp.dimension.acheron;
 
 import java.util.Random;
 
-import org.avp.dimension.BiomeLVBase;
+import org.avp.dimension.BiomeGenLV;
 import org.avp.dimension.acheron.worldgen.TerrainFormation;
 import org.avp.dimension.acheron.worldgen.TerrainFormation1;
 import org.avp.dimension.acheron.worldgen.TerrainFormation2;
@@ -21,7 +21,7 @@ public class WorldGeneratorAcheron implements IWorldGenerator
 
     private void generateSurface(World world, Random random, int chunkX, int chunkZ)
     {
-        if (world.provider.getBiomeGenForCoords(chunkX, chunkZ) == BiomeLVBase.acheron)
+        if (world.provider.getBiomeGenForCoords(chunkX, chunkZ) == BiomeGenLV.acheron)
         {
             for (int i = 0; i < 18; i++)
             {
