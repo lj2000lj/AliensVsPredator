@@ -24,5 +24,5 @@ public class Properties
     public final String            DIMENSION_NAME_VARDA      = "LV-223 (Varda)";
     public final String            DIMENSION_ID_VARDA        = "DIM_LV223";
     public final String            BIOME_NAME_VARDA_BADLANDS = "LV-223.B.1 (Varda Badlands)";
-    public final String            BIOME_NAME_VARDA_FOREST   = "LV-223.B.2 (Varda Laurel Forest)";
+    public final String            BIOME_NAME_VARDA_FOREST   = "LV-223.B.2 (Anomalistic Forest)";
 }
