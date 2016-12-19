@@ -103,6 +103,7 @@ public class BlockHandler implements IInitEvent
     public Block               blockColumnMetal2          = (new BlockMaterial(Material.iron).setHardness(5F).setResistance(30.0F).setLightOpacity(255));
     public Block               blockPlasticCircle         = (new BlockMaterial(Material.clay)).setHardness(10F).setResistance(30.0F).setLightOpacity(0);
     public Block               blockPlastic               = (new BlockMaterial(Material.clay)).setHardness(10F).setResistance(30.0F).setLightOpacity(0);
+    public Block               blockPaddingPanel          = (new BlockMaterial(Material.cloth)).setHardness(10F).setResistance(30.0F).setLightOpacity(0);
     public Block               blockPlasticTri            = (new BlockMaterial(Material.clay)).setHardness(10F).setResistance(30.0F).setLightOpacity(0);
     public Block               blockPlasticTile           = (new BlockMaterial(Material.clay)).setHardness(10F).setResistance(30.0F).setLightOpacity(0);
     public Block               oreSilicon                 = (new BlockMaterial(Material.rock)).setHardness(2.2F).setResistance(1.4F).setLightOpacity(255);
@@ -336,6 +337,7 @@ public class BlockHandler implements IInitEvent
         Game.register(AliensVsPredator.ID, blockMist, "mist").setCreativeTab(AliensVsPredator.tabMain());
         Game.register(AliensVsPredator.ID, blockCryostasisTube, "cryostasistube").setCreativeTab(AliensVsPredator.tabMain());
         ShapedBlockUtil.register(AliensVsPredator.ID, blockPlastic, "plasticblock");
+        ShapedBlockUtil.register(AliensVsPredator.ID, blockPaddingPanel, "paddingpanel");
         ShapedBlockUtil.register(AliensVsPredator.ID, blockPlasticTile, "plastictile");
         ShapedBlockUtil.register(AliensVsPredator.ID, blockPlasticTri, "plastictiletri");
         ShapedBlockUtil.register(AliensVsPredator.ID, blockPlasticCircle, "plastictilecircle");

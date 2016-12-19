@@ -179,6 +179,8 @@ public class Resources
     public final Texture TITANIUM2                = new Texture(AliensVsPredator.ID, "textures/armor/titanium_2.png");
     public final Texture PRESSURESUIT1            = new Texture(AliensVsPredator.ID, "textures/armor/suit_1.png");
     public final Texture PRESSURESUIT2            = new Texture(AliensVsPredator.ID, "textures/armor/suit_2.png");
+    public final Texture MK501                    = new Texture(AliensVsPredator.ID, "textures/armor/mk50_1.png");
+    public final Texture MK502                    = new Texture(AliensVsPredator.ID, "textures/armor/mk50_2.png");
     public final Texture XENO1                    = new Texture(AliensVsPredator.ID, "textures/armor/xeno_1.png");
     public final Texture XENO2                    = new Texture(AliensVsPredator.ID, "textures/armor/xeno_2.png");
     public final Texture MARINE1                  = new Texture(AliensVsPredator.ID, "textures/armor/marine_1.png");
