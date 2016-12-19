@@ -22,7 +22,7 @@ configurations {
 repositories {
     maven {
         name = "arisux"
-        url = "http://arisux.ddns.net/maven/"
+        url = "http://build.arisux.com/maven/"
     }
 }
 
@@ -107,7 +107,7 @@ task("publishToMaven", dependsOn:"build") {
     uploadArchives {
         repositories.mavenDeployer {
             configuration = configurations.deployerJars
-            repository(url: "ftp://arisux.ddns.net/maven/") {
+            repository(url: "ftp://build.arisux.com/maven/") {
                 authentication(userName: project.mavenUsername, password: project.mavenPassword)
             }
         }
