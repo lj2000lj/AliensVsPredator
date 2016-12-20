@@ -1,4 +1,4 @@
-/** AliensVsPredator Minecraft Mod - Copyright (C) 2012-2016 Arisux Technology Group **/
+/** AliensVsPredator Minecraft Mod - Copyright (C) 2012-2017 Arisux Technology Group **/
 package org.avp;
 
 import org.avp.api.AssemblerAPI;
@@ -201,7 +201,7 @@ public class AliensVsPredator implements IMod
     @Mod.EventHandler
     public void pre(FMLPreInitializationEvent event)
     {
-        MDX.log().info("[AliensVsPredator] Copyright(C) 2012-2016 Arisux Technology Group");
+        MDX.log().info("[AliensVsPredator] Copyright(C) 2012-2017 Arisux Technology Group");
         MDX.log().info("[AliensVsPredator] Pre-Initialization");
 
         settings().preInitialize(event);
