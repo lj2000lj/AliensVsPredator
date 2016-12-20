@@ -7,9 +7,9 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-public class EntityProtomorph extends EntityXenomorph
+public class EntityDeacon extends EntityXenomorph
 {
-    public EntityProtomorph(World world)
+    public EntityDeacon(World world)
     {
         super(world);
 

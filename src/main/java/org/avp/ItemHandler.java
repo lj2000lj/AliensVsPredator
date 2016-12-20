@@ -5,6 +5,7 @@ import org.avp.entities.mob.EntityAqua;
 import org.avp.entities.mob.EntityChestburster;
 import org.avp.entities.mob.EntityCombatSynthetic;
 import org.avp.entities.mob.EntityCrusher;
+import org.avp.entities.mob.EntityDeacon;
 import org.avp.entities.mob.EntityDeaconShark;
 import org.avp.entities.mob.EntityDrone;
 import org.avp.entities.mob.EntityEngineer;
@@ -15,7 +16,6 @@ import org.avp.entities.mob.EntityMarine;
 import org.avp.entities.mob.EntityOvamorph;
 import org.avp.entities.mob.EntityPraetorian;
 import org.avp.entities.mob.EntityPredalien;
-import org.avp.entities.mob.EntityProtomorph;
 import org.avp.entities.mob.EntityQueen;
 import org.avp.entities.mob.EntityRoyalFacehugger;
 import org.avp.entities.mob.EntityRunnerDrone;
@@ -187,7 +187,7 @@ public class ItemHandler implements IInitEvent
     public ItemEntitySummoner       itemSummonerYautja          = (new ItemEntitySummoner(EntityYautja.class));
     public ItemEntitySummoner       itemSummonerPredalien       = (new ItemEntitySummoner(EntityPredalien.class));
     public ItemEntitySummoner       itemSummonerCombatSynthetic = (new ItemEntitySummoner(EntityCombatSynthetic.class));
-    public ItemEntitySummoner       itemSummonerProtomorph      = (new ItemEntitySummoner(EntityProtomorph.class));
+    public ItemEntitySummoner       itemSummonerProtomorph      = (new ItemEntitySummoner(EntityDeacon.class));
     public ItemEntitySummoner       itemSummonerHammerpede      = (new ItemEntitySummoner(EntityHammerpede.class));
     public ItemEntitySummoner       itemSummonerTrilobite       = (new ItemEntitySummoner(EntityTrilobite.class));
     public ItemEntitySummoner       itemSummonerYautjaBerserker = (new ItemEntitySummoner(EntityYautjaBerserker.class));
@@ -199,7 +199,7 @@ public class ItemHandler implements IInitEvent
     public ItemEntitySummoner       itemSummonerUltramorph      = (new ItemEntitySummoner(EntityUltramorph.class));
     public ItemEntitySummoner       itemSummonerGooMutant       = (new ItemEntitySummoner(EntityGooMutant.class));
     public ItemEntitySummoner       itemSummonerAethon          = (new ItemEntitySummoner(EntityAethon.class));
-
+    
     @Override
     public void init(FMLInitializationEvent event)
     {
@@ -212,7 +212,7 @@ public class ItemHandler implements IInitEvent
         Game.register(AliensVsPredator.ID, itemSummonerPraetorian, "summon.praetorian").setCreativeTab(AliensVsPredator.tabEntities());
         Game.register(AliensVsPredator.ID, itemSummonerQueen, "summon.queen").setCreativeTab(AliensVsPredator.tabEntities());
         Game.register(AliensVsPredator.ID, itemSummonerPredalien, "summon.predalien").setCreativeTab(AliensVsPredator.tabEntities());
-        Game.register(AliensVsPredator.ID, itemSummonerProtomorph, "summon.protomorph").setCreativeTab(AliensVsPredator.tabEntities());
+        Game.register(AliensVsPredator.ID, itemSummonerProtomorph, "summon.deacon").setCreativeTab(AliensVsPredator.tabEntities());
         Game.register(AliensVsPredator.ID, itemSummonerDeaconShark, "summon.deaconshark").setCreativeTab(AliensVsPredator.tabEntities());
         Game.register(AliensVsPredator.ID, itemSummonerHammerpede, "summon.hammerpede").setCreativeTab(AliensVsPredator.tabEntities());
         Game.register(AliensVsPredator.ID, itemSummonerTrilobite, "summon.trilobite").setCreativeTab(AliensVsPredator.tabEntities());

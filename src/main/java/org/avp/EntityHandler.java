@@ -36,7 +36,7 @@ import org.avp.entities.mob.EntityMarine;
 import org.avp.entities.mob.EntityOvamorph;
 import org.avp.entities.mob.EntityPraetorian;
 import org.avp.entities.mob.EntityPredalien;
-import org.avp.entities.mob.EntityProtomorph;
+import org.avp.entities.mob.EntityDeacon;
 import org.avp.entities.mob.EntityQueen;
 import org.avp.entities.mob.EntityRoyalFacehugger;
 import org.avp.entities.mob.EntityRunnerDrone;
@@ -128,6 +128,7 @@ public class EntityHandler implements IInitEvent
 
     private void registerRemappedEntities()
     {
+        //Global Entity Identity Remapping
         MDX.registerRemappedEntity(EntityRunnerDrone.class, "RunnerDrone");
         MDX.registerRemappedEntity(EntityRunnerWarrior.class, "RunnerWarrior");
         MDX.registerRemappedEntity(EntityDrone.class, "Drone");
@@ -145,13 +146,16 @@ public class EntityHandler implements IInitEvent
         MDX.registerRemappedEntity(EntityAqua.class, "AquaAlien");
         MDX.registerRemappedEntity(EntityPredalien.class, "Predalien");
         MDX.registerRemappedEntity(EntityCombatSynthetic.class, "CombatSynthetic");
-        MDX.registerRemappedEntity(EntityProtomorph.class, "Protomorph");
+        MDX.registerRemappedEntity(EntityDeacon.class, "Protomorph");
         MDX.registerRemappedEntity(EntityHammerpede.class, "Hammerpede");
         MDX.registerRemappedEntity(EntityTrilobite.class, "Trilobite");
         MDX.registerRemappedEntity(EntitySpaceJockey.class, "SpaceJockey");
         MDX.registerRemappedEntity(EntityEngineer.class, "Engineer");
         MDX.registerRemappedEntity(EntityYautjaBerserker.class, "YautjaBerserker");
         MDX.registerRemappedEntity(EntityDeaconShark.class, "DeaconShark");
+
+        //Mod Entity Identity Remapping
+        MDX.registerRemappedEntity(EntityDeacon.class, "avp.Protomorph");
     }
 
     private void registerEntities()
@@ -193,7 +197,7 @@ public class EntityHandler implements IInitEvent
         Game.register(EntityAqua.class, "AquaAlien", entityId++, AliensVsPredator.instance(), 250, 1, true);
         Game.register(EntityPredalien.class, "Predalien", entityId++, AliensVsPredator.instance(), 250, 1, true);
         Game.register(EntityCombatSynthetic.class, "CombatSynthetic", entityId++, AliensVsPredator.instance(), 250, 1, true);
-        Game.register(EntityProtomorph.class, "Protomorph", entityId++, AliensVsPredator.instance(), 250, 1, true);
+        Game.register(EntityDeacon.class, "Deacon", entityId++, AliensVsPredator.instance(), 250, 1, true);
         Game.register(EntityHammerpede.class, "Hammerpede", entityId++, AliensVsPredator.instance(), 250, 1, true);
         Game.register(EntityTrilobite.class, "Trilobite", entityId++, AliensVsPredator.instance(), 250, 1, true);
         Game.register(EntitySpaceJockey.class, "SpaceJockey", entityId++, AliensVsPredator.instance(), 250, 1, true);
@@ -235,7 +239,7 @@ public class EntityHandler implements IInitEvent
             EntityRegistry.addSpawn(EntityYautjaBerserker.class, 1, 0, 1, EnumCreatureType.monster, predatorBiomes);
             EntityRegistry.addSpawn(EntityMarine.class, 2, 1, 1, EnumCreatureType.creature, new BiomeGenBase[] { BiomeGenBase.swampland, BiomeGenBase.forest, BiomeGenBase.forestHills, BiomeGenBase.taiga, BiomeGenBase.taigaHills, BiomeGenBase.plains
             });
-            EntityRegistry.addSpawn(EntityProtomorph.class, 30, 1, 2, EnumCreatureType.monster, new BiomeGenBase[] { BiomeGenVarda.vardaBadlands
+            EntityRegistry.addSpawn(EntityDeacon.class, 30, 1, 2, EnumCreatureType.monster, new BiomeGenBase[] { BiomeGenVarda.vardaBadlands
             });
             EntityRegistry.addSpawn(EntityHammerpede.class, 30, 1, 4, EnumCreatureType.monster, new BiomeGenBase[] { BiomeGenVarda.vardaBadlands
             });

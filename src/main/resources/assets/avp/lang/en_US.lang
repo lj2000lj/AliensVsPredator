@@ -12,6 +12,7 @@ item.avp:shuriken.name=Shuriken
 item.avp:food.doritos.name=Doritos
 item.avp:food.doritos.coolranch.name=Doritos (Cool Ranch)
 item.avp:artifact.tech.name=Yautja Artifact
+
 item.avp:helm.pressure.name=Pressure Helmet
 item.avp:body.pressure.name=Pressure Vest
 item.avp:legwear.pressure.name=Pressure Legwear
@@ -28,6 +29,12 @@ item.avp:helm.celtic.name=Biomask
 item.avp:body.celtic.name=Celtic Chest Armor
 item.avp:legwear.celtic.name=Celtic Leg Armor
 item.avp:boots.celtic.name=Celtic Foot Armor
+item.avp:helm.mk50.name=MK50 Helmet
+item.avp:body.mk50.name=MK50 Chest Guard
+item.avp:legwear.mk50.name=MK50 Jumpsuit
+item.avp:boots.mk50.name=MK50 Boots
+
+
 item.avp:tool.celtic.shovel.name=Celtic Shovel
 item.avp:tool.celtic.sword.name=Celtic Sword
 item.avp:tool.celtic.hoe.name=Celtic Hoe
@@ -100,7 +107,7 @@ item.avp:device.nbtdrive.name=NBT Drive
 item.avp:apc.name=APC
 item.avp:blackGooBucket.name=Black Goo Bucket
 
-item.avp:summon.protomorph.name=Protomorph (Deacon)
+item.avp:summon.deacon.name=Deacon
 item.avp:summon.deaconshark.name=Deacon Shark
 item.avp:summon.hammerpede.name=Hammerpede
 item.avp:summon.trilobite.name=Trilobite
@@ -726,7 +733,15 @@ tile.avp:engineershipmaterial2.invertedridge.name=Engineer Ship Material Inverte
 tile.avp:engineershipmaterial2.smartinvertedridge.name=Engineer Ship Material Smart Inverted Ridge
 tile.avp:engineershipmaterial2.smartridge.name=Engineer Ship Material Smart Ridge
 tile.avp:engineershipmaterial2stairs.name=Engineer Ship Material Stairs
-tile.avp:engineershipmaterial2slab.name=Engineer Ship Material 
+tile.avp:engineershipmaterial2slab.name=Engineer Ship Material
+tile.avp:paddingpanel.name=Geometric Padding Panel
+tile.avp:paddingpanel.slope.name=Geometric Padding Panel Slope
+tile.avp:paddingpanel.corner.name=Geometric Padding Panel Corner
+tile.avp:paddingpanel.invertedcorner.name=Geometric Padding Panel Inverted Corner
+tile.avp:paddingpanel.ridge.name=Geometric Padding Panel Ridge
+tile.avp:paddingpanel.invertedridge.name=Geometric Padding Panel Inverted Ridge
+tile.avp:paddingpanel.smartinvertedridge.name=Geometric Padding Panel Smart Inverted Ridge
+tile.avp:paddingpanel.smartridge.name=Geometric Padding Panel Smart Ridge
 
 tile.avp:satellitemodem.name=Satellite Modem
 tile.avp:satellitedish.name=Satellite Dish
@@ -849,7 +864,7 @@ entity.avp.RoyalFacehugger.name=Royal Facehugger
 entity.avp.Predalien.name=Predalien
 entity.avp.Aqua Xenomorph.name=Aqua Xenomorph
 entity.avp.CombatSynthetic.name=Combat Synthetic
-entity.avp.Protomorph.name=Protomorph (Deacon)
+entity.avp.deacon.name=Deacon
 entity.avp.SpaceJockey.name=Space Jockey
 entity.avp.Engineer.name=Engineer
 entity.avp.Ultramorph.name=Ultramorph
@@ -871,6 +886,7 @@ death.attack.shuriken=%1$s was eviscerated by a shuriken.
 death.attack.smartdisc=%1$s was sliced in half by a smart disc.
 death.attack.laserMine=%1$s was blown to bits by a laser mine.
 death.attack.flamethrower=%1$s was incinerated.
+death.attack.bullet=%1$s was shot by %2$s.
 
 gui.avp.beta.feedback.info.submit.title=Submit Feedback
 gui.avp.beta.feedback.info.submit.button=Submit Feedback

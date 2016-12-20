@@ -206,6 +206,12 @@ public class AliensVsPredator implements IMod
 
         settings().preInitialize(event);
         renderTypes().pre(event);
+        this.remapItemIdentities();
+    }
+    
+    private void remapItemIdentities()
+    {
+        MDX.registerMappingInfo("summon.protomorph", "summon.deacon", AliensVsPredator.ID);
     }
 
     @Override

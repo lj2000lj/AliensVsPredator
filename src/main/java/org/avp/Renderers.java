@@ -41,7 +41,7 @@ import org.avp.entities.mob.EntityMarine;
 import org.avp.entities.mob.EntityOvamorph;
 import org.avp.entities.mob.EntityPraetorian;
 import org.avp.entities.mob.EntityPredalien;
-import org.avp.entities.mob.EntityProtomorph;
+import org.avp.entities.mob.EntityDeacon;
 import org.avp.entities.mob.EntityQueen;
 import org.avp.entities.mob.EntityRoyalFacehugger;
 import org.avp.entities.mob.EntityRunnerDrone;
@@ -269,7 +269,7 @@ public class Renderers implements IPostInitEvent
         registerEntityRenderingHandler(EntityYautjaBerserker.class, new RenderYautjaBerserker());
         registerEntityRenderingHandler(EntityTrilobite.class, new RenderTrilobite());
         registerEntityRenderingHandler(EntityHammerpede.class, new RenderHammerpede());
-        registerEntityRenderingHandler(EntityProtomorph.class, new RenderXenomorph(AliensVsPredator.resources().models().PROTOMORPH, 1.4F));
+        registerEntityRenderingHandler(EntityDeacon.class, new RenderXenomorph(AliensVsPredator.resources().models().PROTOMORPH, 1.4F));
         registerEntityRenderingHandler(EntityDrone.class, new RenderXenomorph(AliensVsPredator.resources().models().DRONE_ADVANCED, 0.9F));
         registerEntityRenderingHandler(EntityWarrior.class, new RenderXenomorph(AliensVsPredator.resources().models().WARRIOR, 1F));
         registerEntityRenderingHandler(EntityPraetorian.class, new RenderXenomorph(AliensVsPredator.resources().models().PRAETORIAN, 1.4F));
@@ -355,7 +355,7 @@ public class Renderers implements IPostInitEvent
         registerItemRenderer(items.itemIncendiaryGrenade, new RenderItemM40(AliensVsPredator.resources().models().M40GRENADE_INCENDIARY));
         
         registerItemRenderer(items.itemSummonerDrone, (new RenderItemSummoner(EntityDrone.class)).setScale(7.5F).setY(6F));
-        registerItemRenderer(items.itemSummonerProtomorph, (new RenderItemSummoner(EntityProtomorph.class)).setScale(7.5F).setY(6F));
+        registerItemRenderer(items.itemSummonerProtomorph, (new RenderItemSummoner(EntityDeacon.class)).setScale(7.5F).setY(6F));
         registerItemRenderer(items.itemSummonerWarrior, (new RenderItemSummoner(EntityWarrior.class)).setScale(7.5F).setY(9F));
         registerItemRenderer(items.itemSummonerRunnerDrone, (new RenderItemSummoner(EntityRunnerDrone.class)).setScale(7.5F).setY(6F));
         registerItemRenderer(items.itemSummonerRunnerWarrior, (new RenderItemSummoner(EntityRunnerWarrior.class)).setScale(7.5F).setY(9F));
