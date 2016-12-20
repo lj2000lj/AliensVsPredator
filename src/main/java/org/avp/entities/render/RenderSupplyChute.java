@@ -1,6 +1,6 @@
 package org.avp.entities.render;
 
-import org.avp.AliensVsPredator;
+import org.avp.entities.EntitySupplyChute;
 
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
@@ -18,6 +18,8 @@ public class RenderSupplyChute extends Render
     @Override
     public void doRender(Entity entity, double posX, double posY, double posZ, float yaw, float renderPartialTicks)
     {
+        EntitySupplyChute chute = (EntitySupplyChute) entity;
+        
         double renderX = (entity.posX - entity.lastTickPosX) * (double) renderPartialTicks;
         double renderY = (entity.posY - entity.lastTickPosY) * (double) renderPartialTicks;
         double renderZ = (entity.posZ - entity.lastTickPosZ) * (double) renderPartialTicks;
@@ -29,7 +31,7 @@ public class RenderSupplyChute extends Render
         OpenGL.disableCullFace();
         OpenGL.rotate(entity.rotationYaw, 0.0F, 1.0F, 0.0F);
         OpenGL.rotate(entity.rotationPitch, 0.0F, 0.0F, 1.0F);
-        AliensVsPredator.resources().models().SUPPLY_CHUTE.draw();
+        chute.getType().getModel().draw();
         OpenGL.popMatrix();
     }
 

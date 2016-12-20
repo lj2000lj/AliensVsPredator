@@ -26,6 +26,8 @@ import org.avp.entities.EntityShuriken;
 import org.avp.entities.EntitySmartDisc;
 import org.avp.entities.EntitySpear;
 import org.avp.entities.EntitySupplyChute;
+import org.avp.entities.EntitySupplyChuteMarines;
+import org.avp.entities.EntitySupplyChuteSeegson;
 import org.avp.entities.mob.EntityAethon;
 import org.avp.entities.mob.EntityAqua;
 import org.avp.entities.mob.EntityChestburster;
@@ -171,6 +173,8 @@ import org.avp.items.render.RenderItemSolarPanel;
 import org.avp.items.render.RenderItemSpear;
 import org.avp.items.render.RenderItemStasisMechanism;
 import org.avp.items.render.RenderItemSummoner;
+import org.avp.items.render.RenderItemSupplyChute;
+import org.avp.items.render.RenderItemSupplyCrate;
 import org.avp.items.render.RenderItemTransformer;
 import org.avp.items.render.RenderItemTurret;
 import org.avp.items.render.RenderItemWorkstation;
@@ -311,6 +315,8 @@ public class Renderers implements IPostInitEvent
         registerEntityRenderingHandler(EntityMechanism.class, new RenderMechanism());
         registerEntityRenderingHandler(EntityMedpod.class, new RenderMedpodEntity());
         registerEntityRenderingHandler(EntitySupplyChute.class, new RenderSupplyChute());
+        registerEntityRenderingHandler(EntitySupplyChuteMarines.class, new RenderSupplyChute());
+        registerEntityRenderingHandler(EntitySupplyChuteSeegson.class, new RenderSupplyChute());
     }
 
     private void registerItemRenderers(ItemHandler items)
@@ -353,6 +359,13 @@ public class Renderers implements IPostInitEvent
         registerItemRenderer(items.itemAPC, new RenderItemAPC());
         registerItemRenderer(items.itemGrenade, new RenderItemM40(AliensVsPredator.resources().models().M40GRENADE));
         registerItemRenderer(items.itemIncendiaryGrenade, new RenderItemM40(AliensVsPredator.resources().models().M40GRENADE_INCENDIARY));
+
+        registerItemRenderer(Item.getItemFromBlock(AliensVsPredator.blocks().supplyCrate), new RenderItemSupplyCrate());
+        registerItemRenderer(Item.getItemFromBlock(AliensVsPredator.blocks().supplyCrateMarines), new RenderItemSupplyCrate());
+        registerItemRenderer(Item.getItemFromBlock(AliensVsPredator.blocks().supplyCrateSeegson), new RenderItemSupplyCrate());
+        registerItemRenderer(items.itemSupplyChute, new RenderItemSupplyChute());
+        registerItemRenderer(items.itemSupplyChuteMarines, new RenderItemSupplyChute());
+        registerItemRenderer(items.itemSupplyChuteSeegson, new RenderItemSupplyChute());
         
         registerItemRenderer(items.itemSummonerDrone, (new RenderItemSummoner(EntityDrone.class)).setScale(7.5F).setY(6F));
         registerItemRenderer(items.itemSummonerProtomorph, (new RenderItemSummoner(EntityDeacon.class)).setScale(7.5F).setY(6F));

@@ -41,6 +41,7 @@ import org.avp.block.skulls.BlockSkullSpaceJockey;
 import org.avp.block.skulls.BlockSkullXenomorph;
 import org.avp.block.skulls.BlockSkullXenomorphWarrior;
 import org.avp.block.skulls.BlockSkullYautja;
+import org.avp.items.ItemSupplyChute.SupplyChuteType;
 
 import com.arisux.mdxlib.lib.game.Game;
 import com.arisux.mdxlib.lib.game.IInitEvent;
@@ -170,7 +171,9 @@ public class BlockHandler implements IInitEvent
     public Block               blockMist                  = (new BlockMist());
     public Block               blockTransformer           = (new BlockTransformer(Material.iron)).setHardness(5.0F).setResistance(10.0F);
     public Block               blockNegativeTransformer   = (new BlockNegativeTransformer(Material.iron)).setHardness(5.0F).setResistance(10.0F);
-    public Block               blockSupplyCrate           = (new BlockSupplyCrate());
+    public Block               supplyCrate           = (new BlockSupplyCrate(SupplyChuteType.UNBRANDED));
+    public Block               supplyCrateMarines    = (new BlockSupplyCrate(SupplyChuteType.MARINES));
+    public Block               supplyCrateSeegson    = (new BlockSupplyCrate(SupplyChuteType.SEEGSON));
     public Block               blockSolarPanel            = (new BlockSolarPanel(Material.iron)).setHardness(5.0F).setResistance(10.0F);
     public Block               blockLocker                = (new BlockLocker(Material.iron).setHardness(1.5F).setResistance(10.0F));
     public Block               blockMedpod                = (new BlockMedpod(Material.iron).setHardness(1.5F).setResistance(10.0F));
@@ -332,7 +335,9 @@ public class BlockHandler implements IInitEvent
         Game.register(AliensVsPredator.ID, blockRepulsionGenerator, "generator").setCreativeTab(AliensVsPredator.tabMain());
         Game.register(AliensVsPredator.ID, blockPowerline, "powerline").setCreativeTab(AliensVsPredator.tabMain());
         Game.register(AliensVsPredator.ID, blockBlastdoor, "blastdoor").setCreativeTab(AliensVsPredator.tabMain());
-        Game.register(AliensVsPredator.ID, blockSupplyCrate, "supplychuteblock").setCreativeTab(null);
+        Game.register(AliensVsPredator.ID, supplyCrate, "supplychuteblock").setCreativeTab(AliensVsPredator.tabMain());
+        Game.register(AliensVsPredator.ID, supplyCrateMarines, "supplychuteblock.marines").setCreativeTab(AliensVsPredator.tabMain());
+        Game.register(AliensVsPredator.ID, supplyCrateSeegson, "supplychuteblock.seegson").setCreativeTab(AliensVsPredator.tabMain());
         Game.register(AliensVsPredator.ID, blockBlackGoo, "blackgoo").setCreativeTab(AliensVsPredator.tabMain());
         Game.register(AliensVsPredator.ID, blockMist, "mist").setCreativeTab(AliensVsPredator.tabMain());
         Game.register(AliensVsPredator.ID, blockCryostasisTube, "cryostasistube").setCreativeTab(AliensVsPredator.tabMain());

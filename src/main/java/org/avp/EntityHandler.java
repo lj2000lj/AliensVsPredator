@@ -20,12 +20,15 @@ import org.avp.entities.EntityShuriken;
 import org.avp.entities.EntitySmartDisc;
 import org.avp.entities.EntitySpear;
 import org.avp.entities.EntitySupplyChute;
+import org.avp.entities.EntitySupplyChuteMarines;
+import org.avp.entities.EntitySupplyChuteSeegson;
 import org.avp.entities.EntityTurret;
 import org.avp.entities.mob.EntityAethon;
 import org.avp.entities.mob.EntityAqua;
 import org.avp.entities.mob.EntityChestburster;
 import org.avp.entities.mob.EntityCombatSynthetic;
 import org.avp.entities.mob.EntityCrusher;
+import org.avp.entities.mob.EntityDeacon;
 import org.avp.entities.mob.EntityDeaconShark;
 import org.avp.entities.mob.EntityDrone;
 import org.avp.entities.mob.EntityEngineer;
@@ -36,7 +39,6 @@ import org.avp.entities.mob.EntityMarine;
 import org.avp.entities.mob.EntityOvamorph;
 import org.avp.entities.mob.EntityPraetorian;
 import org.avp.entities.mob.EntityPredalien;
-import org.avp.entities.mob.EntityDeacon;
 import org.avp.entities.mob.EntityQueen;
 import org.avp.entities.mob.EntityRoyalFacehugger;
 import org.avp.entities.mob.EntityRunnerDrone;
@@ -176,6 +178,8 @@ public class EntityHandler implements IInitEvent
         Game.register(EntityMechanism.class, "MECHANISM", entityId++, AliensVsPredator.instance(), 250, 16, true);
         Game.register(EntityMedpod.class, "Medpod", entityId++, AliensVsPredator.instance(), 250, 16, true);
         Game.register(EntitySupplyChute.class, "SupplyChute", entityId++, AliensVsPredator.instance(), 250, 1, true);
+        Game.register(EntitySupplyChuteMarines.class, "SupplyChuteMarines", entityId++, AliensVsPredator.instance(), 250, 1, true);
+        Game.register(EntitySupplyChuteSeegson.class, "SupplyChuteSeegson", entityId++, AliensVsPredator.instance(), 250, 1, true);
     }
 
     private void registerLivingEntities()

@@ -37,6 +37,7 @@ import org.avp.items.ItemDisc;
 import org.avp.items.ItemEntitySummoner;
 import org.avp.items.ItemFirearm;
 import org.avp.items.ItemFirearm.ItemAmmo;
+import org.avp.items.ItemSupplyChute.SupplyChuteType;
 import org.avp.items.ItemGrenade;
 import org.avp.items.ItemIngotLithium;
 import org.avp.items.ItemLaserMine;
@@ -151,7 +152,9 @@ public class ItemHandler implements IInitEvent
     public Item                     itemDiode                   = (new HookedItem()).setDescription("An electrical component that conducts in one direction.").setMaxStackSize(64);
     public Item                     itemMotherboard             = (new HookedItem());
     public Item                     itemPowerSupply             = (new HookedItem());
-    public Item                     itemSupplyChute             = new ItemSupplyChute().disableIcon();
+    public Item                     itemSupplyChute             = new ItemSupplyChute(SupplyChuteType.UNBRANDED).disableIcon();
+    public Item                     itemSupplyChuteMarines      = new ItemSupplyChute(SupplyChuteType.MARINES).disableIcon();
+    public Item                     itemSupplyChuteSeegson      = new ItemSupplyChute(SupplyChuteType.SEEGSON).disableIcon();
     public Item                     itemFlashDrive              = (new ItemStorageDevice()).setDescription("Strange Engineer technology, found at snowy elevations.").setMaxStackSize(64);
     public Item                     itemVoltageRegulator        = (new HookedItem()).setDescription("An electrical component that maintains a constant voltage level.").setMaxStackSize(64);
     public Item                     itemLed                     = (new HookedItem()).setMaxStackSize(64);
@@ -199,7 +202,7 @@ public class ItemHandler implements IInitEvent
     public ItemEntitySummoner       itemSummonerUltramorph      = (new ItemEntitySummoner(EntityUltramorph.class));
     public ItemEntitySummoner       itemSummonerGooMutant       = (new ItemEntitySummoner(EntityGooMutant.class));
     public ItemEntitySummoner       itemSummonerAethon          = (new ItemEntitySummoner(EntityAethon.class));
-    
+
     @Override
     public void init(FMLInitializationEvent event)
     {
@@ -285,6 +288,8 @@ public class ItemHandler implements IInitEvent
         Game.register(AliensVsPredator.ID, itemDoritosCoolRanch, "food.doritos.coolranch").setCreativeTab(AliensVsPredator.tabMain());
         Game.register(AliensVsPredator.ID, itemFlashDrive, "device.nbtdrive").setCreativeTab(AliensVsPredator.tabMain());
         Game.register(AliensVsPredator.ID, itemSupplyChute, "device.supplychute").setCreativeTab(AliensVsPredator.tabMain());
+        Game.register(AliensVsPredator.ID, itemSupplyChuteMarines, "device.supplychute.marines").setCreativeTab(AliensVsPredator.tabMain());
+        Game.register(AliensVsPredator.ID, itemSupplyChuteSeegson, "device.supplychute.seegson").setCreativeTab(AliensVsPredator.tabMain());
 
         Game.register(AliensVsPredator.ID, itemPistolStock, "part.pistol.stock").setCreativeTab(AliensVsPredator.tabGunComponents());
         Game.register(AliensVsPredator.ID, itemPistolBarrel, "part.pistol.barrel").setCreativeTab(AliensVsPredator.tabGunComponents());

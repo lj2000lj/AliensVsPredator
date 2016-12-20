@@ -155,7 +155,9 @@ public class Resources
         public final TexturedModel<ModelSpitter>              SPITTER_MASK                   = new TexturedModel(new ModelSpitter(), new Texture(AliensVsPredator.ID, "textures/mob/spitter_glow.png"));
         public final TexturedModel<ModelCrusher>              CRUSHER                        = new TexturedModel(new ModelCrusher(), new Texture(AliensVsPredator.ID, "textures/mob/crusher.png"));
         public final TexturedModel<SpecialModelBiped>         COMBAT_SYNTHETIC               = new TexturedModel(new SpecialModelBiped(), new Texture(AliensVsPredator.ID, "textures/mob/combat_synthetic.png"));
-        public final TexturedModel<ModelSupplyChute>          SUPPLY_CHUTE                   = new TexturedModel(new ModelSupplyChute(), new Texture(AliensVsPredator.ID, "textures/misc/supplychute.png"));
+        public final TexturedModel<ModelSupplyChute>          SUPPLY_CHUTE                   = new TexturedModel(new ModelSupplyChute(), new Texture(AliensVsPredator.ID, "textures/tile/supplychute.png"));
+        public final TexturedModel<ModelSupplyChute>          SUPPLY_CHUTE_MARINES                   = new TexturedModel(new ModelSupplyChute(), new Texture(AliensVsPredator.ID, "textures/tile/supplychute.marines.png"));
+        public final TexturedModel<ModelSupplyChute>          SUPPLY_CHUTE_SEEGSON                   = new TexturedModel(new ModelSupplyChute(), new Texture(AliensVsPredator.ID, "textures/tile/supplychute.seegson.png"));
         public final TexturedModel<SpecialModelBiped>         BIPED                          = new TexturedModel(new SpecialModelBiped(), new Texture(AbstractClientPlayer.locationStevePng));
         public final TexturedModel<ModelLaserMine>            LASER_MINE                     = new TexturedModel(new ModelLaserMine(), new Texture(AliensVsPredator.ID, "textures/misc/proximity-mine.png"));
         public final TexturedModel<ModelDNASynthesizer>       DNA_SYNTHESIZER                = new TexturedModel(new ModelDNASynthesizer(), new Texture(AliensVsPredator.ID, "textures/tile/dna-synthesizer.png"));
