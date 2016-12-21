@@ -10,4 +10,4 @@ script: ./gradlew build
 
 env:
   global:
-    TERM=dumb
+    curseForgeApiKey="00000-00000-00000-00000-00000"
