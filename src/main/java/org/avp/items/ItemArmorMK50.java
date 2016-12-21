@@ -1,8 +1,10 @@
 package org.avp.items;
 
 import org.avp.AliensVsPredator;
+import org.avp.ItemHandler;
 
 import com.arisux.mdxlib.lib.client.render.Draw;
+import com.arisux.mdxlib.lib.world.entity.player.inventory.Inventories;
 
 import cr0s.warpdrive.api.IAirCanister;
 import cr0s.warpdrive.api.IBreathingHelmet;
@@ -10,6 +12,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -46,15 +49,36 @@ public class ItemArmorMK50 extends ItemArmor implements IBreathingHelmet
     }
 
     @Override
-    public boolean canBreath(Entity player)
+    public boolean canBreath(Entity entityPlayer)
     {
-        return true;
+        ItemHandler items = AliensVsPredator.items();
+
+        if (entityPlayer instanceof EntityPlayer)
+        {
+            EntityPlayer player = (EntityPlayer) entityPlayer;
+            ItemStack helmStack = Inventories.getHelmSlotItemStack(player);
+            ItemStack bodyStack = Inventories.getHelmSlotItemStack(player);
+            ItemStack legStack = Inventories.getHelmSlotItemStack(player);
+            ItemStack bootStack = Inventories.getHelmSlotItemStack(player);
+
+            if (helmStack != null && bodyStack != null && legStack != null && bootStack != null)
+            {
+                Item helm = helmStack.getItem();
+                Item body = helmStack.getItem();
+                Item legs = helmStack.getItem();
+                Item boots = helmStack.getItem();
+                
+                return helm == items.mk50helmet && body == items.mk50body && legs == items.mk50pants && boots == items.mk50boots;
+            }
+        }
+
+        return false;
     }
 
     @Override
     public boolean removeAir(Entity player)
     {
-        if (player instanceof EntityPlayerMP)
+        if (player instanceof EntityPlayerMP && canBreath(player))
         {
             EntityPlayerMP playerMp = (EntityPlayerMP) player;
             ItemStack[] inventory = playerMp.inventory.mainInventory;
@@ -75,7 +99,7 @@ public class ItemArmorMK50 extends ItemArmor implements IBreathingHelmet
                             ItemStack toAdd = stack.copy();
                             toAdd.stackSize = 1;
                             toAdd.damageItem(1, playerMp);
-                            
+
                             if (stack.getCurrentDurability() >= stack.getMaxDurability())
                             {
                                 toAdd = airCanister.emptyDrop(stack);
