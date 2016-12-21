@@ -12,6 +12,7 @@ import com.arisux.mdxlib.lib.game.Game;
 import com.arisux.mdxlib.lib.world.tile.IRotatable;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -233,7 +234,7 @@ public class TileEntityBlastdoor extends TileEntityElectrical implements IVoltag
     {
         Block block = worldObj.getBlock(posX, posY, posZ);
 
-        if (block != Blocks.air && block != AliensVsPredator.blocks().blockBlastdoor)
+        if (block.getMaterial() != Material.air && block != AliensVsPredator.blocks().blockBlastdoor)
         {
             if (this.worldObj.isRemote)
             {
