@@ -48,28 +48,28 @@ public class ItemArmorMK50 extends ItemArmor implements IBreathingHelmet
     @Override
     public boolean canBreath(Entity entityPlayer)
     {
-        ItemHandler items = AliensVsPredator.items();
+//        ItemHandler items = AliensVsPredator.items();
+//
+//        if (entityPlayer instanceof EntityPlayer)
+//        {
+//            EntityPlayer player = (EntityPlayer) entityPlayer;
+//            ItemStack helmStack = Inventories.getHelmSlotItemStack(player);
+//            ItemStack bodyStack = Inventories.getHelmSlotItemStack(player);
+//            ItemStack legStack = Inventories.getHelmSlotItemStack(player);
+//            ItemStack bootStack = Inventories.getHelmSlotItemStack(player);
+//
+//            if (helmStack != null && bodyStack != null && legStack != null && bootStack != null)
+//            {
+//                Item helm = helmStack.getItem();
+//                Item body = helmStack.getItem();
+//                Item legs = helmStack.getItem();
+//                Item boots = helmStack.getItem();
+//                
+//                return helm == items.mk50helmet && body == items.mk50body && legs == items.mk50pants && boots == items.mk50boots;
+//            }
+//        }
 
-        if (entityPlayer instanceof EntityPlayer)
-        {
-            EntityPlayer player = (EntityPlayer) entityPlayer;
-            ItemStack helmStack = Inventories.getHelmSlotItemStack(player);
-            ItemStack bodyStack = Inventories.getHelmSlotItemStack(player);
-            ItemStack legStack = Inventories.getHelmSlotItemStack(player);
-            ItemStack bootStack = Inventories.getHelmSlotItemStack(player);
-
-            if (helmStack != null && bodyStack != null && legStack != null && bootStack != null)
-            {
-                Item helm = helmStack.getItem();
-                Item body = helmStack.getItem();
-                Item legs = helmStack.getItem();
-                Item boots = helmStack.getItem();
-                
-                return helm == items.mk50helmet && body == items.mk50body && legs == items.mk50pants && boots == items.mk50boots;
-            }
-        }
-
-        return false;
+        return true;
     }
 
     @Override
