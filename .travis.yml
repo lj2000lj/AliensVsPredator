@@ -5,6 +5,7 @@ jdk:
 before_install: 
  - git clone https://github.com/Ri5ux/AliensVsPredator.git
  - chmod +x gradlew
+ - chmod +x travisSetup.sh
  - ./travisSetup.sh
 install: ./gradlew setupDecompWorkspace
 script: ./gradlew build
