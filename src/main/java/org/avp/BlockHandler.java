@@ -58,38 +58,38 @@ public class BlockHandler implements IInitEvent
 
     public Block               terrainHiveResin           = (new BlockHiveResin(Material.wood)).setLightOpacity(255);
     public Block               blockStandardHiveResin     = (new BlockMaterial(Material.wood)).setHardness(5F).setResistance(10.0F).setLightOpacity(255);
-    public Block               blockOvamorph              = (new BlockMaterial(Material.rock));
-    public Block               blockShipMetal1            = (new BlockMaterial(Material.iron).setHardness(5F).setResistance(30.0F).setLightOpacity(255));
-    public Block               blockShipMetal2            = (new BlockMaterial(Material.iron).setHardness(5F).setResistance(30.0F).setLightOpacity(255));
-    public Block               blockFacehuggerRelic       = (new BlockMaterial(Material.rock).setHardness(5F).setResistance(30.0F).setLightOpacity(255));
-    public Block               blockAlienRelic            = (new BlockMaterial(Material.rock).setHardness(5F).setResistance(30.0F).setLightOpacity(255));
-    public Block               blockShipDecor1            = (new BlockMaterial(Material.iron).setHardness(5F).setResistance(30.0F).setLightOpacity(255));
-    public Block               blockShipDecor2            = (new BlockMaterial(Material.iron).setHardness(5F).setResistance(30.0F).setLightOpacity(255));
-    public Block               blockShipDecor3            = (new BlockMaterial(Material.iron).setHardness(5F).setResistance(30.0F).setLightOpacity(255));
-    public Block               blockShipDecor4            = (new BlockMaterial(Material.iron).setHardness(5F).setResistance(30.0F).setLightOpacity(255));
-    public Block               blockShipDecor5            = (new BlockMaterial(Material.iron).setHardness(5F).setResistance(30.0F).setLightOpacity(255));
-    public Block               blockShipDecor6            = (new BlockMaterial(Material.iron).setHardness(5F).setResistance(30.0F).setLightOpacity(255));
-    public Block               blockTempleBrick           = (new BlockMaterial(Material.rock).setHardness(5F).setResistance(30.0F).setLightOpacity(255));
-    public Block               blockTempleTile            = (new BlockMaterial(Material.rock).setHardness(5F).setResistance(30.0F).setLightOpacity(255));
-    public Block               blockTempleWall1           = (new BlockMaterial(Material.rock).setHardness(5F).setResistance(30.0F).setLightOpacity(255));
-    public Block               blockTempleWall2           = (new BlockMaterial(Material.rock).setHardness(5F).setResistance(30.0F).setLightOpacity(255));
-    public Block               blockWall                  = (new BlockMaterial(Material.iron)).setHardness(5F).setResistance(30.0F).setLightOpacity(255);
-    public Block               blockCeiling               = (new BlockMaterial(Material.iron)).setHardness(5F).setResistance(30.0F).setLightOpacity(0);
+    public Block               blockOvamorph              = (new BlockMaterial(Material.rock)).setHardness(5F).setResistance(15.0F).setLightOpacity(255);
+    public Block               blockShipMetal1            = (new BlockMaterial(Material.iron).setHardness(5F).setResistance(15.0F).setLightOpacity(255));
+    public Block               blockShipMetal2            = (new BlockMaterial(Material.iron).setHardness(5F).setResistance(15.0F).setLightOpacity(255));
+    public Block               blockFacehuggerRelic       = (new BlockMaterial(Material.rock).setHardness(5F).setResistance(15.0F).setLightOpacity(255));
+    public Block               blockAlienRelic            = (new BlockMaterial(Material.rock).setHardness(5F).setResistance(15.0F).setLightOpacity(255));
+    public Block               blockShipDecor1            = (new BlockMaterial(Material.iron).setHardness(5F).setResistance(15.0F).setLightOpacity(255));
+    public Block               blockShipDecor2            = (new BlockMaterial(Material.iron).setHardness(5F).setResistance(15.0F).setLightOpacity(255));
+    public Block               blockShipDecor3            = (new BlockMaterial(Material.iron).setHardness(5F).setResistance(15.0F).setLightOpacity(255));
+    public Block               blockShipDecor4            = (new BlockMaterial(Material.iron).setHardness(5F).setResistance(15.0F).setLightOpacity(255));
+    public Block               blockShipDecor5            = (new BlockMaterial(Material.iron).setHardness(5F).setResistance(15.0F).setLightOpacity(255));
+    public Block               blockShipDecor6            = (new BlockMaterial(Material.iron).setHardness(5F).setResistance(15.0F).setLightOpacity(255));
+    public Block               blockTempleBrick           = (new BlockMaterial(Material.rock).setHardness(5F).setResistance(15.0F).setLightOpacity(255));
+    public Block               blockTempleTile            = (new BlockMaterial(Material.rock).setHardness(5F).setResistance(15.0F).setLightOpacity(255));
+    public Block               blockTempleWall1           = (new BlockMaterial(Material.rock).setHardness(5F).setResistance(15.0F).setLightOpacity(255));
+    public Block               blockTempleWall2           = (new BlockMaterial(Material.rock).setHardness(5F).setResistance(15.0F).setLightOpacity(255));
+    public Block               blockWall                  = (new BlockMaterial(Material.iron)).setHardness(5F).setResistance(15.0F).setLightOpacity(255);
+    public Block               blockCeiling               = (new BlockMaterial(Material.iron)).setHardness(5F).setResistance(15.0F).setLightOpacity(0);
     public Block               blockCeilingFan            = (new BlockMaterial(Material.iron)
                                                           {
                                                               public boolean isOpaqueCube()
                                                               {
                                                                   return false;
                                                               };
-                                                          }).setHardness(5F).setResistance(30.0F);
-    public Block               blockCeiliingVent          = (new BlockMaterial(Material.iron)).setHardness(5F).setResistance(30.0F).setLightOpacity(0);
+                                                          }).setHardness(5F).setResistance(15.0F);
+    public Block               blockCeiliingVent          = (new BlockMaterial(Material.iron)).setHardness(5F).setResistance(15.0F).setLightOpacity(0);
     public Block               blockCeilingGrill          = ((new BlockMaterial(Material.iron)
                                                           {
                                                               public boolean isOpaqueCube()
                                                               {
                                                                   return false;
                                                               };
-                                                          }).setHardness(5F).setResistance(30.0F)).setLightOpacity(4);
+                                                          }).setHardness(5F).setResistance(15.0F)).setLightOpacity(4);
     public Block               blockSkulls                = (new BlockMaterial(Material.rock));
     public Block               blockFloorGrill            = ((new BlockMaterial(Material.iron)
                                                           {
@@ -97,58 +97,58 @@ public class BlockHandler implements IInitEvent
                                                               {
                                                                   return false;
                                                               };
-                                                          }).setHardness(5F).setResistance(30.0F)).setLightOpacity(4);
-    public Block               blockIronBricks            = (new BlockMaterial(Material.iron).setHardness(5F).setResistance(30.0F).setLightOpacity(255));
-    public Block               blockVerticalMetal         = (new BlockMaterial(Material.iron).setHardness(5F).setResistance(30.0F).setLightOpacity(255));
-    public Block               blockColumnMetal1          = (new BlockMaterial(Material.iron).setHardness(5F).setResistance(30.0F).setLightOpacity(255));
-    public Block               blockColumnMetal2          = (new BlockMaterial(Material.iron).setHardness(5F).setResistance(30.0F).setLightOpacity(255));
-    public Block               blockPlasticCircle         = (new BlockMaterial(Material.clay)).setHardness(10F).setResistance(30.0F).setLightOpacity(0);
-    public Block               blockPlastic               = (new BlockMaterial(Material.clay)).setHardness(10F).setResistance(30.0F).setLightOpacity(0);
-    public Block               blockPaddingPanel          = (new BlockMaterial(Material.cloth)).setHardness(10F).setResistance(30.0F).setLightOpacity(0);
-    public Block               blockPlasticTri            = (new BlockMaterial(Material.clay)).setHardness(10F).setResistance(30.0F).setLightOpacity(0);
-    public Block               blockPlasticTile           = (new BlockMaterial(Material.clay)).setHardness(10F).setResistance(30.0F).setLightOpacity(0);
+                                                          }).setHardness(5F).setResistance(15.0F)).setLightOpacity(4);
+    public Block               blockIronBricks            = (new BlockMaterial(Material.iron).setHardness(5F).setResistance(15.0F).setLightOpacity(255));
+    public Block               blockVerticalMetal         = (new BlockMaterial(Material.iron).setHardness(5F).setResistance(15.0F).setLightOpacity(255));
+    public Block               blockColumnMetal1          = (new BlockMaterial(Material.iron).setHardness(5F).setResistance(15.0F).setLightOpacity(255));
+    public Block               blockColumnMetal2          = (new BlockMaterial(Material.iron).setHardness(5F).setResistance(15.0F).setLightOpacity(255));
+    public Block               blockPlasticCircle         = (new BlockMaterial(Material.clay)).setHardness(10F).setResistance(15.0F).setLightOpacity(0);
+    public Block               blockPlastic               = (new BlockMaterial(Material.clay)).setHardness(10F).setResistance(15.0F).setLightOpacity(0);
+    public Block               blockPaddingPanel          = (new BlockMaterial(Material.cloth)).setHardness(10F).setResistance(15.0F).setLightOpacity(0);
+    public Block               blockPlasticTri            = (new BlockMaterial(Material.clay)).setHardness(10F).setResistance(15.0F).setLightOpacity(0);
+    public Block               blockPlasticTile           = (new BlockMaterial(Material.clay)).setHardness(10F).setResistance(15.0F).setLightOpacity(0);
     public Block               oreSilicon                 = (new BlockMaterial(Material.rock)).setHardness(2.2F).setResistance(1.4F).setLightOpacity(255);
     public Block               oreLithium                 = (new BlockMaterial(Material.iron)).setHardness(4.2F).setResistance(5.4F).setLightOpacity(255);
     public Block               oreCopper                  = (new BlockMaterial(Material.iron)).setHardness(3.2F).setResistance(2.6F).setLightOpacity(255);
     public Block               oreBauxite                 = (new BlockMaterial(Material.iron)).setHardness(3.2F).setResistance(2.6F).setLightOpacity(255);
     public Block               mainframePanelShimmer      = (new BlockMaterial(Material.iron).setHardness(5F).setResistance(1F).setLightLevel(0.5F));
     public Block               mainframePanelFlicker      = (new BlockMaterial(Material.iron).setHardness(5F).setResistance(10F).setLightLevel(0.5F));
-    public Block               blockVent0                 = (new BlockMaterial(Material.iron)).setHardness(5F).setResistance(30.0F).setLightOpacity(0);
-    public Block               blockVent1                 = (new BlockMaterial(Material.iron)).setHardness(5F).setResistance(30.0F).setLightOpacity(0);
-    public Block               blockVent2                 = (new BlockMaterial(Material.iron)).setHardness(5F).setResistance(30.0F).setLightOpacity(0);
-    public Block               blockEngineerShipFloor     = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(30.0F).setLightOpacity(255));
-    public Block               blockEngineerShipBrick0    = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(30.0F).setLightOpacity(255));
-    public Block               blockEngineerShipBrick1    = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(30.0F).setLightOpacity(255));
-    public Block               blockEngineerShipBrick2    = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(30.0F).setLightOpacity(255));
-    public Block               blockEngineerShipBrick3    = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(30.0F).setLightOpacity(255));
-    public Block               blockEngineerShipGravel    = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(30.0F).setLightOpacity(255));
-    public Block               blockEngineerShipWall0     = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(30.0F).setLightOpacity(255));
-    public Block               blockEngineerShipWall1     = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(30.0F).setLightOpacity(255));
-    public Block               blockEngineerShipWall2     = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(30.0F).setLightOpacity(255));
-    public Block               blockEngineerShipWall3     = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(30.0F).setLightOpacity(255));
-    public Block               blockEngineerShipWall4     = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(30.0F).setLightOpacity(255));
-    public Block               blockEngineerShipRock0     = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(30.0F).setLightOpacity(255));
-    public Block               blockEngineerShipRock1     = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(30.0F).setLightOpacity(255));
-    public Block               blockEngineerShipRock2     = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(30.0F).setLightOpacity(255));
-    public Block               blockEngineerShipRock3     = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(30.0F).setLightOpacity(255));
-    public Block               blockEngineerShipColumn1   = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(30.0F).setLightOpacity(255));
-    public Block               blockEngineerShipColumn2   = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(30.0F).setLightOpacity(255));
-    public Block               blockEngineerShipMaterial1 = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(30.0F).setLightOpacity(255));
-    public Block               blockEngineerShipMaterial2 = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(30.0F).setLightOpacity(255));
+    public Block               blockVent0                 = (new BlockMaterial(Material.iron)).setHardness(5F).setResistance(15.0F).setLightOpacity(0);
+    public Block               blockVent1                 = (new BlockMaterial(Material.iron)).setHardness(5F).setResistance(15.0F).setLightOpacity(0);
+    public Block               blockVent2                 = (new BlockMaterial(Material.iron)).setHardness(5F).setResistance(15.0F).setLightOpacity(0);
+    public Block               blockEngineerShipFloor     = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(15.0F).setLightOpacity(255));
+    public Block               blockEngineerShipBrick0    = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(15.0F).setLightOpacity(255));
+    public Block               blockEngineerShipBrick1    = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(15.0F).setLightOpacity(255));
+    public Block               blockEngineerShipBrick2    = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(15.0F).setLightOpacity(255));
+    public Block               blockEngineerShipBrick3    = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(15.0F).setLightOpacity(255));
+    public Block               blockEngineerShipGravel    = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(15.0F).setLightOpacity(255));
+    public Block               blockEngineerShipWall0     = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(15.0F).setLightOpacity(255));
+    public Block               blockEngineerShipWall1     = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(15.0F).setLightOpacity(255));
+    public Block               blockEngineerShipWall2     = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(15.0F).setLightOpacity(255));
+    public Block               blockEngineerShipWall3     = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(15.0F).setLightOpacity(255));
+    public Block               blockEngineerShipWall4     = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(15.0F).setLightOpacity(255));
+    public Block               blockEngineerShipRock0     = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(15.0F).setLightOpacity(255));
+    public Block               blockEngineerShipRock1     = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(15.0F).setLightOpacity(255));
+    public Block               blockEngineerShipRock2     = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(15.0F).setLightOpacity(255));
+    public Block               blockEngineerShipRock3     = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(15.0F).setLightOpacity(255));
+    public Block               blockEngineerShipColumn1   = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(15.0F).setLightOpacity(255));
+    public Block               blockEngineerShipColumn2   = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(15.0F).setLightOpacity(255));
+    public Block               blockEngineerShipMaterial1 = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(15.0F).setLightOpacity(255));
+    public Block               blockEngineerShipMaterial2 = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(15.0F).setLightOpacity(255));
     public Block               terrainUniStone            = (new BlockMaterial(Material.rock)).setHardness(1.3F).setResistance(2.0F).setLightOpacity(255);
     public Block               terrainUniSand             = (new BlockMaterial(Material.sand)).setHardness(3.5F).setResistance(2.0F).setLightOpacity(255);
     public Block               terrainUniGravel           = (new BlockMaterial(Material.sand)).setHardness(3.0F).setLightOpacity(255);
     public Block               blockSatelliteDish         = (new BlockSatelliteDish()).setHardness(3.2F).setResistance(2.6F);
-    public Block               blockEngineerShipMaterial0 = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(30.0F).setLightOpacity(255));
+    public Block               blockEngineerShipMaterial0 = (new BlockMaterial(Material.iron).setHardness(10F).setResistance(15.0F).setLightOpacity(255));
     public Block               blockSacrificialSpawner    = (new BlockTempleSpawner(Material.rock, false));
     public Block               blockSpawnerCreative       = (new BlockTempleSpawner(Material.rock, true));
     public Block               blockPortalVarda           = (new BlockPortal(AliensVsPredator.settings().dimensionIdVarda()).setHardness(-1.0F).setLightLevel(2.0F));
     public Block               blockPortalAcheron         = (new BlockPortal(AliensVsPredator.settings().dimensionIdAcheron()).setHardness(-1.0F).setLightLevel(2.0F));
     public Block               blockAssembler             = (new BlockAssembler(Material.iron).setHardness(1.5F).setResistance(10.0F));
-    public Block               blockFloorGrillStairs      = (new BlockCustomStairs(blockFloorGrill)).setHardness(5F).setResistance(30.0F).setLightOpacity(4);
-    public Block               blockCeilingGrillStairs    = (new BlockCustomStairs(blockCeilingGrill)).setHardness(5F).setResistance(30.0F).setLightOpacity(4);
-    public Block               blockIronBricksStairs      = (new BlockCustomStairs(blockIronBricks)).setHardness(5F).setResistance(30.0F).setLightOpacity(255);
-    public Block               blockWallStairs            = (new BlockCustomStairs(blockWall)).setHardness(5F).setResistance(30.0F).setLightOpacity(255);
+    public Block               blockFloorGrillStairs      = (new BlockCustomStairs(blockFloorGrill)).setHardness(5F).setResistance(15.0F).setLightOpacity(4);
+    public Block               blockCeilingGrillStairs    = (new BlockCustomStairs(blockCeilingGrill)).setHardness(5F).setResistance(15.0F).setLightOpacity(4);
+    public Block               blockIronBricksStairs      = (new BlockCustomStairs(blockIronBricks)).setHardness(5F).setResistance(15.0F).setLightOpacity(255);
+    public Block               blockWallStairs            = (new BlockCustomStairs(blockWall)).setHardness(5F).setResistance(15.0F).setLightOpacity(255);
     public Block               terrainUniDirt             = (new BlockUnidentifiedDirt()).setHardness(0.5F).setResistance(2.0F).setLightOpacity(255);
     public Block               terrainStalagmite          = (new BlockStalagmite(Material.plants)).setHardness(0.0F).setLightOpacity(0);
     public Block               terrainUniTreeLog          = (new BlockUnidentifiedLog()).setHardness(0.0F).setLightOpacity(0);
@@ -160,8 +160,8 @@ public class BlockHandler implements IInitEvent
     public Block               blockStasisMechanism       = (new BlockStasisMechanism(Material.iron)).setHardness(5.0F).setResistance(10.0F);
     public Block               blockRepulsionGenerator    = (new BlockGenerator(Material.iron)).setHardness(5.0F).setResistance(10.0F);
     public Block               blockPowerline             = (new BlockPowerline(Material.iron)).setHardness(3.2F).setResistance(2.6F);
-    public Block               blockBlastdoor             = (new BlockBlastdoor(Material.iron)).setHardness(10F).setResistance(30.0F).setLightOpacity(0);
-    public Block               blockCryostasisTube        = (new BlockCryostasisTube(Material.iron)).setHardness(10F).setResistance(30.0F).setLightOpacity(4);
+    public Block               blockBlastdoor             = (new BlockBlastdoor(Material.iron)).setHardness(10F).setResistance(15.0F).setLightOpacity(0);
+    public Block               blockCryostasisTube        = (new BlockCryostasisTube(Material.iron)).setHardness(10F).setResistance(15.0F).setLightOpacity(4);
     public Block               blockLightPanel            = (new BlockLightPanel(Material.iron)).setHardness(1.5F).setResistance(2.0F);
     public Block               blockSatelliteModem        = (new BlockSatelliteModem(Material.iron)).setHardness(3.2F).setResistance(2.6F);
     public Block               blockPowercell             = (new BlockPowercell(Material.iron)).setHardness(3.2F).setResistance(2.6F);
@@ -179,7 +179,7 @@ public class BlockHandler implements IInitEvent
     public Block               blockMedpod                = (new BlockMedpod(Material.iron).setHardness(1.5F).setResistance(10.0F));
     public Block               blockGunLocker             = (new BlockGunLocker(Material.iron).setHardness(1.5F).setResistance(10.0F));
     public Block               blockAmpule                = (new BlockAmpule().setHardness(5.0F).setResistance(10.0F));
-    public Block               blockWallW                 = (new BlockWall(Material.iron).setHardness(5F).setResistance(30.0F).setLightOpacity(255));
+    public Block               blockWallW                 = (new BlockWall(Material.iron).setHardness(5F).setResistance(15.0F).setLightOpacity(255));
     public Block               blockRelicTile             = (new BlockMaterial(Material.rock)
                                                           {
                                                               @Override
@@ -187,7 +187,7 @@ public class BlockHandler implements IInitEvent
                                                               {
                                                                   this.blockIcon = register.registerIcon("avp:spawner");
                                                               };
-                                                          }.setHardness(5F).setResistance(30.0F).setLightOpacity(255));
+                                                          }.setHardness(5F).setResistance(15.0F).setLightOpacity(255));
     public Block               blockIndustrialGlass       = (new BlockMaterial(Material.iron)
                                                           {
                                                               @Override
@@ -201,7 +201,7 @@ public class BlockHandler implements IInitEvent
                                                               {
                                                                   return false;
                                                               }
-                                                          }).setHardness(5F).setResistance(30.0F).setLightOpacity(0);
+                                                          }).setHardness(5F).setResistance(15.0F).setLightOpacity(0);
     public Block               blockFloorGrillSlab        = (new BlockCustomSlab(Material.iron)
                                                           {
                                                               @Override
@@ -209,7 +209,7 @@ public class BlockHandler implements IInitEvent
                                                               {
                                                                   this.blockIcon = register.registerIcon("avp:floorgrill");
                                                               };
-                                                          }).setHardness(5F).setResistance(30.0F).setLightOpacity(4);
+                                                          }).setHardness(5F).setResistance(15.0F).setLightOpacity(4);
     public Block               blockCeilingGrillSlab      = (new BlockCustomSlab(Material.iron)
                                                           {
                                                               @Override
@@ -217,7 +217,7 @@ public class BlockHandler implements IInitEvent
                                                               {
                                                                   this.blockIcon = register.registerIcon("avp:ceilinggrill");
                                                               };
-                                                          }).setHardness(5F).setResistance(30.0F).setLightOpacity(4);
+                                                          }).setHardness(5F).setResistance(15.0F).setLightOpacity(4);
     public Block               blockWallSlab              = (new BlockCustomSlab(Material.iron)
                                                           {
                                                               @Override
@@ -225,7 +225,7 @@ public class BlockHandler implements IInitEvent
                                                               {
                                                                   this.blockIcon = register.registerIcon("avp:wall_top");
                                                               };
-                                                          }).setHardness(5F).setResistance(30.0F).setLightOpacity(255);
+                                                          }).setHardness(5F).setResistance(15.0F).setLightOpacity(255);
     public Block               blockIronBricksSlab        = (new BlockCustomSlab(Material.iron)
                                                           {
                                                               @Override
@@ -233,7 +233,7 @@ public class BlockHandler implements IInitEvent
                                                               {
                                                                   this.blockIcon = register.registerIcon("avp:industrialbricks");
                                                               };
-                                                          }).setHardness(5F).setResistance(30.0F).setLightOpacity(255);
+                                                          }).setHardness(5F).setResistance(15.0F).setLightOpacity(255);
     public Block               blockIndustrialGlassSlab   = (new BlockCustomSlab(Material.iron)
                                                           {
                                                               @Override
@@ -241,8 +241,8 @@ public class BlockHandler implements IInitEvent
                                                               {
                                                                   this.blockIcon = register.registerIcon("avp:industrialglass");
                                                               };
-                                                          }).setHardness(5F).setResistance(30.0F).setLightOpacity(0);
-    public Block               blockIndustrialGlassStairs = (new BlockCustomStairs(blockIndustrialGlass)).setHardness(5F).setResistance(30.0F).setLightOpacity(0);
+                                                          }).setHardness(5F).setResistance(15.0F).setLightOpacity(0);
+    public Block               blockIndustrialGlassStairs = (new BlockCustomStairs(blockIndustrialGlass)).setHardness(5F).setResistance(15.0F).setLightOpacity(0);
 
     public Block               blockSkullEngineer         = new BlockSkullEngineer();
     public Block               blockSkullSpaceJockey      = new BlockSkullSpaceJockey();
