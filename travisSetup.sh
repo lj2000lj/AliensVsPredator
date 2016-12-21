@@ -1,4 +1,4 @@
-GRADLE_PROPERTIES=$HOME"/.gradle/gradle.properties"
+GRADLE_PROPERTIES="./gradle.properties"
 export GRADLE_PROPERTIES
 echo "Gradle Properties should exist at $GRADLE_PROPERTIES"
 
