@@ -179,14 +179,18 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob
             }
         }
 
+        this.generateJelly();
+        this.tickEvolution();
+        this.identifyHive();
+        this.findRoyalJelly();
+    }
+    
+    protected void generateJelly()
+    {
         if (this.worldObj.getWorldTime() % (20 * 8) == 0)
         {
             this.jellyLevel++;
         }
-
-        this.tickEvolution();
-        this.identifyHive();
-        this.findRoyalJelly();
     }
 
     public XenomorphHive getHive()
