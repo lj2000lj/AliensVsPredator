@@ -16,6 +16,7 @@
 !/gradlew
 !/gradlew.bat
 !/.travis.yml
+!/travisSetup.sh
 .DS_Store
 
 # Do not include gradle.properties, in contains sensitive information.
