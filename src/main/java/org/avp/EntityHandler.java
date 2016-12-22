@@ -221,7 +221,7 @@ public class EntityHandler implements IInitEvent
 
             BiomeGenBase[] predatorBiomes = this.getFilteredBiomeArray(BiomeGenBase.birchForest, BiomeGenBase.birchForestHills, BiomeGenBase.desert, BiomeGenBase.desertHills, BiomeGenBase.extremeHills, BiomeGenBase.extremeHillsEdge, BiomeGenBase.extremeHillsPlus, BiomeGenBase.forest, BiomeGenBase.forestHills, BiomeGenBase.frozenOcean, BiomeGenBase.frozenRiver, BiomeGenBase.icePlains, BiomeGenBase.jungle, BiomeGenBase.jungleEdge, BiomeGenBase.jungleHills, BiomeGenBase.taiga, BiomeGenBase.taigaHills, BiomeGenVarda.vardaBadlands);
 
-            BiomeGenBase[] engineerBiomes = this.getFilteredBiomeArray(BiomeGenBase.iceMountains, BiomeGenBase.coldTaigaHills, BiomeGenBase.coldTaiga, BiomeGenBase.extremeHills, BiomeGenVarda.vardaBadlands, BiomeGenLV.acheron);
+            BiomeGenBase[] engineerBiomes = this.getFilteredBiomeArray(BiomeGenBase.iceMountains, BiomeGenBase.coldTaigaHills, BiomeGenBase.coldTaiga, BiomeGenBase.extremeHills, BiomeGenVarda.vardaBadlands, BiomeGenLV.acheron, BiomeGenVarda.vardaForest);
 
             BiomeGenBase[] aquaXenomorphBiomes = this.getFilteredBiomeArray(BiomeGenBase.river, BiomeGenBase.beach, BiomeGenBase.stoneBeach);
 
@@ -243,15 +243,8 @@ public class EntityHandler implements IInitEvent
             EntityRegistry.addSpawn(EntityYautjaBerserker.class, 1, 0, 1, EnumCreatureType.monster, predatorBiomes);
             EntityRegistry.addSpawn(EntityMarine.class, 2, 1, 1, EnumCreatureType.creature, new BiomeGenBase[] { BiomeGenBase.swampland, BiomeGenBase.forest, BiomeGenBase.forestHills, BiomeGenBase.taiga, BiomeGenBase.taigaHills, BiomeGenBase.plains
             });
-            EntityRegistry.addSpawn(EntityDeacon.class, 30, 1, 2, EnumCreatureType.monster, new BiomeGenBase[] { BiomeGenVarda.vardaBadlands
-            });
-            EntityRegistry.addSpawn(EntityHammerpede.class, 30, 1, 4, EnumCreatureType.monster, new BiomeGenBase[] { BiomeGenVarda.vardaBadlands
-            });
-            EntityRegistry.addSpawn(EntityTrilobite.class, 30, 1, 2, EnumCreatureType.monster, new BiomeGenBase[] { BiomeGenVarda.vardaBadlands
-            });
-            EntityRegistry.addSpawn(EntityEngineer.class, 1, 1, 1, EnumCreatureType.monster, engineerBiomes);
-            EntityRegistry.addSpawn(EntitySpaceJockey.class, 1, 0, 1, EnumCreatureType.monster, engineerBiomes);
-            EntityRegistry.addSpawn(EntityDeaconShark.class, 1, 0, 1, EnumCreatureType.waterCreature, new BiomeGenBase[] { BiomeGenVarda.vardaBadlands });
+            EntityRegistry.addSpawn(EntityEngineer.class, 5, 1, 1, EnumCreatureType.monster, engineerBiomes);
+            EntityRegistry.addSpawn(EntitySpaceJockey.class, 2, 1, 1, EnumCreatureType.monster, engineerBiomes);
         }
     }
 

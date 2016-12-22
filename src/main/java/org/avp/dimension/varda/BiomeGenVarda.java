@@ -2,6 +2,11 @@ package org.avp.dimension.varda;
 
 import org.avp.AliensVsPredator;
 import org.avp.dimension.BiomeGenLV;
+import org.avp.entities.mob.EntityDeacon;
+import org.avp.entities.mob.EntityDeaconShark;
+import org.avp.entities.mob.EntityEngineer;
+import org.avp.entities.mob.EntityHammerpede;
+import org.avp.entities.mob.EntityTrilobite;
 
 import net.minecraft.world.biome.BiomeGenBase;
 
@@ -21,6 +26,17 @@ public class BiomeGenVarda extends BiomeGenLV
         this.setDisableRain();
         this.theBiomeDecorator = new BiomeDecoratorVarda(this);
         this.waterColorMultiplier = 0xFFFF66;
+        this.addVardaSpawns();
+    }
+    
+    public void addVardaSpawns()
+    {
+        this.spawnableCaveCreatureList.clear();
+        this.spawnableCreatureList.clear();
+        this.spawnableMonsterList.clear();
+        this.spawnableWaterCreatureList.clear();
+        this.spawnableWaterCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityDeaconShark.class, 10, 1, 1));
+        this.spawnableCaveCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityHammerpede.class, 10, 1, 3));
     }
 
     @Override
