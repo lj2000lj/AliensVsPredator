@@ -6,13 +6,12 @@ import com.arisux.mdxlib.lib.client.render.Draw;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
-public class ItemArmorPressureSuit extends ItemArmor
+public class ItemArmorPressureSuit extends ItemAntiVacuumArmor
 {
     public ItemArmorPressureSuit(ArmorMaterial material, int renderIndex, int armorType)
     {
