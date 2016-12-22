@@ -31,7 +31,7 @@ public class ItemArmorPressureSuit extends ItemArmor
             case 2:
                 return Draw.getResourcePath(AliensVsPredator.resources().PRESSURESUIT2);
             case 3:
-                return Draw.getResourcePath(AliensVsPredator.resources().PRESSURESUIT2);
+                return Draw.getResourcePath(AliensVsPredator.resources().PRESSURESUIT1);
             default:
                 return Draw.getResourcePath(AliensVsPredator.resources().PRESSURESUIT2);
         }

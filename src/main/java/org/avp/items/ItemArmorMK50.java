@@ -35,7 +35,7 @@ public class ItemArmorMK50 extends ItemArmor implements IBreathingHelmet
             case 2:
                 return Draw.getResourcePath(AliensVsPredator.resources().MK502);
             case 3:
-                return Draw.getResourcePath(AliensVsPredator.resources().MK502);
+                return Draw.getResourcePath(AliensVsPredator.resources().MK501);
             default:
                 return Draw.getResourcePath(AliensVsPredator.resources().MK502);
         }
