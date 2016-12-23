@@ -11,6 +11,7 @@ import org.avp.entities.mob.model.ModelFacehugger;
 import org.avp.entities.mob.model.ModelGooMutant;
 import org.avp.entities.mob.model.ModelHammerpede;
 import org.avp.entities.mob.model.ModelMarine;
+import org.avp.entities.mob.model.ModelOctohugger;
 import org.avp.entities.mob.model.ModelOvamorph;
 import org.avp.entities.mob.model.ModelPraetorian;
 import org.avp.entities.mob.model.ModelPredalien;
@@ -156,8 +157,8 @@ public class Resources
         public final TexturedModel<ModelCrusher>              CRUSHER                        = new TexturedModel(new ModelCrusher(), new Texture(AliensVsPredator.ID, "textures/mob/crusher.png"));
         public final TexturedModel<SpecialModelBiped>         COMBAT_SYNTHETIC               = new TexturedModel(new SpecialModelBiped(), new Texture(AliensVsPredator.ID, "textures/mob/combat_synthetic.png"));
         public final TexturedModel<ModelSupplyChute>          SUPPLY_CHUTE                   = new TexturedModel(new ModelSupplyChute(), new Texture(AliensVsPredator.ID, "textures/tile/supplychute.png"));
-        public final TexturedModel<ModelSupplyChute>          SUPPLY_CHUTE_MARINES                   = new TexturedModel(new ModelSupplyChute(), new Texture(AliensVsPredator.ID, "textures/tile/supplychute.marines.png"));
-        public final TexturedModel<ModelSupplyChute>          SUPPLY_CHUTE_SEEGSON                   = new TexturedModel(new ModelSupplyChute(), new Texture(AliensVsPredator.ID, "textures/tile/supplychute.seegson.png"));
+        public final TexturedModel<ModelSupplyChute>          SUPPLY_CHUTE_MARINES           = new TexturedModel(new ModelSupplyChute(), new Texture(AliensVsPredator.ID, "textures/tile/supplychute.marines.png"));
+        public final TexturedModel<ModelSupplyChute>          SUPPLY_CHUTE_SEEGSON           = new TexturedModel(new ModelSupplyChute(), new Texture(AliensVsPredator.ID, "textures/tile/supplychute.seegson.png"));
         public final TexturedModel<SpecialModelBiped>         BIPED                          = new TexturedModel(new SpecialModelBiped(), new Texture(AbstractClientPlayer.locationStevePng));
         public final TexturedModel<ModelLaserMine>            LASER_MINE                     = new TexturedModel(new ModelLaserMine(), new Texture(AliensVsPredator.ID, "textures/misc/proximity-mine.png"));
         public final TexturedModel<ModelDNASynthesizer>       DNA_SYNTHESIZER                = new TexturedModel(new ModelDNASynthesizer(), new Texture(AliensVsPredator.ID, "textures/tile/dna-synthesizer.png"));
@@ -167,6 +168,7 @@ public class Resources
         public final TexturedModel<ModelWarrior>              DRONE_SKULL                    = new TexturedModel(new ModelWarrior(), new Texture(AliensVsPredator.ID, "textures/mob/xenomorphskullgiger.png"));
         public final TexturedModel<ModelWarrior>              WARRIOR_SKULL                  = new TexturedModel(new ModelWarrior(), new Texture(AliensVsPredator.ID, "textures/mob/xenomorphskullwarrior.png"));
         public final TexturedModel<ModelYautja>               YAUTJA_SKULL                   = new TexturedModel(new ModelYautja(), new Texture(AliensVsPredator.ID, "textures/mob/yautjaskull.png"));
+        public final TexturedModel<ModelOctohugger>           OCTOHUGGER                     = new TexturedModel<ModelOctohugger>(new ModelOctohugger(), new Texture(AliensVsPredator.ID, "textures/mob/octohugger.png"));
 
         // Xenomorph models with the new universal format
         public final TexturedModel<ModelUltramorph>           ULTRAMORPH                     = new TexturedModel(new ModelUltramorph(), new Texture(AliensVsPredator.ID, "textures/mob/ultramorph.png"));
