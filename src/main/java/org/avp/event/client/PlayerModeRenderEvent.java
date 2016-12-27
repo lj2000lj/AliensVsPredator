@@ -1,7 +1,7 @@
 package org.avp.event.client;
 
 import org.avp.PlayerModeHandler;
-import org.avp.entities.extended.ExtendedEntityPlayer;
+import org.avp.entities.extended.SpecialPlayer;
 import org.avp.items.ItemFirearm;
 import org.avp.items.ItemFlamethrower;
 import org.avp.util.PlayerMode;
@@ -70,7 +70,7 @@ public class PlayerModeRenderEvent
     @SubscribeEvent
     public void renderEntityTick(RenderPlayerEvent.Pre event)
     {
-        ExtendedEntityPlayer extendedPlayer = (ExtendedEntityPlayer) event.entityPlayer.getExtendedProperties(ExtendedEntityPlayer.IDENTIFIER);
+        SpecialPlayer extendedPlayer = (SpecialPlayer) event.entityPlayer.getExtendedProperties(SpecialPlayer.IDENTIFIER);
         ItemStack itemstack = event.entityPlayer.inventory.getCurrentItem();
 
         if (itemstack != null && (itemstack.getItem() instanceof ItemFirearm || itemstack.getItem() instanceof ItemFlamethrower))

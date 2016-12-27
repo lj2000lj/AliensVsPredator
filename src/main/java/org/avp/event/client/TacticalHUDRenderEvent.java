@@ -10,8 +10,8 @@ import static org.lwjgl.opengl.GL11.glDepthMask;
 import java.util.ArrayList;
 
 import org.avp.AliensVsPredator;
-import org.avp.entities.extended.ExtendedEntityLivingBase;
-import org.avp.entities.extended.ExtendedEntityPlayer;
+import org.avp.entities.extended.Organism;
+import org.avp.entities.extended.SpecialPlayer;
 import org.avp.gui.GuiTacticalHUDSettings;
 import org.lwjgl.opengl.GL11;
 
@@ -43,7 +43,7 @@ public class TacticalHUDRenderEvent
 {
     public static final TacticalHUDRenderEvent instance = new TacticalHUDRenderEvent();
     private ArrayList<EntityPlayer> playersInHUD = new ArrayList<EntityPlayer>();
-    private ExtendedEntityPlayer clientPlayerProperties;
+    private SpecialPlayer clientPlayerProperties;
     private GuiCustomButton buttonMarineHelmConfig = new GuiCustomButton(0, 0, 0, 50, 20, "", null);
     private boolean gammaRestored = true;
     private int viewportThreshold = 20;
@@ -76,11 +76,11 @@ public class TacticalHUDRenderEvent
                         {
                             if (entity != null && (Entities.canEntityBeSeenBy(entity, Game.minecraft().thePlayer) || !clientPlayerProperties.isEntityCullingEnabled()) && entity instanceof EntityLivingBase)
                             {
-                                ExtendedEntityLivingBase livingProperties = ExtendedEntityLivingBase.get((EntityLivingBase) entity);
+                                Organism livingProperties = Organism.get((EntityLivingBase) entity);
 
-                                if (livingProperties.doesEntityContainEmbryo())
+                                if (livingProperties.hasEmbryo())
                                 {
-                                    int lifeTimeTicks = livingProperties.getEmbryo().getGestationPeriod() - livingProperties.getEmbryo().getTicksExisted();
+                                    int lifeTimeTicks = livingProperties.getEmbryo().getGestationPeriod() - livingProperties.getEmbryo().getAge();
                                     int lifeTimeSeconds = lifeTimeTicks / 20;
 
                                     Vec3 t = Vec3.createVectorHelper(entity.posX, entity.posY, entity.posZ).addVector(0, entity.getEyeHeight() / 2, 0);
@@ -111,13 +111,13 @@ public class TacticalHUDRenderEvent
                                             OpenGL.scale(indicatorScale, indicatorScale, indicatorScale);
                                             OpenGL.rotate(-Game.minecraft().thePlayer.rotationYaw, 0, 1, 0);
 
-                                            if (livingProperties.doesEntityContainEmbryo())
+                                            if (livingProperties.hasEmbryo())
                                             {
                                                 OpenGL.color4i(0xFFFF0000);
                                                 Draw.drawResourceCentered(AliensVsPredator.resources().INFECTION_INDICATOR, 0, -1, 2, 2, 255, 0, 0, 255);
                                             }
 
-                                            int color = livingProperties.doesEntityContainEmbryo() || livingProperties.getEntityLivingBase() instanceof IMob ? 0xFFFF0000 : 0xFF00AAFF;
+                                            int color = livingProperties.hasEmbryo() || livingProperties.getEntity() instanceof IMob ? 0xFFFF0000 : 0xFF00AAFF;
                                             int textMultiplier = 10;
                                             int textX = 15;
                                             int textY = -28 + textMultiplier;
@@ -126,9 +126,9 @@ public class TacticalHUDRenderEvent
                                             OpenGL.scale(textScale, -textScale, textScale);
 
                                             // RenderUtil.drawString(livingProperties.getEntityLivingBase().getCommandSenderName(), textX, textY += textMultiplier, color, false);
-                                            Draw.drawString(((int) livingProperties.getEntityLivingBase().getDistanceToEntity(Game.minecraft().thePlayer)) + "m", textX, textY += textMultiplier, color, false);
+                                            Draw.drawString(((int) livingProperties.getEntity().getDistanceToEntity(Game.minecraft().thePlayer)) + "m", textX, textY += textMultiplier, color, false);
 
-                                            if (livingProperties.doesEntityContainEmbryo())
+                                            if (livingProperties.hasEmbryo())
                                             {
                                                 Draw.drawString("Analysis: 1 Foreign Organism(s) Detected", textX, textY += textMultiplier, 0xFFFF0000, false);
                                                 Draw.drawString(lifeTimeSeconds / 60 + "." + lifeTimeSeconds % 60 + " Minute(s) Estimated Life Time", textX, textY += textMultiplier, 0xFFFF0000, false);
@@ -167,7 +167,7 @@ public class TacticalHUDRenderEvent
             {
                 if (Inventories.getHelmSlotItemStack(Game.minecraft().thePlayer) != null && Game.minecraft().gameSettings.thirdPersonView == 0 && Inventories.getHelmSlotItemStack(Game.minecraft().thePlayer).getItem() == AliensVsPredator.items().helmMarine)
                 {
-                    ExtendedEntityPlayer playerProperties = ExtendedEntityPlayer.get(Game.minecraft().thePlayer);
+                    SpecialPlayer playerProperties = SpecialPlayer.get(Game.minecraft().thePlayer);
 
                     this.gammaRestored = false;
                     LightmapUpdateEvent.instance.gammaValue = playerProperties.isNightvisionEnabled() ? 8F : 0F;
@@ -236,9 +236,9 @@ public class TacticalHUDRenderEvent
         }
     }
 
-    public ExtendedEntityPlayer getProperties()
+    public SpecialPlayer getProperties()
     {
-        return Game.minecraft() != null ? Game.minecraft().thePlayer != null ? this.clientPlayerProperties = ExtendedEntityPlayer.get(Game.minecraft().thePlayer) : null : null;
+        return Game.minecraft() != null ? Game.minecraft().thePlayer != null ? this.clientPlayerProperties = SpecialPlayer.get(Game.minecraft().thePlayer) : null : null;
     }
 
     public void changeChannel(String channel)
@@ -293,17 +293,17 @@ public class TacticalHUDRenderEvent
         OpenGL.popMatrix();
     }
 
-    public void drawImpregnationIndicator(ExtendedEntityPlayer playerProperties)
+    public void drawImpregnationIndicator(SpecialPlayer playerProperties)
     {
-        ExtendedEntityLivingBase livingProperties = ExtendedEntityLivingBase.get(playerProperties.getPlayer());
+        Organism livingProperties = Organism.get(playerProperties.getPlayer());
 
-        if (livingProperties.doesEntityContainEmbryo() && livingProperties.getEntityLivingBase().worldObj.getWorldTime() % 20 <= 10)
+        if (livingProperties.hasEmbryo() && livingProperties.getEntity().worldObj.getWorldTime() % 20 <= 10)
         {
             ScaledResolution res = Screen.scaledDisplayResolution();
 
             if (livingProperties.getEmbryo() != null)
             {
-                int lifeTimeTicks = livingProperties.getEmbryo().getGestationPeriod() - livingProperties.getEmbryo().getTicksExisted();
+                int lifeTimeTicks = livingProperties.getEmbryo().getGestationPeriod() - livingProperties.getEmbryo().getAge();
                 int lifeTimeSeconds = lifeTimeTicks / 20;
                 int iconSize = 80;
 
@@ -337,7 +337,7 @@ public class TacticalHUDRenderEvent
 
         if (playerFound != null)
         {
-            ExtendedEntityPlayer extendedPlayer = (ExtendedEntityPlayer) playerFound.getExtendedProperties(ExtendedEntityPlayer.IDENTIFIER);
+            SpecialPlayer extendedPlayer = (SpecialPlayer) playerFound.getExtendedProperties(SpecialPlayer.IDENTIFIER);
 
             if (!isPlayerInHUD(playerFound) && extendedPlayer.getBroadcastChannel().equalsIgnoreCase(this.clientPlayerProperties.getBroadcastChannel()))
             {
@@ -351,7 +351,7 @@ public class TacticalHUDRenderEvent
         for (int x = 0; x < playersInHUD.size(); x++)
         {
             EntityPlayer player = playersInHUD.get(x);
-            ExtendedEntityPlayer extendedPlayer = (ExtendedEntityPlayer) player.getExtendedProperties(ExtendedEntityPlayer.IDENTIFIER);
+            SpecialPlayer extendedPlayer = (SpecialPlayer) player.getExtendedProperties(SpecialPlayer.IDENTIFIER);
 
             if (player != null || player != null && !extendedPlayer.getBroadcastChannel().equalsIgnoreCase(this.clientPlayerProperties.getBroadcastChannel()))
             {

@@ -2,6 +2,7 @@ package org.avp.entities;
 
 import org.avp.DamageSources;
 import org.avp.entities.ai.EntityAIMeltBlock;
+import org.avp.entities.mob.EntitySpeciesAlien;
 
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
@@ -33,6 +34,11 @@ public class EntityAcidPool extends EntityLiquidPool implements IMob, IEntitySel
     public boolean isEntityApplicable(Entity entity)
     {
         if (entity instanceof EntityLiquidPool)
+        {
+            return false;
+        }
+        
+        if (entity instanceof EntitySpeciesAlien)
         {
             return false;
         }

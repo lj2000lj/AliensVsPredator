@@ -3,9 +3,8 @@ package org.avp.entities.mob;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import org.avp.entities.extended.ExtendedEntityLivingBase;
+import org.avp.entities.extended.Organism;
 import org.avp.util.Embryo;
-import org.avp.util.EmbryoType;
 import org.avp.util.IParasiticHost;
 import org.avp.util.IParasitoid;
 
@@ -18,9 +17,13 @@ import net.minecraft.entity.ai.EntityAILeapAtTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
+import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.monster.EntityGolem;
+import net.minecraft.entity.monster.EntityPigZombie;
+import net.minecraft.entity.monster.EntitySilverfish;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySnowman;
+import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
@@ -38,7 +41,7 @@ public class EntityParasitoid extends EntitySpeciesAlien implements IMob, IParas
                                                        @Override
                                                        public boolean isEntityApplicable(Entity potentialTarget)
                                                        {
-                                                           ExtendedEntityLivingBase entityExt = (ExtendedEntityLivingBase) potentialTarget.getExtendedProperties(ExtendedEntityLivingBase.IDENTIFIER);
+                                                           Organism entityExt = (Organism) potentialTarget.getExtendedProperties(Organism.IDENTIFIER);
 
                                                            if (potentialTarget instanceof IParasiticHost)
                                                            {
@@ -55,12 +58,12 @@ public class EntityParasitoid extends EntitySpeciesAlien implements IMob, IParas
                                                                return false;
                                                            }
 
-                                                           if (entityExt.doesEntityContainEmbryo())
+                                                           if (entityExt.hasEmbryo())
                                                            {
                                                                return false;
                                                            }
 
-                                                           if (potentialTarget instanceof EntityPlayer && !((EntityPlayer) potentialTarget).capabilities.isCreativeMode)
+                                                           if (potentialTarget instanceof EntityPlayer && ((EntityPlayer) potentialTarget).capabilities.isCreativeMode)
                                                            {
                                                                return false;
                                                            }
@@ -88,6 +91,18 @@ public class EntityParasitoid extends EntitySpeciesAlien implements IMob, IParas
                                                                return false;
 
                                                            if (potentialTarget instanceof EntityZombie)
+                                                               return false;
+
+                                                           if (potentialTarget instanceof EntitySpider)
+                                                               return false;
+
+                                                           if (potentialTarget instanceof EntitySilverfish)
+                                                               return false;
+
+                                                           if (potentialTarget instanceof EntityPigZombie)
+                                                               return false;
+
+                                                           if (potentialTarget instanceof EntityGhast)
                                                                return false;
 
                                                            return true;
@@ -243,12 +258,9 @@ public class EntityParasitoid extends EntitySpeciesAlien implements IMob, IParas
     @Override
     public void implantEmbryo(EntityLivingBase living)
     {
-        ExtendedEntityLivingBase extendedLiving = (ExtendedEntityLivingBase) living.getExtendedProperties(ExtendedEntityLivingBase.IDENTIFIER);
-        extendedLiving.setEmbryo(new Embryo(EmbryoType.getMappingFromHost(extendedLiving.getEntityLivingBase().getClass()))
-        {
-
-        });
-        extendedLiving.syncClients();
+        Organism extendedLiving = (Organism) living.getExtendedProperties(Organism.IDENTIFIER);
+        extendedLiving.setEmbryo(Embryo.getMappingFromHost(extendedLiving.getEntity().getClass()));
+        extendedLiving.syncWithClients();
         this.setFertility(false);
     }
 

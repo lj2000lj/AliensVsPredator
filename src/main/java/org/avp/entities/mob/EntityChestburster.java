@@ -1,13 +1,17 @@
 package org.avp.entities.mob;
 
+import org.avp.DamageSources;
 import org.avp.Sounds;
-import org.avp.util.EmbryoType;
+import org.avp.entities.extended.Organism;
+import org.avp.util.Embryo;
 import org.avp.util.EvolutionType;
 
+import com.arisux.mdxlib.lib.game.Game;
 import com.arisux.mdxlib.lib.world.entity.Entities;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
@@ -25,7 +29,7 @@ import net.minecraft.world.World;
 public class EntityChestburster extends EntitySpeciesAlien implements IMob
 {
     protected Minecraft mc;
-    private int parasiteType;
+    private int         parasiteType;
 
     public EntityChestburster(World world)
     {
@@ -100,14 +104,25 @@ public class EntityChestburster extends EntitySpeciesAlien implements IMob
                         }
 
                         EntityXenomorph xeno = (EntityXenomorph) Entities.constructEntity(this.worldObj, this.getGrownParasiteType());
-                        xeno.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
-                        this.worldObj.spawnEntityInWorld(xeno);
-
-                        for (int particleCount = 0; particleCount < 8; ++particleCount)
+                        
+                        if (xeno != null)
                         {
-                            this.worldObj.spawnParticle("snowballpoof", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
-                        }
+                            xeno.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
+                            this.worldObj.spawnEntityInWorld(xeno);
 
+                            for (int particleCount = 0; particleCount < 8; ++particleCount)
+                            {
+                                this.worldObj.spawnParticle("snowballpoof", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+                            }
+
+                        }
+                        else if (Game.isDevEnvironment())
+                        {
+                            System.out.println("ERROR: NullPointerException during chestburster evolve state.");
+                            System.out.println("INT TYPE: " + this.parasiteType);
+                            System.out.println("CLASS TYPE: " + this.getGrownParasiteType());
+                            System.out.println("EMBRYO TYPE: " + Embryo.get(this.parasiteType));
+                        }
                         this.setDead();
                     }
                 }
@@ -177,15 +192,15 @@ public class EntityChestburster extends EntitySpeciesAlien implements IMob
         return par1PotionEffect.getPotionID() == Potion.poison.id ? false : super.isPotionApplicable(par1PotionEffect);
     }
 
-    public void setHostParasiteType(EmbryoType embryoType)
+    public void setHostParasiteType(Embryo embryo)
     {
-        this.parasiteType = embryoType.getTypeId();
+        this.parasiteType = embryo.getRegistrationId();
     }
 
-    public Class<? extends EntityXenomorph> getGrownParasiteType()
+    public Class<? extends Entity> getGrownParasiteType()
     {
-        EmbryoType hostParasiteType = EmbryoType.get(this.parasiteType);
-        return hostParasiteType == null ? EmbryoType.NORMAL.getResult() : hostParasiteType.getResult();
+        Embryo hostParasiteType = Embryo.get(this.parasiteType);
+        return hostParasiteType == null ? Embryo.STANDARD.getResult() : hostParasiteType.getResult();
     }
 
     @Override
@@ -205,5 +220,19 @@ public class EntityChestburster extends EntitySpeciesAlien implements IMob
     public int getMaxParasiteAge()
     {
         return 18000;
+    }
+
+    public static void emergeFromHost(Organism organism)
+    {
+        EntityLivingBase host = organism.getEntity();
+        World world = host.worldObj;
+        EntityChestburster chestburster = new EntityChestburster(world);
+
+        chestburster.setHostParasiteType(organism.getEmbryo());
+        chestburster.setLocationAndAngles(host.posX, host.posY, host.posZ, 0.0F, 0.0F);
+        world.spawnEntityInWorld(chestburster);
+        organism.removeEmbryo();
+        host.getActivePotionEffects().clear();
+        host.attackEntityFrom(DamageSources.causeChestbursterDamage(chestburster, host), 100000F);
     }
 }

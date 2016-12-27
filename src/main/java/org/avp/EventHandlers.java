@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.avp.event.BucketHandlingEvent;
 import org.avp.event.EmbryoTickEvent;
-import org.avp.event.ExtendedPropertiesEvents;
+import org.avp.event.ExtendedEntityRegistrationHandler;
 import org.avp.event.FarmlandRegistry;
 import org.avp.event.HiveHandler;
 import org.avp.event.VardaStormHandler;
@@ -70,7 +70,7 @@ public class EventHandlers implements IInitEvent
         }
 
         this.registerEvent(EmbryoTickEvent.instance);
-        this.registerEvent(ExtendedPropertiesEvents.instance);
+        this.registerEvent(ExtendedEntityRegistrationHandler.instance);
         this.registerEvent(SaveHandler.instance);
         this.registerEvent(VardaStormHandler.instance);
         this.registerEvent(FarmlandRegistry.instance);

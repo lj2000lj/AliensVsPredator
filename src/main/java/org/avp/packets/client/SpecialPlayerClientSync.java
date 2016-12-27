@@ -1,6 +1,6 @@
 package org.avp.packets.client;
 
-import org.avp.entities.extended.ExtendedEntityLivingBase;
+import org.avp.entities.extended.SpecialPlayer;
 
 import com.arisux.mdxlib.lib.game.Game;
 
@@ -12,17 +12,17 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class PacketSyncEEPC implements IMessage, IMessageHandler<PacketSyncEEPC, PacketSyncEEPC>
+public class SpecialPlayerClientSync implements IMessage, IMessageHandler<SpecialPlayerClientSync, SpecialPlayerClientSync>
 {
     public NBTTagCompound tag;
     private int entityId;
 
-    public PacketSyncEEPC()
+    public SpecialPlayerClientSync()
     {
         ;
     }
 
-    public PacketSyncEEPC(int entityId, NBTTagCompound tag)
+    public SpecialPlayerClientSync(int entityId, NBTTagCompound tag)
     {
         this.entityId = entityId;
         this.tag = tag;
@@ -42,18 +42,19 @@ public class PacketSyncEEPC implements IMessage, IMessageHandler<PacketSyncEEPC,
         ByteBufUtils.writeTag(buf, tag);
     }
 
+    @SuppressWarnings("all")
     @Override
-    public PacketSyncEEPC onMessage(PacketSyncEEPC packet, MessageContext ctx)
+    public SpecialPlayerClientSync onMessage(SpecialPlayerClientSync packet, MessageContext ctx)
     {
         Entity entity = Game.minecraft().thePlayer.worldObj.getEntityByID(packet.entityId);
 
         if (entity != null)
         {
-            ExtendedEntityLivingBase extendedLiving = (ExtendedEntityLivingBase) entity.getExtendedProperties(ExtendedEntityLivingBase.IDENTIFIER);
+            SpecialPlayer extendedPlayer = (SpecialPlayer) entity.getExtendedProperties(SpecialPlayer.IDENTIFIER);
 
-            if (extendedLiving != null)
+            if (extendedPlayer != null)
             {
-                extendedLiving.loadNBTData(packet.tag);
+                extendedPlayer.loadNBTData(packet.tag);
             }
         }
 

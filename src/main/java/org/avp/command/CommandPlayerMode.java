@@ -1,7 +1,7 @@
 package org.avp.command;
 
 import org.avp.AliensVsPredator;
-import org.avp.entities.extended.ExtendedEntityPlayer;
+import org.avp.entities.extended.SpecialPlayer;
 import org.avp.packets.client.PacketPlayerModeUpdate;
 import org.avp.util.PlayerMode;
 
@@ -31,7 +31,7 @@ public class CommandPlayerMode extends CommandBase
     public void processCommand(ICommandSender commandSender, String[] args)
     {
         EntityPlayer player = Players.getPlayerForCommandSender(commandSender);
-        ExtendedEntityPlayer playerExtension = (ExtendedEntityPlayer) player.getExtendedProperties(ExtendedEntityPlayer.IDENTIFIER);
+        SpecialPlayer playerExtension = (SpecialPlayer) player.getExtendedProperties(SpecialPlayer.IDENTIFIER);
         PlayerMode playerMode = PlayerMode.get(Integer.valueOf(args[0]));
 
         playerExtension.setPlayerMode(playerMode);

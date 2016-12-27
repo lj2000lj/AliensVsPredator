@@ -1,8 +1,6 @@
 package org.avp.packets.server;
 
-import org.avp.AliensVsPredator;
-import org.avp.entities.extended.ExtendedEntityPlayer;
-import org.avp.packets.client.PacketSyncEEPPC;
+import org.avp.entities.extended.Organism;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
@@ -12,17 +10,17 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class PacketSyncEEPPS implements IMessage, IMessageHandler<PacketSyncEEPPS, PacketSyncEEPPS>
+public class OrganismServerSync implements IMessage, IMessageHandler<OrganismServerSync, OrganismServerSync>
 {
     public NBTTagCompound tag;
     private int entityId;
 
-    public PacketSyncEEPPS()
+    public OrganismServerSync()
     {
         ;
     }
 
-    public PacketSyncEEPPS(int entityId, NBTTagCompound tag)
+    public OrganismServerSync(int entityId, NBTTagCompound tag)
     {
         this.entityId = entityId;
         this.tag = tag;
@@ -43,18 +41,17 @@ public class PacketSyncEEPPS implements IMessage, IMessageHandler<PacketSyncEEPP
     }
 
     @Override
-    public PacketSyncEEPPS onMessage(PacketSyncEEPPS packet, MessageContext ctx)
+    public OrganismServerSync onMessage(OrganismServerSync packet, MessageContext ctx)
     {
         Entity entity = ctx.getServerHandler().playerEntity.worldObj.getEntityByID(packet.entityId);
 
         if (entity != null)
         {
-            ExtendedEntityPlayer extendedPlayer = (ExtendedEntityPlayer) entity.getExtendedProperties(ExtendedEntityPlayer.IDENTIFIER);
+            Organism extendedLiving = (Organism) entity.getExtendedProperties(Organism.IDENTIFIER);
 
-            if (extendedPlayer != null)
+            if (extendedLiving != null)
             {
-                extendedPlayer.loadNBTData(packet.tag);
-                AliensVsPredator.network().sendToAll(new PacketSyncEEPPC(entity.getEntityId(), extendedPlayer.asNBTTagCompound()));
+                extendedLiving.loadNBTData(packet.tag);
             }
         }
 

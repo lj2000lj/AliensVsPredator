@@ -1,7 +1,7 @@
 package org.avp.event;
 
-import org.avp.entities.extended.ExtendedEntityLivingBase;
-import org.avp.entities.extended.ExtendedEntityPlayer;
+import org.avp.entities.extended.Organism;
+import org.avp.entities.extended.SpecialPlayer;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.Entity;
@@ -14,9 +14,9 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.WorldEvent;
 
-public class ExtendedPropertiesEvents
+public class ExtendedEntityRegistrationHandler
 {
-    public static final ExtendedPropertiesEvents instance = new ExtendedPropertiesEvents();
+    public static final ExtendedEntityRegistrationHandler instance = new ExtendedEntityRegistrationHandler();
     
     @SubscribeEvent
     public void onEntityTrackEvent(PlayerEvent.StartTracking event)
@@ -33,8 +33,8 @@ public class ExtendedPropertiesEvents
 
             if (thePlayer != null)
             {
-                ExtendedEntityPlayer extendedPlayer = new ExtendedEntityPlayer(thePlayer);
-                thePlayer.registerExtendedProperties(ExtendedEntityPlayer.IDENTIFIER, extendedPlayer);
+                SpecialPlayer extendedPlayer = new SpecialPlayer(thePlayer);
+                thePlayer.registerExtendedProperties(SpecialPlayer.IDENTIFIER, extendedPlayer);
             }
         }
 
@@ -44,8 +44,8 @@ public class ExtendedPropertiesEvents
 
             if (entityLiving != null)
             {
-                ExtendedEntityLivingBase extendedLiving = new ExtendedEntityLivingBase(entityLiving);
-                entityLiving.registerExtendedProperties(ExtendedEntityLivingBase.IDENTIFIER, extendedLiving);
+                Organism extendedLiving = new Organism(entityLiving);
+                entityLiving.registerExtendedProperties(Organism.IDENTIFIER, extendedLiving);
             }
         }
     }
@@ -77,24 +77,24 @@ public class ExtendedPropertiesEvents
             {
                 if (target instanceof EntityLivingBase)
                 {
-                    ExtendedEntityLivingBase extendedLiving = (ExtendedEntityLivingBase) target.getExtendedProperties(ExtendedEntityLivingBase.IDENTIFIER);
+                    Organism organism = (Organism) target.getExtendedProperties(Organism.IDENTIFIER);
 
-                    if (extendedLiving != null)
+                    if (organism != null)
                     {
                         if (target instanceof EntityPlayer)
                         {
-                            extendedLiving.syncClients();
+                            organism.syncWithClients();
                         }
                     }
                 }
 
                 if (target instanceof EntityPlayer)
                 {
-                    ExtendedEntityPlayer extendedPlayer = (ExtendedEntityPlayer) target.getExtendedProperties(ExtendedEntityPlayer.IDENTIFIER);
+                    SpecialPlayer specialPlayer = (SpecialPlayer) target.getExtendedProperties(SpecialPlayer.IDENTIFIER);
 
-                    if (extendedPlayer != null)
+                    if (specialPlayer != null)
                     {
-                        extendedPlayer.syncClients();
+                        specialPlayer.syncWithClients();
                     }
                 }
             }

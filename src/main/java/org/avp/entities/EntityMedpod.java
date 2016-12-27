@@ -3,8 +3,8 @@ package org.avp.entities;
 import java.util.List;
 import java.util.UUID;
 
-import org.avp.entities.extended.ExtendedEntityLivingBase;
-import org.avp.entities.extended.ExtendedEntityPlayer;
+import org.avp.entities.extended.Organism;
+import org.avp.entities.extended.SpecialPlayer;
 import org.avp.entities.mob.EntitySpeciesAlien;
 import org.avp.entities.tile.TileEntityMedpod;
 
@@ -96,7 +96,7 @@ public class EntityMedpod extends Entity
             if (this.getTileEntity().getVoltage() > 0 && this.getTileEntity().getDoorProgress() <= 0 && !this.getTileEntity().isOpen() && this.riddenByEntity instanceof EntityLivingBase)
             {
                 EntityLivingBase living = (EntityLivingBase) this.riddenByEntity;
-                ExtendedEntityLivingBase extended = ExtendedEntityLivingBase.get(living);
+                Organism extended = Organism.get(living);
 
                 living.setHealth(living.getMaxHealth());
 
@@ -106,7 +106,7 @@ public class EntityMedpod extends Entity
                     living.getActivePotionEffects().clear();
                 }
 
-                if (extended.doesEntityContainEmbryo())
+                if (extended.hasEmbryo())
                 {
                     extended.setEmbryo(null);
                 }
@@ -119,7 +119,7 @@ public class EntityMedpod extends Entity
                 if (living instanceof EntityPlayer)
                 {
                     EntityPlayer player = (EntityPlayer) living;
-                    ExtendedEntityPlayer extendedPlayer = ExtendedEntityPlayer.get(player);
+                    SpecialPlayer extendedPlayer = SpecialPlayer.get(player);
 
                     player.getFoodStats().setFoodLevel(20);
                 }

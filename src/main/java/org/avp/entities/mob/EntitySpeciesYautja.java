@@ -70,7 +70,7 @@ public abstract class EntitySpeciesYautja extends EntityMob implements IParasiti
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(WEARING_MASK_DATAWATCHER_ID, String.valueOf(this.rand.nextBoolean()));
+        this.dataWatcher.addObject(WEARING_MASK_DATAWATCHER_ID, this.rand.nextBoolean() ? 1 : 0);
     }
 
     @Override
@@ -235,14 +235,14 @@ public abstract class EntitySpeciesYautja extends EntityMob implements IParasiti
 
     public boolean isWearingMask()
     {
-        return Boolean.parseBoolean(this.dataWatcher.getWatchableObjectString(WEARING_MASK_DATAWATCHER_ID));
+        return this.dataWatcher.getWatchableObjectInt(WEARING_MASK_DATAWATCHER_ID) == 1;
     }
 
     public void setWearingMask(boolean wearingMask)
     {
         if (!this.worldObj.isRemote)
         {
-            this.dataWatcher.updateObject(WEARING_MASK_DATAWATCHER_ID, String.valueOf(wearingMask));
+            this.dataWatcher.updateObject(WEARING_MASK_DATAWATCHER_ID, wearingMask ? 1 : 0);
         }
     }
 

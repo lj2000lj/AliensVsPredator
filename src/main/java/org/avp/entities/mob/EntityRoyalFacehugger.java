@@ -1,10 +1,10 @@
 package org.avp.entities.mob;
 
-import org.avp.entities.extended.ExtendedEntityLivingBase;
+import org.avp.entities.extended.Organism;
 import org.avp.util.Embryo;
-import org.avp.util.EmbryoType;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.world.World;
@@ -66,9 +66,9 @@ public class EntityRoyalFacehugger extends EntityFacehugger
     @Override
     public void implantEmbryo(EntityLivingBase living)
     {
-        ExtendedEntityLivingBase extendedLiving = (ExtendedEntityLivingBase) living.getExtendedProperties(ExtendedEntityLivingBase.IDENTIFIER);
-        extendedLiving.setEmbryo(new Embryo(EmbryoType.QUEEN){});
-        extendedLiving.syncClients();
+        Organism extendedLiving = (Organism) living.getExtendedProperties(Organism.IDENTIFIER);
+        extendedLiving.setEmbryo(new Embryo(EntityLiving.class, EntityQueen.class));
+        extendedLiving.syncWithClients();
         this.setFertility(false);
     }
 }

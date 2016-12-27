@@ -1,6 +1,8 @@
-package org.avp.packets.server;
+package org.avp.packets.client;
 
-import org.avp.entities.extended.ExtendedEntityLivingBase;
+import org.avp.entities.extended.Organism;
+
+import com.arisux.mdxlib.lib.game.Game;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
@@ -10,17 +12,17 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class PacketSyncEEPS implements IMessage, IMessageHandler<PacketSyncEEPS, PacketSyncEEPS>
+public class OrganismClientSync implements IMessage, IMessageHandler<OrganismClientSync, OrganismClientSync>
 {
     public NBTTagCompound tag;
     private int entityId;
 
-    public PacketSyncEEPS()
+    public OrganismClientSync()
     {
         ;
     }
 
-    public PacketSyncEEPS(int entityId, NBTTagCompound tag)
+    public OrganismClientSync(int entityId, NBTTagCompound tag)
     {
         this.entityId = entityId;
         this.tag = tag;
@@ -41,13 +43,13 @@ public class PacketSyncEEPS implements IMessage, IMessageHandler<PacketSyncEEPS,
     }
 
     @Override
-    public PacketSyncEEPS onMessage(PacketSyncEEPS packet, MessageContext ctx)
+    public OrganismClientSync onMessage(OrganismClientSync packet, MessageContext ctx)
     {
-        Entity entity = ctx.getServerHandler().playerEntity.worldObj.getEntityByID(packet.entityId);
+        Entity entity = Game.minecraft().thePlayer.worldObj.getEntityByID(packet.entityId);
 
         if (entity != null)
         {
-            ExtendedEntityLivingBase extendedLiving = (ExtendedEntityLivingBase) entity.getExtendedProperties(ExtendedEntityLivingBase.IDENTIFIER);
+            Organism extendedLiving = (Organism) entity.getExtendedProperties(Organism.IDENTIFIER);
 
             if (extendedLiving != null)
             {

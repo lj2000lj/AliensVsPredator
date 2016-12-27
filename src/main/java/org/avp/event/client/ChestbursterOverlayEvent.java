@@ -1,7 +1,7 @@
 package org.avp.event.client;
 
 import org.avp.AliensVsPredator;
-import org.avp.entities.extended.ExtendedEntityLivingBase;
+import org.avp.entities.extended.Organism;
 
 import com.arisux.mdxlib.lib.client.render.Draw;
 import com.arisux.mdxlib.lib.game.Game;
@@ -21,11 +21,11 @@ public class ChestbursterOverlayEvent
         {
             if (event.type == RenderGameOverlayEvent.ElementType.HOTBAR)
             {
-                ExtendedEntityLivingBase livingBaseProperties = (ExtendedEntityLivingBase) Game.minecraft().thePlayer.getExtendedProperties(ExtendedEntityLivingBase.IDENTIFIER);
+                Organism livingBaseProperties = (Organism) Game.minecraft().thePlayer.getExtendedProperties(Organism.IDENTIFIER);
 
-                if (livingBaseProperties.doesEntityContainEmbryo())
+                if (livingBaseProperties.hasEmbryo())
                 {
-                    if (livingBaseProperties.doesEntityContainEmbryo() && Game.minecraft().thePlayer.isDead && livingBaseProperties.getEmbryo().getTicksExisted() >= livingBaseProperties.getEmbryo().getGestationPeriod() - 80)
+                    if (livingBaseProperties.hasEmbryo() && Game.minecraft().thePlayer.isDead && livingBaseProperties.getEmbryo().getAge() >= livingBaseProperties.getEmbryo().getGestationPeriod() - 80)
                     {
                         Draw.drawOverlay(AliensVsPredator.resources().BLUR_CHESTBURSTER_EMERGE, 1F, 0F, 0F, 1F);
                     }

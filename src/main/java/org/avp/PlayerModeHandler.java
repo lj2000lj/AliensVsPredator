@@ -1,6 +1,6 @@
 package org.avp;
 
-import org.avp.entities.extended.ExtendedEntityPlayer;
+import org.avp.entities.extended.SpecialPlayer;
 import org.avp.util.LevelData;
 import org.avp.util.PlayerMode;
 
@@ -61,7 +61,7 @@ public class PlayerModeHandler implements IInitEvent
         if (event.entity instanceof EntityPlayer)
         {
             EntityPlayer player = (EntityPlayer) event.entity;
-            ExtendedEntityPlayer playerExtension = (ExtendedEntityPlayer) player.getExtendedProperties(ExtendedEntityPlayer.IDENTIFIER);
+            SpecialPlayer playerExtension = (SpecialPlayer) player.getExtendedProperties(SpecialPlayer.IDENTIFIER);
 
             playerExtension.setPlayerMode(PlayerMode.NORMAL);
             {
@@ -93,7 +93,7 @@ public class PlayerModeHandler implements IInitEvent
 
     public static boolean isPlayerInMode(EntityPlayer player, PlayerMode playerMode)
     {
-        return ((ExtendedEntityPlayer) player.getExtendedProperties(ExtendedEntityPlayer.IDENTIFIER)).getPlayerMode() == playerMode;
+        return ((SpecialPlayer) player.getExtendedProperties(SpecialPlayer.IDENTIFIER)).getPlayerMode() == playerMode;
     }
 
     public static boolean isNormal(EntityPlayer player)
@@ -118,7 +118,7 @@ public class PlayerModeHandler implements IInitEvent
 
     public PlayerMode getPlayerModeForPlayer(EntityPlayer player)
     {
-        return ((ExtendedEntityPlayer) player.getExtendedProperties(ExtendedEntityPlayer.IDENTIFIER)).getPlayerMode();
+        return ((SpecialPlayer) player.getExtendedProperties(SpecialPlayer.IDENTIFIER)).getPlayerMode();
     }
 
     public LevelData getLevelMappingForPlayer(EntityPlayer player)

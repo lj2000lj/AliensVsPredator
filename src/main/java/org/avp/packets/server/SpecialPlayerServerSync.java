@@ -1,8 +1,8 @@
-package org.avp.packets.client;
+package org.avp.packets.server;
 
-import org.avp.entities.extended.ExtendedEntityPlayer;
-
-import com.arisux.mdxlib.lib.game.Game;
+import org.avp.AliensVsPredator;
+import org.avp.entities.extended.SpecialPlayer;
+import org.avp.packets.client.SpecialPlayerClientSync;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
@@ -12,17 +12,17 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class PacketSyncEEPPC implements IMessage, IMessageHandler<PacketSyncEEPPC, PacketSyncEEPPC>
+public class SpecialPlayerServerSync implements IMessage, IMessageHandler<SpecialPlayerServerSync, SpecialPlayerServerSync>
 {
     public NBTTagCompound tag;
     private int entityId;
 
-    public PacketSyncEEPPC()
+    public SpecialPlayerServerSync()
     {
         ;
     }
 
-    public PacketSyncEEPPC(int entityId, NBTTagCompound tag)
+    public SpecialPlayerServerSync(int entityId, NBTTagCompound tag)
     {
         this.entityId = entityId;
         this.tag = tag;
@@ -42,19 +42,19 @@ public class PacketSyncEEPPC implements IMessage, IMessageHandler<PacketSyncEEPP
         ByteBufUtils.writeTag(buf, tag);
     }
 
-    @SuppressWarnings("all")
     @Override
-    public PacketSyncEEPPC onMessage(PacketSyncEEPPC packet, MessageContext ctx)
+    public SpecialPlayerServerSync onMessage(SpecialPlayerServerSync packet, MessageContext ctx)
     {
-        Entity entity = Game.minecraft().thePlayer.worldObj.getEntityByID(packet.entityId);
+        Entity entity = ctx.getServerHandler().playerEntity.worldObj.getEntityByID(packet.entityId);
 
         if (entity != null)
         {
-            ExtendedEntityPlayer extendedPlayer = (ExtendedEntityPlayer) entity.getExtendedProperties(ExtendedEntityPlayer.IDENTIFIER);
+            SpecialPlayer extendedPlayer = (SpecialPlayer) entity.getExtendedProperties(SpecialPlayer.IDENTIFIER);
 
             if (extendedPlayer != null)
             {
                 extendedPlayer.loadNBTData(packet.tag);
+                AliensVsPredator.network().sendToAll(new SpecialPlayerClientSync(entity.getEntityId(), extendedPlayer.asCompoundTag()));
             }
         }
 

@@ -1,7 +1,7 @@
 package org.avp.entities.ai.alien;
 
 import org.avp.entities.EntityLiquidPool;
-import org.avp.entities.extended.ExtendedEntityLivingBase;
+import org.avp.entities.extended.Organism;
 import org.avp.entities.mob.EntitySpeciesAlien;
 
 import net.minecraft.command.IEntitySelector;
@@ -25,9 +25,9 @@ public class EntitySelectorXenomorph implements IEntitySelector
         if (potentialTarget instanceof EntityLivingBase)
         {
             EntityLivingBase livingBase = (EntityLivingBase) potentialTarget;
-            ExtendedEntityLivingBase livingProperties = ExtendedEntityLivingBase.get(livingBase);
+            Organism livingProperties = Organism.get(livingBase);
             
-            if (livingProperties.doesEntityContainEmbryo())
+            if (livingProperties.hasEmbryo())
             {
                 return false;
             }

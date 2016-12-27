@@ -9,8 +9,8 @@ import static org.lwjgl.opengl.GL11.glDepthMask;
 
 import org.avp.AliensVsPredator;
 import org.avp.dimension.varda.ProviderVarda;
-import org.avp.entities.extended.ExtendedEntityLivingBase;
-import org.avp.entities.extended.ExtendedEntityPlayer;
+import org.avp.entities.extended.Organism;
+import org.avp.entities.extended.SpecialPlayer;
 import org.avp.entities.mob.EntityChestburster;
 import org.avp.entities.mob.EntityMarine;
 import org.avp.entities.mob.EntitySpeciesAlien;
@@ -64,7 +64,7 @@ public class PressureHUDRenderEvent
             {
                 if (Inventories.getHelmSlotItemStack(Game.minecraft().thePlayer) != null && Game.minecraft().gameSettings.thirdPersonView == 0 && Inventories.getHelmSlotItemStack(Game.minecraft().thePlayer).getItem() == AliensVsPredator.items().pressureMask)
                 {
-                    ExtendedEntityPlayer playerProperties = ExtendedEntityPlayer.get(Game.minecraft().thePlayer);
+                    SpecialPlayer playerProperties = SpecialPlayer.get(Game.minecraft().thePlayer);
 
                     this.gammaRestored = false;
                     LightmapUpdateEvent.instance.gammaValue = playerProperties.isNightvisionEnabled() ? 8F : 0F;
@@ -114,9 +114,9 @@ public class PressureHUDRenderEvent
         }
     }
 
-    public ExtendedEntityPlayer getProperties()
+    public SpecialPlayer getProperties()
     {
-        return Game.minecraft() != null ? Game.minecraft().thePlayer != null ? ExtendedEntityPlayer.get(Game.minecraft().thePlayer) : null : null;
+        return Game.minecraft() != null ? Game.minecraft().thePlayer != null ? SpecialPlayer.get(Game.minecraft().thePlayer) : null : null;
     }
 
     public void drawInfoBar()
@@ -269,12 +269,12 @@ public class PressureHUDRenderEvent
                             if (entity instanceof EntityLivingBase)
                             {
                                 EntityLivingBase entityLiving = (EntityLivingBase) entity;
-                                ExtendedEntityLivingBase extendedLiving = (ExtendedEntityLivingBase) entityLiving.getExtendedProperties(ExtendedEntityLivingBase.IDENTIFIER);
+                                Organism extendedLiving = (Organism) entityLiving.getExtendedProperties(Organism.IDENTIFIER);
 
                                 fontrenderer.drawString("Age: " + entityLiving.getAge(), subMenuX + subMenuPadding, subMenuStartY + (curEntry++ * subEntrySpacing), 0x666666);
 
                                 if (!(entity instanceof EntitySpeciesAlien) && extendedLiving.getEmbryo() != null)
-                                    fontrenderer.drawString("Parasite Type: " + extendedLiving.getEmbryo().getType().getResult().getSimpleName(), subMenuX + subMenuPadding, subMenuStartY + (curEntry++ * subEntrySpacing), 0x666666);
+                                    fontrenderer.drawString("Parasite Type: " + extendedLiving.getEmbryo().getResult().getSimpleName(), subMenuX + subMenuPadding, subMenuStartY + (curEntry++ * subEntrySpacing), 0x666666);
                             }
 
                             if (entity instanceof EntitySpeciesAlien)
@@ -382,16 +382,16 @@ public class PressureHUDRenderEvent
         OpenGL.popMatrix();
     }
 
-    public void drawImpregnationIndicator(ExtendedEntityPlayer playerProperties)
+    public void drawImpregnationIndicator(SpecialPlayer playerProperties)
     {
         if (playerProperties != null)
         {
-            ExtendedEntityLivingBase livingProperties = ExtendedEntityLivingBase.get(playerProperties.getPlayer());
+            Organism livingProperties = Organism.get(playerProperties.getPlayer());
 
-            if (livingProperties.doesEntityContainEmbryo() && livingProperties.getEntityLivingBase().worldObj.getWorldTime() % 20 <= 10)
+            if (livingProperties.hasEmbryo() && livingProperties.getEntity().worldObj.getWorldTime() % 20 <= 10)
             {
                 ScaledResolution res = Screen.scaledDisplayResolution();
-                int lifeTimeTicks = livingProperties.getEmbryo().getGestationPeriod() - livingProperties.getEmbryo().getTicksExisted();
+                int lifeTimeTicks = livingProperties.getEmbryo().getGestationPeriod() - livingProperties.getEmbryo().getAge();
                 int lifeTimeSeconds = lifeTimeTicks / 20;
                 int iconSize = 64;
 

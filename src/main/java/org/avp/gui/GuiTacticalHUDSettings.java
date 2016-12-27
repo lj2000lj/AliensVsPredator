@@ -1,6 +1,6 @@
 package org.avp.gui;
 
-import org.avp.entities.extended.ExtendedEntityPlayer;
+import org.avp.entities.extended.SpecialPlayer;
 import org.avp.event.client.TacticalHUDRenderEvent;
 
 import com.arisux.mdxlib.lib.client.gui.GuiCustomButton;
@@ -17,7 +17,7 @@ import net.minecraft.client.gui.GuiScreen;
 
 public class GuiTacticalHUDSettings extends GuiCustomScreen
 {
-    protected final ExtendedEntityPlayer properties;
+    protected final SpecialPlayer properties;
     private GuiCustomTextbox textboxChannel;
     private GuiCustomButton buttonSave;
     private GuiCustomButton buttonNightvisionToggle;
@@ -27,7 +27,7 @@ public class GuiTacticalHUDSettings extends GuiCustomScreen
 
     public GuiTacticalHUDSettings(GuiScreen parent)
     {
-        this.properties = ExtendedEntityPlayer.get(Game.minecraft().thePlayer);
+        this.properties = SpecialPlayer.get(Game.minecraft().thePlayer);
         this.textboxChannel = new GuiCustomTextbox(this, 0, 0, 100, 15);
         this.buttonSave = new GuiCustomButton(0, 0, 0, 100, 15, "", null);
         this.buttonNightvisionToggle = new GuiCustomButton(0, 0, 0, 100, 15, "", null);
@@ -54,7 +54,7 @@ public class GuiTacticalHUDSettings extends GuiCustomScreen
             public void perform(GuiCustomButton button)
             {
                 properties.setNightvisionEnabled(!properties.isNightvisionEnabled());
-                properties.syncServer();
+                properties.syncWithServer();
             }
         });
 
@@ -64,7 +64,7 @@ public class GuiTacticalHUDSettings extends GuiCustomScreen
             public void perform(GuiCustomButton button)
             {
                 properties.setEntityCullingEnabled(!properties.isEntityCullingEnabled());
-                properties.syncServer();
+                properties.syncWithServer();
             }
         });
 
@@ -82,7 +82,7 @@ public class GuiTacticalHUDSettings extends GuiCustomScreen
                     properties.setBroadcastRadius(newRadius);
                     properties.setBroadcastChannel(newChannel);
                     TacticalHUDRenderEvent.instance.setViewportThreshold(newThreshold);
-                    properties.syncServer();
+                    properties.syncWithServer();
                 }
 
                 mc.displayGuiScreen(null);

@@ -7,8 +7,8 @@ import org.avp.packets.client.PacketOpenable;
 import org.avp.packets.client.PacketOvamorphContainsFacehugger;
 import org.avp.packets.client.PacketPlayerModeUpdate;
 import org.avp.packets.client.PacketRotateTransformer;
-import org.avp.packets.client.PacketSyncEEPC;
-import org.avp.packets.client.PacketSyncEEPPC;
+import org.avp.packets.client.OrganismClientSync;
+import org.avp.packets.client.SpecialPlayerClientSync;
 import org.avp.packets.client.PacketTurretInit;
 import org.avp.packets.client.PacketVardaStormMoveEntity;
 import org.avp.packets.server.PacketAddTuretTarget;
@@ -24,8 +24,8 @@ import org.avp.packets.server.PacketRemoveTurretTarget;
 import org.avp.packets.server.PacketShootEntity;
 import org.avp.packets.server.PacketSpawnEntity;
 import org.avp.packets.server.PacketSpawnNuke;
-import org.avp.packets.server.PacketSyncEEPPS;
-import org.avp.packets.server.PacketSyncEEPS;
+import org.avp.packets.server.SpecialPlayerServerSync;
+import org.avp.packets.server.OrganismServerSync;
 import org.avp.packets.server.PacketTurretTargetUpdate;
 import org.avp.packets.server.PacketWriteToDataDevice;
 
@@ -72,10 +72,10 @@ public class NetworkHandler extends SimpleNetworkWrapper implements IInitEvent
         this.registerMessage(Side.CLIENT, PacketOpenable.class);
         this.registerMessage(Side.CLIENT, PacketPlayerModeUpdate.class);
         this.registerMessage(Side.CLIENT, PacketTurretInit.class);
-        this.registerMessage(Side.CLIENT, PacketSyncEEPC.class);
-        this.registerMessage(Side.CLIENT, PacketSyncEEPPC.class);
-        this.registerMessage(Side.SERVER, PacketSyncEEPS.class);
-        this.registerMessage(Side.SERVER, PacketSyncEEPPS.class);
+        this.registerMessage(Side.CLIENT, OrganismClientSync.class);
+        this.registerMessage(Side.CLIENT, SpecialPlayerClientSync.class);
+        this.registerMessage(Side.SERVER, OrganismServerSync.class);
+        this.registerMessage(Side.SERVER, SpecialPlayerServerSync.class);
         this.registerMessage(Side.CLIENT, PacketRotateTransformer.class);
         this.registerMessage(Side.CLIENT, PacketOpenGui.class);
     }

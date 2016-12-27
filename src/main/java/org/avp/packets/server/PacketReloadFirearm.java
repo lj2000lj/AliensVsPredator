@@ -32,7 +32,7 @@ public class PacketReloadFirearm implements IMessage, IMessageHandler<PacketRelo
     {
         EntityPlayer player = ctx.getServerHandler().playerEntity;
 
-        if (player != null && player.inventory != null && player.inventory.getCurrentItem() != null)
+        if (player != null && player.inventory != null && player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof ItemFirearm)
         {
             ((ItemFirearm) player.inventory.getCurrentItem().getItem()).reload(ctx.getServerHandler().playerEntity);
         }
