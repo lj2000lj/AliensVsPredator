@@ -11,6 +11,7 @@ import org.avp.util.IParasitoid;
 
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
@@ -62,6 +63,16 @@ public class EntityParasitoid extends EntitySpeciesAlien implements IMob, IParas
                                                            if (potentialTarget instanceof EntityPlayer && !((EntityPlayer) potentialTarget).capabilities.isCreativeMode)
                                                            {
                                                                return false;
+                                                           }
+
+                                                           if (potentialTarget instanceof EntityLiving)
+                                                           {
+                                                               EntityLiving living = (EntityLiving) potentialTarget;
+
+                                                               if (living.isChild())
+                                                               {
+                                                                   return false;
+                                                               }
                                                            }
 
                                                            if (potentialTarget instanceof EntitySpeciesAlien)
@@ -133,6 +144,20 @@ public class EntityParasitoid extends EntitySpeciesAlien implements IMob, IParas
         if (this.isAttachedToHost())
         {
             this.ticksOnHost++;
+
+            if (ridingEntity instanceof EntityLiving)
+            {
+                EntityLiving living = (EntityLiving) this.ridingEntity;
+
+                living.motionX = 0;
+                living.motionZ = 0;
+                living.tasks.taskEntries.clear();
+                living.targetTasks.taskEntries.clear();
+                this.rotationYawHead = living.rotationYawHead;
+                this.rotationYaw = living.rotationYaw;
+                this.prevRotationYawHead = living.prevRotationYawHead;
+                this.prevRotationYaw = living.prevRotationYaw;
+            }
         }
 
         if (this.getTicksOnHost() > this.getDetachTime())
@@ -181,7 +206,7 @@ public class EntityParasitoid extends EntitySpeciesAlien implements IMob, IParas
     {
         return false;
     }
-    
+
     @Override
     public void collideWithEntity(Entity entity)
     {
@@ -219,8 +244,9 @@ public class EntityParasitoid extends EntitySpeciesAlien implements IMob, IParas
     public void implantEmbryo(EntityLivingBase living)
     {
         ExtendedEntityLivingBase extendedLiving = (ExtendedEntityLivingBase) living.getExtendedProperties(ExtendedEntityLivingBase.IDENTIFIER);
-        extendedLiving.setEmbryo(new Embryo(EmbryoType.getMappingFromHost(extendedLiving.getEntityLivingBase().getClass())){
-            
+        extendedLiving.setEmbryo(new Embryo(EmbryoType.getMappingFromHost(extendedLiving.getEntityLivingBase().getClass()))
+        {
+
         });
         extendedLiving.syncClients();
         this.setFertility(false);

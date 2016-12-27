@@ -43,11 +43,6 @@ public class EmbryoTickEvent
                         livingProperties.tickEmbryo();
                     }
 
-                    living.moveEntity(0, 0, 0);
-                    living.rotationPitch = 0;
-                    living.rotationYaw = 0;
-                    living.rotationYawHead = 0;
-
                     if (event.world.getWorldTime() % 60 == 0)
                     {
                         livingProperties.syncClients();

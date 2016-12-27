@@ -24,7 +24,7 @@ public class EntityFacehugger extends EntityParasitoid implements IMob, IParasit
         super(world);
         this.setSize(0.8F, 0.8F);
         this.experienceValue = 10;
-        this.jumpMovementFactor = 0.045F;
+        this.jumpMovementFactor = 0.3F;
         this.getNavigator().setCanSwim(true);
         this.getNavigator().setAvoidsWater(true);
         this.addTasks();
