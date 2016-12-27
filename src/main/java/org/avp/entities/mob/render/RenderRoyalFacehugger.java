@@ -21,6 +21,14 @@ public class RenderRoyalFacehugger extends RenderFacehugger
 
         float glScale = 1.5F;
         OpenGL.scale(glScale, glScale, glScale);
+
+        if (entityliving instanceof EntityFacehugger)
+        {
+            if (!((EntityFacehugger) entityliving).isFertile())
+            {
+                OpenGL.translate(0, 0.1, 0);
+            }
+        }
     }
 
     @Override

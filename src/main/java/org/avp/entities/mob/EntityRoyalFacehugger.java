@@ -1,5 +1,6 @@
 package org.avp.entities.mob;
 
+import org.avp.entities.extended.ExtendedEntityLivingBase;
 import org.avp.util.Embryo;
 import org.avp.util.EmbryoType;
 
@@ -63,8 +64,11 @@ public class EntityRoyalFacehugger extends EntityFacehugger
     }
     
     @Override
-    protected Embryo createNewEmbryo(Class<? extends EntityLivingBase> host)
+    public void implantEmbryo(EntityLivingBase living)
     {
-        return new Embryo(EmbryoType.QUEEN){};
+        ExtendedEntityLivingBase extendedLiving = (ExtendedEntityLivingBase) living.getExtendedProperties(ExtendedEntityLivingBase.IDENTIFIER);
+        extendedLiving.setEmbryo(new Embryo(EmbryoType.QUEEN){});
+        extendedLiving.syncClients();
+        this.setFertility(false);
     }
 }

@@ -6,7 +6,7 @@ import org.avp.Sounds;
 import org.avp.entities.EntityBullet;
 import org.avp.entities.EntityLiquidLatexPool;
 import org.avp.entities.EntityLiquidPool;
-import org.avp.util.IFacehugSelector;
+import org.avp.util.IParasiticHost;
 
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
@@ -30,7 +30,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
-public class EntityCombatSynthetic extends EntityCreature implements IMob, IRangedAttackMob, IFacehugSelector, IEntitySelector
+public class EntityCombatSynthetic extends EntityCreature implements IMob, IRangedAttackMob, IParasiticHost, IEntitySelector
 {
     private EntityAIBase aiRangedAttack;
     
@@ -135,12 +135,6 @@ public class EntityCombatSynthetic extends EntityCreature implements IMob, IRang
     {
         this.dataWatcher.updateObject(18, Integer.valueOf(15));
     }
-
-    @Override
-    public boolean canFacehuggerAttach()
-    {
-        return false;
-    }
     
     @Override
     public void onDeath(DamageSource damagesource)
@@ -187,6 +181,18 @@ public class EntityCombatSynthetic extends EntityCreature implements IMob, IRang
         if (entity instanceof EntityCombatSynthetic)
             return false;
         
+        return false;
+    }
+
+    @Override
+    public boolean canParasiteAttach()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean canHostParasite()
+    {
         return false;
     }
 }

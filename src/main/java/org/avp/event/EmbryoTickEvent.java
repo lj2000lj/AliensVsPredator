@@ -27,6 +27,13 @@ public class EmbryoTickEvent
             if (entity != null && entity instanceof EntityLivingBase)
             {
                 EntityLivingBase living = (EntityLivingBase) entity;
+                EntityPlayer player = null;
+
+                if (living instanceof EntityPlayer)
+                {
+                    player = (EntityPlayer) living;
+                }
+                
                 ExtendedEntityLivingBase livingProperties = (ExtendedEntityLivingBase) living.getExtendedProperties(ExtendedEntityLivingBase.IDENTIFIER);
 
                 if (livingProperties.doesEntityContainEmbryo())
@@ -61,7 +68,15 @@ public class EmbryoTickEvent
 
                         if (livingProperties.getEmbryo() != null && livingProperties.getEmbryo().getTicksExisted() <= livingProperties.getEmbryo().getGestationPeriod())
                         {
-                            living.addPotionEffect(new PotionEffect(Potion.blindness.getId(), livingProperties.getEmbryo().getGestationPeriod() / 2));
+                            if (player == null || player != null && !player.capabilities.isCreativeMode)
+                            {
+                                living.addPotionEffect(new PotionEffect(Potion.blindness.getId(), livingProperties.getEmbryo().getGestationPeriod() / 2));
+                            }
+                            
+                            if (player != null && player.capabilities.isCreativeMode)
+                            {
+                                player.clearActivePotions();
+                            }
                         }
                     }
                 }
@@ -74,22 +89,22 @@ public class EmbryoTickEvent
     {
         EntityLivingBase living = (EntityLivingBase) event.player;
         ExtendedEntityLivingBase livingProperties = (ExtendedEntityLivingBase) living.getExtendedProperties(ExtendedEntityLivingBase.IDENTIFIER);
-        
+
         if (livingProperties.doesEntityContainEmbryo())
         {
             livingProperties.setEmbryo(null);
         }
     }
-    
+
     @SubscribeEvent
     public void despawnEvent(net.minecraftforge.event.entity.living.LivingSpawnEvent.AllowDespawn event)
     {
-       EntityLivingBase living = (EntityLivingBase) event.entityLiving;
-       ExtendedEntityLivingBase livingProperties = (ExtendedEntityLivingBase) living.getExtendedProperties(ExtendedEntityLivingBase.IDENTIFIER);
-       
-       if (livingProperties.doesEntityContainEmbryo())
-       {
-           event.setResult(Result.DENY);
-       }
+        EntityLivingBase living = (EntityLivingBase) event.entityLiving;
+        ExtendedEntityLivingBase livingProperties = (ExtendedEntityLivingBase) living.getExtendedProperties(ExtendedEntityLivingBase.IDENTIFIER);
+
+        if (livingProperties.doesEntityContainEmbryo())
+        {
+            event.setResult(Result.DENY);
+        }
     }
 }

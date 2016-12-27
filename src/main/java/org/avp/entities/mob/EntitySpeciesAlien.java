@@ -66,7 +66,7 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob
     @Override
     protected boolean canDespawn()
     {
-        return this.getJellyLevel() < 20;
+        return false;
     }
 
     @Override
@@ -228,5 +228,10 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob
     public boolean isCreatureType(EnumCreatureType type, boolean forSpawnCount)
     {
         return type == EnumCreatureType.monster ? true : false;
+    }
+
+    protected void negateFallDamage()
+    {
+        this.fallDistance = 0F;
     }
 }

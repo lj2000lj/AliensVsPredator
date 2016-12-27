@@ -8,7 +8,7 @@ import org.avp.items.ItemFirearm;
 import org.avp.items.ItemPlasmaCaster;
 import org.avp.items.ItemShuriken;
 import org.avp.items.ItemWristbracer;
-import org.avp.util.IFacehugSelector;
+import org.avp.util.IParasiticHost;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.command.IEntitySelector;
@@ -36,7 +36,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public abstract class EntitySpeciesYautja extends EntityMob implements IFacehugSelector, IEntitySelector
+public abstract class EntitySpeciesYautja extends EntityMob implements IParasiticHost, IEntitySelector
 {
     public static int WEARING_MASK_DATAWATCHER_ID = 17;
 
@@ -247,8 +247,14 @@ public abstract class EntitySpeciesYautja extends EntityMob implements IFacehugS
     }
 
     @Override
-    public boolean canFacehuggerAttach()
+    public boolean canParasiteAttach()
     {
         return !this.isWearingMask();
+    }
+    
+    @Override
+    public boolean canHostParasite()
+    {
+        return true;
     }
 }

@@ -14,28 +14,28 @@ public class EntitySelectorXenomorph implements IEntitySelector
     public static final EntitySelectorXenomorph instance = new EntitySelectorXenomorph();
 
     @Override
-    public boolean isEntityApplicable(Entity entity)
+    public boolean isEntityApplicable(Entity potentialTarget)
     {
-        if (entity instanceof EntitySpeciesAlien)
+        if (potentialTarget instanceof EntitySpeciesAlien)
             return false;
         
-        if (entity instanceof EntityLiquidPool)
+        if (potentialTarget instanceof EntityLiquidPool)
             return false;
         
-        if (entity instanceof EntityLivingBase)
+        if (potentialTarget instanceof EntityLivingBase)
         {
-            EntityLivingBase livingBase = (EntityLivingBase) entity;
-            ExtendedEntityLivingBase properties = ExtendedEntityLivingBase.get(livingBase);
+            EntityLivingBase livingBase = (EntityLivingBase) potentialTarget;
+            ExtendedEntityLivingBase livingProperties = ExtendedEntityLivingBase.get(livingBase);
             
-            if (properties.doesEntityContainEmbryo())
+            if (livingProperties.doesEntityContainEmbryo())
             {
                 return false;
             }
         }
         
-        if (entity instanceof EntityPlayer)
+        if (potentialTarget instanceof EntityPlayer)
         {
-            EntityPlayer player = (EntityPlayer) entity;
+            EntityPlayer player = (EntityPlayer) potentialTarget;
             
             if (player.capabilities.isCreativeMode)
             {

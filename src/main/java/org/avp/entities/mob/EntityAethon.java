@@ -2,7 +2,7 @@ package org.avp.entities.mob;
 
 import org.avp.EntityItemDrops;
 import org.avp.entities.EntityLiquidPool;
-import org.avp.util.IFacehugSelector;
+import org.avp.util.IParasiticHost;
 
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
@@ -25,7 +25,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class EntityAethon extends EntityMob implements IMob, IFacehugSelector
+public class EntityAethon extends EntityMob implements IMob, IParasiticHost
 {
     public static final int FLYING_DATAWATCHER_ID = 19;
 
@@ -87,7 +87,13 @@ public class EntityAethon extends EntityMob implements IMob, IFacehugSelector
     }
     
     @Override
-    public boolean canFacehuggerAttach()
+    public boolean canParasiteAttach()
+    {
+        return this.canHostParasite();
+    }
+    
+    @Override
+    public boolean canHostParasite()
     {
         return false;
     }
