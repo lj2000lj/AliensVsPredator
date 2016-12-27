@@ -67,7 +67,7 @@ public class EntityRoyalFacehugger extends EntityFacehugger
     public void implantEmbryo(EntityLivingBase living)
     {
         Organism extendedLiving = (Organism) living.getExtendedProperties(Organism.IDENTIFIER);
-        extendedLiving.setEmbryo(new Embryo(EntityLiving.class, EntityQueen.class));
+        extendedLiving.setEmbryo(new Embryo(EntityQueen.class, EntityLiving.class));
         extendedLiving.syncWithClients();
         this.setFertility(false);
     }
