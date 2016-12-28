@@ -36,6 +36,7 @@ import org.avp.entities.mob.EntityFacehugger;
 import org.avp.entities.mob.EntityGooMutant;
 import org.avp.entities.mob.EntityHammerpede;
 import org.avp.entities.mob.EntityMarine;
+import org.avp.entities.mob.EntityOctohugger;
 import org.avp.entities.mob.EntityOvamorph;
 import org.avp.entities.mob.EntityPraetorian;
 import org.avp.entities.mob.EntityPredalien;
@@ -211,6 +212,7 @@ public class EntityHandler implements IInitEvent
         Game.register(EntityUltramorph.class, "Ultramorph", entityId++, AliensVsPredator.instance(), 250, 1, true);
         Game.register(EntityGooMutant.class, "GooMutant", entityId++, AliensVsPredator.instance(), 250, 1, true);
         Game.register(EntityAethon.class, "Aethon", entityId++, AliensVsPredator.instance(), 250, 1, true);
+        Game.register(EntityOctohugger.class, "Octohugger", entityId++, AliensVsPredator.instance(), 250, 1, true);
     }
 
     private void registerSpawns()
@@ -221,7 +223,7 @@ public class EntityHandler implements IInitEvent
 
             BiomeGenBase[] predatorBiomes = this.getFilteredBiomeArray(BiomeGenBase.birchForest, BiomeGenBase.birchForestHills, BiomeGenBase.desert, BiomeGenBase.desertHills, BiomeGenBase.extremeHills, BiomeGenBase.extremeHillsEdge, BiomeGenBase.extremeHillsPlus, BiomeGenBase.forest, BiomeGenBase.forestHills, BiomeGenBase.frozenOcean, BiomeGenBase.frozenRiver, BiomeGenBase.icePlains, BiomeGenBase.jungle, BiomeGenBase.jungleEdge, BiomeGenBase.jungleHills, BiomeGenBase.taiga, BiomeGenBase.taigaHills, BiomeGenVarda.vardaBadlands);
 
-            BiomeGenBase[] engineerBiomes = this.getFilteredBiomeArray(BiomeGenBase.iceMountains, BiomeGenBase.coldTaigaHills, BiomeGenBase.coldTaiga, BiomeGenBase.extremeHills, BiomeGenVarda.vardaBadlands, BiomeGenLV.acheron, BiomeGenVarda.vardaForest);
+            BiomeGenBase[] engineerBiomes = this.getFilteredBiomeArray(BiomeGenVarda.vardaBadlands, BiomeGenLV.acheron, BiomeGenVarda.vardaForest);
 
             BiomeGenBase[] aquaXenomorphBiomes = this.getFilteredBiomeArray(BiomeGenBase.river, BiomeGenBase.beach, BiomeGenBase.stoneBeach);
 
