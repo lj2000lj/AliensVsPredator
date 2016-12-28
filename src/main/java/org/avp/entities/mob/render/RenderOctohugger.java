@@ -41,15 +41,7 @@ public class RenderOctohugger extends RenderLivingWrapper
     {
         EntityOctohugger octohugger = (EntityOctohugger) entityliving;
 
-        this.scale(octohugger, 0.9F);
-
-        if (octohugger != null && octohugger.ridingEntity == null)
-        {
-            if (octohugger.motionY > 0 || octohugger.motionY < -0.1)
-            {
-                OpenGL.rotate(-45F, 1, 0, 0);
-            }
-        }
+        this.scale(octohugger, 1.1F);
 
         if (octohugger != null && octohugger.ridingEntity != null && octohugger.ridingEntity.ridingEntity != null && octohugger.ridingEntity.ridingEntity instanceof EntityMedpod)
         {
@@ -75,6 +67,8 @@ public class RenderOctohugger extends RenderLivingWrapper
 
     protected void scale(EntityOctohugger octohugger, float glScale)
     {
+        OpenGL.translate(0F, 1.2F, 0F);
+        
         if (octohugger != null && !octohugger.isFertile() && octohugger.ridingEntity == null)
         {
             OpenGL.scale(1F, -1F, 1F);
