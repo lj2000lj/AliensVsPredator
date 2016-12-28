@@ -397,6 +397,7 @@ public class Renderers implements IPostInitEvent
         registerItemRenderer(items.itemSummonerUltramorph, (new RenderItemSummoner(EntityUltramorph.class)).setScale(7.5F).setY(6F));
         registerItemRenderer(items.itemSummonerGooMutant, (new RenderItemSummoner(EntityGooMutant.class)).setScale(7.5F).setY(6F));
         registerItemRenderer(items.itemSummonerAethon, (new RenderItemSummoner(EntityAethon.class)).setScale(7.5F).setY(6F));
+        registerItemRenderer(items.itemSummonerOctohugger, (new RenderItemSummoner(EntityOctohugger.class)).setScale(15F).setY(1F));
 
         TexturedModel<Model88MOD4> _88MOD4 = AliensVsPredator.resources().models()._88MOD4;
         registerItemRenderer(items.itemPistolBarrel, new RenderItem88Mod4Barrel(_88MOD4, _88MOD4.getModel().getBarrel()));

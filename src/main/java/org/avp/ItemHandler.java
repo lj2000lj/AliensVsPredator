@@ -13,6 +13,7 @@ import org.avp.entities.mob.EntityFacehugger;
 import org.avp.entities.mob.EntityGooMutant;
 import org.avp.entities.mob.EntityHammerpede;
 import org.avp.entities.mob.EntityMarine;
+import org.avp.entities.mob.EntityOctohugger;
 import org.avp.entities.mob.EntityOvamorph;
 import org.avp.entities.mob.EntityPraetorian;
 import org.avp.entities.mob.EntityPredalien;
@@ -202,6 +203,7 @@ public class ItemHandler implements IInitEvent
     public ItemEntitySummoner       itemSummonerUltramorph      = (new ItemEntitySummoner(EntityUltramorph.class));
     public ItemEntitySummoner       itemSummonerGooMutant       = (new ItemEntitySummoner(EntityGooMutant.class));
     public ItemEntitySummoner       itemSummonerAethon          = (new ItemEntitySummoner(EntityAethon.class));
+    public ItemEntitySummoner       itemSummonerOctohugger      = (new ItemEntitySummoner(EntityOctohugger.class));
 
     @Override
     public void init(FMLInitializationEvent event)
@@ -233,6 +235,7 @@ public class ItemHandler implements IInitEvent
         Game.register(AliensVsPredator.ID, itemSummonerUltramorph, "summon.ultramorph").setCreativeTab(AliensVsPredator.tabEntities());
         Game.register(AliensVsPredator.ID, itemSummonerGooMutant, "summon.goomutant").setCreativeTab(AliensVsPredator.tabEntities());
         Game.register(AliensVsPredator.ID, itemSummonerAethon, "summon.aethon").setCreativeTab(AliensVsPredator.tabEntities());
+        Game.register(AliensVsPredator.ID, itemSummonerOctohugger, "summon.octohugger").setCreativeTab(AliensVsPredator.tabEntities());
 
         Game.register(AliensVsPredator.ID, pressureMask, "helm.pressure").setCreativeTab(AliensVsPredator.tabMain());
         Game.register(AliensVsPredator.ID, pressureChest, "body.pressure").setCreativeTab(AliensVsPredator.tabMain());
