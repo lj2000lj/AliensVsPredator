@@ -122,7 +122,6 @@ public class RenderItemSummoner extends ItemRenderer
     @Override
     public void renderInInventory(ItemStack item, Object... data)
     {
-        scale = 7.5F;
         OpenGL.translate(8F + x, -2F + y, 4F);
         OpenGL.rotate(0F, 1.0F, 0.0F, 0.0F);
         OpenGL.scale(scale, scale, scale);
