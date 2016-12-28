@@ -114,7 +114,7 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IRoy
     // }
     // }
     // }
-
+    
     public boolean isReadyToMature(IRoyalOrganism jellyProducer)
     {
         IMaturable maturable = (IMaturable) this;

@@ -4,7 +4,6 @@ import org.avp.entities.extended.Organism;
 import org.avp.util.Embryo;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.world.World;
@@ -16,6 +15,7 @@ public class EntityRoyalFacehugger extends EntityFacehugger
         super(world);
         this.setSize(1F, 1F);
         this.experienceValue = 300;
+        this.addTasks();
     }
 
     @Override
@@ -66,9 +66,9 @@ public class EntityRoyalFacehugger extends EntityFacehugger
     @Override
     public void implantEmbryo(EntityLivingBase living)
     {
-        Organism extendedLiving = (Organism) living.getExtendedProperties(Organism.IDENTIFIER);
-        extendedLiving.setEmbryo(new Embryo(EntityQueen.class, EntityLiving.class));
-        extendedLiving.syncWithClients();
+        Organism organism = (Organism) living.getExtendedProperties(Organism.IDENTIFIER);
+        organism.impregnate(Embryo.QUEEN);
+        organism.syncWithClients();
         this.setFertility(false);
     }
 }

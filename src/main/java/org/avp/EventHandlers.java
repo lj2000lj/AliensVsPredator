@@ -3,7 +3,7 @@ package org.avp;
 import java.util.ArrayList;
 
 import org.avp.event.BucketHandlingEvent;
-import org.avp.event.EmbryoTickEvent;
+import org.avp.event.EntityImpregnationHandler;
 import org.avp.event.ExtendedEntityRegistrationHandler;
 import org.avp.event.FarmlandRegistry;
 import org.avp.event.HiveHandler;
@@ -69,7 +69,7 @@ public class EventHandlers implements IInitEvent
             this.registerEvent(DimensionHandler.instance);
         }
 
-        this.registerEvent(EmbryoTickEvent.instance);
+        this.registerEvent(EntityImpregnationHandler.instance);
         this.registerEvent(ExtendedEntityRegistrationHandler.instance);
         this.registerEvent(SaveHandler.instance);
         this.registerEvent(VardaStormHandler.instance);

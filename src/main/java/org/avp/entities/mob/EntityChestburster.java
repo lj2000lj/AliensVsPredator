@@ -10,10 +10,8 @@ import org.avp.entities.extended.Organism;
 import com.arisux.mdxlib.lib.game.Game;
 import com.arisux.mdxlib.lib.world.entity.Entities;
 
-import cpw.mods.fml.common.registry.EntityRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
@@ -211,23 +209,17 @@ public class EntityChestburster extends EntitySpeciesAlien implements IMob, INas
         nbt.setString("MaturityState", this.matureState.getName());
     }
 
-    // public void setHostParasiteType(Embryo embryo)
-    // {
-    // this.parasiteType = embryo.getRegistrationId();
-    // }
-
-    // public Class<? extends Entity> getGrownParasiteType()
-    // {
-    // Embryo hostParasiteType = Embryo.get(this.parasiteType);
-    // return hostParasiteType == null ? Embryo.STANDARD.getResult() : hostParasiteType.getResult();
-    // }
-
-    // public void onTickInHost(EntityLivingBase host)
-
     @Override
-    public void emerge(EntityLivingBase host)
+    public void grow(EntityLivingBase host)
     {
         Organism hostOrganism = (Organism) host.getExtendedProperties(Organism.IDENTIFIER);
+    }
+
+    @Override
+    public void vitalize(EntityLivingBase host)
+    {
+        Organism hostOrganism = (Organism) host.getExtendedProperties(Organism.IDENTIFIER);
+        this.matureState = hostOrganism.getEmbryo().getResultingOrganism();
         this.setLocationAndAngles(host.posX, host.posY, host.posZ, 0.0F, 0.0F);
         host.worldObj.spawnEntityInWorld(this);
         hostOrganism.removeEmbryo();
@@ -239,13 +231,6 @@ public class EntityChestburster extends EntitySpeciesAlien implements IMob, INas
     public Class<? extends Entity> getMatureState()
     {
         return this.matureState;
-    }
-
-    @Override
-    public INascentic setMatureState(Class<? extends Entity> state)
-    {
-        this.matureState = state;
-        return this;
     }
 
     @Override

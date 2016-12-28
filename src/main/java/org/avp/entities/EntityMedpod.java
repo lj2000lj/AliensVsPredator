@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.UUID;
 
 import org.avp.entities.extended.Organism;
-import org.avp.entities.extended.SpecialPlayer;
 import org.avp.entities.mob.EntitySpeciesAlien;
 import org.avp.entities.tile.TileEntityMedpod;
 
@@ -12,9 +11,6 @@ import com.arisux.mdxlib.lib.world.Worlds;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -96,33 +92,9 @@ public class EntityMedpod extends Entity
             if (this.getTileEntity().getVoltage() > 0 && this.getTileEntity().getDoorProgress() <= 0 && !this.getTileEntity().isOpen() && this.riddenByEntity instanceof EntityLivingBase)
             {
                 EntityLivingBase living = (EntityLivingBase) this.riddenByEntity;
-                Organism extended = Organism.get(living);
-
-                living.setHealth(living.getMaxHealth());
-
-                if (!this.worldObj.isRemote)
-                {
-                    living.curePotionEffects(new ItemStack(Items.milk_bucket, 1));
-                    living.getActivePotionEffects().clear();
-                }
-
-                if (extended.hasEmbryo())
-                {
-                    extended.setEmbryo(null);
-                }
-
-                if (living.riddenByEntity != null && living.riddenByEntity instanceof EntitySpeciesAlien)
-                {
-                    living.riddenByEntity.setDead();
-                }
-
-                if (living instanceof EntityPlayer)
-                {
-                    EntityPlayer player = (EntityPlayer) living;
-                    SpecialPlayer extendedPlayer = SpecialPlayer.get(player);
-
-                    player.getFoodStats().setFoodLevel(20);
-                }
+                Organism organism = Organism.get(living);
+                
+                organism.heal();
             }
         }
     }

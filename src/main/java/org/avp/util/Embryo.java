@@ -9,12 +9,15 @@ import org.avp.entities.mob.EntityChestburster;
 import org.avp.entities.mob.EntityDrone;
 import org.avp.entities.mob.EntityEngineer;
 import org.avp.entities.mob.EntityPredalien;
+import org.avp.entities.mob.EntityQueen;
 import org.avp.entities.mob.EntityRunnerDrone;
 import org.avp.entities.mob.EntitySpaceJockey;
 import org.avp.entities.mob.EntitySpitter;
 import org.avp.entities.mob.EntityUltramorph;
 import org.avp.entities.mob.EntityYautja;
 import org.avp.entities.mob.EntityYautjaBerserker;
+
+import com.arisux.mdxlib.lib.world.entity.Entities;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -25,13 +28,15 @@ import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 
 public class Embryo implements Cloneable
 {
     public static final ArrayList<Embryo> registeredTypes = new ArrayList<Embryo>();
-    public static int                     nextAvailableId = 1;
+    private static int                    nextAvailableId = 1;
 
     public static final Embryo            STANDARD        = new Embryo(EntityChestburster.class, EntityDrone.class, EntityLiving.class);
+    public static final Embryo            QUEEN           = new Embryo(EntityChestburster.class, EntityQueen.class, EntityLiving.class).setGestationPeriod(10 * 60 * 20);
 
     static
     {
@@ -45,16 +50,17 @@ public class Embryo implements Cloneable
     private int                         id;
     private int                         age;
     private int                         gestationPeriod;
-    private Class<? extends INascentic> nascentic;
+    private Class<? extends INascentic> nascenticType;
     private Class<? extends Entity>     result;
     private Class<? extends Entity>[]   hosts;
+    private INascentic                  nascenticOrganism;
 
-    public Embryo(Class<?> nascentic, Class<?> result, Class<?>... hosts)
+    public Embryo(Class<?> nascenticType, Class<?> result, Class<?>... hosts)
     {
-        this.nascentic = (Class<? extends INascentic>) nascentic;
+        this.nascenticType = (Class<? extends INascentic>) nascenticType;
         this.result = (Class<? extends Entity>) result;
         this.hosts = (Class<? extends Entity>[]) hosts;
-        this.gestationPeriod = 1000;
+        this.gestationPeriod = 6000;
     }
 
     public Embryo register()
@@ -64,9 +70,14 @@ public class Embryo implements Cloneable
         return this;
     }
 
-    public void tick(Organism extendedEntity)
+    public void grow(Organism host)
     {
         this.age++;
+
+        if (this.getNascenticOrganism() != null)
+        {
+            this.getNascenticOrganism().grow(host.getEntity());
+        }
     }
 
     /**
@@ -97,15 +108,25 @@ public class Embryo implements Cloneable
         this.gestationPeriod = gestationPeriod;
         return this;
     }
-    
+
     public Class<? extends Entity> getResultingOrganism()
     {
         return result;
     }
 
-    public Class<? extends INascentic> getNasenticOrganism()
+    public INascentic createNasenticOrganism(World world)
     {
-        return nascentic;
+        if (this.nascenticOrganism == null)
+        {
+            return this.nascenticOrganism = (INascentic) Entities.constructEntity(world, (Class<? extends Entity>) this.nascenticType);
+        }
+
+        return this.nascenticOrganism;
+    }
+
+    public INascentic getNascenticOrganism()
+    {
+        return nascenticOrganism;
     }
 
     public Class<?>[] getHosts()
@@ -130,7 +151,7 @@ public class Embryo implements Cloneable
         {
             try
             {
-                Embryo embryo = (Embryo) get(id).clone();
+                Embryo embryo = (Embryo) fromId(id).clone();
                 embryo.age = nbt.getInteger("Age");
 
                 return embryo;
@@ -144,7 +165,7 @@ public class Embryo implements Cloneable
         return null;
     }
 
-    public static Embryo get(int id)
+    public static Embryo fromId(int id)
     {
         for (Embryo embryo : registeredTypes)
         {
@@ -164,13 +185,13 @@ public class Embryo implements Cloneable
         return STANDARD;
     }
 
-    public static Embryo getMappingFromHost(Class<? extends EntityLivingBase> host)
+    public static Embryo createFromHost(EntityLivingBase host)
     {
         for (Embryo embryo : registeredTypes)
         {
             for (Class c : embryo.hosts)
             {
-                if (c == host)
+                if (c == host.getClass())
                 {
                     try
                     {
@@ -180,35 +201,6 @@ public class Embryo implements Cloneable
                     {
                         e.printStackTrace();
                     }
-                }
-            }
-        }
-
-        try
-        {
-            return (Embryo) STANDARD.clone();
-        }
-        catch (CloneNotSupportedException e)
-        {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    public static Embryo getMappingFromResult(Class<? extends EntityLivingBase> result)
-    {
-        for (Embryo embryo : registeredTypes)
-        {
-            if (embryo.result == result)
-            {
-                try
-                {
-                    return (Embryo) embryo.clone();
-                }
-                catch (CloneNotSupportedException e)
-                {
-                    e.printStackTrace();
                 }
             }
         }

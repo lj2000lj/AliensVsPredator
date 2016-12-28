@@ -6,7 +6,6 @@ import java.util.Collections;
 import org.avp.api.parasitoidic.IHost;
 import org.avp.api.parasitoidic.IParasitoid;
 import org.avp.entities.extended.Organism;
-import org.avp.util.Embryo;
 
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
@@ -255,9 +254,9 @@ public class EntityParasitoid extends EntitySpeciesAlien implements IMob, IParas
     @Override
     public void implantEmbryo(EntityLivingBase living)
     {
-        Organism extendedLiving = (Organism) living.getExtendedProperties(Organism.IDENTIFIER);
-        extendedLiving.setEmbryo(Embryo.getMappingFromHost(extendedLiving.getEntity().getClass()));
-        extendedLiving.syncWithClients();
+        Organism organism = (Organism) living.getExtendedProperties(Organism.IDENTIFIER);
+        organism.impregnate();
+        organism.syncWithClients();
         this.setFertility(false);
     }
 

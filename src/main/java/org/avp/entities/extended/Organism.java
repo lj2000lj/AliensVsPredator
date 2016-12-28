@@ -1,12 +1,16 @@
 package org.avp.entities.extended;
 
 import org.avp.AliensVsPredator;
+import org.avp.entities.mob.EntitySpeciesAlien;
 import org.avp.packets.client.OrganismClientSync;
 import org.avp.packets.server.OrganismServerSync;
 import org.avp.util.Embryo;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
@@ -33,7 +37,7 @@ public class Organism implements IExtendedEntityProperties
     {
         this.embryo = null;
     }
-
+    
     @Override
     public void saveNBTData(NBTTagCompound nbt)
     {
@@ -63,6 +67,14 @@ public class Organism implements IExtendedEntityProperties
     {
         AliensVsPredator.network().sendToServer(new OrganismServerSync(this.getEntity().getEntityId(), this.asCompoundTag()));
     }
+    
+    public void onTick(World world)
+    {
+        if (this.hasEmbryo() && world.getWorldTime() % 60 == 0)
+        {
+            this.syncWithClients();
+        }
+    }
 
     public EntityLivingBase getEntity()
     {
@@ -78,14 +90,55 @@ public class Organism implements IExtendedEntityProperties
     {
         return this.embryo;
     }
+    
+    public void impregnate()
+    {
+        this.impregnate(Embryo.createFromHost(this.living));
+    }
 
-    public void setEmbryo(Embryo embryo)
+    public void impregnate(Embryo embryo)
     {
         this.embryo = embryo;
     }
 
     public void removeEmbryo()
     {
-        this.setEmbryo(null);
+        this.embryo = null;
+    }
+
+    public void gestate()
+    {
+        if (this.getEntity() != null)
+        {
+            this.getEmbryo().createNasenticOrganism(this.getEntity().worldObj);
+            this.getEmbryo().grow(this);
+        }
+    }
+
+    public void heal()
+    {
+        living.setHealth(living.getMaxHealth());
+
+        if (!living.worldObj.isRemote)
+        {
+            living.curePotionEffects(new ItemStack(Items.milk_bucket, 1));
+            living.getActivePotionEffects().clear();
+        }
+
+        if (this.hasEmbryo())
+        {
+            this.removeEmbryo();
+        }
+
+        if (living.riddenByEntity != null && living.riddenByEntity instanceof EntitySpeciesAlien)
+        {
+            living.riddenByEntity.setDead();
+        }
+
+        if (living instanceof EntityPlayer)
+        {
+            EntityPlayer player = (EntityPlayer) living;
+            player.getFoodStats().setFoodLevel(20);
+        }        
     }
 }
