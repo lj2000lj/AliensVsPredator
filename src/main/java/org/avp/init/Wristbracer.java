@@ -1,4 +1,4 @@
-package org.avp.api;
+package org.avp.init;
 
 import java.util.HashMap;
 
@@ -15,10 +15,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class WristbracerAPI implements IInitEvent
+public class Wristbracer implements IInitEvent
 {
     private HashMap<String, IWristbracerAction> registeredCombos = new HashMap<String, IWristbracerAction>();
-    public static final WristbracerAPI instance = new WristbracerAPI();
+    public static final Wristbracer instance = new Wristbracer();
 
     public static interface IWristbracerAction
     {

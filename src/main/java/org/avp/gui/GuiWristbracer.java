@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.avp.AliensVsPredator;
-import org.avp.api.WristbracerAPI;
+import org.avp.init.Wristbracer;
 import org.avp.inventory.container.ContainerWristbracer;
 import org.lwjgl.opengl.GL11;
 
@@ -102,11 +102,11 @@ public class GuiWristbracer extends GuiContainer
             drawYautjaDigit(this.displays.get(button), guiLeft + 13 + 27 * (x1 - 1), guiTop + 49);
         }
 
-        String combonation = WristbracerAPI.instance.getComboFromDisplays(displays.get(this.buttonList.get(0)), displays.get(this.buttonList.get(1)), displays.get(this.buttonList.get(2)), displays.get(this.buttonList.get(3)), displays.get(this.buttonList.get(4)), displays.get(this.buttonList.get(5)));
+        String combonation = Wristbracer.instance.getComboFromDisplays(displays.get(this.buttonList.get(0)), displays.get(this.buttonList.get(1)), displays.get(this.buttonList.get(2)), displays.get(this.buttonList.get(3)), displays.get(this.buttonList.get(4)), displays.get(this.buttonList.get(5)));
 
-        if (WristbracerAPI.instance.isComboValid(combonation))
+        if (Wristbracer.instance.isComboValid(combonation))
         {
-            WristbracerAPI.instance.getActionForCombo(combonation).actionPerformed(combonation, container);
+            Wristbracer.instance.getActionForCombo(combonation).actionPerformed(combonation, container);
         }
     }
 

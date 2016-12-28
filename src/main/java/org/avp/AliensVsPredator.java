@@ -1,9 +1,9 @@
 /** AliensVsPredator Minecraft Mod - Copyright (C) 2012-2017 Arisux Technology Group **/
 package org.avp;
 
-import org.avp.api.AssemblerAPI;
-import org.avp.api.WristbracerAPI;
 import org.avp.event.HiveHandler;
+import org.avp.init.Assembler;
+import org.avp.init.Wristbracer;
 
 import com.arisux.mdxlib.MDX;
 import com.arisux.mdxlib.lib.game.Game;
@@ -146,15 +146,15 @@ public class AliensVsPredator implements IMod
         return PlayerModeHandler.instance;
     }
 
-    public static AssemblerAPI assembler()
+    public static Assembler assembler()
     {
-        return AssemblerAPI.instance;
+        return Assembler.instance;
     }
 
     @SideOnly(Side.CLIENT)
-    public static WristbracerAPI wristbracer()
+    public static Wristbracer wristbracer()
     {
-        return WristbracerAPI.instance;
+        return Wristbracer.instance;
     }
 
     public static Schematics schematics()

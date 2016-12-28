@@ -1,12 +1,14 @@
 package org.avp.entities.mob;
 
 import org.avp.Sounds;
+import org.avp.api.parasitoidic.IMaturable;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.world.World;
 
-public class EntityPraetorian extends EntityXenomorph
+public class EntityPraetorian extends EntityXenomorph implements IMaturable
 {
     public EntityPraetorian(World world)
     {
@@ -58,5 +60,23 @@ public class EntityPraetorian extends EntityXenomorph
     public void onUpdate()
     {
         super.onUpdate();
+    }
+
+    @Override
+    public Class<? extends Entity> getMatureState()
+    {
+        return EntityQueen.class;
+    }
+
+    @Override
+    public int getMaturityLevel()
+    {
+        return 4096;
+    }
+
+    @Override
+    public int getMaturityTime()
+    {
+        return (30 * 60) * 20;
     }
 }

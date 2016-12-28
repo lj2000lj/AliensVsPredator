@@ -2,15 +2,18 @@ package org.avp.entities.mob;
 
 import org.avp.DamageSources;
 import org.avp.Sounds;
+import org.avp.api.parasitoidic.IMaturable;
+import org.avp.api.parasitoidic.INascentic;
+import org.avp.api.parasitoidic.IRoyalOrganism;
 import org.avp.entities.extended.Organism;
-import org.avp.util.Embryo;
-import org.avp.util.EvolutionType;
 
 import com.arisux.mdxlib.lib.game.Game;
 import com.arisux.mdxlib.lib.world.entity.Entities;
 
+import cpw.mods.fml.common.registry.EntityRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
@@ -26,15 +29,15 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
-public class EntityChestburster extends EntitySpeciesAlien implements IMob
+public class EntityChestburster extends EntitySpeciesAlien implements IMob, INascentic
 {
-    protected Minecraft mc;
-    private int         parasiteType;
+    protected Minecraft             mc;
+    private Class<? extends Entity> matureState;
 
     public EntityChestburster(World world)
     {
         super(world);
-
+        this.matureState = EntityDrone.class;
         this.setSize(1.0F, 0.4F);
         this.experienceValue = 16;
         this.getNavigator().setCanSwim(true);
@@ -86,58 +89,52 @@ public class EntityChestburster extends EntitySpeciesAlien implements IMob
     }
 
     @Override
-    protected void tickEvolution()
+    public boolean isReadyToMature(IRoyalOrganism jellyProducer)
     {
-        if (!this.worldObj.isRemote)
+        IMaturable maturable = (IMaturable) this;
+        IRoyalOrganism ro = (IRoyalOrganism) this;
+        return this.ticksExisted >= maturable.getMaturityTime() || ro.getJellyLevel() >= maturable.getMaturityLevel();
+    }
+
+    @Override
+    public void mature()
+    {
+        if (this.getJellyLevel() >= this.getMaturityLevel() && this.ticksExisted < this.getMaturityTime())
         {
-            if (this.worldObj.getWorldTime() % 40 == 0)
-            {
-                EvolutionType evolution = EvolutionType.getEvolutionMappingFor(this.getClass());
-
-                if (evolution != null)
-                {
-                    if (this.ticksExisted >= this.getMaxParasiteAge() || this.getJellyLevel() >= evolution.getLevel())
-                    {
-                        if (this.getJellyLevel() >= evolution.getLevel() && this.ticksExisted < this.getMaxParasiteAge())
-                        {
-                            this.setJellyLevel(this.getJellyLevel() - evolution.getLevel());
-                        }
-
-                        EntityXenomorph xeno = (EntityXenomorph) Entities.constructEntity(this.worldObj, this.getGrownParasiteType());
-                        
-                        if (xeno != null)
-                        {
-                            xeno.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
-                            this.worldObj.spawnEntityInWorld(xeno);
-
-                            for (int particleCount = 0; particleCount < 8; ++particleCount)
-                            {
-                                this.worldObj.spawnParticle("snowballpoof", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
-                            }
-
-                        }
-                        else if (Game.isDevEnvironment())
-                        {
-                            System.out.println("ERROR: NullPointerException during chestburster evolve state.");
-                            System.out.println("INT TYPE: " + this.parasiteType);
-                            System.out.println("CLASS TYPE: " + this.getGrownParasiteType());
-                            System.out.println("EMBRYO TYPE: " + Embryo.get(this.parasiteType));
-                        }
-                        this.setDead();
-                    }
-                }
-            }
+            this.setJellyLevel(this.getJellyLevel() - this.getMaturityLevel());
         }
+
+        EntityXenomorph matureState = (EntityXenomorph) Entities.constructEntity(this.worldObj, this.getMatureState());
+
+        if (matureState != null)
+        {
+            matureState.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
+            this.worldObj.spawnEntityInWorld(matureState);
+
+            for (int particleCount = 0; particleCount < 8; ++particleCount)
+            {
+                this.worldObj.spawnParticle("snowballpoof", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+            }
+
+        }
+        else if (Game.isDevEnvironment())
+        {
+            System.out.println("ERROR: NullPointerException during chestburster evolve state.");
+            // System.out.println("INT TYPE: " + this.parasiteType);
+            System.out.println("MATURE STATE: " + this.getMatureState());
+            // System.out.println("EMBRYO TYPE: " + Embryo.get(this.parasiteType));
+        }
+        // TODO: Create a shell of the original entity.
+        this.setDead();
     }
 
     protected Entity findPlayerToAttack(EntityPlayer entityplayer)
     {
-        float f = this.getBrightness(1.0F);
+        float brightness = this.getBrightness(1.0F);
 
-        if (f < 0.5F)
+        if (brightness < 0.5F)
         {
-            double d = 40.0D;
-            return this.worldObj.getClosestVulnerablePlayerToEntity(this, d);
+            return this.worldObj.getClosestVulnerablePlayerToEntity(this, 32.0D);
         }
         else
         {
@@ -187,52 +184,79 @@ public class EntityChestburster extends EntitySpeciesAlien implements IMob
     }
 
     @Override
-    public boolean isPotionApplicable(PotionEffect par1PotionEffect)
+    public boolean isPotionApplicable(PotionEffect potionEffect)
     {
-        return par1PotionEffect.getPotionID() == Potion.poison.id ? false : super.isPotionApplicable(par1PotionEffect);
-    }
-
-    public void setHostParasiteType(Embryo embryo)
-    {
-        this.parasiteType = embryo.getRegistrationId();
-    }
-
-    public Class<? extends Entity> getGrownParasiteType()
-    {
-        Embryo hostParasiteType = Embryo.get(this.parasiteType);
-        return hostParasiteType == null ? Embryo.STANDARD.getResult() : hostParasiteType.getResult();
+        return potionEffect.getPotionID() == Potion.poison.id ? false : super.isPotionApplicable(potionEffect);
     }
 
     @Override
     public void readEntityFromNBT(NBTTagCompound nbt)
     {
         super.readEntityFromNBT(nbt);
-        this.parasiteType = nbt.getInteger("parasiteType");
+
+        try
+        {
+            this.matureState = (Class<? extends Entity>) Class.forName(nbt.getString("MaturityState"));
+        }
+        catch (ClassNotFoundException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt)
     {
         super.writeEntityToNBT(nbt);
-        nbt.setInteger("parasiteType", this.parasiteType);
+        nbt.setString("MaturityState", this.matureState.getName());
     }
 
-    public int getMaxParasiteAge()
-    {
-        return 18000;
-    }
+    // public void setHostParasiteType(Embryo embryo)
+    // {
+    // this.parasiteType = embryo.getRegistrationId();
+    // }
 
-    public static void emergeFromHost(Organism organism)
-    {
-        EntityLivingBase host = organism.getEntity();
-        World world = host.worldObj;
-        EntityChestburster chestburster = new EntityChestburster(world);
+    // public Class<? extends Entity> getGrownParasiteType()
+    // {
+    // Embryo hostParasiteType = Embryo.get(this.parasiteType);
+    // return hostParasiteType == null ? Embryo.STANDARD.getResult() : hostParasiteType.getResult();
+    // }
 
-        chestburster.setHostParasiteType(organism.getEmbryo());
-        chestburster.setLocationAndAngles(host.posX, host.posY, host.posZ, 0.0F, 0.0F);
-        world.spawnEntityInWorld(chestburster);
-        organism.removeEmbryo();
+    // public void onTickInHost(EntityLivingBase host)
+
+    @Override
+    public void emerge(EntityLivingBase host)
+    {
+        Organism hostOrganism = (Organism) host.getExtendedProperties(Organism.IDENTIFIER);
+        this.setLocationAndAngles(host.posX, host.posY, host.posZ, 0.0F, 0.0F);
+        host.worldObj.spawnEntityInWorld(this);
+        hostOrganism.removeEmbryo();
         host.getActivePotionEffects().clear();
-        host.attackEntityFrom(DamageSources.causeChestbursterDamage(chestburster, host), 100000F);
+        host.attackEntityFrom(DamageSources.causeChestbursterDamage(this, host), 100000F);
+    }
+
+    @Override
+    public Class<? extends Entity> getMatureState()
+    {
+        return this.matureState;
+    }
+
+    @Override
+    public INascentic setMatureState(Class<? extends Entity> state)
+    {
+        this.matureState = state;
+        return this;
+    }
+
+    @Override
+    public int getMaturityTime()
+    {
+        return (15 * 60) * 20;
+    }
+
+    @Override
+    public int getMaturityLevel()
+    {
+        return 32;
     }
 }

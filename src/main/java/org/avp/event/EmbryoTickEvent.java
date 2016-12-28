@@ -1,7 +1,10 @@
 package org.avp.event;
 
+import org.avp.api.parasitoidic.INascentic;
 import org.avp.entities.extended.Organism;
 import org.avp.entities.mob.EntityChestburster;
+
+import com.arisux.mdxlib.lib.world.entity.Entities;
 
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -25,42 +28,68 @@ public class EmbryoTickEvent
 
             if (entity != null && entity instanceof EntityLivingBase)
             {
-                EntityLivingBase living = (EntityLivingBase) entity;
+                EntityLivingBase host = (EntityLivingBase) entity;
                 EntityPlayer player = null;
 
-                if (living instanceof EntityPlayer)
+                if (host instanceof EntityPlayer)
                 {
-                    player = (EntityPlayer) living;
+                    player = (EntityPlayer) host;
                 }
-                
-                Organism organism = (Organism) living.getExtendedProperties(Organism.IDENTIFIER);
 
-                if (organism.hasEmbryo())
+                Organism hostOrganism = (Organism) host.getExtendedProperties(Organism.IDENTIFIER);
+
+                if (hostOrganism.hasEmbryo())
                 {
-                    if (living instanceof EntityPlayer && !((EntityPlayer) living).capabilities.isCreativeMode || !(living instanceof EntityPlayer))
+                    if (host instanceof EntityPlayer && !((EntityPlayer) host).capabilities.isCreativeMode || !(host instanceof EntityPlayer))
                     {
-                        organism.getEmbryo().tick(organism);
+                        hostOrganism.getEmbryo().tick(hostOrganism);
                     }
 
                     if (event.world.getWorldTime() % 60 == 0)
                     {
-                        organism.syncWithClients();
+                        hostOrganism.syncWithClients();
                     }
 
-                    if (!entity.isDead && organism.getEmbryo() != null)
+                    if (!entity.isDead && hostOrganism.getEmbryo() != null)
                     {
-                        if (organism.getEmbryo().getAge() >= organism.getEmbryo().getGestationPeriod())
+                        if (hostOrganism.getEmbryo().getAge() >= hostOrganism.getEmbryo().getGestationPeriod())
                         {
-                            EntityChestburster.emergeFromHost(organism);
+                            Class<? extends INascentic> nascenticOrganismType = hostOrganism.getEmbryo().getNasenticOrganism();
+                            Entity nascenticEntity = Entities.constructEntity(event.world, (Class<? extends Entity>) nascenticOrganismType);
+                            INascentic nascenticOrganism = (INascentic) nascenticEntity;
+
+                            // for (Object o : EntityList.stringToClassMapping.values())
+                            // {
+                            // if (o instanceof Class)
+                            // {
+                            // Class<? extends Entity> entityClass = (Class<? extends Entity>) o;
+                            //
+                            // if (host.getClass() == entityClass)
+                            // {
+                            //
+                            // }
+                            // }
+                            // }
+
+                            if (nascenticOrganism != null)
+                            {
+                                nascenticOrganism.setMatureState(hostOrganism.getEmbryo().getResultingOrganism());
+                                nascenticOrganism.emerge(host);
+                            }
+                            else
+                            {
+                                System.out.println("embryo: " +  hostOrganism.getEmbryo());
+                                System.out.println("nascenticOrganismType: " + nascenticOrganismType);
+                            }
                         }
 
-                        if (organism.getEmbryo() != null && organism.getEmbryo().getAge() <= organism.getEmbryo().getGestationPeriod())
+                        if (hostOrganism.getEmbryo() != null && hostOrganism.getEmbryo().getAge() <= hostOrganism.getEmbryo().getGestationPeriod())
                         {
                             if (player == null || player != null && !player.capabilities.isCreativeMode)
                             {
-                                living.addPotionEffect(new PotionEffect(Potion.blindness.getId(), organism.getEmbryo().getGestationPeriod() / 2));
+                                host.addPotionEffect(new PotionEffect(Potion.blindness.getId(), hostOrganism.getEmbryo().getGestationPeriod() / 2));
                             }
-                            
+
                             if (player != null && player.capabilities.isCreativeMode)
                             {
                                 player.clearActivePotions();

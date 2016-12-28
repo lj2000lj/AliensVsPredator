@@ -5,10 +5,11 @@ import java.util.UUID;
 
 import org.avp.AliensVsPredator;
 import org.avp.DamageSources;
+import org.avp.api.parasitoidic.IMaturable;
+import org.avp.api.parasitoidic.IRoyalOrganism;
 import org.avp.entities.EntityAcidPool;
 import org.avp.event.HiveHandler;
 import org.avp.packets.client.PacketJellyLevelUpdate;
-import org.avp.util.EvolutionType;
 import org.avp.util.XenomorphHive;
 
 import com.arisux.mdxlib.lib.world.CoordData;
@@ -26,7 +27,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
-public abstract class EntitySpeciesAlien extends EntityMob implements IMob
+public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IRoyalOrganism
 {
     protected XenomorphHive hive;
     private UUID            signature;
@@ -94,24 +95,46 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob
         }
     }
 
-    protected void tickEvolution()
-    {
-        if (this.worldObj.getWorldTime() % 10 == 0)
-        {
-            EvolutionType evolution = EvolutionType.getEvolutionMappingFor(this.getClass());
+    // protected void tickEvolution()
+    // {
+    // if (this.worldObj.getWorldTime() % 10 == 0)
+    // {
+    // EvolutionType evolution = EvolutionType.getEvolutionMappingFor(this.getClass());
+    //
+    // if (!this.worldObj.isRemote && evolution != null && evolution.getEvolution() != null && evolution.getLevel() != 0 && this.jellyLevel >= evolution.getLevel())
+    // {
+    // EntitySpeciesAlien alien = (EntitySpeciesAlien) Entities.constructEntity(this.worldObj, evolution.getEvolution());
+    // alien.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
+    // this.worldObj.spawnEntityInWorld(alien);
+    // NBTTagCompound tag = new NBTTagCompound();
+    // this.writeEntityToNBT(tag);
+    // alien.readEntityFromNBT(tag);
+    // alien.setJellyLevel(this.getJellyLevel() - evolution.getLevel());
+    // this.setDead();
+    // }
+    // }
+    // }
 
-            if (!this.worldObj.isRemote && evolution != null && evolution.getEvolution() != null && evolution.getLevel() != 0 && this.jellyLevel >= evolution.getLevel())
-            {
-                EntitySpeciesAlien alien = (EntitySpeciesAlien) Entities.constructEntity(this.worldObj, evolution.getEvolution());
-                alien.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
-                this.worldObj.spawnEntityInWorld(alien);
-                NBTTagCompound tag = new NBTTagCompound();
-                this.writeEntityToNBT(tag);
-                alien.readEntityFromNBT(tag);
-                alien.setJellyLevel(this.getJellyLevel() - evolution.getLevel());
-                this.setDead();
-            }
-        }
+    public boolean isReadyToMature(IRoyalOrganism jellyProducer)
+    {
+        IMaturable maturable = (IMaturable) this;
+        IRoyalOrganism ro = (IRoyalOrganism) this;
+        return maturable.getMatureState() != null && maturable.getMaturityLevel() > 0 && ro.getJellyLevel() >= maturable.getMaturityLevel();
+    }
+
+    public void mature()
+    {
+        IMaturable maturable = (IMaturable) this;
+        EntitySpeciesAlien alien = (EntitySpeciesAlien) Entities.constructEntity(this.worldObj, maturable.getMatureState());
+        NBTTagCompound tag = new NBTTagCompound();
+
+        alien.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
+        this.worldObj.spawnEntityInWorld(alien);
+        this.writeEntityToNBT(tag);
+        alien.readEntityFromNBT(tag);
+        alien.setJellyLevel(this.getJellyLevel() - maturable.getMaturityLevel());
+        //TODO: Create a shell of the original entity.
+        this.setDead();
     }
 
     @SuppressWarnings("unchecked")
@@ -171,26 +194,55 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob
     {
         super.onUpdate();
 
-        if (this.worldObj.getWorldTime() % 40 == 0)
+        if (!this.worldObj.isRemote)
         {
-            if (!this.worldObj.isRemote)
+            if (this.worldObj.getWorldTime() % 40 == 0)
             {
-                AliensVsPredator.network().sendToAll(new PacketJellyLevelUpdate(jellyLevel, Integer.valueOf(this.getEntityId())));
+                AliensVsPredator.network().sendToAll(new PacketJellyLevelUpdate(jellyLevel, this));
             }
         }
 
-        this.generateJelly();
-        this.tickEvolution();
+        if (this.canProduceJelly())
+        {
+            this.produceJelly();
+        }
+
+        if (this instanceof IMaturable)
+        {
+            IMaturable maturable = (IMaturable) this;
+
+            if (!this.worldObj.isRemote)
+            {
+                if (this.worldObj.getWorldTime() % 20 == 0)
+                {
+                    if (maturable.isReadyToMature(this))
+                    {
+                        maturable.mature();
+                    }
+                }
+            }
+        }
+
         this.identifyHive();
         this.findRoyalJelly();
     }
     
-    protected void generateJelly()
+    @Override
+    public boolean canProduceJelly()
     {
-        if (this.worldObj.getWorldTime() % (20 * 8) == 0)
-        {
-            this.jellyLevel++;
-        }
+        return this.worldObj.getWorldTime() % this.getJellyProductionRate() == 0;
+    }
+
+    @Override
+    public int getJellyProductionRate()
+    {
+        return 8 * 20;
+    }
+
+    @Override
+    public void produceJelly()
+    {
+        this.jellyLevel++;
     }
 
     public XenomorphHive getHive()
@@ -214,14 +266,16 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob
         }
     }
 
+    @Override
     public int getJellyLevel()
     {
         return this.jellyLevel;
     }
 
-    public void setJellyLevel(int jellyLevel)
+    @Override
+    public void setJellyLevel(int level)
     {
-        this.jellyLevel = jellyLevel;
+        this.jellyLevel = level;
     }
 
     @Override

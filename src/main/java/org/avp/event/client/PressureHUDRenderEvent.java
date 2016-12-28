@@ -273,8 +273,8 @@ public class PressureHUDRenderEvent
 
                                 fontrenderer.drawString("Age: " + entityLiving.getAge(), subMenuX + subMenuPadding, subMenuStartY + (curEntry++ * subEntrySpacing), 0x666666);
 
-                                if (!(entity instanceof EntitySpeciesAlien) && extendedLiving.getEmbryo() != null)
-                                    fontrenderer.drawString("Parasite Type: " + extendedLiving.getEmbryo().getResult().getSimpleName(), subMenuX + subMenuPadding, subMenuStartY + (curEntry++ * subEntrySpacing), 0x666666);
+//                                if (!(entity instanceof EntitySpeciesAlien) && extendedLiving.getEmbryo() != null)
+//                                    fontrenderer.drawString("Parasite Type: " + extendedLiving.getEmbryo().getResult().getSimpleName(), subMenuX + subMenuPadding, subMenuStartY + (curEntry++ * subEntrySpacing), 0x666666);
                             }
 
                             if (entity instanceof EntitySpeciesAlien)
@@ -282,10 +282,10 @@ public class PressureHUDRenderEvent
                                 fontrenderer.drawString("Jelly Level: " + ((EntitySpeciesAlien) entity).getJellyLevel(), subMenuX + subMenuPadding, subMenuStartY + (curEntry++ * subEntrySpacing), 0x666666);
                             }
 
-                            if (entity instanceof EntityChestburster)
-                            {
-                                fontrenderer.drawString("Parasite Age: " + ((EntityChestburster) entity).ticksExisted + "/" + ((EntityChestburster) entity).getMaxParasiteAge(), subMenuX + subMenuPadding, subMenuStartY + (curEntry++ * subEntrySpacing), 0x666666);
-                            }
+//                            if (entity instanceof EntityChestburster)
+//                            {
+//                                fontrenderer.drawString("Parasite Age: " + ((EntityChestburster) entity).ticksExisted + "/" + ((EntityChestburster) entity).getMaxParasiteAge(), subMenuX + subMenuPadding, subMenuStartY + (curEntry++ * subEntrySpacing), 0x666666);
+//                            }
 
                             if (entity instanceof EntityMarine)
                             {

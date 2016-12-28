@@ -3,8 +3,8 @@ package org.avp.gui;
 import java.util.ArrayList;
 
 import org.avp.AliensVsPredator;
-import org.avp.api.AssemblerAPI.AssemblerSchematic;
 import org.avp.entities.tile.TileEntityAssembler;
+import org.avp.init.Assembler.AssemblerSchematic;
 import org.avp.packets.server.PacketAssembleCurrentSchematic;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;

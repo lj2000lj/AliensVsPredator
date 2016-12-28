@@ -1,9 +1,12 @@
 package org.avp.entities.mob;
 
+import org.avp.api.parasitoidic.IMaturable;
+
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.world.World;
 
-public class EntityRunnerWarrior extends EntityWarrior
+public class EntityRunnerWarrior extends EntityWarrior implements IMaturable
 {
     public EntityRunnerWarrior(World world)
     {
@@ -18,5 +21,11 @@ public class EntityRunnerWarrior extends EntityWarrior
 
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(40.0D);
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.6D);
+    }
+    
+    @Override
+    public Class<? extends Entity> getMatureState()
+    {
+        return EntityCrusher.class;
     }
 }

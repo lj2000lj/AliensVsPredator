@@ -1,13 +1,15 @@
 package org.avp.entities.mob;
 
 import org.avp.Sounds;
+import org.avp.api.parasitoidic.IMaturable;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.world.World;
 
-public class EntityWarrior extends EntityXenomorph implements IMob
+public class EntityWarrior extends EntityXenomorph implements IMob, IMaturable
 {
     public EntityWarrior(World world)
     {
@@ -51,5 +53,23 @@ public class EntityWarrior extends EntityXenomorph implements IMob
     protected String getDeathSound()
     {
         return Sounds.SOUND_WARRIOR_DEATH.getKey();
+    }
+
+    @Override
+    public Class<? extends Entity> getMatureState()
+    {
+        return EntityPraetorian.class;
+    }
+
+    @Override
+    public int getMaturityLevel()
+    {
+        return 1024;
+    }
+
+    @Override
+    public int getMaturityTime()
+    {
+        return (15 * 60) * 20;
     }
 }

@@ -1,8 +1,8 @@
 package org.avp.packets.server;
 
 import org.avp.AliensVsPredator;
-import org.avp.api.AssemblerAPI;
-import org.avp.api.AssemblerAPI.AssemblerSchematic;
+import org.avp.init.Assembler;
+import org.avp.init.Assembler.AssemblerSchematic;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
@@ -57,7 +57,7 @@ public class PacketAssembleCurrentSchematic implements IMessage, IMessageHandler
             {
                 assembled = i;
                 
-                if (!AssemblerAPI.instance.assembleSchematicAsPlayer(schematic, player))
+                if (!Assembler.instance.assembleSchematicAsPlayer(schematic, player))
                 {
                     assembled = i;
                     break;

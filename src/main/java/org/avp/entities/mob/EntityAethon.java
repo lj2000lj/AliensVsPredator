@@ -1,8 +1,8 @@
 package org.avp.entities.mob;
 
 import org.avp.EntityItemDrops;
+import org.avp.api.parasitoidic.IHost;
 import org.avp.entities.EntityLiquidPool;
-import org.avp.util.IParasiticHost;
 
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
@@ -25,7 +25,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class EntityAethon extends EntityMob implements IMob, IParasiticHost
+public class EntityAethon extends EntityMob implements IMob, IHost
 {
     public static final int FLYING_DATAWATCHER_ID = 19;
 

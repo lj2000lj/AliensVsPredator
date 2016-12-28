@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.avp.AliensVsPredator;
 import org.avp.Sounds;
+import org.avp.api.parasitoidic.IMaturable;
 import org.avp.block.BlockHiveResin;
 import org.avp.entities.tile.TileEntityHiveResin;
 
@@ -18,9 +19,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
-public class EntityDrone extends EntityXenomorph
+public class EntityDrone extends EntityXenomorph implements IMaturable
 {
-    public int  mobType;
+    public int mobType;
 
     public EntityDrone(World world)
     {
@@ -31,7 +32,7 @@ public class EntityDrone extends EntityXenomorph
         this.mobType = this.rand.nextInt(2);
         this.getNavigator().setCanSwim(true);
         this.getNavigator().setAvoidsWater(true);
-        
+
         this.addStandardXenomorphAISet();
     }
 
@@ -129,7 +130,7 @@ public class EntityDrone extends EntityXenomorph
                                 TileEntityHiveResin resin = (TileEntityHiveResin) tileEntity;
                                 resin.setHiveSignature(this.getHive().getUniqueIdentifier());
                                 resin.setBlockCovering(block, 0);
-                                this.worldObj.setBlockMetadataWithNotify((int)coord.x, (int)coord.y, (int)coord.z, meta, 3);
+                                this.worldObj.setBlockMetadataWithNotify((int) coord.x, (int) coord.y, (int) coord.z, meta, 3);
                                 this.hive.addResin(resin);
                             }
 
@@ -178,5 +179,23 @@ public class EntityDrone extends EntityXenomorph
     public void writeEntityToNBT(NBTTagCompound nbt)
     {
         super.writeEntityToNBT(nbt);
+    }
+
+    @Override
+    public Class<? extends Entity> getMatureState()
+    {
+        return EntityWarrior.class;
+    }
+
+    @Override
+    public int getMaturityLevel()
+    {
+        return 512;
+    }
+
+    @Override
+    public int getMaturityTime()
+    {
+        return (15 * 60) * 20;
     }
 }

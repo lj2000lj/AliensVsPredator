@@ -1,7 +1,7 @@
 package org.avp.entities.mob;
 
 import org.avp.Sounds;
-import org.avp.util.IParasitoid;
+import org.avp.api.parasitoidic.IParasitoid;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;

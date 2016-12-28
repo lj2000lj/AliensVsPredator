@@ -1,4 +1,4 @@
-package org.avp.util;
+package org.avp.api.parasitoidic;
 
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;

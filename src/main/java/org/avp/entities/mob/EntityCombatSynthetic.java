@@ -3,10 +3,10 @@ package org.avp.entities.mob;
 import org.avp.AliensVsPredator;
 import org.avp.EntityItemDrops;
 import org.avp.Sounds;
+import org.avp.api.parasitoidic.IHost;
 import org.avp.entities.EntityBullet;
 import org.avp.entities.EntityLiquidLatexPool;
 import org.avp.entities.EntityLiquidPool;
-import org.avp.util.IParasiticHost;
 
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
@@ -30,7 +30,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
-public class EntityCombatSynthetic extends EntityCreature implements IMob, IRangedAttackMob, IParasiticHost, IEntitySelector
+public class EntityCombatSynthetic extends EntityCreature implements IMob, IRangedAttackMob, IHost, IEntitySelector
 {
     private EntityAIBase aiRangedAttack;
     

@@ -1,4 +1,4 @@
-package org.avp.api;
+package org.avp.init;
 
 import java.util.ArrayList;
 
@@ -13,9 +13,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class AssemblerAPI implements IInitEvent
+public class Assembler implements IInitEvent
 {
-    public static final AssemblerAPI      instance             = new AssemblerAPI();
+    public static final Assembler      instance             = new Assembler();
     private ArrayList<AssemblerSchematic> registeredSchematics = new ArrayList<AssemblerSchematic>();
 
     public static class AssemblerSchematic

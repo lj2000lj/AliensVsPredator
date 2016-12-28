@@ -3,6 +3,7 @@ package org.avp.entities.mob;
 import java.util.ArrayList;
 
 import org.avp.Sounds;
+import org.avp.api.parasitoidic.IMaturable;
 import org.avp.entities.EntityAcidPool;
 
 import com.arisux.mdxlib.lib.world.CoordData;

@@ -1,20 +1,17 @@
 package org.avp.entities.mob;
 
-import java.util.Random;
-
-import org.avp.AliensVsPredator;
 import org.avp.Sounds;
+import org.avp.api.parasitoidic.IMaturable;
 
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class EntityCrusher extends EntityXenomorph
+public class EntityCrusher extends EntityPraetorian implements IMaturable
 {
-    public EntityCrusher(World var1)
+    public EntityCrusher(World world)
     {
-        super(var1);
+        super(world);
         this.jumpMovementFactor = 0.2F;
         this.experienceValue = 300;
         this.setSize(1.0F, 3.0F);

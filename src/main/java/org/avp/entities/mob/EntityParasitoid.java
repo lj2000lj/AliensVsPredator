@@ -3,10 +3,10 @@ package org.avp.entities.mob;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import org.avp.api.parasitoidic.IHost;
+import org.avp.api.parasitoidic.IParasitoid;
 import org.avp.entities.extended.Organism;
 import org.avp.util.Embryo;
-import org.avp.util.IParasiticHost;
-import org.avp.util.IParasitoid;
 
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
@@ -43,9 +43,9 @@ public class EntityParasitoid extends EntitySpeciesAlien implements IMob, IParas
                                                        {
                                                            Organism entityExt = (Organism) potentialTarget.getExtendedProperties(Organism.IDENTIFIER);
 
-                                                           if (potentialTarget instanceof IParasiticHost)
+                                                           if (potentialTarget instanceof IHost)
                                                            {
-                                                               IParasiticHost host = (IParasiticHost) potentialTarget;
+                                                               IHost host = (IHost) potentialTarget;
 
                                                                if (!host.canHostParasite() || !host.canParasiteAttach())
                                                                {
@@ -180,14 +180,11 @@ public class EntityParasitoid extends EntitySpeciesAlien implements IMob, IParas
             this.detachFromHost();
         }
     }
-
+    
     @Override
-    protected void generateJelly()
+    public boolean canProduceJelly()
     {
-        if (this.worldObj.getWorldTime() % (20 * 8) == 0 && this.isFertile() && this.jellyLevel <= 256)
-        {
-            this.jellyLevel++;
-        }
+        return this.worldObj.getWorldTime() % this.getJellyProductionRate() == 0 && this.isFertile() && this.jellyLevel <= 256;
     }
 
     @Override

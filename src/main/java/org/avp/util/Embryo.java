@@ -2,8 +2,10 @@ package org.avp.util;
 
 import java.util.ArrayList;
 
+import org.avp.api.parasitoidic.INascentic;
 import org.avp.entities.extended.Organism;
 import org.avp.entities.mob.EntityAqua;
+import org.avp.entities.mob.EntityChestburster;
 import org.avp.entities.mob.EntityDrone;
 import org.avp.entities.mob.EntityEngineer;
 import org.avp.entities.mob.EntityPredalien;
@@ -12,6 +14,7 @@ import org.avp.entities.mob.EntitySpaceJockey;
 import org.avp.entities.mob.EntitySpitter;
 import org.avp.entities.mob.EntityUltramorph;
 import org.avp.entities.mob.EntityYautja;
+import org.avp.entities.mob.EntityYautjaBerserker;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -28,27 +31,29 @@ public class Embryo implements Cloneable
     public static final ArrayList<Embryo> registeredTypes = new ArrayList<Embryo>();
     public static int                     nextAvailableId = 1;
 
-    public static final Embryo            STANDARD        = new Embryo(EntityDrone.class, EntityLiving.class);
+    public static final Embryo            STANDARD        = new Embryo(EntityChestburster.class, EntityDrone.class, EntityLiving.class);
 
     static
     {
-        new Embryo(EntitySpitter.class, EntityCreeper.class).register();
-        new Embryo(EntityAqua.class, EntitySquid.class).register();
-        new Embryo(EntityPredalien.class, EntityYautja.class).register();
-        new Embryo(EntityRunnerDrone.class, EntityCow.class, EntityHorse.class, EntityWolf.class).register();
-        new Embryo(EntityUltramorph.class, EntityEngineer.class, EntitySpaceJockey.class).register();
+        new Embryo(EntityChestburster.class, EntitySpitter.class, EntityCreeper.class).register();
+        new Embryo(EntityChestburster.class, EntityAqua.class, EntitySquid.class).register();
+        new Embryo(EntityChestburster.class, EntityPredalien.class, EntityYautja.class, EntityYautjaBerserker.class).register();
+        new Embryo(EntityChestburster.class, EntityRunnerDrone.class, EntityCow.class, EntityHorse.class, EntityWolf.class).register();
+        new Embryo(EntityChestburster.class, EntityUltramorph.class, EntityEngineer.class, EntitySpaceJockey.class).register();
     }
 
-    private int                       id;
-    private int                       age;
-    private int                       gestationPeriod;
-    private Class<? extends Entity>[] hosts;
-    private Class<? extends Entity>   result;
+    private int                         id;
+    private int                         age;
+    private int                         gestationPeriod;
+    private Class<? extends INascentic> nascentic;
+    private Class<? extends Entity>     result;
+    private Class<? extends Entity>[]   hosts;
 
-    public Embryo(Class<?> result, Class<?>... hosts)
+    public Embryo(Class<?> nascentic, Class<?> result, Class<?>... hosts)
     {
-        this.hosts = (Class<? extends Entity>[]) hosts;
+        this.nascentic = (Class<? extends INascentic>) nascentic;
         this.result = (Class<? extends Entity>) result;
+        this.hosts = (Class<? extends Entity>[]) hosts;
         this.gestationPeriod = 1000;
     }
 
@@ -92,10 +97,15 @@ public class Embryo implements Cloneable
         this.gestationPeriod = gestationPeriod;
         return this;
     }
-
-    public Class<? extends Entity> getResult()
+    
+    public Class<? extends Entity> getResultingOrganism()
     {
         return result;
+    }
+
+    public Class<? extends INascentic> getNasenticOrganism()
+    {
+        return nascentic;
     }
 
     public Class<?>[] getHosts()
