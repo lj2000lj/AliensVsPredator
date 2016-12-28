@@ -33,6 +33,7 @@ import org.avp.entities.mob.EntityAqua;
 import org.avp.entities.mob.EntityChestburster;
 import org.avp.entities.mob.EntityCombatSynthetic;
 import org.avp.entities.mob.EntityCrusher;
+import org.avp.entities.mob.EntityDeacon;
 import org.avp.entities.mob.EntityDeaconShark;
 import org.avp.entities.mob.EntityDrone;
 import org.avp.entities.mob.EntityEngineer;
@@ -40,10 +41,10 @@ import org.avp.entities.mob.EntityFacehugger;
 import org.avp.entities.mob.EntityGooMutant;
 import org.avp.entities.mob.EntityHammerpede;
 import org.avp.entities.mob.EntityMarine;
+import org.avp.entities.mob.EntityOctohugger;
 import org.avp.entities.mob.EntityOvamorph;
 import org.avp.entities.mob.EntityPraetorian;
 import org.avp.entities.mob.EntityPredalien;
-import org.avp.entities.mob.EntityDeacon;
 import org.avp.entities.mob.EntityQueen;
 import org.avp.entities.mob.EntityRoyalFacehugger;
 import org.avp.entities.mob.EntityRunnerDrone;
@@ -67,6 +68,7 @@ import org.avp.entities.mob.render.RenderFacehugger;
 import org.avp.entities.mob.render.RenderGooMutant;
 import org.avp.entities.mob.render.RenderHammerpede;
 import org.avp.entities.mob.render.RenderMarine;
+import org.avp.entities.mob.render.RenderOctohugger;
 import org.avp.entities.mob.render.RenderOvamorph;
 import org.avp.entities.mob.render.RenderPredalien;
 import org.avp.entities.mob.render.RenderQueen;
@@ -295,6 +297,7 @@ public class Renderers implements IPostInitEvent
         registerEntityRenderingHandler(EntityUltramorph.class,  new RenderXenomorph(AliensVsPredator.resources().models().ULTRAMORPH, 1.5F));
         registerEntityRenderingHandler(EntityGooMutant.class, new RenderGooMutant());
         registerEntityRenderingHandler(EntityAethon.class, new RenderAethon());
+        registerEntityRenderingHandler(EntityOctohugger.class, new RenderOctohugger());
     }
 
     private void registerStandardEntityRenderers()
