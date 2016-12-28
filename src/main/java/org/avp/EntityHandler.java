@@ -223,7 +223,7 @@ public class EntityHandler implements IInitEvent
 
             BiomeGenBase[] predatorBiomes = this.getFilteredBiomeArray(BiomeGenBase.birchForest, BiomeGenBase.birchForestHills, BiomeGenBase.desert, BiomeGenBase.desertHills, BiomeGenBase.extremeHills, BiomeGenBase.extremeHillsEdge, BiomeGenBase.extremeHillsPlus, BiomeGenBase.forest, BiomeGenBase.forestHills, BiomeGenBase.frozenOcean, BiomeGenBase.frozenRiver, BiomeGenBase.icePlains, BiomeGenBase.jungle, BiomeGenBase.jungleEdge, BiomeGenBase.jungleHills, BiomeGenBase.taiga, BiomeGenBase.taigaHills, BiomeGenVarda.vardaBadlands);
 
-            BiomeGenBase[] engineerBiomes = this.getFilteredBiomeArray(BiomeGenVarda.vardaBadlands, BiomeGenLV.acheron, BiomeGenVarda.vardaForest);
+            BiomeGenBase[] engineerBiomes = this.getFilteredBiomeArray(BiomeGenVarda.vardaBadlands, BiomeGenVarda.vardaForest);
 
             BiomeGenBase[] aquaXenomorphBiomes = this.getFilteredBiomeArray(BiomeGenBase.river, BiomeGenBase.beach, BiomeGenBase.stoneBeach);
 
