@@ -89,8 +89,9 @@ public class ModelOctohugger extends Model
         float legStart = 15F;
         float legDistance = 0.8F;
 
-        OpenGL.translate(0F, 0.045F + Math.toRadians((MathHelper.sin(o.idleProgress * speed) * (legDistance * 4F))), 0F);
-        OpenGL.translate(0F, MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1F * o.swingProgressPrev * 0.25F, 0F);
+        yOffset = 0.045F + Math.toRadians((MathHelper.sin(o.idleProgress * speed) * (legDistance * 4F)));
+        yOffset = yOffset + MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1F * o.swingProgressPrev * 0.25F;
+        OpenGL.translate(0F, yOffset, 0F);
 
         this.rFlap1.rotateAngleZ = (float) (Math.toRadians(legStart) + (float) Math.toRadians((MathHelper.sin(o.idleProgress * speed) * legDistance) * 20 + legMovement));
         this.rFlap2.rotateAngleZ = (float) (Math.toRadians(legStart) + (float) Math.toRadians((MathHelper.sin(o.idleProgress * speed) * legDistance) * 20 + legMovement));
@@ -125,5 +126,12 @@ public class ModelOctohugger extends Model
         this.body2.render(boxTranslation);
         OpenGL.popMatrix();
         this.body.render(boxTranslation);
+    }
+    
+    private double yOffset;
+
+    public double getYOffset()
+    {
+        return -this.yOffset;
     }
 }

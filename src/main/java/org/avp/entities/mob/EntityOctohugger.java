@@ -1,13 +1,16 @@
 package org.avp.entities.mob;
 
+import java.util.ArrayList;
+
 import org.avp.Sounds;
 import org.avp.api.parasitoidic.IParasitoid;
 
-import net.minecraft.entity.Entity;
+import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.block.Blocks;
+import com.arisux.mdxlib.lib.world.entity.Entities;
+
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
-import net.minecraft.entity.ai.EntityAILeapAtTarget;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.monster.IMob;
@@ -20,6 +23,7 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
         super(world);
         this.setSize(0.8F, 0.8F);
         this.experienceValue = 10;
+        this.ignoreFrustumCheck = true;
         this.jumpMovementFactor = 0.3F;
         this.getNavigator().setCanSwim(true);
         this.getNavigator().setAvoidsWater(true);
@@ -32,8 +36,8 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIAttackOnCollide(this, 0.55D, true));
         this.tasks.addTask(2, new EntityAIWander(this, 0.55D));
-//        this.targetTasks.addTask(0, new EntityAILeapAtTarget(this, 0.8F));
-//        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, Entity.class, 0, false, false, this.getEntitySelector()));
+        // this.targetTasks.addTask(0, new EntityAILeapAtTarget(this, 0.8F));
+        // this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, Entity.class, 0, false, false, this.getEntitySelector()));
     }
 
     @Override
@@ -47,10 +51,54 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
         this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(4.0D);
     }
 
+    private CoordData hangingLocation = null;
+//    private boolean isHanging;
+
+    public CoordData getHangingLocation()
+    {
+        return hangingLocation;
+    }
+    
+//    public boolean isHanging()
+//    {
+//        return isHanging;
+//    }
+
     @Override
     public void onUpdate()
     {
         super.onUpdate();
+
+        if (this.worldObj.getWorldTime() % 60 == 0 && hangingLocation == null)
+        {
+            ArrayList<CoordData> potentialLocations = Blocks.getCoordDataInRangeIncluding((int) this.posX, (int) this.posY, (int) this.posZ, 8, this.worldObj, net.minecraft.init.Blocks.stone);
+            
+            for (int x = 0; x < potentialLocations.size(); x++)
+            {
+                CoordData loc = potentialLocations.get(this.rand.nextInt(potentialLocations.size()));
+                
+                if (this.worldObj.getBlock((int) loc.x, (int) loc.y - 1, (int) loc.z) == net.minecraft.init.Blocks.air)
+                {
+                    if (this.worldObj.getBlock((int) loc.x - 1, (int) loc.y - 1, (int) loc.z) == net.minecraft.init.Blocks.air)
+                    {
+                        if (this.worldObj.getBlock((int) loc.x, (int) loc.y - 1, (int) loc.z - 1) == net.minecraft.init.Blocks.air)
+                        {
+                            if (this.worldObj.getBlock((int) loc.x + 1, (int) loc.y - 1, (int) loc.z) == net.minecraft.init.Blocks.air)
+                            {
+                                if (this.worldObj.getBlock((int) loc.x, (int) loc.y - 1, (int) loc.z + 1) == net.minecraft.init.Blocks.air)
+                                {
+                                    if (Entities.canCoordBeSeenBy(this, loc))
+                                    {
+                                        hangingLocation = loc.add(0.5D, 0, 0.5D);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @Override
