@@ -8,7 +8,7 @@ import com.arisux.mdxlib.lib.client.render.OpenGL;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 
-public class RenderR2PConverter extends TileEntitySpecialRenderer
+public class RenderRedstoneEmitter extends TileEntitySpecialRenderer
 {
     @Override
     public void renderTileEntityAt(TileEntity tileEntity, double posX, double posY, double posZ, float renderPartialTicks)

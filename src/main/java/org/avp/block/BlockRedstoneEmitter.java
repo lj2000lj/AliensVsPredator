@@ -1,17 +1,18 @@
 package org.avp.block;
 
-import org.avp.entities.tile.TileEntityP2RConverter;
+import org.avp.entities.tile.TileEntityRedstoneEmitter;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockP2RConverter extends Block
+public class BlockRedstoneEmitter extends Block
 {
-    public BlockP2RConverter(Material material)
+    public BlockRedstoneEmitter(Material material)
     {
         super(material);
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
@@ -41,6 +42,12 @@ public class BlockP2RConverter extends Block
     {
         return super.onBlockActivated(worldObj, xCoord, yCoord, zCoord, player, side, subX, subY, subZ);
     }
+    
+    @Override
+    public int isProvidingWeakPower(IBlockAccess worldIn, int x, int y, int z, int side)
+    {
+        return worldIn.getBlockMetadata(x, y, z);
+    }
 
     @Override
     public int getRenderType()
@@ -51,7 +58,7 @@ public class BlockP2RConverter extends Block
     @Override
     public TileEntity createTileEntity(World world, int meta)
     {
-        return new TileEntityP2RConverter();
+        return new TileEntityRedstoneEmitter();
     }
 
     @Override

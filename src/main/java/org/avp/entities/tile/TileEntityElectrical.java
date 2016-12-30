@@ -12,6 +12,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 public abstract class TileEntityElectrical extends TileEntity
 {
     protected double voltage;
+    protected double voltagePrev;
     protected double srcVoltage;
     protected double thresholdVoltage;
     protected double resistance;
@@ -208,6 +209,8 @@ public abstract class TileEntityElectrical extends TileEntity
      */
     public void updateEnergyAsReceiver()
     {
+        this.voltagePrev = this.voltage;
+
         for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
         {
             TileEntity tile = this.worldObj.getTileEntity(this.xCoord + direction.offsetX, this.yCoord + direction.offsetY, this.zCoord + direction.offsetZ);
@@ -253,6 +256,7 @@ public abstract class TileEntityElectrical extends TileEntity
         {
             this.setVoltage(0);
         }
+
     }
 
     /**

@@ -1,6 +1,6 @@
 package org.avp.block;
 
-import org.avp.entities.tile.TileEntityR2PConverter;
+import org.avp.entities.tile.TileEntityRedstoneFluxGenerator;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -10,9 +10,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockR2PConverter extends Block
+public class BlockRedstoneFluxGenerator extends Block
 {
-    public BlockR2PConverter(Material material)
+    public BlockRedstoneFluxGenerator(Material material)
     {
         super(material);
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
@@ -40,12 +40,7 @@ public class BlockR2PConverter extends Block
     @Override
     public void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ)
     {
-        TileEntityR2PConverter tile = (TileEntityR2PConverter) world.getTileEntity(x, y, z);
-
-        if (world.getBlock(tileX, tileY, tileZ) == null)
-        {
-            tile.isActiveRedstoneWireAttached = false;
-        }
+        super.onNeighborChange(world, x, y, z, tileX, tileY, tileZ);
     }
 
     @Override
@@ -63,7 +58,7 @@ public class BlockR2PConverter extends Block
     @Override
     public TileEntity createTileEntity(World world, int meta)
     {
-        return new TileEntityR2PConverter();
+        return new TileEntityRedstoneFluxGenerator();
     }
 
     @Override

@@ -6,11 +6,11 @@ import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityR2PConverter extends TileEntityElectrical implements IVoltageProvider
+public class TileEntityRedstoneSensor extends TileEntityElectrical implements IVoltageProvider
 {
     public boolean isActiveRedstoneWireAttached;
 
-    public TileEntityR2PConverter()
+    public TileEntityRedstoneSensor()
     {
         super(true);
     }
@@ -20,10 +20,7 @@ public class TileEntityR2PConverter extends TileEntityElectrical implements IVol
     {
         if (this.canOutputPower())
         {
-            if (this.getWorld().getWorldTime() % (1000 / this.getSourceHertz()) == 0)
-            {
-                this.setVoltage(120);
-            }
+            this.setVoltage(12);
         }
         else
         {
@@ -34,7 +31,7 @@ public class TileEntityR2PConverter extends TileEntityElectrical implements IVol
     @Override
     public boolean canConnectPower(ForgeDirection from)
     {
-        return false;
+        return true;
     }
 
     @Override
@@ -61,37 +58,31 @@ public class TileEntityR2PConverter extends TileEntityElectrical implements IVol
         int x = this.xCoord;
         int y = this.yCoord;
         int z = this.zCoord;
-
+        
         if (world.getBlock(x + 1, y, z) instanceof BlockRedstoneWire)
         {
             this.isActiveRedstoneWireAttached = world.getBlockMetadata(x + 1, y, z) != 0;
         }
-
         else if (world.getBlock(x, y + 1, z) instanceof BlockRedstoneWire)
         {
             this.isActiveRedstoneWireAttached = world.getBlockMetadata(x, y + 1, z) != 0;
         }
-
         else if (world.getBlock(x, y, z + 1) instanceof BlockRedstoneWire)
         {
             this.isActiveRedstoneWireAttached = world.getBlockMetadata(x, y, z + 1) != 0;
         }
-
         else if (world.getBlock(x - 1, y, z) instanceof BlockRedstoneWire)
         {
             this.isActiveRedstoneWireAttached = world.getBlockMetadata(x - 1, y, z) != 0;
         }
-
         else if (world.getBlock(x, y - 1, z) instanceof BlockRedstoneWire)
         {
             this.isActiveRedstoneWireAttached = world.getBlockMetadata(x, y - 1, z) != 0;
         }
-
         else if (world.getBlock(x, y, z - 1) instanceof BlockRedstoneWire)
         {
             this.isActiveRedstoneWireAttached = world.getBlockMetadata(x, y, z - 1) != 0;
         }
-
         else
         {
             this.isActiveRedstoneWireAttached = false;
