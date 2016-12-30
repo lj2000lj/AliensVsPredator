@@ -3,7 +3,9 @@ package org.avp.block;
 import org.avp.entities.tile.TileEntityBlastdoor;
 import org.avp.items.ItemMaintenanceJack;
 
-import com.arisux.mdxlib.lib.game.Game;
+import com.arisux.mdxlib.MDX;
+import com.arisux.mdxlib.lib.client.Notification;
+import com.arisux.mdxlib.lib.client.Notification.DynamicNotification;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -14,7 +16,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.Direction;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -22,6 +23,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockBlastdoor extends Block
 {
+    private DynamicNotification notification = new DynamicNotification();
+    
     public BlockBlastdoor(Material material)
     {
         super(material);
@@ -85,7 +88,9 @@ public class BlockBlastdoor extends Block
 
             if (world.isRemote)
             {
-                Game.minecraft().thePlayer.addChatComponentMessage(new ChatComponentText("\u00A77 Blast door \u00A7a" + percentOpen + "% open."));
+                this.notification.setDisplayTimeout(3);
+                this.notification.setMessage("\u00A77 The blast door is \u00A7a" + percentOpen + "% open.");
+                MDX.sendNotification(this.notification);
             }
         }
         else
@@ -94,7 +99,21 @@ public class BlockBlastdoor extends Block
 
             if (world.isRemote)
             {
-                Game.minecraft().thePlayer.addChatComponentMessage(new ChatComponentText("\u00A77 Blast door \u00A7a" + (blastdoor.isOpen() ? "opened" : "closed") + "."));
+                final String value = (blastdoor.isOpen() ? "opened" : "closed");
+                MDX.sendNotification(new Notification()
+                {
+                    @Override
+                    public String getMessage()
+                    {
+                        return "\u00A77 Blast door \u00A7a" + value + ".";
+                    }
+
+                    @Override
+                    public int displayTimeout()
+                    {
+                        return 20;
+                    }
+                });
             }
         }
     }
