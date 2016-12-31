@@ -9,6 +9,7 @@ import org.avp.packets.client.PacketPlayerModeUpdate;
 import org.avp.packets.client.PacketRotateTransformer;
 import org.avp.packets.client.OrganismClientSync;
 import org.avp.packets.client.SpecialPlayerClientSync;
+import org.avp.packets.client.PacketSyncRF;
 import org.avp.packets.client.PacketTurretInit;
 import org.avp.packets.client.PacketVardaStormMoveEntity;
 import org.avp.packets.server.PacketAddTuretTarget;
@@ -77,6 +78,7 @@ public class NetworkHandler extends SimpleNetworkWrapper implements IInitEvent
         this.registerMessage(Side.SERVER, OrganismServerSync.class);
         this.registerMessage(Side.SERVER, SpecialPlayerServerSync.class);
         this.registerMessage(Side.CLIENT, PacketRotateTransformer.class);
+        this.registerMessage(Side.CLIENT, PacketSyncRF.class);
         this.registerMessage(Side.CLIENT, PacketOpenGui.class);
     }
 

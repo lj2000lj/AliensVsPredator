@@ -61,10 +61,11 @@ import org.avp.entities.tile.TileEntityLightPanel;
 import org.avp.entities.tile.TileEntityLocker;
 import org.avp.entities.tile.TileEntityMedpod;
 import org.avp.entities.tile.TileEntityNegativeTransformer;
-import org.avp.entities.tile.TileEntityP2RConverter;
+import org.avp.entities.tile.TileEntityRedstoneEmitter;
+import org.avp.entities.tile.TileEntityRedstoneFluxGenerator;
 import org.avp.entities.tile.TileEntityPowercell;
 import org.avp.entities.tile.TileEntityPowerline;
-import org.avp.entities.tile.TileEntityR2PConverter;
+import org.avp.entities.tile.TileEntityRedstoneSensor;
 import org.avp.entities.tile.TileEntityRepulsionGenerator;
 import org.avp.entities.tile.TileEntitySatelliteDish;
 import org.avp.entities.tile.TileEntitySatelliteModem;
@@ -117,8 +118,8 @@ public class EntityHandler implements IInitEvent
         GameRegistry.registerTileEntity(TileEntitySatelliteDish.class, "tileEntitySatelliteDish");
         GameRegistry.registerTileEntity(TileEntityTransformer.class, "tileEntityTransformer");
         GameRegistry.registerTileEntity(TileEntityNegativeTransformer.class, "tileEntityNegativeTransformer");
-        GameRegistry.registerTileEntity(TileEntityR2PConverter.class, "tileEntityR2PConverter");
-        GameRegistry.registerTileEntity(TileEntityP2RConverter.class, "tileEntityP2RConverter");
+        GameRegistry.registerTileEntity(TileEntityRedstoneSensor.class, "tileEntityR2PConverter");
+        GameRegistry.registerTileEntity(TileEntityRedstoneEmitter.class, "tileEntityP2RConverter");
         GameRegistry.registerTileEntity(TileEntityPowercell.class, "tileEntityPowercell");
         GameRegistry.registerTileEntity(TileEntityAmpule.class, "tileEntityAmpule");
         GameRegistry.registerTileEntity(TileEntityLocker.class, "tileEntityLocker");
@@ -127,6 +128,7 @@ public class EntityHandler implements IInitEvent
         GameRegistry.registerTileEntity(TileEntitySupplyCrate.class, "tileEntitySupplyCrate");
         GameRegistry.registerTileEntity(TileEntitySolarPanel.class, "tile.avp.solarpanel");
         GameRegistry.registerTileEntity(TileEntitySkull.class, "tile.avp.skull");
+        GameRegistry.registerTileEntity(TileEntityRedstoneFluxGenerator.class, "tile.avp.redstonefluxgenerator");
     }
 
     private void registerRemappedEntities()
