@@ -14,6 +14,7 @@ import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.monster.IMob;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 public class EntityOctohugger extends EntityParasitoid implements IMob, IParasitoid
@@ -21,7 +22,7 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
     public EntityOctohugger(World world)
     {
         super(world);
-        this.setSize(0.8F, 0.8F);
+        this.setSize(0.3F, 0.8F);
         this.experienceValue = 10;
         this.ignoreFrustumCheck = true;
         this.jumpMovementFactor = 0.3F;
@@ -41,6 +42,16 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
     }
 
     @Override
+    protected void entityInit()
+    {
+        super.entityInit();
+        this.dataWatcher.addObject(27, (float) 0);
+        this.dataWatcher.addObject(28, (float) 0);
+        this.dataWatcher.addObject(29, (float) 0);
+        this.dataWatcher.addObject(31, 0);
+    }
+
+    @Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
@@ -52,31 +63,68 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
     }
 
     private CoordData hangingLocation = null;
-//    private boolean isHanging;
+
+    public boolean isHanging()
+    {
+        return this.dataWatcher.getWatchableObjectInt(31) == 1;
+    }
+
+    public void setHanging(boolean isHanging)
+    {
+        this.dataWatcher.updateObject(31, isHanging ? 1 : 0);
+    }
 
     public CoordData getHangingLocation()
     {
-        return hangingLocation;
+        double x = this.dataWatcher.getWatchableObjectFloat(27);
+        double y = this.dataWatcher.getWatchableObjectFloat(28);
+        double z = this.dataWatcher.getWatchableObjectFloat(29);
+
+        if (this.hangingLocation != null)
+        {
+            this.hangingLocation.x = x;
+            this.hangingLocation.y = y;
+            this.hangingLocation.z = z;
+        }
+        else
+        {
+            this.hangingLocation = new CoordData(x, y, z);
+        }
+        
+        return this.hangingLocation;
+    }
+
+    public void updateHangingLocation(CoordData location)
+    {
+        if (location != null)
+        {
+            this.dataWatcher.updateObject(27, (float)location.x);
+            this.dataWatcher.updateObject(28, (float)location.y);
+            this.dataWatcher.updateObject(29, (float)location.z);
+        }
+
+        this.hangingLocation = location;
     }
     
-//    public boolean isHanging()
-//    {
-//        return isHanging;
-//    }
+    public boolean isHangingLocationStale()
+    {
+        return (this.getHangingLocation() == null || this.getHangingLocation().x() == 0 && this.getHangingLocation().y() == 0 && this.getHangingLocation().z() == 0);
+    }
 
     @Override
     public void onUpdate()
     {
         super.onUpdate();
+        this.fallDistance = 0;
 
-        if (this.worldObj.getWorldTime() % 60 == 0 && hangingLocation == null)
+        if (!this.worldObj.isRemote && this.worldObj.getWorldTime() % 60 == 0 && isHangingLocationStale())
         {
             ArrayList<CoordData> potentialLocations = Blocks.getCoordDataInRangeIncluding((int) this.posX, (int) this.posY, (int) this.posZ, 8, this.worldObj, net.minecraft.init.Blocks.stone);
-            
+
             for (int x = 0; x < potentialLocations.size(); x++)
             {
                 CoordData loc = potentialLocations.get(this.rand.nextInt(potentialLocations.size()));
-                
+
                 if (this.worldObj.getBlock((int) loc.x, (int) loc.y - 1, (int) loc.z) == net.minecraft.init.Blocks.air)
                 {
                     if (this.worldObj.getBlock((int) loc.x - 1, (int) loc.y - 1, (int) loc.z) == net.minecraft.init.Blocks.air)
@@ -89,7 +137,7 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
                                 {
                                     if (Entities.canCoordBeSeenBy(this, loc))
                                     {
-                                        hangingLocation = loc.add(0.5D, 0, 0.5D);
+                                        this.updateHangingLocation(loc.add(0.5D + (this.rand.nextDouble() / 2) - (this.rand.nextDouble() / 2), 0, 0.5D + (this.rand.nextDouble() / 2) - (this.rand.nextDouble() / 2)));
                                         break;
                                     }
                                 }
@@ -98,6 +146,46 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
                     }
                 }
             }
+        }
+
+        if (!this.isHangingLocationStale())
+        {
+            double hangingX = this.getHangingLocation().x;
+            double hangingY = this.getHangingLocation().y;
+            double hangingZ = this.getHangingLocation().z;
+            double speed = 0.085D;
+
+            {
+                this.motionX += (hangingX - this.posX) * speed * 1.4;
+                this.motionY += (hangingY - this.posY) * (speed * 0.85);
+                this.motionZ += (hangingZ - this.posZ) * speed * 1.4;
+
+                this.moveEntity(this.motionX, this.motionY, this.motionZ);
+
+                double distance = this.getDistance(hangingX, hangingY, hangingZ);
+
+                if (distance <= 1.1D)
+                {
+                     this.setHanging(true);
+                     this.motionX = 0;
+                     this.motionY = 0;
+                     this.motionZ = 0;
+                }
+            }
+        }
+        
+        if (this.isHanging())
+        {
+//            this.motionX = 0;
+//            this.motionY = 0;
+//            this.motionZ = 0;
+        }
+
+        if (!this.isDead)
+        {
+            this.motionX = 0;
+            this.motionY = 0;
+            this.motionZ = 0;
         }
     }
 
@@ -129,5 +217,27 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
     protected String getDeathSound()
     {
         return Sounds.SOUND_FACEHUGGER_DEATH.getKey();
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        super.readFromNBT(nbt);
+        this.setHanging(nbt.getInteger("IsHanging") == 1);
+        this.updateHangingLocation(new CoordData(nbt.getDouble("HangingX"), nbt.getDouble("HangingY"), nbt.getDouble("HangingZ")));
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound nbt)
+    {
+        super.writeToNBT(nbt);
+        nbt.setInteger("IsHanging", this.isHanging() ? 1 : 0);
+
+        if (!this.isHangingLocationStale())
+        {
+            nbt.setDouble("HangingX", this.getHangingLocation().x);
+            nbt.setDouble("HangingY", this.getHangingLocation().y);
+            nbt.setDouble("HangingZ", this.getHangingLocation().z);
+        }
     }
 }

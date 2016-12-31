@@ -17,7 +17,6 @@ import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.MathHelper;
 
 public class RenderOctohugger extends RenderLivingWrapper
 {
@@ -42,7 +41,7 @@ public class RenderOctohugger extends RenderLivingWrapper
         {
             EntityOctohugger octohugger = (EntityOctohugger) entity;
             
-            if (octohugger.getHangingLocation() != null)
+            if (!octohugger.isHangingLocationStale())
             {
                 GL11.glLineWidth(4.0F);
                 GL11.glEnable(GL11.GL_LINE_SMOOTH);
