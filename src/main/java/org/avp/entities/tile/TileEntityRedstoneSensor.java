@@ -1,10 +1,13 @@
 package org.avp.entities.tile;
 
+import java.util.ArrayList;
+
 import org.avp.util.IVoltageProvider;
 
-import net.minecraft.block.BlockRedstoneComparator;
-import net.minecraft.block.BlockRedstoneWire;
+import com.arisux.mdxlib.lib.world.CoordData;
+
 import net.minecraft.block.material.Material;
+import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -61,33 +64,54 @@ public class TileEntityRedstoneSensor extends TileEntityElectrical implements IV
         int y = this.yCoord;
         int z = this.zCoord;
 
-        if (world.getBlock(x + 1, y, z).getMaterial() == Material.circuits)
+        ArrayList<CoordData> locations = new ArrayList<CoordData>();
+        CoordData loc = new CoordData(x, y, z);
+        CoordData right = loc.add(1, 0, 0);
+        CoordData left = loc.add(-1, 0, 0);
+        CoordData front = loc.add(0, 0, 1);
+        CoordData back = loc.add(0, 0, -1);
+        CoordData up = loc.add(0, 1, 0);
+        CoordData down = loc.add(0, -1, 0);
+
+        locations.add(right);
+        locations.add(left);
+        locations.add(front);
+        locations.add(back);
+        locations.add(up);
+        locations.add(down);
+
+        this.isActiveRedstoneWireAttached = false;
+
+        for (CoordData location : locations)
         {
-            this.isActiveRedstoneWireAttached = world.getBlockMetadata(x + 1, y, z) != 0;
-        }
-        else if (world.getBlock(x, y + 1, z).getMaterial() == Material.circuits)
-        {
-            this.isActiveRedstoneWireAttached = world.getBlockMetadata(x, y + 1, z) != 0;
-        }
-        else if (world.getBlock(x, y, z + 1).getMaterial() == Material.circuits)
-        {
-            this.isActiveRedstoneWireAttached = world.getBlockMetadata(x, y, z + 1) != 0;
-        }
-        else if (world.getBlock(x - 1, y, z).getMaterial() == Material.circuits)
-        {
-            this.isActiveRedstoneWireAttached = world.getBlockMetadata(x - 1, y, z) != 0;
-        }
-        else if (world.getBlock(x, y - 1, z).getMaterial() == Material.circuits)
-        {
-            this.isActiveRedstoneWireAttached = world.getBlockMetadata(x, y - 1, z) != 0;
-        }
-        else if (world.getBlock(x, y, z - 1).getMaterial() == Material.circuits)
-        {
-            this.isActiveRedstoneWireAttached = world.getBlockMetadata(x, y, z - 1) != 0;
-        }
-        else
-        {
-            this.isActiveRedstoneWireAttached = false;
+            if (location.getBlock(world).getMaterial() == Material.circuits)
+            {
+                if (location.getBlock(world) == Blocks.redstone_wire && location.getBlockMetadata(world) > 0)
+                {
+                    this.isActiveRedstoneWireAttached = true;
+                    break;
+                }
+                if (location.getBlock(world) == Blocks.lever && location.getBlockMetadata(world) >= 9)
+                {
+                    this.isActiveRedstoneWireAttached = true;
+                    break;
+                }
+                if (location.getBlock(world) == Blocks.detector_rail && location.getBlockMetadata(world) >= 8)
+                {
+                    this.isActiveRedstoneWireAttached = true;
+                    break;
+                }
+                if (location.getBlock(world) == Blocks.powered_repeater)
+                {
+                    this.isActiveRedstoneWireAttached = true;
+                    break;
+                }
+                if (location.getBlock(world) == Blocks.redstone_torch)
+                {
+                    this.isActiveRedstoneWireAttached = true;
+                    break;
+                }
+            }
         }
 
         return this.isActiveRedstoneWireAttached;
