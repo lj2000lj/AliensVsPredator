@@ -1,9 +1,14 @@
 package org.avp.entities.tile;
 
+import org.avp.AliensVsPredator;
+import org.avp.packets.client.PacketSyncRF;
 import org.avp.util.IVoltageProvider;
 
 import cofh.api.energy.IEnergyReceiver;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityRedstoneFluxGenerator extends TileEntityElectrical implements IVoltageProvider, IEnergyReceiver
@@ -11,7 +16,7 @@ public class TileEntityRedstoneFluxGenerator extends TileEntityElectrical implem
     protected int rfEnergy;
     protected int rfStoredPerTick;
     protected int rfUsedPerTick;
-    
+
     public TileEntityRedstoneFluxGenerator()
     {
         super(true);
@@ -23,6 +28,8 @@ public class TileEntityRedstoneFluxGenerator extends TileEntityElectrical implem
     public void updateEntity()
     {
         super.updateEntity();
+        
+        this.updateEnergyAsReceiver();
 
         if (rfEnergy >= rfUsedPerTick)
         {
@@ -32,6 +39,11 @@ public class TileEntityRedstoneFluxGenerator extends TileEntityElectrical implem
         else
         {
             this.setVoltage(0);
+        }
+
+        if (!this.worldObj.isRemote && this.worldObj.getWorldTime() % 20 == 0)
+        {
+            AliensVsPredator.network().sendToAll(new PacketSyncRF(this.getEnergyStored(null), this.xCoord, this.yCoord, this.zCoord));
         }
     }
 
@@ -58,6 +70,11 @@ public class TileEntityRedstoneFluxGenerator extends TileEntityElectrical implem
     {
         return 10000;
     }
+    
+    public void setRfEnergy(int rfEnergy)
+    {
+        this.rfEnergy = rfEnergy;
+    }
 
     @Override
     public boolean canConnectEnergy(ForgeDirection from)
@@ -68,8 +85,15 @@ public class TileEntityRedstoneFluxGenerator extends TileEntityElectrical implem
     @Override
     public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
     {
-        this.rfEnergy = this.rfEnergy + rfStoredPerTick;
-        return rfStoredPerTick;
+        int usedRF = 0;
+        
+        if (maxReceive >= this.rfStoredPerTick && this.rfEnergy < this.getEnergyStored(from))
+        {
+            this.rfEnergy = this.rfEnergy + rfStoredPerTick;
+            usedRF = Math.min(maxReceive, rfStoredPerTick);
+        }
+        
+        return usedRF;
     }
 
     @Override
@@ -82,6 +106,20 @@ public class TileEntityRedstoneFluxGenerator extends TileEntityElectrical implem
     public int getMaxEnergyStored(ForgeDirection from)
     {
         return 10000;
+    }
+
+    @Override
+    public Packet getDescriptionPacket()
+    {
+        NBTTagCompound nbtTag = new NBTTagCompound();
+        this.writeToNBT(nbtTag);
+        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbtTag);
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet)
+    {
+        readFromNBT(packet.getNbtCompound());
     }
 
     @Override

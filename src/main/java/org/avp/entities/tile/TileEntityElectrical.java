@@ -141,7 +141,7 @@ public abstract class TileEntityElectrical extends TileEntity
     }
 
     /**
-     * @param voltage - The amount of boost this component should contain.
+     * @param rf - The amount of boost this component should contain.
      */
     public void setBoost(double boost)
     {
