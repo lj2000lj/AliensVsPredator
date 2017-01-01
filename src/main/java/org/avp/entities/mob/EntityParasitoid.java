@@ -165,13 +165,20 @@ public class EntityParasitoid extends EntitySpeciesAlien implements IMob, IParas
 
                 living.motionX = 0;
                 living.motionZ = 0;
-                living.tasks.taskEntries.clear();
-                living.targetTasks.taskEntries.clear();
                 this.rotationYawHead = living.rotationYawHead;
                 this.rotationYaw = living.rotationYaw;
                 this.prevRotationYawHead = living.prevRotationYawHead;
                 this.prevRotationYaw = living.prevRotationYaw;
             }
+        }
+        
+        if (!this.isFertile())
+        {
+            this.motionX = 0;
+            this.motionZ = 0;
+            this.tasks.taskEntries.clear();
+            this.targetTasks.taskEntries.clear();
+            this.moveHelper.speed = 0;
         }
 
         if (this.getTicksOnHost() > this.getDetachTime())
@@ -179,7 +186,7 @@ public class EntityParasitoid extends EntitySpeciesAlien implements IMob, IParas
             this.detachFromHost();
         }
     }
-    
+
     @Override
     public boolean canProduceJelly()
     {

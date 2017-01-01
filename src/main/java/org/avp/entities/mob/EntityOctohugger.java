@@ -9,6 +9,8 @@ import com.arisux.mdxlib.lib.world.CoordData;
 import com.arisux.mdxlib.lib.world.block.Blocks;
 import com.arisux.mdxlib.lib.world.entity.Entities;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAISwimming;
@@ -90,7 +92,7 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
         {
             this.hangingLocation = new CoordData(x, y, z);
         }
-        
+
         return this.hangingLocation;
     }
 
@@ -98,14 +100,14 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
     {
         if (location != null)
         {
-            this.dataWatcher.updateObject(27, (float)location.x);
-            this.dataWatcher.updateObject(28, (float)location.y);
-            this.dataWatcher.updateObject(29, (float)location.z);
+            this.dataWatcher.updateObject(27, (float) location.x);
+            this.dataWatcher.updateObject(28, (float) location.y);
+            this.dataWatcher.updateObject(29, (float) location.z);
         }
 
         this.hangingLocation = location;
     }
-    
+
     public boolean isHangingLocationStale()
     {
         return (this.getHangingLocation() == null || this.getHangingLocation().x() == 0 && this.getHangingLocation().y() == 0 && this.getHangingLocation().z() == 0);
@@ -119,30 +121,62 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
 
         if (!this.worldObj.isRemote && this.worldObj.getWorldTime() % 60 == 0 && isHangingLocationStale())
         {
-            ArrayList<CoordData> potentialLocations = Blocks.getCoordDataInRangeIncluding((int) this.posX, (int) this.posY, (int) this.posZ, 8, this.worldObj, net.minecraft.init.Blocks.stone);
+            ArrayList<CoordData> potentialLocations = Blocks.getCoordDataInRange((int) this.posX, (int) this.posY, (int) this.posZ, 8);
 
             for (int x = 0; x < potentialLocations.size(); x++)
             {
                 CoordData loc = potentialLocations.get(this.rand.nextInt(potentialLocations.size()));
 
-                if (this.worldObj.getBlock((int) loc.x, (int) loc.y - 1, (int) loc.z) == net.minecraft.init.Blocks.air)
+                if (loc.getBlock(this.worldObj) != net.minecraft.init.Blocks.air)
                 {
-                    if (this.worldObj.getBlock((int) loc.x - 1, (int) loc.y - 1, (int) loc.z) == net.minecraft.init.Blocks.air)
+                    if (this.worldObj.getBlock((int) loc.x, (int) loc.y - 1, (int) loc.z) == net.minecraft.init.Blocks.air)
                     {
-                        if (this.worldObj.getBlock((int) loc.x, (int) loc.y - 1, (int) loc.z - 1) == net.minecraft.init.Blocks.air)
+                        if (this.worldObj.getBlock((int) loc.x - 1, (int) loc.y - 1, (int) loc.z) == net.minecraft.init.Blocks.air)
                         {
-                            if (this.worldObj.getBlock((int) loc.x + 1, (int) loc.y - 1, (int) loc.z) == net.minecraft.init.Blocks.air)
+                            if (this.worldObj.getBlock((int) loc.x, (int) loc.y - 1, (int) loc.z - 1) == net.minecraft.init.Blocks.air)
                             {
-                                if (this.worldObj.getBlock((int) loc.x, (int) loc.y - 1, (int) loc.z + 1) == net.minecraft.init.Blocks.air)
+                                if (this.worldObj.getBlock((int) loc.x + 1, (int) loc.y - 1, (int) loc.z) == net.minecraft.init.Blocks.air)
                                 {
-                                    if (Entities.canCoordBeSeenBy(this, loc))
+                                    if (this.worldObj.getBlock((int) loc.x, (int) loc.y - 1, (int) loc.z + 1) == net.minecraft.init.Blocks.air)
                                     {
-                                        this.updateHangingLocation(loc.add(0.5D + (this.rand.nextDouble() / 2) - (this.rand.nextDouble() / 2), 0, 0.5D + (this.rand.nextDouble() / 2) - (this.rand.nextDouble() / 2)));
-                                        break;
+                                        if (Entities.canCoordBeSeenBy(this, loc))
+                                        {
+                                            this.updateHangingLocation(loc.add(0.5D + (this.rand.nextDouble() / 2) - (this.rand.nextDouble() / 2), 0, 0.5D + (this.rand.nextDouble() / 2) - (this.rand.nextDouble() / 2)));
+                                            break;
+                                        }
                                     }
                                 }
                             }
                         }
+                    }
+                }
+            }
+        }
+
+        double maxStringStrength = 0.085D;
+        double stringStrength = maxStringStrength;
+
+        if (this.boundingBox != null)
+        {
+            ArrayList<Entity> entities = (ArrayList<Entity>) worldObj.getEntitiesWithinAABB(EntityLivingBase.class, this.boundingBox.expand(0, 16, 0));
+
+            if (entities != null)
+            {
+                for (Entity entity : new ArrayList<Entity>(entities))
+                {
+                    if (!parasiteSelector.isEntityApplicable(entity) || entity instanceof EntityParasitoid)
+                    {
+                        entities.remove(entity);
+                    }
+                }
+
+                Entity target = entities.size() >= 1 ? (Entity) entities.get(worldObj.rand.nextInt(entities.size())) : null;
+
+                if (target != null)
+                {
+                    if (this.getDistanceToEntity(target) > 0)
+                    {
+                        stringStrength = 0.0F;
                     }
                 }
             }
@@ -153,46 +187,36 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
             double hangingX = this.getHangingLocation().x;
             double hangingY = this.getHangingLocation().y;
             double hangingZ = this.getHangingLocation().z;
-            double speed = 0.085D;
+            this.motionX += (hangingX - this.posX) * stringStrength * 1.4;
+            this.motionY += (hangingY - this.posY) * (stringStrength * 0.85);
+            this.motionZ += (hangingZ - this.posZ) * stringStrength * 1.4;
 
+            this.moveEntity(this.motionX, this.motionY, this.motionZ);
+
+            double distance = this.getDistance(hangingX, hangingY, hangingZ);
+
+            if (distance <= 1.1D)
             {
-                this.motionX += (hangingX - this.posX) * speed * 1.4;
-                this.motionY += (hangingY - this.posY) * (speed * 0.85);
-                this.motionZ += (hangingZ - this.posZ) * speed * 1.4;
-
-                this.moveEntity(this.motionX, this.motionY, this.motionZ);
-
-                double distance = this.getDistance(hangingX, hangingY, hangingZ);
-
-                if (distance <= 1.1D)
-                {
-                     this.setHanging(true);
-                }
-                this.motionX = 0;
-                this.motionY = 0;
-                this.motionZ = 0;
+                this.setHanging(true);
             }
+
+            this.motionX = 0;
+            this.motionY = 0;
+            this.motionZ = 0;
         }
-        
+
+        if (this.ridingEntity != null || !this.isFertile() || this.isHanging() && this.getHangingLocation() != null && this.getHangingLocation().getBlock(this.worldObj) == net.minecraft.init.Blocks.air || this.getHangingLocation() != null && !Entities.canCoordBeSeenBy(this, this.getHangingLocation()))
+        {
+            this.setHanging(false);
+            this.updateHangingLocation(new CoordData(0, 0, 0));
+        }
+
         if (this.isHanging())
         {
-            if (this.getHangingLocation() != null && this.getHangingLocation().getBlock(this.worldObj) == net.minecraft.init.Blocks.air)
-            {
-                this.setHanging(false);
-                this.updateHangingLocation(new CoordData(0, 0, 0));
-            }
-            
-//            this.motionX = 0;
-//            this.motionY = 0;
-//            this.motionZ = 0;
+            this.motionX = 0;
+            this.motionY = 0;
+            this.motionZ = 0;
         }
-
-//        if (!this.isDead)
-//        {
-//            this.motionX = 0;
-//            this.motionY = 0;
-//            this.motionZ = 0;
-//        }
     }
 
     @Override

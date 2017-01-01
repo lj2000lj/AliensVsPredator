@@ -1,5 +1,7 @@
 package org.avp.entities.mob.model;
 
+import org.avp.entities.mob.EntityOctohugger;
+
 import com.arisux.mdxlib.lib.client.Model;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
@@ -84,10 +86,24 @@ public class ModelOctohugger extends Model
     {
         RenderObject o = (RenderObject) renderObject;
         float legMovement = -(MathHelper.cos(o.swingProgress * 2.6662F + (float) Math.PI) * 1F * o.swingProgressPrev * 0.25F) * 90;
-
         float speed = 0.055F;
         float legStart = 15F;
         float legDistance = 0.8F;
+
+        if (o.getEntity() != null && o.getEntity() instanceof EntityOctohugger)
+        {
+            EntityOctohugger octohugger = (EntityOctohugger) o.getEntity();
+
+            if (octohugger.ridingEntity != null)
+            {
+                legMovement = 40F;
+            }
+            
+            if (octohugger.ridingEntity == null && !octohugger.isFertile())
+            {
+                o.idleProgress = 0;
+            }
+        }
 
         yOffset = 0.045F + Math.toRadians((MathHelper.sin(o.idleProgress * speed) * (legDistance * 4F)));
         yOffset = yOffset + MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1F * o.swingProgressPrev * 0.25F;
@@ -104,6 +120,20 @@ public class ModelOctohugger extends Model
 
         this.fFlap1.rotateAngleX = (float) -(Math.toRadians(legStart) + (float) Math.toRadians((MathHelper.sin(o.idleProgress * speed) * legDistance) * 20 + legMovement));
         this.fFlap2.rotateAngleX = (float) -(Math.toRadians(legStart) + (float) Math.toRadians((MathHelper.sin(o.idleProgress * speed) * legDistance) * 20 + legMovement));
+
+        if (o.getEntity() != null && o.getEntity() instanceof EntityOctohugger)
+        {
+            EntityOctohugger octohugger = (EntityOctohugger) o.getEntity();
+
+            if (octohugger.ridingEntity != null)
+            {
+                legDistance = -20F;
+                this.rFlap2.rotateAngleZ = (float) -(Math.toRadians(legStart) + (float) Math.toRadians((MathHelper.sin(o.idleProgress * speed) * legDistance) * 1 + legMovement));
+                this.bFlap2.rotateAngleX = (float) -(Math.toRadians(legStart) + (float) Math.toRadians((MathHelper.sin(o.idleProgress * speed) * legDistance) * 1 + legMovement));
+                this.lFlap2.rotateAngleZ = (float) (Math.toRadians(legStart) + (float) Math.toRadians((MathHelper.sin(o.idleProgress * speed) * legDistance) * 1 + legMovement));
+                this.fFlap2.rotateAngleX = (float) (Math.toRadians(legStart) + (float) Math.toRadians((MathHelper.sin(o.idleProgress * speed) * legDistance) * 1 + legMovement));
+            }
+        }
 
         this.rFlap1.render(boxTranslation);
         this.bFlap1.render(boxTranslation);
@@ -127,7 +157,7 @@ public class ModelOctohugger extends Model
         OpenGL.popMatrix();
         this.body.render(boxTranslation);
     }
-    
+
     private double yOffset;
 
     public double getYOffset()

@@ -59,6 +59,12 @@ public class RenderOctohugger extends RenderLivingWrapper
     {
         EntityOctohugger octohugger = (EntityOctohugger) entityliving;
 
+        if (octohugger.ridingEntity == null && !octohugger.isFertile())
+        {
+            OpenGL.rotate(90F, 1F, 0F, 0F);
+        }
+        
+        OpenGL.translate(0F, 1.2F, 0F);
         this.scale(octohugger, 1.1F);
 
         if (octohugger != null && octohugger.ridingEntity != null && octohugger.ridingEntity.ridingEntity != null && octohugger.ridingEntity.ridingEntity instanceof EntityMedpod)
@@ -72,7 +78,10 @@ public class RenderOctohugger extends RenderLivingWrapper
 
         if (octohugger.ridingEntity != null && octohugger.ridingEntity instanceof EntityLivingBase)
         {
-            for (EntityRenderTransforms transform : transforms)
+            OpenGL.translate(0F, -1.5F, 0F);
+            OpenGL.translate(0F, 0F, 1.25F);
+
+            for (EntityRenderTransforms transform : RenderFacehugger.transforms)
             {
                 if (transform.isApplicable(octohugger.ridingEntity))
                 {
@@ -85,14 +94,6 @@ public class RenderOctohugger extends RenderLivingWrapper
 
     protected void scale(EntityOctohugger octohugger, float glScale)
     {
-        OpenGL.translate(0F, 1.2F, 0F);
-        
-        if (octohugger != null && !octohugger.isFertile() && octohugger.ridingEntity == null)
-        {
-            OpenGL.scale(1F, -1F, 1F);
-            OpenGL.translate(0F, 0.25F, 0F);
-        }
-
         OpenGL.scale(glScale, glScale, glScale);
     }
 }
