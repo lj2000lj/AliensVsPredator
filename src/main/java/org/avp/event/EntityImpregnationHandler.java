@@ -106,7 +106,6 @@ public class EntityImpregnationHandler
 
                                 if (world.isRemote && timeLeft <= 2)
                                 {
-                                    System.out.println("ran the potato");
                                     float spread = 0.5F;
 
                                     for (int i = 1024; i > 0; i--)
