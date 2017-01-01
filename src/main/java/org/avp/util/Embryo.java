@@ -145,7 +145,7 @@ public class Embryo implements Cloneable
 
     public static Embryo load(NBTTagCompound nbt)
     {
-        int id = nbt.getInteger("EmbryoType");
+        int id = nbt.getInteger("EmbryoId");
 
         if (id != 0)
         {
