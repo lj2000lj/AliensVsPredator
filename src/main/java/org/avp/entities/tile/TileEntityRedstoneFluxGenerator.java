@@ -87,7 +87,7 @@ public class TileEntityRedstoneFluxGenerator extends TileEntityElectrical implem
     {
         int usedRF = 0;
         
-        if (maxReceive >= this.rfStoredPerTick && this.rfEnergy < this.getEnergyStored(from))
+        if (maxReceive >= this.rfStoredPerTick && this.rfEnergy < this.getMaxEnergyStored(from))
         {
             this.rfEnergy = this.rfEnergy + rfStoredPerTick;
             usedRF = Math.min(maxReceive, rfStoredPerTick);
