@@ -98,7 +98,7 @@ public class Organism implements IExtendedEntityProperties
 
     public void impregnate(Embryo embryo)
     {
-        this.embryo = embryo;
+        this.embryo = embryo.createCopy();
     }
 
     public void removeEmbryo()

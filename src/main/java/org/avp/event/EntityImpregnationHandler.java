@@ -104,7 +104,7 @@ public class EntityImpregnationHandler
                                     }
                                 }
 
-                                if (world.isRemote && timeLeft <= 2)
+                                if (world.isRemote && timeLeft <= 3)
                                 {
                                     float spread = 0.5F;
 
@@ -117,7 +117,6 @@ public class EntityImpregnationHandler
                                 if (world.isRemote && age >= timeBleed)
                                 {
                                     float spread = 0.5F;
-                                    // Game.minecraft().effectRenderer.addEffect(new EntityBloodFX(world, host.posX + (host.getRNG().nextDouble() * spread) - (host.getRNG().nextDouble() * spread), host.posY + (host.getRNG().nextDouble() * spread) - (host.getRNG().nextDouble() * spread), host.posZ + (host.getRNG().nextDouble() * spread) - (host.getRNG().nextDouble() * spread), 0x610000));
 
                                     if (host.getRNG().nextInt(100) == 0)
                                     {
@@ -137,7 +136,6 @@ public class EntityImpregnationHandler
                                                     particleColor = 0x660000;
                                                     break;
                                             }
-                                            // EntityLavaFX
                                             Game.minecraft().effectRenderer.addEffect(new EntityBloodFX(world, host.posX + (host.getRNG().nextDouble() * spread) - (host.getRNG().nextDouble() * spread), host.posY + (host.getRNG().nextDouble() * spread) - (host.getRNG().nextDouble() * spread), host.posZ + (host.getRNG().nextDouble() * spread) - (host.getRNG().nextDouble() * spread), particleColor));
                                         }
                                     }

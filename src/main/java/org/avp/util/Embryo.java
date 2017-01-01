@@ -35,8 +35,8 @@ public class Embryo implements Cloneable
     public static final ArrayList<Embryo> registeredTypes = new ArrayList<Embryo>();
     private static int                    nextAvailableId = 1;
 
-    public static final Embryo            STANDARD        = new Embryo(EntityChestburster.class, EntityDrone.class, EntityLiving.class);
-    public static final Embryo            QUEEN           = new Embryo(EntityChestburster.class, EntityQueen.class, EntityLiving.class).setGestationPeriod(10 * 60 * 20);
+    public static final Embryo                 STANDARD        = new Embryo(EntityChestburster.class, EntityDrone.class, EntityLiving.class).register();
+    public static final Embryo                 QUEEN           = new Embryo(EntityChestburster.class, EntityQueen.class, EntityLiving.class).setGestationPeriod(10 * 60 * 20).register();
 
     static
     {
@@ -63,6 +63,10 @@ public class Embryo implements Cloneable
         this.gestationPeriod = 6000;
     }
 
+    /**
+     * Embryo types MUST be registered. They will not sync to the client if they are not.
+     * @return
+     */
     public Embryo register()
     {
         this.id = nextAvailableId++;
@@ -164,6 +168,25 @@ public class Embryo implements Cloneable
         }
         return null;
     }
+    
+    public Embryo createCopy()
+    {
+        return Embryo.createCopy(this);
+    }
+    
+    public static Embryo createCopy(Embryo source)
+    {
+        try
+        {
+            return (Embryo) source.clone();
+        }
+        catch (CloneNotSupportedException e)
+        {
+            e.printStackTrace();
+        }
+        
+        return null;
+    }
 
     public static Embryo fromId(int id)
     {
@@ -171,18 +194,11 @@ public class Embryo implements Cloneable
         {
             if (embryo.id == id)
             {
-                try
-                {
-                    return (Embryo) embryo.clone();
-                }
-                catch (CloneNotSupportedException e)
-                {
-                    e.printStackTrace();
-                }
+                return embryo.createCopy();
             }
         }
 
-        return STANDARD;
+        return STANDARD.createCopy();
     }
 
     public static Embryo createFromHost(EntityLivingBase host)
@@ -193,27 +209,11 @@ public class Embryo implements Cloneable
             {
                 if (c == host.getClass())
                 {
-                    try
-                    {
-                        return (Embryo) embryo.clone();
-                    }
-                    catch (CloneNotSupportedException e)
-                    {
-                        e.printStackTrace();
-                    }
+                    return embryo.createCopy();
                 }
             }
         }
 
-        try
-        {
-            return (Embryo) STANDARD.clone();
-        }
-        catch (CloneNotSupportedException e)
-        {
-            e.printStackTrace();
-        }
-
-        return null;
+        return STANDARD.createCopy();
     }
 }
