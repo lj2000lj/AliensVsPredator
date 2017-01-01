@@ -70,7 +70,7 @@ public class Organism implements IExtendedEntityProperties
     
     public void onTick(World world)
     {
-        if (this.hasEmbryo() && world.getWorldTime() % 60 == 0)
+        if (!world.isRemote && this.hasEmbryo() && world.getWorldTime() % 60 == 0)
         {
             this.syncWithClients();
         }
