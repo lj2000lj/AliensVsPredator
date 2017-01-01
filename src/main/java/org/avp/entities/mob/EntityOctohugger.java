@@ -167,26 +167,32 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
                 if (distance <= 1.1D)
                 {
                      this.setHanging(true);
-                     this.motionX = 0;
-                     this.motionY = 0;
-                     this.motionZ = 0;
                 }
+                this.motionX = 0;
+                this.motionY = 0;
+                this.motionZ = 0;
             }
         }
         
         if (this.isHanging())
         {
+            if (this.getHangingLocation() != null && this.getHangingLocation().getBlock(this.worldObj) == net.minecraft.init.Blocks.air)
+            {
+                this.setHanging(false);
+                this.updateHangingLocation(new CoordData(0, 0, 0));
+            }
+            
 //            this.motionX = 0;
 //            this.motionY = 0;
 //            this.motionZ = 0;
         }
 
-        if (!this.isDead)
-        {
-            this.motionX = 0;
-            this.motionY = 0;
-            this.motionZ = 0;
-        }
+//        if (!this.isDead)
+//        {
+//            this.motionX = 0;
+//            this.motionY = 0;
+//            this.motionZ = 0;
+//        }
     }
 
     @Override
