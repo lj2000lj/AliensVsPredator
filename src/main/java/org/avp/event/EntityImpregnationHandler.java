@@ -56,7 +56,10 @@ public class EntityImpregnationHandler
                     {
                         if (player == null || player != null && !player.capabilities.isCreativeMode)
                         {
-                            host.addPotionEffect(new PotionEffect(Potion.blindness.getId(), hostOrganism.getEmbryo().getGestationPeriod() / 2));
+                            if (hostOrganism.getEmbryo().getAge() <= hostOrganism.getEmbryo().getGestationPeriod() / 2)
+                            {
+                                host.addPotionEffect(new PotionEffect(Potion.blindness.getId(), hostOrganism.getEmbryo().getGestationPeriod() / 2));
+                            }
                         }
 
                         if (player != null && player.capabilities.isCreativeMode)
