@@ -6,7 +6,7 @@ import org.avp.packets.client.PacketOpenBlastdoor;
 import org.avp.packets.client.PacketOpenable;
 import org.avp.packets.client.PacketOvamorphContainsFacehugger;
 import org.avp.packets.client.PacketPlayerModeUpdate;
-import org.avp.packets.client.PacketRotateTransformer;
+import org.avp.packets.client.PacketRotateRotatable;
 import org.avp.packets.client.PacketSyncEEPC;
 import org.avp.packets.client.PacketSyncEEPPC;
 import org.avp.packets.client.PacketSyncRF;
@@ -77,7 +77,7 @@ public class NetworkHandler extends SimpleNetworkWrapper implements IInitEvent
         this.registerMessage(Side.CLIENT, PacketSyncEEPPC.class);
         this.registerMessage(Side.SERVER, PacketSyncEEPS.class);
         this.registerMessage(Side.SERVER, PacketSyncEEPPS.class);
-        this.registerMessage(Side.CLIENT, PacketRotateTransformer.class);
+        this.registerMessage(Side.CLIENT, PacketRotateRotatable.class);
         this.registerMessage(Side.CLIENT, PacketSyncRF.class);
         this.registerMessage(Side.CLIENT, PacketOpenGui.class);
     }

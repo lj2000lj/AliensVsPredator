@@ -1,6 +1,10 @@
 package org.avp.block;
 
+import java.util.ArrayList;
+
+import org.avp.AliensVsPredator;
 import org.avp.entities.tile.TileEntityRedstoneFluxGenerator;
+import org.avp.packets.client.PacketRotateRotatable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -9,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockRedstoneFluxGenerator extends Block
 {
@@ -46,7 +51,45 @@ public class BlockRedstoneFluxGenerator extends Block
     @Override
     public boolean onBlockActivated(World worldObj, int xCoord, int yCoord, int zCoord, EntityPlayer player, int side, float subX, float subY, float subZ)
     {
-        return true;
+        TileEntity te = worldObj.getTileEntity(xCoord, yCoord, zCoord);
+
+        if (te != null && te instanceof TileEntityRedstoneFluxGenerator)
+        {
+            TileEntityRedstoneFluxGenerator generator = (TileEntityRedstoneFluxGenerator) te;
+
+            ArrayList<ForgeDirection> forgeDirections = new ArrayList<ForgeDirection>();
+
+            for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+            {
+                if (dir != ForgeDirection.UP && dir != ForgeDirection.DOWN)
+                {
+                    forgeDirections.add(dir);
+                }
+            }
+
+            if (generator.getDirection() != null)
+            {
+                int index = forgeDirections.indexOf(generator.getDirection());
+
+                if (index + 1 >= forgeDirections.size())
+                {
+                    index = -1;
+                }
+
+                if (forgeDirections.get(index + 1) != null)
+                {
+                    generator.setDirection(forgeDirections.get(index + 1));
+                }
+
+                if (!worldObj.isRemote)
+                {
+                    AliensVsPredator.network().sendToAll(new PacketRotateRotatable(generator.getDirection().ordinal(), generator.xCoord, generator.yCoord, generator.zCoord));
+                }
+            }
+
+            generator.getDescriptionPacket();
+        }
+        return super.onBlockActivated(worldObj, xCoord, yCoord, zCoord, player, side, subX, subY, subZ);
     }
 
     @Override
