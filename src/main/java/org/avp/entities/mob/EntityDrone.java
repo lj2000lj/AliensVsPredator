@@ -7,7 +7,7 @@ import org.avp.Sounds;
 import org.avp.block.BlockHiveResin;
 import org.avp.entities.tile.TileEntityHiveResin;
 
-import com.arisux.amdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.CoordData;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -99,8 +99,6 @@ public class EntityDrone extends EntityXenomorph
     {
         if (!this.worldObj.isRemote)
         {
-            System.out.println(this.jellyLevel);
-            
             if (this.getHive() != null && this.worldObj.getWorldTime() % 10 == 0 && rand.nextInt(3) == 0)
             {
                 if (this.jellyLevel >= 16)

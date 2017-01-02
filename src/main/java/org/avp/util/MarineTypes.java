@@ -3,8 +3,8 @@ package org.avp.util;
 import org.avp.AliensVsPredator;
 import org.avp.items.ItemFirearm;
 
-import com.arisux.amdxlib.lib.client.Model;
-import com.arisux.amdxlib.lib.client.TexturedModel;
+import com.arisux.mdxlib.lib.client.Model;
+import com.arisux.mdxlib.lib.client.TexturedModel;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

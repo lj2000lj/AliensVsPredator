@@ -35,10 +35,11 @@ import net.minecraft.world.World;
 //TODO: Add IEntitySelector
 public class EntityFacehugger extends EntitySpeciesAlien implements IMob
 {
-    private Sorter facehugTargetSorter;
-    private int ticksOnHost;
-    private ArrayList<EntityLivingBase> targets = null;
-    private ArrayList<Class<?>> ignoreTargets = new ArrayList<Class<?>>();
+    private Sorter                      facehugTargetSorter;
+    private int                         ticksOnHost;
+    private ArrayList<EntityLivingBase> targets              = null;
+    private ArrayList<Class<?>>         ignoreTargets        = new ArrayList<Class<?>>();
+    private int                         refertilizationJelly = 0;
 
     public EntityFacehugger(World world)
     {
@@ -124,6 +125,15 @@ public class EntityFacehugger extends EntitySpeciesAlien implements IMob
         }
     }
 
+    @Override
+    protected void generateJelly()
+    {
+        if (this.worldObj.getWorldTime() % (20 * 8) == 0 && this.isFertile() && this.jellyLevel <= 256)
+        {
+            this.jellyLevel++;
+        }
+    }
+
     public ArrayList<EntityLivingBase> getTargets()
     {
         return targets;
@@ -138,7 +148,7 @@ public class EntityFacehugger extends EntitySpeciesAlien implements IMob
     {
         if (this.isCollidedHorizontally && this.isFertile())
         {
-//            this.motionY += 0.12F;
+            // this.motionY += 0.12F;
         }
     }
 
@@ -195,7 +205,13 @@ public class EntityFacehugger extends EntitySpeciesAlien implements IMob
     protected void onPickupJelly(EntityItem entityItem)
     {
         super.onPickupJelly(entityItem);
-        this.setFertile(1);
+
+        refertilizationJelly += entityItem.getEntityItem().stackSize;
+
+        if (refertilizationJelly >= (5 + this.rand.nextInt(5)))
+        {
+            this.setFertile(1);
+        }
     }
 
     @Override
@@ -266,7 +282,7 @@ public class EntityFacehugger extends EntitySpeciesAlien implements IMob
     @Override
     public double getYOffset()
     {
-        return 0.3D;
+        return super.getYOffset();
     }
 
     @Override

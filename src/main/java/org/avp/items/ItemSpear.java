@@ -3,8 +3,8 @@ package org.avp.items;
 import org.avp.AliensVsPredator;
 import org.avp.entities.EntitySpear;
 
-import com.arisux.amdxlib.lib.game.GameSounds;
-import com.arisux.amdxlib.lib.world.entity.player.inventory.Inventories;
+import com.arisux.mdxlib.lib.game.GameSounds;
+import com.arisux.mdxlib.lib.world.entity.player.inventory.Inventories;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;

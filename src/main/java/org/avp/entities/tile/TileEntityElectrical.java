@@ -15,6 +15,7 @@ public abstract class TileEntityElectrical extends TileEntity implements IPowerN
 {
     protected double voltage;
     protected double amperage;
+    protected double voltagePrev;
     protected double resistance;
     protected double operationVoltage;
 
@@ -124,14 +125,6 @@ public abstract class TileEntityElectrical extends TileEntity implements IPowerN
         }
 
         return false;
-    }
-
-    /**
-     * @return The Source Direction that a receiver can extract from
-     */
-    public ForgeDirection getSourcePowerDirection()
-    {
-        return null;
     }
 
     /**

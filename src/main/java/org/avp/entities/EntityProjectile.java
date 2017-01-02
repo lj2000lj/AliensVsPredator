@@ -2,8 +2,8 @@ package org.avp.entities;
 
 import java.util.List;
 
-import com.arisux.amdxlib.lib.game.GameSounds;
-import com.arisux.amdxlib.lib.world.entity.Entities;
+import com.arisux.mdxlib.lib.game.GameSounds;
+import com.arisux.mdxlib.lib.world.entity.Entities;
 
 import cpw.mods.fml.common.registry.IThrowableEntity;
 import cpw.mods.fml.relauncher.Side;

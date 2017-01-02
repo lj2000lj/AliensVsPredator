@@ -1,11 +1,11 @@
 package org.avp.items.render;
 
-import com.arisux.amdxlib.lib.client.Model;
-import com.arisux.amdxlib.lib.client.render.OpenGL;
-import com.arisux.amdxlib.lib.client.render.ItemRenderer;
-import com.arisux.amdxlib.lib.client.render.Texture;
-import com.arisux.amdxlib.lib.game.Game;
-import com.arisux.amdxlib.lib.world.entity.Entities;
+import com.arisux.mdxlib.lib.client.Model;
+import com.arisux.mdxlib.lib.client.render.OpenGL;
+import com.arisux.mdxlib.lib.client.render.ItemRenderer;
+import com.arisux.mdxlib.lib.client.render.Texture;
+import com.arisux.mdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.world.entity.Entities;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.Render;

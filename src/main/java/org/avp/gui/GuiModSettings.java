@@ -6,13 +6,13 @@ import org.avp.AliensVsPredator;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
-import com.arisux.amdxlib.lib.client.gui.GuiCustomButton;
-import com.arisux.amdxlib.lib.client.gui.GuiCustomScreen;
-import com.arisux.amdxlib.lib.client.gui.GuiElement;
-import com.arisux.amdxlib.lib.client.gui.IAction;
-import com.arisux.amdxlib.lib.client.render.Draw;
-import com.arisux.amdxlib.lib.client.render.ScaledResolution;
-import com.arisux.amdxlib.lib.client.render.Screen;
+import com.arisux.mdxlib.lib.client.gui.GuiCustomButton;
+import com.arisux.mdxlib.lib.client.gui.GuiCustomScreen;
+import com.arisux.mdxlib.lib.client.gui.GuiElement;
+import com.arisux.mdxlib.lib.client.gui.IAction;
+import com.arisux.mdxlib.lib.client.render.Draw;
+import com.arisux.mdxlib.lib.client.render.ScaledResolution;
+import com.arisux.mdxlib.lib.client.render.Screen;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;

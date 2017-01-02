@@ -4,7 +4,7 @@ import org.avp.event.BucketHandlingEvent;
 import org.avp.fluids.FluidBlackGoo;
 import org.avp.fluids.FluidMist;
 
-import com.arisux.amdxlib.lib.game.IInitEvent;
+import com.arisux.mdxlib.lib.game.IInitEvent;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import net.minecraft.init.Items;

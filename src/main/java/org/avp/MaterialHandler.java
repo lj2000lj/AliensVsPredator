@@ -1,6 +1,6 @@
 package org.avp;
 
-import com.arisux.amdxlib.lib.game.IInitEvent;
+import com.arisux.mdxlib.lib.game.IInitEvent;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import net.minecraft.block.material.MapColor;
@@ -21,10 +21,11 @@ public class MaterialHandler implements IInitEvent
 
     public static class Armors
     {
-        public final ArmorMaterial celtic = EnumHelper.addArmorMaterial("celtic", 32, new int[] { 4, 7, 5, 3 }, 9);
+        public final ArmorMaterial celtic = EnumHelper.addArmorMaterial("celtic", 34, new int[] { 4, 7, 5, 3 }, 9);
         public final ArmorMaterial chitin = EnumHelper.addArmorMaterial("chitin", 30, new int[] { 2, 7, 5, 3 }, 7);
-        public final ArmorMaterial kevlar = EnumHelper.addArmorMaterial("kevlar", 25, new int[] { 2, 6, 3, 2 }, 5);
-        public final ArmorMaterial pressuresuit = EnumHelper.addArmorMaterial("pressuresuit", 24, new int[] { 2, 4, 3, 2 }, 6);
+        public final ArmorMaterial kevlar = EnumHelper.addArmorMaterial("kevlar", 26, new int[] { 2, 6, 3, 2 }, 5);
+        public final ArmorMaterial pressuresuit = EnumHelper.addArmorMaterial("pressuresuit", 22, new int[] { 2, 4, 3, 2 }, 6);
+        public final ArmorMaterial mk50 = EnumHelper.addArmorMaterial("mk50", 24, new int[] { 2, 4, 3, 2 }, 6);
     }
 
     public static class Tools

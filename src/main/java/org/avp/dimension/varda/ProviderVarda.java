@@ -1,8 +1,6 @@
 package org.avp.dimension.varda;
 
 import org.avp.AliensVsPredator;
-import org.avp.dimension.BiomeLVBase;
-import org.avp.dimension.acheron.ChunkProviderAcheron;
 import org.avp.event.VardaStormHandler;
 
 import cpw.mods.fml.relauncher.Side;
@@ -11,6 +9,7 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.WorldProvider;
+import net.minecraft.world.WorldType;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.client.IRenderHandler;
@@ -28,7 +27,7 @@ public class ProviderVarda extends WorldProvider
     @Override
     public void registerWorldChunkManager()
     {
-        this.worldChunkMgr = new ChunkManagerVarda(BiomeLVBase.varda);
+        this.worldChunkMgr = new ChunkManagerVarda(this.getSeed(), WorldType.DEFAULT);
         this.hasNoSky = false;
         this.isHellWorld = false;
     }
@@ -61,7 +60,7 @@ public class ProviderVarda extends WorldProvider
     @Override
     public String getDepartMessage()
     {
-        return "Leaving" + AliensVsPredator.properties().DIMENSION_NAME_VARDA;
+        return "Leaving " + AliensVsPredator.properties().DIMENSION_NAME_VARDA;
     }
 
     @Override
@@ -79,7 +78,7 @@ public class ProviderVarda extends WorldProvider
     @Override
     public IChunkProvider createChunkGenerator()
     {
-        return new ChunkProviderAcheron(this.worldObj, worldObj.getSeed());
+        return new ChunkProviderVarda(this.worldObj, worldObj.getSeed());
     }
 
     @Override

@@ -8,10 +8,11 @@ import org.avp.packets.client.PacketOpenBlastdoor;
 import org.avp.util.IOpenable;
 import org.avp.util.IPowerDrain;
 
-import com.arisux.amdxlib.lib.game.Game;
-import com.arisux.amdxlib.lib.world.tile.IRotatable;
+import com.arisux.mdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.world.tile.IRotatable;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -233,7 +234,7 @@ public class TileEntityBlastdoor extends TileEntityElectrical implements IPowerD
     {
         Block block = worldObj.getBlock(posX, posY, posZ);
 
-        if (block != Blocks.air && block != AliensVsPredator.blocks().blockBlastdoor)
+        if (block.getMaterial() != Material.air && block != AliensVsPredator.blocks().blockBlastdoor)
         {
             if (this.worldObj.isRemote)
             {

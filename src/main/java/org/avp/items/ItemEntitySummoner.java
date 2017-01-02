@@ -3,9 +3,9 @@ package org.avp.items;
 import org.avp.AliensVsPredator;
 import org.avp.packets.server.PacketSpawnEntity;
 
-import com.arisux.amdxlib.lib.world.entity.Entities;
-import com.arisux.amdxlib.lib.world.entity.player.inventory.Inventories;
-import com.arisux.amdxlib.lib.world.item.HookedItem;
+import com.arisux.mdxlib.lib.world.entity.Entities;
+import com.arisux.mdxlib.lib.world.entity.player.inventory.Inventories;
+import com.arisux.mdxlib.lib.world.item.HookedItem;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;

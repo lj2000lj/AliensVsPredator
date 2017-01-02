@@ -5,7 +5,7 @@ import java.util.List;
 import org.avp.DamageSources;
 import org.avp.entities.mob.EntityMarine;
 
-import com.arisux.amdxlib.lib.game.GameSounds;
+import com.arisux.mdxlib.lib.game.GameSounds;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;

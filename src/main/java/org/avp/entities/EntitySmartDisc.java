@@ -3,7 +3,7 @@ package org.avp.entities;
 import org.avp.AliensVsPredator;
 import org.avp.DamageSources;
 
-import com.arisux.amdxlib.lib.game.GameSounds;
+import com.arisux.mdxlib.lib.game.GameSounds;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

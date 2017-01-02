@@ -2,8 +2,8 @@ package org.avp.entities.render;
 
 import org.avp.AliensVsPredator;
 
-import com.arisux.amdxlib.lib.client.render.OpenGL;
-import com.arisux.amdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.client.render.OpenGL;
+import com.arisux.mdxlib.lib.game.Game;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;

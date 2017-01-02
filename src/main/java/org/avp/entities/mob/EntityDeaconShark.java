@@ -5,8 +5,8 @@ import java.util.List;
 import org.avp.entities.ai.helpers.EntityExtendedLookHelper;
 import org.avp.entities.pathfinding.PathNavigateSwimmer;
 
-import com.arisux.amdxlib.lib.world.CoordData;
-import com.arisux.amdxlib.lib.world.entity.Entities;
+import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.entity.Entities;
 
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;

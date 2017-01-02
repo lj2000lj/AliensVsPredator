@@ -12,14 +12,14 @@ import org.avp.packets.server.PacketWriteToDataDevice;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
-import com.arisux.amdxlib.lib.client.gui.GuiCustomButton;
-import com.arisux.amdxlib.lib.client.gui.GuiCustomSlider;
-import com.arisux.amdxlib.lib.client.gui.IAction;
-import com.arisux.amdxlib.lib.client.render.Color;
-import com.arisux.amdxlib.lib.client.render.Draw;
-import com.arisux.amdxlib.lib.client.render.OpenGL;
-import com.arisux.amdxlib.lib.game.Game;
-import com.arisux.amdxlib.lib.world.entity.Entities;
+import com.arisux.mdxlib.lib.client.gui.GuiCustomButton;
+import com.arisux.mdxlib.lib.client.gui.GuiCustomSlider;
+import com.arisux.mdxlib.lib.client.gui.IAction;
+import com.arisux.mdxlib.lib.client.render.Color;
+import com.arisux.mdxlib.lib.client.render.Draw;
+import com.arisux.mdxlib.lib.client.render.OpenGL;
+import com.arisux.mdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.world.entity.Entities;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

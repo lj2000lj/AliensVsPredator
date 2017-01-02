@@ -2,7 +2,7 @@ package org.avp.packets.server;
 
 import org.avp.AliensVsPredator;
 
-import com.arisux.amdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.game.Game;
 
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;

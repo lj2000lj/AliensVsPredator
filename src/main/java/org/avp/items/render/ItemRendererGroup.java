@@ -2,12 +2,12 @@ package org.avp.items.render;
 
 import org.lwjgl.opengl.GL11;
 
-import com.arisux.amdxlib.lib.client.Model;
-import com.arisux.amdxlib.lib.client.TexturedModel;
-import com.arisux.amdxlib.lib.client.render.Draw;
-import com.arisux.amdxlib.lib.client.render.OpenGL;
-import com.arisux.amdxlib.lib.game.Game;
-import com.arisux.amdxlib.lib.client.render.ItemRenderer;
+import com.arisux.mdxlib.lib.client.Model;
+import com.arisux.mdxlib.lib.client.TexturedModel;
+import com.arisux.mdxlib.lib.client.render.Draw;
+import com.arisux.mdxlib.lib.client.render.OpenGL;
+import com.arisux.mdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.client.render.ItemRenderer;
 
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.item.ItemStack;

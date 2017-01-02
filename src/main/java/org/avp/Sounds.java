@@ -3,9 +3,9 @@ package org.avp;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import com.arisux.amdxlib.AMDXLib;
-import com.arisux.amdxlib.lib.client.Sound;
-import com.arisux.amdxlib.lib.game.IPostInitEvent;
+import com.arisux.mdxlib.MDX;
+import com.arisux.mdxlib.lib.client.Sound;
+import com.arisux.mdxlib.lib.game.IPostInitEvent;
 
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 
@@ -95,14 +95,14 @@ public class Sounds implements IPostInitEvent
                     Field f = Sound.class.getDeclaredField("volume");
                     f.setAccessible(true);
                     
-                    AMDXLib.log().info(String.format("Adjusted the volume of %s to the globally configured volume setting of %s%%.", ((Sound) field.get(this)).getKey(), (f.getFloat(field.get(this)) * 100 / 1.0F)));
+                    MDX.log().info(String.format("Adjusted the volume of %s to the globally configured volume setting of %s%%.", ((Sound) field.get(this)).getKey(), (f.getFloat(field.get(this)) * 100 / 1.0F)));
                 }
             }
             catch (Exception e1)
             {
                 try
                 {
-                    AMDXLib.log().info(String.format("Failed to adjust the volume of %s: %s", ((Sound) field.get(this)).getKey(), e1));
+                    MDX.log().info(String.format("Failed to adjust the volume of %s: %s", ((Sound) field.get(this)).getKey(), e1));
                 }
                 catch (Exception e2)
                 {

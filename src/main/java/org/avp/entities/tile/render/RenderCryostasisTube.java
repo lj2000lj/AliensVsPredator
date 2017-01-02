@@ -12,8 +12,8 @@ import org.avp.entities.tile.TileEntityCryostasisTube;
 import org.avp.util.EntityRenderTransforms;
 import org.lwjgl.opengl.GL12;
 
-import com.arisux.amdxlib.lib.client.TexturedModel;
-import com.arisux.amdxlib.lib.client.render.OpenGL;
+import com.arisux.mdxlib.lib.client.TexturedModel;
+import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

@@ -5,7 +5,7 @@ import org.avp.DamageSources;
 import org.avp.Sounds;
 import org.avp.inventory.container.ContainerWristbracer;
 
-import com.arisux.amdxlib.lib.world.item.HookedItem;
+import com.arisux.mdxlib.lib.world.item.HookedItem;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;

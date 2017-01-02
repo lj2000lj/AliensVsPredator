@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.avp.entities.EntityGrenade;
 
-import com.arisux.amdxlib.lib.world.entity.player.inventory.Inventories;
-import com.arisux.amdxlib.lib.world.item.HookedItem;
+import com.arisux.mdxlib.lib.world.entity.player.inventory.Inventories;
+import com.arisux.mdxlib.lib.world.item.HookedItem;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

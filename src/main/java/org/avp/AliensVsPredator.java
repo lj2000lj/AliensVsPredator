@@ -1,13 +1,13 @@
-/** AliensVsPredator Minecraft Mod - Copyright (C) 2012-2016 Arisux Technology Group **/
+/** AliensVsPredator Minecraft Mod - Copyright (C) 2012-2017 Arisux Technology Group **/
 package org.avp;
 
 import org.avp.api.AssemblerAPI;
 import org.avp.api.WristbracerAPI;
 import org.avp.event.HiveHandler;
 
-import com.arisux.amdxlib.AMDXLib;
-import com.arisux.amdxlib.lib.game.Game;
-import com.arisux.amdxlib.lib.game.IMod;
+import com.arisux.mdxlib.MDX;
+import com.arisux.mdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.game.IMod;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -22,7 +22,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;
 
-@Mod(modid = AliensVsPredator.ID, acceptedMinecraftVersions = "1.7.10", canBeDeactivated = true, dependencies = "required-after:amdxlib")
+@Mod(modid = AliensVsPredator.ID, acceptedMinecraftVersions = "1.7.10", canBeDeactivated = true, dependencies = "required-after:mdxlib")
 public class AliensVsPredator implements IMod
 {
     protected static final String   ID = "avp";
@@ -201,18 +201,24 @@ public class AliensVsPredator implements IMod
     @Mod.EventHandler
     public void pre(FMLPreInitializationEvent event)
     {
-        AMDXLib.log().info("[AliensVsPredator] Copyright(C) 2012-2016 Arisux Technology Group");
-        AMDXLib.log().info("[AliensVsPredator] Pre-Initialization");
+        MDX.log().info("[AliensVsPredator] Copyright(C) 2012-2017 Arisux Technology Group");
+        MDX.log().info("[AliensVsPredator] Pre-Initialization");
 
         settings().preInitialize(event);
         renderTypes().pre(event);
+        this.remapItemIdentities();
+    }
+    
+    private void remapItemIdentities()
+    {
+        MDX.registerMappingInfo("summon.protomorph", "summon.deacon", AliensVsPredator.ID);
     }
 
     @Override
     @Mod.EventHandler
     public void init(FMLInitializationEvent event)
     {
-        AMDXLib.log().info("[AliensVsPredator] Initialization");
+        MDX.log().info("[AliensVsPredator] Initialization");
 
         fluids().init(event);
         network().init(event);
@@ -241,7 +247,7 @@ public class AliensVsPredator implements IMod
     @Mod.EventHandler
     public void post(FMLPostInitializationEvent event)
     {
-        AMDXLib.log().info("[AliensVsPredator] Post-Initialization");
+        MDX.log().info("[AliensVsPredator] Post-Initialization");
         
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
         {

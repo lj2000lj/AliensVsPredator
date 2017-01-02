@@ -2,10 +2,13 @@ package org.avp.util;
 
 import org.avp.entities.mob.EntityAqua;
 import org.avp.entities.mob.EntityDrone;
+import org.avp.entities.mob.EntityEngineer;
 import org.avp.entities.mob.EntityPredalien;
 import org.avp.entities.mob.EntityQueen;
 import org.avp.entities.mob.EntityRunnerDrone;
+import org.avp.entities.mob.EntitySpaceJockey;
 import org.avp.entities.mob.EntitySpitter;
+import org.avp.entities.mob.EntityUltramorph;
 import org.avp.entities.mob.EntityXenomorph;
 import org.avp.entities.mob.EntityYautja;
 
@@ -25,7 +28,8 @@ public enum EmbryoType
     AQUA(2, EntitySquid.class, EntityAqua.class), 
     PREDALIEN(3, EntityYautja.class, EntityPredalien.class), 
     RUNNER(4, new Class[] { EntityCow.class, EntityHorse.class, EntityWolf.class }, EntityRunnerDrone.class),
-    QUEEN(5, Entity.class, EntityQueen.class);
+    QUEEN(5, Entity.class, EntityQueen.class),
+    ULTRAMORPH(6, new Class[] { EntityEngineer.class, EntitySpaceJockey.class }, EntityUltramorph.class);
 
     private int typeId;
     private int gestationPeriod;

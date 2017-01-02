@@ -3,7 +3,7 @@ package org.avp.entities.mob.render;
 import org.avp.AliensVsPredator;
 import org.avp.entities.mob.EntityFacehugger;
 
-import com.arisux.amdxlib.lib.client.render.OpenGL;
+import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.entity.EntityLivingBase;
 

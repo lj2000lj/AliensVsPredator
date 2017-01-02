@@ -4,8 +4,9 @@ import java.util.Random;
 
 import org.avp.entities.EntitySupplyChute;
 import org.avp.entities.tile.TileEntitySupplyCrate;
+import org.avp.items.ItemSupplyChute.SupplyChuteType;
 
-import com.arisux.amdxlib.lib.world.tile.IRotatable;
+import com.arisux.mdxlib.lib.world.tile.IRotatable;
 
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.material.Material;
@@ -23,9 +24,12 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockSupplyCrate extends BlockFalling
 {
-    public BlockSupplyCrate()
+    private SupplyChuteType type;
+    
+    public BlockSupplyCrate(SupplyChuteType type)
     {
         super(Material.iron);
+        this.type = type;
     }
 
     @Override
@@ -37,7 +41,10 @@ public class BlockSupplyCrate extends BlockFalling
     @Override
     public TileEntity createTileEntity(World world, int metadata)
     {
-        return new TileEntitySupplyCrate();
+        TileEntitySupplyCrate crate = new TileEntitySupplyCrate();
+        crate.setType(this.type);
+        
+        return crate;
     }
 
     @Override
@@ -81,12 +88,21 @@ public class BlockSupplyCrate extends BlockFalling
 
                 if (!fallInstantly && world.checkChunksExist(posX - b0, posY - b0, posZ - b0, posX + b0, posY + b0, posZ + b0))
                 {
-                    EntitySupplyChute crate = new EntitySupplyChute(world, (double) ((float) posX + 0.5F), (double) ((float) posY + 0.5F), (double) ((float) posZ + 0.5F), this, world.getBlockMetadata(posX, posY, posZ));
-                    this.onStartFalling(crate);
-                    world.spawnEntityInWorld(crate);
+                    this.spawnParachute(world, posX, posY, posZ);
                 }
             }
         }
+    }
+    
+    public void spawnParachute(World world, int posX, int posY, int posZ)
+    {
+        EntitySupplyChute chute = this.getType().createEntity(world, (double) ((float) posX + 0.5F), (double) ((float) posY + 0.5F), (double) ((float) posZ + 0.5F));
+        world.spawnEntityInWorld(chute);
+    }
+    
+    public SupplyChuteType getType()
+    {
+        return this.type;
     }
 
     @Override

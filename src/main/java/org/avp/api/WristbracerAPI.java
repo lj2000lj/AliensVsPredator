@@ -5,10 +5,10 @@ import java.util.HashMap;
 import org.avp.AliensVsPredator;
 import org.avp.packets.server.PacketSpawnNuke;
 
-import com.arisux.amdxlib.AMDXLib;
-import com.arisux.amdxlib.lib.client.render.Draw;
-import com.arisux.amdxlib.lib.game.Game;
-import com.arisux.amdxlib.lib.game.IInitEvent;
+import com.arisux.mdxlib.MDX;
+import com.arisux.mdxlib.lib.client.render.Draw;
+import com.arisux.mdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.game.IInitEvent;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -53,7 +53,7 @@ public class WristbracerAPI implements IInitEvent
         }
         else
         {
-            AMDXLib.log().warn(String.format("[AVP/API/Wristbracer] Combonation '%s' is already registered.", combonation));
+            MDX.log().warn(String.format("[AVP/API/Wristbracer] Combonation '%s' is already registered.", combonation));
         }
     }
 

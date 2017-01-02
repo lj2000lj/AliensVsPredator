@@ -1,7 +1,7 @@
 package org.avp.dimension.acheron;
 
 import org.avp.AliensVsPredator;
-import org.avp.dimension.BiomeLVBase;
+import org.avp.dimension.BiomeGenLV;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -26,7 +26,7 @@ public class ProviderAcheron extends WorldProvider
     @Override
     public void registerWorldChunkManager()
     {
-        this.worldChunkMgr = new ChunkManagerAcheron(BiomeLVBase.acheron);
+        this.worldChunkMgr = new ChunkManagerAcheron(BiomeGenLV.acheron);
         this.hasNoSky = false;
         this.isHellWorld = false;
     }

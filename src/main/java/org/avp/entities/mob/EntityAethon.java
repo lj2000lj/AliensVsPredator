@@ -2,6 +2,7 @@ package org.avp.entities.mob;
 
 import org.avp.EntityItemDrops;
 import org.avp.entities.EntityLiquidPool;
+import org.avp.util.IFacehugSelector;
 
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
@@ -24,7 +25,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class EntityAethon extends EntityMob implements IMob
+public class EntityAethon extends EntityMob implements IMob, IFacehugSelector
 {
     public static final int FLYING_DATAWATCHER_ID = 19;
 
@@ -83,6 +84,12 @@ public class EntityAethon extends EntityMob implements IMob
     protected boolean isAIEnabled()
     {
         return true;
+    }
+    
+    @Override
+    public boolean canFacehuggerAttach()
+    {
+        return false;
     }
 
     private ChunkCoordinates flyToPosition;

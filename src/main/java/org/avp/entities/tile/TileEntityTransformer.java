@@ -4,7 +4,7 @@ import org.avp.util.IPowerDrain;
 import org.avp.util.IPowerNode;
 import org.avp.util.IPowerSource;
 
-import com.arisux.amdxlib.lib.world.tile.IRotatable;
+import com.arisux.mdxlib.lib.world.tile.IRotatable;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -83,12 +83,6 @@ public class TileEntityTransformer extends TileEntityElectrical implements IPowe
                 this.voltage = 0;
             }
         }
-    }
-
-    @Override
-    public ForgeDirection getSourcePowerDirection()
-    {
-        return direction;
     }
 
     @Override

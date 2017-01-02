@@ -6,8 +6,7 @@ import java.util.UUID;
 import org.avp.event.HiveHandler;
 import org.avp.util.XenomorphHive;
 
-import com.arisux.amdxlib.lib.game.Game;
-import com.arisux.amdxlib.lib.world.Worlds;
+import com.arisux.mdxlib.lib.world.Worlds;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
@@ -85,28 +84,28 @@ public class TileEntityHiveResin extends TileEntity
     @Override
     public void updateEntity()
     {
-        if (Game.minecraft().theWorld != null && this.worldObj.getWorldTime() % 20 == 0)
+        if (this.worldObj.getWorldTime() % 20 == 0)
         {
             if (variant != null)
             {
-                bottomBlock = Game.minecraft().theWorld.getBlock(this.xCoord, this.yCoord - 1, this.zCoord);
-                topBlock = Game.minecraft().theWorld.getBlock(this.xCoord, this.yCoord + 1, this.zCoord);
+                bottomBlock = this.worldObj.getBlock(this.xCoord, this.yCoord - 1, this.zCoord);
+                topBlock = this.worldObj.getBlock(this.xCoord, this.yCoord + 1, this.zCoord);
 
-                northBlock = Game.minecraft().theWorld.getBlock(this.xCoord + variant.nX, this.yCoord, this.zCoord + variant.nZ);
-                northTopBlock = Game.minecraft().theWorld.getBlock(this.xCoord + variant.nX, this.yCoord + 1, this.zCoord + variant.nZ);
-                northBottomBlock = Game.minecraft().theWorld.getBlock(this.xCoord + variant.nX, this.yCoord - 1, this.zCoord + variant.nZ);
+                northBlock = this.worldObj.getBlock(this.xCoord + variant.nX, this.yCoord, this.zCoord + variant.nZ);
+                northTopBlock = this.worldObj.getBlock(this.xCoord + variant.nX, this.yCoord + 1, this.zCoord + variant.nZ);
+                northBottomBlock = this.worldObj.getBlock(this.xCoord + variant.nX, this.yCoord - 1, this.zCoord + variant.nZ);
 
-                southBlock = Game.minecraft().theWorld.getBlock(this.xCoord + variant.sX, this.yCoord, this.zCoord + variant.sZ);
-                southTopBlock = Game.minecraft().theWorld.getBlock(this.xCoord + variant.sX, this.yCoord + 1, this.zCoord + variant.sZ);
-                southBottomBlock = Game.minecraft().theWorld.getBlock(this.xCoord + variant.sX, this.yCoord - 1, this.zCoord + variant.sZ);
+                southBlock = this.worldObj.getBlock(this.xCoord + variant.sX, this.yCoord, this.zCoord + variant.sZ);
+                southTopBlock = this.worldObj.getBlock(this.xCoord + variant.sX, this.yCoord + 1, this.zCoord + variant.sZ);
+                southBottomBlock = this.worldObj.getBlock(this.xCoord + variant.sX, this.yCoord - 1, this.zCoord + variant.sZ);
 
-                eastBlock = Game.minecraft().theWorld.getBlock(this.xCoord + variant.eX, this.yCoord, this.zCoord + variant.eZ);
-                eastTopBlock = Game.minecraft().theWorld.getBlock(this.xCoord + variant.eX, this.yCoord + 1, this.zCoord + variant.eZ);
-                eastBottomBlock = Game.minecraft().theWorld.getBlock(this.xCoord + variant.eX, this.yCoord - 1, this.zCoord + variant.eZ);
+                eastBlock = this.worldObj.getBlock(this.xCoord + variant.eX, this.yCoord, this.zCoord + variant.eZ);
+                eastTopBlock = this.worldObj.getBlock(this.xCoord + variant.eX, this.yCoord + 1, this.zCoord + variant.eZ);
+                eastBottomBlock = this.worldObj.getBlock(this.xCoord + variant.eX, this.yCoord - 1, this.zCoord + variant.eZ);
 
-                westBlock = Game.minecraft().theWorld.getBlock(this.xCoord + variant.wX, this.yCoord, this.zCoord + variant.wZ);
-                westTopBlock = Game.minecraft().theWorld.getBlock(this.xCoord + variant.wX, this.yCoord + 1, this.zCoord + variant.wZ);
-                westBottomBlock = Game.minecraft().theWorld.getBlock(this.xCoord + variant.wX, this.yCoord - 1, this.zCoord + variant.wZ);
+                westBlock = this.worldObj.getBlock(this.xCoord + variant.wX, this.yCoord, this.zCoord + variant.wZ);
+                westTopBlock = this.worldObj.getBlock(this.xCoord + variant.wX, this.yCoord + 1, this.zCoord + variant.wZ);
+                westBottomBlock = this.worldObj.getBlock(this.xCoord + variant.wX, this.yCoord - 1, this.zCoord + variant.wZ);
             }
             else
             {

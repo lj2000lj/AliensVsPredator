@@ -2,7 +2,7 @@ package org.avp.items.model;
 
 import org.avp.util.IFirearmModel;
 
-import com.arisux.amdxlib.lib.client.Model;
+import com.arisux.mdxlib.lib.client.Model;
 
 import net.minecraft.client.model.ModelRenderer;
 

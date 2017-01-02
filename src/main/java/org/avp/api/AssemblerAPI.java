@@ -2,9 +2,9 @@ package org.avp.api;
 
 import java.util.ArrayList;
 
-import com.arisux.amdxlib.AMDXLib;
-import com.arisux.amdxlib.lib.game.IInitEvent;
-import com.arisux.amdxlib.lib.world.entity.player.inventory.Inventories;
+import com.arisux.mdxlib.MDX;
+import com.arisux.mdxlib.lib.game.IInitEvent;
+import com.arisux.mdxlib.lib.world.entity.player.inventory.Inventories;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import net.minecraft.entity.item.EntityItem;
@@ -101,7 +101,7 @@ public class AssemblerAPI implements IInitEvent
         }
         else
         {
-            AMDXLib.log().warn(String.format("[AVP/API/Assembler] Schematic for id '%s' is already registered.", schematic.getSchematicId()));
+            MDX.log().warn(String.format("[AVP/API/Assembler] Schematic for id '%s' is already registered.", schematic.getSchematicId()));
         }
     }
 

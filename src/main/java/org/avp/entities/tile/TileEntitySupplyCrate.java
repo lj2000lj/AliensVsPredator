@@ -2,10 +2,11 @@ package org.avp.entities.tile;
 
 import org.avp.AliensVsPredator;
 import org.avp.inventory.container.ContainerSupplyCrate;
+import org.avp.items.ItemSupplyChute.SupplyChuteType;
 import org.avp.packets.client.PacketOpenable;
 import org.avp.util.IOpenable;
 
-import com.arisux.amdxlib.lib.world.tile.IRotatable;
+import com.arisux.mdxlib.lib.world.tile.IRotatable;
 
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,6 +29,7 @@ public class TileEntitySupplyCrate extends TileEntity implements IOpenable, IRot
 	private ForgeDirection direction;
 	public Container container;
 	private boolean isOpen;
+	private SupplyChuteType type;
 
 	public TileEntitySupplyCrate()
 	{
@@ -49,6 +51,11 @@ public class TileEntitySupplyCrate extends TileEntity implements IOpenable, IRot
 		if (this.inventory != null)
 		{
 			this.saveInventoryToNBT(nbt, inventory);
+		}
+		
+		if (this.type != null)
+		{
+		    nbt.setInteger("Type", this.type.id());
 		}
 	}
 
@@ -83,6 +90,7 @@ public class TileEntitySupplyCrate extends TileEntity implements IOpenable, IRot
 		}
 
 		this.readInventoryFromNBT(nbt, this.inventory);
+		this.type = SupplyChuteType.get(nbt.getInteger("Type"));
 	}
 
 	private void readInventoryFromNBT(NBTTagCompound nbt, IInventory inventory)
@@ -119,8 +127,6 @@ public class TileEntitySupplyCrate extends TileEntity implements IOpenable, IRot
 	@Override
 	public Packet getDescriptionPacket()
 	{
-	    //WHY IS THIS BEING CALLED SO MUCH
-	    
 		NBTTagCompound nbtTag = new NBTTagCompound();
 		this.writeToNBT(nbtTag);
 		return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbtTag);
@@ -165,4 +171,14 @@ public class TileEntitySupplyCrate extends TileEntity implements IOpenable, IRot
 	{
 		return isOpen;
 	}
+	
+	public SupplyChuteType getType()
+    {
+        return type;
+    }
+	
+	public void setType(SupplyChuteType type)
+    {
+        this.type = type;
+    }
 }

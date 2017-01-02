@@ -1,6 +1,6 @@
 package org.avp.block;
 
-import com.arisux.amdxlib.lib.world.block.BlockSide;
+import com.arisux.mdxlib.lib.world.block.BlockSide;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

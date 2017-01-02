@@ -6,8 +6,8 @@ import org.avp.AliensVsPredator;
 import org.avp.EntityItemDrops;
 import org.avp.packets.client.PacketOvamorphContainsFacehugger;
 
-import com.arisux.amdxlib.lib.world.CoordData;
-import com.arisux.amdxlib.lib.world.entity.Entities;
+import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.entity.Entities;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;

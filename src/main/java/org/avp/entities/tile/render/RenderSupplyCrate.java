@@ -1,11 +1,10 @@
 package org.avp.entities.tile.render;
 
-import org.avp.AliensVsPredator;
 import org.avp.entities.tile.TileEntitySupplyCrate;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import com.arisux.amdxlib.lib.client.render.OpenGL;
+import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -16,7 +15,7 @@ public class RenderSupplyCrate extends TileEntitySpecialRenderer
     public void renderTileEntityAt(TileEntity tileEntity, double posX, double posY, double posZ, float renderPartialTicks)
     {
         TileEntitySupplyCrate tile = (TileEntitySupplyCrate) tileEntity;
-        
+
         OpenGL.pushMatrix();
         {
             float scale = 1F;
@@ -27,8 +26,9 @@ public class RenderSupplyCrate extends TileEntitySpecialRenderer
             OpenGL.enable(GL11.GL_ALPHA_TEST);
             OpenGL.disableCullFace();
             OpenGL.rotate(tile);
-            AliensVsPredator.resources().models().SUPPLY_CHUTE.bindTexture();
-            AliensVsPredator.resources().models().SUPPLY_CHUTE.getModel().drawCrate();
+            
+            tile.getType().getModel().bindTexture();
+            tile.getType().getModel().getModel().drawCrate();
         }
         OpenGL.popMatrix();
     }

@@ -3,7 +3,7 @@ package org.avp.items;
 import org.avp.AliensVsPredator;
 import org.avp.entities.mob.model.ModelDrone;
 
-import com.arisux.amdxlib.lib.client.render.Draw;
+import com.arisux.mdxlib.lib.client.render.Draw;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

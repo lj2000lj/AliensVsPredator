@@ -2,7 +2,7 @@ package org.avp.items;
 
 import org.avp.AliensVsPredator;
 
-import com.arisux.amdxlib.lib.client.render.Draw;
+import com.arisux.mdxlib.lib.client.render.Draw;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -40,7 +40,6 @@ public class ItemArmorTitanium extends ItemArmor
     @Override
     public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack)
     {
-        // if you have the set, you get jump boost and fall damage is negated. if you also have the wrist bracer, you get limited invisibility
         if (player.inventory.armorItemInSlot(3) != null && player.inventory.armorItemInSlot(3).getItem() == AliensVsPredator.items().helmTitanium && player.inventory.armorItemInSlot(2) != null && player.inventory.armorItemInSlot(2).getItem() == AliensVsPredator.items().plateTitanium && player.inventory.armorItemInSlot(1) != null && player.inventory.armorItemInSlot(1).getItem() == AliensVsPredator.items().legsTitanium && player.inventory.armorItemInSlot(0) != null && player.inventory.armorItemInSlot(0).getItem() == AliensVsPredator.items().bootsTitanium)
         {
             player.fallDistance = 0.0F;
@@ -51,5 +50,4 @@ public class ItemArmorTitanium extends ItemArmor
             }
         }
     }
-
 }

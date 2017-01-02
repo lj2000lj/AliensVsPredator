@@ -13,7 +13,7 @@ import org.avp.gui.GuiWristbracer;
 import org.avp.inventory.container.ContainerWristbracer;
 import org.avp.items.ItemWristbracer;
 
-import com.arisux.amdxlib.lib.game.IInitEvent;
+import com.arisux.mdxlib.lib.game.IInitEvent;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.network.IGuiHandler;

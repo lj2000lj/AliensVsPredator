@@ -5,7 +5,7 @@ import java.util.Random;
 
 import org.avp.AliensVsPredator;
 import org.avp.entities.tile.TileEntityTransformer;
-import org.avp.packets.client.PacketRotateTransformer;
+import org.avp.packets.client.PacketRotateRotatable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -102,7 +102,7 @@ public class BlockTransformer extends Block
 
                 if (!worldObj.isRemote)
                 {
-                    AliensVsPredator.network().sendToAll(new PacketRotateTransformer(transformer.getDirection().ordinal(), transformer.xCoord, transformer.yCoord, transformer.zCoord));
+                    AliensVsPredator.network().sendToAll(new PacketRotateRotatable(transformer.getDirection().ordinal(), transformer.xCoord, transformer.yCoord, transformer.zCoord));
                 }
             }
 

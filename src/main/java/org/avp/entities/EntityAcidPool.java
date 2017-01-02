@@ -1,9 +1,11 @@
 package org.avp.entities;
 
+import org.avp.DamageSources;
 import org.avp.entities.ai.EntityAIMeltBlock;
 
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.monster.IMob;
@@ -21,9 +23,12 @@ public class EntityAcidPool extends EntityLiquidPool implements IMob, IEntitySel
         this.ignoreFrustumCheck = true;
         this.setSize(0.08F, 0.08F);
         this.tasks.addTask(0, new EntityAIMeltBlock(this, -1));
-        this.targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, Entity.class, /** targetChance **/ 0, /** shouldCheckSight **/ false, /** nearbyOnly **/ false, this));
+        this.targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, Entity.class, /** targetChance **/
+            0, /** shouldCheckSight **/
+            false, /** nearbyOnly **/
+            false, this));
     }
-    
+
     @Override
     public boolean isEntityApplicable(Entity entity)
     {
@@ -31,7 +36,7 @@ public class EntityAcidPool extends EntityLiquidPool implements IMob, IEntitySel
         {
             return false;
         }
-        
+
         return true;
     }
 
@@ -88,7 +93,19 @@ public class EntityAcidPool extends EntityLiquidPool implements IMob, IEntitySel
     public void onUpdate()
     {
         super.onUpdate();
-        
+
+        if (!this.worldObj.isRemote)
+        {
+            double range = 1.2;
+            EntityLivingBase target = (EntityLivingBase) (this.worldObj.findNearestEntityWithinAABB(EntityLivingBase.class, this.boundingBox.expand(range, 0.1D, range), this));
+
+            if (target != null && isEntityApplicable(target))
+            {
+                this.setAttackTarget(target);
+                target.attackEntityFrom(DamageSources.acid, 4F);
+            }
+        }
+
         if (worldObj.isRemote && worldObj.getWorldTime() % 4 <= 0)
         {
             this.worldObj.spawnParticle("smoke", this.posX + this.rand.nextDouble(), this.posY + this.rand.nextDouble(), this.posZ + this.rand.nextDouble(), 0.0D, 0.0D, 0.0D);

@@ -3,7 +3,7 @@ package org.avp.packets.client;
 import org.avp.entities.extended.ExtendedEntityPlayer;
 import org.avp.util.PlayerMode;
 
-import com.arisux.amdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.game.Game;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;

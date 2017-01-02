@@ -4,7 +4,7 @@ import org.avp.Sounds;
 import org.avp.util.EmbryoType;
 import org.avp.util.EvolutionType;
 
-import com.arisux.amdxlib.lib.world.entity.Entities;
+import com.arisux.mdxlib.lib.world.entity.Entities;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;

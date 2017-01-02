@@ -3,7 +3,8 @@ package org.avp;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.avp.dimension.BiomeLVBase;
+import org.avp.dimension.BiomeGenLV;
+import org.avp.dimension.varda.BiomeGenVarda;
 import org.avp.entities.EntityAPC;
 import org.avp.entities.EntityAcidPool;
 import org.avp.entities.EntityAcidProjectile;
@@ -19,12 +20,15 @@ import org.avp.entities.EntityShuriken;
 import org.avp.entities.EntitySmartDisc;
 import org.avp.entities.EntitySpear;
 import org.avp.entities.EntitySupplyChute;
+import org.avp.entities.EntitySupplyChuteMarines;
+import org.avp.entities.EntitySupplyChuteSeegson;
 import org.avp.entities.EntityTurret;
 import org.avp.entities.mob.EntityAethon;
 import org.avp.entities.mob.EntityAqua;
 import org.avp.entities.mob.EntityChestburster;
 import org.avp.entities.mob.EntityCombatSynthetic;
 import org.avp.entities.mob.EntityCrusher;
+import org.avp.entities.mob.EntityDeacon;
 import org.avp.entities.mob.EntityDeaconShark;
 import org.avp.entities.mob.EntityDrone;
 import org.avp.entities.mob.EntityEngineer;
@@ -35,7 +39,6 @@ import org.avp.entities.mob.EntityMarine;
 import org.avp.entities.mob.EntityOvamorph;
 import org.avp.entities.mob.EntityPraetorian;
 import org.avp.entities.mob.EntityPredalien;
-import org.avp.entities.mob.EntityProtomorph;
 import org.avp.entities.mob.EntityQueen;
 import org.avp.entities.mob.EntityRoyalFacehugger;
 import org.avp.entities.mob.EntityRunnerDrone;
@@ -57,10 +60,11 @@ import org.avp.entities.tile.TileEntityLightPanel;
 import org.avp.entities.tile.TileEntityLocker;
 import org.avp.entities.tile.TileEntityMedpod;
 import org.avp.entities.tile.TileEntityNegativeTransformer;
-import org.avp.entities.tile.TileEntityP2RConverter;
+import org.avp.entities.tile.TileEntityRedstoneEmitter;
+import org.avp.entities.tile.TileEntityRedstoneFluxGenerator;
 import org.avp.entities.tile.TileEntityPowercell;
 import org.avp.entities.tile.TileEntityPowerline;
-import org.avp.entities.tile.TileEntityR2PConverter;
+import org.avp.entities.tile.TileEntityRedstoneSensor;
 import org.avp.entities.tile.TileEntityRepulsionGenerator;
 import org.avp.entities.tile.TileEntitySatelliteDish;
 import org.avp.entities.tile.TileEntitySatelliteModem;
@@ -72,9 +76,9 @@ import org.avp.entities.tile.TileEntityTransformer;
 import org.avp.entities.tile.TileEntityTurret;
 import org.avp.entities.tile.TileEntityWorkstation;
 
-import com.arisux.amdxlib.AMDXLib;
-import com.arisux.amdxlib.lib.game.Game;
-import com.arisux.amdxlib.lib.game.IInitEvent;
+import com.arisux.mdxlib.MDX;
+import com.arisux.mdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.game.IInitEvent;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.registry.EntityRegistry;
@@ -113,8 +117,8 @@ public class EntityHandler implements IInitEvent
         GameRegistry.registerTileEntity(TileEntitySatelliteDish.class, "tileEntitySatelliteDish");
         GameRegistry.registerTileEntity(TileEntityTransformer.class, "tileEntityTransformer");
         GameRegistry.registerTileEntity(TileEntityNegativeTransformer.class, "tileEntityNegativeTransformer");
-        GameRegistry.registerTileEntity(TileEntityR2PConverter.class, "tileEntityR2PConverter");
-        GameRegistry.registerTileEntity(TileEntityP2RConverter.class, "tileEntityP2RConverter");
+        GameRegistry.registerTileEntity(TileEntityRedstoneSensor.class, "tileEntityR2PConverter");
+        GameRegistry.registerTileEntity(TileEntityRedstoneEmitter.class, "tileEntityP2RConverter");
         GameRegistry.registerTileEntity(TileEntityPowercell.class, "tileEntityPowercell");
         GameRegistry.registerTileEntity(TileEntityAmpule.class, "tileEntityAmpule");
         GameRegistry.registerTileEntity(TileEntityLocker.class, "tileEntityLocker");
@@ -123,34 +127,39 @@ public class EntityHandler implements IInitEvent
         GameRegistry.registerTileEntity(TileEntitySupplyCrate.class, "tileEntitySupplyCrate");
         GameRegistry.registerTileEntity(TileEntitySolarPanel.class, "tile.avp.solarpanel");
         GameRegistry.registerTileEntity(TileEntitySkull.class, "tile.avp.skull");
+        GameRegistry.registerTileEntity(TileEntityRedstoneFluxGenerator.class, "tile.avp.redstonefluxgenerator");
     }
 
     private void registerRemappedEntities()
     {
-        AMDXLib.registerRemappedEntity(EntityRunnerDrone.class, "RunnerDrone");
-        AMDXLib.registerRemappedEntity(EntityRunnerWarrior.class, "RunnerWarrior");
-        AMDXLib.registerRemappedEntity(EntityDrone.class, "Drone");
-        AMDXLib.registerRemappedEntity(EntityWarrior.class, "Warrior");
-        AMDXLib.registerRemappedEntity(EntitySpitter.class, "Spitter");
-        AMDXLib.registerRemappedEntity(EntityCrusher.class, "Crusher");
-        AMDXLib.registerRemappedEntity(EntityPraetorian.class, "Praetorian");
-        AMDXLib.registerRemappedEntity(EntityMarine.class, "Marine");
-        AMDXLib.registerRemappedEntity(EntityYautja.class, "Yautja");
-        AMDXLib.registerRemappedEntity(EntityQueen.class, "Queen");
-        AMDXLib.registerRemappedEntity(EntityFacehugger.class, "Facehugger");
-        AMDXLib.registerRemappedEntity(EntityChestburster.class, "Chestbuster");
-        AMDXLib.registerRemappedEntity(EntityOvamorph.class, "Ovamorph");
-        AMDXLib.registerRemappedEntity(EntityRoyalFacehugger.class, "RoyalFacehugger");
-        AMDXLib.registerRemappedEntity(EntityAqua.class, "AquaAlien");
-        AMDXLib.registerRemappedEntity(EntityPredalien.class, "Predalien");
-        AMDXLib.registerRemappedEntity(EntityCombatSynthetic.class, "CombatSynthetic");
-        AMDXLib.registerRemappedEntity(EntityProtomorph.class, "Protomorph");
-        AMDXLib.registerRemappedEntity(EntityHammerpede.class, "Hammerpede");
-        AMDXLib.registerRemappedEntity(EntityTrilobite.class, "Trilobite");
-        AMDXLib.registerRemappedEntity(EntitySpaceJockey.class, "SpaceJockey");
-        AMDXLib.registerRemappedEntity(EntityEngineer.class, "Engineer");
-        AMDXLib.registerRemappedEntity(EntityYautjaBerserker.class, "YautjaBerserker");
-        AMDXLib.registerRemappedEntity(EntityDeaconShark.class, "DeaconShark");
+        //Global Entity Identity Remapping
+        MDX.registerRemappedEntity(EntityRunnerDrone.class, "RunnerDrone");
+        MDX.registerRemappedEntity(EntityRunnerWarrior.class, "RunnerWarrior");
+        MDX.registerRemappedEntity(EntityDrone.class, "Drone");
+        MDX.registerRemappedEntity(EntityWarrior.class, "Warrior");
+        MDX.registerRemappedEntity(EntitySpitter.class, "Spitter");
+        MDX.registerRemappedEntity(EntityCrusher.class, "Crusher");
+        MDX.registerRemappedEntity(EntityPraetorian.class, "Praetorian");
+        MDX.registerRemappedEntity(EntityMarine.class, "Marine");
+        MDX.registerRemappedEntity(EntityYautja.class, "Yautja");
+        MDX.registerRemappedEntity(EntityQueen.class, "Queen");
+        MDX.registerRemappedEntity(EntityFacehugger.class, "Facehugger");
+        MDX.registerRemappedEntity(EntityChestburster.class, "Chestbuster");
+        MDX.registerRemappedEntity(EntityOvamorph.class, "Ovamorph");
+        MDX.registerRemappedEntity(EntityRoyalFacehugger.class, "RoyalFacehugger");
+        MDX.registerRemappedEntity(EntityAqua.class, "AquaAlien");
+        MDX.registerRemappedEntity(EntityPredalien.class, "Predalien");
+        MDX.registerRemappedEntity(EntityCombatSynthetic.class, "CombatSynthetic");
+        MDX.registerRemappedEntity(EntityDeacon.class, "Protomorph");
+        MDX.registerRemappedEntity(EntityHammerpede.class, "Hammerpede");
+        MDX.registerRemappedEntity(EntityTrilobite.class, "Trilobite");
+        MDX.registerRemappedEntity(EntitySpaceJockey.class, "SpaceJockey");
+        MDX.registerRemappedEntity(EntityEngineer.class, "Engineer");
+        MDX.registerRemappedEntity(EntityYautjaBerserker.class, "YautjaBerserker");
+        MDX.registerRemappedEntity(EntityDeaconShark.class, "DeaconShark");
+
+        //Mod Entity Identity Remapping
+        MDX.registerRemappedEntity(EntityDeacon.class, "avp.Protomorph");
     }
 
     private void registerEntities()
@@ -171,6 +180,8 @@ public class EntityHandler implements IInitEvent
         Game.register(EntityMechanism.class, "MECHANISM", entityId++, AliensVsPredator.instance(), 250, 16, true);
         Game.register(EntityMedpod.class, "Medpod", entityId++, AliensVsPredator.instance(), 250, 16, true);
         Game.register(EntitySupplyChute.class, "SupplyChute", entityId++, AliensVsPredator.instance(), 250, 1, true);
+        Game.register(EntitySupplyChuteMarines.class, "SupplyChuteMarines", entityId++, AliensVsPredator.instance(), 250, 1, true);
+        Game.register(EntitySupplyChuteSeegson.class, "SupplyChuteSeegson", entityId++, AliensVsPredator.instance(), 250, 1, true);
     }
 
     private void registerLivingEntities()
@@ -192,7 +203,7 @@ public class EntityHandler implements IInitEvent
         Game.register(EntityAqua.class, "AquaAlien", entityId++, AliensVsPredator.instance(), 250, 1, true);
         Game.register(EntityPredalien.class, "Predalien", entityId++, AliensVsPredator.instance(), 250, 1, true);
         Game.register(EntityCombatSynthetic.class, "CombatSynthetic", entityId++, AliensVsPredator.instance(), 250, 1, true);
-        Game.register(EntityProtomorph.class, "Protomorph", entityId++, AliensVsPredator.instance(), 250, 1, true);
+        Game.register(EntityDeacon.class, "Deacon", entityId++, AliensVsPredator.instance(), 250, 1, true);
         Game.register(EntityHammerpede.class, "Hammerpede", entityId++, AliensVsPredator.instance(), 250, 1, true);
         Game.register(EntityTrilobite.class, "Trilobite", entityId++, AliensVsPredator.instance(), 250, 1, true);
         Game.register(EntitySpaceJockey.class, "SpaceJockey", entityId++, AliensVsPredator.instance(), 250, 1, true);
@@ -208,13 +219,11 @@ public class EntityHandler implements IInitEvent
     {
         if (AliensVsPredator.settings().areAutoSpawnsEnabled())
         {
-            BiomeGenBase[] xenomorphBiomes = this.getFilteredBiomeArray(BiomeGenBase.birchForest, BiomeGenBase.birchForestHills, BiomeGenBase.coldBeach, BiomeGenBase.coldTaiga, BiomeGenBase.coldTaigaHills, BiomeGenBase.desertHills, BiomeGenBase.extremeHills, BiomeGenBase.extremeHillsEdge, BiomeGenBase.extremeHillsPlus, BiomeGenBase.forest, BiomeGenBase.forestHills, BiomeGenBase.iceMountains, BiomeGenBase.icePlains, BiomeGenBase.jungle, BiomeGenBase.jungleEdge, BiomeGenBase.jungleHills, BiomeGenBase.plains, BiomeGenBase.roofedForest, BiomeGenBase.swampland, BiomeGenBase.taiga, BiomeGenBase.taigaHills, BiomeLVBase.acheron);
+            BiomeGenBase[] xenomorphBiomes = this.getFilteredBiomeArray(BiomeGenBase.birchForest, BiomeGenBase.birchForestHills, BiomeGenBase.coldBeach, BiomeGenBase.coldTaiga, BiomeGenBase.coldTaigaHills, BiomeGenBase.desertHills, BiomeGenBase.extremeHills, BiomeGenBase.extremeHillsEdge, BiomeGenBase.extremeHillsPlus, BiomeGenBase.forest, BiomeGenBase.forestHills, BiomeGenBase.iceMountains, BiomeGenBase.icePlains, BiomeGenBase.jungle, BiomeGenBase.jungleEdge, BiomeGenBase.jungleHills, BiomeGenBase.plains, BiomeGenBase.roofedForest, BiomeGenBase.swampland, BiomeGenBase.taiga, BiomeGenBase.taigaHills, BiomeGenLV.acheron);
 
-            BiomeGenBase[] predatorBiomes = this.getFilteredBiomeArray(BiomeGenBase.birchForest, BiomeGenBase.birchForestHills, BiomeGenBase.desert, BiomeGenBase.desertHills, BiomeGenBase.extremeHills, BiomeGenBase.extremeHillsEdge, BiomeGenBase.extremeHillsPlus, BiomeGenBase.forest, BiomeGenBase.forestHills, BiomeGenBase.frozenOcean, BiomeGenBase.frozenRiver, BiomeGenBase.icePlains, BiomeGenBase.jungle, BiomeGenBase.jungleEdge, BiomeGenBase.jungleHills, BiomeGenBase.taiga, BiomeGenBase.taigaHills, BiomeLVBase.varda);
+            BiomeGenBase[] predatorBiomes = this.getFilteredBiomeArray(BiomeGenBase.birchForest, BiomeGenBase.birchForestHills, BiomeGenBase.desert, BiomeGenBase.desertHills, BiomeGenBase.extremeHills, BiomeGenBase.extremeHillsEdge, BiomeGenBase.extremeHillsPlus, BiomeGenBase.forest, BiomeGenBase.forestHills, BiomeGenBase.frozenOcean, BiomeGenBase.frozenRiver, BiomeGenBase.icePlains, BiomeGenBase.jungle, BiomeGenBase.jungleEdge, BiomeGenBase.jungleHills, BiomeGenBase.taiga, BiomeGenBase.taigaHills, BiomeGenVarda.vardaBadlands);
 
-            BiomeGenBase[] engineerBiomes = this.getFilteredBiomeArray(BiomeGenBase.iceMountains, // need to get the NBT flash drive as a 5% engineer drop OnDeath to craft the assembler
-                BiomeGenBase.coldTaigaHills, // found at snowy elevations according to the NBT item tip
-                BiomeGenBase.coldTaiga, BiomeGenBase.extremeHills, BiomeLVBase.varda, BiomeLVBase.acheron);
+            BiomeGenBase[] engineerBiomes = this.getFilteredBiomeArray(BiomeGenBase.iceMountains, BiomeGenBase.coldTaigaHills, BiomeGenBase.coldTaiga, BiomeGenBase.extremeHills, BiomeGenVarda.vardaBadlands, BiomeGenLV.acheron, BiomeGenVarda.vardaForest);
 
             BiomeGenBase[] aquaXenomorphBiomes = this.getFilteredBiomeArray(BiomeGenBase.river, BiomeGenBase.beach, BiomeGenBase.stoneBeach);
 
@@ -236,15 +245,8 @@ public class EntityHandler implements IInitEvent
             EntityRegistry.addSpawn(EntityYautjaBerserker.class, 1, 0, 1, EnumCreatureType.monster, predatorBiomes);
             EntityRegistry.addSpawn(EntityMarine.class, 2, 1, 1, EnumCreatureType.creature, new BiomeGenBase[] { BiomeGenBase.swampland, BiomeGenBase.forest, BiomeGenBase.forestHills, BiomeGenBase.taiga, BiomeGenBase.taigaHills, BiomeGenBase.plains
             });
-            EntityRegistry.addSpawn(EntityProtomorph.class, 30, 1, 2, EnumCreatureType.monster, new BiomeGenBase[] { BiomeLVBase.varda
-            });
-            EntityRegistry.addSpawn(EntityHammerpede.class, 30, 1, 4, EnumCreatureType.monster, new BiomeGenBase[] { BiomeLVBase.varda
-            });
-            EntityRegistry.addSpawn(EntityTrilobite.class, 30, 1, 2, EnumCreatureType.monster, new BiomeGenBase[] { BiomeLVBase.varda
-            });
-            EntityRegistry.addSpawn(EntityEngineer.class, 1, 1, 1, EnumCreatureType.monster, engineerBiomes);
-            EntityRegistry.addSpawn(EntitySpaceJockey.class, 1, 0, 1, EnumCreatureType.monster, engineerBiomes);
-            EntityRegistry.addSpawn(EntityDeaconShark.class, 1, 0, 1, EnumCreatureType.waterCreature, new BiomeGenBase[] { BiomeLVBase.varda });
+            EntityRegistry.addSpawn(EntityEngineer.class, 5, 1, 1, EnumCreatureType.monster, engineerBiomes);
+            EntityRegistry.addSpawn(EntitySpaceJockey.class, 2, 1, 1, EnumCreatureType.monster, engineerBiomes);
         }
     }
 
@@ -266,7 +268,7 @@ public class EntityHandler implements IInitEvent
 
         for (BiomeGenBase biome : biomeList)
         {
-            if (!(biome instanceof BiomeLVBase))
+            if (!(biome instanceof BiomeGenLV))
             {
                 newList.remove(biome);
             }

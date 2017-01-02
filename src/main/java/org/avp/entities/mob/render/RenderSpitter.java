@@ -4,8 +4,8 @@ import org.avp.AliensVsPredator;
 import org.avp.entities.mob.EntitySpitter;
 import org.lwjgl.opengl.GL11;
 
-import com.arisux.amdxlib.lib.client.RenderLivingWrapper;
-import com.arisux.amdxlib.lib.client.render.OpenGL;
+import com.arisux.mdxlib.lib.client.RenderLivingWrapper;
+import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.EntityLivingBase;

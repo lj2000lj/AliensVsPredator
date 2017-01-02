@@ -1,77 +1,71 @@
-AliensVsPredator
+AliensVsPredator (Minecraft Mod)
 =============
-
-A Minecraft Mod, based entirely off of the AliensVsPredator franchise. It's also based off of other related franchises. That means it includes 
-everything from xenomorphs to predaliens, plasma casters to pulse rifles, equipment to study the species with, dimensions, 
-and of course plenty of blocks to start Building Better Worlds™
-
 
 ## Links ##
 * [Source]
-* [Wiki]
 * [Issues]
-* [Website]
 
 ## Prerequisites ##
-* [Java]
+* [Java Development Kit 7 or Newer]
+* [Gradle]
 
 ## Contributing ##
-I have a general set of [rules] I follow for my projects.
-Do read through it if you do plan on contributing.
+Please read the following if you plan on contributing to this project. It is very important to have your development 
+environment set up properly. Aside from that, pull requests that do not follow the same format will not be accepted.
 
-## Clone ##
-The following steps will ensure your project is cloned properly
+## 1) Clone The Repository ##
+Open your command line, and execute the following commands:
 
 1. `git clone git@github.com:Ri5ux/AliensVsPredator.git`
 2. `cd AliensVsPredator`
 
-## Development Environment ##
-__Note:__ If you do not have [Gradle] installed then use ./gradlew for Unix systems or Git Bash and gradlew.bat for
-Windows systems in place of any 'gradle' command.
+## 2) Setup the Development Environment ##
+__Note:__ If [Gradle] is not installed on your system, you may use ./gradlew on Unix based platforms or ./gradlew.bat
+on Windows platforms.
 
-If you are a contributor, it is important that your development environment is setup properly. After cloning, as shown
-above, follow the given steps for your ide:
+1. Run `gradle setupDecompWorkspace` and wait for it to complete.
+2. Once completed, copy `mdxlib_at.cfg` from the mdxlib jar located in your .gradle cache directory with the following structure `.gradle\caches\modules-2\files-2.1\com.arisux\mdxlib\X.X.X.X\0000000000000000000000000000000000000000\mdxlib-X.X.X.X-deobf.jar`.
+3. Paste `mdxlib_at.cfg` into this repo's `src\main\resources\` directory.
+4. Run `gradle setupDecompWorkspace` once more. This time, it should detect an Access Transformer. If it does not, then you have copied it to the wrong location.
 
-#### [IntelliJ]
+## 3) Setup your IDE ##
 
-1. `gradle setupDecompWorkspace --refresh-dependencies`
-2. `gradle idea`
+__Note:__ If you experience any errors setting up your IDE, please run `gradle setupDecompWorkspace --refresh-dependencies`
+to rule out any dependency related issues.
+
+#### [IntelliJ IDEA]
+
+1. `gradle idea`
 
 #### [Eclipse]
 
-1. `gradle setupDecompWorkspace --refresh-dependencies`
-2. `gradle eclipse`
+1. `gradle eclipse`
 
-## Updating your Clone ##
-__Note:__ If you do not have [Gradle] installed then use ./gradlew for Unix systems or Git Bash and gradlew.bat for
-Windows systems in place of any 'gradle' command.
+## Updating your Repository ##
 
-The following steps will update your clone with the official repo.
+Run the following to sync your copy of the repository up with the latest changes:
 
 * `git pull`
+
+If you experience any new errors, it may be due to a dependency change. Please refresh your dependencies:
 * `gradle --refresh-dependencies`
 
-## Building
-__Note:__ If you do not have [Gradle] installed then use ./gradlew for Unix systems or Git Bash and gradlew.bat for
-Windows systems in place of any 'gradle' command.
+## Building the Project ##
 
-We use [Gradle] for AliensVsPredator.
+Before you can initiate the build process, you must create a new text document with the name `gradle.properties` in the 
+root directory of the repository. Then add `curseForgeApiKey=00000-00000-00000-00000-00000` to the start of the configuration
+and save it.
 
-Before you can build this mod, you must first create gradle.properties in the repositories root directory and create
-the following entry:
-curseForgeApiKey=00000-00000-00000-00000-00000
+__Note:__ If the above entry is not added, the build process will fail.
 
-If the above entry is not added, the build process will fail.
+If you run into build problems, you may also need to add `mavenUsername=null` and `mavenPassword=null` on their own respective lines.
 
-In order to build AliensVsPredator you simply need to run the `gradle` command.
-You can find the compiled JAR file in `./build/libs` labeled similarly to 'AliensVsPredator-x.x.jar'.
+To initiate the build process, run `gradle build`.
+You can find the compiled project artifacts in `./build/libs`.
 
 [Source]: https://github.com/Ri5ux/AliensVsPredator
-[Wiki]: https://github.com/Ri5ux/AliensVsPredator/wiki
 [Issues]: https://github.com/Ri5ux/AliensVsPredator/issues
-[Website]: http://aliensvspredator.org/
-[Java]: http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
-[rules]: Contributors.md
-[IntelliJ]: https://www.jetbrains.com/idea/
+[IntelliJ IDEA]: https://www.jetbrains.com/idea/
 [Eclipse]: https://www.eclipse.org/
 [Gradle]: https://www.gradle.org/
+[Java Development Kit 7 or Newer]: http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html

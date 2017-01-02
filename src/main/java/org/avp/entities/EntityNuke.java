@@ -3,8 +3,8 @@ package org.avp.entities;
 import org.avp.AliensVsPredator;
 import org.avp.Sounds;
 
-import com.arisux.amdxlib.lib.client.Sound;
-import com.arisux.amdxlib.lib.world.Worlds;
+import com.arisux.mdxlib.lib.client.Sound;
+import com.arisux.mdxlib.lib.world.Worlds;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.EntityThrowable;

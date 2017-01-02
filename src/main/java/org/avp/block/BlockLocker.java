@@ -2,7 +2,7 @@ package org.avp.block;
 
 import org.avp.entities.tile.TileEntityLocker;
 
-import com.arisux.amdxlib.lib.world.tile.IRotatable;
+import com.arisux.mdxlib.lib.world.tile.IRotatable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -137,7 +137,7 @@ public class BlockLocker extends Block
     {
         TileEntity tile = world.getTileEntity(posX, posY, posZ);
 
-        if (tile != null)
+        if (tile != null && tile instanceof TileEntityLocker)
         {
             TileEntityLocker locker = (TileEntityLocker) tile;
             return locker.isOpen() ? null : super.getCollisionBoundingBoxFromPool(world, posX, posY, posZ);

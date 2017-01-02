@@ -3,7 +3,7 @@ package org.avp.packets.server;
 import org.avp.AliensVsPredator;
 import org.avp.entities.EntityGrenade;
 
-import com.arisux.amdxlib.lib.world.entity.player.inventory.Inventories;
+import com.arisux.mdxlib.lib.world.entity.player.inventory.Inventories;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
