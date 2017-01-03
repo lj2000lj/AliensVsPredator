@@ -1,6 +1,5 @@
 package org.avp.entities.fx;
 
-import java.awt.Color;
 import java.util.Random;
 
 import org.avp.AliensVsPredator;
@@ -19,8 +18,9 @@ public class EntityFXElectricArc extends EntityFX
 {
     private static final ResourceLocation particleTextures = new ResourceLocation("textures/particle/particles.png");
 
-    private Random                        rand             = new Random();
-    private Color                         color;
+    private Random                        rand;
+    private int                           color;
+    private int                           tessellation;
     private float                         rotYaw;
     private float                         rotPitch;
     private float                         density;
@@ -28,36 +28,48 @@ public class EntityFXElectricArc extends EntityFX
     private double                        targetY;
     private double                        targetZ;
     private double                        displacement;
-    private double                        detail;
+    private double                        complexity;
 
-    public EntityFXElectricArc(World world, double x, double y, double z, double targetX, double targetY, double targetZ, int age, Color c)
+    public EntityFXElectricArc(World world, double x, double y, double z, double targetX, double targetY, double targetZ, int age)
     {
-        this(world, x, y, z, targetX, targetY, targetZ, 1.6D, 0.2D, age, c, 0.1F);
+        this(world, x, y, z, targetX, targetY, targetZ, age, 1.6D, 0.1D, 0.1F, 0xFF6655CC);
     }
 
-    public EntityFXElectricArc(World world, double x, double y, double z, double targetX, double targetY, double targetZ, double displacement, double detail, int age, Color c, float density)
+    public EntityFXElectricArc(World world, double x, double y, double z, double targetX, double targetY, double targetZ, int age, int color)
+    {
+        this(world, x, y, z, targetX, targetY, targetZ, age, 1.6D, 0.1D, 0.1F, color);
+    }
+
+    public EntityFXElectricArc(World world, double x, double y, double z, double targetX, double targetY, double targetZ, int age, double displacement, double complexity, float density, int color)
     {
         super(world, x, y, z);
-        this.color = c;
+        this.rand = new Random();
+        this.tessellation = 2;
         this.particleMaxAge = age;
-        this.particleAge = 0;
         this.targetX = targetX;
         this.targetY = targetY;
         this.targetZ = targetZ;
-        this.density = density;
         this.displacement = displacement;
-        this.detail = detail;
+        this.complexity = complexity;
+        this.density = density;
+        this.color = color;
         this.changeDirection((float) (this.posX - this.targetX), (float) (this.posY - this.targetY), (float) (this.posZ - this.targetZ));
     }
 
     @Override
-    public void renderParticle(Tessellator tessellator, float x, float y, float z, float motionX, float motionY, float motionZ)
+    public void renderParticle(Tessellator tessellator, float partialTicks, float rX, float rXZ, float rZ, float rYZ, float rXY)
     {
         tessellator.draw();
-        super.renderParticle(tessellator, x, y, z, motionX, motionY, motionZ);
-        drawArc(tessellator, posX, posY, posZ, targetX, targetY, targetZ, displacement, detail, density);
+        super.renderParticle(tessellator, partialTicks, rX, rXZ, rZ, rYZ, rXY);
+        this.drawArc(tessellator, posX, posY, posZ, targetX, targetY, targetZ, displacement, complexity, density);
         Draw.bindTexture(particleTextures);
         tessellator.startDrawingQuads();
+    }
+
+    public EntityFXElectricArc setTessellation(int tessellation)
+    {
+        this.tessellation = tessellation;
+        return this;
     }
 
     private void changeDirection(float x, float y, float z)
@@ -67,22 +79,18 @@ public class EntityFXElectricArc extends EntityFX
         this.rotPitch = ((float) (Math.atan2(y, variance) * 180.0D / Math.PI));
     }
 
-    private void drawArc(Tessellator tessellator, double x1, double y1, double z1, double x2, double y2, double z2, double displacement, double detail, float density)
+    private void drawArc(Tessellator tessellator, double sX, double sY, double sZ, double tX, double tY, double tZ, double displacement, double complexity, float density)
     {
-        if (displacement < detail)
+        if (displacement < complexity)
         {
-            float x = (float) (x1 - interpPosX);
-            float y = (float) (y1 - interpPosY);
-            float z = (float) (z1 - interpPosZ);
+            float x = (float) (sX - tX);
+            float y = (float) (sY - tY);
+            float z = (float) (sZ - tZ);
 
-            float xd = (float) (x1 - x2);
-            float yd = (float) (y1 - y2);
-            float zd = (float) (z1 - z2);
-
-            this.changeDirection(xd, yd, zd);
+            this.changeDirection(x, y, z);
 
             GL11.glPushMatrix();
-            GL11.glTranslatef(x, y, z);
+            GL11.glTranslatef((float) (sX - interpPosX), (float) (sY - interpPosY), (float) (sZ - interpPosZ));
             GL11.glDepthMask(false);
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_CURRENT_BIT);
@@ -90,24 +98,32 @@ public class EntityFXElectricArc extends EntityFX
             GL11.glRotatef(90.0F, 1.0F, 0.0F, 0.0F);
             GL11.glRotatef(180.0F + this.rotYaw, 0.0F, 0.0F, -1.0F);
             GL11.glRotatef(this.rotPitch, 1.0F, 0.0F, 0.0F);
-            
+            OpenGL.disableLight();
             AliensVsPredator.resources().BLANK.bind();
 
-            double xx = density * -0.15;
-            double xx2 = density * -0.15 * 1.0;
-            double yy = MathHelper.sqrt_float(xd * xd + yd * yd + zd * zd);
+            double vX1 = density * -0.15;
+            double vX2 = density * -0.15 * 1.0;
+            double vY2 = MathHelper.sqrt_float(x * x + y * y + z * z);
+            double vY1 = 0.0D;
 
-            for (int i = 0; i < 3; i++)
+            int a = (color >> 24 & 255);
+            int r = (color >> 16 & 255);
+            int g = (color >> 8 & 255);
+            int b = (color & 255);
+
+            for (int i = 0; i < tessellation; i++)
             {
-                GL11.glRotatef(60.0F, 0.0F, 1.0F, 0.0F);
+                GL11.glRotatef((360F / tessellation) / 2, 0.0F, 1.0F, 0.0F);
                 tessellator.startDrawingQuads();
-                tessellator.setColorRGBA(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
-                tessellator.addVertexWithUV(xx2, yy, 0.0, 0.0, 1.0);
-                tessellator.addVertexWithUV(xx, 0, 0.0, 0.0, 0.0);
-                tessellator.addVertexWithUV(-xx, 0, 0.0, 1.0, 0.0);
-                tessellator.addVertexWithUV(-xx2, yy, 0.0, 1.0, 1.0);
+                tessellator.setColorRGBA(r, g, b, a);
+                tessellator.addVertexWithUV(vX2, vY2, 0.0, 0.0, 1.0);
+                tessellator.addVertexWithUV(vX1, vY1, 0.0, 0.0, 0.0);
+                tessellator.addVertexWithUV(-vX1, vY1, 0.0, 1.0, 0.0);
+                tessellator.addVertexWithUV(-vX2, vY2, 0.0, 1.0, 1.0);
                 tessellator.draw();
             }
+
+            OpenGL.enableLight();
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             GL11.glEnable(GL11.GL_CULL_FACE);
             GL11.glDisable(GL11.GL_BLEND);
@@ -116,23 +132,21 @@ public class EntityFXElectricArc extends EntityFX
         }
         else
         {
-            double midX = (x2 + x1) / 2;
-            double midY = (y2 + y1) / 2;
-            double midZ = (z2 + z1) / 2;
-            midX += (rand.nextFloat() - 0.5) * displacement;
-            midY += (rand.nextFloat() - 0.5) * displacement;
-            midZ += (rand.nextFloat() - 0.5) * displacement;
-            drawArc(tessellator, x1, y1, z1, midX, midY, midZ, displacement / 2, detail, density);
-            drawArc(tessellator, x2, y2, z2, midX, midY, midZ, displacement / 2, detail, density);
+            double splitX = (tX + sX) / 2;
+            double splitY = (tY + sY) / 2;
+            double splitZ = (tZ + sZ) / 2;
+            splitX += (rand.nextFloat() - 0.5) * displacement;
+            splitY += (rand.nextFloat() - 0.5) * displacement;
+            splitZ += (rand.nextFloat() - 0.5) * displacement;
+            drawArc(tessellator, sX, sY, sZ, splitX, splitY, splitZ, displacement / 2, complexity, density);
+            drawArc(tessellator, tX, tY, tZ, splitX, splitY, splitZ, displacement / 2, complexity, density);
         }
     }
 
     @Override
     public void onUpdate()
     {
-        particleAge++;
-
-        if (particleAge > particleMaxAge)
+        if (this.particleAge++ > this.particleMaxAge)
         {
             this.setDead();
         }
