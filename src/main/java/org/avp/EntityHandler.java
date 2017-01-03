@@ -25,6 +25,8 @@ import org.avp.entities.EntitySupplyChuteSeegson;
 import org.avp.entities.EntityTurret;
 import org.avp.entities.mob.EntityAethon;
 import org.avp.entities.mob.EntityAqua;
+import org.avp.entities.mob.EntityBelugaburster;
+import org.avp.entities.mob.EntityBelugamorph;
 import org.avp.entities.mob.EntityChestburster;
 import org.avp.entities.mob.EntityCombatSynthetic;
 import org.avp.entities.mob.EntityCrusher;
@@ -215,6 +217,8 @@ public class EntityHandler implements IInitEvent
         Game.register(EntityGooMutant.class, "GooMutant", entityId++, AliensVsPredator.instance(), 250, 1, true);
         Game.register(EntityAethon.class, "Aethon", entityId++, AliensVsPredator.instance(), 250, 1, true);
         Game.register(EntityOctohugger.class, "Octohugger", entityId++, AliensVsPredator.instance(), 250, 1, true);
+        Game.register(EntityBelugaburster.class, "Belugaburster", entityId++, AliensVsPredator.instance(), 250, 1, true);
+        Game.register(EntityBelugamorph.class, "Belugamorph", entityId++, AliensVsPredator.instance(), 250, 1, true);
     }
 
     private void registerSpawns()

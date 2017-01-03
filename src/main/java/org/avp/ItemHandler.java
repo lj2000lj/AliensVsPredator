@@ -2,6 +2,8 @@ package org.avp;
 
 import org.avp.entities.mob.EntityAethon;
 import org.avp.entities.mob.EntityAqua;
+import org.avp.entities.mob.EntityBelugaburster;
+import org.avp.entities.mob.EntityBelugamorph;
 import org.avp.entities.mob.EntityChestburster;
 import org.avp.entities.mob.EntityCombatSynthetic;
 import org.avp.entities.mob.EntityCrusher;
@@ -38,7 +40,6 @@ import org.avp.items.ItemDisc;
 import org.avp.items.ItemEntitySummoner;
 import org.avp.items.ItemFirearm;
 import org.avp.items.ItemFirearm.ItemAmmo;
-import org.avp.items.ItemSupplyChute.SupplyChuteType;
 import org.avp.items.ItemGrenade;
 import org.avp.items.ItemIngotLithium;
 import org.avp.items.ItemLaserMine;
@@ -50,6 +51,7 @@ import org.avp.items.ItemShuriken;
 import org.avp.items.ItemSpear;
 import org.avp.items.ItemStorageDevice;
 import org.avp.items.ItemSupplyChute;
+import org.avp.items.ItemSupplyChute.SupplyChuteType;
 import org.avp.items.ItemWristbracer;
 
 import com.arisux.mdxlib.lib.game.Game;
@@ -204,6 +206,8 @@ public class ItemHandler implements IInitEvent
     public ItemEntitySummoner       itemSummonerGooMutant       = (new ItemEntitySummoner(EntityGooMutant.class));
     public ItemEntitySummoner       itemSummonerAethon          = (new ItemEntitySummoner(EntityAethon.class));
     public ItemEntitySummoner       itemSummonerOctohugger      = (new ItemEntitySummoner(EntityOctohugger.class));
+    public ItemEntitySummoner       itemSummonerBelugaburster   = (new ItemEntitySummoner(EntityBelugaburster.class));
+    public ItemEntitySummoner       itemSummonerBelugamorph     = (new ItemEntitySummoner(EntityBelugamorph.class));
 
     @Override
     public void init(FMLInitializationEvent event)
@@ -236,6 +240,8 @@ public class ItemHandler implements IInitEvent
         Game.register(AliensVsPredator.ID, itemSummonerGooMutant, "summon.goomutant").setCreativeTab(AliensVsPredator.tabEntities());
         Game.register(AliensVsPredator.ID, itemSummonerAethon, "summon.aethon").setCreativeTab(AliensVsPredator.tabEntities());
         Game.register(AliensVsPredator.ID, itemSummonerOctohugger, "summon.octohugger").setCreativeTab(AliensVsPredator.tabEntities());
+        Game.register(AliensVsPredator.ID, itemSummonerBelugaburster, "summon.belugaburster").setCreativeTab(AliensVsPredator.tabEntities());
+        Game.register(AliensVsPredator.ID, itemSummonerBelugamorph, "summon.belugamorph").setCreativeTab(AliensVsPredator.tabEntities());
 
         Game.register(AliensVsPredator.ID, pressureMask, "helm.pressure").setCreativeTab(AliensVsPredator.tabMain());
         Game.register(AliensVsPredator.ID, pressureChest, "body.pressure").setCreativeTab(AliensVsPredator.tabMain());

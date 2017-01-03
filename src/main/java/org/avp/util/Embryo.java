@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import org.avp.api.parasitoidic.INascentic;
 import org.avp.entities.extended.Organism;
 import org.avp.entities.mob.EntityAqua;
+import org.avp.entities.mob.EntityBelugaburster;
+import org.avp.entities.mob.EntityBelugamorph;
 import org.avp.entities.mob.EntityChestburster;
 import org.avp.entities.mob.EntityDrone;
 import org.avp.entities.mob.EntityEngineer;
@@ -35,8 +37,9 @@ public class Embryo implements Cloneable
     public static final ArrayList<Embryo> registeredTypes = new ArrayList<Embryo>();
     private static int                    nextAvailableId = 1;
 
-    public static final Embryo                 STANDARD        = new Embryo(EntityChestburster.class, EntityDrone.class, EntityLiving.class).register();
-    public static final Embryo                 QUEEN           = new Embryo(EntityChestburster.class, EntityQueen.class, EntityLiving.class).setGestationPeriod(10 * 60 * 20).register();
+    public static final Embryo            STANDARD        = new Embryo(EntityChestburster.class, EntityDrone.class, EntityLiving.class).register();
+    public static final Embryo            QUEEN           = new Embryo(EntityChestburster.class, EntityQueen.class, EntityLiving.class).setGestationPeriod(10 * 60 * 20).register();
+    public static final Embryo            BELUGA          = new Embryo(EntityBelugaburster.class, EntityBelugamorph.class, EntityLiving.class).register();
 
     static
     {
@@ -168,12 +171,12 @@ public class Embryo implements Cloneable
         }
         return null;
     }
-    
+
     public Embryo createCopy()
     {
         return Embryo.createCopy(this);
     }
-    
+
     public static Embryo createCopy(Embryo source)
     {
         try
@@ -184,7 +187,7 @@ public class Embryo implements Cloneable
         {
             e.printStackTrace();
         }
-        
+
         return null;
     }
 

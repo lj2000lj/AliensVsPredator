@@ -30,6 +30,8 @@ import org.avp.entities.EntitySupplyChuteMarines;
 import org.avp.entities.EntitySupplyChuteSeegson;
 import org.avp.entities.mob.EntityAethon;
 import org.avp.entities.mob.EntityAqua;
+import org.avp.entities.mob.EntityBelugaburster;
+import org.avp.entities.mob.EntityBelugamorph;
 import org.avp.entities.mob.EntityChestburster;
 import org.avp.entities.mob.EntityCombatSynthetic;
 import org.avp.entities.mob.EntityCrusher;
@@ -60,6 +62,7 @@ import org.avp.entities.mob.EntityYautja;
 import org.avp.entities.mob.EntityYautjaBerserker;
 import org.avp.entities.mob.render.RenderAethon;
 import org.avp.entities.mob.render.RenderAqua;
+import org.avp.entities.mob.render.RenderBelugaburster;
 import org.avp.entities.mob.render.RenderChestburster;
 import org.avp.entities.mob.render.RenderCombatSynthetic;
 import org.avp.entities.mob.render.RenderDeaconShark;
@@ -300,6 +303,8 @@ public class Renderers implements IPostInitEvent
         registerEntityRenderingHandler(EntityGooMutant.class, new RenderGooMutant());
         registerEntityRenderingHandler(EntityAethon.class, new RenderAethon());
         registerEntityRenderingHandler(EntityOctohugger.class, new RenderOctohugger());
+        registerEntityRenderingHandler(EntityBelugaburster.class, new RenderBelugaburster());
+        registerEntityRenderingHandler(EntityBelugamorph.class,  new RenderXenomorph(AliensVsPredator.resources().models().BELUGAMORPH, 1F));
     }
 
     private void registerStandardEntityRenderers()
@@ -400,6 +405,8 @@ public class Renderers implements IPostInitEvent
         registerItemRenderer(items.itemSummonerGooMutant, (new RenderItemSummoner(EntityGooMutant.class)).setScale(10F).setY(3F));
         registerItemRenderer(items.itemSummonerAethon, (new RenderItemSummoner(EntityAethon.class)).setScale(7.5F).setY(6F));
         registerItemRenderer(items.itemSummonerOctohugger, (new RenderItemSummoner(EntityOctohugger.class)).setScale(24F).setY(-10F));
+        registerItemRenderer(items.itemSummonerBelugaburster, (new RenderItemSummoner(EntityBelugaburster.class)).setScale(9F).setY(1F));
+        registerItemRenderer(items.itemSummonerBelugamorph, (new RenderItemSummoner(EntityBelugamorph.class)).setScale(7.5F).setY(6F));
 
         TexturedModel<Model88MOD4> _88MOD4 = AliensVsPredator.resources().models()._88MOD4;
         registerItemRenderer(items.itemPistolBarrel, new RenderItem88Mod4Barrel(_88MOD4, _88MOD4.getModel().getBarrel()));

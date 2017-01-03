@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import org.avp.Sounds;
 import org.avp.api.parasitoidic.IParasitoid;
+import org.avp.entities.extended.Organism;
+import org.avp.util.Embryo;
 
 import com.arisux.mdxlib.lib.world.CoordData;
 import com.arisux.mdxlib.lib.world.block.Blocks;
@@ -247,6 +249,15 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
     protected String getDeathSound()
     {
         return Sounds.SOUND_FACEHUGGER_DEATH.getKey();
+    }
+
+    @Override
+    public void implantEmbryo(EntityLivingBase living)
+    {
+        Organism organism = (Organism) living.getExtendedProperties(Organism.IDENTIFIER);
+        organism.impregnate(Embryo.BELUGA);
+        organism.syncWithClients();
+        this.setFertility(false);
     }
 
     @Override

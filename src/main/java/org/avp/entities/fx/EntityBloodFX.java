@@ -1,9 +1,5 @@
 package org.avp.entities.fx;
 
-import org.lwjgl.opengl.GL11;
-
-import com.arisux.mdxlib.lib.client.render.OpenGL;
-
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.particle.EntityDropParticleFX;
@@ -20,7 +16,7 @@ public class EntityBloodFX extends EntityDropParticleFX
     public EntityBloodFX(World worldIn, double posX, double posY, double posZ, int color)
     {
         super(worldIn, posX, posY, posZ, null);
-        this.particleMaxAge = (60 * 20) * 3;
+        this.particleMaxAge = ((60 * 20) * 3) + ((this.rand.nextInt(30 * 20)));
         this.color = color;
         this.motionX *= 0.800000011920929D;
         this.motionY *= 0.800000011920929D;
