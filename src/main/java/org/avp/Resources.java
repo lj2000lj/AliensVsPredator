@@ -2,6 +2,7 @@ package org.avp;
 
 import org.avp.entities.mob.model.ModelAethon;
 import org.avp.entities.mob.model.ModelAqua;
+import org.avp.entities.mob.model.ModelBelugaburster;
 import org.avp.entities.mob.model.ModelChestburster;
 import org.avp.entities.mob.model.ModelCrusher;
 import org.avp.entities.mob.model.ModelDeaconShark;
@@ -168,6 +169,7 @@ public class Resources
         public final TexturedModel<ModelWarrior>              WARRIOR_SKULL                  = new TexturedModel(new ModelWarrior(), new Texture(AliensVsPredator.ID, "textures/mob/xenomorphskullwarrior.png"));
         public final TexturedModel<ModelYautja>               YAUTJA_SKULL                   = new TexturedModel(new ModelYautja(), new Texture(AliensVsPredator.ID, "textures/mob/yautjaskull.png"));
         public final TexturedModel<ModelOctohugger>           OCTOHUGGER                     = new TexturedModel(new ModelOctohugger(), new Texture(AliensVsPredator.ID, "textures/mob/octohugger.png"));
+        public final TexturedModel<ModelBelugaburster>        BELUGABURSTER                  = new TexturedModel(new ModelBelugaburster(), new Texture(AliensVsPredator.ID, "textures/mob/belugaburster.png"));
 
         /** New xenomorph model format **/
         public final TexturedModel<ModelUltramorph>           ULTRAMORPH                     = new TexturedModel(new ModelUltramorph(), new Texture(AliensVsPredator.ID, "textures/mob/ultramorph.png"));
