@@ -126,6 +126,13 @@ public abstract class TileEntityElectrical extends TileEntity implements IPowerN
 
         return false;
     }
+    
+    @Override
+    public void updateEntity()
+    {
+        super.updateEntity();
+        this.voltagePrev = this.voltage;
+    }
 
     /**
      * Updates the voltage of this component based on surrounding components.

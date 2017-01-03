@@ -1,9 +1,14 @@
 package org.avp.entities.tile;
 
+import java.awt.Color;
+import java.util.Random;
+
+import org.avp.entities.fx.EntityFXElectricArc;
 import org.avp.util.IPowerDrain;
 import org.avp.util.IPowerNode;
 import org.avp.util.IPowerSource;
 
+import com.arisux.mdxlib.lib.game.Game;
 import com.arisux.mdxlib.lib.world.tile.IRotatable;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -61,6 +66,20 @@ public class TileEntityTransformer extends TileEntityElectrical implements IPowe
     {
         super.updateEntity();
         this.updateEnergyAsReceiver();
+        
+        int rate = 10;
+
+        if (this.worldObj.isRemote)
+        {
+//            for (int i = 3; i > 0; i--)
+            {
+                Random r = new Random();
+                double tX = this.xCoord + r.nextInt(5) - r.nextInt(5);
+                double tY =  this.yCoord + r.nextInt(5) - r.nextInt(5);
+                double tZ =  this.zCoord + r.nextInt(5) - r.nextInt(5);
+                Game.minecraft().effectRenderer.addEffect(new EntityFXElectricArc(this.worldObj, this.xCoord + 0.5, this.yCoord + 0.75, this.zCoord + 0.5, tX, tY, tZ, rate, new Color(97, 94, 172, 180)));
+            }
+        }
 
         if (this.voltage > 0)
         {
@@ -109,7 +128,7 @@ public class TileEntityTransformer extends TileEntityElectrical implements IPowe
 
         return 0;
     }
-    
+
     @Override
     public double provideAmperage(IPowerNode to)
     {

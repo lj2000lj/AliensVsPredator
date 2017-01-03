@@ -217,6 +217,7 @@ public class Resources
     public final Texture MOTIONTRACKER_S5         = new Texture(AliensVsPredator.ID, "textures/misc/motiontracker/sweep5.png");
     public final Texture MOTIONTRACKER_S6         = new Texture(AliensVsPredator.ID, "textures/misc/motiontracker/sweep6.png");
     public final Texture QUEEN_BOSS_BAR           = new Texture(AliensVsPredator.ID, "textures/misc/queenbossbar.png");
+    public final Texture BLANK                    = new Texture(AliensVsPredator.ID, "textures/misc/blank.png");
 
     public final IconSet ICONSET_WALLW            = new BlockIconSet("avp:wall_top", "avp:wall_top", "avp:wall_top", "avp:wall_side", "avp:wall_side", "avp:wall_side", "avp:wall_side");
     public final IconSet ICONSET_SPAWNER          = new BlockIconSet("avp:spawner_side", "avp:spawner_top", "avp:spawner_bottom", "avp:spawner_side", "avp:spawner_side", "avp:spawner_side", "avp:spawner_side");

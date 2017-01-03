@@ -178,7 +178,7 @@ public class TileEntityBlastdoor extends TileEntityElectrical implements IPowerD
     @Override
     public double getVoltage()
     {
-        return this.getVoltage();
+        return super.getVoltage();
     }
 
     @Override

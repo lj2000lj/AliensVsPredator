@@ -172,12 +172,6 @@ public class TileEntityCryostasisTube extends TileEntityElectrical implements IP
     }
 
     @Override
-    public double getVoltage()
-    {
-        return this.getVoltage();
-    }
-
-    @Override
     public double getVoltageThreshold()
     {
         return 120;
