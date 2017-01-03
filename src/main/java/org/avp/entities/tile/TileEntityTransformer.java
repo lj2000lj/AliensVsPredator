@@ -1,6 +1,5 @@
 package org.avp.entities.tile;
 
-import java.awt.Color;
 import java.util.Random;
 
 import org.avp.entities.fx.EntityFXElectricArc;
@@ -77,7 +76,7 @@ public class TileEntityTransformer extends TileEntityElectrical implements IPowe
                 double tX = this.xCoord + r.nextInt(5) - r.nextInt(5);
                 double tY =  this.yCoord + r.nextInt(5) - r.nextInt(5);
                 double tZ =  this.zCoord + r.nextInt(5) - r.nextInt(5);
-                Game.minecraft().effectRenderer.addEffect(new EntityFXElectricArc(this.worldObj, this.xCoord + 0.5, this.yCoord + 0.75, this.zCoord + 0.5, tX, tY, tZ, rate, new Color(97, 94, 172, 180)));
+                Game.minecraft().effectRenderer.addEffect(new EntityFXElectricArc(this.worldObj, this.xCoord + 0.5, this.yCoord + 0.75, this.zCoord + 0.5, tX, tY, tZ, rate));
             }
         }
 
