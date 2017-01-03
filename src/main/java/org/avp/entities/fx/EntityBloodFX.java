@@ -9,7 +9,6 @@ import net.minecraft.world.World;
 
 public class EntityBloodFX extends EntityDropParticleFX
 {
-    //new EntityDropParticleFX(world, host.posX + host.getRNG().nextDouble() - host.getRNG().nextDouble(), host.posY + host.getRNG().nextDouble() - host.getRNG().nextDouble(), host.posZ + host.getRNG().nextDouble() - host.getRNG().nextDouble(), Material.lava)
     private int bobTimer;
     private int color;
 
@@ -21,7 +20,6 @@ public class EntityBloodFX extends EntityDropParticleFX
         this.motionX *= 0.800000011920929D;
         this.motionY *= 0.800000011920929D;
         this.motionZ *= 0.800000011920929D;
-//        this.motionX = (double)(this.rand.nextFloat() * 0.4F + 0.05F);
         float particleSpread = 0.15F;
         this.motionY = (double)(this.rand.nextFloat() * 0.4F + 0.05F);
         this.motionZ = (double)(this.rand.nextFloat() * particleSpread) - (this.rand.nextFloat() * particleSpread);
@@ -86,7 +84,7 @@ public class EntityBloodFX extends EntityDropParticleFX
     }
 
     @Override
-    public void renderParticle(Tessellator tessellator, float p_70539_2_, float p_70539_3_, float p_70539_4_, float p_70539_5_, float p_70539_6_, float p_70539_7_)
+    public void renderParticle(Tessellator tessellator, float partialTicks, float rX, float rXZ, float rZ, float rYZ, float rXY)
     {
         float minU = (float) this.particleTextureIndexX / 16.0F;
         float maxU = minU + 0.0624375F;
@@ -102,19 +100,18 @@ public class EntityBloodFX extends EntityDropParticleFX
             maxV = this.particleIcon.getMaxV();
         }
 
-        float x = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) p_70539_2_ - interpPosX);
-        float y = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) p_70539_2_ - interpPosY);
-        float z = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) p_70539_2_ - interpPosZ);
+        float x = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) partialTicks - interpPosX);
+        float y = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) partialTicks - interpPosY);
+        float z = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) partialTicks - interpPosZ);
 
         int r = (color & 0xFF0000) >> 16;
         int g = (color & 0xFF00) >> 8;
         int b = (color & 0xFF);
         
-//        OpenGL.blendFunc(GL11.GL_ONE, GL11.GL_ONE_MINUS_DST_ALPHA);
         tessellator.setColorRGBA_F(r, g, b, 1F);
-        tessellator.addVertexWithUV((double) (x - p_70539_3_ * scale - p_70539_6_ * scale), (double) (y - p_70539_4_ * scale), (double) (z - p_70539_5_ * scale - p_70539_7_ * scale), (double) maxU, (double) maxV);
-        tessellator.addVertexWithUV((double) (x - p_70539_3_ * scale + p_70539_6_ * scale), (double) (y + p_70539_4_ * scale), (double) (z - p_70539_5_ * scale + p_70539_7_ * scale), (double) maxU, (double) minV);
-        tessellator.addVertexWithUV((double) (x + p_70539_3_ * scale + p_70539_6_ * scale), (double) (y + p_70539_4_ * scale), (double) (z + p_70539_5_ * scale + p_70539_7_ * scale), (double) minU, (double) minV);
-        tessellator.addVertexWithUV((double) (x + p_70539_3_ * scale - p_70539_6_ * scale), (double) (y - p_70539_4_ * scale), (double) (z + p_70539_5_ * scale - p_70539_7_ * scale), (double) minU, (double) maxV);
+        tessellator.addVertexWithUV((double) (x - rX * scale - rYZ * scale), (double) (y - rXZ * scale), (double) (z - rZ * scale - rXY * scale), (double) maxU, (double) maxV);
+        tessellator.addVertexWithUV((double) (x - rX * scale + rYZ * scale), (double) (y + rXZ * scale), (double) (z - rZ * scale + rXY * scale), (double) maxU, (double) minV);
+        tessellator.addVertexWithUV((double) (x + rX * scale + rYZ * scale), (double) (y + rXZ * scale), (double) (z + rZ * scale + rXY * scale), (double) minU, (double) minV);
+        tessellator.addVertexWithUV((double) (x + rX * scale - rYZ * scale), (double) (y - rXZ * scale), (double) (z + rZ * scale - rXY * scale), (double) minU, (double) maxV);
     }
 }
