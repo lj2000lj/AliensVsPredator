@@ -26,11 +26,11 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
-public class EntityChestburster extends EntitySpeciesAlien implements IMob, INascentic
+public class EntityBelugaburster extends EntitySpeciesAlien implements IMob, INascentic
 {
     private Class<? extends Entity> matureState;
 
-    public EntityChestburster(World world)
+    public EntityBelugaburster(World world)
     {
         super(world);
         this.matureState = EntityDrone.class;
