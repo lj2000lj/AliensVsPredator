@@ -51,10 +51,6 @@ println "Minecraft Forge " + minecraft.version + " with mappings " + minecraft.m
 dependencies {
     deployerJars 'org.apache.maven.wagon:wagon-ftp:2.2'
     compile 'com.arisux:mdxlib:1.0.0.39:deobf'
-    compile files('libs/CoFHCore-[1.7.10]3.1.2-325-dev.jar')
-    compile files('libs/ThermalFoundation-[1.7.10]1.2.5-115-dev.jar')
-    compile files('libs/ThermalDynamics-[1.7.10]1.2.0-171-dev.jar')
-    compile files('libs/ThermalExpansion-[1.7.10]4.1.4-247-dev.jar')
 }
 
 jar {
