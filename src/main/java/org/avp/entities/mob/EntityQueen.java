@@ -385,4 +385,10 @@ public class EntityQueen extends EntityXenomorph implements IMob
     {
         return false;
     }
+    
+    @Override
+    protected boolean canDespawn()
+    {
+        return false;
+    }
 }
