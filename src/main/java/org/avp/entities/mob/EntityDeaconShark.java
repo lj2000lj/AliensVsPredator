@@ -2,10 +2,10 @@ package org.avp.entities.mob;
 
 import java.util.List;
 
+import org.avp.entities.EntityAcidPool;
 import org.avp.entities.ai.helpers.EntityExtendedLookHelper;
 import org.avp.entities.pathfinding.PathNavigateSwimmer;
 
-import com.arisux.mdxlib.lib.world.CoordData;
 import com.arisux.mdxlib.lib.world.entity.Entities;
 
 import net.minecraft.command.IEntitySelector;
@@ -25,7 +25,6 @@ import net.minecraft.entity.ai.EntityLookHelper;
 import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
@@ -39,7 +38,12 @@ public class EntityDeaconShark extends EntitySpeciesAlien
                                                               @Override
                                                               public boolean isEntityApplicable(Entity target)
                                                               {
-                                                                  return !(target instanceof EntityDeaconShark) && EntityDeaconShark.this.canEntityBeSeen(target);
+                                                                  if (target instanceof EntityAcidPool)
+                                                                  {
+                                                                      return false;
+                                                                  }
+                                                                  
+                                                                  return  !(target instanceof EntityDeaconShark) && EntityDeaconShark.this.canEntityBeSeen(target);
                                                               }
                                                           };
 
@@ -111,17 +115,21 @@ public class EntityDeaconShark extends EntitySpeciesAlien
 
     public EntityLivingBase findTarget()
     {
-        List<? extends Entity> targets = Entities.getEntitiesInCoordsRange(this.worldObj, EntityLiving.class, new CoordData(this), (int) this.getEntityAttribute(SharedMonsterAttributes.followRange).getAttributeValue(), 64);
-
-        for (Entity target : targets)
+        List<? extends EntityLivingBase> targets =  worldObj.getEntitiesWithinAABB(EntityLivingBase.class, this.boundingBox.expand(24, 32, 24));
+        Entity attackTarget = null;
+    
+        for (EntityLivingBase target : targets)
         {
             if (this.entitySelector.isEntityApplicable(target) && this.canEntityBeSeen(target))
             {
-                return (EntityLivingBase) target;
+                attackTarget = target;
             }
         }
+        
+        targets.clear();
+        targets = null;
 
-        return null;
+        return (EntityLivingBase) attackTarget;
     }
 
     @Override
@@ -129,12 +137,17 @@ public class EntityDeaconShark extends EntitySpeciesAlien
     {
         if (this.getAttackTarget() == null || this.getAttackTarget() != null && this.getAttackTarget().isDead || !(this.distanceToTargetLastTick - this.getDistanceToEntity(this.getAttackTarget()) > 0.1))
         {
-            if (this.worldObj.getWorldTime() % 20 == 0)
+            if (this.worldObj.getWorldTime() % 60 == 0)
             {
                 this.setAttackTarget(this.findTarget());
             }
         }
-
+        
+        if (this.getAttackTarget() == null && this.getNavigator().getPath() != null)
+        {
+            this.getNavigator().clearPathEntity();
+        }
+        
         if (this.getAttackTarget() != null)
         {
             this.distanceToTargetLastTick = this.getDistanceToEntity(this.getAttackTarget());
@@ -168,6 +181,8 @@ public class EntityDeaconShark extends EntitySpeciesAlien
         {
             this.rotationYaw = this.rotationYawHead;
         }
+        
+        this.setDead();
 
         super.onLivingUpdate();
     }
@@ -187,23 +202,18 @@ public class EntityDeaconShark extends EntitySpeciesAlien
     @Override
     public boolean getCanSpawnHere()
     {
-        AxisAlignedBB box = this.boundingBox.copy().expand(4, 10, 4);
-
-        if (this.worldObj.checkNoEntityCollision(box) && this.worldObj.getCollidingBoundingBoxes(this, box).isEmpty())
+        if (!(this.posZ > 16 && this.posY <= 64 && this.worldObj.getWorldTime() % 80 == 0))
         {
-            List<? extends Entity> entities = Entities.getEntitiesInCoordsRange(worldObj, EntityDeaconShark.class, new CoordData(this), 5, 32);
-            
-            return entities.isEmpty();
+            return false;
         }
 
-        return false;
+        return this.worldObj.checkNoEntityCollision(this.boundingBox.expand(16, 32, 16));
     }
 
     @Override
     protected boolean canDespawn()
     {
-        List<? extends Entity> otherSharks = Entities.getEntitiesInCoordsRange(this.worldObj, EntityDeaconShark.class, new CoordData(this), (int) 64);
-        return otherSharks != null && otherSharks.size() > 0 && !this.hasCustomNameTag();
+        return super.canDespawn() && !this.hasCustomNameTag();
     }
 
     @Override

@@ -7,6 +7,7 @@ import org.avp.entities.tile.TileEntityHiveResin;
 import org.avp.event.HiveHandler;
 
 import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.CoordData.BlockDataStore;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -82,7 +83,7 @@ public class BlockHiveResin extends Block
                 {
                     if (resin != null && resin.getBlockCovering() != null)
                     {
-                        HiveHandler.instance.burntResin.add(new CoordData(posX, posY, posZ, resin.getBlockCovering()));
+                        HiveHandler.instance.burntResin.add(new CoordData(posX, posY, posZ).store(new BlockDataStore(resin.getBlockCovering(), (byte)0)));
                     }
                 }
 

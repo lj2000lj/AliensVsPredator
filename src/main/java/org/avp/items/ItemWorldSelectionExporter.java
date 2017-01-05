@@ -3,6 +3,7 @@ package org.avp.items;
 import java.util.List;
 
 import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.CoordData.BlockDataStore;
 import com.arisux.mdxlib.lib.world.item.HookedItem;
 
 import cpw.mods.fml.relauncher.Side;
@@ -26,7 +27,7 @@ public class ItemWorldSelectionExporter extends HookedItem
         if (!player.worldObj.isRemote)
         {
             player.worldObj.markBlockForUpdate(posX, posY, posZ);
-            this.writeSelectionDataToStack(new CoordData(posX, posY, posZ, player.worldObj.getBlock(posX, posY, posZ)), null, stack);
+            this.writeSelectionDataToStack(new CoordData(posX, posY, posZ).store(new BlockDataStore(player.worldObj.getBlock(posX, posY, posZ), (byte) 0)), null, stack);
         }
 
         return true;
@@ -37,7 +38,7 @@ public class ItemWorldSelectionExporter extends HookedItem
     {
         if (!player.worldObj.isRemote)
         {
-            this.writeSelectionDataToStack(null, new CoordData(posX, posY, posZ, player.worldObj.getBlock(posX, posY, posZ)), stack);
+            this.writeSelectionDataToStack(null, new CoordData(posX, posY, posZ).store(new BlockDataStore(player.worldObj.getBlock(posX, posY, posZ), (byte) 0)), stack);
         }
 
         return super.onItemUseFirst(stack, player, world, posX, posY, posZ, side, hitX, hitY, hitZ);
@@ -48,8 +49,8 @@ public class ItemWorldSelectionExporter extends HookedItem
         NBTTagCompound tag = stack.getTagCompound() != null ? stack.getTagCompound() : new NBTTagCompound();
         NBTTagCompound lastSelection1 = (NBTTagCompound) tag.getTag("SelectedPos1");
         NBTTagCompound lastSelection2 = (NBTTagCompound) tag.getTag("SelectedPos2");
-        CoordData lastPos1 = lastSelection1 != null ? new CoordData(lastSelection1.getInteger("PosX"), lastSelection1.getInteger("PosY"), lastSelection1.getInteger("PosZ"), lastSelection1.getString("Id")) : null;
-        CoordData lastPos2 = lastSelection2 != null ? new CoordData(lastSelection2.getInteger("PosX"), lastSelection2.getInteger("PosY"), lastSelection2.getInteger("PosZ"), lastSelection2.getString("Id")) : null;
+        CoordData lastPos1 = lastSelection1 != null ? new CoordData(lastSelection1.getInteger("PosX"), lastSelection1.getInteger("PosY"), lastSelection1.getInteger("PosZ")).store(new BlockDataStore(lastSelection1.getString("Id"), (byte) 0)) : null;
+        CoordData lastPos2 = lastSelection2 != null ? new CoordData(lastSelection2.getInteger("PosX"), lastSelection2.getInteger("PosY"), lastSelection2.getInteger("PosZ")).store(new BlockDataStore(lastSelection1.getString("Id"), (byte) 0)) : null;
 
         if (pos1 != null)
         {

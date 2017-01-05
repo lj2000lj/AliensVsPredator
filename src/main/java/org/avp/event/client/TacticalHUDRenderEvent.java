@@ -31,7 +31,6 @@ import cpw.mods.fml.common.gameevent.TickEvent.RenderTickEvent;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.inventory.GuiInventory;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
@@ -41,12 +40,13 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 
 public class TacticalHUDRenderEvent
 {
-    public static final TacticalHUDRenderEvent instance = new TacticalHUDRenderEvent();
-    private ArrayList<EntityPlayer> playersInHUD = new ArrayList<EntityPlayer>();
-    private ExtendedEntityPlayer clientPlayerProperties;
-    private GuiCustomButton buttonMarineHelmConfig = new GuiCustomButton(0, 0, 0, 50, 20, "", null);
-    private boolean gammaRestored = true;
-    private int viewportThreshold = 20;
+    public static final TacticalHUDRenderEvent instance               = new TacticalHUDRenderEvent();
+    private ArrayList<EntityPlayer>            playersInHUD           = new ArrayList<EntityPlayer>();
+    private ExtendedEntityPlayer               clientPlayerProperties;
+    private GuiCustomButton                    buttonMarineHelmConfig = new GuiCustomButton(0, 0, 0, 50, 20, "", null);
+    private boolean                            gammaRestored          = true;
+    private int                                viewportThreshold      = 20;
+    private ArrayList<EntityLivingBase>        trackedEntities;
 
     public TacticalHUDRenderEvent()
     {
@@ -61,99 +61,111 @@ public class TacticalHUDRenderEvent
         {
             if (Inventories.getHelmSlotItemStack(Game.minecraft().thePlayer) != null && Inventories.getHelmSlotItemStack(Game.minecraft().thePlayer).getItem() == AliensVsPredator.items().helmMarine)
             {
-                ArrayList<Entity> entities = (ArrayList<Entity>) Entities.getEntitiesInCoordsRange(Game.minecraft().thePlayer.worldObj, Entity.class, new CoordData(Game.minecraft().thePlayer), 30, 30);
-                Vec3 p = Game.minecraft().thePlayer.getLookVec();
-                float scale = 24.0F;
-
-                OpenGL.pushMatrix();
+                if (Game.minecraft().theWorld != null && Game.minecraft().theWorld.getWorldTime() % (20 * 3) == 0)
                 {
-                    OpenGL.translate(p.xCoord, p.yCoord, p.zCoord);
-                    OpenGL.scale(scale, scale, scale);
-
-                    if (Game.minecraft().thePlayer != null && clientPlayerProperties != null)
+                    if (trackedEntities != null)
                     {
-                        for (Entity entity : entities)
+                        trackedEntities.clear();
+                    }
+                    
+                    trackedEntities = (ArrayList<EntityLivingBase>) Entities.getEntitiesInCoordsRange(Game.minecraft().thePlayer.worldObj, EntityLivingBase.class, new CoordData(Game.minecraft().thePlayer), 30, 30);
+                }
+
+                if (trackedEntities != null)
+                {
+                    Vec3 p = Game.minecraft().thePlayer.getLookVec();
+                    float scale = 24.0F;
+
+                    OpenGL.pushMatrix();
+                    {
+                        OpenGL.translate(p.xCoord, p.yCoord, p.zCoord);
+                        OpenGL.scale(scale, scale, scale);
+
+                        if (Game.minecraft().thePlayer != null && clientPlayerProperties != null)
                         {
-                            if (entity != null && (Entities.canEntityBeSeenBy(entity, Game.minecraft().thePlayer) || !clientPlayerProperties.isEntityCullingEnabled()) && entity instanceof EntityLivingBase)
+                            for (EntityLivingBase entity : trackedEntities)
                             {
-                                ExtendedEntityLivingBase livingProperties = ExtendedEntityLivingBase.get((EntityLivingBase) entity);
-
-                                if (livingProperties.doesEntityContainEmbryo())
+                                if (entity != null && (Entities.canEntityBeSeenBy(entity, Game.minecraft().thePlayer) || !clientPlayerProperties.isEntityCullingEnabled()) && entity instanceof EntityLivingBase)
                                 {
-                                    int lifeTimeTicks = livingProperties.getEmbryo().getGestationPeriod() - livingProperties.getEmbryo().getTicksExisted();
-                                    int lifeTimeSeconds = lifeTimeTicks / 20;
+                                    ExtendedEntityLivingBase livingProperties = ExtendedEntityLivingBase.get((EntityLivingBase) entity);
 
-                                    Vec3 t = Vec3.createVectorHelper(entity.posX, entity.posY, entity.posZ).addVector(0, entity.getEyeHeight() / 2, 0);
-                                    t = t.subtract(Game.minecraft().thePlayer.getPosition(Game.partialTicks()));
-                                    Vec3 tmp = p.addVector(t.xCoord, t.yCoord, t.zCoord).normalize();
-                                    Vec3 res = p.addVector(tmp.xCoord, tmp.yCoord, tmp.zCoord);
-
-                                    OpenGL.pushMatrix();
+                                    if (livingProperties.doesEntityContainEmbryo())
                                     {
-                                        OpenGL.disable(GL11.GL_ALPHA_TEST);
-                                        OpenGL.enable(GL_DEPTH_TEST);
-                                        GL11.glDepthFunc(GL11.GL_ALWAYS);
-                                        OpenGL.blendClear();
-                                        OpenGL.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_CONSTANT_ALPHA);
-                                        OpenGL.disableLight();
-                                        OpenGL.disableLightMapping();
-                                        OpenGL.translate(p.xCoord, p.yCoord, p.zCoord);
-                                        OpenGL.translate(-res.xCoord, -res.yCoord, -res.zCoord);
-                                        OpenGL.rotate(-Game.minecraft().thePlayer.rotationYaw - 180, 0, 1, 0);
-                                        OpenGL.rotate(-Game.minecraft().thePlayer.rotationPitch, 1, 0, 0);
+                                        int lifeTimeTicks = livingProperties.getEmbryo().getGestationPeriod() - livingProperties.getEmbryo().getTicksExisted();
+                                        int lifeTimeSeconds = lifeTimeTicks / 20;
+
+                                        Vec3 t = Vec3.createVectorHelper(entity.posX, entity.posY, entity.posZ).addVector(0, entity.getEyeHeight() / 2, 0);
+                                        t = t.subtract(Game.minecraft().thePlayer.getPosition(Game.partialTicks()));
+                                        Vec3 tmp = p.addVector(t.xCoord, t.yCoord, t.zCoord).normalize();
+                                        Vec3 res = p.addVector(tmp.xCoord, tmp.yCoord, tmp.zCoord);
 
                                         OpenGL.pushMatrix();
                                         {
-                                            OpenGL.rotate(Game.minecraft().thePlayer.rotationYaw - 180, 0, 1, 0);
-                                            float indicatorScale = 0.05F;
+                                            OpenGL.disable(GL11.GL_ALPHA_TEST);
+                                            OpenGL.enable(GL_DEPTH_TEST);
+                                            GL11.glDepthFunc(GL11.GL_ALWAYS);
                                             OpenGL.blendClear();
                                             OpenGL.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_CONSTANT_ALPHA);
-                                            OpenGL.scale(indicatorScale, indicatorScale, indicatorScale);
-                                            OpenGL.rotate(-Game.minecraft().thePlayer.rotationYaw, 0, 1, 0);
+                                            OpenGL.disableLight();
+                                            OpenGL.disableLightMapping();
+                                            OpenGL.translate(p.xCoord, p.yCoord, p.zCoord);
+                                            OpenGL.translate(-res.xCoord, -res.yCoord, -res.zCoord);
+                                            OpenGL.rotate(-Game.minecraft().thePlayer.rotationYaw - 180, 0, 1, 0);
+                                            OpenGL.rotate(-Game.minecraft().thePlayer.rotationPitch, 1, 0, 0);
 
-                                            if (livingProperties.doesEntityContainEmbryo())
+                                            OpenGL.pushMatrix();
                                             {
-                                                OpenGL.color4i(0xFFFF0000);
-                                                Draw.drawResourceCentered(AliensVsPredator.resources().INFECTION_INDICATOR, 0, -1, 2, 2, 255, 0, 0, 255);
-                                            }
+                                                OpenGL.rotate(Game.minecraft().thePlayer.rotationYaw - 180, 0, 1, 0);
+                                                float indicatorScale = 0.05F;
+                                                OpenGL.blendClear();
+                                                OpenGL.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_CONSTANT_ALPHA);
+                                                OpenGL.scale(indicatorScale, indicatorScale, indicatorScale);
+                                                OpenGL.rotate(-Game.minecraft().thePlayer.rotationYaw, 0, 1, 0);
 
-                                            int color = livingProperties.doesEntityContainEmbryo() || livingProperties.getEntityLivingBase() instanceof IMob ? 0xFFFF0000 : 0xFF00AAFF;
-                                            int textMultiplier = 10;
-                                            int textX = 15;
-                                            int textY = -28 + textMultiplier;
-                                            float textScale = 0.0625F;
-                                            OpenGL.rotate(180F, 0F, 1F, 0F);
-                                            OpenGL.scale(textScale, -textScale, textScale);
+                                                if (livingProperties.doesEntityContainEmbryo())
+                                                {
+                                                    OpenGL.color4i(0xFFFF0000);
+                                                    Draw.drawResourceCentered(AliensVsPredator.resources().INFECTION_INDICATOR, 0, -1, 2, 2, 255, 0, 0, 255);
+                                                }
 
-                                            // RenderUtil.drawString(livingProperties.getEntityLivingBase().getCommandSenderName(), textX, textY += textMultiplier, color, false);
-                                            Draw.drawString(((int) livingProperties.getEntityLivingBase().getDistanceToEntity(Game.minecraft().thePlayer)) + "m", textX, textY += textMultiplier, color, false);
+                                                int color = livingProperties.doesEntityContainEmbryo() || livingProperties.getEntityLivingBase() instanceof IMob ? 0xFFFF0000 : 0xFF00AAFF;
+                                                int textMultiplier = 10;
+                                                int textX = 15;
+                                                int textY = -28 + textMultiplier;
+                                                float textScale = 0.0625F;
+                                                OpenGL.rotate(180F, 0F, 1F, 0F);
+                                                OpenGL.scale(textScale, -textScale, textScale);
 
-                                            if (livingProperties.doesEntityContainEmbryo())
-                                            {
-                                                Draw.drawString("Analysis: 1 Foreign Organism(s) Detected", textX, textY += textMultiplier, 0xFFFF0000, false);
-                                                Draw.drawString(lifeTimeSeconds / 60 + "." + lifeTimeSeconds % 60 + " Minute(s) Estimated Life Time", textX, textY += textMultiplier, 0xFFFF0000, false);
+                                                // RenderUtil.drawString(livingProperties.getEntityLivingBase().getCommandSenderName(), textX, textY += textMultiplier, color, false);
+                                                Draw.drawString(((int) livingProperties.getEntityLivingBase().getDistanceToEntity(Game.minecraft().thePlayer)) + "m", textX, textY += textMultiplier, color, false);
+
+                                                if (livingProperties.doesEntityContainEmbryo())
+                                                {
+                                                    Draw.drawString("Analysis: 1 Foreign Organism(s) Detected", textX, textY += textMultiplier, 0xFFFF0000, false);
+                                                    Draw.drawString(lifeTimeSeconds / 60 + "." + lifeTimeSeconds % 60 + " Minute(s) Estimated Life Time", textX, textY += textMultiplier, 0xFFFF0000, false);
+                                                }
+                                                else
+                                                {
+                                                    Draw.drawCenteredRectWithOutline(0, 0, 16, 16, 1, 0x00000000, color);
+                                                }
                                             }
-                                            else
-                                            {
-                                                Draw.drawCenteredRectWithOutline(0, 0, 16, 16, 1, 0x00000000, color);
-                                            }
+                                            OpenGL.popMatrix();
+
+                                            OpenGL.enableLightMapping();
+                                            OpenGL.enableLight();
+                                            OpenGL.enable(GL11.GL_DEPTH_TEST);
+                                            GL11.glDepthFunc(GL11.GL_LEQUAL);
+                                            OpenGL.enable(GL11.GL_ALPHA_TEST);
+                                            GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
                                         }
                                         OpenGL.popMatrix();
-
-                                        OpenGL.enableLightMapping();
-                                        OpenGL.enableLight();
-                                        OpenGL.enable(GL11.GL_DEPTH_TEST);
-                                        GL11.glDepthFunc(GL11.GL_LEQUAL);
-                                        OpenGL.enable(GL11.GL_ALPHA_TEST);
-                                        GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
                                     }
-                                    OpenGL.popMatrix();
                                 }
                             }
                         }
                     }
+                    OpenGL.popMatrix();
                 }
-                OpenGL.popMatrix();
             }
         }
     }

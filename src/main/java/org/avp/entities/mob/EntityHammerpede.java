@@ -8,18 +8,15 @@ import org.avp.entities.EntityAcidPool;
 
 import com.arisux.mdxlib.lib.world.CoordData;
 import com.arisux.mdxlib.lib.world.block.Blocks;
-import com.arisux.mdxlib.lib.world.entity.Entities;
 
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -85,25 +82,8 @@ public class EntityHammerpede extends EntitySpeciesAlien implements IMob
     public void onUpdate()
     {
         super.onUpdate();
-
         this.fallDistance = 0F;
-
         this.lurkInBlackGoo();
-
-        if (this.getAttackTarget() == null && this.worldObj.getWorldTime() % 60 == 0 && this.rand.nextInt(3) == 0)
-        {
-            ArrayList<EntityLivingBase> entities = (ArrayList<EntityLivingBase>) Entities.getEntitiesInCoordsRange(worldObj, EntityLivingBase.class, new CoordData(this), (int) this.getEntityAttribute(SharedMonsterAttributes.followRange).getAttributeValue() / 2);
-
-            for (EntityLivingBase entity : entities)
-            {
-                if (entitySelector.isEntityApplicable(entity) && Entities.canEntityBeSeenBy(entity, this) && (!entitySelector.isEntityApplicable(entity.getLastAttacker()) && (entity.ticksExisted - entity.getLastAttackerTime() > 150)))
-                {
-                    if (entity instanceof EntityPlayer && !((EntityPlayer) entity).capabilities.isCreativeMode)
-
-                        this.setAttackTarget(entity);
-                }
-            }
-        }
     }
 
     public void lurkInBlackGoo()
@@ -114,14 +94,15 @@ public class EntityHammerpede extends EntitySpeciesAlien implements IMob
             {
                 if (this.worldObj.getBlock((int) this.posX, (int) this.posY, (int) this.posZ) != AliensVsPredator.blocks().blockBlackGoo)
                 {
-                    double range = this.getEntityAttribute(SharedMonsterAttributes.followRange).getAttributeValue() / 2;
-                    ArrayList<CoordData> coordData = Blocks.getCoordDataInRangeIncluding((int) this.posX, (int) this.posY, (int) this.posZ, (int) range, this.worldObj, AliensVsPredator.blocks().blockBlackGoo);
+                    ArrayList<CoordData> coordData = Blocks.getCoordDataInRangeIncluding((int) this.posX, (int) this.posY, (int) this.posZ, (int) 10, this.worldObj, AliensVsPredator.blocks().blockBlackGoo);
 
                     if (coordData.size() > 0)
                     {
                         CoordData selectedCoord = coordData.get(this.rand.nextInt(coordData.size()));
                         this.getNavigator().tryMoveToXYZ((double) selectedCoord.x, (double) selectedCoord.y, (double) selectedCoord.z, this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getAttributeValue());
                     }
+                    coordData.clear();
+                    coordData = null;
                 }
             }
         }

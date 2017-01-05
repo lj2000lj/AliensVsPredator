@@ -12,8 +12,6 @@ import org.lwjgl.opengl.GL11;
 import com.arisux.mdxlib.lib.client.render.Draw;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.game.Game;
-import com.arisux.mdxlib.lib.world.CoordData;
-import com.arisux.mdxlib.lib.world.entity.Entities;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
@@ -43,31 +41,23 @@ public class BossBarEvent
     {
         if (Game.minecraft().thePlayer != null)
         {
-            ArrayList<EntityLivingBase> bossesToRemove = new ArrayList<EntityLivingBase>();
-
-            for (EntityLivingBase boss : bosses)
-            {
-                if (boss.isDead)
-                {
-                    bossesToRemove.add(boss);
-                }
-            }
-
-            for (EntityLivingBase boss : bossesToRemove)
-            {
-                this.bosses.remove(boss);
-            }
-
             if (Game.minecraft().thePlayer.worldObj.getWorldTime() % 40 == 0)
             {
-                @SuppressWarnings("unchecked")
-                ArrayList<EntityQueen> queens = (ArrayList<EntityQueen>) Entities.getEntitiesInCoordsRange(Game.minecraft().thePlayer.worldObj, EntityQueen.class, new CoordData(Game.minecraft().thePlayer), 32);
-
-                for (EntityQueen queen : queens)
+                for (Object o : Game.minecraft().theWorld.loadedEntityList)
                 {
-                    if (!bosses.contains(queen))
+                    if (o instanceof EntityLivingBase)
                     {
-                        bosses.add(queen);
+                        EntityLivingBase living = (EntityLivingBase) o;
+                        
+                        if (living.isDead || this.bosses.contains(o))
+                        {
+                            break;
+                        }
+
+                        if (living instanceof EntityQueen)
+                        {
+                            bosses.add(living);
+                        }
                     }
                 }
             }

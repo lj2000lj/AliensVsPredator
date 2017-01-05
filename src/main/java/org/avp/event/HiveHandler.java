@@ -92,7 +92,7 @@ public class HiveHandler implements IDataSaveHandler
     @SubscribeEvent
     public void updateHives(TickEvent.WorldTickEvent event)
     {
-        // TODO: Murder annoying slimes if this is a dev environment.
+        //Murder annoying slimes if this is a dev environment.
         if (Game.isDevEnvironment())
         {
             for (Object o : new ArrayList(event.world.loadedEntityList))
