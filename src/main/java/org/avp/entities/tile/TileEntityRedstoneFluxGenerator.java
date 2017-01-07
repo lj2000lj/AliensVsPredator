@@ -4,6 +4,8 @@ import org.avp.AliensVsPredator;
 import org.avp.packets.client.PacketSyncRF;
 import org.avp.util.IVoltageProvider;
 
+import com.arisux.mdxlib.lib.world.tile.IRotatable;
+
 import cofh.api.energy.IEnergyReceiver;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -11,8 +13,9 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityRedstoneFluxGenerator extends TileEntityElectrical implements IVoltageProvider, IEnergyReceiver
+public class TileEntityRedstoneFluxGenerator extends TileEntityElectrical implements IVoltageProvider, IEnergyReceiver, IRotatable
 {
+    private ForgeDirection direction;
     protected int rfEnergy;
     protected int rfStoredPerTick;
     protected int rfUsedPerTick;
@@ -22,6 +25,7 @@ public class TileEntityRedstoneFluxGenerator extends TileEntityElectrical implem
         super(true);
         this.rfStoredPerTick = 25;
         this.rfUsedPerTick = 20;
+        this.direction = ForgeDirection.SOUTH;
     }
 
     @Override
@@ -87,7 +91,7 @@ public class TileEntityRedstoneFluxGenerator extends TileEntityElectrical implem
     {
         int usedRF = 0;
         
-        if (maxReceive >= this.rfStoredPerTick && this.rfEnergy < this.getEnergyStored(from))
+        if (maxReceive >= this.rfStoredPerTick && this.rfEnergy < this.getMaxEnergyStored(from))
         {
             this.rfEnergy = this.rfEnergy + rfStoredPerTick;
             usedRF = Math.min(maxReceive, rfStoredPerTick);
@@ -127,6 +131,11 @@ public class TileEntityRedstoneFluxGenerator extends TileEntityElectrical implem
     {
         super.writeToNBT(nbt);
         nbt.setInteger("RFEnergy", this.rfEnergy);
+
+        if (this.direction != null)
+        {
+            nbt.setInteger("Direction", this.direction.ordinal());
+        }
     }
 
     @Override
@@ -134,5 +143,18 @@ public class TileEntityRedstoneFluxGenerator extends TileEntityElectrical implem
     {
         super.readFromNBT(nbt);
         this.rfEnergy = nbt.getInteger("RFEnergy");
+        this.direction = ForgeDirection.getOrientation(nbt.getInteger("Direction"));
+    }
+
+    @Override
+    public ForgeDirection getDirection()
+    {
+        return direction;
+    }
+
+    @Override
+    public void setDirection(ForgeDirection direction)
+    {
+        this.direction = direction;
     }
 }

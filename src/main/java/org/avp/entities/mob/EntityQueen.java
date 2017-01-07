@@ -195,7 +195,7 @@ public class EntityQueen extends EntityXenomorph implements IMob
 
                     for (CoordData point : this.pathPoints)
                     {
-                        if (closestPoint != null && point.distanceFrom(this) < closestPoint.getLastDistanceCalculated())
+                        if (closestPoint != null && point.distanceFrom(this) < closestPoint.distanceFrom(this))
                         {
                             closestPoint = point;
                         }
@@ -255,7 +255,7 @@ public class EntityQueen extends EntityXenomorph implements IMob
         this.jumpBoost();
         this.pathfindToHive();
         this.heal();
-
+        
         // this.getHive().destroy();
         // this.setDead();
 
@@ -382,6 +382,12 @@ public class EntityQueen extends EntityXenomorph implements IMob
 
     @Override
     public boolean canBePushed()
+    {
+        return false;
+    }
+    
+    @Override
+    protected boolean canDespawn()
     {
         return false;
     }

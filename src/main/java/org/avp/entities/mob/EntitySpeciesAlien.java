@@ -12,7 +12,6 @@ import org.avp.event.HiveHandler;
 import org.avp.packets.client.PacketJellyLevelUpdate;
 import org.avp.util.XenomorphHive;
 
-import com.arisux.mdxlib.lib.world.CoordData;
 import com.arisux.mdxlib.lib.world.Worlds;
 import com.arisux.mdxlib.lib.world.entity.Entities;
 import com.arisux.mdxlib.lib.world.entity.ItemDrop;
@@ -67,7 +66,7 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IRoy
     @Override
     protected boolean canDespawn()
     {
-        return false;
+        return this.getJellyLevel() < 20 && !this.hasCustomNameTag();
     }
 
     @Override
@@ -140,9 +139,9 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IRoy
     @SuppressWarnings("unchecked")
     protected void findRoyalJelly()
     {
-        if (!this.worldObj.isRemote && !(this instanceof EntityOvamorph) && this.worldObj.getWorldTime() % 20 == 0)
+        if (!this.worldObj.isRemote && this.worldObj.getWorldTime() % 40 == 0)
         {
-            ArrayList<EntityItem> entityItemList = (ArrayList<EntityItem>) Entities.getEntitiesInCoordsRange(worldObj, EntityItem.class, new CoordData(this), 8);
+            ArrayList<EntityItem> entityItemList = (ArrayList<EntityItem>) worldObj.getEntitiesWithinAABB(EntityItem.class, this.boundingBox.expand(8, 8, 8));
 
             for (EntityItem entityItem : entityItemList)
             {
@@ -157,7 +156,7 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IRoy
                             this.getNavigator().setPath(this.getNavigator().getPathToEntityLiving(entityItem), 1);
                         }
 
-                        if (this.getDistanceToEntity(entityItem) < 1)
+                        if (this.getDistanceToEntity(entityItem) <= 1)
                         {
                             this.onPickupJelly(entityItem);
                         }
@@ -165,6 +164,9 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IRoy
                     }
                 }
             }
+            
+            entityItemList.clear();
+            entityItemList = null;
         }
     }
 
@@ -180,7 +182,7 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IRoy
 
     public boolean canMoveToJelly()
     {
-        return true;
+        return !(this instanceof EntityOvamorph);
     }
 
     protected void onPickupJelly(EntityItem entityItem)
@@ -194,7 +196,7 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IRoy
     {
         super.onUpdate();
 
-        if (!this.worldObj.isRemote)
+        if (this.worldObj.getWorldTime() % 80 == 0)
         {
             if (this.worldObj.getWorldTime() % 40 == 0)
             {

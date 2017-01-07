@@ -16,11 +16,11 @@ public class FacehuggerRenderEvent
     public static final FacehuggerRenderEvent instance = new FacehuggerRenderEvent();
 
     @SubscribeEvent
-    public void renderTickOverlay(RenderGameOverlayEvent.Pre event)
+    public void renderTickOverlay(RenderGameOverlayEvent event)
     {
         if (Game.minecraft().thePlayer != null)
         {
-            if (event.type == RenderGameOverlayEvent.ElementType.HOTBAR)
+            if (event.type == RenderGameOverlayEvent.ElementType.AIR)
             {
                 if (Game.minecraft().gameSettings.thirdPersonView == 0 && Game.minecraft().thePlayer.riddenByEntity != null && Game.minecraft().thePlayer.riddenByEntity instanceof EntityFacehugger)
                 {

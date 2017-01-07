@@ -190,13 +190,14 @@ public class EntityChestburster extends EntitySpeciesAlien implements IMob, INas
     {
         super.readEntityFromNBT(nbt);
 
+        String maturityState = nbt.getString("MaturityState");
         try
         {
-            this.matureState = (Class<? extends Entity>) Class.forName(nbt.getString("MaturityState"));
+            this.matureState = (Class<? extends Entity>) Class.forName(maturityState);
         }
         catch (ClassNotFoundException e)
         {
-            e.printStackTrace();
+            System.out.println("Unable to ready maturity state for chestburster: " + maturityState);
         }
     }
 

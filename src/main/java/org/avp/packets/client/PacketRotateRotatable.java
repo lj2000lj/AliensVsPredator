@@ -1,8 +1,7 @@
 package org.avp.packets.client;
 
-import org.avp.entities.tile.TileEntityTransformer;
-
 import com.arisux.mdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.world.tile.IRotatable;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
@@ -12,19 +11,19 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class PacketRotateTransformer implements IMessage, IMessageHandler<PacketRotateTransformer, PacketRotateTransformer>
+public class PacketRotateRotatable implements IMessage, IMessageHandler<PacketRotateRotatable, PacketRotateRotatable>
 {
     public int direction;
     public int x;
     public int y;
     public int z;
 
-    public PacketRotateTransformer()
+    public PacketRotateRotatable()
     {
         ;
     }
 
-    public PacketRotateTransformer(int direction, int x, int y, int z)
+    public PacketRotateRotatable(int direction, int x, int y, int z)
     {
         this.direction = direction;
         this.x = x;
@@ -51,7 +50,7 @@ public class PacketRotateTransformer implements IMessage, IMessageHandler<Packet
     }
 
     @Override
-    public PacketRotateTransformer onMessage(PacketRotateTransformer packet, MessageContext ctx)
+    public PacketRotateRotatable onMessage(PacketRotateRotatable packet, MessageContext ctx)
     {
         World world = Game.minecraft().thePlayer.worldObj;
 
@@ -59,10 +58,10 @@ public class PacketRotateTransformer implements IMessage, IMessageHandler<Packet
         {
             TileEntity tile = world.getTileEntity(packet.x, packet.y, packet.z);
 
-            if (tile != null && tile instanceof TileEntityTransformer)
+            if (tile != null && tile instanceof IRotatable)
             {
-                TileEntityTransformer tileTransformer = (TileEntityTransformer) tile;
-                tileTransformer.setDirection(ForgeDirection.getOrientation(packet.direction));
+                IRotatable rotatable = (IRotatable) tile;
+                rotatable.setDirection(ForgeDirection.getOrientation(packet.direction));
             }
         }
 

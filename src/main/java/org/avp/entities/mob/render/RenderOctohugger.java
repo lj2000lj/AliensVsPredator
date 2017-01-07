@@ -17,6 +17,7 @@ import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 
 public class RenderOctohugger extends RenderLivingWrapper
 {
@@ -86,6 +87,11 @@ public class RenderOctohugger extends RenderLivingWrapper
                 if (transform.isApplicable(octohugger.ridingEntity))
                 {
                     transform.post(octohugger, partialTicks);
+                    
+                    if (octohugger.ridingEntity instanceof EntityPlayer)
+                    {
+                        
+                    }
                     break;
                 }
             }

@@ -8,6 +8,7 @@ import org.avp.entities.mob.EntityEngineer;
 import org.avp.entities.mob.EntityHammerpede;
 import org.avp.entities.mob.EntityTrilobite;
 
+import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.world.biome.BiomeGenBase;
 
 public class BiomeGenVarda extends BiomeGenLV
@@ -26,20 +27,11 @@ public class BiomeGenVarda extends BiomeGenLV
         this.setDisableRain();
         this.theBiomeDecorator = new BiomeDecoratorVarda(this);
         this.waterColorMultiplier = 0xFFFF66;
-        this.addVardaSpawns();
-    }
-    
-    public void addVardaSpawns()
-    {
         this.spawnableCaveCreatureList.clear();
         this.spawnableCreatureList.clear();
         this.spawnableMonsterList.clear();
         this.spawnableWaterCreatureList.clear();
-        this.spawnableWaterCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityDeaconShark.class, 10, 1, 1));
-        this.spawnableCaveCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityHammerpede.class, 10, 1, 3));
-        this.spawnableCaveCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityDeacon.class, 1, 0, 1));
-        this.spawnableCaveCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityEngineer.class, 1, 0, 1));
-        this.spawnableCaveCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityTrilobite.class, 1, 0, 1));
+        this.spawnableWaterCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityDeaconShark.class, 1, 0, 1));
     }
 
     @Override

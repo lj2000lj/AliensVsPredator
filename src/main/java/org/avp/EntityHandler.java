@@ -63,10 +63,10 @@ import org.avp.entities.tile.TileEntityLightPanel;
 import org.avp.entities.tile.TileEntityLocker;
 import org.avp.entities.tile.TileEntityMedpod;
 import org.avp.entities.tile.TileEntityNegativeTransformer;
-import org.avp.entities.tile.TileEntityRedstoneEmitter;
-import org.avp.entities.tile.TileEntityRedstoneFluxGenerator;
 import org.avp.entities.tile.TileEntityPowercell;
 import org.avp.entities.tile.TileEntityPowerline;
+import org.avp.entities.tile.TileEntityRedstoneEmitter;
+import org.avp.entities.tile.TileEntityRedstoneFluxGenerator;
 import org.avp.entities.tile.TileEntityRedstoneSensor;
 import org.avp.entities.tile.TileEntityRepulsionGenerator;
 import org.avp.entities.tile.TileEntitySatelliteDish;
@@ -86,8 +86,11 @@ import com.arisux.mdxlib.lib.game.IInitEvent;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.monster.IMob;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.util.EnumHelper;
 
 public class EntityHandler implements IInitEvent
 {
@@ -135,7 +138,7 @@ public class EntityHandler implements IInitEvent
 
     private void registerRemappedEntities()
     {
-        //Global Entity Identity Remapping
+        // Global Entity Identity Remapping
         MDX.registerRemappedEntity(EntityRunnerDrone.class, "RunnerDrone");
         MDX.registerRemappedEntity(EntityRunnerWarrior.class, "RunnerWarrior");
         MDX.registerRemappedEntity(EntityDrone.class, "Drone");
@@ -161,7 +164,7 @@ public class EntityHandler implements IInitEvent
         MDX.registerRemappedEntity(EntityYautjaBerserker.class, "YautjaBerserker");
         MDX.registerRemappedEntity(EntityDeaconShark.class, "DeaconShark");
 
-        //Mod Entity Identity Remapping
+        // Mod Entity Identity Remapping
         MDX.registerRemappedEntity(EntityDeacon.class, "avp.Protomorph");
     }
 
@@ -221,6 +224,9 @@ public class EntityHandler implements IInitEvent
         Game.register(EntityBelugamorph.class, "Belugamorph", entityId++, AliensVsPredator.instance(), 250, 1, true);
     }
 
+    private static final Class<?>[][]    PARAM_TYPES   = new Class[][] { { EnumCreatureType.class, Class.class, int.class, Material.class, boolean.class, boolean.class } };
+//    public static final EnumCreatureType WATER_MONSTER = EnumHelper.addEnum(PARAM_TYPES, EnumCreatureType.class, "water_monster", IMob.class, 20, Material.water, false, false);
+
     private void registerSpawns()
     {
         if (AliensVsPredator.settings().areAutoSpawnsEnabled())
@@ -253,6 +259,11 @@ public class EntityHandler implements IInitEvent
             });
             EntityRegistry.addSpawn(EntityEngineer.class, 5, 1, 1, EnumCreatureType.monster, vardaBiomes);
             EntityRegistry.addSpawn(EntitySpaceJockey.class, 2, 1, 1, EnumCreatureType.monster, vardaBiomes);
+
+            EntityRegistry.addSpawn(EntityHammerpede.class, 1, 0, 3, EnumCreatureType.monster, vardaBiomes);
+            EntityRegistry.addSpawn(EntityDeacon.class, 1, 0, 1, EnumCreatureType.monster, vardaBiomes);
+            EntityRegistry.addSpawn(EntityEngineer.class, 1, 0, 1, EnumCreatureType.monster, vardaBiomes);
+            EntityRegistry.addSpawn(EntityTrilobite.class, 1, 0, 1, EnumCreatureType.monster, vardaBiomes);
         }
     }
 

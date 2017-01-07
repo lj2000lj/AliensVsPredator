@@ -2,10 +2,12 @@ package org.avp.entities.extended;
 
 import org.avp.AliensVsPredator;
 import org.avp.entities.mob.EntitySpeciesAlien;
+import org.avp.event.client.TacticalHUDRenderEvent;
 import org.avp.packets.client.OrganismClientSync;
 import org.avp.packets.server.OrganismServerSync;
 import org.avp.util.Embryo;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,6 +22,7 @@ public class Organism implements IExtendedEntityProperties
     public static final String IDENTIFIER = "Organism";
     private EntityLivingBase   living;
     private Embryo             embryo;
+    private int                bpm;
 
     public Organism(EntityLivingBase living)
     {
@@ -36,18 +39,21 @@ public class Organism implements IExtendedEntityProperties
     public void init(Entity entity, World world)
     {
         this.embryo = null;
+        this.bpm = 60;
     }
-    
+
     @Override
     public void saveNBTData(NBTTagCompound nbt)
     {
         Embryo.save(this.getEmbryo(), nbt);
+        nbt.setInteger("BPM", this.bpm);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound nbt)
     {
         this.embryo = Embryo.load(nbt);
+        this.bpm = nbt.getInteger("BPM");
     }
 
     private NBTTagCompound asCompoundTag()
@@ -67,12 +73,54 @@ public class Organism implements IExtendedEntityProperties
     {
         AliensVsPredator.network().sendToServer(new OrganismServerSync(this.getEntity().getEntityId(), this.asCompoundTag()));
     }
-    
+
     public void onTick(World world)
     {
-        if (!world.isRemote && this.hasEmbryo() && world.getWorldTime() % 60 == 0)
+        if (!world.isRemote && world.getWorldTime() % 60 == 0)
         {
             this.syncWithClients();
+        }
+
+        if (!world.isRemote)
+        {
+            if (this.getEntity().isSprinting())
+            {
+                this.bpm = 130 + this.getEntity().getRNG().nextInt(20);
+            }
+            else if (this.getEntity().motionX + this.getEntity().motionZ > 0)
+            {
+                this.bpm = 70 + this.getEntity().getRNG().nextInt(10);
+            }
+            else
+            {
+                this.bpm = 60 + this.getEntity().getRNG().nextInt(10);
+            }
+            
+            if (this.hasEmbryo())
+            {
+                int age = this.getEmbryo().getAge();
+                int gestationPeriod = this.getEmbryo().getGestationPeriod();
+                int timeLeft = gestationPeriod - age;
+                int timeBleed = gestationPeriod - (gestationPeriod / 10);
+
+                if (age >= timeBleed)
+                {
+                    this.bpm = 60 + (250 - (timeLeft * 250 / (30 * 20)));
+                    
+                    if (world.getWorldTime() % 10 == 0)
+                    {
+                        this.syncWithClients();
+                    }
+                }
+            }
+        }
+
+        if (world.isRemote)
+        {
+            if (this.getEntity() == Minecraft.getMinecraft().thePlayer)
+            {
+                TacticalHUDRenderEvent.instance.getElectrocardiogram().setRate(this.bpm);
+            }
         }
     }
 
@@ -90,7 +138,7 @@ public class Organism implements IExtendedEntityProperties
     {
         return this.embryo;
     }
-    
+
     public void impregnate()
     {
         this.impregnate(Embryo.createFromHost(this.living));
@@ -139,6 +187,6 @@ public class Organism implements IExtendedEntityProperties
         {
             EntityPlayer player = (EntityPlayer) living;
             player.getFoodStats().setFoodLevel(20);
-        }        
+        }
     }
 }

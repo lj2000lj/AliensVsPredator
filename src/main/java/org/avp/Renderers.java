@@ -779,15 +779,14 @@ public class Renderers implements IPostInitEvent
             @Override
             public void post(Entity entity, float partialTicks)
             {
-                EntityFacehugger facehugger = (EntityFacehugger) entity;
                 OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
                 OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
                 OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
                 OpenGL.translate(0F, -0.2F, 0F);
 
-                if (facehugger.ridingEntity instanceof EntityZombie)
+                if (entity.ridingEntity instanceof EntityZombie)
                 {
-                    EntityZombie zombie = (EntityZombie) facehugger.ridingEntity;
+                    EntityZombie zombie = (EntityZombie) entity.ridingEntity;
 
                     if (zombie.isChild())
                     {
@@ -808,8 +807,7 @@ public class Renderers implements IPostInitEvent
             @Override
             public void post(Entity entity, float partialTicks)
             {
-                EntityFacehugger facehugger = (EntityFacehugger) entity;
-                EntityClientPlayerMP player = (EntityClientPlayerMP) facehugger.ridingEntity;
+                EntityClientPlayerMP player = (EntityClientPlayerMP) entity.ridingEntity;
                 OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
                 OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
                 OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
@@ -937,8 +935,7 @@ public class Renderers implements IPostInitEvent
             @Override
             public void post(Entity entity, float partialTicks)
             {
-                EntityFacehugger facehugger = (EntityFacehugger) entity;
-                EntitySlime slime = (EntitySlime) facehugger.ridingEntity;
+                EntitySlime slime = (EntitySlime) entity.ridingEntity;
                 OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
                 OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
                 OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
