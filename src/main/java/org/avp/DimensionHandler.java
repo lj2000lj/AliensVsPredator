@@ -84,7 +84,7 @@ public class DimensionHandler implements IInitEvent
             Teleporter teleporter = new TeleporterLV(worldServer);
             serverManager.transferPlayerToDimension(player, dimensionId, teleporter);
 
-            CoordData safePos = Entities.getSafePosition(new CoordData(player.posX, player.posY, player.posZ), worldServer);
+            CoordData safePos = Entities.getSafePositionAboveBelow(new CoordData(player.posX, player.posY, player.posZ), worldServer);
 
             if (safePos == null)
             {
@@ -101,7 +101,7 @@ public class DimensionHandler implements IInitEvent
             Teleporter teleporter = new TeleporterLV(worldServer);
             serverManager.transferPlayerToDimension(player, 0, teleporter);
 
-            CoordData safePos = Entities.getSafePosition(new CoordData(player.posX, player.posY, player.posZ), worldServer);
+            CoordData safePos = Entities.getSafePositionAboveBelow(new CoordData(player.posX, player.posY, player.posZ), worldServer);
 
             if (safePos == null)
             {
@@ -118,7 +118,7 @@ public class DimensionHandler implements IInitEvent
             Teleporter teleporter = new TeleporterLV(MinecraftServer.getServer().worldServerForDimension(dimensionId));
             serverManager.transferPlayerToDimension(player, dimensionId, teleporter);
 
-            CoordData safePos = Entities.getSafePosition(new CoordData(player.posX, player.posY, player.posZ), worldServer);
+            CoordData safePos = Entities.getSafePositionAboveBelow(new CoordData(player.posX, player.posY, player.posZ), worldServer);
 
             if (safePos == null)
             {
