@@ -50,7 +50,7 @@ println "Minecraft Forge " + minecraft.version + " with mappings " + minecraft.m
 
 dependencies {
     deployerJars 'org.apache.maven.wagon:wagon-ftp:2.2'
-    compile 'com.arisux:mdxlib:1.0.0.40:deobf'
+    compile 'com.arisux:mdxlib:1.0.0.41:deobf'
 }
 
 jar {
