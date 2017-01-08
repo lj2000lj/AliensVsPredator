@@ -141,6 +141,7 @@ public class EntityImpregnationHandler
         }
     }
 
+    @SideOnly(Side.CLIENT)
     private void bleed(EntityLivingBase host, float spread)
     {
         if (host == null)
