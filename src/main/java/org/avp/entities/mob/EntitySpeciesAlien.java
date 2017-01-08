@@ -198,7 +198,7 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IRoy
 
         if (this.worldObj.getWorldTime() % 80 == 0)
         {
-            if (this.worldObj.getWorldTime() % 40 == 0)
+            if (!this.worldObj.isRemote)
             {
                 AliensVsPredator.network().sendToAll(new PacketJellyLevelUpdate(jellyLevel, this));
             }
