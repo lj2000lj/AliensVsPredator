@@ -8,6 +8,7 @@ import org.avp.api.parasitoidic.IRoyalOrganism;
 import org.avp.entities.extended.Organism;
 
 import com.arisux.mdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.world.CoordData;
 import com.arisux.mdxlib.lib.world.entity.Entities;
 
 import net.minecraft.entity.Entity;
@@ -219,13 +220,21 @@ public class EntityChestburster extends EntitySpeciesAlien implements IMob, INas
     {
         Organism hostOrganism = (Organism) host.getExtendedProperties(Organism.IDENTIFIER);
         this.matureState = hostOrganism.getEmbryo().getResultingOrganism();
-        this.setLocationAndAngles(host.posX, host.posY, host.posZ, 0.0F, 0.0F);
+        
+        CoordData safeLocation = Entities.getSafeLocationAround(this, new CoordData((int)host.posX, (int)host.posY, (int)host.posZ));
+        
+        if (safeLocation == null)
+        {
+            safeLocation = new CoordData((int)host.posX, (int)host.posY, (int)host.posZ);
+        }
+        
+        this.setLocationAndAngles(safeLocation.x(), safeLocation.y(), safeLocation.z(), 0.0F, 0.0F);
         host.worldObj.spawnEntityInWorld(this);
         hostOrganism.removeEmbryo();
         host.getActivePotionEffects().clear();
         host.attackEntityFrom(DamageSources.causeChestbursterDamage(this, host), 100000F);
     }
-
+    
     @Override
     public Class<? extends Entity> getMatureState()
     {

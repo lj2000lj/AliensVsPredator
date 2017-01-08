@@ -1,8 +1,10 @@
 package org.avp.entities.mob.model;
 
 import com.arisux.mdxlib.lib.client.Model;
+import com.arisux.mdxlib.lib.client.Model.RenderObject;
 
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.util.MathHelper;
 
 public class ModelBelugaburster extends Model
 {
@@ -219,5 +221,42 @@ public class ModelBelugaburster extends Model
     protected void render(IRenderObject renderObject, float boxTranslation)
     {
         this.bodyMid.render(boxTranslation);
+        RenderObject o = (RenderObject) renderObject;
+
+        float newangle = MathHelper.cos(o.idleProgress * 8.0F * 0.1F) * (float) Math.PI * 0.9F * o.swingProgressPrev;
+        float neckangle = MathHelper.cos(o.idleProgress * 4.0F * 0.1F) * (float) Math.PI * 0.9F * o.swingProgressPrev;
+        float distMult = 0.15F;
+        float neckdistmult = 0.1F;
+
+        if (o.getEntity() != null && o.getEntity().prevPosX == o.getEntity().posX && o.getEntity().prevPosY == o.getEntity().posY && o.getEntity().prevPosZ == o.getEntity().posZ)
+        {
+            newangle = newangle + MathHelper.cos(o.idleProgress * 0.15F);
+            neckangle = neckangle + MathHelper.cos(o.idleProgress * 0.15F);
+            distMult = 0.15F;
+            neckdistmult = 0.015F;
+        }
+
+        float startAngle = 2.5F;
+
+        this.head1.rotateAngleX = (float) (Math.toRadians(-45F) + -neckangle * neckdistmult * 0.25F);
+        this.neck.rotateAngleX = (float) (Math.toRadians(-45F) + -neckangle * neckdistmult);
+
+        this.lArm4.rotateAngleZ = (float) (Math.toRadians(5F) + -newangle * 0.1F) * 0.25F;
+        this.lArm5.rotateAngleZ = (float) (Math.toRadians(5F) + -newangle * 0.1F) * 0.25F;
+        this.lArm6.rotateAngleZ = (float) (Math.toRadians(5F) + -newangle * 0.1F) * 0.25F;
+
+        this.rArm4.rotateAngleZ = (float) (Math.toRadians(-5F) + -newangle * 0.1F) * 0.25F;
+        this.rArm5.rotateAngleZ = (float) (Math.toRadians(-5F) + -newangle * 0.1F) * 0.25F;
+        this.rArm6.rotateAngleZ = (float) (Math.toRadians(-5F) + -newangle * 0.1F) * 0.25F;
+        
+        this.lTail1.rotateAngleY = (float) (Math.toRadians(startAngle) + newangle * distMult) * 0.5F;
+        this.lTail2.rotateAngleY = (float) (Math.toRadians(startAngle) + newangle * distMult) * 0.25F;
+        this.lTail3.rotateAngleY = (float) (Math.toRadians(startAngle) + newangle * distMult);
+        this.lTail4.rotateAngleY = (float) (Math.toRadians(startAngle) + newangle * distMult);
+
+        this.rTail1.rotateAngleY = (float) (Math.toRadians(-startAngle) + newangle * distMult) * 0.5F;
+        this.rTail2.rotateAngleY = (float) (Math.toRadians(-startAngle) + newangle * distMult) * 0.25F;
+        this.rTail3.rotateAngleY = (float) (Math.toRadians(-startAngle) + newangle * distMult);
+        this.rTail4.rotateAngleY = (float) (Math.toRadians(-startAngle) + newangle * distMult);
     }
 }
