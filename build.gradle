@@ -33,8 +33,12 @@ apply plugin: 'maven'
 version = "4.0.0.${System.env.BUILD_NUMBER}"
 group= "org.avp"
 archivesBaseName = "aliensvspredator"
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+
+tasks.withType(JavaCompile) {
+	sourceCompatibility = "1.7"
+	targetCompatibility = "1.7"
+	options.encoding = 'UTF-8'
+}
 
 minecraft {
     version = "1.7.10-10.13.4.1614-1.7.10"

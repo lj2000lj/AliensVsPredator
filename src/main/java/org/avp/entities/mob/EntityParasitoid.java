@@ -178,7 +178,6 @@ public class EntityParasitoid extends EntitySpeciesAlien implements IMob, IParas
             this.motionZ = 0;
             this.tasks.taskEntries.clear();
             this.targetTasks.taskEntries.clear();
-            this.moveHelper.speed = 0;
         }
 
         if (this.getTicksOnHost() > this.getDetachTime())

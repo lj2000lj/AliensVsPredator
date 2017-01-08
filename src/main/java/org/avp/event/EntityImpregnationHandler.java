@@ -69,7 +69,7 @@ public class EntityImpregnationHandler
                             }
                             else if (world.isRemote)
                             {
-                                if (!Game.minecraft().isGamePaused)
+                                if (!Game.minecraft().isGamePaused())
                                 {
                                     hostOrganism.gestate();
                                 }
