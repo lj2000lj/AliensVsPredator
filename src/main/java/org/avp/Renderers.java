@@ -537,10 +537,12 @@ public class Renderers implements IPostInitEvent
                 if (tile.stasisEntity != null)
                 {
                     OpenGL.pushMatrix();
+                    OpenGL.scale(0.875F, 0.875F, 0.875F);
                     if (tile.getVoltage() > 0)
                         OpenGL.disableLight();
-                    OpenGL.translate(0F, 0.5F, 0F);
+                    OpenGL.translate(0F, 0.75F, 0F);
                     OpenGL.rotate(180F, 1F, 0F, 0F);
+                    OpenGL.rotate(23.5F, 0F, 1F, 0F);
                     RenderManager.instance.renderEntityWithPosYaw(tile.stasisEntity, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
                     OpenGL.popMatrix();
                 }
