@@ -2,6 +2,7 @@ package org.avp.event;
 
 import org.avp.entities.extended.Organism;
 import org.avp.entities.fx.EntityBloodFX;
+import org.avp.entities.mob.EntitySpeciesYautja;
 
 import com.arisux.mdxlib.lib.game.Game;
 
@@ -106,37 +107,21 @@ public class EntityImpregnationHandler
 
                                 if (world.isRemote && timeLeft <= 3)
                                 {
-                                    float spread = 0.5F;
-
                                     for (int i = 1024; i > 0; i--)
                                     {
-                                        Game.minecraft().effectRenderer.addEffect(new EntityBloodFX(world, host.posX + (host.getRNG().nextDouble() * spread) - (host.getRNG().nextDouble() * spread), host.posY + (host.getRNG().nextDouble() * spread) - (host.getRNG().nextDouble() * spread), host.posZ + (host.getRNG().nextDouble() * spread) - (host.getRNG().nextDouble() * spread), 0x610000));
+                                        this.bleed(host, 0.5F);
                                     }
                                 }
 
                                 if (world.isRemote && age >= timeBleed)
                                 {
-                                    float spread = 0.5F;
-
+                                    this.bleed(host, 0.25F);
+                                    
                                     if (host.getRNG().nextInt(100) == 0)
                                     {
                                         for (int i = 64; i > 0; i--)
                                         {
-                                            int particleColor = 0;
-
-                                            switch (host.getRNG().nextInt(3))
-                                            {
-                                                case 0:
-                                                    particleColor = 0x550000;
-                                                    break;
-                                                case 1:
-                                                    particleColor = 0x440000;
-                                                    break;
-                                                default:
-                                                    particleColor = 0x660000;
-                                                    break;
-                                            }
-                                            Game.minecraft().effectRenderer.addEffect(new EntityBloodFX(world, host.posX + (host.getRNG().nextDouble() * spread) - (host.getRNG().nextDouble() * spread), host.posY + (host.getRNG().nextDouble() * spread) - (host.getRNG().nextDouble() * spread), host.posZ + (host.getRNG().nextDouble() * spread) - (host.getRNG().nextDouble() * spread), particleColor));
+                                            this.bleed(host, 0.5F);
                                         }
                                     }
                                 }
@@ -154,6 +139,29 @@ public class EntityImpregnationHandler
                 }
             }
         }
+    }
+
+    private void bleed(EntityLivingBase host, float spread)
+    {
+        if (host == null)
+        {
+            return;
+        }
+
+        double pX = host.posX + (host.getRNG().nextDouble() * spread) - (host.getRNG().nextDouble() * spread);
+        double pY = host.posY + (host.getRNG().nextDouble() * spread) - (host.getRNG().nextDouble() * spread);
+        double pZ = host.posZ + (host.getRNG().nextDouble() * spread) - (host.getRNG().nextDouble() * spread);
+
+        int particleColor = 0x610000;
+        boolean glow = false;
+
+        if (host instanceof EntitySpeciesYautja)
+        {
+            particleColor = 0x00FF00;
+            glow = true;
+        }
+
+        Game.minecraft().effectRenderer.addEffect(new EntityBloodFX(host.worldObj, pX, pY, pZ, particleColor, glow));
     }
 
     @SubscribeEvent

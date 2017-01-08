@@ -1,5 +1,7 @@
 package org.avp.entities.fx;
 
+import com.arisux.mdxlib.lib.client.render.OpenGL;
+
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.particle.EntityDropParticleFX;
@@ -11,12 +13,14 @@ public class EntityBloodFX extends EntityDropParticleFX
 {
     private int bobTimer;
     private int color;
+    private boolean glow;
 
-    public EntityBloodFX(World worldIn, double posX, double posY, double posZ, int color)
+    public EntityBloodFX(World worldIn, double posX, double posY, double posZ, int color, boolean glow)
     {
         super(worldIn, posX, posY, posZ, null);
         this.particleMaxAge = ((60 * 20) * 3) + ((this.rand.nextInt(30 * 20)));
         this.color = color;
+        this.glow = glow;
         this.motionX *= 0.800000011920929D;
         this.motionY *= 0.800000011920929D;
         this.motionZ *= 0.800000011920929D;
@@ -108,10 +112,22 @@ public class EntityBloodFX extends EntityDropParticleFX
         int g = (color & 0xFF00) >> 8;
         int b = (color & 0xFF);
         
+        if (glow)
+        {
+            OpenGL.disableLightMapping();
+        }
+        
         tessellator.setColorRGBA_F(r, g, b, 1F);
         tessellator.addVertexWithUV((double) (x - rX * scale - rYZ * scale), (double) (y - rXZ * scale), (double) (z - rZ * scale - rXY * scale), (double) maxU, (double) maxV);
         tessellator.addVertexWithUV((double) (x - rX * scale + rYZ * scale), (double) (y + rXZ * scale), (double) (z - rZ * scale + rXY * scale), (double) maxU, (double) minV);
         tessellator.addVertexWithUV((double) (x + rX * scale + rYZ * scale), (double) (y + rXZ * scale), (double) (z + rZ * scale + rXY * scale), (double) minU, (double) minV);
         tessellator.addVertexWithUV((double) (x + rX * scale - rYZ * scale), (double) (y - rXZ * scale), (double) (z + rZ * scale - rXY * scale), (double) minU, (double) maxV);
+        tessellator.draw();
+        tessellator.startDrawingQuads();
+        
+        if (glow)
+        {
+            OpenGL.enableLightMapping();
+        }
     }
 }
