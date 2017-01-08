@@ -1,6 +1,7 @@
 package org.avp;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.avp.block.BlockShape;
 import org.avp.block.BlockShape.ShapeTypes;
@@ -10,7 +11,6 @@ import com.arisux.mdxlib.lib.world.block.Blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
-import scala.actors.threadpool.Arrays;
 
 public class ShapedBlockUtil
 {
