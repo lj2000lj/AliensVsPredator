@@ -1,8 +1,11 @@
 package org.avp.items.render;
 
+import com.arisux.mdxlib.MDX;
+import com.arisux.mdxlib.lib.client.Model;
 import com.arisux.mdxlib.lib.client.TexturedModel;
 import com.arisux.mdxlib.lib.client.render.ItemRenderer;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
+import com.arisux.mdxlib.lib.client.render.Texture;
 import com.arisux.mdxlib.lib.game.Game;
 
 import net.minecraft.item.ItemStack;
@@ -18,7 +21,18 @@ public class RenderItemSummoner extends ItemRenderer
     public RenderItemSummoner(TexturedModel<?> model)
     {
         super(null);
-        this.model = new TexturedModel(model);
+        this.model = model;
+        
+        try
+        {
+            Model newModel = model.getModel().getClass().getConstructor().newInstance(new Object[] {});
+            this.model = (TexturedModel.class.getConstructor(Model.class, Texture.class)).newInstance(new Object[] { newModel, model.getTexture() });
+        }
+        catch (Exception e)
+        {
+            MDX.log().warn("Failed to create new model instance: " + e);
+            e.printStackTrace();
+        }
     }
 
     public RenderItemSummoner setX(float x)
