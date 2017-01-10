@@ -46,8 +46,7 @@ minecraft {
     runDir = "eclipse"
     mappings = "stable_12"
     
-    replace "Gradle.MCVERSION", project.minecraft.version
-    replace "Gradle.MDXVERSION", project.mdxversion
+    replace "required-after:mdxlib", "required-after:mdxlib@[${project.mdxversion}]" 
     replaceIn 'AliensVsPredator.java'
 }
 

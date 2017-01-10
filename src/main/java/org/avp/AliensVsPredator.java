@@ -22,7 +22,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;
 
-@Mod(name = "AliensVsPredator", modid = AliensVsPredator.ID, acceptedMinecraftVersions = "@MCVERSION@", dependencies = "required-after:mdxlib@[@MDXVERSION@]")
+@Mod(name = "AliensVsPredator", modid = AliensVsPredator.ID, dependencies = "required-after:mdxlib")
 public class AliensVsPredator implements IMod
 {
     public static final String      ID = "avp";
