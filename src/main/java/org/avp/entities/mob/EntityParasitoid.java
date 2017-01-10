@@ -40,7 +40,7 @@ public class EntityParasitoid extends EntitySpeciesAlien implements IMob, IParas
                                                        @Override
                                                        public boolean isEntityApplicable(Entity potentialTarget)
                                                        {
-                                                           Organism entityExt = (Organism) potentialTarget.getExtendedProperties(Organism.IDENTIFIER);
+                                                           Organism organism = (Organism) potentialTarget.getExtendedProperties(Organism.IDENTIFIER);
 
                                                            if (potentialTarget instanceof IHost)
                                                            {
@@ -57,7 +57,7 @@ public class EntityParasitoid extends EntitySpeciesAlien implements IMob, IParas
                                                                return false;
                                                            }
 
-                                                           if (entityExt.hasEmbryo())
+                                                           if (organism != null && organism.hasEmbryo())
                                                            {
                                                                return false;
                                                            }
