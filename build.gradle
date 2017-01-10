@@ -61,18 +61,18 @@ dependencies {
 }
 
 jar {
-	archiveName = "[FORGE-${minecraft.getApiVersion()}-MDX-${project.mdxversion}][${project.version}] ${project.archivesBaseName}.jar"
+	archiveName = "[${minecraft.getApiVersion()}][${project.version}] ${project.archivesBaseName}.jar"
 }
 
 task srcJar(type: Jar) {
     from sourceSets.main.output
-	archiveName = "[FORGE-${minecraft.getApiVersion()}-MDX-${project.mdxversion}][${project.version}] ${project.archivesBaseName}-sources.jar"
+	archiveName = "[${minecraft.getApiVersion()}][${project.version}] ${project.archivesBaseName}-sources.jar"
     classifier = 'sources'
 }
 
 task deobfJar(type: Jar) {
     from sourceSets.main.output
-	archiveName = "[FORGE-${minecraft.getApiVersion()}-MDX-${project.mdxversion}][${project.version}] ${project.archivesBaseName}-deobf.jar"
+	archiveName = "[${minecraft.getApiVersion()}][${project.version}] ${project.archivesBaseName}-deobf.jar"
     classifier = 'deobf'
 }
 
@@ -82,7 +82,7 @@ artifacts {
 
 curse {
     displayName = "${project.archivesBaseName} ${project.version}"
-    artifact = file("${project.buildDir}/libs/[FORGE-${minecraft.getApiVersion()}-MDX-${project.mdxversion}][${project.version}] ${project.archivesBaseName}.jar")
+    artifact = file("${project.buildDir}/libs/[${minecraft.getApiVersion()}][${project.version}] ${project.archivesBaseName}.jar")
     projectId = '221641'
     apiKey = project.curseForgeApiKey
     releaseType = 'beta'
