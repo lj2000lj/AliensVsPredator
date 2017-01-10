@@ -14,10 +14,11 @@ public class RenderItemSummoner extends ItemRenderer
     private float                   y;
     private TexturedModel<?>        model;
 
+    @SuppressWarnings("all")
     public RenderItemSummoner(TexturedModel<?> model)
     {
         super(null);
-        this.model = new TexturedModel<>(model);
+        this.model = new TexturedModel(model);
     }
 
     public RenderItemSummoner setX(float x)
