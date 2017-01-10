@@ -22,13 +22,14 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;
 
-@Mod(modid = AliensVsPredator.ID, acceptedMinecraftVersions = "1.7.10", canBeDeactivated = true, dependencies = "required-after:mdxlib")
+@Mod(name = "AliensVsPredator", modid = AliensVsPredator.ID, acceptedMinecraftVersions = "@MCVERSION@", dependencies = "required-after:mdxlib@[@MDXVERSION@]")
 public class AliensVsPredator implements IMod
 {
-    protected static final String   ID = "avp";
+    public static final String      ID = "avp";
 
     @Mod.Instance(AliensVsPredator.ID)
     private static AliensVsPredator instance;
+    
     private ModContainer            container;
 
     @Override
@@ -208,7 +209,7 @@ public class AliensVsPredator implements IMod
         renderTypes().pre(event);
         this.remapItemIdentities();
     }
-    
+
     private void remapItemIdentities()
     {
         MDX.registerMappingInfo("summon.protomorph", "summon.deacon", AliensVsPredator.ID);
@@ -248,7 +249,7 @@ public class AliensVsPredator implements IMod
     public void post(FMLPostInitializationEvent event)
     {
         MDX.log().info("[AliensVsPredator] Post-Initialization");
-        
+
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
         {
             sounds().post(event);
@@ -262,7 +263,7 @@ public class AliensVsPredator implements IMod
     {
         commands().onServerStarting(event);
     }
-    
+
     @EventHandler
     public void onServerStopped(FMLServerStoppedEvent event)
     {

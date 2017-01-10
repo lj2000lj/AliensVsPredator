@@ -10,8 +10,7 @@
   "credits": "",
   "logoFile": "",
   "screenshots": [],
-  "useDependencyInformation": true,
-  "requiredMods": ["mdxlib"],
-  "dependencies": ["mdxlib"],
+  "requiredMods": [],
+  "dependencies": [],
   "beta": true
 }]

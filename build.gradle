@@ -31,8 +31,9 @@ apply plugin: 'curseforge'
 apply plugin: 'maven'
 
 version = "4.0.0.${System.env.BUILD_NUMBER}"
-group= "org.avp"
+group = "org.avp"
 archivesBaseName = "aliensvspredator"
+project.ext.set("mdxversion", "1.0.0.42")
 
 tasks.withType(JavaCompile) {
 	sourceCompatibility = "1.7"
@@ -44,28 +45,34 @@ minecraft {
     version = "1.7.10-10.13.4.1614-1.7.10"
     runDir = "eclipse"
     mappings = "stable_12"
+    
+    replace "@MCVERSION@", project.minecraft.version
+    replace "@MDXVERSION@", project.mdxversion
+    replaceIn 'AliensVsPredator.java'
 }
 
-println "Minecraft Forge " + minecraft.version + " with mappings " + minecraft.mappings
+println "Minecraft ${minecraft.version}"
+println "Minecraft Forge ${minecraft.getApiVersion()} with mappings ${minecraft.mappings}"
+println "Minecraft Development Library X ${project.mdxversion}"
 
 dependencies {
     deployerJars 'org.apache.maven.wagon:wagon-ftp:2.2'
-    compile 'com.arisux:mdxlib:1.0.0.41:deobf'
+    compile "com.arisux:mdxlib:${project.mdxversion}:deobf"
 }
 
 jar {
-	archiveName = "[${minecraft.getApiVersion()}][${project.version}] ${project.archivesBaseName}.jar"
+	archiveName = "[FORGE-${minecraft.getApiVersion()}-MDX-${project.mdxversion}][${project.version}] ${project.archivesBaseName}.jar"
 }
 
 task srcJar(type: Jar) {
-    from sourceSets.main.allSource
-	archiveName = "[${minecraft.getApiVersion()}][${project.version}] ${project.archivesBaseName}-sources.jar"
+    from sourceSets.main.output
+	archiveName = "[FORGE-${minecraft.getApiVersion()}-MDX-${project.mdxversion}][${project.version}] ${project.archivesBaseName}-sources.jar"
     classifier = 'sources'
 }
 
 task deobfJar(type: Jar) {
     from sourceSets.main.output
-	archiveName = "[${minecraft.getApiVersion()}][${project.version}] ${project.archivesBaseName}-deobf.jar"
+	archiveName = "[FORGE-${minecraft.getApiVersion()}-MDX-${project.mdxversion}][${project.version}] ${project.archivesBaseName}-deobf.jar"
     classifier = 'deobf'
 }
 
@@ -75,7 +82,7 @@ artifacts {
 
 curse {
     displayName = "${project.archivesBaseName} ${project.version}"
-    artifact = file("${project.buildDir}/libs/[${minecraft.getApiVersion()}][${project.version}] ${project.archivesBaseName}.jar")
+    artifact = file("${project.buildDir}/libs/[FORGE-${minecraft.getApiVersion()}-MDX-${project.mdxversion}][${project.version}] ${project.archivesBaseName}.jar")
     projectId = '221641'
     apiKey = project.curseForgeApiKey
     releaseType = 'beta'
