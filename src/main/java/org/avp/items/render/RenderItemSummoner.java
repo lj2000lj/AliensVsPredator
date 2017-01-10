@@ -1,33 +1,23 @@
 package org.avp.items.render;
 
-import com.arisux.mdxlib.lib.client.Model;
-import com.arisux.mdxlib.lib.client.render.OpenGL;
+import com.arisux.mdxlib.lib.client.TexturedModel;
 import com.arisux.mdxlib.lib.client.render.ItemRenderer;
-import com.arisux.mdxlib.lib.client.render.Texture;
+import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.game.Game;
-import com.arisux.mdxlib.lib.world.entity.Entities;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.RendererLivingEntity;
-import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 
 public class RenderItemSummoner extends ItemRenderer
 {
-    private Class<? extends Entity> entityClass;
     private float                   scale;
     private float                   x;
     private float                   y;
-    private ModelBase               modelCache;
-    private Texture                 textureCache;
-    private Render                  renderCache;
+    private TexturedModel<?>        model;
 
-    public RenderItemSummoner(Class<? extends Entity> entityClass)
+    public RenderItemSummoner(TexturedModel<?> model)
     {
         super(null);
-        this.entityClass = entityClass;
+        this.model = new TexturedModel<>(model);
     }
 
     public RenderItemSummoner setX(float x)
@@ -51,49 +41,23 @@ public class RenderItemSummoner extends ItemRenderer
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data)
     {
-        this.updateCache();
         super.renderItem(type, item, data);
-    }
-
-    public void updateCache()
-    {
-        if (renderCache == null)
-        {
-            renderCache = RenderManager.instance.getEntityClassRenderObject(entityClass);
-        }
-
-        if (renderCache instanceof RendererLivingEntity)
-        {
-            if (modelCache == null)
-            {
-                modelCache = Model.getMainModel((RendererLivingEntity) renderCache);
-            }
-
-            if (textureCache == null)
-            {
-                textureCache = new Texture(Entities.getEntityTexture(renderCache, null));
-            }
-        }
     }
 
     public void renderCachedModel()
     {
-        if (modelCache != null && textureCache != null)
+        OpenGL.pushMatrix();
         {
-            OpenGL.pushMatrix();
-            {
-                OpenGL.enableLighting();
-                OpenGL.scale(1F, -1F, 1F);
-                OpenGL.translate(0F, -1F, 0F);
-                OpenGL.rotate(180F, 0F, 0F, 1F);
-                OpenGL.rotate(-45F, 0F, 1F, 0F);
-                textureCache.bind();
-                OpenGL.disableCullFace();
-                modelCache.render(null, 0F, 0F, 0F, 0F, 0F, Model.DEFAULT_BOX_TRANSLATION);
-                OpenGL.disableLighting();
-            }
-            OpenGL.popMatrix();
+            OpenGL.enableLighting();
+            OpenGL.scale(1F, -1F, 1F);
+            OpenGL.translate(0F, -1F, 0F);
+            OpenGL.rotate(180F, 0F, 0F, 1F);
+            OpenGL.rotate(-45F, 0F, 1F, 0F);
+            OpenGL.disableCullFace();
+            this.model.draw();
+            OpenGL.disableLighting();
         }
+        OpenGL.popMatrix();
     }
 
     @Override

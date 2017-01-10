@@ -205,8 +205,8 @@ public class EntityQueen extends EntityXenomorph implements IMob
                     {
                         if (Game.isDevEnvironment() && this.worldObj.getWorldTime() % (20 * 3) == 0)
                         {
-                            System.out.println("Unable to pathfind to closest point, too far: " + this.pathPoints.size() + " Points, " + ((int) closestPoint.distanceFrom(this)) + " Meters, " + closestPoint);
-                            System.out.println(this.pathPoints);
+//                            System.out.println("Unable to pathfind to closest point, too far: " + this.pathPoints.size() + " Points, " + ((int) closestPoint.distanceFrom(this)) + " Meters, " + closestPoint);
+//                            System.out.println(this.pathPoints);
                         }
                     }
                     else
@@ -299,10 +299,6 @@ public class EntityQueen extends EntityXenomorph implements IMob
 
                             if (alien != null && alien.getHive() == null)
                             {
-                                if (Game.isDevEnvironment())
-                                {
-                                    System.out.println("Set hive signature on alien with uuid: " + alien.getUniqueID());
-                                }
                                 alien.setHiveSignature(this.hive.getUniqueIdentifier());
                             }
                         }
