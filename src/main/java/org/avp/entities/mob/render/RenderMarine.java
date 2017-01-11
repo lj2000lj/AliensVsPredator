@@ -2,11 +2,11 @@ package org.avp.entities.mob.render;
 
 import org.avp.AliensVsPredator;
 import org.avp.entities.mob.EntityMarine;
+import org.avp.entities.mob.model.ModelMarine;
 import org.lwjgl.opengl.GL11;
 
 import com.arisux.mdxlib.lib.client.Model;
 import com.arisux.mdxlib.lib.client.RenderLivingWrapper;
-import com.arisux.mdxlib.lib.client.SpecialModelBiped;
 import com.arisux.mdxlib.lib.client.TexturedModel;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
@@ -25,9 +25,9 @@ public class RenderMarine extends RenderLivingWrapper
         super.preRenderCallback(living, partialTicks);
     }
     
-    public SpecialModelBiped getModel()
+    public ModelMarine getModel()
     {
-        return (SpecialModelBiped) this.getModelTexMap().getModel();
+        return (ModelMarine) this.getModelTexMap().getModel();
     }
 
     @Override

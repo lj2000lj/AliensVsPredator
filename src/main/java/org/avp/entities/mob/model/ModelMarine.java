@@ -1,7 +1,6 @@
 package org.avp.entities.mob.model;
 
 import com.arisux.mdxlib.lib.client.Model;
-import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.MathHelper;
@@ -9,10 +8,10 @@ import net.minecraft.util.MathHelper;
 public class ModelMarine extends Model
 {
     public ModelRenderer bipedHead, bipedHeadwear, bipedBody, bipedRightArm, bipedLeftArm, bipedRightLeg, bipedLeftLeg, bipedEars, bipedCloak;
-    public int heldItemLeft;
-    public int heldItemRight;
-    public boolean isSneak;
-    public boolean aimedBow;
+    public int           heldItemLeft;
+    public int           heldItemRight;
+    public boolean       isSneak;
+    public boolean       aimedBow;
 
     public ModelMarine()
     {
@@ -21,7 +20,7 @@ public class ModelMarine extends Model
         this.isSneak = false;
         this.aimedBow = false;
         this.textureWidth = 64;
-        this.textureHeight = 43;
+        this.textureHeight = 32;
         this.bipedCloak = new ModelRenderer(this, 0, 0);
         this.bipedCloak.addBox(-5.0F, 0.0F, -1.0F, 10, 16, 1, 0F);
         this.bipedEars = new ModelRenderer(this, 24, 0);
@@ -55,7 +54,7 @@ public class ModelMarine extends Model
     protected void render(IRenderObject renderObject, float boxTranslation)
     {
         RenderObject o = (RenderObject) renderObject;
-        
+
         this.bipedHead.rotateAngleY = o.headYaw / (180F / (float) Math.PI);
         this.bipedHead.rotateAngleX = o.headPitch / (180F / (float) Math.PI);
         this.bipedHeadwear.rotateAngleY = this.bipedHead.rotateAngleY;
@@ -144,7 +143,7 @@ public class ModelMarine extends Model
         this.bipedRightArm.rotateAngleX += MathHelper.sin(o.idleProgress * 0.067F) * 0.05F;
         this.bipedLeftArm.rotateAngleX -= MathHelper.sin(o.idleProgress * 0.067F) * 0.05F;
 
-        if (null == null)
+        if (this.aimedBow)
         {
             var8 = 0.0F;
             var9 = 0.0F;
@@ -161,37 +160,13 @@ public class ModelMarine extends Model
             this.bipedRightArm.rotateAngleX += MathHelper.sin(o.idleProgress * 0.067F) * 0.05F;
             this.bipedLeftArm.rotateAngleX -= MathHelper.sin(o.idleProgress * 0.067F) * 0.05F;
         }
-        
-        //TODO: Check if this is in the right order
-        
-        if (this.isChild)
-        {
-            float scale = 2.0F;
-            OpenGL.pushMatrix();
-            OpenGL.scale(1.5F / scale, 1.5F / scale, 1.5F / scale);
-            OpenGL.translate(0.0F, 16.0F * boxTranslation, 0.0F);
-            this.bipedHead.render(boxTranslation);
-            OpenGL.popMatrix();
-            OpenGL.pushMatrix();
-            OpenGL.scale(1.0F / scale, 1.0F / scale, 1.0F / scale);
-            OpenGL.translate(0.0F, 24.0F * boxTranslation, 0.0F);
-            this.bipedBody.render(boxTranslation);
-            this.bipedRightArm.render(boxTranslation);
-            this.bipedLeftArm.render(boxTranslation);
-            this.bipedRightLeg.render(boxTranslation);
-            this.bipedLeftLeg.render(boxTranslation);
-            this.bipedHeadwear.render(boxTranslation);
-            OpenGL.popMatrix();
-        }
-        else
-        {
-            this.bipedHead.render(boxTranslation);
-            this.bipedBody.render(boxTranslation);
-            this.bipedRightArm.render(boxTranslation);
-            this.bipedLeftArm.render(boxTranslation);
-            this.bipedRightLeg.render(boxTranslation);
-            this.bipedLeftLeg.render(boxTranslation);
-            this.bipedHeadwear.render(boxTranslation);
-        }        
+
+        this.bipedHead.render(boxTranslation);
+        this.bipedBody.render(boxTranslation);
+        this.bipedRightArm.render(boxTranslation);
+        this.bipedLeftArm.render(boxTranslation);
+        this.bipedRightLeg.render(boxTranslation);
+        this.bipedLeftLeg.render(boxTranslation);
+        this.bipedHeadwear.render(boxTranslation);
     }
 }

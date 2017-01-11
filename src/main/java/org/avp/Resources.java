@@ -138,7 +138,7 @@ public class Resources
         public final TexturedModel<ModelChestburster>          CHESTBUSTER                    = new TexturedModel(new ModelChestburster(), new Texture(AliensVsPredator.ID, "textures/mob/chestbuster.png"));
         public final TexturedModel<ModelFacehugger>            FACEHUGGER                     = new TexturedModel(new ModelFacehugger(), new Texture(AliensVsPredator.ID, "textures/mob/facehugger.png"));
         public final TexturedModel<ModelRoyalFacehugger>       ROYALFACEHUGGER                = new TexturedModel(new ModelRoyalFacehugger(), new Texture(AliensVsPredator.ID, "textures/mob/royalfacehugger.png"));
-        public final TexturedModel<ModelMarine>                MARINE                         = new TexturedModel(new SpecialModelBiped(), new Texture(AliensVsPredator.ID, "textures/mob/marine.png"));
+        public final TexturedModel<ModelMarine>                MARINE                         = new TexturedModel(new ModelMarine(), new Texture(AliensVsPredator.ID, "textures/mob/marine.png"));
         public final TexturedModel<ModelOvamorph>              OVAMORPH                       = new TexturedModel(new ModelOvamorph(), new Texture(AliensVsPredator.ID, "textures/mob/alienegg.png"));
         public final TexturedModel<ModelPredalien>             PREDALIEN                      = new TexturedModel(new ModelPredalien(), new Texture(AliensVsPredator.ID, "textures/mob/predalien.png"));
         public final TexturedModel<ModelPraetorian>            PRAETORIAN                     = new TexturedModel(new ModelPraetorian(), new Texture(AliensVsPredator.ID, "textures/mob/praetorian.png"));

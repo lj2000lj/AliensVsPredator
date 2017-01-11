@@ -1,8 +1,10 @@
 package org.avp.entities.mob.model;
 
 import com.arisux.mdxlib.lib.client.Model;
+import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.util.MathHelper;
 
 public class ModelGooMutant extends Model
 {
@@ -18,6 +20,9 @@ public class ModelGooMutant extends Model
     public ModelRenderer lspike;
     public ModelRenderer rspike;
     public ModelRenderer spines;
+    public int           heldItemLeft;
+    public int           heldItemRight;
+    public boolean       isSneak;
 
     public ModelGooMutant()
     {
@@ -76,12 +81,87 @@ public class ModelGooMutant extends Model
     @Override
     protected void render(IRenderObject renderObject, float boxTranslation)
     {
-        this.headOverlay.render(boxTranslation);
-        this.body.render(boxTranslation);
-        this.rLeg.render(boxTranslation);
-        this.rArm.render(boxTranslation);
-        this.lLeg.render(boxTranslation);
+        RenderObject o = (RenderObject) renderObject;
+
+        this.head.rotateAngleY = o.headYaw / (180F / (float) Math.PI);
+        this.head.rotateAngleX = o.headPitch / (180F / (float) Math.PI);
+        this.headOverlay.rotateAngleY = this.head.rotateAngleY;
+        this.headOverlay.rotateAngleX = this.head.rotateAngleX;
+        this.rArm.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 2.0F * o.swingProgressPrev * 0.5F;
+        this.lArm.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 2.0F * o.swingProgressPrev * 0.5F;
+        this.rArm.rotateAngleZ = 0.0F;
+        this.lArm.rotateAngleZ = 0.0F;
+        this.rLeg.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 1.4F * o.swingProgressPrev;
+        this.lLeg.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1.4F * o.swingProgressPrev;
+        this.rLeg.rotateAngleY = 0.0F;
+        this.lLeg.rotateAngleY = 0.0F;
+
+        if (this.isRiding)
+        {
+            this.rArm.rotateAngleX += -((float) Math.PI / 5F);
+            this.lArm.rotateAngleX += -((float) Math.PI / 5F);
+            this.rLeg.rotateAngleX = -((float) Math.PI * 2F / 5F);
+            this.lLeg.rotateAngleX = -((float) Math.PI * 2F / 5F);
+            this.rLeg.rotateAngleY = ((float) Math.PI / 10F);
+            this.lLeg.rotateAngleY = -((float) Math.PI / 10F);
+        }
+
+        if (this.heldItemLeft != 0)
+        {
+            this.lArm.rotateAngleX = this.lArm.rotateAngleX * 0.5F - ((float) Math.PI / 10F) * this.heldItemLeft;
+        }
+
+        if (this.heldItemRight != 0)
+        {
+            this.rArm.rotateAngleX = this.rArm.rotateAngleX * 0.5F - ((float) Math.PI / 10F) * this.heldItemRight;
+        }
+
+        this.rArm.rotateAngleY = 0.0F;
+        this.lArm.rotateAngleY = 0.0F;
+        float var8;
+        float var9;
+
+        if (this.swingProgress > -9990.0F)
+        {
+            var8 = this.swingProgress;
+            this.body.rotateAngleY = MathHelper.sin(MathHelper.sqrt_float(var8) * (float) Math.PI * 2.0F) * 0.2F;
+            this.rArm.rotationPointZ = MathHelper.sin(this.body.rotateAngleY) * 5.0F;
+            this.rArm.rotationPointX = -MathHelper.cos(this.body.rotateAngleY) * 5.0F;
+            this.lArm.rotationPointZ = -MathHelper.sin(this.body.rotateAngleY) * 5.0F;
+            this.lArm.rotationPointX = MathHelper.cos(this.body.rotateAngleY) * 5.0F;
+            this.rArm.rotateAngleY += this.body.rotateAngleY;
+            this.lArm.rotateAngleY += this.body.rotateAngleY;
+            this.lArm.rotateAngleX += this.body.rotateAngleY;
+            var8 = 1.0F - this.swingProgress;
+            var8 *= var8;
+            var8 *= var8;
+            var8 = 1.0F - var8;
+            var9 = MathHelper.sin(var8 * (float) Math.PI);
+            float var10 = MathHelper.sin(this.swingProgress * (float) Math.PI) * -(this.head.rotateAngleX - 0.7F) * 0.75F;
+            this.rArm.rotateAngleX = (float) (this.rArm.rotateAngleX - (var9 * 1.2D + var10));
+            this.rArm.rotateAngleY += this.body.rotateAngleY * 2.0F;
+            this.rArm.rotateAngleZ = MathHelper.sin(this.swingProgress * (float) Math.PI) * -0.4F;
+        }
+
+        this.body.rotateAngleX = 0.0F;
+        this.rLeg.rotationPointZ = 0.1F;
+        this.lLeg.rotationPointZ = 0.1F;
+        this.rLeg.rotationPointY = 12.0F;
+        this.lLeg.rotationPointY = 12.0F;
+        this.head.rotationPointY = 0.0F;
+        this.headOverlay.rotationPointY = 0.0F;
+
+        this.rArm.rotateAngleZ += MathHelper.cos(o.idleProgress * 0.09F) * 0.05F + 0.05F;
+        this.lArm.rotateAngleZ -= MathHelper.cos(o.idleProgress * 0.09F) * 0.05F + 0.05F;
+        this.rArm.rotateAngleX += MathHelper.sin(o.idleProgress * 0.067F) * 0.05F;
+        this.lArm.rotateAngleX -= MathHelper.sin(o.idleProgress * 0.067F) * 0.05F;
+
         this.head.render(boxTranslation);
+        this.body.render(boxTranslation);
+        this.rArm.render(boxTranslation);
         this.lArm.render(boxTranslation);
+        this.rLeg.render(boxTranslation);
+        this.lLeg.render(boxTranslation);
+        this.headOverlay.render(boxTranslation);
     }
 }
