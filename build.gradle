@@ -120,6 +120,7 @@ task("publishToMaven", dependsOn:"build") {
             pom.project {
         		properties {
             		forgeVersion = minecraft.getApiVersion()
+	            	mcVersion = minecraft.version
             	}
             }
         }
