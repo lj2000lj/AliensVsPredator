@@ -254,8 +254,8 @@ public class ModelChestbursterRunner extends Model
         this.tail5.rotateAngleY = newangle * distMult;
 
         this.headBase.rotateAngleY = (float) Math.toRadians(o.headYaw) * 0.75F;
-        this.lThigh.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 1.4F * o.swingProgressPrev;
-        this.rThigh.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1.4F * o.swingProgressPrev;
+        this.lThigh.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 1.4F * o.swingProgressPrev - 0.5F;
+        this.rThigh.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1.4F * o.swingProgressPrev - 0.5F;
         this.rArm1.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 1.4F * o.swingProgressPrev + 0.3665191F;
         this.lArm1.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1.4F * o.swingProgressPrev + 0.3665191F;
         
