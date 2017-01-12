@@ -101,7 +101,7 @@ public class EntityChestburster extends EntitySpeciesAlien implements IMob, INas
             this.setJellyLevel(this.getJellyLevel() - this.getMaturityLevel());
         }
 
-        EntityXenomorph matureState = (EntityXenomorph) Entities.constructEntity(this.worldObj, this.getMatureState());
+        EntitySpeciesAlien matureState = (EntitySpeciesAlien) Entities.constructEntity(this.worldObj, this.getMatureState());
 
         if (matureState != null)
         {
@@ -117,11 +117,8 @@ public class EntityChestburster extends EntitySpeciesAlien implements IMob, INas
         else if (Game.isDevEnvironment())
         {
             System.out.println("ERROR: NullPointerException during chestburster evolve state.");
-            // System.out.println("INT TYPE: " + this.parasiteType);
             System.out.println("MATURE STATE: " + this.getMatureState());
-            // System.out.println("EMBRYO TYPE: " + Embryo.get(this.parasiteType));
         }
-        // TODO: Create a shell of the original entity.
         this.setDead();
     }
 
