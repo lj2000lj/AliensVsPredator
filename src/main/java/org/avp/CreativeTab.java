@@ -38,7 +38,7 @@ public class CreativeTab
                                                   @Override
                                                   public Item getTabIconItem()
                                                   {
-                                                      return AliensVsPredator.items().itemSummonerFacehugger;
+                                                      return AliensVsPredator.items().summoners.itemSummonerFacehugger;
                                                   }
 
                                                   public String getTranslatedTabLabel()

@@ -42,8 +42,11 @@ import org.avp.entities.mob.EntityOctohugger;
 import org.avp.entities.mob.EntityOvamorph;
 import org.avp.entities.mob.EntityPraetorian;
 import org.avp.entities.mob.EntityPredalien;
+import org.avp.entities.mob.EntityPredalienChestburster;
 import org.avp.entities.mob.EntityQueen;
+import org.avp.entities.mob.EntityQueenChestburster;
 import org.avp.entities.mob.EntityRoyalFacehugger;
+import org.avp.entities.mob.EntityRunnerChestburster;
 import org.avp.entities.mob.EntityRunnerDrone;
 import org.avp.entities.mob.EntityRunnerWarrior;
 import org.avp.entities.mob.EntitySpaceJockey;
@@ -222,6 +225,9 @@ public class EntityHandler implements IInitEvent
         Game.register(EntityOctohugger.class, "Octohugger", entityId++, AliensVsPredator.instance(), 250, 1, true);
         Game.register(EntityBelugaburster.class, "Belugaburster", entityId++, AliensVsPredator.instance(), 250, 1, true);
         Game.register(EntityBelugamorph.class, "Belugamorph", entityId++, AliensVsPredator.instance(), 250, 1, true);
+        Game.register(EntityPredalienChestburster.class, "PredalienChestburster", entityId++, AliensVsPredator.instance(), 250, 1, true);
+        Game.register(EntityQueenChestburster.class, "QueenChestburster", entityId++, AliensVsPredator.instance(), 250, 1, true);
+        Game.register(EntityRunnerChestburster.class, "RunnerChestburster", entityId++, AliensVsPredator.instance(), 250, 1, true);
     }
 
     private static final Class<?>[][]    PARAM_TYPES   = new Class[][] { { EnumCreatureType.class, Class.class, int.class, Material.class, boolean.class, boolean.class } };
