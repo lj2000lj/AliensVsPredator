@@ -1,8 +1,10 @@
 package org.avp.entities.mob.model;
 
 import com.arisux.mdxlib.lib.client.Model;
+import com.arisux.mdxlib.lib.client.Model.RenderObject;
 
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.util.MathHelper;
 
 public class ModelChestbursterPredalien extends Model {
     public ModelRenderer body15;
@@ -181,6 +183,25 @@ public class ModelChestbursterPredalien extends Model {
     @Override
     protected void render(IRenderObject renderObject, float boxTranslation)
     {
+        RenderObject o = (RenderObject) renderObject;
+
+        float newangle = MathHelper.cos(o.idleProgress * 4.0F * 0.1F) * (float) Math.PI * 0.9F * o.swingProgressPrev;
+        float distMult = 0.05F;
+
+        if (o.getEntity() != null && o.getEntity().prevPosX == o.getEntity().posX && o.getEntity().prevPosY == o.getEntity().posY && o.getEntity().prevPosZ == o.getEntity().posZ)
+        {
+            newangle = newangle + MathHelper.cos(o.idleProgress * 0.15F);
+            distMult = 0.05F;
+        }
+
+        this.tail1.rotateAngleY = newangle * distMult;
+        this.tail2.rotateAngleY = newangle * distMult;
+        this.tail3.rotateAngleY = newangle * distMult;
+        this.tail4.rotateAngleY = newangle * distMult;
+        this.tail5.rotateAngleY = newangle * distMult;
+        this.tail6.rotateAngleY = newangle * distMult;
+        this.tail7.rotateAngleY = newangle * distMult;
+        
         this.body7.render(boxTranslation);
         this.tail2.render(boxTranslation);
         this.body14.render(boxTranslation);
