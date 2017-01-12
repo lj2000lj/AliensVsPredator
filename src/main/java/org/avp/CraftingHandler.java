@@ -16,12 +16,10 @@ import net.minecraft.item.ItemStack;
 public class CraftingHandler implements IInitEvent
 {
     public static final CraftingHandler instance   = new CraftingHandler();
-    private ItemStack                   jungleWood = new ItemStack(Blocks.planks, 4);
     private ItemStack                   charcoal   = new ItemStack(Items.coal, 1);
 
     public CraftingHandler()
     {
-        jungleWood.setMetadata(3);
         charcoal.setMetadata(1);
     }
 
