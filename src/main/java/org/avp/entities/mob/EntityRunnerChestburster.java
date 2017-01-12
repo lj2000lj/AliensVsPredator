@@ -22,7 +22,7 @@ public class EntityRunnerChestburster extends EntityChestburster implements IMob
     public EntityRunnerChestburster(World world)
     {
         super(world);
-        this.matureState = EntityPredalien.class;
+        this.matureState = EntityRunnerDrone.class;
         this.setSize(1.0F, 0.4F);
         this.experienceValue = 16;
         this.getNavigator().setCanSwim(true);

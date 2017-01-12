@@ -11,7 +11,10 @@ import org.avp.entities.mob.EntityChestburster;
 import org.avp.entities.mob.EntityDrone;
 import org.avp.entities.mob.EntityEngineer;
 import org.avp.entities.mob.EntityPredalien;
+import org.avp.entities.mob.EntityPredalienChestburster;
 import org.avp.entities.mob.EntityQueen;
+import org.avp.entities.mob.EntityQueenChestburster;
+import org.avp.entities.mob.EntityRunnerChestburster;
 import org.avp.entities.mob.EntityRunnerDrone;
 import org.avp.entities.mob.EntitySpaceJockey;
 import org.avp.entities.mob.EntitySpitter;
@@ -38,15 +41,15 @@ public class Embryo implements Cloneable
     private static int                    nextAvailableId = 1;
 
     public static final Embryo            STANDARD        = new Embryo(EntityChestburster.class, EntityDrone.class, EntityLiving.class).register();
-    public static final Embryo            QUEEN           = new Embryo(EntityChestburster.class, EntityQueen.class, EntityLiving.class).setGestationPeriod(10 * 60 * 20).register();
+    public static final Embryo            QUEEN           = new Embryo(EntityQueenChestburster.class, EntityQueen.class, EntityLiving.class).setGestationPeriod(10 * 60 * 20).register();
     public static final Embryo            BELUGA          = new Embryo(EntityBelugaburster.class, EntityBelugamorph.class, EntityLiving.class).register();
 
     static
     {
         new Embryo(EntityChestburster.class, EntitySpitter.class, EntityCreeper.class).register();
         new Embryo(EntityChestburster.class, EntityAqua.class, EntitySquid.class).register();
-        new Embryo(EntityChestburster.class, EntityPredalien.class, EntityYautja.class, EntityYautjaBerserker.class).register();
-        new Embryo(EntityChestburster.class, EntityRunnerDrone.class, EntityCow.class, EntityHorse.class, EntityWolf.class).register();
+        new Embryo(EntityPredalienChestburster.class, EntityPredalien.class, EntityYautja.class, EntityYautjaBerserker.class).register();
+        new Embryo(EntityRunnerChestburster.class, EntityRunnerDrone.class, EntityCow.class, EntityHorse.class, EntityWolf.class).register();
         new Embryo(EntityChestburster.class, EntityUltramorph.class, EntityEngineer.class, EntitySpaceJockey.class).register();
     }
 
