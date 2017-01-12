@@ -5,6 +5,7 @@ import org.avp.entities.mob.model.ModelAqua;
 import org.avp.entities.mob.model.ModelBelugaburster;
 import org.avp.entities.mob.model.ModelBelugamorph;
 import org.avp.entities.mob.model.ModelChestburster;
+import org.avp.entities.mob.model.ModelChestbursterPredalien;
 import org.avp.entities.mob.model.ModelCrusher;
 import org.avp.entities.mob.model.ModelDeaconShark;
 import org.avp.entities.mob.model.ModelDrone;
@@ -136,6 +137,7 @@ public class Resources
         public final TexturedModel<ModelCable>                 CABLE                          = new TexturedModel(new ModelCable(), new Texture(AliensVsPredator.ID, "textures/tile/cable.png"));
         public final TexturedModel<ModelBlastdoor>             BLASTDOOR                      = new TexturedModel(new ModelBlastdoor(), new Texture(AliensVsPredator.ID, "textures/tile/blastdoor.png"));
         public final TexturedModel<ModelChestburster>          CHESTBUSTER                    = new TexturedModel(new ModelChestburster(), new Texture(AliensVsPredator.ID, "textures/mob/chestbuster.png"));
+        public final TexturedModel<ModelChestbursterPredalien> CHESTBUSTER_PREDALIEN          = new TexturedModel(new ModelChestbursterPredalien(), new Texture(AliensVsPredator.ID, "textures/mob/chestbuster_predalien.png"));
         public final TexturedModel<ModelFacehugger>            FACEHUGGER                     = new TexturedModel(new ModelFacehugger(), new Texture(AliensVsPredator.ID, "textures/mob/facehugger.png"));
         public final TexturedModel<ModelRoyalFacehugger>       ROYALFACEHUGGER                = new TexturedModel(new ModelRoyalFacehugger(), new Texture(AliensVsPredator.ID, "textures/mob/royalfacehugger.png"));
         public final TexturedModel<ModelMarine>                MARINE                         = new TexturedModel(new ModelMarine(), new Texture(AliensVsPredator.ID, "textures/mob/marine.png"));
