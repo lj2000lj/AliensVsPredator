@@ -3,6 +3,7 @@ package org.avp.entities.mob.model;
 import com.arisux.mdxlib.lib.client.Model;
 
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.util.MathHelper;
 
 public class ModelChestbursterRunner extends Model
 {
@@ -235,6 +236,29 @@ public class ModelChestbursterRunner extends Model
     @Override
     protected void render(IRenderObject renderObject, float boxTranslation)
     {
+        RenderObject o = (RenderObject) renderObject;
+
+        float newangle = MathHelper.cos(o.idleProgress * 4.0F * 0.1F) * (float) Math.PI * 0.9F * o.swingProgressPrev;
+        float distMult = 0.05F;
+
+        if (o.getEntity() != null && o.getEntity().prevPosX == o.getEntity().posX && o.getEntity().prevPosY == o.getEntity().posY && o.getEntity().prevPosZ == o.getEntity().posZ)
+        {
+            newangle = newangle + MathHelper.cos(o.idleProgress * 0.15F);
+            distMult = 0.05F;
+        }
+
+        this.tail1.rotateAngleY = newangle * distMult;
+        this.tail2.rotateAngleY = newangle * distMult;
+        this.tail3.rotateAngleY = newangle * distMult;
+        this.tail4.rotateAngleY = newangle * distMult;
+        this.tail5.rotateAngleY = newangle * distMult;
+
+        this.headBase.rotateAngleY = (float) Math.toRadians(o.headYaw) * 0.75F;
+        this.lThigh.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 1.4F * o.swingProgressPrev;
+        this.rThigh.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1.4F * o.swingProgressPrev;
+        this.rArm1.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 1.4F * o.swingProgressPrev + 0.3665191F;
+        this.lArm1.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1.4F * o.swingProgressPrev + 0.3665191F;
+        
         this.chest.render(boxTranslation);
     }
 }
