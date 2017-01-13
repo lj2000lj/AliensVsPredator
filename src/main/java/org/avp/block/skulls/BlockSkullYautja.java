@@ -24,7 +24,7 @@ public class BlockSkullYautja extends BlockSkull
     public ModelRenderer[] getSkullModelRenderers()
     {
         ModelYautja m = Resources.model.getModel();
-        return new ModelRenderer[] { m.head, m.head1, m.head2, m.head3, m.head4, m.head5, m.head6, m.head7, m.head8, m.head9, m.head10, m.head11, m.head12, m.head13, m.head14, m.head15, m.head16, m.head17, m.head18, m.head19, m.head20, m.head21, m.head22, m.head23, m.head25, m.head26, m.head27, m.head28, m.head29, m.head30, m.head55 };
+        return new ModelRenderer[] { m.face };
     }
 
     @Override

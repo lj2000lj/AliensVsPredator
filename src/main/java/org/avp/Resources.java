@@ -30,7 +30,6 @@ import org.avp.entities.mob.model.ModelTrilobite;
 import org.avp.entities.mob.model.ModelUltramorph;
 import org.avp.entities.mob.model.ModelWarrior;
 import org.avp.entities.mob.model.ModelYautja;
-import org.avp.entities.mob.model.ModelYautjaBerserker;
 import org.avp.entities.model.ModelBullet;
 import org.avp.entities.model.ModelLaserMine;
 import org.avp.entities.model.ModelSpear;
@@ -99,7 +98,6 @@ public class Resources
         public final TexturedModel<Model88MOD4>                _88MOD4                        = new TexturedModel(new Model88MOD4(), new Texture(AliensVsPredator.ID, "textures/items/models/88mod4.png"));
         public final TexturedModel<ModelNostromoFlamethrower>  FLAMETHROWER_NOSTROMO          = new TexturedModel(new ModelNostromoFlamethrower(), new Texture(AliensVsPredator.ID, "textures/items/models/flamethrower.nostromo.png"));
         public final TexturedModel<ModelEngineer>              ENGINEER                       = new TexturedModel(new ModelEngineer(), new Texture(AliensVsPredator.ID, "textures/mob/engineer_bio.png"));
-        public final TexturedModel<ModelYautjaBerserker>       YAUTJA_BERSERKER               = new TexturedModel(new ModelYautjaBerserker(), new Texture(AliensVsPredator.ID, "textures/mob/yautja_berserker.png"));
         public final TexturedModel<ModelLocker>                LOCKER                         = new TexturedModel(new ModelLocker(), new Texture(AliensVsPredator.ID, "textures/tile/locker.png"));
         public final TexturedModel<ModelLocker>                GUN_LOCKER                     = new TexturedModel(new ModelLocker(), new Texture(AliensVsPredator.ID, "textures/tile/gunlocker.png"));
         public final TexturedModel<ModelEngineer>              SPACE_JOCKEY                   = new TexturedModel(new ModelEngineer(), new Texture(AliensVsPredator.ID, "textures/mob/engineer.png"));
@@ -161,6 +159,7 @@ public class Resources
         public final TexturedModel<ModelQueen>                 XENOQUEEN                      = new TexturedModel(new ModelQueen(), new Texture(AliensVsPredator.ID, "textures/mob/queen.png"));
         public final TexturedModel<ModelQueen>                 XENOQUEEN_MASK                 = new TexturedModel(new ModelQueen(), new Texture(AliensVsPredator.ID, "textures/mob/queen_mask.png"));
         public final TexturedModel<ModelYautja>                YAUTJA                         = new TexturedModel(new ModelYautja(), new Texture(AliensVsPredator.ID, "textures/mob/yautja.png"));
+        public final TexturedModel<ModelYautja>                YAUTJA_BERSERKER               = new TexturedModel(new ModelYautja(), new Texture(AliensVsPredator.ID, "textures/mob/yautja_berserker.png"));
         public final TexturedModel<ModelSpitter>               SPITTER                        = new TexturedModel(new ModelSpitter(), new Texture(AliensVsPredator.ID, "textures/mob/spitter.png"));
         public final TexturedModel<ModelSpitter>               SPITTER_MASK                   = new TexturedModel(new ModelSpitter(), new Texture(AliensVsPredator.ID, "textures/mob/spitter_glow.png"));
         public final TexturedModel<ModelCrusher>               CRUSHER                        = new TexturedModel(new ModelCrusher(), new Texture(AliensVsPredator.ID, "textures/mob/crusher.png"));
