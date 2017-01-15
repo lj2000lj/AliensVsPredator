@@ -183,7 +183,7 @@ public class Organism implements IExtendedEntityProperties
             living.riddenByEntity.setDead();
         }
 
-        if (living instanceof EntityPlayer)
+        if (living instanceof EntityPlayer && living.worldObj.isRemote)
         {
             EntityPlayer player = (EntityPlayer) living;
             player.getFoodStats().setFoodLevel(20);
