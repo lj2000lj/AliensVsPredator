@@ -18,9 +18,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 public class TileEntityMedpod extends TileEntityElectrical implements IOpenable, IVoltageReceiver, IRotatable
 {
     private ForgeDirection direction;
-    private boolean isOpen;
-    private EntityMedpod medpodEntity;
-    private float doorProgress;
+    private boolean        isOpen;
+    private EntityMedpod   medpodEntity;
+    private float          doorProgress;
 
     public TileEntityMedpod()
     {
@@ -147,14 +147,17 @@ public class TileEntityMedpod extends TileEntityElectrical implements IOpenable,
                 AliensVsPredator.network().sendToAll(new PacketOpenable(isOpen, this.xCoord, this.yCoord, this.zCoord));
             }
 
-            if (this.getEntity().riddenByEntity == null)
+            if (this.getEntity() != null)
             {
-                this.getEntity().clearLastRidden();
-            }
+                if (this.getEntity().riddenByEntity == null)
+                {
+                    this.getEntity().clearLastRidden();
+                }
 
-            if (isOpen && this.getEntity() != null && this.getEntity().riddenByEntity != null)
-            {
-                this.getEntity().riddenByEntity = null;
+                if (isOpen && this.getEntity() != null && this.getEntity().riddenByEntity != null)
+                {
+                    this.getEntity().riddenByEntity = null;
+                }
             }
         }
     }
