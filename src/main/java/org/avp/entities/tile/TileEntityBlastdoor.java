@@ -25,6 +25,7 @@ public class TileEntityBlastdoor extends TileEntityElectrical implements IVoltag
 {
     private ForgeDirection direction;
     private float doorProgress;
+    private float doorProgressPrev;
     private boolean doorOpen;
     private boolean isParent;
     private boolean placedByPlayer;
@@ -116,6 +117,7 @@ public class TileEntityBlastdoor extends TileEntityElectrical implements IVoltag
     public void updateEntity()
     {
         super.updateEntity();
+        this.doorProgressPrev = this.doorProgress;
         this.updateEnergyAsReceiver();
         this.ticksExisted++;
 
@@ -373,5 +375,10 @@ public class TileEntityBlastdoor extends TileEntityElectrical implements IVoltag
     public int getDoorResealTime()
     {
         return 600;
+    }
+
+    public float getDoorProgressPrev()
+    {
+        return this.doorProgressPrev;
     }
 }
