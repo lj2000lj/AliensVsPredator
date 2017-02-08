@@ -10,6 +10,8 @@ import com.arisux.mdxlib.lib.game.Game;
 import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.entity.Entities;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -125,7 +127,7 @@ public class EntityPlasma extends EntityThrowable
         if (!this.worldObj.isRemote)
         {
             Sounds.SOUND_WEAPON_PLASMA_EXPLOSION.playSound(this, 7F, 1.0F);
-            
+
             @SuppressWarnings("unchecked")
             List<Entity> entities = (List<Entity>) Entities.getEntitiesInCoordsRange(worldObj, Entity.class, new Pos(this.posX, this.posY, this.posZ), (int) Math.ceil(this.getPlasmaSize()));
 
@@ -148,7 +150,16 @@ public class EntityPlasma extends EntityThrowable
             this.motionY = 0;
             this.motionZ = 0;
         }
-        
+
+        if (this.worldObj.isRemote)
+        {
+            this.specialEffect();
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    private void specialEffect()
+    {
         float spread = this.getPlasmaSize() * 5F;
 
         for (int i = (int) Math.round(spread); i > 0; i--)
@@ -157,9 +168,7 @@ public class EntityPlasma extends EntityThrowable
             double pY = this.posY + (this.rand.nextDouble() * spread) - (this.rand.nextDouble() * spread);
             double pZ = this.posZ + (this.rand.nextDouble() * spread) - (this.rand.nextDouble() * spread);
 
-            int particleColor = 0xFF66AAFF;
-
-            Game.minecraft().effectRenderer.addEffect(new EntityFXElectricArc(this.worldObj, this.posX, this.posY, this.posZ, pX, pY, pZ, 10, particleColor));
+            Game.minecraft().effectRenderer.addEffect(new EntityFXElectricArc(this.worldObj, this.posX, this.posY, this.posZ, pX, pY, pZ, 10, 0xFF66AAFF));
         }
     }
 

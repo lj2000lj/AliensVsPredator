@@ -202,6 +202,7 @@ public abstract class EntitySpeciesYautja extends EntityMob implements IHost, IE
         super.onDeath(damagesource);
 
         EntityItemDrops.PREDATOR_ARTIFACT.tryDrop(this);
+        EntityItemDrops.PLASMACANNON.tryDrop(this);
 
         if (damagesource == DamageSources.wristbracer)
         {
