@@ -112,6 +112,8 @@ public class EntityBloodFX extends EntityDropParticleFX
         int g = (color & 0xFF00) >> 8;
         int b = (color & 0xFF);
         
+        OpenGL.enableLight();
+        
         if (glow)
         {
             OpenGL.disableLightMapping();
