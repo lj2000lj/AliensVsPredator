@@ -54,7 +54,7 @@ public class PacketRemoveTurretTarget implements IMessage, IMessageHandler<Packe
 
         if (tile != null)
         {
-            tile.setSafe((Class<? extends Entity>) EntityList.stringToClassMapping.get(packet.entityIdentifier));
+            tile.removeTargetType((Class<? extends Entity>) EntityList.stringToClassMapping.get(packet.entityIdentifier));
         }
         
         return null;

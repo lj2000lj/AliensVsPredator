@@ -10,7 +10,7 @@ import org.avp.util.XenomorphHive;
 
 import com.arisux.mdxlib.MDX;
 import com.arisux.mdxlib.lib.game.Game;
-import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.Worlds;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -28,12 +28,12 @@ public class HiveHandler implements IDataSaveHandler
 {
     public static final HiveHandler  instance = new HiveHandler();
     private ArrayList<XenomorphHive> hives    = null;
-    public ArrayList<CoordData>      burntResin;
+    public ArrayList<Pos>      burntResin;
 
     public HiveHandler()
     {
         this.hives = new ArrayList<XenomorphHive>();
-        this.burntResin = new ArrayList<CoordData>();
+        this.burntResin = new ArrayList<Pos>();
     }
 
     public ArrayList<XenomorphHive> getHives()
@@ -106,7 +106,7 @@ public class HiveHandler implements IDataSaveHandler
             }
         }
 
-        for (CoordData coord : new ArrayList<CoordData>(this.burntResin))
+        for (Pos coord : new ArrayList<Pos>(this.burntResin))
         {
             int meta = event.world.getBlockMetadata((int) coord.x, (int) coord.y, (int) coord.z);
             event.world.setBlock((int) coord.x, (int) coord.y, (int) coord.z, coord.getBlock(event.world));

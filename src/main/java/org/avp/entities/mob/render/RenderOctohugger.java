@@ -6,7 +6,7 @@ import org.avp.AliensVsPredator;
 import org.avp.entities.EntityMedpod;
 import org.avp.entities.mob.EntityOctohugger;
 import org.avp.entities.mob.model.ModelOctohugger;
-import org.avp.event.client.RenderMedpodEvent;
+import org.avp.event.client.render.RenderLivingHook;
 import org.avp.util.EntityRenderTransforms;
 import org.lwjgl.opengl.GL11;
 
@@ -74,7 +74,7 @@ public class RenderOctohugger extends RenderLivingWrapper
             EntityMedpod medpod = (EntityMedpod) entity.ridingEntity;
 
             OpenGL.rotate(medpod.getTileEntity());
-            RenderMedpodEvent.instance.getRenderer().transformEntity(medpod, entity, partialTicks);
+            RenderLivingHook.instance.getRenderer().transformEntity(medpod, entity, partialTicks);
         }
 
         if (octohugger.ridingEntity != null && octohugger.ridingEntity instanceof EntityLivingBase)

@@ -11,7 +11,7 @@ import org.avp.dimension.varda.gen.VardaTree2Generator;
 import org.avp.dimension.varda.gen.VardaTree3Generator;
 import org.avp.dimension.varda.gen.VardaTreeGenerator;
 
-import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.Worlds;
 
 import net.minecraft.init.Blocks;
@@ -77,7 +77,7 @@ public class BiomeDecoratorVarda extends BiomeDecorator
             this.generateForestDecorations((BiomeVardaForest) biome);
         }
         
-        Worlds.generateInChunk(world, this.stalagmiteGen, this.randomGenerator, 10, new CoordData(chunk_X, 0, chunk_Z));
+        Worlds.generateInChunk(world, this.stalagmiteGen, this.randomGenerator, 10, new Pos(chunk_X, 0, chunk_Z));
 
         for (int i = 0; i < 128; i++)
         {
@@ -103,7 +103,7 @@ public class BiomeDecoratorVarda extends BiomeDecorator
     @Override
     protected void generateOres()
     {
-        CoordData chunkCoords = new CoordData(chunk_X, 0, chunk_Z);
+        Pos chunkCoords = new Pos(chunk_X, 0, chunk_Z);
 
         Worlds.generateInChunk(world, genDirt, this.randomGenerator, 20, 0, 4, chunkCoords);
         Worlds.generateInChunk(world, genSand, this.randomGenerator, 20, 0, 128, chunkCoords);

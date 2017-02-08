@@ -2,7 +2,7 @@ package org.avp.command;
 
 import com.arisux.mdxlib.MDX;
 import com.arisux.mdxlib.lib.game.Chat;
-import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.Structure;
 import com.arisux.mdxlib.lib.world.StructureGenerationHandler;
 import com.arisux.mdxlib.lib.world.entity.player.Players;
@@ -44,18 +44,18 @@ public class CommandGenerate extends CommandBase
 
                 if (schematicTargetName.equals(schematicName))
                 {
-                    CoordData data = null;
+                    Pos data = null;
 
                     if (args.length == 1)
                     {
-                        data = new CoordData(player.posX, player.posY, player.posZ);
+                        data = new Pos(player.posX, player.posY, player.posZ);
                     }
                     else if (args.length == 4)
                     {
                         double posX = Double.parseDouble(args[1]);
                         double posY = Double.parseDouble(args[2]);
                         double posZ = Double.parseDouble(args[3]);
-                        data = new CoordData(posX, posY, posZ);
+                        data = new Pos(posX, posY, posZ);
                     }
 
                     WorldServer worldServer = MinecraftServer.getServer().worldServerForDimension(player.dimension);

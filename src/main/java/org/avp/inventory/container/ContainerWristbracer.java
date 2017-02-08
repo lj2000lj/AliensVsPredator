@@ -1,5 +1,7 @@
 package org.avp.inventory.container;
 
+import org.avp.items.ItemWristbracer;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
@@ -12,8 +14,8 @@ import net.minecraftforge.common.util.Constants;
 
 public class ContainerWristbracer extends Container
 {
-    public IInventory inventory;
-    public ItemStack stack;
+    public IInventory   inventory;
+    public ItemStack    stack;
     public EntityPlayer player;
 
     public ContainerWristbracer(EntityPlayer player)
@@ -43,30 +45,30 @@ public class ContainerWristbracer extends Container
     {
         if (player.getCurrentEquippedItem() != null)
         {
-            NBTTagCompound nbt = player.getCurrentEquippedItem().getTagCompound();
+            NBTTagCompound wristbracerTag = player.getCurrentEquippedItem().getTagCompound();
             NBTTagList items = new NBTTagList();
 
-            if (nbt == null)
+            if (wristbracerTag == null)
             {
-                nbt = new NBTTagCompound();
+                wristbracerTag = new NBTTagCompound();
             }
 
-            for (byte x = 0; x < this.inventory.getSizeInventory(); x++)
+            for (byte slot = 0; slot < this.inventory.getSizeInventory(); slot++)
             {
-                ItemStack stackSlot = this.inventory.getStackInSlot(x);
+                ItemStack stack = this.inventory.getStackInSlot(slot);
 
-                if (stackSlot != null)
+                if (stack != null)
                 {
                     NBTTagCompound item = new NBTTagCompound();
-                    item.setByte("Slot", x);
-                    stackSlot.writeToNBT(item);
+                    item.setByte(ItemWristbracer.TAG_WRISTBRACER_ITEMS_SLOT, slot);
+                    stack.writeToNBT(item);
                     items.appendTag(item);
                 }
             }
 
-            nbt.setTag("Items", items);
-            player.getCurrentEquippedItem().setTagCompound(nbt);
-            return nbt;
+            wristbracerTag.setTag(ItemWristbracer.TAG_WRISTBRACER_ITEMS, items);
+            player.getCurrentEquippedItem().setTagCompound(wristbracerTag);
+            return wristbracerTag;
         }
 
         return null;
@@ -76,13 +78,13 @@ public class ContainerWristbracer extends Container
     {
         if (stack != null && stack.getTagCompound() != null)
         {
-            NBTTagList items = stack.getTagCompound().getTagList("Items", Constants.NBT.TAG_COMPOUND);
+            NBTTagList items = stack.getTagCompound().getTagList(ItemWristbracer.TAG_WRISTBRACER_ITEMS, Constants.NBT.TAG_COMPOUND);
 
             for (byte x = 0; x < items.tagCount(); x++)
             {
                 NBTTagCompound item = items.getCompoundTagAt(x);
 
-                byte slot = item.getByte("Slot");
+                byte slot = item.getByte(ItemWristbracer.TAG_WRISTBRACER_ITEMS_SLOT);
 
                 if (slot >= 0 && slot <= this.inventory.getSizeInventory())
                 {
@@ -107,7 +109,6 @@ public class ContainerWristbracer extends Container
 
         if (slot != null && slot.getHasStack())
         {
-
             ItemStack stack = slot.getStack();
             ItemStack result = stack.copy();
 

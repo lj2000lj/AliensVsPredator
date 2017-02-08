@@ -7,7 +7,7 @@ import org.avp.AliensVsPredator;
 import org.avp.dimension.varda.gen.VardaGenCaves;
 import org.avp.dimension.varda.gen.VardaGenLakes;
 
-import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.Worlds;
 
 import net.minecraft.block.Block;
@@ -403,7 +403,7 @@ public class ChunkProviderVarda implements IChunkProvider
 	@Override
 	public void populate(IChunkProvider chunkProvider, int chunkX, int chunkZ)
 	{
-		CoordData chunkCoord = new CoordData(chunkX, 0, chunkZ);
+		Pos chunkCoord = new Pos(chunkX, 0, chunkZ);
 		BlockSand.fallInstantly = true;
 		int posX = chunkX * 16;
 		int posZ = chunkZ * 16;

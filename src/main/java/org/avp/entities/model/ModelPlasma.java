@@ -55,10 +55,10 @@ public class ModelPlasma extends Model
         OpenGL.pushMatrix();
         {
             OpenGL.scale(scale, scale, scale);
-            OpenGL.disable(GL11.GL_TEXTURE_2D);
+            OpenGL.disableTexture2d();
             OpenGL.disableLightMapping();
             OpenGL.disableLight();
-            OpenGL.enable(GL11.GL_BLEND);
+            OpenGL.enableBlend();
             OpenGL.blendFunc(GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE);
 
             for (int rZ = 0; rZ < 2; ++rZ)
@@ -92,15 +92,21 @@ public class ModelPlasma extends Model
             }
             OpenGL.enableLight();
             OpenGL.enableLightMapping();
-            OpenGL.enable(GL11.GL_TEXTURE_2D);
-            OpenGL.disable(GL11.GL_BLEND);
+            OpenGL.enableTexture2d();
+            OpenGL.disableBlend();
         }
         OpenGL.popMatrix();
     }
     
-    public void setColor(Color color)
+    public ModelPlasma setColor(Color color)
     {
         this.color = color;
+        return this;
+    }
+    
+    public Color getColor()
+    {
+        return color;
     }
     
     public void setScale(float scale)

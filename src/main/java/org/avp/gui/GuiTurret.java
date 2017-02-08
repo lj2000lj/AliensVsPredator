@@ -82,11 +82,11 @@ public class GuiTurret extends GuiContainer
     {
         super.initGui();
 
-        this.buttonScrollUp = new GuiCustomButton(0, 0, 0, 20, 20, "", null);
-        this.buttonScrollDown = new GuiCustomButton(1, 0, 0, 20, 20, "", null);
-        this.buttonAddAsTarget = new GuiCustomButton(2, 0, 0, 50, 20, "", null);
-        this.buttonSave = new GuiCustomButton(3, 0, 0, 35, 20, "", null);
-        this.buttonLoad = new GuiCustomButton(4, 0, 0, 35, 20, "", null);
+        this.buttonScrollUp = new GuiCustomButton(0, 0, 0, 20, 20, "");
+        this.buttonScrollDown = new GuiCustomButton(1, 0, 0, 20, 20, "");
+        this.buttonAddAsTarget = new GuiCustomButton(2, 0, 0, 50, 20, "");
+        this.buttonSave = new GuiCustomButton(3, 0, 0, 35, 20, "");
+        this.buttonLoad = new GuiCustomButton(4, 0, 0, 35, 20, "");
 
         this.sliderColorA = new GuiCustomSlider(0, 0, 0, "Laser Color A", 0F, 255F);
         this.sliderColorR = new GuiCustomSlider(0, 0, 0, "Laser Color R", 0F, 255F);
@@ -155,7 +155,7 @@ public class GuiTurret extends GuiContainer
             if (entity != null && yEntryPos <= yPos + 50)
             {
                 Draw.drawRectWithOutline(3, yEntryPos - 4, 134, 12, 1, 0x00000000, 0xFF444444);
-                Draw.drawString(entity.getCommandSenderName(), 6, yEntryPos - 2, !this.tile.isSafe(entity) ? (getCurrentSelectedEntity() == entity ? 0xFFFF8800 : 0xFFFF0000) : (getCurrentSelectedEntity() == entity ? 0xFFFFFFFF : 0xFF444444), false);
+                Draw.drawString(entity.getCommandSenderName(), 6, yEntryPos - 2, this.tile.canTargetType(entity.getClass()) ? (getCurrentSelectedEntity() == entity ? 0xFFFF8800 : 0xFFFF0000) : (getCurrentSelectedEntity() == entity ? 0xFFFFFFFF : 0xFF444444), false);
             }
         }
 
@@ -232,14 +232,14 @@ public class GuiTurret extends GuiContainer
             {
                 if (tile != null)
                 {
-                    if (tile.isSafe(getCurrentSelectedEntity()))
+                    if (!tile.canTargetType(getCurrentSelectedEntity().getClass()))
                     {
-                        tile.setDangerous(getCurrentSelectedEntity());
+                        tile.addTargetType(getCurrentSelectedEntity().getClass());
                         AliensVsPredator.network().sendToServer(new PacketAddTuretTarget(tile.xCoord, tile.yCoord, tile.zCoord, Entities.getEntityRegistrationId(getCurrentSelectedEntity())));
                     }
                     else
                     {
-                        tile.setSafe(getCurrentSelectedEntity());
+                        tile.removeTargetType(getCurrentSelectedEntity().getClass());
                         AliensVsPredator.network().sendToServer(new PacketRemoveTurretTarget(tile.xCoord, tile.yCoord, tile.zCoord, Entities.getEntityRegistrationId(getCurrentSelectedEntity())));
                     }
                 }
@@ -277,7 +277,7 @@ public class GuiTurret extends GuiContainer
             }
         });
 
-        if (this.tile.isSafe(getCurrentSelectedEntity()))
+        if (!this.tile.canTargetType(getCurrentSelectedEntity().getClass()))
         {
             this.buttonAddAsTarget.displayString = "+";
             this.buttonAddAsTarget.overlayColorHover = 0xFF00FF77;

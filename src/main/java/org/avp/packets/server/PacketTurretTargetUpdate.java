@@ -2,28 +2,35 @@ package org.avp.packets.server;
 
 import org.avp.entities.tile.TileEntityTurret;
 
+import com.arisux.mdxlib.lib.client.render.Rotation;
+import com.arisux.mdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.world.Pos;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.Entity;
 
 public class PacketTurretTargetUpdate implements IMessage, IMessageHandler<PacketTurretTargetUpdate, PacketTurretTargetUpdate>
 {
-    public int x, y, z;
-    public int id;
+    public int      x, y, z;
+    public int      id;
+    public Rotation focrot;
+    public Pos      foc;
 
     public PacketTurretTargetUpdate()
     {
         ;
     }
 
-    public PacketTurretTargetUpdate(int x, int y, int z, int id)
+    public PacketTurretTargetUpdate(TileEntityTurret turret)
     {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.id = id;
+        this.x = turret.xCoord;
+        this.y = turret.yCoord;
+        this.z = turret.zCoord;
+        this.id = turret.getTargetEntity().getEntityId();
+        this.focrot = turret.getFocusRotation();
+        this.foc = turret.getFocusPosition();
     }
 
     @Override
@@ -33,6 +40,8 @@ public class PacketTurretTargetUpdate implements IMessage, IMessageHandler<Packe
         this.y = buf.readInt();
         this.z = buf.readInt();
         this.id = buf.readInt();
+        this.foc = new Pos(0, 0, 0).readFromBuffer(buf);
+        this.focrot = new Rotation(0F, 0F).readFromBuffer(buf);
     }
 
     @Override
@@ -42,17 +51,18 @@ public class PacketTurretTargetUpdate implements IMessage, IMessageHandler<Packe
         buf.writeInt(y);
         buf.writeInt(z);
         buf.writeInt(id);
+        foc.writeToBuffer(buf);
+        focrot.writeToBuffer(buf);
     }
 
     @Override
     public PacketTurretTargetUpdate onMessage(PacketTurretTargetUpdate packet, MessageContext ctx)
     {
-        TileEntityTurret tile = (TileEntityTurret) ctx.getServerHandler().playerEntity.worldObj.getTileEntity(packet.x, packet.y, packet.z);
-        Entity entity = ctx.getServerHandler().playerEntity.worldObj.getEntityByID(packet.id);
+        TileEntityTurret tile = (TileEntityTurret) Game.minecraft().theWorld.getTileEntity(packet.x, packet.y, packet.z);
 
         if (tile != null)
         {
-            tile.setTargetEntity(entity);
+            tile.onReceiveTargetUpdatePacket(packet, ctx);
         }
 
         return null;

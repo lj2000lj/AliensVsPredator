@@ -10,7 +10,7 @@ import org.avp.items.ItemM240IncineratorUnit;
 import org.avp.items.ItemNostromoFlamethrower;
 
 import com.arisux.mdxlib.lib.game.Game;
-import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.block.Blocks;
 import com.arisux.mdxlib.lib.world.entity.Entities;
 
@@ -87,7 +87,7 @@ public class EntityFlame extends EntityThrowable
 
         if (!this.worldObj.isRemote)
         {
-            Entity entityHit = Entities.getEntityInCoordsRange(worldObj, EntityLiving.class, new CoordData(this), flameSpread, flameSpread);
+            Entity entityHit = Entities.getEntityInCoordsRange(worldObj, EntityLiving.class, new Pos(this), flameSpread, flameSpread);
 
             if (entityHit != null && !entityHit.isImmuneToFire())
             {
@@ -170,9 +170,9 @@ public class EntityFlame extends EntityThrowable
 
         if (rand.nextInt(10) == 0)
         {
-            ArrayList<CoordData> list = Blocks.getCoordDataInRangeIncluding(movingObjectPosition.blockX, movingObjectPosition.blockY, movingObjectPosition.blockZ, 1, this.worldObj, AliensVsPredator.blocks().blockCryostasisTube);
+            ArrayList<Pos> list = Blocks.getCoordDataInRangeIncluding(movingObjectPosition.blockX, movingObjectPosition.blockY, movingObjectPosition.blockZ, 1, this.worldObj, AliensVsPredator.blocks().blockCryostasisTube);
 
-            for (CoordData coord : list)
+            for (Pos coord : list)
             {
                 TileEntity tile = coord.getTileEntity(this.worldObj);
 

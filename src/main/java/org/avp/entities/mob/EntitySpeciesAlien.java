@@ -60,13 +60,13 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IRoy
     public void onKillEntity(EntityLivingBase entity)
     {
         super.onKillEntity(entity);
-        this.setJellyLevel(this.getJellyLevel() + 20);
+        this.setJellyLevel(this.getJellyLevel() + 250);
     }
 
     @Override
     protected boolean canDespawn()
     {
-        return this.getJellyLevel() < 20 && !this.hasCustomNameTag();
+        return false;
     }
 
     @Override
@@ -187,7 +187,7 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IRoy
 
     protected void onPickupJelly(EntityItem entityItem)
     {
-        this.setJellyLevel(this.getJellyLevel() + entityItem.getEntityItem().stackSize);
+        this.setJellyLevel(this.getJellyLevel() + (entityItem.getEntityItem().stackSize * 100));
         entityItem.setDead();
     }
 

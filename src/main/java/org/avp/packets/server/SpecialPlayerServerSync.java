@@ -1,7 +1,7 @@
 package org.avp.packets.server;
 
 import org.avp.AliensVsPredator;
-import org.avp.entities.extended.SpecialPlayer;
+import org.avp.entities.extended.ModPlayer;
 import org.avp.packets.client.SpecialPlayerClientSync;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
@@ -49,7 +49,7 @@ public class SpecialPlayerServerSync implements IMessage, IMessageHandler<Specia
 
         if (entity != null)
         {
-            SpecialPlayer extendedPlayer = (SpecialPlayer) entity.getExtendedProperties(SpecialPlayer.IDENTIFIER);
+            ModPlayer extendedPlayer = (ModPlayer) entity.getExtendedProperties(ModPlayer.IDENTIFIER);
 
             if (extendedPlayer != null)
             {

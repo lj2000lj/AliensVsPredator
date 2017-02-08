@@ -1,15 +1,20 @@
 package org.avp.items;
 
 import org.avp.AliensVsPredator;
+import org.avp.entities.extended.ModPlayer;
+import org.avp.event.client.render.VisionModeRenderEvent;
+import org.lwjgl.input.Keyboard;
 
 import com.arisux.mdxlib.lib.client.render.Draw;
+import com.arisux.mdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.world.entity.player.inventory.Inventories;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
 public class ItemArmorTitanium extends ItemArmor
@@ -40,13 +45,28 @@ public class ItemArmorTitanium extends ItemArmor
     @Override
     public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack)
     {
-        if (player.inventory.armorItemInSlot(3) != null && player.inventory.armorItemInSlot(3).getItem() == AliensVsPredator.items().helmTitanium && player.inventory.armorItemInSlot(2) != null && player.inventory.armorItemInSlot(2).getItem() == AliensVsPredator.items().plateTitanium && player.inventory.armorItemInSlot(1) != null && player.inventory.armorItemInSlot(1).getItem() == AliensVsPredator.items().legsTitanium && player.inventory.armorItemInSlot(0) != null && player.inventory.armorItemInSlot(0).getItem() == AliensVsPredator.items().bootsTitanium)
+        if (player.inventory.armorItemInSlot(3) != null && player.inventory.armorItemInSlot(3).getItem() == AliensVsPredator.items().helmTitanium)
         {
+            ModPlayer specialPlayer = ModPlayer.get(player);
             player.fallDistance = 0.0F;
-            player.addPotionEffect(new PotionEffect(Potion.jump.getId(), 1, 1));
-            if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() == AliensVsPredator.items().itemWristBlade)
+
+            if (world.isRemote)
             {
-                player.addPotionEffect(new PotionEffect(Potion.invisibility.getId(), 2, 0));
+                this.controlledAbility(specialPlayer);
+            }
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void controlledAbility(ModPlayer specialPlayer)
+    {
+        if (Game.minecraft().inGameHasFocus)
+        {
+            ItemStack helmSlot = Inventories.getHelmSlotItemStack(Game.minecraft().thePlayer);
+
+            if (helmSlot != null && helmSlot.getItem() == AliensVsPredator.items().helmTitanium && AliensVsPredator.keybinds().genericSpecial.isPressed() && Keyboard.getEventKeyState())
+            {
+                VisionModeRenderEvent.instance.switchMode();
             }
         }
     }

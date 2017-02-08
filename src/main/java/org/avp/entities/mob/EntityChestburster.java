@@ -8,7 +8,7 @@ import org.avp.api.parasitoidic.IRoyalOrganism;
 import org.avp.entities.extended.Organism;
 
 import com.arisux.mdxlib.lib.game.Game;
-import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.entity.Entities;
 
 import net.minecraft.entity.Entity;
@@ -218,11 +218,11 @@ public class EntityChestburster extends EntitySpeciesAlien implements IMob, INas
         Organism hostOrganism = (Organism) host.getExtendedProperties(Organism.IDENTIFIER);
         this.matureState = hostOrganism.getEmbryo().getResultingOrganism();
         
-        CoordData safeLocation = Entities.getSafeLocationAround(this, new CoordData((int)host.posX, (int)host.posY, (int)host.posZ));
+        Pos safeLocation = Entities.getSafeLocationAround(this, new Pos((int)host.posX, (int)host.posY, (int)host.posZ));
         
         if (safeLocation == null)
         {
-            safeLocation = new CoordData((int)host.posX, (int)host.posY, (int)host.posZ);
+            safeLocation = new Pos((int)host.posX, (int)host.posY, (int)host.posZ);
         }
         
         this.setLocationAndAngles(safeLocation.x(), safeLocation.y(), safeLocation.z(), 0.0F, 0.0F);

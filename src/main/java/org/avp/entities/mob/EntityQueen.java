@@ -12,7 +12,7 @@ import org.avp.packets.server.PacketSpawnEntity;
 import org.avp.util.XenomorphHive;
 
 import com.arisux.mdxlib.lib.game.Game;
-import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.entity.Entities;
 
 import net.minecraft.entity.Entity;
@@ -38,7 +38,7 @@ public class EntityQueen extends EntityXenomorph implements IMob
     public boolean               growingOvipositor;
     public boolean               reproducing;
 
-    private ArrayList<CoordData> pathPoints                         = new ArrayList<CoordData>();
+    private ArrayList<Pos> pathPoints                         = new ArrayList<Pos>();
 
     public EntityQueen(World world)
     {
@@ -180,20 +180,20 @@ public class EntityQueen extends EntityXenomorph implements IMob
     {
         if (this.hive != null && !this.reproducing)
         {
-            CoordData coordQueen = new CoordData(this);
-            CoordData coordHive = new CoordData(this.hive.xCoord(), this.hive.yCoord(), this.hive.zCoord());
+            Pos coordQueen = new Pos(this);
+            Pos coordHive = new Pos(this.hive.xCoord(), this.hive.yCoord(), this.hive.zCoord());
 
             int hiveDist = (int) this.getDistance(coordHive.x, coordHive.y, coordHive.z);
 
             if (hiveDist > this.hive.getMaxHiveRadius() * 0.5 && this.getAttackTarget() == null || this.getAttackTarget() == null && this.getNavigator().tryMoveToXYZ(coordHive.x, coordHive.y, coordHive.z, 1.55D))
             {
-                this.pathPoints = CoordData.getPointsBetween(coordQueen, coordHive, hiveDist / 12);
+                this.pathPoints = Pos.getPointsBetween(coordQueen, coordHive, hiveDist / 12);
 
                 if (this.pathPoints != null && !this.pathPoints.isEmpty())
                 {
-                    CoordData closestPoint = this.pathPoints.get(0);
+                    Pos closestPoint = this.pathPoints.get(0);
 
-                    for (CoordData point : this.pathPoints)
+                    for (Pos point : this.pathPoints)
                     {
                         if (closestPoint != null && point.distanceFrom(this) < closestPoint.distanceFrom(this))
                         {
@@ -269,7 +269,7 @@ public class EntityQueen extends EntityXenomorph implements IMob
             if (this.worldObj.getWorldTime() % 20 == 0)
             {
                 @SuppressWarnings("unchecked")
-                ArrayList<EntitySpeciesAlien> aliens = (ArrayList<EntitySpeciesAlien>) Entities.getEntitiesInCoordsRange(this.worldObj, EntitySpeciesAlien.class, new CoordData(this), 16);
+                ArrayList<EntitySpeciesAlien> aliens = (ArrayList<EntitySpeciesAlien>) Entities.getEntitiesInCoordsRange(this.worldObj, EntitySpeciesAlien.class, new Pos(this), 16);
 
                 if (this.getHive() != null)
                 {

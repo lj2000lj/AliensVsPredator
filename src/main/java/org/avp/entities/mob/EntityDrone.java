@@ -8,7 +8,7 @@ import org.avp.api.parasitoidic.IMaturable;
 import org.avp.block.BlockHiveResin;
 import org.avp.entities.tile.TileEntityHiveResin;
 
-import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.Pos;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -104,7 +104,7 @@ public class EntityDrone extends EntityXenomorph implements IMaturable
             {
                 if (this.jellyLevel >= 16)
                 {
-                    CoordData coord = findNextSuitableResinLocation(2);
+                    Pos coord = findNextSuitableResinLocation(2);
 
                     if (coord != null)
                     {
@@ -142,9 +142,9 @@ public class EntityDrone extends EntityXenomorph implements IMaturable
         }
     }
 
-    public CoordData findNextSuitableResinLocation(int range)
+    public Pos findNextSuitableResinLocation(int range)
     {
-        ArrayList<CoordData> data = new ArrayList<CoordData>();
+        ArrayList<Pos> data = new ArrayList<Pos>();
 
         for (int x = (int) (posX - range); x < posX + range * 2; x++)
         {
@@ -152,7 +152,7 @@ public class EntityDrone extends EntityXenomorph implements IMaturable
             {
                 for (int z = (int) (posZ - range); z < posZ + range * 2; z++)
                 {
-                    CoordData location = new CoordData(x, y, z);
+                    Pos location = new Pos(x, y, z);
                     Block block = location.getBlock(this.worldObj);
 
                     if (!(block == net.minecraft.init.Blocks.air) && !(block instanceof BlockHiveResin) && block.isOpaqueCube())
@@ -190,7 +190,7 @@ public class EntityDrone extends EntityXenomorph implements IMaturable
     @Override
     public int getMaturityLevel()
     {
-        return 512;
+        return 6000;
     }
 
     @Override

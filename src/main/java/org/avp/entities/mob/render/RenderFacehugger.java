@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.avp.AliensVsPredator;
 import org.avp.entities.EntityMedpod;
 import org.avp.entities.mob.EntityFacehugger;
-import org.avp.event.client.RenderMedpodEvent;
+import org.avp.event.client.render.RenderLivingHook;
 import org.avp.util.EntityRenderTransforms;
 
 import com.arisux.mdxlib.lib.client.Model;
@@ -57,7 +57,7 @@ public class RenderFacehugger extends RenderLivingWrapper
             EntityMedpod medpod = (EntityMedpod) entity.ridingEntity;
 
             OpenGL.rotate(medpod.getTileEntity());
-            RenderMedpodEvent.instance.getRenderer().transformEntity(medpod, entity, partialTicks);
+            RenderLivingHook.instance.getRenderer().transformEntity(medpod, entity, partialTicks);
         }
 
         if (facehugger.ridingEntity != null && facehugger.ridingEntity instanceof EntityLivingBase)

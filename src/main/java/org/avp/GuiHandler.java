@@ -70,7 +70,6 @@ public class GuiHandler implements IGuiHandler, IInitEvent
     @Override
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
     {
-        System.out.println("TRIED TO OPEN CLIENT GUI");
         if (ID == AliensVsPredator.properties().GUI_ASSEMBLER)
         {
             return new GuiAssembler(player.inventory, (TileEntityAssembler) world.getTileEntity(x, y, z), world, x, y, z);
@@ -85,7 +84,7 @@ public class GuiHandler implements IGuiHandler, IInitEvent
         {
             Item item = player.getCurrentEquippedItem().getItem();
 
-            if (item == AliensVsPredator.items().itemWristBlade)
+            if (item == AliensVsPredator.items().itemWristbracer)
             {
                 return new GuiWristbracer(player, (ContainerWristbracer) ((ItemWristbracer) item).getNewContainer(player));
             }

@@ -8,7 +8,7 @@ import org.avp.entities.mob.EntitySpeciesAlien;
 import org.avp.entities.tile.TileEntityHiveResin;
 import org.avp.event.HiveHandler;
 
-import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.Worlds;
 
 import net.minecraft.entity.Entity;
@@ -233,7 +233,7 @@ public class XenomorphHive
         return this.getQueen().getDistance(this.xCoord(), this.yCoord(), this.zCoord()) < this.getCoreRange();
     }
 
-    public boolean isPointWithinHive(CoordData coord)
+    public boolean isPointWithinHive(Pos coord)
     {
         return isPointWithinHive((int) coord.x(), (int) coord.y(), (int) coord.z());
     }

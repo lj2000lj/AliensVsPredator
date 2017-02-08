@@ -6,7 +6,7 @@ import org.avp.Sounds;
 import org.avp.api.parasitoidic.IHost;
 import org.avp.items.ItemDisc;
 import org.avp.items.ItemFirearm;
-import org.avp.items.ItemPlasmaCaster;
+import org.avp.items.ItemPlasmaCannon;
 import org.avp.items.ItemShuriken;
 import org.avp.items.ItemWristbracer;
 
@@ -87,7 +87,7 @@ public abstract class EntitySpeciesYautja extends EntityMob implements IHost, IE
 
                 if (stack != null)
                 {
-                    if (item instanceof ItemSword || item instanceof ItemFirearm || item instanceof ItemWristbracer || item instanceof ItemPlasmaCaster || item instanceof ItemBow || item instanceof ItemDisc || item instanceof ItemShuriken)
+                    if (item instanceof ItemSword || item instanceof ItemFirearm || item instanceof ItemWristbracer || item instanceof ItemPlasmaCannon || item instanceof ItemBow || item instanceof ItemDisc || item instanceof ItemShuriken)
                     {
                         return true;
                     }

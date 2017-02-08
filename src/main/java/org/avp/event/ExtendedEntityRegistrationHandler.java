@@ -1,7 +1,7 @@
 package org.avp.event;
 
 import org.avp.entities.extended.Organism;
-import org.avp.entities.extended.SpecialPlayer;
+import org.avp.entities.extended.ModPlayer;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.Entity;
@@ -33,8 +33,8 @@ public class ExtendedEntityRegistrationHandler
 
             if (thePlayer != null)
             {
-                SpecialPlayer extendedPlayer = new SpecialPlayer(thePlayer);
-                thePlayer.registerExtendedProperties(SpecialPlayer.IDENTIFIER, extendedPlayer);
+                ModPlayer extendedPlayer = new ModPlayer(thePlayer);
+                thePlayer.registerExtendedProperties(ModPlayer.IDENTIFIER, extendedPlayer);
             }
         }
 
@@ -90,7 +90,7 @@ public class ExtendedEntityRegistrationHandler
 
                 if (target instanceof EntityPlayer)
                 {
-                    SpecialPlayer specialPlayer = (SpecialPlayer) target.getExtendedProperties(SpecialPlayer.IDENTIFIER);
+                    ModPlayer specialPlayer = (ModPlayer) target.getExtendedProperties(ModPlayer.IDENTIFIER);
 
                     if (specialPlayer != null)
                     {

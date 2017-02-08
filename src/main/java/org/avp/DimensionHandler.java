@@ -5,7 +5,7 @@ import org.avp.dimension.acheron.ProviderAcheron;
 import org.avp.dimension.varda.ProviderVarda;
 
 import com.arisux.mdxlib.lib.game.IInitEvent;
-import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.entity.Entities;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -84,7 +84,7 @@ public class DimensionHandler implements IInitEvent
             Teleporter teleporter = new TeleporterLV(worldServer);
             serverManager.transferPlayerToDimension(player, dimensionId, teleporter);
 
-            CoordData safePos = Entities.getSafePositionAboveBelow(new CoordData(player.posX, player.posY, player.posZ), worldServer);
+            Pos safePos = Entities.getSafePositionAboveBelow(new Pos(player.posX, player.posY, player.posZ), worldServer);
 
             if (safePos == null)
             {
@@ -101,7 +101,7 @@ public class DimensionHandler implements IInitEvent
             Teleporter teleporter = new TeleporterLV(worldServer);
             serverManager.transferPlayerToDimension(player, 0, teleporter);
 
-            CoordData safePos = Entities.getSafePositionAboveBelow(new CoordData(player.posX, player.posY, player.posZ), worldServer);
+            Pos safePos = Entities.getSafePositionAboveBelow(new Pos(player.posX, player.posY, player.posZ), worldServer);
 
             if (safePos == null)
             {
@@ -118,7 +118,7 @@ public class DimensionHandler implements IInitEvent
             Teleporter teleporter = new TeleporterLV(MinecraftServer.getServer().worldServerForDimension(dimensionId));
             serverManager.transferPlayerToDimension(player, dimensionId, teleporter);
 
-            CoordData safePos = Entities.getSafePositionAboveBelow(new CoordData(player.posX, player.posY, player.posZ), worldServer);
+            Pos safePos = Entities.getSafePositionAboveBelow(new Pos(player.posX, player.posY, player.posZ), worldServer);
 
             if (safePos == null)
             {

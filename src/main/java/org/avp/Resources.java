@@ -61,6 +61,7 @@ import org.avp.items.model.ModelM41A;
 import org.avp.items.model.ModelM56SG;
 import org.avp.items.model.ModelMotionTracker;
 import org.avp.items.model.ModelNostromoFlamethrower;
+import org.avp.items.model.ModelPlasmaCannon;
 import org.avp.items.model.ModelSniper;
 import org.avp.items.model.ModelWristBlade;
 
@@ -112,6 +113,7 @@ public class Resources
         public final TexturedModel<ModelBullet>                BULLET                         = new TexturedModel(new ModelBullet(), new Texture(AliensVsPredator.ID, "textures/misc/renderbullet.png"));
         public final TexturedModel<ModelSpear>                 SPEAR                          = new TexturedModel(new ModelSpear(), new Texture(AliensVsPredator.ID, "textures/misc/renderspear.png"));
         public final TexturedModel<ModelWristBlade>            WRISTBLADES                    = new TexturedModel(new ModelWristBlade(), new Texture(AliensVsPredator.ID, "textures/items/models/wristblade.png"));
+        public final TexturedModel<ModelPlasmaCannon>          PLASMACANNON                   = new TexturedModel(new ModelPlasmaCannon(), new Texture(AliensVsPredator.ID, "textures/items/models/plasmacannon.png"));
         public final TexturedModel<ModelM240ICU>               M240ICU                        = new TexturedModel(new ModelM240ICU(), new Texture(AliensVsPredator.ID, "textures/items/models/m240icu.png"));
         public final TexturedModel<ModelM41A>                  M41A                           = new TexturedModel(new ModelM41A(), new Texture(AliensVsPredator.ID, "textures/items/models/pulserifle.png"));
         public final TexturedModel<ModelM56SG>                 M56SG                          = new TexturedModel(new ModelM56SG(), new Texture(AliensVsPredator.ID, "textures/items/models/m56sg.png"));
@@ -175,6 +177,7 @@ public class Resources
         public final TexturedModel<ModelWarrior>               DRONE_SKULL                    = new TexturedModel(new ModelWarrior(), new Texture(AliensVsPredator.ID, "textures/mob/xenomorphskullgiger.png"));
         public final TexturedModel<ModelWarrior>               WARRIOR_SKULL                  = new TexturedModel(new ModelWarrior(), new Texture(AliensVsPredator.ID, "textures/mob/xenomorphskullwarrior.png"));
         public final TexturedModel<ModelYautja>                YAUTJA_SKULL                   = new TexturedModel(new ModelYautja(), new Texture(AliensVsPredator.ID, "textures/mob/yautjaskull.png"));
+        public final TexturedModel<ModelQueen>                 QUEEN_SKULL                    = new TexturedModel(new ModelQueen(), new Texture(AliensVsPredator.ID, "textures/mob/queenskull.png"));
         public final TexturedModel<ModelOctohugger>            OCTOHUGGER                     = new TexturedModel(new ModelOctohugger(), new Texture(AliensVsPredator.ID, "textures/mob/octohugger.png"));
         public final TexturedModel<ModelBelugaburster>         BELUGABURSTER                  = new TexturedModel(new ModelBelugaburster(), new Texture(AliensVsPredator.ID, "textures/mob/belugaburster.png"));
         public final TexturedModel<ModelBelugamorph>           BELUGAMORPH                    = new TexturedModel(new ModelBelugamorph(), new Texture(AliensVsPredator.ID, "textures/mob/belugamorph.png"));
@@ -230,6 +233,7 @@ public class Resources
     public final Texture MOTIONTRACKER_S5         = new Texture(AliensVsPredator.ID, "textures/misc/motiontracker/sweep5.png");
     public final Texture MOTIONTRACKER_S6         = new Texture(AliensVsPredator.ID, "textures/misc/motiontracker/sweep6.png");
     public final Texture QUEEN_BOSS_BAR           = new Texture(AliensVsPredator.ID, "textures/misc/queenbossbar.png");
+    public final Texture BLANK                    = new Texture(AliensVsPredator.ID, "textures/misc/blank.png");
 
     public final IconSet ICONSET_WALLW            = new BlockIconSet("avp:wall_top", "avp:wall_top", "avp:wall_top", "avp:wall_side", "avp:wall_side", "avp:wall_side", "avp:wall_side");
     public final IconSet ICONSET_SPAWNER          = new BlockIconSet("avp:spawner_side", "avp:spawner_top", "avp:spawner_bottom", "avp:spawner_side", "avp:spawner_side", "avp:spawner_side", "avp:spawner_side");

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.avp.DamageSources;
 import org.avp.entities.mob.EntityMarine;
+import org.avp.entities.tile.TileEntityTurret;
 
 import com.arisux.mdxlib.lib.game.GameSounds;
 
@@ -23,20 +24,20 @@ import net.minecraft.world.World;
 
 public class EntityBullet extends Entity
 {
-    private int xTile;
-    private int yTile;
-    private int zTile;
-    private Block inTile;
-    private int inData;
-    private int arrowShake;
-    private int ticksInGround;
-    private int ticksInAir;
+    private int     xTile;
+    private int     yTile;
+    private int     zTile;
+    private Block   inTile;
+    private int     inData;
+    private int     arrowShake;
+    private int     ticksInGround;
+    private int     ticksInAir;
     private boolean inGround;
     private boolean doesArrowBelongToPlayer;
     private boolean arrowCritical;
     private boolean physics;
-    public Entity shootingEntity;
-    public double damage;
+    public Entity   shootingEntity;
+    public double   damage;
 
     public EntityBullet(World world)
     {
@@ -72,7 +73,7 @@ public class EntityBullet extends Entity
         this.yOffset = 0.0F;
     }
 
-    public EntityBullet(World world, Entity entity, float velocity, double damage)
+    public EntityBullet(World world, Object source, float velocity, double damage)
     {
         super(world);
         this.damage = damage;
@@ -87,10 +88,7 @@ public class EntityBullet extends Entity
         this.arrowShake = 0;
         this.ticksInAir = 0;
         this.arrowCritical = true;
-        this.shootingEntity = entity;
-        this.doesArrowBelongToPlayer = entity instanceof EntityPlayer;
         this.setSize(0.5F, 0.5F);
-        this.setLocationAndAngles(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ, entity.rotationYaw, entity.rotationPitch);
         this.posX -= MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
         this.posY -= 0.10000000149011612D;
         this.posZ -= MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
@@ -100,9 +98,24 @@ public class EntityBullet extends Entity
         this.motionZ = MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
         this.motionY = (-MathHelper.sin(this.rotationPitch / 180.0F * (float) Math.PI));
         this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, velocity * 1.5F, 1.0F);
+
+        if (source instanceof EntityPlayer)
+        {
+            EntityPlayer srcPlayer = (EntityPlayer) source;
+            
+            this.shootingEntity = srcPlayer;
+            this.doesArrowBelongToPlayer = srcPlayer instanceof EntityPlayer;
+            this.setLocationAndAngles(srcPlayer.posX, srcPlayer.posY + srcPlayer.getEyeHeight(), srcPlayer.posZ, srcPlayer.rotationYaw, srcPlayer.rotationPitch);
+        }
+        else if (source instanceof TileEntityTurret)
+        {
+            TileEntityTurret srcTurret = (TileEntityTurret) source;
+
+//            this.setLocationAndAngles(srcTurret.xCoord, srcTurret.yCoord, srcTurret.zCoord, srcTurret.getRotationYaw(), srcTurret.getRotationPitch());
+        }
     }
 
-    public EntityBullet(World world, Entity entity, Entity targetEntity, float velocity, double damage)
+    public EntityBullet(World world, Object source, Entity targetEntity, float velocity, double damage)
     {
         super(world);
         this.damage = damage;
@@ -117,10 +130,7 @@ public class EntityBullet extends Entity
         this.arrowShake = 0;
         this.ticksInAir = 0;
         this.arrowCritical = true;
-        this.shootingEntity = entity;
-        this.doesArrowBelongToPlayer = entity instanceof EntityPlayer;
         this.setSize(0.5F, 0.5F);
-        this.setLocationAndAngles(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ, entity.rotationYaw, entity.rotationPitch);
         this.posX -= MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
         this.posY -= 0.10000000149011612D;
         this.posZ -= MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
@@ -129,22 +139,44 @@ public class EntityBullet extends Entity
         this.motionX = -MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
         this.motionZ = MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
         this.motionY = (-MathHelper.sin(this.rotationPitch / 180.0F * (float) Math.PI));
+        
+        double srcX = 0;
+        double srcZ = 0;
 
-        double x = targetEntity.posX - entity.posX;
-        double y = targetEntity.boundingBox.maxY - this.posY;
-        double z = targetEntity.posZ - entity.posZ;
-        double v = MathHelper.sqrt_double(x * x + z * z);
-
-        if (v >= 1.0E-7D)
+        if (source instanceof EntityPlayer)
         {
-            float yaw = (float) (Math.atan2(z, x) * 180.0D / Math.PI) - 90.0F;
-            float pitch = (float) (-(Math.atan2(y, v) * 180.0D / Math.PI));
-            double xOffset = x / v;
-            double zOffset = z / v;
-            this.setLocationAndAngles(entity.posX + xOffset, this.posY, entity.posZ + zOffset, yaw, pitch);
-            this.yOffset = 0.0F;
-            this.setThrowableHeading(x, y, z, velocity, damage);
+            EntityPlayer srcPlayer = (EntityPlayer) source;
+            
+            this.shootingEntity = srcPlayer;
+            this.doesArrowBelongToPlayer = srcPlayer instanceof EntityPlayer;
+            this.setLocationAndAngles(srcPlayer.posX, srcPlayer.posY + srcPlayer.getEyeHeight(), srcPlayer.posZ, srcPlayer.rotationYaw, srcPlayer.rotationPitch);
+            srcX = srcPlayer.posX;
+            srcZ = srcPlayer.posZ;
         }
+//        else if (source instanceof TileEntityTurret)
+//        {
+//            TileEntityTurret srcTurret = (TileEntityTurret) source;
+//
+//            this.setLocationAndAngles(srcTurret.xCoord, srcTurret.yCoord + 1, srcTurret.zCoord, srcTurret.getRotationYaw(), srcTurret.getRotationPitch());
+//            srcX = srcTurret.xCoord;
+//            srcZ = srcTurret.zCoord;
+//        }
+//
+//        double x = targetEntity.posX - srcX;
+//        double y = targetEntity.boundingBox.maxY - this.posY;
+//        double z = targetEntity.posZ - srcZ;
+//        double v = MathHelper.sqrt_double(x * x + z * z);
+//
+//        if (v >= 1.0E-7D)
+//        {
+//            float yaw = (float) (Math.atan2(z, x) * 180.0D / Math.PI) - 90.0F;
+//            float pitch = (float) (-(Math.atan2(y, v) * 180.0D / Math.PI));
+//            double xOffset = x / v;
+//            double zOffset = z / v;
+//            this.setLocationAndAngles(srcX + xOffset, this.posY, srcZ + zOffset, yaw, pitch);
+//            this.yOffset = 0.0F;
+//            this.setThrowableHeading(x, y, z, velocity, damage);
+//        }
     }
 
     @Override
@@ -324,7 +356,7 @@ public class EntityBullet extends Entity
                     {
                         EntityTurret entityTurret = (EntityTurret) this.shootingEntity;
 
-                        if (!entityTurret.getTileEntity().isSafe(movingobjectposition.entityHit))
+                        if (!entityTurret.getTileEntity().canTargetType(movingobjectposition.entityHit.getClass()))
                         {
                             entityTurret.getTileEntity().setTargetEntity(movingobjectposition.entityHit);
                         }

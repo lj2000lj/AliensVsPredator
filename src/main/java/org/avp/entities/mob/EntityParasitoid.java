@@ -131,24 +131,33 @@ public class EntityParasitoid extends EntitySpeciesAlien implements IMob, IParas
     }
 
     @Override
+    protected boolean isMovementBlocked()
+    {
+        return !isFertile();
+    }
+
+    @Override
     public void onUpdate()
     {
         super.onUpdate();
 
-        if (this.isFertile())
+        if (this.worldObj.getWorldTime() % 20 == 0)
         {
-            ArrayList<EntityLivingBase> targetHosts = (ArrayList<EntityLivingBase>) worldObj.selectEntitiesWithinAABB(EntityLivingBase.class, this.boundingBox.expand(1.0D, 16.0D, 1.0D), parasiteSelector);
-
-            if (targetHosts != null && targetHosts.size() > 0)
+            if (isFertile())
             {
-                Collections.sort(targetHosts, new EntityAINearestAttackableTarget.Sorter(this));
+                ArrayList<EntityLivingBase> targetHosts = (ArrayList<EntityLivingBase>) worldObj.selectEntitiesWithinAABB(EntityLivingBase.class, this.boundingBox.expand(1.0D, 16.0D, 1.0D), parasiteSelector);
 
-                EntityLivingBase targetHost = targetHosts.get(0);
-                this.setAttackTarget(targetHost);
-
-                if (!targetHosts.contains(this.getAttackTarget()))
+                if (targetHosts != null && targetHosts.size() > 0)
                 {
-                    this.setAttackTarget(null);
+                    Collections.sort(targetHosts, new EntityAINearestAttackableTarget.Sorter(this));
+
+                    EntityLivingBase targetHost = targetHosts.get(0);
+                    this.setAttackTarget(targetHost);
+
+                    if (!targetHosts.contains(this.getAttackTarget()))
+                    {
+                        this.setAttackTarget(null);
+                    }
                 }
             }
         }
@@ -170,14 +179,6 @@ public class EntityParasitoid extends EntitySpeciesAlien implements IMob, IParas
                 this.prevRotationYawHead = living.prevRotationYawHead;
                 this.prevRotationYaw = living.prevRotationYaw;
             }
-        }
-        
-        if (!this.isFertile())
-        {
-            this.motionX = 0;
-            this.motionZ = 0;
-            this.tasks.taskEntries.clear();
-            this.targetTasks.taskEntries.clear();
         }
 
         if (this.getTicksOnHost() > this.getDetachTime())
@@ -276,16 +277,6 @@ public class EntityParasitoid extends EntitySpeciesAlien implements IMob, IParas
     public void setFertility(boolean isFertile)
     {
         this.dataWatcher.updateObject(30, isFertile ? 1 : 0);
-
-        if (isFertile)
-        {
-            this.addTasks();
-        }
-        else
-        {
-            this.tasks.taskEntries.clear();
-            this.targetTasks.taskEntries.clear();
-        }
     }
 
     @Override
@@ -322,7 +313,8 @@ public class EntityParasitoid extends EntitySpeciesAlien implements IMob, IParas
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
-        this.setFertility(nbt.getInteger("IsFertile") == 1);
+        boolean isFertile = nbt.getInteger("IsFertile") == 1;
+        this.setFertility(isFertile);
     }
 
     @Override

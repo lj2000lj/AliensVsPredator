@@ -15,7 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 public class OrganismClientSync implements IMessage, IMessageHandler<OrganismClientSync, OrganismClientSync>
 {
     public NBTTagCompound tag;
-    private int entityId;
+    private int           entityId;
 
     public OrganismClientSync()
     {
@@ -45,15 +45,18 @@ public class OrganismClientSync implements IMessage, IMessageHandler<OrganismCli
     @Override
     public OrganismClientSync onMessage(OrganismClientSync packet, MessageContext ctx)
     {
-        Entity entity = Game.minecraft().thePlayer.worldObj.getEntityByID(packet.entityId);
-
-        if (entity != null)
+        if (Game.minecraft().thePlayer != null && Game.minecraft().thePlayer.worldObj != null)
         {
-            Organism extendedLiving = (Organism) entity.getExtendedProperties(Organism.IDENTIFIER);
+            Entity entity = Game.minecraft().thePlayer.worldObj.getEntityByID(packet.entityId);
 
-            if (extendedLiving != null)
+            if (entity != null)
             {
-                extendedLiving.loadNBTData(packet.tag);
+                Organism extendedLiving = (Organism) entity.getExtendedProperties(Organism.IDENTIFIER);
+
+                if (extendedLiving != null)
+                {
+                    extendedLiving.loadNBTData(packet.tag);
+                }
             }
         }
 

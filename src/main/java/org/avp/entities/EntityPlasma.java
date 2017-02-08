@@ -2,62 +2,90 @@ package org.avp.entities;
 
 import java.util.List;
 
-import org.avp.AliensVsPredator;
+import org.avp.DamageSources;
+import org.avp.Sounds;
+import org.avp.entities.fx.EntityFXElectricArc;
 
-import com.arisux.mdxlib.lib.game.GameSounds;
-import com.arisux.mdxlib.lib.world.CoordData;
-import com.arisux.mdxlib.lib.world.Worlds;
+import com.arisux.mdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.entity.Entities;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 public class EntityPlasma extends EntityThrowable
 {
-    private boolean belongsToPlayer, released;
-    private float size;
-    public Entity shootingEntity;
+    public float    syncSize;
+    public boolean  synced;
+    private boolean impacted;
 
     public EntityPlasma(World world)
     {
         super(world);
-        this.setSize(0.5F, 0.5F);
     }
 
-    public EntityPlasma(World world, EntityLivingBase shootingEntity)
+    public EntityPlasma(World world, EntityLivingBase shootingEntity, float size)
     {
         super(world, shootingEntity);
-        this.setSize(0.5F, 0.5F);
-        this.shootingEntity = shootingEntity;
-        this.belongsToPlayer = shootingEntity instanceof EntityPlayer;
+        this.setSize(size, size);
+        this.syncSize = size;
+        this.noClip = true;
+    }
+
+    @Override
+    protected void entityInit()
+    {
+        super.entityInit();
+        this.dataWatcher.addObject(30, 1F);
+        this.dataWatcher.addObject(31, -1);
     }
 
     @Override
     public void onUpdate()
     {
-        if (this.released)
+        this.moveEntity(this.motionX, this.motionY, this.motionZ);
+
+        if (!this.worldObj.isRemote && !this.synced)
         {
-            this.moveEntity(this.motionX, this.motionY, this.motionZ);
+            this.dataWatcher.updateObject(30, this.syncSize);
+            this.synced = true;
         }
 
-        if (this.ticksExisted >= 20 * 20)
+        if (!this.worldObj.isRemote)
         {
-            this.setDead();
+            if (this.getImpactTimer() == this.getMaxImpactTimer())
+            {
+                this.dataWatcher.updateObject(31, this.getImpactTimer());
+            }
+        }
+
+        if (this.getImpactTimer() > 0)
+        {
+            if (!this.worldObj.isRemote)
+            {
+                this.updateImpactTimer(this.getImpactTimer() - 1);
+            }
+        }
+
+        if (!this.worldObj.isRemote)
+        {
+            if (this.getImpactTimer() == -1 && this.ticksExisted >= 20 * 20 || this.getImpactTimer() == 0)
+            {
+                this.setDead();
+            }
         }
 
         MovingObjectPosition movingObjectPosition = this.worldObj.rayTraceBlocks(Vec3.createVectorHelper(this.posX, this.posY, this.posZ), Vec3.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ));
 
         if (!this.worldObj.isRemote)
         {
-            Entity entityHit = Entities.getEntityInCoordsRange(worldObj, EntityLiving.class, new CoordData(this), 1, 1);
+            Entity entityHit = Entities.getEntityInCoordsRange(worldObj, EntityLiving.class, new Pos(this), 1, 1);
 
             if (entityHit != null)
             {
@@ -68,15 +96,6 @@ public class EntityPlasma extends EntityThrowable
         if (movingObjectPosition != null || this.isCollidedHorizontally)
         {
             this.onImpact(movingObjectPosition);
-            this.setDead();
-        }
-
-        Entity entity = this;
-
-        for (int x = 0; x < 20; x++)
-        {
-            entity.worldObj.spawnParticle("enchantmenttable", entity.posX + rand.nextDouble(), entity.posY + rand.nextDouble(), entity.posZ + rand.nextDouble(), 0.0D - rand.nextDouble(), 0.0D - rand.nextDouble(), 0.0D - rand.nextDouble());
-            entity.worldObj.spawnParticle("reddust", entity.posX - rand.nextDouble() + rand.nextDouble(), entity.posY - rand.nextDouble() + rand.nextDouble(), entity.posZ - rand.nextDouble() + rand.nextDouble(), 0.5D, 1D, 5.0D);
         }
     }
 
@@ -84,14 +103,20 @@ public class EntityPlasma extends EntityThrowable
     public void writeEntityToNBT(NBTTagCompound nbt)
     {
         super.writeEntityToNBT(nbt);
-        nbt.setBoolean("player", this.belongsToPlayer);
+        nbt.setFloat("PlasmaSize", this.getPlasmaSize());
     }
 
     @Override
     public void readEntityFromNBT(NBTTagCompound nbt)
     {
         super.readEntityFromNBT(nbt);
-        this.belongsToPlayer = nbt.getBoolean("player");
+        this.syncSize = nbt.getFloat("PlasmaSize");
+    }
+
+    @Override
+    protected void doBlockCollisions()
+    {
+        super.doBlockCollisions();
     }
 
     @Override
@@ -99,42 +124,67 @@ public class EntityPlasma extends EntityThrowable
     {
         if (!this.worldObj.isRemote)
         {
-            Worlds.createExplosion(null, worldObj, new CoordData(this), 1.5F * size, false, true, AliensVsPredator.settings().areExplosionsEnabled());
-            GameSounds.fxPop.playSound(this,  0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-
+            Sounds.SOUND_WEAPON_PLASMA_EXPLOSION.playSound(this, 7F, 1.0F);
+            
             @SuppressWarnings("unchecked")
-            List<Entity> entitiesInRange = (List<Entity>) Entities.getEntitiesInCoordsRange(worldObj, EntityLivingBase.class, new CoordData(this.posX, this.posY, this.posZ), (int) Math.ceil(1.5F * size));
+            List<Entity> entities = (List<Entity>) Entities.getEntitiesInCoordsRange(worldObj, Entity.class, new Pos(this.posX, this.posY, this.posZ), (int) Math.ceil(this.getPlasmaSize()));
 
-            for (Entity entity : entitiesInRange)
+            for (Entity entity : entities)
             {
-                entity.attackEntityFrom(new DamageSource("Plasma"), 20F * size);
+                if (entity != this.getThrower())
+                {
+                    entity.attackEntityFrom(DamageSources.plasmacaster, 20F * this.getPlasmaSize());
+                    entity.hurtResistantTime = 0;
+                }
             }
 
-            this.setDead();
+            if (!this.impacted)
+            {
+                this.updateImpactTimer(this.getMaxImpactTimer());
+                this.impacted = true;
+            }
+
+            this.motionX = 0;
+            this.motionY = 0;
+            this.motionZ = 0;
+        }
+        
+        float spread = this.getPlasmaSize() * 5F;
+
+        for (int i = (int) Math.round(spread); i > 0; i--)
+        {
+            double pX = this.posX + (this.rand.nextDouble() * spread) - (this.rand.nextDouble() * spread);
+            double pY = this.posY + (this.rand.nextDouble() * spread) - (this.rand.nextDouble() * spread);
+            double pZ = this.posZ + (this.rand.nextDouble() * spread) - (this.rand.nextDouble() * spread);
+
+            int particleColor = 0xFF66AAFF;
+
+            Game.minecraft().effectRenderer.addEffect(new EntityFXElectricArc(this.worldObj, this.posX, this.posY, this.posZ, pX, pY, pZ, 10, particleColor));
         }
     }
 
     public float getPlasmaSize()
     {
-        return size;
+        return this.dataWatcher.getWatchableObjectFloat(30);
     }
 
-    public EntityPlasma setPlasmaSize(float size)
+    public int getImpactTimer()
     {
-        this.size = size;
-        return this;
+        return this.dataWatcher.getWatchableObjectInt(31);
     }
 
-    public void increaseSize()
+    public void updateImpactTimer(int time)
     {
-        if (size < 2.0F)
-        {
-            size += 0.02F;
-        }
+        this.dataWatcher.updateObject(31, time);
     }
 
-    public void release()
+    public int getImpactPrev()
     {
-        this.released = true;
+        return this.getImpactTimer() - 1;
+    }
+
+    public int getMaxImpactTimer()
+    {
+        return 6;
     }
 }

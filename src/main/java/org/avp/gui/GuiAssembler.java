@@ -55,14 +55,14 @@ public class GuiAssembler extends GuiContainer
         super.initGui();
         this.guiTop = 5;
 
-        this.buttonScrollUp = new GuiCustomButton(0, 0, 0, 20, 20, "", null);
-        this.buttonScrollDown = new GuiCustomButton(1, 0, 0, 20, 20, "", null);
-        this.buttonAssemble = new GuiCustomButton(2, 0, 0, 50, 20, "", null);
-        this.buttonAssemble4 = new GuiCustomButton(2, 0, 0, 50, 20, "", null);
-        this.buttonAssemble8 = new GuiCustomButton(2, 0, 0, 50, 20, "", null);
-        this.buttonAssemble16 = new GuiCustomButton(2, 0, 0, 50, 20, "", null);
-        this.buttonAssemble32 = new GuiCustomButton(2, 0, 0, 50, 20, "", null);
-        this.buttonAssembleStack = new GuiCustomButton(2, 0, 0, 50, 20, "", null);
+        this.buttonScrollUp = new GuiCustomButton(0, 0, 0, 20, 20, "");
+        this.buttonScrollDown = new GuiCustomButton(1, 0, 0, 20, 20, "");
+        this.buttonAssemble = new GuiCustomButton(2, 0, 0, 50, 20, "");
+        this.buttonAssemble4 = new GuiCustomButton(2, 0, 0, 50, 20, "");
+        this.buttonAssemble8 = new GuiCustomButton(2, 0, 0, 50, 20, "");
+        this.buttonAssemble16 = new GuiCustomButton(2, 0, 0, 50, 20, "");
+        this.buttonAssemble32 = new GuiCustomButton(2, 0, 0, 50, 20, "");
+        this.buttonAssembleStack = new GuiCustomButton(2, 0, 0, 50, 20, "");
     }
 
     @Override

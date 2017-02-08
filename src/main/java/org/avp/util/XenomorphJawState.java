@@ -1,6 +1,6 @@
 package org.avp.util;
 
-import com.arisux.mdxlib.lib.util.Math;
+import com.arisux.mdxlib.lib.util.MDXMath;
 
 public enum XenomorphJawState
 {
@@ -20,12 +20,12 @@ public enum XenomorphJawState
     
     public static float interpolateLowerJawAngle(float progress)
     {
-        return Math.interpolateRotation(CLOSED.lowerJawAngle, OPEN.lowerJawAngle, progress);
+        return MDXMath.interpolateRotation(CLOSED.lowerJawAngle, OPEN.lowerJawAngle, progress);
     }
     
     public static float interpolateInnerJawAngle(float progress)
     {
-        return Math.interpolateRotation(CLOSED.innerJawAngle, OPEN.innerJawAngle, progress);
+        return MDXMath.interpolateRotation(CLOSED.innerJawAngle, OPEN.innerJawAngle, progress);
     }
     
     public static float calculateJawOffset(float progress)

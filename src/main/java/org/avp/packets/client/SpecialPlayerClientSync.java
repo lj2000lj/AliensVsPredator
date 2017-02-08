@@ -1,6 +1,6 @@
 package org.avp.packets.client;
 
-import org.avp.entities.extended.SpecialPlayer;
+import org.avp.entities.extended.ModPlayer;
 
 import com.arisux.mdxlib.lib.game.Game;
 
@@ -50,7 +50,7 @@ public class SpecialPlayerClientSync implements IMessage, IMessageHandler<Specia
 
         if (entity != null)
         {
-            SpecialPlayer extendedPlayer = (SpecialPlayer) entity.getExtendedProperties(SpecialPlayer.IDENTIFIER);
+            ModPlayer extendedPlayer = (ModPlayer) entity.getExtendedProperties(ModPlayer.IDENTIFIER);
 
             if (extendedPlayer != null)
             {

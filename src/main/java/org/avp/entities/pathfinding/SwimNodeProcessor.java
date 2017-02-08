@@ -1,6 +1,6 @@
 package org.avp.entities.pathfinding;
 
-import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.Pos;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -65,7 +65,7 @@ public class SwimNodeProcessor extends NodeProcessor
             {
                 for (int z = posZ; z < posZ + this.entitySizeZ; ++z)
                 {
-                    CoordData blockpos = new CoordData(x, y, z);
+                    Pos blockpos = new Pos(x, y, z);
                     Block block = blockpos.getBlock(entity.worldObj);
 
                     if (block.getMaterial() != Material.water)

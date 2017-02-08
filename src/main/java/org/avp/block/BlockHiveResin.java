@@ -6,8 +6,8 @@ import org.avp.AliensVsPredator;
 import org.avp.entities.tile.TileEntityHiveResin;
 import org.avp.event.HiveHandler;
 
-import com.arisux.mdxlib.lib.world.CoordData;
-import com.arisux.mdxlib.lib.world.CoordData.BlockDataStore;
+import com.arisux.mdxlib.lib.world.Pos;
+import com.arisux.mdxlib.lib.world.Pos.BlockDataStore;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -74,7 +74,7 @@ public class BlockHiveResin extends Block
 
         if (tile instanceof TileEntityHiveResin)
         {
-            CoordData coord = new CoordData(posX, posY, posZ);
+            Pos coord = new Pos(posX, posY, posZ);
             TileEntityHiveResin resin = (TileEntityHiveResin) tile;
 
             if (resin != null)
@@ -83,7 +83,7 @@ public class BlockHiveResin extends Block
                 {
                     if (resin != null && resin.getBlockCovering() != null)
                     {
-                        HiveHandler.instance.burntResin.add(new CoordData(posX, posY, posZ).store(new BlockDataStore(resin.getBlockCovering(), (byte)0)));
+                        HiveHandler.instance.burntResin.add(new Pos(posX, posY, posZ).store(new BlockDataStore(resin.getBlockCovering(), (byte)0)));
                     }
                 }
 

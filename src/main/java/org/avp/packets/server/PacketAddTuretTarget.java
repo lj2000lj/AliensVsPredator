@@ -54,7 +54,7 @@ public class PacketAddTuretTarget implements IMessage, IMessageHandler<PacketAdd
 
         if (tile != null)
         {
-            tile.setDangerous((Class<? extends Entity>) EntityList.stringToClassMapping.get(packet.entityIdentifier));
+            tile.addTargetType((Class<? extends Entity>) EntityList.stringToClassMapping.get(packet.entityIdentifier));
         }
 
         return null;

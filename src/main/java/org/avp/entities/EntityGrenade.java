@@ -5,7 +5,7 @@ import java.util.List;
 import org.avp.AliensVsPredator;
 import org.avp.entities.mob.EntityXenomorph;
 
-import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.Worlds;
 
 import net.minecraft.entity.Entity;
@@ -98,7 +98,7 @@ public class EntityGrenade extends EntityThrowable
     {
         if (!this.worldObj.isRemote)
         {
-            Explosion explosion = Worlds.createExplosion(null, worldObj, new CoordData(this), 2F, isFlaming(), true, AliensVsPredator.settings().areExplosionsEnabled());
+            Explosion explosion = Worlds.createExplosion(null, worldObj, new Pos(this), 2F, isFlaming(), true, AliensVsPredator.settings().areExplosionsEnabled());
 
             List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(4, 4, 4));
 

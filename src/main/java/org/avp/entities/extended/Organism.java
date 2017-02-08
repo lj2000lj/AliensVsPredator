@@ -2,7 +2,7 @@ package org.avp.entities.extended;
 
 import org.avp.AliensVsPredator;
 import org.avp.entities.mob.EntitySpeciesAlien;
-import org.avp.event.client.TacticalHUDRenderEvent;
+import org.avp.event.client.render.TacticalHUDRenderEvent;
 import org.avp.packets.client.OrganismClientSync;
 import org.avp.packets.server.OrganismServerSync;
 import org.avp.util.Embryo;

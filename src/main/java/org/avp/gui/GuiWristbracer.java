@@ -23,9 +23,9 @@ import net.minecraft.world.EnumDifficulty;
 
 public class GuiWristbracer extends GuiContainer
 {
-    private HashMap<GuiButton, Integer> displays = new HashMap<GuiButton, Integer>();
-    protected List<GuiButton> buttonList = new ArrayList<GuiButton>();
-    public ContainerWristbracer container;
+    private HashMap<GuiButton, Integer> displays   = new HashMap<GuiButton, Integer>();
+    protected List<GuiButton>           buttonList = new ArrayList<GuiButton>();
+    public ContainerWristbracer         container;
 
     public GuiWristbracer(EntityPlayer player, ContainerWristbracer container)
     {
@@ -37,7 +37,7 @@ public class GuiWristbracer extends GuiContainer
 
         for (int x = 1; x <= 6; x++)
         {
-            this.buttonList.add(new GuiCustomButton(x, 0, 0, 50, 100, "X", null));
+            this.buttonList.add(new GuiCustomButton(x, 0, 0, 50, 100, "X"));
             this.displays.put(this.buttonList.get(x - 1), 0);
         }
     }
@@ -69,8 +69,6 @@ public class GuiWristbracer extends GuiContainer
         AliensVsPredator.resources().GUI_WRISTBRACER.bind();
         Draw.drawQuad(guiLeft, guiTop, xSize, ySize - 30, 0, 0, 0);
 
-        Draw.drawRect(guiLeft + 31, guiTop + 16, 16, 16, 0x33FF0000);
-
         for (byte s = 0; s < 9; s++)
         {
             Draw.drawRect(guiLeft + 15 + (18 * s), guiTop + 136, 16, 16, 0xAA000000);
@@ -80,8 +78,16 @@ public class GuiWristbracer extends GuiContainer
         {
             GuiCustomButton button = (GuiCustomButton) this.buttonList.get(x1 - 1);
 
+            if (mc.gameSettings.difficulty == EnumDifficulty.EASY || mc.gameSettings.difficulty == EnumDifficulty.PEACEFUL)
+            {
+                button.tooltip = String.valueOf(this.displays.get(button));
+            }
+            else
+            {
+                button.tooltip = "";
+            }
+
             button.displayString = "";
-            button.tooltip = mc.gameSettings.difficulty == EnumDifficulty.EASY || mc.gameSettings.difficulty == EnumDifficulty.PEACEFUL ? String.valueOf(this.displays.get(button)) : "?";
             button.xPosition = guiLeft + 15 + 27 * (x1 - 1);
             button.yPosition = guiTop + 49;
             button.width = 25;

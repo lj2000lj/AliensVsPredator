@@ -5,6 +5,7 @@ import org.avp.event.HiveHandler;
 import org.avp.init.Assembler;
 import org.avp.init.Wristbracer;
 
+import com.arisux.mdxlib.MDXModule;
 import com.arisux.mdxlib.MDX;
 import com.arisux.mdxlib.lib.game.Game;
 import com.arisux.mdxlib.lib.game.IMod;
@@ -202,6 +203,11 @@ public class AliensVsPredator implements IMod
     @Mod.EventHandler
     public void pre(FMLPreInitializationEvent event)
     {
+        if (!MDXModule.enable)
+        {
+            return;
+        }
+        
         MDX.log().info("[AliensVsPredator] Copyright(C) 2012-2017 Arisux Technology Group");
         MDX.log().info("[AliensVsPredator] Pre-Initialization");
 
@@ -219,6 +225,11 @@ public class AliensVsPredator implements IMod
     @Mod.EventHandler
     public void init(FMLInitializationEvent event)
     {
+        if (!MDXModule.enable)
+        {
+            return;
+        }
+        
         MDX.log().info("[AliensVsPredator] Initialization");
 
         fluids().init(event);
@@ -248,6 +259,11 @@ public class AliensVsPredator implements IMod
     @Mod.EventHandler
     public void post(FMLPostInitializationEvent event)
     {
+        if (!MDXModule.enable)
+        {
+            return;
+        }
+        
         MDX.log().info("[AliensVsPredator] Post-Initialization");
 
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
@@ -261,6 +277,11 @@ public class AliensVsPredator implements IMod
     @EventHandler
     public void onServerStarting(FMLServerStartingEvent event)
     {
+        if (!MDXModule.enable)
+        {
+            return;
+        }
+        
         commands().onServerStarting(event);
     }
 

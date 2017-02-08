@@ -2,7 +2,7 @@ package org.avp.world;
 
 import java.util.Random;
 
-import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.StructureGenerationHandler;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 public class DerelictLocation
 {
     private Random rand;
-    private CoordData coord;
+    private Pos coord;
     private boolean generated;
     private int index;
 
@@ -21,7 +21,7 @@ public class DerelictLocation
         this.rand = new Random();
         this.generated = generated;
         this.index = index;
-        this.coord = new CoordData(this.newDerelictXZCoord(), this.newDerelictYCoord(), this.newDerelictXZCoord());
+        this.coord = new Pos(this.newDerelictXZCoord(), this.newDerelictYCoord(), this.newDerelictXZCoord());
     }
 
     public int getIndex()
@@ -34,12 +34,12 @@ public class DerelictLocation
         this.index = index;
     }
 
-    public CoordData getCoord()
+    public Pos getCoord()
     {
         return coord;
     }
 
-    public DerelictLocation setCoord(CoordData coord)
+    public DerelictLocation setCoord(Pos coord)
     {
         this.coord = coord;
         return this;
@@ -73,7 +73,7 @@ public class DerelictLocation
         int posY = tag != null ? (tagLocation.getInteger("PosY") == 0 ? this.newDerelictYCoord() : tagLocation.getInteger("PosY")) : this.newDerelictYCoord();
         int posZ = tag != null ? (tagLocation.getInteger("PosZ") == 0 ? this.newDerelictXZCoord() : tagLocation.getInteger("PosZ")) : this.newDerelictXZCoord();
 
-        this.setCoord(new CoordData(posX, posY, posZ));
+        this.setCoord(new Pos(posX, posY, posZ));
     }
 
     public int getDerelictSpawnRange()

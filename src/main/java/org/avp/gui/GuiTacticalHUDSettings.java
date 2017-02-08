@@ -1,7 +1,7 @@
 package org.avp.gui;
 
-import org.avp.entities.extended.SpecialPlayer;
-import org.avp.event.client.TacticalHUDRenderEvent;
+import org.avp.entities.extended.ModPlayer;
+import org.avp.event.client.render.TacticalHUDRenderEvent;
 
 import com.arisux.mdxlib.lib.client.gui.GuiCustomButton;
 import com.arisux.mdxlib.lib.client.gui.GuiCustomScreen;
@@ -17,23 +17,24 @@ import net.minecraft.client.gui.GuiScreen;
 
 public class GuiTacticalHUDSettings extends GuiCustomScreen
 {
-    protected final SpecialPlayer properties;
-    private GuiCustomTextbox textboxChannel;
-    private GuiCustomButton buttonSave;
-    private GuiCustomButton buttonNightvisionToggle;
-    private GuiCustomButton buttonEntityCullingToggle;
-    private GuiCustomSlider sliderTxPower;
-    private GuiCustomSlider sliderViewportThreshold;
+    protected final ModPlayer player;
+    private GuiCustomTextbox channel;
+    private GuiCustomButton save;
+    private GuiCustomButton nightvision;
+    private GuiCustomButton entityCulling;
+    private GuiCustomSlider txPower;
+    private GuiCustomSlider viewportThreshold;
 
     public GuiTacticalHUDSettings(GuiScreen parent)
     {
-        this.properties = SpecialPlayer.get(Game.minecraft().thePlayer);
-        this.textboxChannel = new GuiCustomTextbox(this, 0, 0, 100, 15);
-        this.buttonSave = new GuiCustomButton(0, 0, 0, 100, 15, "", null);
-        this.buttonNightvisionToggle = new GuiCustomButton(0, 0, 0, 100, 15, "", null);
-        this.buttonEntityCullingToggle = new GuiCustomButton(0, 0, 0, 100, 15, "", null);
-        this.sliderTxPower = new GuiCustomSlider(0, 100, 100, "", 1, 1024);
-        this.sliderViewportThreshold = new GuiCustomSlider(0, 100, 100, "", 1, 32);
+        this.player = ModPlayer.get(Game.minecraft().thePlayer);
+        this.channel = new GuiCustomTextbox(this, 0, 0, 100, 15);
+        this.save = new GuiCustomButton(0, 0, 0, 100, 15, "");
+        this.nightvision = new GuiCustomButton(0, 0, 0, 100, 15, "");
+        this.entityCulling = new GuiCustomButton(0, 0, 0, 100, 15, "");
+        this.txPower = new GuiCustomSlider(0, 100, 100, "", 1, 1024);
+        this.viewportThreshold = new GuiCustomSlider(0, 100, 100, "", 1, 32);
+        this.channel.trackElement();
     }
 
     @Override
@@ -41,48 +42,49 @@ public class GuiTacticalHUDSettings extends GuiCustomScreen
     {
         super.initGui();
 
-        this.textboxChannel.setText("Default");
-        this.sliderTxPower.sliderValue = properties.getBroadcastRadius() / sliderTxPower.sliderMaxValue;
-        this.sliderTxPower.displayString = "Transmit Power: " + (int) (sliderTxPower.sliderValue * sliderTxPower.sliderMaxValue);
+        this.channel.setText(this.player.getBroadcastChannel());
+        this.txPower.sliderValue = player.getBroadcastRadius() / txPower.sliderMaxValue;
+        this.txPower.displayString = "Transmit Power: " + (int) (txPower.sliderValue * txPower.sliderMaxValue);
 
-        this.sliderViewportThreshold.sliderValue = TacticalHUDRenderEvent.instance.getViewportThreshold() / sliderViewportThreshold.sliderMaxValue;
-        this.sliderViewportThreshold.displayString = "Threshold: " + (int) (sliderViewportThreshold.sliderValue * sliderViewportThreshold.sliderMaxValue);
+        this.viewportThreshold.sliderValue = TacticalHUDRenderEvent.instance.getViewportThreshold() / viewportThreshold.sliderMaxValue;
+        this.viewportThreshold.displayString = "Threshold: " + (int) (viewportThreshold.sliderValue * viewportThreshold.sliderMaxValue);
 
-        this.buttonNightvisionToggle.setAction(new IAction()
+        this.nightvision.setAction(new IAction()
         {
             @Override
             public void perform(GuiCustomButton button)
             {
-                properties.setNightvisionEnabled(!properties.isNightvisionEnabled());
-                properties.syncWithServer();
+                player.setNightvisionEnabled(!player.isNightvisionEnabled());
+                player.syncWithServer();
             }
         });
 
-        this.buttonEntityCullingToggle.setAction(new IAction()
+        this.entityCulling.setAction(new IAction()
         {
             @Override
             public void perform(GuiCustomButton button)
             {
-                properties.setEntityCullingEnabled(!properties.isEntityCullingEnabled());
-                properties.syncWithServer();
+                player.setEntityCullingEnabled(!player.isEntityCullingEnabled());
+                player.syncWithServer();
             }
         });
 
-        this.buttonSave.setAction(new IAction()
+        this.save.setAction(new IAction()
         {
             @Override
             public void perform(GuiCustomButton button)
             {
-                String newChannel = textboxChannel.getText();
-                int newRadius = (int) (sliderTxPower.sliderValue * sliderTxPower.sliderMaxValue);
-                int newThreshold = (int) (sliderViewportThreshold.sliderValue * sliderViewportThreshold.sliderMaxValue);
+                String newChannel = channel.getText();
+                int newRadius = (int) (txPower.sliderValue * txPower.sliderMaxValue);
+                int newThreshold = (int) (viewportThreshold.sliderValue * viewportThreshold.sliderMaxValue);
 
-                if (properties.getBroadcastChannel() != newChannel || properties.getBroadcastRadius() != newRadius || TacticalHUDRenderEvent.instance.getViewportThreshold() != newThreshold)
+                if (player.getBroadcastChannel() != newChannel || player.getBroadcastRadius() != newRadius || TacticalHUDRenderEvent.instance.getViewportThreshold() != newThreshold)
                 {
-                    properties.setBroadcastRadius(newRadius);
-                    properties.setBroadcastChannel(newChannel);
+                    player.setBroadcastRadius(newRadius);
+                    player.setBroadcastChannel(newChannel);
                     TacticalHUDRenderEvent.instance.setViewportThreshold(newThreshold);
-                    properties.syncWithServer();
+                    player.syncWithServer();
+                    channel.setText(newChannel);
                 }
 
                 mc.displayGuiScreen(null);
@@ -103,63 +105,63 @@ public class GuiTacticalHUDSettings extends GuiCustomScreen
         Draw.drawRect(interfaceStartX, 0, interfaceWidth, height, 0xCC000000);
         Draw.drawString("Tactical HUD Configuration", interfaceStartX + 10, 10, 0xFF00AAFF);
 
-        textboxChannel.setMaxStringLength(18);
-        textboxChannel.xPosition = interfaceStartX + 10;
-        textboxChannel.yPosition = elementStart;
-        textboxChannel.height = 15;
-        textboxChannel.width = 120;
-        Draw.drawString("Broadcast Channel", textboxChannel.xPosition + textboxChannel.width + 10, textboxChannel.yPosition + 3, 0xFFCCCCCC);
-        textboxChannel.drawTextBox();
+        channel.setMaxStringLength(18);
+        channel.xPosition = interfaceStartX + 10;
+        channel.yPosition = elementStart;
+        channel.height = 15;
+        channel.width = 120;
+        Draw.drawString("Broadcast Channel", channel.xPosition + channel.width + 10, channel.yPosition + 3, 0xFFCCCCCC);
+        channel.drawTextBox();
 
-        sliderTxPower.label = "TX Power";
-        sliderTxPower.xPosition = interfaceStartX + 10;
-        sliderTxPower.yPosition = elementStart += elementSpacing;
-        sliderTxPower.width = 120;
-        sliderTxPower.height = 15;
-        sliderTxPower.sliderMaxValue = 1024;
-        sliderTxPower.baseColor = 0x55000000;
-        sliderTxPower.sliderButtonColor = 0x9900AAFF;
-        sliderTxPower.tooltip = "The distance this tactical HUD will connect to other tactical HUDs.";
-        Draw.drawString("Transmit Power", sliderTxPower.xPosition + sliderTxPower.width + 10, sliderTxPower.yPosition + 3, 0xFFCCCCCC);
-        sliderTxPower.drawButton();
+        txPower.label = "TX Power";
+        txPower.xPosition = interfaceStartX + 10;
+        txPower.yPosition = elementStart += elementSpacing;
+        txPower.width = 120;
+        txPower.height = 15;
+        txPower.sliderMaxValue = 1024;
+        txPower.baseColor = 0x55000000;
+        txPower.sliderButtonColor = 0x9900AAFF;
+        txPower.tooltip = "The distance this tactical HUD will connect to other tactical HUDs.";
+        Draw.drawString("Transmit Power", txPower.xPosition + txPower.width + 10, txPower.yPosition + 3, 0xFFCCCCCC);
+        txPower.drawButton();
 
-        sliderViewportThreshold.label = "Threshold";
-        sliderViewportThreshold.xPosition = interfaceStartX + 10;
-        sliderViewportThreshold.yPosition = elementStart += elementSpacing;
-        sliderViewportThreshold.width = 120;
-        sliderViewportThreshold.height = 15;
-        sliderViewportThreshold.sliderMaxValue = 32;
-        sliderViewportThreshold.baseColor = 0x55000000;
-        sliderViewportThreshold.sliderButtonColor = 0x9900AAFF;
-        sliderViewportThreshold.tooltip = "The amount of users with tactical HUDs to display in the viewport.";
-        Draw.drawString("Viewport Threshold", sliderViewportThreshold.xPosition + sliderViewportThreshold.width + 10, sliderViewportThreshold.yPosition + 3, 0xFFCCCCCC);
-        sliderViewportThreshold.drawButton();
+        viewportThreshold.label = "Threshold";
+        viewportThreshold.xPosition = interfaceStartX + 10;
+        viewportThreshold.yPosition = elementStart += elementSpacing;
+        viewportThreshold.width = 120;
+        viewportThreshold.height = 15;
+        viewportThreshold.sliderMaxValue = 32;
+        viewportThreshold.baseColor = 0x55000000;
+        viewportThreshold.sliderButtonColor = 0x9900AAFF;
+        viewportThreshold.tooltip = "The amount of users with tactical HUDs to display in the viewport.";
+        Draw.drawString("Viewport Threshold", viewportThreshold.xPosition + viewportThreshold.width + 10, viewportThreshold.yPosition + 3, 0xFFCCCCCC);
+        viewportThreshold.drawButton();
 
-        buttonNightvisionToggle.displayString = properties.isNightvisionEnabled() ? "Disable Nightvision" : "Enable Nightvision";
-        buttonNightvisionToggle.xPosition = interfaceStartX + 10;
-        buttonNightvisionToggle.yPosition = elementStart += elementSpacing;
-        buttonNightvisionToggle.width = 120;
-        buttonNightvisionToggle.height = 18;
-        buttonNightvisionToggle.baseColor = 0xAA00AAFF;
-        buttonNightvisionToggle.drawButton();
-        buttonNightvisionToggle.tooltip = "Toggle nightvision on or off.";
+        nightvision.displayString = player.isNightvisionEnabled() ? "Disable Nightvision" : "Enable Nightvision";
+        nightvision.xPosition = interfaceStartX + 10;
+        nightvision.yPosition = elementStart += elementSpacing;
+        nightvision.width = 120;
+        nightvision.height = 18;
+        nightvision.baseColor = 0xAA00AAFF;
+        nightvision.drawButton();
+        nightvision.tooltip = "Toggle nightvision on or off.";
 
-        buttonEntityCullingToggle.displayString = properties.isEntityCullingEnabled() ? "Disable Entity Culling" : "Enable Entity Culling";
-        buttonEntityCullingToggle.xPosition = interfaceStartX + 10;
-        buttonEntityCullingToggle.yPosition = elementStart += elementSpacing;
-        buttonEntityCullingToggle.width = 120;
-        buttonEntityCullingToggle.height = 18;
-        buttonEntityCullingToggle.baseColor = 0xAA00AAFF;
-        buttonEntityCullingToggle.drawButton();
-        buttonEntityCullingToggle.tooltip = "";
+        entityCulling.displayString = player.isEntityCullingEnabled() ? "Disable Entity Culling" : "Enable Entity Culling";
+        entityCulling.xPosition = interfaceStartX + 10;
+        entityCulling.yPosition = elementStart += elementSpacing;
+        entityCulling.width = 120;
+        entityCulling.height = 18;
+        entityCulling.baseColor = 0xAA00AAFF;
+        entityCulling.drawButton();
+        entityCulling.tooltip = "";
 
-        buttonSave.displayString = "Save";
-        buttonSave.xPosition = interfaceStartX + 10;
-        buttonSave.yPosition = Screen.scaledDisplayResolution().getScaledHeight() - buttonSave.height - 10;
-        buttonSave.width = 50;
-        buttonSave.height = 20;
-        buttonSave.baseColor = 0xAA00AAFF;
-        buttonSave.drawButton();
+        save.displayString = "Save";
+        save.xPosition = interfaceStartX + 10;
+        save.yPosition = Screen.scaledDisplayResolution().getScaledHeight() - save.height - 10;
+        save.width = 50;
+        save.height = 20;
+        save.baseColor = 0xAA00AAFF;
+        save.drawButton();
     }
 
     @Override
@@ -172,7 +174,7 @@ public class GuiTacticalHUDSettings extends GuiCustomScreen
     protected void keyTyped(char c, int i)
     {
         super.keyTyped(c, i);
-        textboxChannel.textboxKeyTyped(c, i);
+        channel.textboxKeyTyped(c, i);
     }
 
     @Override
@@ -191,10 +193,5 @@ public class GuiTacticalHUDSettings extends GuiCustomScreen
     public void onGuiClosed()
     {
         super.onGuiClosed();
-
-//        textboxChannel.remove();
-//        buttonSave.remove();
-//        sliderTxPower.remove();
-//        sliderViewportThreshold.remove();
     }
 }

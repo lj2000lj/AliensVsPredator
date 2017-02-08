@@ -6,7 +6,7 @@ import org.avp.dimension.varda.ProviderVarda;
 import org.avp.packets.client.PacketVardaStormMoveEntity;
 
 import com.arisux.mdxlib.lib.game.Game;
-import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.Worlds;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -47,7 +47,7 @@ public class VardaStormHandler
                 {
                     Entity entity = (Entity) o;
 
-                    if (event.world != null && entity.worldObj.provider instanceof ProviderVarda && Worlds.canSeeSky(new CoordData(entity), event.world))
+                    if (event.world != null && entity.worldObj.provider instanceof ProviderVarda && Worlds.canSeeSky(new Pos(entity), event.world))
                     {
                         entity.motionZ += 0.04F;
                         entity.motionY += MathHelper.sin(entity.worldObj.getWorldTime() * 0.4F) * 0.1F;

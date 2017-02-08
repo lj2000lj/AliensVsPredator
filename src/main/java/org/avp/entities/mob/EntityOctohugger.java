@@ -7,7 +7,7 @@ import org.avp.api.parasitoidic.IParasitoid;
 import org.avp.entities.extended.Organism;
 import org.avp.util.Embryo;
 
-import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.block.Blocks;
 import com.arisux.mdxlib.lib.world.entity.Entities;
 
@@ -66,7 +66,7 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
         this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(4.0D);
     }
 
-    private CoordData hangingLocation = null;
+    private Pos hangingLocation = null;
 
     public boolean isHanging()
     {
@@ -78,7 +78,7 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
         this.dataWatcher.updateObject(31, isHanging ? 1 : 0);
     }
 
-    public CoordData getHangingLocation()
+    public Pos getHangingLocation()
     {
         double x = this.dataWatcher.getWatchableObjectFloat(27);
         double y = this.dataWatcher.getWatchableObjectFloat(28);
@@ -92,13 +92,13 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
         }
         else
         {
-            this.hangingLocation = new CoordData(x, y, z);
+            this.hangingLocation = new Pos(x, y, z);
         }
 
         return this.hangingLocation;
     }
 
-    public void updateHangingLocation(CoordData location)
+    public void updateHangingLocation(Pos location)
     {
         if (location != null)
         {
@@ -123,11 +123,11 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
 
         if (!this.worldObj.isRemote && this.worldObj.getWorldTime() % 60 == 0 && isHangingLocationStale())
         {
-            ArrayList<CoordData> potentialLocations = Blocks.getCoordDataInRange((int) this.posX, (int) this.posY, (int) this.posZ, 8);
+            ArrayList<Pos> potentialLocations = Blocks.getCoordDataInRange((int) this.posX, (int) this.posY, (int) this.posZ, 8);
 
             for (int x = 0; x < potentialLocations.size(); x++)
             {
-                CoordData loc = potentialLocations.get(this.rand.nextInt(potentialLocations.size()));
+                Pos loc = potentialLocations.get(this.rand.nextInt(potentialLocations.size()));
 
                 if (loc.getBlock(this.worldObj) != net.minecraft.init.Blocks.air)
                 {
@@ -141,7 +141,7 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
                                 {
                                     if (this.worldObj.getBlock((int) loc.x, (int) loc.y - 1, (int) loc.z + 1) == net.minecraft.init.Blocks.air)
                                     {
-                                        if (Entities.canCoordBeSeenBy(this, loc))
+                                        if (Entities.canEntityBeSeenBy(this, loc))
                                         {
                                             this.updateHangingLocation(loc.add(0.5D + (this.rand.nextDouble() / 2) - (this.rand.nextDouble() / 2), 0, 0.5D + (this.rand.nextDouble() / 2) - (this.rand.nextDouble() / 2)));
                                             break;
@@ -207,10 +207,10 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
             this.motionZ = 0;
         }
 
-        if (this.ridingEntity != null || !this.isFertile() || this.isHanging() && this.getHangingLocation() != null && this.getHangingLocation().getBlock(this.worldObj) == net.minecraft.init.Blocks.air || this.getHangingLocation() != null && !Entities.canCoordBeSeenBy(this, this.getHangingLocation()))
+        if (this.ridingEntity != null || !this.isFertile() || this.isHanging() && this.getHangingLocation() != null && this.getHangingLocation().getBlock(this.worldObj) == net.minecraft.init.Blocks.air || this.getHangingLocation() != null && !Entities.canEntityBeSeenBy(this, this.getHangingLocation()))
         {
             this.setHanging(false);
-            this.updateHangingLocation(new CoordData(0, 0, 0));
+            this.updateHangingLocation(new Pos(0, 0, 0));
         }
 
         if (this.isHanging())
@@ -265,7 +265,7 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
     {
         super.readFromNBT(nbt);
         this.setHanging(nbt.getInteger("IsHanging") == 1);
-        this.updateHangingLocation(new CoordData(nbt.getDouble("HangingX"), nbt.getDouble("HangingY"), nbt.getDouble("HangingZ")));
+        this.updateHangingLocation(new Pos(nbt.getDouble("HangingX"), nbt.getDouble("HangingY"), nbt.getDouble("HangingZ")));
     }
 
     @Override

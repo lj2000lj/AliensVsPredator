@@ -24,12 +24,14 @@ public class GuiModSettings extends GuiCustomScreen
 
     public GuiModSettings(GuiScreen parent)
     {
-        GuiCustomButton titleElement = new GuiCustomButton(0, 0, 0, 40, 10, "Graphics Settings", null);
+        GuiCustomButton titleElement = new GuiCustomButton(0, 0, 0, 40, 10, "Graphics Settings");
         titleElement.tooltip = "Higher settings require more system resources.";
         titleElement.enabled = false;
         this.elements.add(titleElement);
         
-        GuiCustomButton buttonElement = new GuiCustomButton(1, 0, 0, 40, 10, String.format("Hive Tessellation", AliensVsPredator.settings().getHiveTesselation()), new IAction()
+        GuiCustomButton buttonElement = new GuiCustomButton(1, 0, 0, 40, 10, String.format("Hive Tessellation", AliensVsPredator.settings().getHiveTesselation()));
+        buttonElement.tooltip = "Visual detail complexity of hive resin. - Low, High, Ultra";
+        buttonElement.setAction(new IAction()
         {
             @Override
             public void perform(GuiCustomButton button)
@@ -37,20 +39,20 @@ public class GuiModSettings extends GuiCustomScreen
                 AliensVsPredator.settings().toggleHiveTessellation();
             }
         });
-        buttonElement.tooltip = "Visual detail complexity of hive resin. - Low, High, Ultra";
         this.elements.add(buttonElement);
         
-        buttonElement = new GuiCustomButton(2, 0, 0, 40, 10, "Apply", new IAction()
+        buttonElement = new GuiCustomButton(2, 0, 0, 40, 10, "Apply");
+        buttonElement.tooltip = "Apply your setting changes.";
+        buttonElement.setAction(new IAction()
         {
             @Override
             public void perform(GuiCustomButton button)
             {
                 AliensVsPredator.settings().saveClientSettings();
                 Minecraft.getMinecraft().refreshResources();
-                button.displayString = "Applied Settings";
+                button.displayString = "Settings Saved";
             }
         });
-        buttonElement.tooltip = "Apply your setting changes.";
         this.elements.add(buttonElement);
     }
 

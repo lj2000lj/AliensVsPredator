@@ -72,7 +72,7 @@ public class ItemFirearm extends HookedItem
         {
             if (this.ammoCount > 0 || player.capabilities.isCreativeMode)
             {
-                MovingObjectPosition objMouseOver = Entities.rayTrace(player, 128);
+                MovingObjectPosition objMouseOver = Entities.rayTraceAll(player, 128);
 
                 this.renderRecoil();
                 this.fixDelay();

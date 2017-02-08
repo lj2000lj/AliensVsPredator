@@ -17,6 +17,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
@@ -26,7 +27,6 @@ public class BlockTurret extends Block
     public BlockTurret(Material material)
     {
         super(material);
-        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 2F, 1.0F);
         this.setTickRandomly(true);
     }
 
@@ -116,7 +116,7 @@ public class BlockTurret extends Block
 
         TileEntityTurret tile = (TileEntityTurret) worldObj.getTileEntity(posX, posY, posZ);
 
-        if (tile != null && tile.getEntity() != null)
+        if (tile != null)
         {
             if (!worldObj.isRemote)
             {
@@ -145,7 +145,10 @@ public class BlockTurret extends Block
                 }
             }
 
-            tile.getEntity().setDead();
+//            if (tile.getEntity() != null)
+//            {
+//                tile.getEntity().setDead();
+//            }
         }
     }
 
@@ -154,5 +157,11 @@ public class BlockTurret extends Block
     {
         super.onBlockDestroyedByExplosion(world, posX, posY, posZ, sourceExplosion);
         this.onBlockDestroyedByPlayer(world, posX, posY, posZ, 0);
+    }
+    
+    @Override
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World worldIn, int x, int y, int z)
+    {
+        return null;
     }
 }

@@ -4,7 +4,7 @@ import java.util.Random;
 
 import org.avp.AliensVsPredator;
 
-import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.Worlds;
 
 import cpw.mods.fml.common.IWorldGenerator;
@@ -23,7 +23,7 @@ public class WorldGenerator implements IWorldGenerator
 
     private void generateSurface(World world, Random rand, int chunkX, int chunkZ)
     {
-        CoordData chunkCoords = new CoordData(chunkX, 0, chunkZ);
+        Pos chunkCoords = new Pos(chunkX, 0, chunkZ);
         BiomeGenBase[] overworldBiomes = new BiomeGenBase[] { BiomeGenBase.beach, BiomeGenBase.birchForest, BiomeGenBase.birchForestHills, BiomeGenBase.coldBeach, BiomeGenBase.coldTaiga, BiomeGenBase.coldTaigaHills, BiomeGenBase.desert, BiomeGenBase.desertHills, BiomeGenBase.extremeHills, BiomeGenBase.extremeHillsEdge, BiomeGenBase.extremeHillsPlus, BiomeGenBase.forest, BiomeGenBase.forestHills, BiomeGenBase.frozenOcean, BiomeGenBase.frozenRiver, BiomeGenBase.iceMountains, BiomeGenBase.icePlains, BiomeGenBase.jungle, BiomeGenBase.jungleEdge, BiomeGenBase.jungleHills, BiomeGenBase.plains, BiomeGenBase.river, BiomeGenBase.roofedForest, BiomeGenBase.swampland, BiomeGenBase.taiga, BiomeGenBase.taigaHills, BiomeGenBase.ocean, BiomeGenBase.deepOcean
         };
         Worlds.generateInBiome(world, new WorldGenMinable(AliensVsPredator.blocks().oreBauxite, 4), rand, 20, 16, 128, chunkCoords, overworldBiomes);

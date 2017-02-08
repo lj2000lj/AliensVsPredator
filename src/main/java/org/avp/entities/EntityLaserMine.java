@@ -88,7 +88,7 @@ public class EntityLaserMine extends Entity
 
         if (this.worldObj.getWorldTime() % 10 == 0)
         {
-            this.laserHit = Entities.rayTrace(this, this.getLaserMaxDepth());
+            this.laserHit = Entities.rayTraceAll(this, this.getLaserMaxDepth());
         }
 
         if (this.worldObj.isRemote)

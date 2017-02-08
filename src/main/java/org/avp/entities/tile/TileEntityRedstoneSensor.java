@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.avp.util.IVoltageProvider;
 
-import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.Pos;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -64,14 +64,14 @@ public class TileEntityRedstoneSensor extends TileEntityElectrical implements IV
         int y = this.yCoord;
         int z = this.zCoord;
 
-        ArrayList<CoordData> locations = new ArrayList<CoordData>();
-        CoordData loc = new CoordData(x, y, z);
-        CoordData right = loc.add(1, 0, 0);
-        CoordData left = loc.add(-1, 0, 0);
-        CoordData front = loc.add(0, 0, 1);
-        CoordData back = loc.add(0, 0, -1);
-        CoordData up = loc.add(0, 1, 0);
-        CoordData down = loc.add(0, -1, 0);
+        ArrayList<Pos> locations = new ArrayList<Pos>();
+        Pos loc = new Pos(x, y, z);
+        Pos right = loc.add(1, 0, 0);
+        Pos left = loc.add(-1, 0, 0);
+        Pos front = loc.add(0, 0, 1);
+        Pos back = loc.add(0, 0, -1);
+        Pos up = loc.add(0, 1, 0);
+        Pos down = loc.add(0, -1, 0);
 
         locations.add(right);
         locations.add(left);
@@ -82,7 +82,7 @@ public class TileEntityRedstoneSensor extends TileEntityElectrical implements IV
 
         this.isActiveRedstoneWireAttached = false;
 
-        for (CoordData location : locations)
+        for (Pos location : locations)
         {
             if (location.getBlock(world).getMaterial() == Material.circuits)
             {

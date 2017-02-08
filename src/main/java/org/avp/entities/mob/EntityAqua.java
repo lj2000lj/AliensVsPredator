@@ -6,7 +6,7 @@ import org.avp.Sounds;
 import org.avp.api.parasitoidic.IMaturable;
 import org.avp.entities.EntityAcidPool;
 
-import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.block.Blocks;
 import com.arisux.mdxlib.lib.world.entity.Entities;
 
@@ -60,7 +60,7 @@ public class EntityAqua extends EntityXenomorph
 
         if (this.getAttackTarget() == null && this.worldObj.getWorldTime() % 60 == 0 && this.rand.nextInt(3) == 0)
         {
-            ArrayList<EntityLivingBase> entities = (ArrayList<EntityLivingBase>) Entities.getEntitiesInCoordsRange(worldObj, EntityLivingBase.class, new CoordData(this), (int) this.getEntityAttribute(SharedMonsterAttributes.followRange).getAttributeValue() / 2);
+            ArrayList<EntityLivingBase> entities = (ArrayList<EntityLivingBase>) Entities.getEntitiesInCoordsRange(worldObj, EntityLivingBase.class, new Pos(this), (int) this.getEntityAttribute(SharedMonsterAttributes.followRange).getAttributeValue() / 2);
 
             for (EntityLivingBase entity : entities)
             {
@@ -84,11 +84,11 @@ public class EntityAqua extends EntityXenomorph
                 if (this.worldObj.getBlock((int) this.posX, (int) this.posY, (int) this.posZ) != net.minecraft.init.Blocks.water)
                 {
                     double range = this.getEntityAttribute(SharedMonsterAttributes.followRange).getAttributeValue() / 2;
-                    ArrayList<CoordData> coordData = Blocks.getCoordDataInRangeIncluding((int) this.posX, (int) this.posY, (int) this.posZ, (int) range, this.worldObj, net.minecraft.init.Blocks.water);
+                    ArrayList<Pos> coordData = Blocks.getCoordDataInRangeIncluding((int) this.posX, (int) this.posY, (int) this.posZ, (int) range, this.worldObj, net.minecraft.init.Blocks.water);
 
                     if (coordData.size() > 0)
                     {
-                        CoordData selectedCoord = coordData.get(this.rand.nextInt(coordData.size()));
+                        Pos selectedCoord = coordData.get(this.rand.nextInt(coordData.size()));
                         this.getNavigator().tryMoveToXYZ((double) selectedCoord.x, (double) selectedCoord.y, (double) selectedCoord.z, this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getAttributeValue());
                     }
                 }

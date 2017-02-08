@@ -1,6 +1,6 @@
 package org.avp.items;
 
-import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.Worlds;
 import com.arisux.mdxlib.lib.world.entity.player.inventory.Inventories;
 import com.arisux.mdxlib.lib.world.item.HookedItem;
@@ -35,7 +35,7 @@ public class ItemIngotLithium extends HookedItem
 
             if (currentDepletion >= depletionTicks)
             {
-                Worlds.createExplosion(entity, worldObj, new CoordData(entity), 1F, true, true, !worldObj.isRemote);
+                Worlds.createExplosion(entity, worldObj, new Pos(entity), 1F, true, true, !worldObj.isRemote);
                 Inventories.consumeItem((EntityPlayer) entity, this, true);
             }
         }

@@ -1,6 +1,6 @@
 package org.avp.entities.pathfinding;
 
-import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.Pos;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.world.IBlockAccess;
@@ -25,7 +25,7 @@ public class PathFinder
         return this.createEntityPathTo(blockAccess, entity, targetEntity.posX, targetEntity.getBoundingBox().minY, targetEntity.posZ, maxDistance);
     }
 
-    public PathEntity createEntityPathTo(IBlockAccess blockAccess, Entity entity, CoordData targetCoord, float maxDistance)
+    public PathEntity createEntityPathTo(IBlockAccess blockAccess, Entity entity, Pos targetCoord, float maxDistance)
     {
         return this.createEntityPathTo(blockAccess, entity, (double) ((float) targetCoord.x + 0.5F), (double) ((float) targetCoord.y + 0.5F), (double) ((float) targetCoord.z + 0.5F), maxDistance);
     }

@@ -5,7 +5,7 @@ import java.util.Random;
 import org.avp.AliensVsPredator;
 import org.avp.dimension.BiomeGenLV;
 
-import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.Worlds;
 
 import net.minecraft.world.World;
@@ -50,12 +50,12 @@ public class BiomeDecoratorAcheron extends BiomeDecorator
     {
         this.generateOres();
 
-        Worlds.generateInChunk(world, this.stalagmiteGen, this.randomGenerator, 10, new CoordData(chunk_X, 0, chunk_Z));
+        Worlds.generateInChunk(world, this.stalagmiteGen, this.randomGenerator, 10, new Pos(chunk_X, 0, chunk_Z));
     }
 
     @Override
     protected void generateOres()
     {
-        Worlds.generateInChunk(world, new WorldGenMinable(AliensVsPredator.blocks().terrainUniDirt, 32), this.randomGenerator, 20, 0, 128, new CoordData(chunk_X, 0, chunk_Z));
+        Worlds.generateInChunk(world, new WorldGenMinable(AliensVsPredator.blocks().terrainUniDirt, 32), this.randomGenerator, 20, 0, 128, new Pos(chunk_X, 0, chunk_Z));
     }
 }

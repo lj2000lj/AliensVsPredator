@@ -56,7 +56,7 @@ public class RenderItemWristbracer extends ItemRenderer
         this.getModelTexMap().getTexture().bind();
         this.getModel().render();
 
-        if (playerToRender != null && ItemWristbracer.playersWristbracerContainsBlades(playerToRender))
+        if (playerToRender != null && ItemWristbracer.equippedHasBlades(playerToRender))
         {
             Model.draw(this.getModel().b6);
             Model.draw(this.getModel().bladeLeft);
@@ -78,7 +78,7 @@ public class RenderItemWristbracer extends ItemRenderer
         this.getModelTexMap().getTexture().bind();
         this.getModel().render();
 
-        if (playerToRender != null && ItemWristbracer.playersWristbracerContainsBlades(playerToRender))
+        if (playerToRender != null && ItemWristbracer.equippedHasBlades(playerToRender))
         {
             Model.draw(this.getModel().b6);
             Model.draw(this.getModel().bladeLeft);

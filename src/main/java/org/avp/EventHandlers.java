@@ -8,23 +8,19 @@ import org.avp.event.ExtendedEntityRegistrationHandler;
 import org.avp.event.FarmlandRegistry;
 import org.avp.event.HiveHandler;
 import org.avp.event.VardaStormHandler;
-import org.avp.event.client.AlienArmorEvents;
-import org.avp.event.client.AmmoIndicatorRenderEvent;
-import org.avp.event.client.BossBarEvent;
-import org.avp.event.client.ChestbursterOverlayEvent;
-import org.avp.event.client.CommonFirearmEvents;
-import org.avp.event.client.FacehuggerRenderEvent;
-import org.avp.event.client.FireAPCEvent;
-import org.avp.event.client.LightmapUpdateEvent;
-import org.avp.event.client.PlayerModeRenderEvent;
-import org.avp.event.client.PressureHUDRenderEvent;
-import org.avp.event.client.PulseRifleEvents;
-import org.avp.event.client.RenderMedpodEvent;
-import org.avp.event.client.RenderPlayerAPCEvent;
-import org.avp.event.client.RenderPlayerHotbarAPCEvent;
-import org.avp.event.client.TacticalHUDRenderEvent;
-import org.avp.event.client.VisionModeRenderEvent;
-import org.avp.event.client.WristBracerEvents;
+import org.avp.event.client.input.InputHandler;
+import org.avp.event.client.render.AmmoIndicatorRenderEvent;
+import org.avp.event.client.render.BossBarEvent;
+import org.avp.event.client.render.ChestbursterOverlayEvent;
+import org.avp.event.client.render.FacehuggerRenderEvent;
+import org.avp.event.client.render.LightmapUpdateEvent;
+import org.avp.event.client.render.PlayerModeRenderEvent;
+import org.avp.event.client.render.PressureHUDRenderEvent;
+import org.avp.event.client.render.RenderLivingHook;
+import org.avp.event.client.render.RenderPlayerAPCEvent;
+import org.avp.event.client.render.RenderPlayerHotbarAPCEvent;
+import org.avp.event.client.render.TacticalHUDRenderEvent;
+import org.avp.event.client.render.VisionModeRenderEvent;
 import org.avp.items.render.RenderMotionTrackerScreen;
 
 import com.arisux.mdxlib.lib.game.Game;
@@ -44,11 +40,9 @@ public class EventHandlers implements IInitEvent
     {
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
         {
-            this.registerEvent(AlienArmorEvents.instance);
-            this.registerEvent(FireAPCEvent.instance);
+            this.registerEvent(InputHandler.instance);
             this.registerEvent(RenderPlayerHotbarAPCEvent.instance);
             this.registerEvent(ChestbursterOverlayEvent.instance);
-            this.registerEvent(CommonFirearmEvents.instance);
             this.registerEvent(PlayerModeRenderEvent.instance);
             this.registerEvent(AmmoIndicatorRenderEvent.instance);
             this.registerEvent(TacticalHUDRenderEvent.instance);
@@ -58,10 +52,8 @@ public class EventHandlers implements IInitEvent
             this.registerEvent(RenderMotionTrackerScreen.instance);
             this.registerEvent(LightmapUpdateEvent.instance);
             this.registerEvent(RenderPlayerAPCEvent.instance);
-            this.registerEvent(PulseRifleEvents.instance);
-            this.registerEvent(WristBracerEvents.instance);
             this.registerEvent(BossBarEvent.instance);
-            this.registerEvent(RenderMedpodEvent.instance);
+            this.registerEvent(RenderLivingHook.instance);
         }
 
         if (FMLCommonHandler.instance().getSide() == Side.SERVER)

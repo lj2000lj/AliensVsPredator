@@ -6,7 +6,7 @@ import org.avp.AliensVsPredator;
 import org.avp.Sounds;
 import org.avp.entities.EntityAcidPool;
 
-import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.block.Blocks;
 
 import net.minecraft.command.IEntitySelector;
@@ -94,11 +94,11 @@ public class EntityHammerpede extends EntitySpeciesAlien implements IMob
             {
                 if (this.worldObj.getBlock((int) this.posX, (int) this.posY, (int) this.posZ) != AliensVsPredator.blocks().blockBlackGoo)
                 {
-                    ArrayList<CoordData> coordData = Blocks.getCoordDataInRangeIncluding((int) this.posX, (int) this.posY, (int) this.posZ, (int) 10, this.worldObj, AliensVsPredator.blocks().blockBlackGoo);
+                    ArrayList<Pos> coordData = Blocks.getCoordDataInRangeIncluding((int) this.posX, (int) this.posY, (int) this.posZ, (int) 10, this.worldObj, AliensVsPredator.blocks().blockBlackGoo);
 
                     if (coordData.size() > 0)
                     {
-                        CoordData selectedCoord = coordData.get(this.rand.nextInt(coordData.size()));
+                        Pos selectedCoord = coordData.get(this.rand.nextInt(coordData.size()));
                         this.getNavigator().tryMoveToXYZ((double) selectedCoord.x, (double) selectedCoord.y, (double) selectedCoord.z, this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getAttributeValue());
                     }
                     coordData.clear();

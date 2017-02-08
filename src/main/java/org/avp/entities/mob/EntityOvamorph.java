@@ -6,7 +6,7 @@ import org.avp.AliensVsPredator;
 import org.avp.EntityItemDrops;
 import org.avp.packets.client.PacketOvamorphContainsFacehugger;
 
-import com.arisux.mdxlib.lib.world.CoordData;
+import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.entity.Entities;
 
 import net.minecraft.entity.Entity;
@@ -33,7 +33,7 @@ public class EntityOvamorph extends EntitySpeciesAlien implements IMob
     public EntityOvamorph(World par1World)
     {
         super(par1World);
-        this.setSize(0.5F, 0.5F);
+        this.setSize(1F, 1F);
         this.hatchingTime = 20 * 30 + (10 * rand.nextInt(24));
         this.experienceValue = 10;
         this.openProgress = -maxOpenProgress;
@@ -136,7 +136,7 @@ public class EntityOvamorph extends EntitySpeciesAlien implements IMob
             {
                 int hatchAcceleration = this.acceleratedHatching ? 8 : 1;
                 EntityPlayer closestPlayer = this.worldObj.getClosestPlayerToEntity(this, 15.0D);
-                ArrayList<Entity> entities = (ArrayList<Entity>) Entities.getEntitiesInCoordsRange(this.worldObj, EntityLiving.class, new CoordData(this), 8);
+                ArrayList<Entity> entities = (ArrayList<Entity>) Entities.getEntitiesInCoordsRange(this.worldObj, EntityLiving.class, new Pos(this), 8);
 
                 for (Entity entity : new ArrayList<Entity>(entities))
                 {
@@ -189,7 +189,7 @@ public class EntityOvamorph extends EntitySpeciesAlien implements IMob
         if (!this.worldObj.isRemote)
         {
             EntityFacehugger facehugger = new EntityFacehugger(this.worldObj);
-            CoordData pos = new CoordData(this).findSafePosAround(this.worldObj);
+            Pos pos = new Pos(this).findSafePosAround(this.worldObj);
 
             facehugger.setLocationAndAngles(pos.x, pos.y, pos.z, 0F, 0F);
             worldObj.spawnEntityInWorld(facehugger);

@@ -10,7 +10,7 @@ import static org.lwjgl.opengl.GL11.GL_ZERO;
 import org.avp.AliensVsPredator;
 import org.avp.entities.mob.EntitySpeciesAlien;
 import org.avp.entities.mob.EntityXenomorph;
-import org.avp.event.client.LightmapUpdateEvent;
+import org.avp.event.client.render.LightmapUpdateEvent;
 
 import com.arisux.mdxlib.lib.client.render.Draw;
 import com.arisux.mdxlib.lib.client.render.OpenGL;

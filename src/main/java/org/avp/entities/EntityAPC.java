@@ -3,6 +3,7 @@ package org.avp.entities;
 import java.util.List;
 
 import org.avp.AliensVsPredator;
+import org.avp.packets.server.PacketFireAPC;
 
 import com.arisux.mdxlib.lib.game.Game;
 
@@ -23,19 +24,19 @@ import net.minecraft.world.World;
 public class EntityAPC extends Entity
 {
     private boolean isVehicleEmpty;
-    private double speedMultiplier;
-    private int rotationIncrements;
-    private double vehicleX;
-    private double vehicleY;
-    private double vehicleZ;
-    private double vehicleYaw;
-    private double vehiclePitch;
+    private double  speedMultiplier;
+    private int     rotationIncrements;
+    private double  vehicleX;
+    private double  vehicleY;
+    private double  vehicleZ;
+    private double  vehicleYaw;
+    private double  vehiclePitch;
     @SideOnly(Side.CLIENT)
-    private double velocityX;
+    private double  velocityX;
     @SideOnly(Side.CLIENT)
-    private double velocityY;
+    private double  velocityY;
     @SideOnly(Side.CLIENT)
-    private double velocityZ;
+    private double  velocityZ;
 
     public EntityAPC(World worldIn)
     {
@@ -194,10 +195,27 @@ public class EntityAPC extends Entity
         this.velocityZ = this.motionZ = z;
     }
 
+    @SideOnly(Side.CLIENT)
+    private void handleKeybindAction()
+    {
+        if (this.worldObj.isRemote)
+        {
+            if (Game.minecraft().thePlayer.isRiding() && Game.minecraft().thePlayer.ridingEntity instanceof EntityAPC)
+            {
+                if (AliensVsPredator.keybinds().specialPrimary.isPressed())
+                {
+                    AliensVsPredator.network().sendToServer(new PacketFireAPC());
+                }
+            }
+        }
+    }
+
     @Override
     public void onUpdate()
     {
         super.onUpdate();
+        
+        this.handleKeybindAction();
 
         this.speedMultiplier = 1.95D;
         this.fallDistance = 0;

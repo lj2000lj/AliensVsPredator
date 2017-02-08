@@ -148,9 +148,9 @@ public class ModelTurret extends Model
         RenderObject tileRenderObject = (RenderObject) renderObject;
         TileEntityTurret tile = (TileEntityTurret) tileRenderObject.getTileEntity();
         
-        if (tile != null && tile.getEntity() != null)
+        if (tile != null)
         {
-            float rotationYaw = (-tile.getRotationYaw() + (tile.getDirection() * 90)) / (180F / (float) Math.PI);
+            float rotationYaw = (-tile.getRotationYaw()) / (180F / (float) Math.PI);
             float rotationPitch = -tile.getRotationPitch() / (180F / (float) Math.PI);
 
             barrel.rotateAngleY = rotationYaw;
