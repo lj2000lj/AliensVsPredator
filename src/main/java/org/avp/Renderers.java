@@ -177,6 +177,7 @@ import org.avp.items.render.RenderItemM56SG;
 import org.avp.items.render.RenderItemMedpod;
 import org.avp.items.render.RenderItemMotionTracker;
 import org.avp.items.render.RenderItemNostromoFlamethrower;
+import org.avp.items.render.RenderItemPlasmaCannon;
 import org.avp.items.render.RenderItemPowercell;
 import org.avp.items.render.RenderItemPowerline;
 import org.avp.items.render.RenderItemRepulsionGenerator;
@@ -364,8 +365,9 @@ public class Renderers implements IPostInitEvent
         registerItemRenderer(Item.getItemFromBlock(AliensVsPredator.blocks().blockGunLocker), new RenderItemGunLocker());
         registerItemRenderer(Item.getItemFromBlock(AliensVsPredator.blocks().blockMedpod), new RenderItemMedpod());
         registerItemRenderer(Item.getItemFromBlock(AliensVsPredator.blocks().blockSatelliteDish), new RenderItemSatelliteDish());
-        registerItemRenderer(items.itemWristBlade, new RenderItemWristbracer());
+        registerItemRenderer(items.itemWristbracer, new RenderItemWristbracer());
         registerItemRenderer(items.itemWristbracerBlades, new RenderItemWristbracerBlades());
+        registerItemRenderer(items.itemPlasmaCannon, new RenderItemPlasmaCannon());
         registerItemRenderer(items.itemSpear, new RenderItemSpear());
         registerItemRenderer(items.itemM240ICU, new RenderItemM240ICU());
         registerItemRenderer(items.itemNostromoFlamethrower, new RenderItemNostromoFlamethrower());
@@ -901,7 +903,7 @@ public class Renderers implements IPostInitEvent
                 OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
                 OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
                 OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                OpenGL.translate(0F, -0.1F, 0.25F);
+                OpenGL.translate(0F, -0.1F, -0.05F);
             }
         });
 
