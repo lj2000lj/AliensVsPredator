@@ -25,13 +25,43 @@ public abstract class EntityRenderTransforms
     {
         return this.entities;
     }
-    
+
     public boolean isApplicable(Entity entity)
     {
-        return entities.contains(entity.getClass());
+        if (entities.contains(entity.getClass()))
+        {
+            return true;
+        }
+        
+        for (Class<?> c : getSuperClasses(entity))
+        {
+            if (c != null && entities.contains(c))
+            {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    public static ArrayList<Class<?>> getSuperClasses(Object o)
+    {
+        ArrayList<Class<?>> list = new ArrayList<Class<?>>();
+        Class<?> c = o.getClass();
+        Class<?> superclass = c.getSuperclass();
+        list.add(superclass);
+        
+        while (superclass != null)
+        {
+            c = superclass;
+            superclass = c.getSuperclass();
+            list.add(superclass);
+        }
+        
+        return list;
     }
 
     public abstract void pre(Entity entity, float partialTicks);
-    
+
     public abstract void post(Entity entity, float partialTicks);
 }

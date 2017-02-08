@@ -3,18 +3,17 @@ package org.avp.event.client.render;
 import org.avp.entities.EntityMedpod;
 import org.avp.entities.tile.render.RenderMedpod;
 import org.avp.util.EntityRenderTransforms;
-import org.lwjgl.opengl.GL11;
 
 import com.arisux.mdxlib.lib.client.Model;
 import com.arisux.mdxlib.lib.client.render.Draw;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.util.MDXMath;
 import com.arisux.mdxlib.lib.world.entity.Entities;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.entity.Entity;
@@ -95,7 +94,14 @@ public class RenderLivingHook
         @Override
         protected ResourceLocation getEntityTexture(Entity entity)
         {
-            return null;
+            ResourceLocation resource = Entities.getEntityTexture(this.cache, entity);
+
+            if (entity instanceof AbstractClientPlayer)
+            {
+                resource = ((AbstractClientPlayer) entity).getLocationSkin();
+            }
+
+            return resource;
         }
 
         public void render(EntityLivingBase entity, RendererLivingEntity renderer, double posX, double posY, double posZ, float partialTicks)
@@ -110,11 +116,24 @@ public class RenderLivingHook
 
             OpenGL.pushMatrix();
             {
-                float rotationYaw = com.arisux.mdxlib.lib.util.MDXMath.interpolateRotation(entity.prevRenderYawOffset, entity.renderYawOffset, partialTicks);
-                float rotationYawHead = com.arisux.mdxlib.lib.util.MDXMath.interpolateRotation(entity.prevRotationYawHead, entity.rotationYawHead, partialTicks);
+                float rotationYaw = MDXMath.interpolateRotation(entity.prevRenderYawOffset, entity.renderYawOffset, partialTicks);
+                float rotationYawHead = MDXMath.interpolateRotation(entity.prevRotationYawHead, entity.rotationYawHead, partialTicks);
                 float rotationPitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
-                float idleProgress = 0.17453292F;
+                float idleProgress = entity.ticksExisted + partialTicks;
+                float swingProgressPrev = entity.prevLimbSwingAmount + (entity.limbSwingAmount - entity.prevLimbSwingAmount) * partialTicks;
+                float swingProgress = entity.limbSwing - entity.limbSwingAmount * (1.0F - partialTicks);
 
+                if (entity.isChild())
+                {
+                    swingProgress *= 3.0F;
+                }
+
+                if (swingProgressPrev > 1.0F)
+                {
+                    swingProgressPrev = 1.0F;
+                }
+
+                this.mainModel.swingProgress = this.getSwingProgress(entity, partialTicks);
                 this.mainModel.isRiding = false;
                 this.mainModel.isChild = entity.isChild();
 
@@ -123,64 +142,30 @@ public class RenderLivingHook
                     this.renderPassModel.isChild = this.mainModel.isChild;
                 }
 
-                OpenGL.disableCullFace();
+                OpenGL.enableBlend();
+                OpenGL.blendClear();
                 OpenGL.translate(posX, posY, posZ);
-                OpenGL.rotate(medpod.getTileEntity());
-                OpenGL.scale(-1.0F, -1.0F, 1.0F);
-                this.preRenderCallback(entity, partialTicks);
-                OpenGL.enableAlphaTest();
-                OpenGL.translate(0.0F, -24.0F * Model.DEFAULT_BOX_TRANSLATION - 0.0078125F, 0.0F);
                 this.transformEntity(medpod, entity, partialTicks);
-                this.mainModel.setLivingAnimations(entity, 0F, 0F, partialTicks);
-                this.renderModel(entity, 0F, 0F, idleProgress, rotationYawHead - rotationYaw, rotationPitch, Model.DEFAULT_BOX_TRANSLATION);
-                OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
-                OpenGL.enableTexture2d();
-                OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
-                OpenGL.enableCullFace();
+                this.mainModel.setLivingAnimations(entity, swingProgress, swingProgressPrev, partialTicks);
+                Draw.bindTexture(this.getEntityTexture(entity));
+                this.mainModel.render(entity, swingProgress, swingProgressPrev, idleProgress, rotationYawHead - rotationYaw, rotationPitch, Model.DEFAULT_BOX_TRANSLATION);
+                OpenGL.disableBlend();
             }
-            GL11.glPopMatrix();
-            this.passSpecialRender(entity, posX, posY, posZ);
+            OpenGL.popMatrix();
         }
 
-        protected void renderModel(EntityLivingBase living, float swingProgress, float swingProgressPrev, float idleProgress, float rotationYawHead, float rotationPitch, float boxTranslation)
+        @Deprecated
+        protected void renderModel(EntityLivingBase entity, float swingProgress, float swingProgressPrev, float idleProgress, float rotationYawHead, float rotationPitch, float boxTranslation)
         {
-            if (living instanceof AbstractClientPlayer)
-            {
-                AbstractClientPlayer clientPlayer = (AbstractClientPlayer) living;
-                Draw.bindTexture(clientPlayer.getLocationSkin());
-            }
-            else
-            {
-                Draw.bindTexture(Entities.getEntityTexture(this.cache, living));
-            }
-
-            if (!living.isInvisible())
-            {
-                this.mainModel.render(living, swingProgress, swingProgressPrev, idleProgress, rotationYawHead, rotationPitch, boxTranslation);
-            }
-            else if (!living.isInvisibleToPlayer(Game.minecraft().thePlayer))
-            {
-                OpenGL.pushMatrix();
-                OpenGL.color(1.0F, 1.0F, 1.0F, 0.15F);
-                OpenGL.depthMask(false);
-                OpenGL.enableBlend();
-                OpenGL.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
-                this.mainModel.render(living, swingProgress, swingProgressPrev, idleProgress, rotationYawHead, rotationPitch, boxTranslation);
-                OpenGL.disableBlend();
-                GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
-                OpenGL.depthMask(true);
-                OpenGL.popMatrix();
-            }
-            else
-            {
-                this.mainModel.setRotationAngles(swingProgress, swingProgressPrev, idleProgress, rotationYawHead, rotationPitch, boxTranslation, living);
-            }
+            this.mainModel.setRotationAngles(swingProgress, swingProgressPrev, idleProgress, rotationYawHead, rotationPitch, boxTranslation, entity);
         }
 
         public void transformEntity(EntityMedpod medpod, Entity inMedpod, float partialTicks)
         {
             float rotation = (float) medpod.getTileEntity().getDoorProgress() * 45 / medpod.getTileEntity().getMaxDoorProgress();
+
+            OpenGL.rotate(medpod.getTileEntity());
+            OpenGL.scale(-1.0F, -1.0F, 1.0F);
 
             for (EntityRenderTransforms transform : RenderMedpod.transforms)
             {
@@ -190,14 +175,10 @@ public class RenderLivingHook
                     break;
                 }
             }
-
-            OpenGL.translate(0F, 0F, 0.225F);
-            OpenGL.translate(0F, 1.5F, -0F);
-            OpenGL.rotate(rotation, 1F, 0F, 0F);
-            OpenGL.translate(0F, -1.75F + inMedpod.height, 0F);
-            OpenGL.translate(0F, -0.5F, 0F);
-            OpenGL.rotate(180F, 0F, 1F, 0);
-
+            
+            OpenGL.translate(0.0F, -24.0F * Model.DEFAULT_BOX_TRANSLATION + 1.5F, 0.0F);
+            OpenGL.rotate(rotation - 90F, 1F, 0F, 0F);
+            
             for (EntityRenderTransforms transform : RenderMedpod.transforms)
             {
                 if (transform.isApplicable(inMedpod))

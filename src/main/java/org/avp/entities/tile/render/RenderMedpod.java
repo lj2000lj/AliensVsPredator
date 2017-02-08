@@ -14,7 +14,7 @@ import net.minecraft.tileentity.TileEntity;
 public class RenderMedpod extends TileEntitySpecialRenderer
 {
     public static ArrayList<EntityRenderTransforms> transforms = new ArrayList<EntityRenderTransforms>();
-    
+
     @Override
     public void renderTileEntityAt(TileEntity tileEntity, double posX, double posY, double posZ, float renderPartialTicks)
     {
@@ -43,6 +43,7 @@ public class RenderMedpod extends TileEntitySpecialRenderer
             AliensVsPredator.resources().models().MEDPOD_MASK.draw(tile);
             OpenGL.enableLight();
             OpenGL.enableLightMapping();
+            OpenGL.blendClear();
             OpenGL.disableBlend();
         }
         OpenGL.popMatrix();

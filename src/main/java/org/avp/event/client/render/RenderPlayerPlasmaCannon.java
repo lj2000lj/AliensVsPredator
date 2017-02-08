@@ -1,6 +1,7 @@
 package org.avp.event.client.render;
 
 import org.avp.AliensVsPredator;
+import org.avp.entities.EntityMedpod;
 import org.avp.entities.extended.ModPlayer;
 import org.avp.entities.model.ModelPlasma;
 import org.avp.event.client.input.handlers.InputHandlerPlasmaCannon;
@@ -70,24 +71,27 @@ public class RenderPlayerPlasmaCannon implements IEventRenderer, IFirstPersonRen
             {
                 ModPlayer player = ModPlayer.get((EntityPlayer) pre.entity);
 
-                if (ItemWristbracer.hasPlasmaCannon(ItemWristbracer.wristbracer(player.getEntity())))
+                if (!(player.getEntity().ridingEntity instanceof EntityMedpod))
                 {
-                    EntityPlayer entity = player.getEntity();
-                    float rotationYaw = MDXMath.interpolateRotation(entity.prevRenderYawOffset, entity.renderYawOffset, partialTicks);
-                    float rotationYawHead = MDXMath.interpolateRotation(entity.prevRotationYawHead, entity.rotationYawHead, partialTicks);
-                    float rotationPitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
-                    float idleProgress = entity.ticksExisted + partialTicks;
-                    float swingProgress = entity.getSwingProgress(partialTicks);
-                    float swingProgressPrev = entity.prevSwingProgress;
-                    float scale = 0.5F;
-                    
-                    OpenGL.pushMatrix();
-                    OpenGL.scale(scale, -scale, -scale);
-                    OpenGL.rotate(rotationYaw, 0F, 1F, 0F);
-                    OpenGL.translate(-0.75F, -0.125F, -0.55F);
-                    MODEL.bindTexture();
-                    MODEL.getModel().render(new RenderObject(new Object[] { entity, swingProgress, swingProgressPrev, idleProgress, rotationYawHead - rotationYaw, rotationPitch }));
-                    OpenGL.popMatrix();
+                    if (ItemWristbracer.hasPlasmaCannon(ItemWristbracer.wristbracer(player.getEntity())))
+                    {
+                        EntityPlayer entity = player.getEntity();
+                        float rotationYaw = MDXMath.interpolateRotation(entity.prevRenderYawOffset, entity.renderYawOffset, partialTicks);
+                        float rotationYawHead = MDXMath.interpolateRotation(entity.prevRotationYawHead, entity.rotationYawHead, partialTicks);
+                        float rotationPitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
+                        float idleProgress = entity.ticksExisted + partialTicks;
+                        float swingProgress = entity.getSwingProgress(partialTicks);
+                        float swingProgressPrev = entity.prevSwingProgress;
+                        float scale = 0.5F;
+
+                        OpenGL.pushMatrix();
+                        OpenGL.scale(scale, -scale, -scale);
+                        OpenGL.rotate(rotationYaw, 0F, 1F, 0F);
+                        OpenGL.translate(-0.75F, -0.125F, -0.55F);
+                        MODEL.bindTexture();
+                        MODEL.getModel().render(new RenderObject(new Object[] { entity, swingProgress, swingProgressPrev, idleProgress, rotationYawHead - rotationYaw, rotationPitch }));
+                        OpenGL.popMatrix();
+                    }
                 }
             }
         }
@@ -177,7 +181,7 @@ public class RenderPlayerPlasmaCannon implements IEventRenderer, IFirstPersonRen
                         OpenGL.rotate(-70F, 0F, 0F, 1F);
                         OpenGL.rotate(45F, 1F, 0F, 0F);
                         OpenGL.translate(-0.1F, -3.95F, 1.25F);
-//                         OpenGL.rotate(rotationYawHead, 0F, 1F, 0F);
+                        // OpenGL.rotate(rotationYawHead, 0F, 1F, 0F);
                         // OpenGL.rotate(rotationPitch, 1F, 0F, 0F);
                         // OpenGL.translate(0F, 0F, -1F);
                         // OpenGL.enableLight();
@@ -240,6 +244,7 @@ public class RenderPlayerPlasmaCannon implements IEventRenderer, IFirstPersonRen
                 OpenGL.popMatrix();
 
                 entityRenderer.enableLightmap(partialTicks);
+                OpenGL.blendClear();
             }
         }
     }
