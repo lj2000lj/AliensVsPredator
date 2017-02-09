@@ -178,6 +178,7 @@ import org.avp.items.render.RenderItemNostromoFlamethrower;
 import org.avp.items.render.RenderItemPlasmaCannon;
 import org.avp.items.render.RenderItemPowercell;
 import org.avp.items.render.RenderItemPowerline;
+import org.avp.items.render.RenderItemRedstoneFluxGenerator;
 import org.avp.items.render.RenderItemRepulsionGenerator;
 import org.avp.items.render.RenderItemSatelliteDish;
 import org.avp.items.render.RenderItemSkull;
@@ -323,6 +324,7 @@ public class Renderers implements IPostInitEvent
         registerItemRenderer(Item.getItemFromBlock(AliensVsPredator.blocks().blockPowercell), new RenderItemPowercell());
         registerItemRenderer(Item.getItemFromBlock(AliensVsPredator.blocks().blockTransformer), new RenderItemTransformer());
         registerItemRenderer(Item.getItemFromBlock(AliensVsPredator.blocks().blockNegativeTransformer), new RenderItemTransformer());
+        registerItemRenderer(Item.getItemFromBlock(AliensVsPredator.blocks().redstoneFluxGenerator), new RenderItemRedstoneFluxGenerator());
         registerItemRenderer(Item.getItemFromBlock(AliensVsPredator.blocks().blockAmpule), new RenderItemAmpule());
         registerItemRenderer(Item.getItemFromBlock(AliensVsPredator.blocks().blockLocker), new RenderItemLocker());
         registerItemRenderer(Item.getItemFromBlock(AliensVsPredator.blocks().blockGunLocker), new RenderItemGunLocker());
