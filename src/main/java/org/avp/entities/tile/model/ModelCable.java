@@ -59,6 +59,17 @@ public class ModelCable extends Model
     {
         TileEntity tile = (TileEntity) renderObject.getObject();
 
+        nodeX.isHidden = false;
+        nodeY.isHidden = false;
+        nodeZ.isHidden = false;
+        
+        cableTop.isHidden = true;
+        cableBottom.isHidden = true;
+        cableWest.isHidden = false;
+        cableEast.isHidden = false;
+        cableSouth.isHidden = false;
+        cableNorth.isHidden = false;
+        
         if (tile != null)
         {
             TileEntity leftTile = tile.getWorld().getTileEntity(tile.xCoord + 1, tile.yCoord, tile.zCoord);

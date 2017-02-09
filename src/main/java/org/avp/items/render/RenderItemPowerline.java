@@ -25,31 +25,34 @@ public class RenderItemPowerline extends ItemRenderer
     @Override
     public void renderThirdPerson(ItemStack item, Object... data)
     {
-        ;
+        OpenGL.pushMatrix();
+        OpenGL.translate(0.375, 0F, 0);
+        OpenGL.rotate(90, 1, 0, 0);
+        OpenGL.rotate(35, 0, 1, 0);
+        this.getModelTexMap().draw();
+        OpenGL.popMatrix();
     }
 
     @Override
     public void renderFirstPerson(ItemStack item, Object... data)
     {
-        ;
+        OpenGL.pushMatrix();
+        OpenGL.translate(0.375, 0.4F, 0);
+        OpenGL.rotate(90, 1, 0, 0);
+        OpenGL.rotate(35, 0, 1, 0);
+        this.getModelTexMap().draw();
+        OpenGL.popMatrix();
     }
 
     @Override
     public void renderInInventory(ItemStack item, Object... data)
     {
+        float glScale = 22F;
         OpenGL.pushMatrix();
-        {
-            float glScale = 14F;
-            OpenGL.disable(GL11.GL_TEXTURE_2D);
-            OpenGL.scale(glScale, glScale, glScale);
-            OpenGL.translate(1.3, 0, 0);
-            OpenGL.rotate(45, 0, 0, 1);
-            OpenGL.rotate(0, 0, 1, 0);
-            OpenGL.color4i(0xFF222222);
-            this.getModelTexMap().drawStandaloneModel();
-            OpenGL.color4i(0xFF222222);
-            OpenGL.enable(GL11.GL_TEXTURE_2D);
-        }
+        OpenGL.scale(glScale, glScale, glScale);
+        OpenGL.translate(0.375, 0.4F, 0);
+        OpenGL.rotate(45, 0, 1, 0);
+        this.getModelTexMap().draw();
         OpenGL.popMatrix();
     }
 
@@ -60,9 +63,6 @@ public class RenderItemPowerline extends ItemRenderer
         OpenGL.disable(GL11.GL_TEXTURE_2D);
         OpenGL.rotate((Game.minecraft().theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
         OpenGL.disable(GL11.GL_CULL_FACE);
-        OpenGL.color4i(0xFF222222);
-        this.getModelTexMap().drawStandaloneModel();
-        OpenGL.color4i(0xFFFFFFFF);
-        OpenGL.enable(GL11.GL_TEXTURE_2D);
+        this.getModelTexMap().draw();
     }
 }
