@@ -10,55 +10,48 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class ModelCable extends Model
 {
-    ModelRenderer node, down, up, front, back, left, right;
+    public ModelRenderer cableWest;
+    public ModelRenderer cableEast;
+    public ModelRenderer cableSouth;
+    public ModelRenderer cableNorth;
+    public ModelRenderer cableBottom;
+    public ModelRenderer cableTop;
+    public ModelRenderer nodeX;
+    public ModelRenderer nodeY;
+    public ModelRenderer nodeZ;
 
     public ModelCable()
     {
-        textureWidth = 512;
-        textureHeight = 64;
-
-        node = new ModelRenderer(this, 0, 0);
-        node.addBox(0F, 0F, 0F, 2, 2, 2);
-        node.setRotationPoint(-1F, 15F, -1F);
-        node.setTextureSize(512, 64);
-        node.mirror = true;
-        setRotation(node, 0F, 0F, 0F);
-        down = new ModelRenderer(this, 0, 0);
-        down.addBox(0F, 0F, 0F, 2, 2, 7);
-        down.setRotationPoint(1F, 18F, -1F);
-        down.setTextureSize(512, 64);
-        down.mirror = true;
-        setRotation(down, -1.570796F, -3.141593F, 0F);
-        up = new ModelRenderer(this, 0, 0);
-        up.addBox(0F, 0F, 0F, 2, 2, 7);
-        up.setRotationPoint(1F, 14F, 1F);
-        up.setTextureSize(512, 64);
-        up.mirror = true;
-        setRotation(up, 1.570796F, -3.141593F, 0F);
-        front = new ModelRenderer(this, 0, 0);
-        front.addBox(0F, 0F, 0F, 2, 2, 7);
-        front.setRotationPoint(1F, 15F, -2F);
-        front.setTextureSize(512, 64);
-        front.mirror = true;
-        setRotation(front, 0F, -3.141593F, 0F);
-        back = new ModelRenderer(this, 0, 0);
-        back.addBox(0F, 0F, 0F, 2, 2, 7);
-        back.setRotationPoint(-1F, 15F, 2F);
-        back.setTextureSize(512, 64);
-        back.mirror = true;
-        setRotation(back, 0F, 0F, 0F);
-        left = new ModelRenderer(this, 0, 0);
-        left.addBox(0F, 0F, 0F, 2, 2, 7);
-        left.setRotationPoint(2F, 15F, 1F);
-        left.setTextureSize(512, 64);
-        left.mirror = true;
-        setRotation(left, 0F, 1.570796F, 0F);
-        right = new ModelRenderer(this, 0, 0);
-        right.addBox(0F, 0F, 0F, 2, 2, 7);
-        right.setRotationPoint(-2F, 15F, -1F);
-        right.setTextureSize(512, 64);
-        right.mirror = true;
-        setRotation(right, 0F, -1.570796F, 0F);
+        this.textureWidth = 64;
+        this.textureHeight = 32;
+        this.cableTop = new ModelRenderer(this, 41, 0);
+        this.cableTop.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.cableTop.addBox(-0.5F, -7.5F, -0.5F, 1, 7, 1, 0.0F);
+        this.nodeZ = new ModelRenderer(this, 0, 0);
+        this.nodeZ.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.nodeZ.addBox(-0.5F, -0.0F, -1.0F, 1, 1, 2, 0.0F);
+        this.cableEast = new ModelRenderer(this, 41, 12);
+        this.cableEast.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.cableEast.addBox(-8.0F, 0.0F, -0.5F, 7, 1, 1, 0.0F);
+        this.cableSouth = new ModelRenderer(this, 20, 0);
+        this.cableSouth.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.cableSouth.addBox(-0.5F, 0.0F, 1.0F, 1, 1, 7, 0.0F);
+        this.nodeX = new ModelRenderer(this, 0, 4);
+        this.nodeX.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.nodeX.addBox(-1.0F, 0.0F, -0.5F, 2, 1, 1, 0.0F);
+        this.cableWest = new ModelRenderer(this, 0, 12);
+        this.cableWest.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.cableWest.addBox(1.0F, 0.0F, -0.5F, 7, 1, 1, 0.0F);
+        this.cableBottom = new ModelRenderer(this, 48, 0);
+        this.cableBottom.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.cableBottom.addBox(-0.5F, 1.5F, -0.5F, 1, 7, 1, 0.0F);
+        this.nodeY = new ModelRenderer(this, 0, 4);
+        this.nodeY.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.nodeY.addBox(-0.5F, -0.5F, -0.5F, 2, 1, 1, 0.0F);
+        this.setRotation(nodeY, 0.0F, 0.0F, 1.5707963267948966F);
+        this.cableNorth = new ModelRenderer(this, 20, 16);
+        this.cableNorth.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.cableNorth.addBox(-0.5F, 0.0F, -8.0F, 1, 1, 7, 0.0F);
     }
 
     @Override
@@ -66,85 +59,51 @@ public class ModelCable extends Model
     {
         TileEntity tile = (TileEntity) renderObject.getObject();
 
-        node.render(boxTranslation);
-
         if (tile != null)
         {
-            down.setRotationPoint(1F, 17F, -1F);
-            up.setRotationPoint(1F, 15F, 1F);
-            front.setRotationPoint(1F, 15F, -1F);
-            back.setRotationPoint(-1F, 15F, 1F);
-            left.setRotationPoint(1F, 15F, 1F);
-            right.setRotationPoint(-1F, 15F, -1F);
-
             TileEntity leftTile = tile.getWorld().getTileEntity(tile.xCoord + 1, tile.yCoord, tile.zCoord);
-
-            if (leftTile instanceof TileEntityElectrical)
-            {
-                TileEntityElectrical connection = (TileEntityElectrical) leftTile;
-
-                if (connection.canProvideEnergyToReceiver(ForgeDirection.EAST))
-                    left.render(boxTranslation);
-            }
+            cableWest.isHidden = !(leftTile instanceof TileEntityElectrical && ((TileEntityElectrical) leftTile).canProvideEnergyToReceiver(ForgeDirection.EAST));
 
             TileEntity rightTile = tile.getWorld().getTileEntity(tile.xCoord - 1, tile.yCoord, tile.zCoord);
-
-            if (rightTile instanceof TileEntityElectrical)
-            {
-                TileEntityElectrical connection = (TileEntityElectrical) rightTile;
-
-                if (connection.canProvideEnergyToReceiver(ForgeDirection.WEST))
-                    right.render(boxTranslation);
-            }
+            cableEast.isHidden = !(rightTile instanceof TileEntityElectrical && ((TileEntityElectrical) rightTile).canProvideEnergyToReceiver(ForgeDirection.WEST));
 
             TileEntity topTile = tile.getWorld().getTileEntity(tile.xCoord, tile.yCoord + 1, tile.zCoord);
-
-            if (topTile instanceof TileEntityElectrical)
-            {
-                TileEntityElectrical connection = (TileEntityElectrical) topTile;
-
-                if (connection.canProvideEnergyToReceiver(ForgeDirection.UP))
-                    up.render(boxTranslation);
-            }
+            cableTop.isHidden = !(topTile instanceof TileEntityElectrical && ((TileEntityElectrical) topTile).canProvideEnergyToReceiver(ForgeDirection.UP));
 
             TileEntity bottomTile = tile.getWorld().getTileEntity(tile.xCoord, tile.yCoord - 1, tile.zCoord);
-
-            if (bottomTile instanceof TileEntityElectrical)
-            {
-                TileEntityElectrical connection = (TileEntityElectrical) bottomTile;
-
-                if (connection.canProvideEnergyToReceiver(ForgeDirection.DOWN))
-                    down.render(boxTranslation);
-            }
+            cableBottom.isHidden = !(bottomTile instanceof TileEntityElectrical && ((TileEntityElectrical) bottomTile).canProvideEnergyToReceiver(ForgeDirection.DOWN));
 
             TileEntity backTile = tile.getWorld().getTileEntity(tile.xCoord, tile.yCoord, tile.zCoord + 1);
-
-            if (backTile instanceof TileEntityElectrical)
-            {
-                TileEntityElectrical connection = (TileEntityElectrical) backTile;
-
-                if (connection.canProvideEnergyToReceiver(ForgeDirection.SOUTH))
-                    back.render(boxTranslation);
-            }
+            cableSouth.isHidden = !(backTile instanceof TileEntityElectrical && ((TileEntityElectrical) backTile).canProvideEnergyToReceiver(ForgeDirection.NORTH));
 
             TileEntity frontTile = tile.getWorld().getTileEntity(tile.xCoord, tile.yCoord, tile.zCoord - 1);
+            cableNorth.isHidden = !(frontTile instanceof TileEntityElectrical && ((TileEntityElectrical) frontTile).canProvideEnergyToReceiver(ForgeDirection.SOUTH));
 
-            if (frontTile instanceof TileEntityElectrical)
+            nodeX.isHidden = cableEast.isHidden && cableWest.isHidden;
+            nodeY.isHidden = cableTop.isHidden && cableBottom.isHidden;
+            nodeZ.isHidden = cableNorth.isHidden && cableSouth.isHidden;
+            
+            if (nodeX.isHidden && nodeY.isHidden && nodeZ.isHidden)
             {
-                TileEntityElectrical connection = (TileEntityElectrical) frontTile;
-
-                if (connection.canProvideEnergyToReceiver(ForgeDirection.NORTH))
-                    front.render(boxTranslation);
+                nodeX.isHidden = false;
+                nodeY.isHidden = false;
+                nodeZ.isHidden = false;
+                
+                cableWest.isHidden = false;
+                cableEast.isHidden = false;
+                cableSouth.isHidden = false;
+                cableNorth.isHidden = false;
             }
         }
-        else
-        {
-            left.render(boxTranslation);
-            right.render(boxTranslation);
-            up.render(boxTranslation);
-            down.render(boxTranslation);
-            front.render(boxTranslation);
-            back.render(boxTranslation);
-        }
+
+        this.cableTop.render(boxTranslation);
+        this.cableEast.render(boxTranslation);
+        this.cableSouth.render(boxTranslation);
+        this.cableWest.render(boxTranslation);
+        this.cableBottom.render(boxTranslation);
+        this.cableNorth.render(boxTranslation);
+        this.nodeX.render(boxTranslation);
+        this.nodeY.render(boxTranslation);
+        this.nodeZ.render(boxTranslation);
     }
 }

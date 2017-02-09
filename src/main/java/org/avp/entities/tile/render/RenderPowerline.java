@@ -1,12 +1,12 @@
 package org.avp.entities.tile.render;
 
-import static org.lwjgl.opengl.GL11.GL_ALPHA_TEST;
 import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
 
 import org.avp.AliensVsPredator;
 import org.avp.entities.tile.TileEntityPowerline;
-import org.lwjgl.opengl.GL11;
 
+import com.arisux.mdxlib.lib.client.Model;
+import com.arisux.mdxlib.lib.client.Model.RenderObject;
 import com.arisux.mdxlib.lib.client.render.Draw;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.game.Game;
@@ -24,19 +24,14 @@ public class RenderPowerline extends TileEntitySpecialRenderer
         OpenGL.pushMatrix();
         {
             OpenGL.disable(GL_CULL_FACE);
-            OpenGL.disable(GL11.GL_TEXTURE_2D);
 
             OpenGL.pushMatrix();
             {
-                OpenGL.translate(posX + 0.5F, posY + 1.5F, posZ + 0.5F);
+                OpenGL.translate(posX + 0.5F, posY + 0.5F, posZ + 0.5F);
                 OpenGL.scale(1.0F, -1.0F, 1.0F);
-                OpenGL.enable(GL_ALPHA_TEST);
-                OpenGL.color4i(0xFF222222);
-                AliensVsPredator.resources().models().CABLE.drawStandaloneModel(tile);
+                AliensVsPredator.resources().models().CABLE.draw(new RenderObject(new Object[] { tile, 0F, 0F, 0F, 0F, 0F, Model.DEFAULT_BOX_TRANSLATION }));
             }
             OpenGL.popMatrix();
-
-            OpenGL.enable(GL11.GL_TEXTURE_2D);
 
             OpenGL.translate(posX + 0.5F, posY + 1.5F, posZ + 0.5F);
 
