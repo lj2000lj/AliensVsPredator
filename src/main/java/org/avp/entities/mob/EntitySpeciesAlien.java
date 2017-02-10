@@ -9,7 +9,6 @@ import org.avp.api.parasitoidic.IMaturable;
 import org.avp.api.parasitoidic.IRoyalOrganism;
 import org.avp.entities.EntityAcidPool;
 import org.avp.event.HiveHandler;
-import org.avp.packets.client.PacketJellyLevelUpdate;
 import org.avp.util.XenomorphHive;
 
 import com.arisux.mdxlib.lib.world.Worlds;
@@ -28,9 +27,9 @@ import net.minecraft.world.World;
 
 public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IRoyalOrganism
 {
+    protected final int     JELLY_LEVEL_DW_ID = 31;
     protected XenomorphHive hive;
     private UUID            signature;
-    protected int           jellyLevel;
 
     public EntitySpeciesAlien(World world)
     {
@@ -39,12 +38,18 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IRoy
     }
 
     @Override
+    protected void entityInit()
+    {
+        super.entityInit();
+        this.dataWatcher.addObject(JELLY_LEVEL_DW_ID, this.getJellyLevelStart());
+    }
+
+    @Override
     public void writeEntityToNBT(NBTTagCompound nbt)
     {
         super.writeEntityToNBT(nbt);
 
         nbt.setString("HiveSignature", signature != null ? this.signature.toString() : "");
-        nbt.setInteger("jellyLevel", this.jellyLevel);
     }
 
     @Override
@@ -53,7 +58,6 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IRoy
         super.readEntityFromNBT(nbt);
 
         this.signature = Worlds.uuidFromNBT(nbt, "HiveSignature");
-        this.jellyLevel = nbt.getInteger("jellyLevel");
     }
 
     @Override
@@ -89,7 +93,7 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IRoy
                 this.worldObj.spawnEntityInWorld(entity);
             }
 
-            ItemDrop dynamicJelly = new ItemDrop(100, new ItemStack(AliensVsPredator.items().itemRoyalJelly, this.jellyLevel / 4));
+            ItemDrop dynamicJelly = new ItemDrop(100, new ItemStack(AliensVsPredator.items().itemRoyalJelly, this.getJellyLevel() / 4));
             dynamicJelly.tryDrop(this);
         }
     }
@@ -112,7 +116,7 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IRoy
         this.writeEntityToNBT(tag);
         alien.readEntityFromNBT(tag);
         alien.setJellyLevel(this.getJellyLevel() - maturable.getMaturityLevel());
-        //TODO: Create a shell of the original entity.
+        // TODO: Create a shell of the original entity.
         this.setDead();
     }
 
@@ -144,7 +148,7 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IRoy
                     }
                 }
             }
-            
+
             entityItemList.clear();
             entityItemList = null;
         }
@@ -176,14 +180,6 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IRoy
     {
         super.onUpdate();
 
-        if (this.worldObj.getWorldTime() % 80 == 0)
-        {
-            if (!this.worldObj.isRemote)
-            {
-                AliensVsPredator.network().sendToAll(new PacketJellyLevelUpdate(jellyLevel, this));
-            }
-        }
-
         if (this.canProduceJelly())
         {
             this.produceJelly();
@@ -208,7 +204,7 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IRoy
         this.identifyHive();
         this.findRoyalJelly();
     }
-    
+
     @Override
     public boolean canProduceJelly()
     {
@@ -224,7 +220,13 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IRoy
     @Override
     public void produceJelly()
     {
-        this.jellyLevel++;
+        if (!this.worldObj.isRemote)
+        {
+            if (this.worldObj.getWorldTime() % 20 == 0)
+            {
+                this.setJellyLevel(this.getJellyLevel() + 20);
+            }
+        }
     }
 
     public XenomorphHive getHive()
@@ -251,13 +253,13 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IRoy
     @Override
     public int getJellyLevel()
     {
-        return this.jellyLevel;
+        return this.dataWatcher.getWatchableObjectInt(JELLY_LEVEL_DW_ID);
     }
 
     @Override
     public void setJellyLevel(int level)
     {
-        this.jellyLevel = level;
+        this.dataWatcher.updateObject(JELLY_LEVEL_DW_ID, level);
     }
 
     @Override
@@ -269,5 +271,10 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IRoy
     protected void negateFallDamage()
     {
         this.fallDistance = 0F;
+    }
+
+    protected int getJellyLevelStart()
+    {
+        return 50;
     }
 }

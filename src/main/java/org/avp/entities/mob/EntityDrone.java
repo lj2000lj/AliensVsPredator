@@ -16,6 +16,8 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
@@ -102,9 +104,9 @@ public class EntityDrone extends EntityXenomorph implements IMaturable
         {
             if (this.getHive() != null && this.worldObj.getWorldTime() % 10 == 0 && rand.nextInt(3) == 0)
             {
-                if (this.jellyLevel >= 16)
+                if (this.getJellyLevel() >= 16)
                 {
-                    Pos coord = findNextSuitableResinLocation(2);
+                    Pos coord = findNextSuitableResinLocation(3);
 
                     if (coord != null)
                     {
@@ -134,7 +136,7 @@ public class EntityDrone extends EntityXenomorph implements IMaturable
                                 this.hive.addResin(resin);
                             }
 
-                            this.jellyLevel -= 16;
+                            this.setJellyLevel(this.getJellyLevel() - 16);
                         }
                     }
                 }
@@ -146,20 +148,34 @@ public class EntityDrone extends EntityXenomorph implements IMaturable
     {
         ArrayList<Pos> data = new ArrayList<Pos>();
 
-        for (int x = (int) (posX - range); x < posX + range * 2; x++)
+        for (int x = (int) (posX - range); x < posX + range; x++)
         {
-            for (int y = (int) (posY - range); y < posY + range * 2; y++)
+            for (int y = (int) (posY - range); y < posY + range; y++)
             {
-                for (int z = (int) (posZ - range); z < posZ + range * 2; z++)
+                for (int z = (int) (posZ - range); z < posZ + range; z++)
                 {
                     Pos location = new Pos(x, y, z);
                     Block block = location.getBlock(this.worldObj);
 
                     if (!(block == net.minecraft.init.Blocks.air) && !(block instanceof BlockHiveResin) && block.isOpaqueCube())
                     {
-                        if (location.isAnySurfaceEmpty(this.worldObj) && (this.worldObj.rayTraceBlocks(Vec3.createVectorHelper(this.posX, this.posY + (double) this.getEyeHeight(), this.posZ), Vec3.createVectorHelper(x, y, z)) == null))
+                        Vec3 start = Vec3.createVectorHelper(this.posX, this.posY + (double) this.getEyeHeight(), this.posZ);
+                        Vec3 end = Vec3.createVectorHelper(x, y, z);
+                        MovingObjectPosition hit = this.worldObj.rayTraceBlocks(start, end);
+
+                        if (hit != null && hit.typeOfHit == MovingObjectType.BLOCK || hit == null)
                         {
-                            data.add(location);
+                            boolean canSeeCoord = true;
+
+                            if (hit != null)
+                            {
+                                canSeeCoord = hit.blockX == x && hit.blockY == y && hit.blockZ == z;
+                            }
+
+                            if (location.isAnySurfaceEmpty(this.worldObj) && canSeeCoord)
+                            {
+                                data.add(location);
+                            }
                         }
                     }
                 }

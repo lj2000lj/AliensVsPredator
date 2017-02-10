@@ -46,7 +46,6 @@ public class EntityQueen extends EntityXenomorph implements IMob
         this.setSize(2.0F, 5.0F);
         this.growingOvipositor = false;
         this.experienceValue = 40000;
-        this.jellyLevel = OVIPOSITOR_JELLYLEVEL_THRESHOLD;
         this.jumpMovementFactor = 0.2F;
         this.hurtResistantTime = 0;
         this.ignoreFrustumCheck = true;
@@ -124,7 +123,7 @@ public class EntityQueen extends EntityXenomorph implements IMob
     {
         if (this.reproducing)
         {
-            if (!this.worldObj.isRemote && this.worldObj.getWorldTime() % (20 * 120) == 0 && this.jellyLevel >= OVIPOSITOR_UNHEALTHY_THRESHOLD)
+            if (!this.worldObj.isRemote && this.worldObj.getWorldTime() % (20 * 120) == 0 && this.getJellyLevel() >= OVIPOSITOR_UNHEALTHY_THRESHOLD)
             {
                 int ovipositorDist = 10;
                 double rotationYawRadians = Math.toRadians(this.rotationYawHead - 90);
@@ -133,7 +132,7 @@ public class EntityQueen extends EntityXenomorph implements IMob
 
                 this.worldObj.playSoundAtEntity(this, AliensVsPredator.sounds().SOUND_QUEEN_HURT.getKey(), 1F, this.rand.nextInt(10) / 100);
                 AliensVsPredator.network().sendToServer(new PacketSpawnEntity(ovamorphX, this.posY, ovamorphZ, Entities.getEntityRegistrationId(EntityOvamorph.class)));
-                this.jellyLevel -= 100;
+                this.setJellyLevel(this.getJellyLevel() - 100);
             }
         }
     }
@@ -144,14 +143,14 @@ public class EntityQueen extends EntityXenomorph implements IMob
         {
             if (this.hive != null)
             {
-                boolean ovipositorHealthy = this.jellyLevel >= OVIPOSITOR_UNHEALTHY_THRESHOLD;
+                boolean ovipositorHealthy = this.getJellyLevel() >= OVIPOSITOR_UNHEALTHY_THRESHOLD;
 
                 if (ovipositorHealthy)
                 {
                     if (this.getOvipositorSize() < OVIPOSITOR_THRESHOLD_SIZE)
                     {
                         this.setOvipositorSize(this.getOvipositorSize() + OVIPOSITOR_PROGRESSIVE_GROWTH_SIZE);
-                        this.jellyLevel -= OVIPOSITOR_JELLYLEVEL_GROWTH_USE;
+                        this.setJellyLevel(this.getJellyLevel() - OVIPOSITOR_JELLYLEVEL_GROWTH_USE);
                     }
 
                     this.removeAI();
@@ -386,5 +385,11 @@ public class EntityQueen extends EntityXenomorph implements IMob
     protected boolean canDespawn()
     {
         return false;
+    }
+    
+    @Override
+    protected int getJellyLevelStart()
+    {
+        return 1000;
     }
 }

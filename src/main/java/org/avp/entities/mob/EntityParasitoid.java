@@ -190,7 +190,7 @@ public class EntityParasitoid extends EntitySpeciesAlien implements IMob, IParas
     @Override
     public boolean canProduceJelly()
     {
-        return this.worldObj.getWorldTime() % this.getJellyProductionRate() == 0 && this.isFertile() && this.jellyLevel <= 256;
+        return this.worldObj.getWorldTime() % this.getJellyProductionRate() == 0 && this.isFertile() && this.getJellyLevel() <= 256;
     }
 
     @Override

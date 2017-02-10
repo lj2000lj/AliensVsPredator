@@ -2,7 +2,6 @@ package org.avp;
 
 import org.avp.packets.client.OrganismClientSync;
 import org.avp.packets.client.PacketAmmoUpdate;
-import org.avp.packets.client.PacketJellyLevelUpdate;
 import org.avp.packets.client.PacketOpenBlastdoor;
 import org.avp.packets.client.PacketOpenable;
 import org.avp.packets.client.PacketOvamorphContainsFacehugger;
@@ -66,7 +65,6 @@ public class NetworkHandler extends SimpleNetworkWrapper implements IInitEvent
         this.registerMessage(Side.SERVER, PacketReadFromDataDevice.class);
         this.registerMessage(Side.CLIENT, PacketTurretTargetUpdate.class);
         this.registerMessage(Side.SERVER, PacketWriteToDataDevice.class);
-        this.registerMessage(Side.CLIENT, PacketJellyLevelUpdate.class);
         this.registerMessage(Side.CLIENT, PacketOvamorphContainsFacehugger.class);
         this.registerMessage(Side.CLIENT, PacketAmmoUpdate.class);
         this.registerMessage(Side.CLIENT, PacketOpenBlastdoor.class);
