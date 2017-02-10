@@ -29,6 +29,7 @@ public class RenderSupplyCrate extends TileEntitySpecialRenderer
             
             tile.getType().getModel().bindTexture();
             tile.getType().getModel().getModel().drawCrate();
+            OpenGL.enableCullFace();
         }
         OpenGL.popMatrix();
     }

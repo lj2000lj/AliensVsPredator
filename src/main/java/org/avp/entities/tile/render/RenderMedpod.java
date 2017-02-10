@@ -45,6 +45,7 @@ public class RenderMedpod extends TileEntitySpecialRenderer
             OpenGL.enableLightMapping();
             OpenGL.blendClear();
             OpenGL.disableBlend();
+            OpenGL.enableCullFace();
         }
         OpenGL.popMatrix();
     }

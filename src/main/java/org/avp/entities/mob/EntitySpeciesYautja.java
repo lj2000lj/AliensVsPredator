@@ -10,16 +10,15 @@ import org.avp.items.ItemPlasmaCannon;
 import org.avp.items.ItemShuriken;
 import org.avp.items.ItemWristbracer;
 
-import net.minecraft.block.material.Material;
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.ai.EntityAIPanic;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
@@ -47,13 +46,13 @@ public abstract class EntitySpeciesYautja extends EntityMob implements IHost, IE
         this.setSize(1.0F, 2.5F);
         this.getNavigator().setCanSwim(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityCreature.class, 1.0D, false));
+        this.tasks.addTask(1, new EntityAIPanic(this, 0.7F));
+        this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityLivingBase.class, 1D, true));
         this.tasks.addTask(2, new EntityAIWatchClosest(this, EntityMob.class, 16F));
         this.tasks.addTask(2, new EntityAIWander(this, 0.8D));
-        this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
+        this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.6F));
         this.targetTasks.addTask(0, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true, false, this));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityCreature.class, 0, true, false, this));
+        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityLivingBase.class, 0, false, false, this));
     }
 
     @Override
@@ -61,8 +60,8 @@ public abstract class EntitySpeciesYautja extends EntityMob implements IHost, IE
     {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(80.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.5199999761581421D);
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(8.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.6D);
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(6.0D);
         this.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(0.75D);
     }
 
@@ -71,6 +70,12 @@ public abstract class EntitySpeciesYautja extends EntityMob implements IHost, IE
     {
         super.entityInit();
         this.dataWatcher.addObject(WEARING_MASK_DATAWATCHER_ID, this.rand.nextBoolean() ? 1 : 0);
+    }
+    
+    @Override
+    public void onUpdate()
+    {
+        super.onUpdate();
     }
 
     @Override
@@ -133,7 +138,7 @@ public abstract class EntitySpeciesYautja extends EntityMob implements IHost, IE
     @Override
     public boolean attackEntityAsMob(Entity entity)
     {
-        int damage = 5;
+        int damage = 6;
 
         if (this.isPotionActive(Potion.damageBoost))
         {
@@ -175,7 +180,7 @@ public abstract class EntitySpeciesYautja extends EntityMob implements IHost, IE
     @Override
     public boolean isInWater()
     {
-        return this.worldObj.handleMaterialAcceleration(this.boundingBox.expand(0.0D, -0.900000023841858D, 0.0D), Material.water, this);
+        return super.isInWater();
     }
 
     @Override
@@ -203,6 +208,8 @@ public abstract class EntitySpeciesYautja extends EntityMob implements IHost, IE
 
         EntityItemDrops.PREDATOR_ARTIFACT.tryDrop(this);
         EntityItemDrops.PLASMACANNON.tryDrop(this);
+        EntityItemDrops.WRISTBRACER.tryDrop(this);
+        EntityItemDrops.WRISTBRACER_BLADES.tryDrop(this);
 
         if (damagesource == DamageSources.wristbracer)
         {

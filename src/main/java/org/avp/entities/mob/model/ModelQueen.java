@@ -547,15 +547,12 @@ public class ModelQueen extends Model
         this.bStabber3.render(boxTranslation);
         this.bStabber4.render(boxTranslation);
         this.bStabber5.render(boxTranslation);
-        OpenGL.enableCullFace();
         
 
         OpenGL.pushMatrix();
-        OpenGL.disableCullFace();
         OpenGL.scale(1F, 1F, -1F);
         OpenGL.translate(0F, 0.01F, -9.1F);
         this.tailStabber.render(boxTranslation);
-        OpenGL.enableCullFace();
         OpenGL.popMatrix();
 
         OpenGL.pushMatrix();
@@ -596,8 +593,9 @@ public class ModelQueen extends Model
                     OpenGL.translate(0, -0.05F, 1F - queen.getOvipositorSize());
                     OpenGL.scale(queen.getOvipositorSize(), queen.getOvipositorSize(), queen.getOvipositorSize());
                     OpenGL.enableBlend();
+                    OpenGL.blendClear();
                     OpenGL.disableCullFace();
-//                    OpenGL.blendFunc(GL11.GL_ONE, GL11.GL_ONE_MINUS_DST_COLOR);
+                    OpenGL.blendFunc(GL11.GL_ONE, GL11.GL_ONE_MINUS_DST_COLOR);
                     AliensVsPredator.resources().models().XENOQUEEN_MASK.getTexture().bind();
                     draw(sack0);
                     draw(sack1);
@@ -613,5 +611,6 @@ public class ModelQueen extends Model
                 OpenGL.popMatrix();
             }
         }
+        OpenGL.enableCullFace();
     }
 }

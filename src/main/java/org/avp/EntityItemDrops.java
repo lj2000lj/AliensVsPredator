@@ -26,6 +26,8 @@ public class EntityItemDrops
     public static final ItemDrop SKULLS_XENO = new ItemDrop(1, DropType.RATE_PERDROP_SINGLE, new ItemStack(AliensVsPredator.blocks().blockSkullXenomorphWarrior), new ItemStack(AliensVsPredator.blocks().blockSkullXenomorph));
     public static final ItemDrop PREDATOR_ARTIFACT = new ItemDrop(50, new ItemStack(items.itemArtifactTech));
     public static final ItemDrop PLASMACANNON = new ItemDrop(5, new ItemStack(items.itemPlasmaCannon));
+    public static final ItemDrop WRISTBRACER = new ItemDrop(5, new ItemStack(items.itemWristbracer));
+    public static final ItemDrop WRISTBRACER_BLADES = new ItemDrop(25, new ItemStack(items.itemWristbracerBlades));
     public static final ItemDrop AMMUNITION = new ItemDrop(75, DropType.RATE_PERSTACK_MULTIPLE, new ItemStack(items.itemAmmoAC), new ItemStack(items.itemAmmoAR), new ItemStack(items.itemAmmoPistol), new ItemStack(items.itemAmmoSMG), new ItemStack(items.itemAmmoSniper));
     public static final ItemDrop FIREARMS = new ItemDrop(15, DropType.RATE_PERSTACK_SINGLE, new ItemStack(items.itemM56SG), new ItemStack(items.itemPistol), new ItemStack(items.itemM4), new ItemStack(items.itemM41A), new ItemStack(items.itemSniper));
 }

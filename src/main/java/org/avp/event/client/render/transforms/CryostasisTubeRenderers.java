@@ -120,6 +120,7 @@ public class CryostasisTubeRenderers
                 OpenGL.translate(0F, -0.75F, 0F);
                 AliensVsPredator.resources().models().CRYOSTASIS_TUBE.draw();
                 OpenGL.popMatrix();
+                OpenGL.enableCullFace();
             }
 
             @Override
@@ -180,6 +181,7 @@ public class CryostasisTubeRenderers
                 OpenGL.scale(0.5, 0.5, 0.5);
                 OpenGL.enableLightMapping();
                 OpenGL.enableLight();
+                OpenGL.enableCullFace();
             }
         });
     }

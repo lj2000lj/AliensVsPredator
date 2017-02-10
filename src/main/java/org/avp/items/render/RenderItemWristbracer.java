@@ -91,16 +91,14 @@ public class RenderItemWristbracer extends ItemRenderer
     {
         super.renderInInventory(item, data);
         
-        OpenGL.enableBlend();
-        OpenGL.blendClear();
         OpenGL.rotate(-45F, 0.0F, 1.0F, 0.0F);
         OpenGL.translate(-16F, -7F, -18F);
         OpenGL.scale(33F, 33F, 33F);
-        this.getModelTexMap().getTexture().bind();
-        this.getModel().render();
+        OpenGL.disableCullFace();
+        this.getModelTexMap().draw();
         Model.draw(this.getModel().b6);
         Model.draw(this.getModel().bladeLeft);
-        OpenGL.disableBlend();
+        OpenGL.enableCullFace();
     }
     
     @Override

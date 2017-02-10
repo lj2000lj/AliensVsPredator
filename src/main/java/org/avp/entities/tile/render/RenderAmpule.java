@@ -27,6 +27,7 @@ public class RenderAmpule extends TileEntitySpecialRenderer
             OpenGL.disableCullFace();
             OpenGL.rotate(tile);
             AliensVsPredator.resources().models().AMPULE.draw(tile);
+            OpenGL.enableCullFace();
         }
         OpenGL.popMatrix();
     }

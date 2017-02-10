@@ -19,6 +19,7 @@ public class RenderSatelliteDish extends TileEntitySpecialRenderer
             OpenGL.translate(0.5F, -1.525F, 0.5F);
             OpenGL.disableCullFace();
             AliensVsPredator.resources().models().SATELLITE_DISH.draw(tileEntity);
+            OpenGL.enableCullFace();
         }
         OpenGL.popMatrix();
     }

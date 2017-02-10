@@ -5,7 +5,6 @@ import com.arisux.mdxlib.lib.client.render.ItemRenderer;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.game.Game;
 
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.ItemStack;
 
 public class RenderItemSummoner extends ItemRenderer
@@ -52,7 +51,6 @@ public class RenderItemSummoner extends ItemRenderer
         {
             OpenGL.enableBlend();
             OpenGL.blendClear();
-            RenderHelper.enableGUIStandardItemLighting();
             OpenGL.scale(1F, -1F, 1F);
             OpenGL.translate(0F, -1F, 0F);
             OpenGL.rotate(180F, 0F, 0F, 1F);

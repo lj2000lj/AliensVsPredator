@@ -32,6 +32,7 @@ public class RenderSupplyChute extends Render
         OpenGL.rotate(entity.rotationYaw, 0.0F, 1.0F, 0.0F);
         OpenGL.rotate(entity.rotationPitch, 0.0F, 0.0F, 1.0F);
         chute.getType().getModel().draw();
+        OpenGL.enableCullFace();
         OpenGL.popMatrix();
     }
 

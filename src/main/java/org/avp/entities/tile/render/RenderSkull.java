@@ -38,6 +38,7 @@ public class RenderSkull extends TileEntitySpecialRenderer
             {
                 renderer.render(Model.DEFAULT_BOX_TRANSLATION);
             }
+            OpenGL.enableCullFace();
         }
         OpenGL.popMatrix();
     }

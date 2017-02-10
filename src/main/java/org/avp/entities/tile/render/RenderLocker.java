@@ -87,6 +87,7 @@ public class RenderLocker extends TileEntitySpecialRenderer
                 }
                 OpenGL.popMatrix();
             }
+            OpenGL.enableCullFace();
         }
         OpenGL.popMatrix();
     }
