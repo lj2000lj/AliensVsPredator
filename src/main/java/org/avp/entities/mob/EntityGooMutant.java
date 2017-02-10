@@ -1,5 +1,7 @@
 package org.avp.entities.mob;
 
+import org.avp.api.parasitoidic.IHost;
+
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -18,7 +20,7 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
-public class EntityGooMutant extends EntityMob implements IMob
+public class EntityGooMutant extends EntityMob implements IMob, IHost
 {
     IEntitySelector mobSelector = new IEntitySelector()
     {
@@ -100,6 +102,18 @@ public class EntityGooMutant extends EntityMob implements IMob
 
     @Override
     public boolean canDespawn()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean canParasiteAttach()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean canHostParasite()
     {
         return false;
     }
