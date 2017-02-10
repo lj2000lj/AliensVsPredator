@@ -157,8 +157,8 @@ public class PressureHUDRenderEvent
             if (provider instanceof ProviderVarda)
             {
                 ProviderVarda providerVarda = (ProviderVarda) provider;
-                long stormStartTime = providerVarda.getStormHandler().getStormStartTime() * 1000L;
-                long stormEndTime = providerVarda.getStormHandler().getStormEndTime() * 1000L;
+                long stormStartTime = providerVarda.getStormProvider().getStormStartTime() * 1000L;
+                long stormEndTime = providerVarda.getStormProvider().getStormEndTime() * 1000L;
                 long worldTime = providerVarda.getWorldTime();
                 int warningTime = 1000;
                 int timeUntilStorm = (int) (stormStartTime - provider.getWorldTime());

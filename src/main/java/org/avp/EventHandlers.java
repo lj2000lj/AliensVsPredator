@@ -7,7 +7,6 @@ import org.avp.event.EntityImpregnationHandler;
 import org.avp.event.ExtendedEntityRegistrationHandler;
 import org.avp.event.FarmlandRegistry;
 import org.avp.event.HiveHandler;
-import org.avp.event.VardaStormHandler;
 import org.avp.event.client.input.InputHandler;
 import org.avp.event.client.render.AmmoIndicatorRenderEvent;
 import org.avp.event.client.render.BossBarEvent;
@@ -33,7 +32,7 @@ import cpw.mods.fml.relauncher.Side;
 public class EventHandlers implements IInitEvent
 {
     public static final EventHandlers instance = new EventHandlers();
-    public ArrayList<Object>              events   = new ArrayList<Object>();
+    public ArrayList<Object>          events   = new ArrayList<Object>();
 
     @Override
     public void init(FMLInitializationEvent event)
@@ -64,7 +63,6 @@ public class EventHandlers implements IInitEvent
         this.registerEvent(EntityImpregnationHandler.instance);
         this.registerEvent(ExtendedEntityRegistrationHandler.instance);
         this.registerEvent(SaveHandler.instance);
-        this.registerEvent(VardaStormHandler.instance);
         this.registerEvent(FarmlandRegistry.instance);
         this.registerEvent(BucketHandlingEvent.instance);
         this.registerEvent(HiveHandler.instance);

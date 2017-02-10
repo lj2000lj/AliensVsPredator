@@ -1,7 +1,7 @@
 package org.avp.dimension.varda;
 
 import org.avp.AliensVsPredator;
-import org.avp.event.VardaStormHandler;
+import org.avp.event.StormProvider;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -16,12 +16,21 @@ import net.minecraftforge.client.IRenderHandler;
 
 public class ProviderVarda extends WorldProvider
 {
+    public StormProvider stormProvider = new StormProvider();
+    
     @SideOnly(Side.CLIENT)
     private IRenderHandler skyProvider;
 
     public ProviderVarda()
     {
         ;
+    }
+    
+    @Override
+    public void updateWeather()
+    {
+        super.updateWeather();
+        this.stormProvider.update(this.worldObj);
     }
 
     @Override
@@ -146,9 +155,9 @@ public class ProviderVarda extends WorldProvider
         return brightness * 0.45F;
     }
 
-    public VardaStormHandler getStormHandler()
+    public StormProvider getStormProvider()
     {
-        return VardaStormHandler.instance;
+        return this.stormProvider;
     }
 
     @Override
