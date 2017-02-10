@@ -27,7 +27,7 @@ import net.minecraft.world.World;
 
 public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IRoyalOrganism
 {
-    protected final int     JELLY_LEVEL_DW_ID = 31;
+    protected final int     JELLY_LEVEL_DW_ID = 26;
     protected XenomorphHive hive;
     private UUID            signature;
 
@@ -50,6 +50,7 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IRoy
         super.writeEntityToNBT(nbt);
 
         nbt.setString("HiveSignature", signature != null ? this.signature.toString() : "");
+        nbt.setInteger("JellyLevel", this.getJellyLevel());
     }
 
     @Override
@@ -58,6 +59,7 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IRoy
         super.readEntityFromNBT(nbt);
 
         this.signature = Worlds.uuidFromNBT(nbt, "HiveSignature");
+        this.setJellyLevel(nbt.getInteger("JellyLevel"));
     }
 
     @Override
