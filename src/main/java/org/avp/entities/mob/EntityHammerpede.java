@@ -166,4 +166,16 @@ public class EntityHammerpede extends EntitySpeciesAlien implements IMob
     {
         super.writeEntityToNBT(nbt);
     }
+    
+    @Override
+    protected void findRoyalJelly()
+    {
+        ;
+    }
+    
+    @Override
+    public void identifyHive()
+    {
+        ;
+    }
 }
