@@ -94,26 +94,6 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IRoy
         }
     }
 
-    // protected void tickEvolution()
-    // {
-    // if (this.worldObj.getWorldTime() % 10 == 0)
-    // {
-    // EvolutionType evolution = EvolutionType.getEvolutionMappingFor(this.getClass());
-    //
-    // if (!this.worldObj.isRemote && evolution != null && evolution.getEvolution() != null && evolution.getLevel() != 0 && this.jellyLevel >= evolution.getLevel())
-    // {
-    // EntitySpeciesAlien alien = (EntitySpeciesAlien) Entities.constructEntity(this.worldObj, evolution.getEvolution());
-    // alien.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
-    // this.worldObj.spawnEntityInWorld(alien);
-    // NBTTagCompound tag = new NBTTagCompound();
-    // this.writeEntityToNBT(tag);
-    // alien.readEntityFromNBT(tag);
-    // alien.setJellyLevel(this.getJellyLevel() - evolution.getLevel());
-    // this.setDead();
-    // }
-    // }
-    // }
-    
     public boolean isReadyToMature(IRoyalOrganism jellyProducer)
     {
         IMaturable maturable = (IMaturable) this;

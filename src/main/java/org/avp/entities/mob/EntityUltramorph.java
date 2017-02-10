@@ -66,4 +66,16 @@ public class EntityUltramorph extends EntityXenomorph implements IMob
     {
         super.writeEntityToNBT(nbt);
     }
+    
+    @Override
+    protected void findRoyalJelly()
+    {
+        ;
+    }
+    
+    @Override
+    public void identifyHive()
+    {
+        ;
+    }
 }

@@ -281,4 +281,16 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
             nbt.setDouble("HangingZ", this.getHangingLocation().z);
         }
     }
+    
+    @Override
+    protected void findRoyalJelly()
+    {
+        ;
+    }
+    
+    @Override
+    public void identifyHive()
+    {
+        ;
+    }
 }

@@ -69,4 +69,16 @@ public class EntityDeacon extends EntityXenomorph
     {
         super.writeEntityToNBT(nbt);
     }
+    
+    @Override
+    protected void findRoyalJelly()
+    {
+        ;
+    }
+    
+    @Override
+    public void identifyHive()
+    {
+        ;
+    }
 }
