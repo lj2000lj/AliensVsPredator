@@ -5,6 +5,7 @@ import com.arisux.mdxlib.lib.client.render.ItemRenderer;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.game.Game;
 
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.ItemStack;
 
 public class RenderItemSummoner extends ItemRenderer
@@ -49,14 +50,17 @@ public class RenderItemSummoner extends ItemRenderer
     {
         OpenGL.pushMatrix();
         {
-            OpenGL.enableLighting();
+            OpenGL.enableBlend();
+            OpenGL.blendClear();
+            RenderHelper.enableGUIStandardItemLighting();
             OpenGL.scale(1F, -1F, 1F);
             OpenGL.translate(0F, -1F, 0F);
             OpenGL.rotate(180F, 0F, 0F, 1F);
             OpenGL.rotate(-45F, 0F, 1F, 0F);
             OpenGL.disableCullFace();
             this.model.draw();
-            OpenGL.disableLighting();
+            OpenGL.enableCullFace();
+            OpenGL.disableBlend();
         }
         OpenGL.popMatrix();
     }
@@ -98,9 +102,9 @@ public class RenderItemSummoner extends ItemRenderer
     {
         OpenGL.rotate(180F, 0.0F, 0.0F, 1F);
         OpenGL.rotate(90F, 0.0F, 1F, 0F);
-        OpenGL.translate(0F, -2.5F, 0F);
         OpenGL.rotate((this.mc.theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
-
+        OpenGL.scale(0.25F, 0.25F, 0.25F);
+        OpenGL.translate(0F, -2.5F, 0F);
         this.renderCachedModel();
     }
 }

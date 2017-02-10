@@ -3,9 +3,9 @@ package org.avp.items.render;
 import org.avp.AliensVsPredator;
 import org.lwjgl.opengl.GL11;
 
+import com.arisux.mdxlib.lib.client.render.ItemRenderer;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.game.Game;
-import com.arisux.mdxlib.lib.client.render.ItemRenderer;
 
 import net.minecraft.item.ItemStack;
 
@@ -31,7 +31,7 @@ public class RenderItemMedpod extends ItemRenderer
         OpenGL.disable(GL11.GL_CULL_FACE);
         OpenGL.scale(glScale, -glScale, glScale);
         this.getModelTexMap().draw();
-        
+
         OpenGL.pushMatrix();
         {
             AliensVsPredator.resources().models().MEDPOD_MASK.draw();
@@ -44,22 +44,22 @@ public class RenderItemMedpod extends ItemRenderer
     {
         float glScale = 0.8F;
 
-        if (firstPersonRenderCheck(data[1]))
+        OpenGL.enableBlend();
+        OpenGL.blendClear();
+        OpenGL.translate(0.1F, 1.0F, 0.2F);
+        OpenGL.rotate(95.0F, 1.0F, 0.0F, 0.0F);
+        OpenGL.rotate(120.0F, 0.0F, 1.0F, 0.0F);
+        OpenGL.rotate(79.0F, 0.0F, 0.0F, 1.0F);
+        OpenGL.disable(GL11.GL_CULL_FACE);
+        OpenGL.scale(glScale, glScale, glScale);
+        this.getModelTexMap().draw();
+
+        OpenGL.pushMatrix();
         {
-            OpenGL.translate(0.1F, 1.0F, 0.2F);
-            OpenGL.rotate(95.0F, 1.0F, 0.0F, 0.0F);
-            OpenGL.rotate(120.0F, 0.0F, 1.0F, 0.0F);
-            OpenGL.rotate(79.0F, 0.0F, 0.0F, 1.0F);
-            OpenGL.disable(GL11.GL_CULL_FACE);
-            OpenGL.scale(glScale, glScale, glScale);
-            this.getModelTexMap().draw();            
-            
-            OpenGL.pushMatrix();
-            {
-                AliensVsPredator.resources().models().MEDPOD_MASK.draw();
-            }
-            OpenGL.popMatrix();
+            AliensVsPredator.resources().models().MEDPOD_MASK.draw();
         }
+        OpenGL.popMatrix();
+        OpenGL.disableBlend();
     }
 
     @Override
@@ -74,14 +74,14 @@ public class RenderItemMedpod extends ItemRenderer
         OpenGL.enable(GL11.GL_BLEND);
         OpenGL.blendClear();
         this.getModelTexMap().draw();
-        
+
         OpenGL.pushMatrix();
         {
             AliensVsPredator.resources().models().MEDPOD_MASK.draw();
         }
         OpenGL.popMatrix();
     }
-    
+
     @Override
     public void renderInWorld(ItemStack item, Object... data)
     {
