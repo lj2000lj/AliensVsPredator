@@ -157,7 +157,7 @@ public class EntityDrone extends EntityXenomorph implements IMaturable
                     Pos location = new Pos(x, y, z);
                     Block block = location.getBlock(this.worldObj);
 
-                    if (!(block == net.minecraft.init.Blocks.air) && !(block instanceof BlockHiveResin) && block.isOpaqueCube())
+                    if (this.canReplaceWithResin(block))
                     {
                         Vec3 start = Vec3.createVectorHelper(this.posX, this.posY + (double) this.getEyeHeight(), this.posZ);
                         Vec3 end = Vec3.createVectorHelper(x, y, z);
@@ -183,6 +183,11 @@ public class EntityDrone extends EntityXenomorph implements IMaturable
         }
 
         return data.size() > 0 ? data.get(this.rand.nextInt(data.size())) : null;
+    }
+    
+    protected boolean canReplaceWithResin(Block block)
+    {
+        return !(block == net.minecraft.init.Blocks.air) && !(block instanceof BlockHiveResin) && block.isOpaqueCube();
     }
 
     @Override
