@@ -91,7 +91,6 @@ public class EntityChestburster extends EntitySpeciesAlien implements IMob, INas
         IMaturable maturable = (IMaturable) this;
         IRoyalOrganism ro = (IRoyalOrganism) this;
         
-        System.out.println(maturable.getMaturityLevel() + " " + this.getCommandSenderName());
         return this.ticksExisted >= maturable.getMaturityTime() || ro.getJellyLevel() >= maturable.getMaturityLevel();
     }
 
