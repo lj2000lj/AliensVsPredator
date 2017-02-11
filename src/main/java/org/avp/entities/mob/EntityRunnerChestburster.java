@@ -81,12 +81,6 @@ public class EntityRunnerChestburster extends EntityChestburster implements IMob
     @Override
     public int getMaturityTime()
     {
-        return (15 * 60) * 20;
-    }
-
-    @Override
-    public int getMaturityLevel()
-    {
-        return 32;
+        return (8 * 60) * 20;
     }
 }

@@ -87,6 +87,6 @@ public class EntityQueenChestburster extends EntityChestburster implements IMob,
     @Override
     public int getMaturityLevel()
     {
-        return 32;
+        return 12800;
     }
 }

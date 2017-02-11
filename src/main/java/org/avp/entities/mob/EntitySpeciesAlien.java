@@ -277,6 +277,6 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IRoy
 
     protected int getJellyLevelStart()
     {
-        return 50;
+        return 0;
     }
 }
