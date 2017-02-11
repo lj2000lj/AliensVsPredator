@@ -10,7 +10,6 @@ import com.arisux.mdxlib.lib.world.entity.Entities;
 
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
@@ -182,8 +181,6 @@ public class EntityDeaconShark extends EntitySpeciesAlien
             this.rotationYaw = this.rotationYawHead;
         }
         
-        this.setDead();
-
         super.onLivingUpdate();
     }
 
@@ -213,7 +210,7 @@ public class EntityDeaconShark extends EntitySpeciesAlien
     @Override
     protected boolean canDespawn()
     {
-        return super.canDespawn() && !this.hasCustomNameTag();
+        return !this.hasCustomNameTag();
     }
 
     @Override
