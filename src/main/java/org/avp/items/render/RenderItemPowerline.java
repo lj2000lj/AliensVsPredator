@@ -52,7 +52,9 @@ public class RenderItemPowerline extends ItemRenderer
         OpenGL.scale(glScale, glScale, glScale);
         OpenGL.translate(0.375, 0.4F, 0);
         OpenGL.rotate(45, 0, 1, 0);
+        OpenGL.disableCullFace();
         this.getModelTexMap().draw();
+        OpenGL.enableCullFace();
         OpenGL.popMatrix();
     }
 
