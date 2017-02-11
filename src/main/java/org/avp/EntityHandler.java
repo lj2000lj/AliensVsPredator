@@ -91,9 +91,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.monster.IMob;
 import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraftforge.common.util.EnumHelper;
 
 public class EntityHandler implements IInitEvent
 {
@@ -259,7 +257,7 @@ public class EntityHandler implements IInitEvent
                 EntityRegistry.addSpawn(EntityFacehugger.class, 30, 1, 2, EnumCreatureType.monster, xenomorphBiomes);
             }
 
-            EntityRegistry.addSpawn(EntityYautja.class, 1, 1, 1, EnumCreatureType.monster, predatorBiomes);
+            EntityRegistry.addSpawn(EntityYautja.class, 1, 0, 1, EnumCreatureType.monster, predatorBiomes);
             EntityRegistry.addSpawn(EntityYautjaBerserker.class, 1, 0, 1, EnumCreatureType.monster, predatorBiomes);
             EntityRegistry.addSpawn(EntityMarine.class, 2, 1, 1, EnumCreatureType.creature, new BiomeGenBase[] { BiomeGenBase.swampland, BiomeGenBase.forest, BiomeGenBase.forestHills, BiomeGenBase.taiga, BiomeGenBase.taigaHills, BiomeGenBase.plains
             });
@@ -267,6 +265,7 @@ public class EntityHandler implements IInitEvent
             EntityRegistry.addSpawn(EntitySpaceJockey.class, 2, 1, 1, EnumCreatureType.monster, vardaBiomes);
 
             EntityRegistry.addSpawn(EntityHammerpede.class, 1, 0, 3, EnumCreatureType.monster, vardaBiomes);
+            EntityRegistry.addSpawn(EntityOctohugger.class, 20, 0, 3, EnumCreatureType.monster, vardaBiomes);
             EntityRegistry.addSpawn(EntityDeacon.class, 1, 0, 1, EnumCreatureType.monster, vardaBiomes);
             EntityRegistry.addSpawn(EntityEngineer.class, 1, 0, 1, EnumCreatureType.monster, vardaBiomes);
             EntityRegistry.addSpawn(EntityTrilobite.class, 1, 0, 1, EnumCreatureType.monster, vardaBiomes);

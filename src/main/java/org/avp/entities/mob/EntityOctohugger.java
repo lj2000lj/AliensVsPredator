@@ -19,6 +19,8 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 
 public class EntityOctohugger extends EntityParasitoid implements IMob, IParasitoid
@@ -207,7 +209,7 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
             this.motionZ = 0;
         }
 
-        if (this.ridingEntity != null || !this.isFertile() || this.isHanging() && this.getHangingLocation() != null && this.getHangingLocation().getBlock(this.worldObj) == net.minecraft.init.Blocks.air || this.getHangingLocation() != null && !Entities.canEntityBeSeenBy(this, this.getHangingLocation()))
+        if (this.ridingEntity != null || !this.isFertile() || this.isHanging() && this.getHangingLocation() != null && this.getHangingLocation().getBlock(this.worldObj) == net.minecraft.init.Blocks.air)
         {
             this.setHanging(false);
             this.updateHangingLocation(new Pos(0, 0, 0));
@@ -237,6 +239,35 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
     protected boolean canDespawn()
     {
         return false;
+    }
+    
+    @Override
+    public boolean getCanSpawnHere()
+    {
+        int x = MathHelper.floor_double(this.posX);
+        int y = MathHelper.floor_double(this.boundingBox.minY);
+        int z = MathHelper.floor_double(this.posZ);
+
+        return super.getCanSpawnHere() && isValidLightLevel() && !this.worldObj.canBlockSeeTheSky(x, y, z);
+    }
+    
+    @Override
+    protected boolean isValidLightLevel()
+    {
+        int x = MathHelper.floor_double(this.posX);
+        int y = MathHelper.floor_double(this.boundingBox.minY);
+        int z = MathHelper.floor_double(this.posZ);
+
+        if (this.worldObj.getSavedLightValue(EnumSkyBlock.Sky, x, y, z) > this.rand.nextInt(32))
+        {
+            return false;
+        }
+        else
+        {
+            int light = this.worldObj.getBlockLightValue(x, y, z);
+
+            return light <= this.rand.nextInt(8);
+        }
     }
 
     @Override
