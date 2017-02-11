@@ -1,7 +1,6 @@
 package org.avp.dimension.varda;
 
 import org.avp.AliensVsPredator;
-import org.avp.event.StormProvider;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

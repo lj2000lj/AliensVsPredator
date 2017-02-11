@@ -1,9 +1,7 @@
-package org.avp.event;
+package org.avp.dimension.varda;
 
 import org.avp.AliensVsPredator;
 import org.avp.DamageSources;
-import org.avp.dimension.varda.BiomeGenVarda;
-import org.avp.dimension.varda.ProviderVarda;
 import org.lwjgl.opengl.GL11;
 
 import com.arisux.mdxlib.lib.client.render.Draw;

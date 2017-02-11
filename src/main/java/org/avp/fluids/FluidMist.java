@@ -7,5 +7,8 @@ public class FluidMist extends Fluid
     public FluidMist()
     {
         super("mist");
+        this.setDensity(1);
+        this.setViscosity(8000);
+        this.setGaseous(true);
     }
 }
