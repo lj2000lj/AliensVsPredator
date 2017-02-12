@@ -1,14 +1,12 @@
 package org.avp;
 
-import org.avp.api.material.IMaterialPhysics;
+import org.avp.materials.MaterialBlackGoo;
+import org.avp.materials.MaterialMist;
 
 import com.arisux.mdxlib.lib.game.IInitEvent;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
-import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialLiquid;
-import net.minecraft.block.material.MaterialTransparent;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraftforge.common.util.EnumHelper;
@@ -19,34 +17,8 @@ public class MaterialHandler implements IInitEvent
     private Armors armors = new Armors();
     private Tools tools = new Tools();
 
-    public final Material mist = new MaterialTransparent(MapColor.lightBlueColor);
+    public final Material mist = new MaterialMist();
     public final Material blackgoo = new MaterialBlackGoo();
-    
-    public static class MaterialBlackGoo extends MaterialLiquid implements IMaterialPhysics
-    {
-        public MaterialBlackGoo()
-        {
-            super(MapColor.blackColor);
-            this.setNoPushMobility();
-        }
-        
-        public boolean blocksMovement()
-        {
-            return true;
-        }
-        
-        @Override
-        public double getEntityPushStrength()
-        {
-            return 0.01D;
-        }
-        
-        @Override
-        public double getEntitySpeedMultiplier()
-        {
-            return 0.00000001D;
-        }
-    }
 
     public static class Armors
     {

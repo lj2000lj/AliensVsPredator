@@ -1,6 +1,7 @@
 package org.avp.event;
 
 import org.avp.api.material.IMaterialPhysics;
+import org.avp.api.material.IMaterialRenderer;
 
 import com.arisux.mdxlib.MDX;
 import com.arisux.mdxlib.lib.game.Game;
@@ -20,10 +21,39 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 
 public class MaterialPhysicsHandler
 {
     public static final MaterialPhysicsHandler instance = new MaterialPhysicsHandler();
+
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public void render(RenderGameOverlayEvent event)
+    {
+        if (Game.minecraft().theWorld != null)
+        {
+            Material materialInside = getMaterialInside(Game.minecraft().thePlayer);
+
+            if (materialInside != null && materialInside instanceof IMaterialPhysics)
+            {
+                IMaterialPhysics physics = (IMaterialPhysics) materialInside;
+                IMaterialRenderer renderer = (IMaterialRenderer) physics.getMaterialRenderer();
+
+                if (renderer != null)
+                {
+                    if (event.type == ElementType.HELMET)
+                    {
+                        if (Game.minecraft().thePlayer.isInsideOfMaterial(materialInside))
+                        {
+                            renderer.renderMaterialOverlay(materialInside);
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
@@ -152,7 +182,7 @@ public class MaterialPhysicsHandler
                 }
             }
 
-            if (entity.isPushedByWater())
+            if (entity.isPushedByWater() || physics.ignoresPushableCheck())
             {
                 motion = motion.normalize();
                 physics.adjustEntitySpeed(entity, physics.getEntitySpeedMultiplier());
