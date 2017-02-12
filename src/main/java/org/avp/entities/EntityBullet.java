@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.avp.DamageSources;
 import org.avp.entities.mob.EntityMarine;
-import org.avp.entities.tile.TileEntityTurret;
 
 import com.arisux.mdxlib.lib.game.GameSounds;
 
@@ -98,20 +97,17 @@ public class EntityBullet extends Entity
         this.motionZ = MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
         this.motionY = (-MathHelper.sin(this.rotationPitch / 180.0F * (float) Math.PI));
         this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, velocity * 1.5F, 1.0F);
-
-        if (source instanceof EntityPlayer)
+        
+        if (source instanceof EntityLivingBase)
         {
-            EntityPlayer srcPlayer = (EntityPlayer) source;
-            
-            this.shootingEntity = srcPlayer;
-            this.doesArrowBelongToPlayer = srcPlayer instanceof EntityPlayer;
-            this.setLocationAndAngles(srcPlayer.posX, srcPlayer.posY + srcPlayer.getEyeHeight(), srcPlayer.posZ, srcPlayer.rotationYaw, srcPlayer.rotationPitch);
-        }
-        else if (source instanceof TileEntityTurret)
-        {
-            TileEntityTurret srcTurret = (TileEntityTurret) source;
+            EntityLivingBase living = (EntityLivingBase) source;
+            this.shootingEntity = living;
+            this.setLocationAndAngles(living.posX, living.posY + living.getEyeHeight(), living.posZ, living.rotationYaw, living.rotationPitch);
 
-//            this.setLocationAndAngles(srcTurret.xCoord, srcTurret.yCoord, srcTurret.zCoord, srcTurret.getRotationYaw(), srcTurret.getRotationPitch());
+            if (source instanceof EntityPlayer)
+            {
+                this.doesArrowBelongToPlayer = living instanceof EntityPlayer;
+            }
         }
     }
 
@@ -142,41 +138,37 @@ public class EntityBullet extends Entity
         
         double srcX = 0;
         double srcZ = 0;
-
-        if (source instanceof EntityPlayer)
+        
+        if (source instanceof EntityLivingBase)
         {
-            EntityPlayer srcPlayer = (EntityPlayer) source;
+            EntityLivingBase living = (EntityLivingBase) source;
+            this.shootingEntity = living;
             
-            this.shootingEntity = srcPlayer;
-            this.doesArrowBelongToPlayer = srcPlayer instanceof EntityPlayer;
-            this.setLocationAndAngles(srcPlayer.posX, srcPlayer.posY + srcPlayer.getEyeHeight(), srcPlayer.posZ, srcPlayer.rotationYaw, srcPlayer.rotationPitch);
-            srcX = srcPlayer.posX;
-            srcZ = srcPlayer.posZ;
+            this.setLocationAndAngles(living.posX, living.posY + living.getEyeHeight(), living.posZ, living.rotationYaw, living.rotationPitch);
+            srcX = living.posX;
+            srcZ = living.posZ;
+
+            if (source instanceof EntityPlayer)
+            {
+                this.doesArrowBelongToPlayer = living instanceof EntityPlayer;
+            }
         }
-//        else if (source instanceof TileEntityTurret)
-//        {
-//            TileEntityTurret srcTurret = (TileEntityTurret) source;
-//
-//            this.setLocationAndAngles(srcTurret.xCoord, srcTurret.yCoord + 1, srcTurret.zCoord, srcTurret.getRotationYaw(), srcTurret.getRotationPitch());
-//            srcX = srcTurret.xCoord;
-//            srcZ = srcTurret.zCoord;
-//        }
-//
-//        double x = targetEntity.posX - srcX;
-//        double y = targetEntity.boundingBox.maxY - this.posY;
-//        double z = targetEntity.posZ - srcZ;
-//        double v = MathHelper.sqrt_double(x * x + z * z);
-//
-//        if (v >= 1.0E-7D)
-//        {
-//            float yaw = (float) (Math.atan2(z, x) * 180.0D / Math.PI) - 90.0F;
-//            float pitch = (float) (-(Math.atan2(y, v) * 180.0D / Math.PI));
-//            double xOffset = x / v;
-//            double zOffset = z / v;
-//            this.setLocationAndAngles(srcX + xOffset, this.posY, srcZ + zOffset, yaw, pitch);
-//            this.yOffset = 0.0F;
-//            this.setThrowableHeading(x, y, z, velocity, damage);
-//        }
+
+        double x = targetEntity.posX - srcX;
+        double y = targetEntity.boundingBox.maxY - this.posY;
+        double z = targetEntity.posZ - srcZ;
+        double v = MathHelper.sqrt_double(x * x + z * z);
+
+        if (v >= 1.0E-7D)
+        {
+            float yaw = (float) (Math.atan2(z, x) * 180.0D / Math.PI) - 90.0F;
+            float pitch = (float) (-(Math.atan2(y, v) * 180.0D / Math.PI));
+            double xOffset = x / v;
+            double zOffset = z / v;
+            this.setLocationAndAngles(srcX + xOffset, this.posY, srcZ + zOffset, yaw, pitch);
+            this.yOffset = 0.0F;
+            this.setThrowableHeading(x, y, z, velocity, damage);
+        }
     }
 
     @Override
