@@ -52,6 +52,7 @@ public class EntityQueen extends EntityXenomorph implements IMob
         this.getNavigator().setCanSwim(true);
         this.dataWatcher.addObject(14, 0F);
         this.addStandardXenomorphAISet();
+        this.jellyLimitOverride = true;
     }
 
     public float getOvipositorSize()

@@ -30,11 +30,13 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IRoy
     protected final int     JELLY_LEVEL_DW_ID = 26;
     protected XenomorphHive hive;
     private UUID            signature;
+    protected boolean         jellyLimitOverride;
 
     public EntitySpeciesAlien(World world)
     {
         super(world);
         this.jumpMovementFactor = 0.2F;
+        this.jellyLimitOverride = false;
     }
 
     @Override
@@ -96,8 +98,12 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IRoy
             }
 
             int adjustedLevel = this.getJellyLevel() / 4;
-            adjustedLevel = adjustedLevel < 64 ? adjustedLevel : 64;
-            
+
+            if (this.jellyLimitOverride)
+            {
+                adjustedLevel = adjustedLevel < 64 ? adjustedLevel : 64;
+            }
+
             ItemDrop dynamicJelly = new ItemDrop(100, new ItemStack(AliensVsPredator.items().itemRoyalJelly, adjustedLevel));
             dynamicJelly.tryDrop(this);
         }
