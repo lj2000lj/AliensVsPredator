@@ -16,9 +16,9 @@ import java.util.Arrays;
 public class EntityAIMeltBlock extends EntityAIYOffsetBlockInteract
 {
     private static final ArrayList<Block> blockBlacklist = new ArrayList<Block>();
-    private EntityLiving theEntity;
-    private int          breakingTime;
-    private int          breakProgress = -1;
+    private EntityLiving                  theEntity;
+    private int                           breakingTime;
+    private int                           breakProgress  = -1;
 
     public EntityAIMeltBlock(EntityLiving theEntity)
     {
@@ -33,7 +33,10 @@ public class EntityAIMeltBlock extends EntityAIYOffsetBlockInteract
         blacklist(Blocks.obsidian);
         blacklist(Blocks.bedrock);
         blacklist(Blocks.end_portal_frame);
-        blacklist(AliensVsPredator.blocks().plasticShapes);
+        blacklist(AliensVsPredator.blocks().industrialGlassShapes);
+        blacklist(AliensVsPredator.blocks().blockIndustrialGlass);
+        blacklist(AliensVsPredator.blocks().blockIndustrialGlassSlab);
+        blacklist(AliensVsPredator.blocks().blockIndustrialGlassStairs);
         blacklist(AliensVsPredator.blocks().plasticCircleShapes);
         blacklist(AliensVsPredator.blocks().plasticTileShapes);
         blacklist(AliensVsPredator.blocks().plasticTriShapes);
@@ -58,7 +61,7 @@ public class EntityAIMeltBlock extends EntityAIYOffsetBlockInteract
         blacklist(AliensVsPredator.blocks().engineerShipWall3Shapes);
         blacklist(AliensVsPredator.blocks().engineerShipWall4Shapes);
     }
-    
+
     public static Block blacklist(Block block)
     {
         blockBlacklist.add(block);
@@ -70,7 +73,7 @@ public class EntityAIMeltBlock extends EntityAIYOffsetBlockInteract
         for (Block block : new ArrayList<Block>(Arrays.asList(blocks)))
         {
             blockBlacklist.add(block);
-            
+
         }
         return blocks;
     }
@@ -115,7 +118,7 @@ public class EntityAIMeltBlock extends EntityAIYOffsetBlockInteract
         {
             GameSounds.fxMinecraftFizz.playSound(this.theEntity.worldObj, this.theEntity.posX, this.theEntity.posY, this.theEntity.posZ);
         }
-        
+
         if (blockBlacklist.contains(target) || target instanceof IAcidResistant && ((IAcidResistant) target).canAcidDestroy(this.theEntity.worldObj, targetX, targetY, targetZ, this.theEntity))
         {
             return;
