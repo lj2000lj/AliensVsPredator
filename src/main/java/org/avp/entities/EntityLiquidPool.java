@@ -11,10 +11,11 @@ public class EntityLiquidPool extends EntityCreature
     public EntityLiquidPool(World world)
     {
         super(world);
-        this.lifetime = 600;
+        this.lifetime = 60000;
         this.isImmuneToFire = false;
         this.ignoreFrustumCheck = true;
         this.setSize(0.08F, 0.08F);
+        this.rotationYaw = this.rand.nextInt(360);
     }
 
     @Override
