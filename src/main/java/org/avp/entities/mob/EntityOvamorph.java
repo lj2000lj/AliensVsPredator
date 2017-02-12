@@ -10,7 +10,7 @@ import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.entity.Entities;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
@@ -134,19 +134,18 @@ public class EntityOvamorph extends EntitySpeciesAlien implements IMob
 
             if (this.worldObj.getBlock(x, y, z).getMaterial() != AliensVsPredator.materials().mist || this.acceleratedHatching)
             {
-                int hatchAcceleration = this.acceleratedHatching ? 8 : 1;
-                EntityPlayer closestPlayer = this.worldObj.getClosestPlayerToEntity(this, 15.0D);
-                ArrayList<Entity> entities = (ArrayList<Entity>) Entities.getEntitiesInCoordsRange(this.worldObj, EntityLiving.class, new Pos(this), 8);
+                int hatchAcceleration = this.acceleratedHatching ? 20 : 1;
+                ArrayList<Entity> potentialHosts = (ArrayList<Entity>) Entities.getEntitiesInCoordsRange(this.worldObj, EntityLivingBase.class, new Pos(this), 8);
 
-                for (Entity entity : new ArrayList<Entity>(entities))
+                for (Entity entity : new ArrayList<Entity>(potentialHosts))
                 {
-                    if (entity instanceof EntitySpeciesAlien)
+                    if (!EntityParasitoid.parasiteSelector.isEntityApplicable(entity))
                     {
-                        entities.remove(entity);
+                        potentialHosts.remove(entity);
                     }
                 }
 
-                if (closestPlayer != null && !closestPlayer.capabilities.isCreativeMode || this.hasHatched || entities.size() > 0)
+                if (this.hasHatched || potentialHosts.size() > 0)
                 {
                     if (this.acceleratedHatching || this.hatchingTime <= 0)
                     {
@@ -169,11 +168,6 @@ public class EntityOvamorph extends EntitySpeciesAlien implements IMob
     protected void collideWithEntity(Entity entity)
     {
         super.collideWithEntity(entity);
-
-        // if (!(entity instanceof EntityOvamorph) && !(entity instanceof EntitySpeciesAlien))
-        // {
-        // this.acceleratedHatching = true;
-        // }
     }
 
     @Override
