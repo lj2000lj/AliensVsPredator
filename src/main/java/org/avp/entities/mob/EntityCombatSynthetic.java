@@ -39,7 +39,7 @@ public class EntityCombatSynthetic extends EntityCreature implements IMob, IRang
         super(word);
         this.setSize(1, 2);
         this.experienceValue = 40;
-        this.aiRangedAttack = new EntityAIArrowAttack(this, 0.4D, 8, 24);
+        this.aiRangedAttack = new EntityAIArrowAttack(this, 0.4D, 80, 24);
         this.dataWatcher.addObject(18, new Integer(15));
         this.dataWatcher.addObject(17, "");
         this.dataWatcher.addObject(16, Byte.valueOf((byte) 0));
@@ -49,14 +49,14 @@ public class EntityCombatSynthetic extends EntityCreature implements IMob, IRang
         this.tasks.addTask(4, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
         this.tasks.addTask(5, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, Entity.class, /** targetChance **/ 0, /** shouldCheckSight **/ false, /** nearbyOnly **/ false, this));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityLivingBase.class, /** targetChance **/ 0, /** shouldCheckSight **/ true, /** nearbyOnly **/ false, this));
     }
 
     @Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(80.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(50.0D);
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.5499999761581421D);
     }
     
@@ -160,7 +160,7 @@ public class EntityCombatSynthetic extends EntityCreature implements IMob, IRang
         if (entity instanceof EntityMob)
             return true;
 
-        if (entity instanceof EntityYautja)
+        if (entity instanceof EntitySpeciesYautja)
             return true;
 
         if (entity instanceof EntityGolem)
