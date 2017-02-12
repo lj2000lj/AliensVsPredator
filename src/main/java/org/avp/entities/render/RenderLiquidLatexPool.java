@@ -31,7 +31,6 @@ public class RenderLiquidLatexPool extends Render
             double partialZ = posZ - renderZ;
 
             AliensVsPredator.resources().LIQUID_POOL.bind();
-            OpenGL.disableLighting();
             tessellator.startDrawingQuads();
             tessellator.setColorRGBA_F(1F, 1F, 1F, 1F);
 
