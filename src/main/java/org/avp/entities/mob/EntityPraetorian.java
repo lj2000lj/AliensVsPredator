@@ -71,7 +71,7 @@ public class EntityPraetorian extends EntityXenomorph implements IMaturable
     @Override
     public int getMaturityLevel()
     {
-        return 4096;
+        return 1024 * 16;
     }
 
     @Override

@@ -64,7 +64,7 @@ public class EntityWarrior extends EntityXenomorph implements IMob, IMaturable
     @Override
     public int getMaturityLevel()
     {
-        return 1024;
+        return 1024 * 12;
     }
 
     @Override

@@ -211,7 +211,7 @@ public class EntityDrone extends EntityXenomorph implements IMaturable
     @Override
     public int getMaturityLevel()
     {
-        return 6000;
+        return 1024 * 6;
     }
 
     @Override
