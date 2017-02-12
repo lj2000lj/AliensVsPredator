@@ -11,7 +11,6 @@ import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.client.render.Screen;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.util.ResourceLocation;
 
 public class RenderMaterialMist implements IMaterialRenderer
 {
@@ -25,7 +24,7 @@ public class RenderMaterialMist implements IMaterialRenderer
         OpenGL.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         OpenGL.color(1F, 0.9F, 1F, 0.6F);
         OpenGL.disableAlphaTest();
-        Draw.bindTexture(new ResourceLocation(AliensVsPredator.ID, "textures/blocks/mist.still.png"));
+        Draw.bindTexture(AliensVsPredator.resources().MIST);
         Draw.drawQuad(0, 0, Screen.scaledDisplayResolution().getScaledWidth(), Screen.scaledDisplayResolution().getScaledHeight());
         OpenGL.depthMask(true);
         OpenGL.enableDepthTest();
