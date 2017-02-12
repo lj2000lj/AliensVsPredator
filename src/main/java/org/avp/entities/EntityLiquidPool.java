@@ -82,4 +82,16 @@ public class EntityLiquidPool extends EntityCreature
     {
         return lifetime;
     }
+    
+    @Override
+    protected String getHurtSound()
+    {
+        return null;
+    }
+    
+    @Override
+    protected String getDeathSound()
+    {
+        return null;
+    }
 }
