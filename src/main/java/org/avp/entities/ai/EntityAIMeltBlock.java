@@ -37,6 +37,7 @@ public class EntityAIMeltBlock extends EntityAIYOffsetBlockInteract
         blacklist(AliensVsPredator.blocks().blockIndustrialGlass);
         blacklist(AliensVsPredator.blocks().blockIndustrialGlassSlab);
         blacklist(AliensVsPredator.blocks().blockIndustrialGlassStairs);
+        blacklist(AliensVsPredator.blocks().plasticShapes);
         blacklist(AliensVsPredator.blocks().plasticCircleShapes);
         blacklist(AliensVsPredator.blocks().plasticTileShapes);
         blacklist(AliensVsPredator.blocks().plasticTriShapes);
