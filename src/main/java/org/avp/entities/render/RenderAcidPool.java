@@ -23,10 +23,10 @@ public class RenderAcidPool extends Render
     {
         OpenGL.pushMatrix();
         {
-            OpenGL.disable(GL11.GL_LIGHTING);
-            OpenGL.enable(GL11.GL_BLEND);
-            OpenGL.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+            OpenGL.enableBlend();
+            OpenGL.blendClear();
             OpenGL.disableLightMapping();
+            OpenGL.blendFunc(GL11.GL_ONE, GL11.GL_ONE_MINUS_SRC_ALPHA);
             AliensVsPredator.resources().ACID_POOL.bind();
             float offset = 1.4F;
             double renderX = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * renderPartialTicks;
@@ -36,7 +36,7 @@ public class RenderAcidPool extends Render
             double partialY = posY - renderY;
             double partialZ = posZ - renderZ;
             tessellator.startDrawingQuads();
-            tessellator.setColorRGBA_F(0.5F, 1.0F, 0F, 1F);
+            tessellator.setColorRGBA_F(1F, 1.0F, 0F, 1F);
 
             for (int blockX = MathHelper.floor_double(renderX - offset); blockX <= MathHelper.floor_double(renderX + offset); ++blockX)
             {
@@ -56,8 +56,8 @@ public class RenderAcidPool extends Render
 
             tessellator.draw();
             OpenGL.color(1.0F, 1.0F, 1.0F, 1.0F);
-            OpenGL.disable(GL11.GL_BLEND);
-            OpenGL.enable(GL11.GL_LIGHTING);
+            OpenGL.disableBlend();
+            OpenGL.enableLightMapping();
         }
         OpenGL.popMatrix();
     }
