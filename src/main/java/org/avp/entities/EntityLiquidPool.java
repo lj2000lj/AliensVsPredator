@@ -11,7 +11,7 @@ public class EntityLiquidPool extends EntityCreature
     public EntityLiquidPool(World world)
     {
         super(world);
-        this.lifetime = 60000;
+        this.lifetime = 600;
         this.isImmuneToFire = false;
         this.ignoreFrustumCheck = true;
         this.setSize(0.08F, 0.08F);
