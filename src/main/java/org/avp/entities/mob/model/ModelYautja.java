@@ -1,5 +1,7 @@
 package org.avp.entities.mob.model;
 
+import org.avp.entities.mob.EntitySpeciesYautja;
+
 import com.arisux.mdxlib.lib.client.Model;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
@@ -109,6 +111,7 @@ public class ModelYautja extends Model
     public ModelRenderer lLegguard;
     public ModelRenderer lFootguard;
     public ModelRenderer lFootSole;
+
     public ModelYautja()
     {
         this.textureWidth = 256;
@@ -598,46 +601,14 @@ public class ModelYautja extends Model
         this.face.addChild(this.rMandibleLower1);
     }
 
-
     @Override
     protected void render(IRenderObject renderObject, float boxTranslation)
     {
         RenderObject o = (RenderObject) renderObject;
-        
-//        this.rightarm.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 2.0F * o.swingProgressPrev * 0.5F;
-//        this.rightarm.rotateAngleZ = 0.0F;
-//        this.rightarm2.rotateAngleX = this.rightarm.rotateAngleX;
-//        this.rightarm2.rotateAngleZ = this.rightarm.rotateAngleZ;
-//        this.rightarm3.rotateAngleX = this.rightarm.rotateAngleX;
-//        this.rightarm3.rotateAngleZ = this.rightarm.rotateAngleZ;
-//        this.blade1.rotateAngleX = this.rightarm.rotateAngleX;
-//        this.blade1.rotateAngleZ = this.rightarm.rotateAngleZ;
-//        this.blade2.rotateAngleX = this.rightarm.rotateAngleX;
-//        this.blade2.rotateAngleZ = this.rightarm.rotateAngleZ;
-//        this.leftarm.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 2.0F * o.swingProgressPrev * 0.5F;
-//        this.leftarm.rotateAngleZ = 0.0F;
-//        this.leftarm2.rotateAngleX = this.leftarm.rotateAngleX;
-//        this.leftarm2.rotateAngleZ = this.leftarm.rotateAngleZ;
-//        this.leftarm3.rotateAngleX = this.leftarm.rotateAngleX;
-//        this.leftarm3.rotateAngleZ = this.leftarm.rotateAngleZ;
-//        this.rightleg.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 1.4F * o.swingProgressPrev;
-//        this.rightleg.rotateAngleY = 0.0F;
-//        this.rightleg.rotateAngleX = this.rightleg.rotateAngleX;
-//        this.rightleg2.rotateAngleX = this.rightleg.rotateAngleX;
-//        this.rightleg2.rotateAngleZ = this.rightleg.rotateAngleZ;
-//        this.rightleg3.rotateAngleX = this.rightleg.rotateAngleX;
-//        this.rightleg3.rotateAngleZ = this.rightleg.rotateAngleZ;
-//        this.leftleg.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1.4F * o.swingProgressPrev;
-//        this.leftleg.rotateAngleY = 0.0F;
-//        this.leftleg2.rotateAngleX = this.leftleg.rotateAngleX;
-//        this.leftleg2.rotateAngleZ = this.leftleg.rotateAngleZ;
-//        this.leftleg3.rotateAngleX = this.leftleg.rotateAngleX;
-//        this.leftleg3.rotateAngleZ = this.leftleg.rotateAngleZ;
-        
 
         float swingProgress = o.swingProgress;
         float swingProgressPrev = o.swingProgressPrev;
-        float mandibleProgress = (o.idleProgress + (o.swingProgress * 75F)) * 2F ;
+        float mandibleProgress = (o.idleProgress + (o.swingProgress * 75F)) * 2F;
 
         this.lMandibleUpper.rotateAngleY = (float) ((float) Math.sin(Math.toRadians(mandibleProgress)) * 0.075F - Math.toRadians(15F));
         this.lMandibleUpper.rotateAngleZ = (float) ((float) Math.sin(Math.toRadians(mandibleProgress)) * 0.075F + Math.toRadians(5F));
@@ -648,7 +619,7 @@ public class ModelYautja extends Model
         this.rMandibleUpper.rotateAngleZ = -(float) ((float) Math.sin(Math.toRadians(mandibleProgress)) * 0.075F + Math.toRadians(5F));
         this.rMandibleLower1.rotateAngleY = -(float) Math.sin(Math.toRadians(mandibleProgress)) * 0.075F;
         this.rMandibleLower1.rotateAngleZ = -(float) Math.cos(Math.toRadians(mandibleProgress)) * 0.075F;
-        
+
         this.face.rotateAngleY = (float) Math.toRadians(o.headYaw) * 0.75F;
         this.rThigh.rotateAngleX = MathHelper.cos(swingProgress * 1F + (float) Math.PI) * 0.75F * swingProgressPrev - 0.2F;
         this.lThigh.rotateAngleX = MathHelper.sin(swingProgress * 1F + (float) Math.PI) * 0.75F * swingProgressPrev - 0.2F;
@@ -658,9 +629,27 @@ public class ModelYautja extends Model
         this.lShin.rotateAngleX = this.lThigh.rotateAngleX * 0.75F + 0.35F;
         this.lArmLower.rotateAngleX = this.rThigh.rotateAngleX * 1.75F;
         this.rArmLower.rotateAngleX = this.lThigh.rotateAngleX * 1.75F;
-        
-        
-        this.biomaskMouth.isHidden = true;
+
+        if (o.getEntity() instanceof EntitySpeciesYautja)
+        {
+            EntitySpeciesYautja yautja = (EntitySpeciesYautja) o.getEntity();
+            this.biomaskMouth.isHidden = false;
+            this.lMandibleLower1.isHidden = true;
+            this.rMandibleLower1.isHidden = true;
+            this.lMandibleUpper.isHidden = true;
+            this.rMandibleUpper.isHidden = true;
+            this.nose.isHidden = true;
+
+            if (!yautja.isWearingMask())
+            {
+                this.biomaskMouth.isHidden = true;
+                this.lMandibleLower1.isHidden = false;
+                this.rMandibleLower1.isHidden = false;
+                this.lMandibleUpper.isHidden = false;
+                this.rMandibleUpper.isHidden = false;
+                this.nose.isHidden = false;
+            }
+        }
 
         OpenGL.pushMatrix();
         OpenGL.translate(this.rArmUpper.offsetX, this.rArmUpper.offsetY, this.rArmUpper.offsetZ);

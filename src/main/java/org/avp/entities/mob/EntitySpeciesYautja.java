@@ -46,7 +46,6 @@ public abstract class EntitySpeciesYautja extends EntityMob implements IHost, IE
         this.setSize(1.0F, 2.5F);
         this.getNavigator().setCanSwim(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIPanic(this, 0.7F));
         this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityLivingBase.class, 1D, true));
         this.tasks.addTask(2, new EntityAIWatchClosest(this, EntityMob.class, 16F));
         this.tasks.addTask(2, new EntityAIWander(this, 0.8D));
