@@ -99,7 +99,7 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IRoy
 
             int adjustedLevel = this.getJellyLevel() / 4;
 
-            if (this.jellyLimitOverride)
+            if (!this.jellyLimitOverride)
             {
                 adjustedLevel = adjustedLevel < 64 ? adjustedLevel : 64;
             }
