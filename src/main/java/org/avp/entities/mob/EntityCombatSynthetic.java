@@ -39,7 +39,7 @@ public class EntityCombatSynthetic extends EntityCreature implements IMob, IRang
         super(word);
         this.setSize(1, 2);
         this.experienceValue = 40;
-        this.aiRangedAttack = new EntityAIArrowAttack(this, 0.4D, 80, 24);
+        this.aiRangedAttack = new EntityAIArrowAttack(this, 0.4D, 20, 24);
         this.dataWatcher.addObject(18, new Integer(15));
         this.dataWatcher.addObject(17, "");
         this.dataWatcher.addObject(16, Byte.valueOf((byte) 0));
@@ -109,7 +109,6 @@ public class EntityCombatSynthetic extends EntityCreature implements IMob, IRang
 
         if (this.getAttackTarget() != null && this.worldObj.getWorldTime() % 20 == 0 && this.aiRangedAttack.shouldExecute() && this.canEntityBeSeen(this.getAttackTarget()))
         {
-            Sounds.SOUND_WEAPON_PULSERIFLE.playSound(this);
         }
     }
 
@@ -124,7 +123,9 @@ public class EntityCombatSynthetic extends EntityCreature implements IMob, IRang
     {
         if (this.getAttackTarget() != null)
         {
-            EntityBullet entityBullet = new EntityBullet(this.worldObj, this, targetEntity, 10F, 0.0000001F);
+            Sounds.SOUND_WEAPON_PULSERIFLE.playSound(this);
+            EntityBullet entityBullet = new EntityBullet(this.worldObj, this, targetEntity, 10F, 0.5F);
+            entityBullet.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
             this.worldObj.spawnEntityInWorld(entityBullet);
             this.worldObj.spawnParticle("largesmoke", this.posX, this.posY + this.getEyeHeight(), this.posZ, 1, 1, 1);
         }
