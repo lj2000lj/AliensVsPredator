@@ -108,11 +108,9 @@ public class EntityBloodFX extends EntityDropParticleFX
         float y = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) partialTicks - interpPosY);
         float z = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) partialTicks - interpPosZ);
 
-        int r = (color & 0xFF0000) >> 16;
-        int g = (color & 0xFF00) >> 8;
-        int b = (color & 0xFF);
-        
-        OpenGL.enableLight();
+        float r = ((float)((color & 0xFF0000) >> 16)) / 255F;
+        float g = ((float)((color & 0xFF00) >> 8)) / 255F;
+        float b = ((float)(color & 0xFF)) / 255F;
         
         if (glow)
         {

@@ -14,6 +14,15 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.boss.EntityDragon;
+import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntityEnderman;
+import net.minecraft.entity.monster.EntityGhast;
+import net.minecraft.entity.monster.EntityPigZombie;
+import net.minecraft.entity.monster.EntitySpider;
+import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.passive.EntityMooshroom;
+import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -162,6 +171,42 @@ public class EntityImpregnationHandler
             glow = true;
         }
 
+        if (host instanceof EntitySquid || host instanceof EntitySpider)
+        {
+            particleColor = 0x0000FF;
+            glow = false;
+        }
+
+        if (host instanceof EntityCreeper)
+        {
+            particleColor = 0x507d2a;
+            glow = false;
+        }
+        
+        if (host instanceof EntityGhast)
+        {
+            particleColor = 0xF0F0F0;
+            glow = false;
+        }
+        
+        if (host instanceof EntityMooshroom)
+        {
+            particleColor = 0xCD8C6F;
+            glow = false;
+        }
+        
+        if (host instanceof EntityEnderman)
+        {
+            particleColor = 0xCC00FA;
+            glow = true;
+        }
+        
+        if (host instanceof EntityDragon)
+        {
+            particleColor = 0x9600BC;
+            glow = true;
+        }
+        
         Game.minecraft().effectRenderer.addEffect(new EntityBloodFX(host.worldObj, pX, pY, pZ, particleColor, glow));
     }
 
