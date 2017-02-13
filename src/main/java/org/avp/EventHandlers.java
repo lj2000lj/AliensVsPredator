@@ -7,7 +7,7 @@ import org.avp.event.EntityImpregnationHandler;
 import org.avp.event.ExtendedEntityRegistrationHandler;
 import org.avp.event.FarmlandRegistry;
 import org.avp.event.HiveHandler;
-import org.avp.event.MaterialPhysicsHandler;
+import org.avp.event.MaterialHandler;
 import org.avp.event.client.input.InputHandler;
 import org.avp.event.client.render.AmmoIndicatorRenderEvent;
 import org.avp.event.client.render.BossBarEvent;
@@ -67,7 +67,7 @@ public class EventHandlers implements IInitEvent
         this.registerEvent(FarmlandRegistry.instance);
         this.registerEvent(BucketHandlingEvent.instance);
         this.registerEvent(HiveHandler.instance);
-        this.registerEvent(MaterialPhysicsHandler.instance);
+        this.registerEvent(MaterialHandler.instance);
     }
 
     public void registerEvent(Object event)

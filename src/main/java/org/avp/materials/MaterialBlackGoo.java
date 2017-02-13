@@ -25,15 +25,15 @@ public class MaterialBlackGoo extends MaterialLiquid implements IMaterialPhysics
     }
     
     @Override
-    public double getEntityPushStrength()
+    public double getForceVelocity()
     {
         return 0.01D;
     }
     
     @Override
-    public double getEntitySpeedMultiplier()
+    public double getVelocity()
     {
-        return 0.25D;
+        return 0.275D;
     }
 
     @SideOnly(Side.CLIENT)

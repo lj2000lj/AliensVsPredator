@@ -22,11 +22,13 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.EntityViewRenderEvent.FogColors;
+import net.minecraftforge.client.event.EntityViewRenderEvent.RenderFogEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 
-public class MaterialPhysicsHandler
+public class MaterialHandler
 {
-    public static final MaterialPhysicsHandler instance = new MaterialPhysicsHandler();
+    public static final MaterialHandler instance = new MaterialHandler();
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
@@ -65,6 +67,58 @@ public class MaterialPhysicsHandler
         }
     }
 
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public void fogRenderEvent(RenderFogEvent event)
+    {
+        if (Game.minecraft().theWorld != null && !Game.minecraft().isGamePaused())
+        {
+            Material material = getMaterialInside(Game.minecraft().thePlayer);
+
+            if (material instanceof IMaterialPhysics)
+            {
+                if (Game.minecraft().thePlayer.isInsideOfMaterial(material))
+                {
+                    IMaterialPhysics physics = (IMaterialPhysics) material;
+                    IMaterialRenderer renderer = (IMaterialRenderer) physics.getMaterialRenderer();
+
+                    if (renderer != null)
+                    {
+                        renderer.renderFog(material);
+                    }
+                }
+            }
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public void fogColorUpdate(FogColors event)
+    {
+        if (Game.minecraft().theWorld != null && !Game.minecraft().isGamePaused())
+        {
+            Material material = getMaterialInside(Game.minecraft().thePlayer);
+
+            if (material instanceof IMaterialPhysics)
+            {
+                if (Game.minecraft().thePlayer.isInsideOfMaterial(material))
+                {
+                    IMaterialPhysics physics = (IMaterialPhysics) material;
+                    IMaterialRenderer renderer = (IMaterialRenderer) physics.getMaterialRenderer();
+
+                    if (renderer != null)
+                    {
+                        Vec3 fogColor = renderer.getFogColor();
+
+                        event.red = (float) fogColor.xCoord;
+                        event.green = (float) fogColor.yCoord;
+                        event.blue = (float) fogColor.zCoord;
+                    }
+                }
+            }
+        }
+    }
+
     @SubscribeEvent
     public void onUpdate(WorldTickEvent event)
     {
@@ -89,10 +143,18 @@ public class MaterialPhysicsHandler
                     if (material instanceof IMaterialPhysics)
                     {
                         IMaterialPhysics physics = (IMaterialPhysics) material;
+                        Vec3 motion = MaterialHandler.instance.handleMaterialAcceleration(entity, material, physics);
 
-                        if (MaterialPhysicsHandler.instance.handleMaterialAcceleration(entity, material, physics))
+                        if (motion != null)
                         {
-                            physics.onFluidCollision(entity);
+                            physics.onCollision(entity);
+
+                            if (entity.isPushedByWater() || physics.ignoresPushableCheck())
+                            {
+                                motion = motion.normalize();
+                                physics.handleMovement(entity);
+                                physics.handleForce(entity, motion);
+                            }
                         }
                     }
                 }
@@ -140,7 +202,7 @@ public class MaterialPhysicsHandler
         return null;
     }
 
-    public boolean handleMaterialAcceleration(Entity entity, Material material, IMaterialPhysics physics)
+    public Vec3 handleMaterialAcceleration(Entity entity, Material material, IMaterialPhysics physics)
     {
         AxisAlignedBB box = entity.boundingBox.expand(0.0D, -0.4D, 0.0D).contract(0.001D, 0.001D, 0.001D);
 
@@ -153,12 +215,11 @@ public class MaterialPhysicsHandler
 
         if (!entity.worldObj.checkChunksExist(minX, minY, minZ, maxX, maxY, maxZ))
         {
-            return false;
+            return null;
         }
         else
         {
-            boolean modified = false;
-            Vec3 motion = Vec3.createVectorHelper(0.0D, 0.0D, 0.0D);
+            Vec3 motion = null;
 
             for (int x = minX; x < maxX; ++x)
             {
@@ -174,22 +235,14 @@ public class MaterialPhysicsHandler
 
                             if ((double) maxY >= lhp)
                             {
-                                modified = true;
-                                block.modifyEntityVelocity(entity.worldObj, x, y, z, entity, motion);
+                                block.modifyEntityVelocity(entity.worldObj, x, y, z, entity, motion = Vec3.createVectorHelper(0.0D, 0.0D, 0.0D));
                             }
                         }
                     }
                 }
             }
 
-            if (entity.isPushedByWater() || physics.ignoresPushableCheck())
-            {
-                motion = motion.normalize();
-                physics.adjustEntitySpeed(entity, physics.getEntitySpeedMultiplier());
-                physics.pushEntity(entity, physics.getEntityPushStrength(), motion);
-            }
-
-            return modified;
+            return motion;
         }
     }
 }

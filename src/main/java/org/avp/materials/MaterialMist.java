@@ -19,13 +19,13 @@ public class MaterialMist extends MaterialTransparent implements IMaterialPhysic
     }
     
     @Override
-    public double getEntityPushStrength()
+    public double getForceVelocity()
     {
         return 0D;
     }
     
     @Override
-    public double getEntitySpeedMultiplier()
+    public double getVelocity()
     {
         return 0D;
     }
