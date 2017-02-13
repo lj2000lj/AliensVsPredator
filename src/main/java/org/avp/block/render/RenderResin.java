@@ -31,7 +31,7 @@ public class RenderResin implements ISimpleBlockRenderingHandler
     {
         if (world != null)
         {
-            GraphicsSetting hiveTessellation = ClientSettings.instance.getHiveTesselation();
+            GraphicsSetting hiveTessellation = ClientSettings.instance.hiveTessellation().value();
             Block renderBlock = AliensVsPredator.blocks().blockStandardHiveResin;
             TileEntityHiveResin resin = (TileEntityHiveResin) world.getTileEntity(x, y, z);
 

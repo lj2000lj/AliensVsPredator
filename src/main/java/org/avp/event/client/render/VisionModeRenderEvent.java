@@ -3,8 +3,8 @@ package org.avp.event.client.render;
 import org.avp.AliensVsPredator;
 import org.avp.util.VisionMode;
 
-import com.arisux.mdxlib.lib.client.gui.GuiCustomButton;
 import com.arisux.mdxlib.lib.client.gui.IAction;
+import com.arisux.mdxlib.lib.client.gui.IGuiElement;
 import com.arisux.mdxlib.lib.client.render.Draw;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.client.render.Screen;
@@ -24,7 +24,7 @@ public class VisionModeRenderEvent
     private IAction switchVisionMode = new IAction()
     {
         @Override
-        public void perform(GuiCustomButton button)
+        public void perform(IGuiElement element)
         {
             currentVisionMode = currentVisionMode.id < VisionMode.values().length - 1 ? VisionMode.get(currentVisionMode.id + 1) : VisionMode.get(0);            
         }

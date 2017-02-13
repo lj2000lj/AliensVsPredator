@@ -15,6 +15,7 @@ import org.lwjgl.input.Mouse;
 import com.arisux.mdxlib.lib.client.gui.GuiCustomButton;
 import com.arisux.mdxlib.lib.client.gui.GuiCustomSlider;
 import com.arisux.mdxlib.lib.client.gui.IAction;
+import com.arisux.mdxlib.lib.client.gui.IGuiElement;
 import com.arisux.mdxlib.lib.client.render.Color;
 import com.arisux.mdxlib.lib.client.render.Draw;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
@@ -201,7 +202,7 @@ public class GuiTurret extends GuiContainer
         this.buttonScrollUp.setAction(new IAction()
         {
             @Override
-            public void perform(GuiCustomButton button)
+            public void perform(IGuiElement element)
             {
                 scrollDown();
             }
@@ -215,7 +216,7 @@ public class GuiTurret extends GuiContainer
         this.buttonScrollDown.setAction(new IAction()
         {
             @Override
-            public void perform(GuiCustomButton button)
+            public void perform(IGuiElement element)
             {
                 scrollUp();
             }
@@ -228,7 +229,7 @@ public class GuiTurret extends GuiContainer
         this.buttonAddAsTarget.setAction(new IAction()
         {
             @Override
-            public void perform(GuiCustomButton button)
+            public void perform(IGuiElement element)
             {
                 if (tile != null)
                 {
@@ -254,7 +255,7 @@ public class GuiTurret extends GuiContainer
         this.buttonSave.setAction(new IAction()
         {
             @Override
-            public void perform(GuiCustomButton button)
+            public void perform(IGuiElement element)
             {
                 AliensVsPredator.network().sendToServer(new PacketWriteToDataDevice(tile.xCoord, tile.yCoord, tile.zCoord, 0));
                 tile.writeToOtherDevice(0);
@@ -269,7 +270,7 @@ public class GuiTurret extends GuiContainer
         this.buttonLoad.setAction(new IAction()
         {
             @Override
-            public void perform(GuiCustomButton button)
+            public void perform(IGuiElement element)
             {
                 tile.getDangerousTargets().clear();
                 AliensVsPredator.network().sendToServer(new PacketReadFromDataDevice(tile.xCoord, tile.yCoord, tile.zCoord, 0));

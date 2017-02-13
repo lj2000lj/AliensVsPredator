@@ -11,6 +11,7 @@ import org.lwjgl.input.Mouse;
 
 import com.arisux.mdxlib.lib.client.gui.GuiCustomButton;
 import com.arisux.mdxlib.lib.client.gui.IAction;
+import com.arisux.mdxlib.lib.client.gui.IGuiElement;
 import com.arisux.mdxlib.lib.client.render.Draw;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.game.Game;
@@ -177,7 +178,7 @@ public class GuiAssembler extends GuiContainer
         this.buttonScrollUp.setAction(new IAction()
         {
             @Override
-            public void perform(GuiCustomButton button)
+            public void perform(IGuiElement element)
             {
                 scrollDown();
             }
@@ -192,7 +193,7 @@ public class GuiAssembler extends GuiContainer
         this.buttonAssemble.setAction(new IAction()
         {
             @Override
-            public void perform(GuiCustomButton button)
+            public void perform(IGuiElement element)
             {
                 AssemblerSchematic selectedSchematic = schematics.get(getScroll());
                 AliensVsPredator.assembler().assembleSchematicAsPlayer(selectedSchematic, Game.minecraft().thePlayer);
@@ -209,7 +210,7 @@ public class GuiAssembler extends GuiContainer
         this.buttonAssemble4.setAction(new IAction()
         {
             @Override
-            public void perform(GuiCustomButton button)
+            public void perform(IGuiElement element)
             {
                 AssemblerSchematic selectedSchematic = schematics.get(getScroll());
                 AliensVsPredator.assembler().assembleSchematicAsPlayer(selectedSchematic, Game.minecraft().thePlayer);
@@ -226,7 +227,7 @@ public class GuiAssembler extends GuiContainer
         this.buttonAssemble8.setAction(new IAction()
         {
             @Override
-            public void perform(GuiCustomButton button)
+            public void perform(IGuiElement element)
             {
                 AssemblerSchematic selectedSchematic = schematics.get(getScroll());
                 AliensVsPredator.assembler().assembleSchematicAsPlayer(selectedSchematic, Game.minecraft().thePlayer);
@@ -243,7 +244,7 @@ public class GuiAssembler extends GuiContainer
         this.buttonAssemble16.setAction(new IAction()
         {
             @Override
-            public void perform(GuiCustomButton button)
+            public void perform(IGuiElement element)
             {
                 AssemblerSchematic selectedSchematic = schematics.get(getScroll());
                 AliensVsPredator.assembler().assembleSchematicAsPlayer(selectedSchematic, Game.minecraft().thePlayer);
@@ -260,7 +261,7 @@ public class GuiAssembler extends GuiContainer
         this.buttonAssemble32.setAction(new IAction()
         {
             @Override
-            public void perform(GuiCustomButton button)
+            public void perform(IGuiElement element)
             {
                 AssemblerSchematic selectedSchematic = schematics.get(getScroll());
                 AliensVsPredator.assembler().assembleSchematicAsPlayer(selectedSchematic, Game.minecraft().thePlayer);
@@ -277,7 +278,7 @@ public class GuiAssembler extends GuiContainer
         this.buttonAssembleStack.setAction(new IAction()
         {
             @Override
-            public void perform(GuiCustomButton button)
+            public void perform(IGuiElement element)
             {
                 AssemblerSchematic selectedSchematic = schematics.get(getScroll());
                 AliensVsPredator.assembler().assembleSchematicAsPlayer(selectedSchematic, Game.minecraft().thePlayer);
@@ -295,7 +296,7 @@ public class GuiAssembler extends GuiContainer
         this.buttonScrollDown.setAction(new IAction()
         {
             @Override
-            public void perform(GuiCustomButton button)
+            public void perform(IGuiElement element)
             {
                 scrollUp();
             }

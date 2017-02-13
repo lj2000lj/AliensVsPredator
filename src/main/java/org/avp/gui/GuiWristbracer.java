@@ -11,6 +11,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.arisux.mdxlib.lib.client.gui.GuiCustomButton;
 import com.arisux.mdxlib.lib.client.gui.IAction;
+import com.arisux.mdxlib.lib.client.gui.IGuiElement;
 import com.arisux.mdxlib.lib.client.render.Draw;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
@@ -99,7 +100,7 @@ public class GuiWristbracer extends GuiContainer
             button.setAction(new IAction()
             {
                 @Override
-                public void perform(GuiCustomButton button)
+                public void perform(IGuiElement element)
                 {
                     updateScreenDigit(button.id, displays.get(button) < 9 ? displays.get(button) + 1 : 0);
                 }

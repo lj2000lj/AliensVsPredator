@@ -10,15 +10,16 @@ import static org.lwjgl.opengl.GL11.glDepthMask;
 import java.util.ArrayList;
 
 import org.avp.AliensVsPredator;
+import org.avp.entities.extended.ModPlayer;
 import org.avp.entities.extended.Organism;
 import org.avp.event.client.render.wavegraph.Wavegraph;
 import org.avp.event.client.render.wavegraph.ekg.Electrocardiogram;
-import org.avp.entities.extended.ModPlayer;
 import org.avp.gui.GuiTacticalHUDSettings;
 import org.lwjgl.opengl.GL11;
 
 import com.arisux.mdxlib.lib.client.gui.GuiCustomButton;
 import com.arisux.mdxlib.lib.client.gui.IAction;
+import com.arisux.mdxlib.lib.client.gui.IGuiElement;
 import com.arisux.mdxlib.lib.client.render.Draw;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.client.render.Screen;
@@ -244,7 +245,7 @@ public class TacticalHUDRenderEvent
                 buttonMarineHelmConfig.setAction(new IAction()
                 {
                     @Override
-                    public void perform(GuiCustomButton button)
+                    public void perform(IGuiElement element)
                     {
                         Game.minecraft().displayGuiScreen(guiSettings);
                     }

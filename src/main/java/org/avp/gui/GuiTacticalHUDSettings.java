@@ -8,6 +8,7 @@ import com.arisux.mdxlib.lib.client.gui.GuiCustomScreen;
 import com.arisux.mdxlib.lib.client.gui.GuiCustomSlider;
 import com.arisux.mdxlib.lib.client.gui.GuiCustomTextbox;
 import com.arisux.mdxlib.lib.client.gui.IAction;
+import com.arisux.mdxlib.lib.client.gui.IGuiElement;
 import com.arisux.mdxlib.lib.client.render.Draw;
 import com.arisux.mdxlib.lib.client.render.ScaledResolution;
 import com.arisux.mdxlib.lib.client.render.Screen;
@@ -52,7 +53,7 @@ public class GuiTacticalHUDSettings extends GuiCustomScreen
         this.nightvision.setAction(new IAction()
         {
             @Override
-            public void perform(GuiCustomButton button)
+            public void perform(IGuiElement element)
             {
                 player.setNightvisionEnabled(!player.isNightvisionEnabled());
                 player.syncWithServer();
@@ -62,7 +63,7 @@ public class GuiTacticalHUDSettings extends GuiCustomScreen
         this.entityCulling.setAction(new IAction()
         {
             @Override
-            public void perform(GuiCustomButton button)
+            public void perform(IGuiElement element)
             {
                 player.setEntityCullingEnabled(!player.isEntityCullingEnabled());
                 player.syncWithServer();
@@ -72,7 +73,7 @@ public class GuiTacticalHUDSettings extends GuiCustomScreen
         this.save.setAction(new IAction()
         {
             @Override
-            public void perform(GuiCustomButton button)
+            public void perform(IGuiElement element)
             {
                 String newChannel = channel.getText();
                 int newRadius = (int) (txPower.sliderValue * txPower.sliderMaxValue);
