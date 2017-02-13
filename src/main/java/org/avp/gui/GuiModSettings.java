@@ -2,7 +2,7 @@ package org.avp.gui;
 
 import java.util.ArrayList;
 
-import org.avp.AliensVsPredator;
+import org.avp.Settings.ClientSettings;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
@@ -29,14 +29,14 @@ public class GuiModSettings extends GuiCustomScreen
         titleElement.enabled = false;
         this.elements.add(titleElement);
         
-        GuiCustomButton buttonElement = new GuiCustomButton(1, 0, 0, 40, 10, String.format("Hive Tessellation", AliensVsPredator.settings().getHiveTesselation()));
+        GuiCustomButton buttonElement = new GuiCustomButton(1, 0, 0, 40, 10, String.format("Hive Tessellation", ClientSettings.instance.getHiveTesselation()));
         buttonElement.tooltip = "Visual detail complexity of hive resin. - Low, High, Ultra";
         buttonElement.setAction(new IAction()
         {
             @Override
             public void perform(GuiCustomButton button)
             {
-                AliensVsPredator.settings().toggleHiveTessellation();
+                ClientSettings.instance.toggleHiveTessellation();
             }
         });
         this.elements.add(buttonElement);
@@ -48,7 +48,7 @@ public class GuiModSettings extends GuiCustomScreen
             @Override
             public void perform(GuiCustomButton button)
             {
-                AliensVsPredator.settings().saveClientSettings();
+                ClientSettings.instance.saveClientSettings();
                 Minecraft.getMinecraft().refreshResources();
                 button.displayString = "Settings Saved";
             }
@@ -112,7 +112,7 @@ public class GuiModSettings extends GuiCustomScreen
             
             if (element.id == 1)
             {
-                element.displayString = String.format("Hive Tessellation (%s)", AliensVsPredator.settings().getHiveTesselation());
+                element.displayString = String.format("Hive Tessellation (%s)", ClientSettings.instance.getHiveTesselation());
             }
         }
     }

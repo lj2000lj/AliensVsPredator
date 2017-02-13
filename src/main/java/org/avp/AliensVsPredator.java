@@ -211,7 +211,7 @@ public class AliensVsPredator implements IMod
         MDX.log().info("[AliensVsPredator] Copyright(C) 2012-2017 Arisux Technology Group");
         MDX.log().info("[AliensVsPredator] Pre-Initialization");
 
-        settings().preInitialize(event);
+        settings().pre(event);
         renderTypes().pre(event);
         this.remapItemIdentities();
     }

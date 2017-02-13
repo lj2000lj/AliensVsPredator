@@ -2,210 +2,184 @@ package org.avp;
 
 import java.io.File;
 
+import com.arisux.mdxlib.config.GraphicsSetting;
+import com.arisux.mdxlib.lib.game.IPreInitEvent;
+
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.config.Property;
 
-public class Settings
+public class Settings implements IPreInitEvent
 {
-    public static final Settings instance = new Settings();
+    public static final Settings instance        = new Settings();
 
-    public static enum GraphicsSetting
+    private Configuration        configuration;
+
+    private final String         CATEGORY_OTHER  = "general";
+    private final String         CATEGORY_DIM    = "dimensions";
+    private final String         CATEGORY_BIOMES = "biomes";
+
+    private Property             explosionsEnabled;
+    private Property             plasmaCannonExplosions;
+    private Property             updaterEnabled;
+    private Property             debugToolsEnabled;
+    private Property             nukesEnabled;
+    private Property             overworldSpawnsEnabled;
+    private Property             autoSpawnsEnabled;
+    private Property             evolvedXenomorphSpawns;
+    private Property             dimVarda;
+    private Property             dimAcheron;
+    private Property             biomeVarda;
+    private Property             biomeVardaForest;
+    private Property             biomeAcheron;
+    private Property             globalSoundVolume;
+
+    @SideOnly(Side.CLIENT)
+    public static class ClientSettings
     {
-        LOW(),
-        MEDIUM(),
-        HIGH(),
-        ULTRA();
-        
-        public static GraphicsSetting level(int i)
+        public static final ClientSettings instance          = new ClientSettings();
+
+        private Configuration              configuration;
+
+        private final String               CATEGORY_GRAPHICS = "graphics";
+
+        private Property                   hiveTesselation;
+
+        public void load(Configuration configuration)
         {
-            for (GraphicsSetting gs : values())
-            {
-                if (gs.ordinal() == i)
-                {
-                    return gs;
-                }
-            }
-            
-            return GraphicsSetting.MEDIUM;
-        }
-        
-        public int level()
-        {
-            return this.ordinal();
+            this.configuration = configuration;
+            hiveTesselation = configuration.get(CATEGORY_GRAPHICS, "HIVE_TESSELLATION", GraphicsSetting.ULTRA.ordinal());
         }
 
-        public GraphicsSetting next()
+        public void saveClientSettings()
         {
-            return GraphicsSetting.next(this);
+            hiveTesselation.set(this.getHiveTesselation().level());
+            configuration.save();
         }
 
-        public static GraphicsSetting next(GraphicsSetting setting)
+        public GraphicsSetting getHiveTesselation()
         {
-            if (setting == GraphicsSetting.LOW)
-            {
-                return GraphicsSetting.MEDIUM;
-            }
-            
-            if (setting == GraphicsSetting.MEDIUM)
-            {
-                return GraphicsSetting.HIGH;
-            }
-            
-            if (setting == GraphicsSetting.HIGH)
-            {
-                return GraphicsSetting.ULTRA;
-            }
-            
-            return GraphicsSetting.LOW;
+            return GraphicsSetting.level(hiveTesselation);
+        }
+
+        public void toggleHiveTessellation()
+        {
+            this.hiveTesselation.set(getHiveTesselation().next().level());
         }
     }
 
-    private File            configFile;
-    private Configuration   config;
-
-    private final String    CATEGORY_OTHER    = "ETC";
-    private final String    CATEGORY_GRAPHICS = "GRAPHICS";
-    private final String    CATEGORY_DIM      = "DIMENSIONS";
-    private final String    CATEGORY_BIOMES   = "BIOMES";
-
-    private boolean         explosionsEnabled;
-    private boolean         updaterEnabled;
-    private boolean         debugToolsEnabled;
-    private boolean         nukesEnabled;
-    private boolean         overworldSpawnsEnabled;
-    private boolean         autoSpawnsEnabled;
-    private boolean         evolvedXenomorphSpawns;
-    private int             dimVarda;
-    private int             dimAcheron;
-    private int             biomeVarda;
-    private int             biomeVardaForest;
-    private int             biomeAcheron;
-    private int             globalSoundVolume;
-    private GraphicsSetting hiveTesselation = GraphicsSetting.ULTRA;
-
     @EventHandler
-    public void preInitialize(FMLPreInitializationEvent evt)
+    public void pre(FMLPreInitializationEvent evt)
     {
-        configFile = new File(evt.getModConfigurationDirectory(), "aliensvspredator.cfg");
-        config = new Configuration(configFile);
-
+        configuration = new Configuration(new File(evt.getModConfigurationDirectory(), "aliensvspredator.config"));
         try
         {
-            config.load();
+            configuration.load();
 
-            dimVarda = config.get(CATEGORY_DIM, "VARDA", 223).getInt();
-            dimAcheron = config.get(CATEGORY_DIM, "ACHERON", 426).getInt();
+            if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
+            {
+                ClientSettings.instance.load(configuration);
+            }
 
-            biomeVarda = config.get(CATEGORY_BIOMES, "VARDA", 223).getInt();
-            biomeAcheron = config.get(CATEGORY_BIOMES, "ACHERON", 224).getInt();
-            biomeVardaForest = config.get(CATEGORY_BIOMES, "VARDA_FOREST", 225).getInt();
+            dimVarda = configuration.get(CATEGORY_DIM, "varda", 223);
+            dimAcheron = configuration.get(CATEGORY_DIM, "acheron", 426);
 
-            hiveTesselation = GraphicsSetting.level(config.get(CATEGORY_GRAPHICS, "HIVE_TESSELLATION", GraphicsSetting.ULTRA.ordinal()).getInt());
+            biomeVarda = configuration.get(CATEGORY_BIOMES, "varda_badlands", 223);
+            biomeAcheron = configuration.get(CATEGORY_BIOMES, "acheron", 224);
+            biomeVardaForest = configuration.get(CATEGORY_BIOMES, "varda_forest", 229);
 
-            explosionsEnabled = config.get(CATEGORY_OTHER, "EXPLOSION_BLOCK_DAMAGE", true).getBoolean(true);
-            nukesEnabled = config.get(CATEGORY_OTHER, "NUKES_ENABLED", true).getBoolean(true);
-            overworldSpawnsEnabled = config.get(CATEGORY_OTHER, "OVERWORLD_MOB_SPAWNING", true).getBoolean(true);
-            autoSpawnsEnabled = config.get(CATEGORY_OTHER, "AUTO_MOB_SPAWNING", true).getBoolean(true);
-            evolvedXenomorphSpawns = config.get(CATEGORY_OTHER, "EVOLVED_XENOMORPH_SPAWNS", true).getBoolean(true);
-            updaterEnabled = config.get(CATEGORY_OTHER, "UPDATER_ENABLED", true, "Toggle the mod's updater.").getBoolean(true);
-            debugToolsEnabled = config.get(CATEGORY_OTHER, "DEBUG_TOOLS", false, "Toggle the debugging tools.").getBoolean(false);
-            globalSoundVolume = config.get(CATEGORY_OTHER, "GLOBAL_SOUND_VOLUME", 100, "Change the volume of this mod's sounds. EXAMPLES: 100 = 100% Volume, 50 = 50% Volume, 150 = 150% Volume").getInt();
+            plasmaCannonExplosions = configuration.get(CATEGORY_OTHER, "plasma_cannon_explosions", false);
+            explosionsEnabled = configuration.get(CATEGORY_OTHER, "explosion_block_damage", true);
+            nukesEnabled = configuration.get(CATEGORY_OTHER, "nukes", true);
+            overworldSpawnsEnabled = configuration.get(CATEGORY_OTHER, "overworld_spawning", true);
+            autoSpawnsEnabled = configuration.get(CATEGORY_OTHER, "auto_spawning", true);
+            evolvedXenomorphSpawns = configuration.get(CATEGORY_OTHER, "mature_spawns", true);
+            updaterEnabled = configuration.get(CATEGORY_OTHER, "updater", true, "Toggle the mod's updater.");
+            debugToolsEnabled = configuration.get(CATEGORY_OTHER, "debug_tools", false, "Toggle the debugging tools.");
+            globalSoundVolume = configuration.get(CATEGORY_OTHER, "global_volume", 75, "Change the volume of this mod's sounds. EXAMPLES: 100 = 100% Volume, 50 = 50% Volume, 150 = 150% Volume");
         }
         finally
         {
-            config.save();
+            configuration.save();
         }
-    }
-
-    public void saveClientSettings()
-    {
-        config.get(CATEGORY_GRAPHICS, "HIVE_TESSELLATION", 1).set(this.hiveTesselation.level());
-        config.save();
-    }
-
-    public File getConfigFile()
-    {
-        return configFile;
     }
 
     public Configuration getConfig()
     {
-        return config;
+        return configuration;
     }
 
     public boolean areOverworldSpawnsEnabled()
     {
-        return overworldSpawnsEnabled;
+        return overworldSpawnsEnabled.getBoolean();
     }
 
     public boolean areAutoSpawnsEnabled()
     {
-        return autoSpawnsEnabled;
+        return autoSpawnsEnabled.getBoolean();
     }
     
+    public boolean arePlasmaCannonExplosionsEnabled()
+    {
+        return plasmaCannonExplosions.getBoolean();
+    }
+
     public boolean shouldEvolvedXenomorphsSpawn()
     {
-        return evolvedXenomorphSpawns;
+        return evolvedXenomorphSpawns.getBoolean();
     }
 
     public boolean areExplosionsEnabled()
     {
-        return this.explosionsEnabled;
+        return this.explosionsEnabled.getBoolean();
     }
 
     public boolean isUpdaterEnabled()
     {
-        return this.updaterEnabled;
+        return this.updaterEnabled.getBoolean();
     }
 
     public boolean areDebugToolsEnabled()
     {
-        return this.debugToolsEnabled;
+        return this.debugToolsEnabled.getBoolean();
     }
 
     public int dimensionIdVarda()
     {
-        return this.dimVarda;
+        return this.dimVarda.getInt();
     }
 
     public int dimensionIdAcheron()
     {
-        return this.dimAcheron;
+        return this.dimAcheron.getInt();
     }
 
     public int biomeIdVardaBadlands()
     {
-        return this.biomeVarda;
+        return this.biomeVarda.getInt();
     }
 
     public int biomeIdVardaForest()
     {
-        return this.biomeVardaForest;
+        return this.biomeVardaForest.getInt();
     }
 
     public int biomeIdAcheron()
     {
-        return this.biomeAcheron;
+        return this.biomeAcheron.getInt();
     }
 
     public boolean areNukesEnabled()
     {
-        return this.nukesEnabled;
+        return this.nukesEnabled.getBoolean();
     }
 
     public float globalSoundVolume()
     {
-        return this.globalSoundVolume * 1.0F / 100;
-    }
-
-    public GraphicsSetting getHiveTesselation()
-    {
-        return hiveTesselation;
-    }
-
-    public void toggleHiveTessellation()
-    {
-        this.hiveTesselation = this.hiveTesselation.next();
+        return this.globalSoundVolume.getInt() / 100F;
     }
 }

@@ -2,12 +2,15 @@ package org.avp.entities;
 
 import java.util.List;
 
+import org.avp.AliensVsPredator;
 import org.avp.DamageSources;
+import org.avp.Settings;
 import org.avp.Sounds;
 import org.avp.entities.fx.EntityFXElectricArc;
 
 import com.arisux.mdxlib.lib.game.Game;
 import com.arisux.mdxlib.lib.world.Pos;
+import com.arisux.mdxlib.lib.world.Worlds;
 import com.arisux.mdxlib.lib.world.entity.Entities;
 
 import cpw.mods.fml.relauncher.Side;
@@ -126,6 +129,11 @@ public class EntityPlasma extends EntityThrowable
     {
         if (!this.worldObj.isRemote)
         {
+            if (Settings.instance.arePlasmaCannonExplosionsEnabled())
+            {
+                Worlds.createExplosion(null, worldObj, new Pos(this), 3F * this.getPlasmaSize(), false, true, AliensVsPredator.settings().areExplosionsEnabled());
+            }
+
             Sounds.SOUND_WEAPON_PLASMA_EXPLOSION.playSound(this, 7F, 1.0F);
 
             @SuppressWarnings("unchecked")

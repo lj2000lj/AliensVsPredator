@@ -1,10 +1,11 @@
 package org.avp.entities.tile.render;
 
 import org.avp.AliensVsPredator;
-import org.avp.Settings.GraphicsSetting;
+import org.avp.Settings.ClientSettings;
 import org.avp.entities.tile.TileEntityHiveResin;
 import org.avp.entities.tile.model.ModelHiveResin;
 
+import com.arisux.mdxlib.config.GraphicsSetting;
 import com.arisux.mdxlib.lib.client.Model;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
@@ -17,7 +18,7 @@ public class RenderHiveResin extends TileEntitySpecialRenderer
     @Override
     public void renderTileEntityAt(TileEntity tile, double posX, double posY, double posZ, float partialTicks)
     {
-        GraphicsSetting hiveTessellation = AliensVsPredator.settings().getHiveTesselation();
+        GraphicsSetting hiveTessellation = ClientSettings.instance.getHiveTesselation();
 
         if (hiveTessellation == GraphicsSetting.MEDIUM || hiveTessellation == GraphicsSetting.HIGH || hiveTessellation == GraphicsSetting.ULTRA)
         {

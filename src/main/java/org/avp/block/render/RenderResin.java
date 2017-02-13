@@ -1,8 +1,10 @@
 package org.avp.block.render;
 
 import org.avp.AliensVsPredator;
-import org.avp.Settings.GraphicsSetting;
+import org.avp.Settings.ClientSettings;
 import org.avp.entities.tile.TileEntityHiveResin;
+
+import com.arisux.mdxlib.config.GraphicsSetting;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import net.minecraft.block.Block;
@@ -29,7 +31,7 @@ public class RenderResin implements ISimpleBlockRenderingHandler
     {
         if (world != null)
         {
-            GraphicsSetting hiveTessellation = AliensVsPredator.settings().getHiveTesselation();
+            GraphicsSetting hiveTessellation = ClientSettings.instance.getHiveTesselation();
             Block renderBlock = AliensVsPredator.blocks().blockStandardHiveResin;
             TileEntityHiveResin resin = (TileEntityHiveResin) world.getTileEntity(x, y, z);
 
