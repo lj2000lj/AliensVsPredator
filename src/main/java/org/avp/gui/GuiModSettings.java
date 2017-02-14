@@ -22,6 +22,7 @@ import com.arisux.mdxlib.lib.client.render.Draw;
 import com.arisux.mdxlib.lib.client.render.ScaledResolution;
 import com.arisux.mdxlib.lib.client.render.Screen;
 import com.arisux.mdxlib.lib.game.Chat;
+import com.arisux.mdxlib.lib.util.SystemInfo;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -30,6 +31,7 @@ public class GuiModSettings extends GuiCustomScreen
 {
     private ArrayList<IGuiElement> elements = new ArrayList<IGuiElement>();
     private int                    scroll   = 0;
+    private String                 processorName;
 
     public GuiModSettings(GuiScreen parent)
     {
@@ -248,6 +250,30 @@ public class GuiModSettings extends GuiCustomScreen
 
         Draw.drawRect(0, 0, resolution.getScaledWidth(), resolution.getScaledHeight(), 0xAA000000);
 
+        int idx = 1;
+        int yStart = 15;
+        int padding = 12;
+
+        double memoryTotal = SystemInfo.toMBFromB(SystemInfo.vmMemoryTotalBytes());
+        double memoryFree = SystemInfo.toMBFromB(SystemInfo.vmMemoryFreeBytes());
+        double memoryMax = SystemInfo.toMBFromB(SystemInfo.vmMemoryMaxBytes());
+        double memoryUsed = memoryTotal - memoryFree;
+        int memoryPercent = (int) (memoryUsed * 100D / memoryTotal);
+        int memoryPercentMax = (int) (memoryUsed * 100D / memoryMax);
+
+        Draw.drawProgressBar(String.format("VM Memory %s/%s %s%%", memoryUsed, memoryTotal, memoryPercent), 100, memoryPercent, 5, yStart + (padding * idx++) - (15 * scroll), resolution.getScaledWidth() - 10, 5, 0, 0xFF00CCFF, false);
+        Draw.drawProgressBar(String.format("VM Memory Total %s/%s %s%%", memoryUsed, memoryMax, memoryPercentMax), 100, memoryPercentMax, 5, yStart + (padding * idx++) - (15 * scroll), resolution.getScaledWidth() - 10, 5, 0, 0xFF00CCFF, false);
+
+        Draw.drawString(String.format("VM Memory: %sMB/%sMB MAX: %sMB", Math.round(SystemInfo.toMBFromB(SystemInfo.vmMemoryTotalBytes()) - SystemInfo.toMBFromB(SystemInfo.vmMemoryFreeBytes())), Math.round(SystemInfo.toMBFromB(SystemInfo.vmMemoryTotalBytes())), Math.round(SystemInfo.toMBFromB(SystemInfo.vmMemoryMaxBytes()))), 5, yStart + (padding * idx++) - (15 * scroll), 0xFF00CCFF, false);
+        Draw.drawString(String.format("CPU: %s (%s Logical Cores)", SystemInfo.cpu(), SystemInfo.cpuCores()), 5, yStart + (padding * idx++) - (15 * scroll), 0xFF00CCFF, false);
+        Draw.drawString(String.format("GPU: %s (%s)", SystemInfo.gpu(), SystemInfo.gpuVendor()), 5, yStart + (padding * idx++) - (15 * scroll), 0xFF00CCFF, false);
+        if (SystemInfo.getMemoryCapacity() != 0)
+        {
+            Draw.drawString(String.format("RAM: %sGB", (int) SystemInfo.toGBFromB(SystemInfo.getMemoryCapacity())), 5, yStart + (padding * idx++) - (15 * scroll), 0xFF00CCFF, false);
+        }
+        Draw.drawString(String.format("OS: %s (%s, %s)", SystemInfo.osName(), SystemInfo.osVersion(), SystemInfo.osArchitecture()), 5, yStart + (padding * idx++) - (15 * scroll), 0xFF00CCFF, false);
+        Draw.drawString(String.format("Java: %s", SystemInfo.javaVersion()), 5, yStart + (padding * idx++) - (15 * scroll), 0xFF00CCFF, false);
+
         for (IGuiElement element : this.elements)
         {
             if (element instanceof GuiCustomButton)
@@ -261,13 +287,13 @@ public class GuiModSettings extends GuiCustomScreen
             {
                 GuiCustomTextbox textbox = (GuiCustomTextbox) element;
                 textbox.drawTextBox();
-                 Draw.drawString(textbox.tooltip, textbox.xPosition + textbox.width + 10, textbox.yPosition + (textbox.height / 2) - 4, 0xFFFFFFFF);
+                Draw.drawString(textbox.tooltip, textbox.xPosition + textbox.width + 10, textbox.yPosition + (textbox.height / 2) - 4, 0xFFFFFFFF);
             }
-            
+
             element.drawTooltip();
         }
 
-        Draw.drawRect(0, 0, resolution.getScaledWidth(), 20, 0xFF121212);
+        Draw.drawRect(0, 0, resolution.getScaledWidth(), 20, 0xAA000000);
         Draw.drawString("Aliens Vs Predator Settings", 5, 6, 0xFF00CCFF, false);
     }
 
@@ -278,6 +304,7 @@ public class GuiModSettings extends GuiCustomScreen
 
         this.updateScrolling();
 
+        int yStart = 130;
         int controlWidth = 100;
         int controlHeight = 15;
         int vPadding = 1;
@@ -292,7 +319,7 @@ public class GuiModSettings extends GuiCustomScreen
                 GuiCustomButton button = (GuiCustomButton) element;
 
                 button.xPosition = hPadding;
-                button.yPosition = 25 + ((idx * (controlHeight + vPadding)) - controlHeight * scroll);
+                button.yPosition = yStart + ((idx * (controlHeight + vPadding)) - controlHeight * scroll);
                 button.width = controlWidth;
                 button.height = controlHeight;
 
@@ -313,7 +340,7 @@ public class GuiModSettings extends GuiCustomScreen
                 GuiCustomTextbox textbox = (GuiCustomTextbox) element;
 
                 textbox.xPosition = hPadding;
-                textbox.yPosition = 25 + ((idx * (controlHeight + vPadding)) - controlHeight * scroll);
+                textbox.yPosition = yStart + ((idx * (controlHeight + vPadding)) - controlHeight * scroll);
                 textbox.width = controlWidth;
                 textbox.height = controlHeight;
             }
