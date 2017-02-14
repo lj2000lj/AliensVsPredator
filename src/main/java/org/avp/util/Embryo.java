@@ -5,11 +5,18 @@ import java.util.ArrayList;
 import org.avp.api.parasitoidic.INascentic;
 import org.avp.entities.extended.Organism;
 import org.avp.entities.mob.EntityAqua;
+import org.avp.entities.mob.EntityBabyhead;
+import org.avp.entities.mob.EntityBatXeno;
 import org.avp.entities.mob.EntityBelugaburster;
 import org.avp.entities.mob.EntityBelugamorph;
+import org.avp.entities.mob.EntityBoiler;
 import org.avp.entities.mob.EntityChestburster;
+import org.avp.entities.mob.EntityDracoburster;
+import org.avp.entities.mob.EntityDracomorph;
 import org.avp.entities.mob.EntityDrone;
 import org.avp.entities.mob.EntityEngineer;
+import org.avp.entities.mob.EntityMyceliomorph;
+import org.avp.entities.mob.EntityPantheramorph;
 import org.avp.entities.mob.EntityPredalien;
 import org.avp.entities.mob.EntityPredalienChestburster;
 import org.avp.entities.mob.EntityQueen;
@@ -27,9 +34,14 @@ import com.arisux.mdxlib.lib.world.entity.Entities;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntityWitch;
+import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.passive.EntityHorse;
+import net.minecraft.entity.passive.EntityMooshroom;
+import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.nbt.NBTTagCompound;
@@ -46,7 +58,12 @@ public class Embryo implements Cloneable
 
     static
     {
-        new Embryo(EntityChestburster.class, EntitySpitter.class, EntityCreeper.class).register();
+        new Embryo(EntityChestburster.class, EntityBoiler.class, EntityCreeper.class).register();
+        new Embryo(EntityChestburster.class, EntitySpitter.class, EntityWitch.class).register();
+        new Embryo(EntityDracoburster.class, EntityDracomorph.class, EntityDragon.class).register();
+        new Embryo(EntityChestburster.class, EntityMyceliomorph.class, EntityMooshroom.class).register();
+        new Embryo(EntityChestburster.class, EntityPantheramorph.class, EntityOcelot.class).register();
+        new Embryo(EntityChestburster.class, EntityBatXeno.class, EntityBat.class).register();
         new Embryo(EntityChestburster.class, EntityAqua.class, EntitySquid.class).register();
         new Embryo(EntityPredalienChestburster.class, EntityPredalien.class, EntityYautja.class, EntityYautjaBerserker.class).register();
         new Embryo(EntityRunnerChestburster.class, EntityRunnerDrone.class, EntityCow.class, EntityHorse.class, EntityWolf.class).register();
