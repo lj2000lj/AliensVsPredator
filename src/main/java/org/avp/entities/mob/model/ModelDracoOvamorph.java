@@ -140,7 +140,6 @@ public class ModelDracoOvamorph extends Model
     @Override
     protected void render(IRenderObject renderObject, float boxTranslation)
     {
-        super.render(renderObject, boxTranslation);
         this.lFrontLobe2.render(boxTranslation);
         this.lBackLobe2.render(boxTranslation);
         this.rFrontLobe2.render(boxTranslation);

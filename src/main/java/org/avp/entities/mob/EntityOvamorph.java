@@ -13,7 +13,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
@@ -21,14 +20,14 @@ import net.minecraft.world.World;
 
 public class EntityOvamorph extends EntitySpeciesAlien implements IMob
 {
-    private int hatchingTime;
-    private boolean hasHatched;
-    private boolean acceleratedHatching;
-    private int openProgress;
-    private int hatchWaitTimer;
-    private final int maxOpenProgress = 21;
-    private boolean containsFacehugger;
-    private boolean sendUpdates;
+    protected int hatchingTime;
+    protected boolean hasHatched;
+    protected boolean acceleratedHatching;
+    protected int openProgress;
+    protected int hatchWaitTimer;
+    protected final int maxOpenProgress = 21;
+    protected boolean containsFacehugger;
+    protected boolean sendUpdates;
 
     public EntityOvamorph(World par1World)
     {
@@ -178,7 +177,7 @@ public class EntityOvamorph extends EntitySpeciesAlien implements IMob
         EntityItemDrops.ROYAL_JELLY_SINGLE.tryDrop(this);
     }
 
-    private void hatch()
+    protected void hatch()
     {
         if (!this.worldObj.isRemote)
         {

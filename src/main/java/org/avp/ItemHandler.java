@@ -2,24 +2,33 @@ package org.avp;
 
 import org.avp.entities.mob.EntityAethon;
 import org.avp.entities.mob.EntityAqua;
+import org.avp.entities.mob.EntityBabyhead;
+import org.avp.entities.mob.EntityBatXeno;
 import org.avp.entities.mob.EntityBelugaburster;
 import org.avp.entities.mob.EntityBelugamorph;
+import org.avp.entities.mob.EntityBoiler;
 import org.avp.entities.mob.EntityChestburster;
 import org.avp.entities.mob.EntityCombatSynthetic;
 import org.avp.entities.mob.EntityCrusher;
 import org.avp.entities.mob.EntityDeacon;
 import org.avp.entities.mob.EntityDeaconShark;
+import org.avp.entities.mob.EntityDracoEgg;
+import org.avp.entities.mob.EntityDracoburster;
+import org.avp.entities.mob.EntityDracomorph;
 import org.avp.entities.mob.EntityDrone;
 import org.avp.entities.mob.EntityEngineer;
 import org.avp.entities.mob.EntityFacehugger;
 import org.avp.entities.mob.EntityGooMutant;
 import org.avp.entities.mob.EntityHammerpede;
 import org.avp.entities.mob.EntityMarine;
+import org.avp.entities.mob.EntityMyceliomorph;
 import org.avp.entities.mob.EntityOctohugger;
 import org.avp.entities.mob.EntityOvamorph;
+import org.avp.entities.mob.EntityPantheramorph;
 import org.avp.entities.mob.EntityPraetorian;
 import org.avp.entities.mob.EntityPredalien;
 import org.avp.entities.mob.EntityPredalienChestburster;
+import org.avp.entities.mob.EntityPredatorHound;
 import org.avp.entities.mob.EntityQueen;
 import org.avp.entities.mob.EntityQueenChestburster;
 import org.avp.entities.mob.EntityRoyalFacehugger;
@@ -30,9 +39,12 @@ import org.avp.entities.mob.EntitySpaceJockey;
 import org.avp.entities.mob.EntitySpitter;
 import org.avp.entities.mob.EntityTrilobite;
 import org.avp.entities.mob.EntityUltramorph;
+import org.avp.entities.mob.EntityUrsuidae;
+import org.avp.entities.mob.EntityVardaMonkey;
 import org.avp.entities.mob.EntityWarrior;
 import org.avp.entities.mob.EntityYautja;
 import org.avp.entities.mob.EntityYautjaBerserker;
+import org.avp.entities.mob.EntityYautjaMutant;
 import org.avp.items.ItemAPC;
 import org.avp.items.ItemArmorMK50;
 import org.avp.items.ItemArmorMarine;
@@ -102,7 +114,7 @@ public class ItemHandler implements IInitEvent
     public Item                     swordTitanium            = (new ItemSword(AliensVsPredator.materials().tools().celtic));
     public Item                     hoeTitanium              = (new ItemHoe(AliensVsPredator.materials().tools().celtic));
     public Item                     itemSpear                = (new ItemSpear(AliensVsPredator.materials().tools().celtic));
-    public Item                     itemWristbracer           = (new ItemWristbracer()).setDescription("Applies " + ItemWristbracer.getDamageToApply() + " damage to any entity, regardless of their armor, while blades are inserted.").setMaxStackSize(1);
+    public Item                     itemWristbracer          = (new ItemWristbracer()).setDescription("Applies " + ItemWristbracer.getDamageToApply() + " damage to any entity, regardless of their armor, while blades are inserted.").setMaxStackSize(1);
     public Item                     itemWristbracerBlades    = (new HookedItem()).disableIcon().setDescription("Place in your wristbracer to equip.").setMaxStackSize(1).setMaxDurability(AliensVsPredator.materials().tools().celtic.getMaxUses());
     public Item                     itemPlasmaCannon         = (new ItemPlasmaCannon()).setFull3D();
     public Item                     itemProximityMine        = (new ItemLaserMine());
@@ -218,6 +230,19 @@ public class ItemHandler implements IInitEvent
         public ItemEntitySummoner itemSummonerPredalienChestburster = (new ItemEntitySummoner(EntityPredalienChestburster.class));
         public ItemEntitySummoner itemSummonerQueenChestburster     = (new ItemEntitySummoner(EntityQueenChestburster.class));
         public ItemEntitySummoner itemSummonerRunnerChestburster    = (new ItemEntitySummoner(EntityRunnerChestburster.class));
+
+        public ItemEntitySummoner itemSummonerBabyhead              = (new ItemEntitySummoner(EntityBabyhead.class));
+        public ItemEntitySummoner itemSummonerBatXeno               = (new ItemEntitySummoner(EntityBatXeno.class));
+        public ItemEntitySummoner itemSummonerBoiler                = (new ItemEntitySummoner(EntityBoiler.class));
+        public ItemEntitySummoner itemSummonerDracoburster          = (new ItemEntitySummoner(EntityDracoburster.class));
+        public ItemEntitySummoner itemSummonerDracoEgg              = (new ItemEntitySummoner(EntityDracoEgg.class));
+        public ItemEntitySummoner itemSummonerDracomorph            = (new ItemEntitySummoner(EntityDracomorph.class));
+        public ItemEntitySummoner itemSummonerMyceliomorph          = (new ItemEntitySummoner(EntityMyceliomorph.class));
+        public ItemEntitySummoner itemSummonerPantheramorph         = (new ItemEntitySummoner(EntityPantheramorph.class));
+        public ItemEntitySummoner itemSummonerPredatorHound         = (new ItemEntitySummoner(EntityPredatorHound.class));
+        public ItemEntitySummoner itemSummonerUrsuidae              = (new ItemEntitySummoner(EntityUrsuidae.class));
+        public ItemEntitySummoner itemSummonerVardaMonkey           = (new ItemEntitySummoner(EntityVardaMonkey.class));
+        public ItemEntitySummoner itemSummonerYautjaMutant          = (new ItemEntitySummoner(EntityYautjaMutant.class));
     }
 
     @Override
@@ -256,6 +281,18 @@ public class ItemHandler implements IInitEvent
         Game.register(AliensVsPredator.ID, summoners.itemSummonerPredalienChestburster, "summon.chestburster.predalien").setCreativeTab(AliensVsPredator.tabEntities());
         Game.register(AliensVsPredator.ID, summoners.itemSummonerQueenChestburster, "summon.chestburster.queen").setCreativeTab(AliensVsPredator.tabEntities());
         Game.register(AliensVsPredator.ID, summoners.itemSummonerRunnerChestburster, "summon.chestburster.runner").setCreativeTab(AliensVsPredator.tabEntities());
+        Game.register(AliensVsPredator.ID, summoners.itemSummonerBabyhead, "summon.babyhead").setCreativeTab(AliensVsPredator.tabEntitiesIncomplete());
+        Game.register(AliensVsPredator.ID, summoners.itemSummonerBatXeno, "summon.batxeno").setCreativeTab(AliensVsPredator.tabEntitiesIncomplete());
+        Game.register(AliensVsPredator.ID, summoners.itemSummonerBoiler, "summon.boiler").setCreativeTab(AliensVsPredator.tabEntitiesIncomplete());
+        Game.register(AliensVsPredator.ID, summoners.itemSummonerDracoburster, "summon.dracoburster").setCreativeTab(AliensVsPredator.tabEntitiesIncomplete());
+        Game.register(AliensVsPredator.ID, summoners.itemSummonerDracoEgg, "summon.dracoegg").setCreativeTab(AliensVsPredator.tabEntitiesIncomplete());
+        Game.register(AliensVsPredator.ID, summoners.itemSummonerDracomorph, "summon.dracomorph").setCreativeTab(AliensVsPredator.tabEntitiesIncomplete());
+        Game.register(AliensVsPredator.ID, summoners.itemSummonerMyceliomorph, "summon.myceliomorph").setCreativeTab(AliensVsPredator.tabEntitiesIncomplete());
+        Game.register(AliensVsPredator.ID, summoners.itemSummonerPantheramorph, "summon.pantheramorph").setCreativeTab(AliensVsPredator.tabEntitiesIncomplete());
+        Game.register(AliensVsPredator.ID, summoners.itemSummonerPredatorHound, "summon.predatorhound").setCreativeTab(AliensVsPredator.tabEntitiesIncomplete());
+        Game.register(AliensVsPredator.ID, summoners.itemSummonerUrsuidae, "summon.ursuidae").setCreativeTab(AliensVsPredator.tabEntitiesIncomplete());
+        Game.register(AliensVsPredator.ID, summoners.itemSummonerVardaMonkey, "summon.vardamonkey").setCreativeTab(AliensVsPredator.tabEntitiesIncomplete());
+        Game.register(AliensVsPredator.ID, summoners.itemSummonerYautjaMutant, "summon.yautjamutant").setCreativeTab(AliensVsPredator.tabEntitiesIncomplete());
 
         Game.register(AliensVsPredator.ID, pressureMask, "helm.pressure").setCreativeTab(AliensVsPredator.tabMain());
         Game.register(AliensVsPredator.ID, pressureChest, "body.pressure").setCreativeTab(AliensVsPredator.tabMain());

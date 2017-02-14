@@ -531,7 +531,6 @@ public class ModelMutantYautja extends Model
     @Override
     protected void render(IRenderObject renderObject, float boxTranslation)
     {
-        super.render(renderObject, boxTranslation);
         OpenGL.pushMatrix();
         OpenGL.translate(this.lThigh.offsetX, this.lThigh.offsetY, this.lThigh.offsetZ);
         OpenGL.translate(this.lThigh.rotationPointX * boxTranslation, this.lThigh.rotationPointY * boxTranslation, this.lThigh.rotationPointZ * boxTranslation);

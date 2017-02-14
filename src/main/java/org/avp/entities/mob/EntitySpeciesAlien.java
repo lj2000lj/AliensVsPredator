@@ -30,7 +30,7 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IRoy
     protected final int     JELLY_LEVEL_DW_ID = 26;
     protected XenomorphHive hive;
     private UUID            signature;
-    protected boolean         jellyLimitOverride;
+    protected boolean       jellyLimitOverride;
 
     public EntitySpeciesAlien(World world)
     {

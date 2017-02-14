@@ -201,8 +201,9 @@ public class Resources
         public final TexturedModel<ModelDracoburster>          DRACOBURSTER                   = new TexturedModel(new ModelDracoburster(), new Texture(AliensVsPredator.ID, "textures/mob/dracoburster.png"));
         public final TexturedModel<ModelDracomorph>            DRACOMORPH                     = new TexturedModel(new ModelDracomorph(), new Texture(AliensVsPredator.ID, "textures/mob/dracomorph.png"));
         public final TexturedModel<ModelDracoOvamorph>         DRACO_OVAMORPH                 = new TexturedModel(new ModelDracoOvamorph(), new Texture(AliensVsPredator.ID, "textures/mob/dracomorphegg.png"));
-        public final TexturedModel<ModelMutantYautja>          MUTANTYAUTJA                   = new TexturedModel(new ModelMutantYautja(), new Texture(AliensVsPredator.ID, "textures/mob/yautjamutant.png"));
+        public final TexturedModel<ModelMutantYautja>          MUTANT_YAUTJA                   = new TexturedModel(new ModelMutantYautja(), new Texture(AliensVsPredator.ID, "textures/mob/yautjamutant.png"));
         public final TexturedModel<ModelMyceliomorph>          MYCELIOMORPH                   = new TexturedModel(new ModelMyceliomorph(), new Texture(AliensVsPredator.ID, "textures/mob/myceliomorph.png"));
+        public final TexturedModel<ModelMyceliomorph>          MYCELIOMORPH_MASK                   = new TexturedModel(new ModelMyceliomorph(), new Texture(AliensVsPredator.ID, "textures/mob/myceliomorph_glow.png"));
         public final TexturedModel<ModelPantheramorph>         PANTHERAMORPH                  = new TexturedModel(new ModelPantheramorph(), new Texture(AliensVsPredator.ID, "textures/mob/pantheramorph.png"));
         public final TexturedModel<ModelPredatorHound>         PREDATOR_HOUND                 = new TexturedModel(new ModelPredatorHound(), new Texture(AliensVsPredator.ID, "textures/mob/predatorhound.png"));
         public final TexturedModel<ModelUrsuidae>              URSUIDAE                       = new TexturedModel(new ModelUrsuidae(), new Texture(AliensVsPredator.ID, "textures/mob/vardaboar.png"));

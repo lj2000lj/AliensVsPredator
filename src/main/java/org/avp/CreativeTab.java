@@ -46,12 +46,12 @@ public class CreativeTab
                                                       return "Mobs";
                                                   }
                                               };
-    public static CreativeTabs tabEntitiesWIP = new CreativeTabs("summoners_wip")
+    public static CreativeTabs tabEntitiesIncomplete = new CreativeTabs("summoners_wip")
                                               {
                                                   @Override
                                                   public Item getTabIconItem()
                                                   {
-                                                      return AliensVsPredator.items().summoners.itemSummonerTrilobite;
+                                                      return AliensVsPredator.items().itemMaintenanceJack;
                                                   }
 
                                                   public String getTranslatedTabLabel()

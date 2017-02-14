@@ -184,6 +184,11 @@ public class AliensVsPredator implements IMod
         return CreativeTab.tabBlocks;
     }
 
+    public static CreativeTabs tabEntitiesIncomplete()
+    {
+        return CreativeTab.tabEntitiesIncomplete;
+    }
+
     public static CreativeTabs tabEntities()
     {
         return CreativeTab.tabEntities;
