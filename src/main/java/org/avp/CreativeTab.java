@@ -43,7 +43,20 @@ public class CreativeTab
 
                                                   public String getTranslatedTabLabel()
                                                   {
-                                                      return "Summoners";
+                                                      return "Mobs";
+                                                  }
+                                              };
+    public static CreativeTabs tabEntitiesWIP = new CreativeTabs("summoners_wip")
+                                              {
+                                                  @Override
+                                                  public Item getTabIconItem()
+                                                  {
+                                                      return AliensVsPredator.items().summoners.itemSummonerTrilobite;
+                                                  }
+
+                                                  public String getTranslatedTabLabel()
+                                                  {
+                                                      return "Mobs (Incomplete)";
                                                   }
                                               };
     public static CreativeTabs tabGunParts    = new CreativeTabs("gunparts")
