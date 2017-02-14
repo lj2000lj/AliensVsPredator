@@ -18,9 +18,7 @@ import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntityGhast;
-import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityMooshroom;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.player.EntityPlayer;
@@ -203,7 +201,7 @@ public class EntityImpregnationHandler
         
         if (host instanceof EntityDragon)
         {
-            particleColor = 0x9600BC;
+            particleColor = 0xA831FF;
             glow = true;
         }
         
