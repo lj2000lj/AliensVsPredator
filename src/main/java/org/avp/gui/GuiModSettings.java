@@ -19,6 +19,7 @@ import com.arisux.mdxlib.lib.client.gui.GuiCustomTextbox;
 import com.arisux.mdxlib.lib.client.gui.IAction;
 import com.arisux.mdxlib.lib.client.gui.IGuiElement;
 import com.arisux.mdxlib.lib.client.render.Draw;
+import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.client.render.ScaledResolution;
 import com.arisux.mdxlib.lib.client.render.Screen;
 import com.arisux.mdxlib.lib.game.Chat;
@@ -57,7 +58,7 @@ public class GuiModSettings extends GuiCustomScreen
                 }
                 else
                 {
-                    element.tooltip = Chat.format(String.format("&b%s&f &8%s", WordUtils.capitalize(setting.property().getLanguageKey().replace("_", " ")), setting.property().comment));
+                    element.tooltip = Chat.format(String.format("&b%s&f:&7%s", WordUtils.capitalize(setting.property().getLanguageKey().replace("_", " ")), setting.property().comment));
                 }
 
                 element.setAction(new IAction()
@@ -88,7 +89,7 @@ public class GuiModSettings extends GuiCustomScreen
                 }
                 else
                 {
-                    textbox.tooltip = Chat.format(String.format("&b%s&f &8%s", WordUtils.capitalize(setting.property().getLanguageKey().replace("_", " ")), setting.property().comment));
+                    textbox.tooltip = Chat.format(String.format("&b%s&f:&7%s", WordUtils.capitalize(setting.property().getLanguageKey().replace("_", " ")), setting.property().comment));
                 }
 
                 textbox.setAction(new IAction()
@@ -99,7 +100,6 @@ public class GuiModSettings extends GuiCustomScreen
                         if (element instanceof GuiCustomTextbox)
                         {
                             GuiCustomTextbox t = (GuiCustomTextbox) element;
-                            System.out.println(setting.property().getName() + " " + setting.value() + " " + t.getText());
                             setting.property().set(t.getText());
                         }
                     }
@@ -107,7 +107,7 @@ public class GuiModSettings extends GuiCustomScreen
                 textbox.trackElement();
                 this.elements.add(textbox);
             }
-            
+
             if (setting instanceof ConfigSettingBoolean)
             {
                 element = new GuiCustomButton(2, 0, 0, 0, 10, setting.getStringValue());
@@ -118,7 +118,7 @@ public class GuiModSettings extends GuiCustomScreen
                 }
                 else
                 {
-                    element.tooltip = Chat.format(String.format("&b%s&f &8%s", WordUtils.capitalize(setting.property().getLanguageKey().replace("_", " ")), setting.property().comment));
+                    element.tooltip = Chat.format(String.format("&b%s&f:&7%s", WordUtils.capitalize(setting.property().getLanguageKey().replace("_", " ")), setting.property().comment));
                 }
 
                 element.setAction(new IAction()
@@ -158,7 +158,7 @@ public class GuiModSettings extends GuiCustomScreen
                 }
                 else
                 {
-                    element.tooltip = Chat.format(String.format("&b%s&f &8%s", WordUtils.capitalize(setting.property().getLanguageKey().replace("_", " ")), setting.property().comment));
+                    element.tooltip = Chat.format(String.format("&b%s&f:&7%s", WordUtils.capitalize(setting.property().getLanguageKey().replace("_", " ")), setting.property().comment));
                 }
 
                 element.setAction(new IAction()
@@ -189,7 +189,7 @@ public class GuiModSettings extends GuiCustomScreen
                 }
                 else
                 {
-                    textbox.tooltip = Chat.format(String.format("&b%s&f &8%s", WordUtils.capitalize(setting.property().getLanguageKey().replace("_", " ")), setting.property().comment));
+                    textbox.tooltip = Chat.format(String.format("&b%s&f:&7%s", WordUtils.capitalize(setting.property().getLanguageKey().replace("_", " ")), setting.property().comment));
                 }
 
                 textbox.setAction(new IAction()
@@ -200,7 +200,6 @@ public class GuiModSettings extends GuiCustomScreen
                         if (element instanceof GuiCustomTextbox)
                         {
                             GuiCustomTextbox t = (GuiCustomTextbox) element;
-                            System.out.println(setting.property().getName() + " " + setting.value() + " " + t.getText());
                             setting.property().set(t.getText());
                         }
                     }
@@ -211,7 +210,7 @@ public class GuiModSettings extends GuiCustomScreen
         }
 
         element = new GuiCustomButton(2, 0, 0, 0, 10, "Apply");
-        element.tooltip = "Applies these settings without saving them to the config. Changes will be lost after restarting the game.";
+        element.tooltip = "Applies settings without saving them to the config. Changes will be lost after restarting the game.";
         element.overlayColorHover = 0xAA444444;
         element.fontColor = 0xFF00CCFF;
         element.fontShadow = false;
@@ -226,7 +225,7 @@ public class GuiModSettings extends GuiCustomScreen
         this.elements.add(element);
 
         element = new GuiCustomButton(2, 0, 0, 0, 10, "Save and Apply");
-        element.tooltip = "Applies these settings and saves them to the config.";
+        element.tooltip = "Applies settings and saves them to the config.";
         element.overlayColorHover = 0xAA444444;
         element.fontColor = 0xFF00CCFF;
         element.fontShadow = false;
@@ -277,8 +276,6 @@ public class GuiModSettings extends GuiCustomScreen
     {
         ScaledResolution resolution = Screen.scaledDisplayResolution();
 
-        Draw.drawRect(0, 0, resolution.getScaledWidth(), resolution.getScaledHeight(), 0xAA000000);
-
         int idx = 1;
         int yStart = 15;
         int padding = 12;
@@ -290,18 +287,21 @@ public class GuiModSettings extends GuiCustomScreen
         int memoryPercent = (int) (memoryUsed * 100D / memoryTotal);
         int memoryPercentMax = (int) (memoryUsed * 100D / memoryMax);
 
-        Draw.drawProgressBar(String.format("VM Memory %s/%s %s%%", memoryUsed, memoryTotal, memoryPercent), 100, memoryPercent, 5, yStart + (padding * idx++) - (15 * scroll), resolution.getScaledWidth() - 10, 5, 0, 0xFF00CCFF, false);
-        Draw.drawProgressBar(String.format("VM Memory Total %s/%s %s%%", memoryUsed, memoryMax, memoryPercentMax), 100, memoryPercentMax, 5, yStart + (padding * idx++) - (15 * scroll), resolution.getScaledWidth() - 10, 5, 0, 0xFF00CCFF, false);
+        Draw.drawRect(0, 0, resolution.getScaledWidth(), resolution.getScaledHeight(), 0xAA000000);
 
-        Draw.drawString(String.format("VM Memory: %sMB/%sMB MAX: %sMB", Math.round(SystemInfo.toMBFromB(SystemInfo.vmMemoryTotalBytes()) - SystemInfo.toMBFromB(SystemInfo.vmMemoryFreeBytes())), Math.round(SystemInfo.toMBFromB(SystemInfo.vmMemoryTotalBytes())), Math.round(SystemInfo.toMBFromB(SystemInfo.vmMemoryMaxBytes()))), 5, yStart + (padding * idx++) - (15 * scroll), 0xFF00CCFF, false);
-        Draw.drawString(String.format("CPU: %s (%s Logical Cores)", SystemInfo.cpu(), SystemInfo.cpuCores()), 5, yStart + (padding * idx++) - (15 * scroll), 0xFF00CCFF, false);
-        Draw.drawString(String.format("GPU: %s (%s)", SystemInfo.gpu(), SystemInfo.gpuVendor()), 5, yStart + (padding * idx++) - (15 * scroll), 0xFF00CCFF, false);
+        Draw.drawProgressBar(String.format("VM Memory %s/%s %s%%", memoryUsed, memoryTotal, memoryPercent), 100, memoryPercent, 5, yStart + (padding * idx++) - (15 * scroll), resolution.getScaledWidth() - 10, 5, 0, 0xFF00DDFF, false);
+        Draw.drawProgressBar(String.format("VM Memory Total %s/%s %s%%", memoryUsed, memoryMax, memoryPercentMax), 100, memoryPercentMax, 5, yStart + (padding * idx++) - (15 * scroll), resolution.getScaledWidth() - 10, 5, 0, 0xFF00DDFF, false);
+
+        Draw.drawString(String.format("VM Memory: %sMB/%sMB MAX: %sMB", Math.round(SystemInfo.toMBFromB(SystemInfo.vmMemoryTotalBytes()) - SystemInfo.toMBFromB(SystemInfo.vmMemoryFreeBytes())), Math.round(SystemInfo.toMBFromB(SystemInfo.vmMemoryTotalBytes())), Math.round(SystemInfo.toMBFromB(SystemInfo.vmMemoryMaxBytes()))), 5, yStart + (padding * idx++) - (15 * scroll), 0xFFAAAAAA, false);
+        Draw.drawString(String.format("CPU: %s (%s Logical Cores)", SystemInfo.cpu(), SystemInfo.cpuCores()), 5, yStart + (padding * idx++) - (15 * scroll), 0xFFAAAAAA, false);
+        Draw.drawString(String.format("GPU: %s (%s)", SystemInfo.gpu(), SystemInfo.gpuVendor()), 5, yStart + (padding * idx++) - (15 * scroll), 0xFFAAAAAA, false);
         if (SystemInfo.getMemoryCapacity() != 0)
         {
-            Draw.drawString(String.format("RAM: %sGB", (int) SystemInfo.toGBFromB(SystemInfo.getMemoryCapacity())), 5, yStart + (padding * idx++) - (15 * scroll), 0xFF00CCFF, false);
+            Draw.drawString(String.format("RAM: %sGB", (int) SystemInfo.toGBFromB(SystemInfo.getMemoryCapacity())), 5, yStart + (padding * idx++) - (15 * scroll), 0xFFAAAAAA, false);
         }
-        Draw.drawString(String.format("OS: %s (%s, %s)", SystemInfo.osName(), SystemInfo.osVersion(), SystemInfo.osArchitecture()), 5, yStart + (padding * idx++) - (15 * scroll), 0xFF00CCFF, false);
-        Draw.drawString(String.format("Java: %s", SystemInfo.javaVersion()), 5, yStart + (padding * idx++) - (15 * scroll), 0xFF00CCFF, false);
+        Draw.drawString(String.format("OS: %s (%s, %s)", SystemInfo.osName(), SystemInfo.osVersion(), SystemInfo.osArchitecture()), 5, yStart + (padding * idx++) - (15 * scroll), 0xFFAAAAAA, false);
+        Draw.drawString(String.format("Java: %s", SystemInfo.javaVersion()), 5, yStart + (padding * idx++) - (15 * scroll), 0xFFAAAAAA, false);
+        float descTextScale = 0.5F;
 
         for (IGuiElement element : this.elements)
         {
@@ -309,14 +309,40 @@ public class GuiModSettings extends GuiCustomScreen
             {
                 GuiCustomButton button = (GuiCustomButton) element;
                 button.drawButton();
-                Draw.drawString(button.tooltip, button.xPosition + button.width + 10, button.yPosition + (button.height / 2) - 4, 0xFFFFFFFF);
+
+                if (button.tooltip.contains(":"))
+                {
+                    String[] info = button.tooltip.split(":");
+                    Draw.drawString(info[0], Math.round((button.xPosition + button.width + 10)), Math.round((button.yPosition + (button.height / 2) - 6)), 0xFFFFFFFF);
+                    OpenGL.pushMatrix();
+                    OpenGL.scale(descTextScale, descTextScale, descTextScale);
+                    Draw.drawString(info[1], Math.round((button.xPosition + button.width + 10) / descTextScale), Math.round((button.yPosition + (button.height / 2) + 4) / descTextScale), 0xFFFFFFFF);
+                    OpenGL.popMatrix();
+                }
+                else
+                {
+                    Draw.drawString(button.tooltip, Math.round((button.xPosition + button.width + 10)), Math.round((button.yPosition + (button.height / 2) - 4)), 0xFFAAAAAA);
+                }
             }
 
             if (element instanceof GuiCustomTextbox)
             {
                 GuiCustomTextbox textbox = (GuiCustomTextbox) element;
                 textbox.drawTextBox();
-                Draw.drawString(textbox.tooltip, textbox.xPosition + textbox.width + 10, textbox.yPosition + (textbox.height / 2) - 4, 0xFFFFFFFF);
+
+                if (textbox.tooltip.contains(":"))
+                {
+                    String[] info = textbox.tooltip.split(":");
+                    Draw.drawString(info[0], Math.round((textbox.xPosition + textbox.width + 10)), Math.round((textbox.yPosition + (textbox.height / 2) - 6)), 0xFFFFFFFF);
+                    OpenGL.pushMatrix();
+                    OpenGL.scale(descTextScale, descTextScale, descTextScale);
+                    Draw.drawString(info[1], Math.round((textbox.xPosition + textbox.width + 10) / descTextScale), Math.round((textbox.yPosition + (textbox.height / 2) + 4) / descTextScale), 0xFFFFFFFF);
+                    OpenGL.popMatrix();
+                }
+                else
+                {
+                    Draw.drawString(textbox.tooltip, Math.round((textbox.xPosition + textbox.width + 10) / descTextScale), Math.round((textbox.yPosition + (textbox.height / 2) - 4) / descTextScale), 0xFFFFFFFF);
+                }
             }
 
             element.drawTooltip();
@@ -324,6 +350,7 @@ public class GuiModSettings extends GuiCustomScreen
 
         Draw.drawRect(0, 0, resolution.getScaledWidth(), 20, 0xAA000000);
         Draw.drawString("Aliens Vs Predator Settings", 5, 6, 0xFF00CCFF, false);
+        // OpenGL.scale(-guiscale, -guiscale, 1F);
     }
 
     @Override
