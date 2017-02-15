@@ -33,7 +33,12 @@ public class EntityDracomorph extends EntitySpeciesAlien implements IMob, IHost
                                                       @Override
                                                       public boolean isEntityApplicable(Entity target)
                                                       {
-                                                          if (target instanceof EntityDracomorph)
+                                                          if (target instanceof EntityQueen)
+                                                          {
+                                                              return true;
+                                                          }
+                                                          
+                                                          if (target instanceof EntitySpeciesAlien)
                                                           {
                                                               return false;
                                                           }
