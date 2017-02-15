@@ -9,6 +9,7 @@ import org.avp.block.BlockHiveResin;
 import org.avp.entities.tile.TileEntityHiveResin;
 
 import com.arisux.mdxlib.lib.world.Pos;
+import com.arisux.mdxlib.lib.world.entity.Entities;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -23,7 +24,8 @@ import net.minecraft.world.World;
 
 public class EntityDrone extends EntityXenomorph implements IMaturable
 {
-    public int mobType;
+    public int             mobType;
+    private EntityOvamorph targetOvamorph;
 
     public EntityDrone(World world)
     {
@@ -70,6 +72,7 @@ public class EntityDrone extends EntityXenomorph implements IMaturable
     {
         super.onUpdate();
 
+        this.tickRepurposingAI();
         this.tickHiveBuildingAI();
 
         if (this.hive != null)
@@ -98,45 +101,87 @@ public class EntityDrone extends EntityXenomorph implements IMaturable
         return super.attackEntityAsMob(entity);
     }
 
+    public void tickRepurposingAI()
+    {
+        if (!this.worldObj.isRemote)
+        {
+            if (this.worldObj.getWorldTime() % 20 == 0)
+            {
+                if (this.rand.nextInt(3) == 0)
+                {
+                    @SuppressWarnings("unchecked")
+                    ArrayList<EntityOvamorph> ovamorphs = (ArrayList<EntityOvamorph>) Entities.getEntitiesInCoordsRange(this.worldObj, EntityOvamorph.class, new Pos(this), 16);
+
+                    if (this.getHive() != null)
+                    {
+                        for (EntityOvamorph ovamorph : ovamorphs)
+                        {
+                            if (!ovamorph.containsFacehugger)
+                            {
+                                targetOvamorph = ovamorph;
+                                this.getNavigator().tryMoveToEntityLiving(ovamorph, this.getMoveHelper().getSpeed());
+                            }
+                        }
+                    }
+                }
+
+                if (this.targetOvamorph != null)
+                {
+                    double distance = this.getDistanceSqToEntity(targetOvamorph);
+
+                    if (distance <= 2)
+                    {
+                        this.setJellyLevel(this.getJellyLevel() + targetOvamorph.getJellyLevel());
+                        this.targetOvamorph.setDead();
+                        this.targetOvamorph = null;
+                    }
+                }
+            }
+        }
+    }
+
     public void tickHiveBuildingAI()
     {
         if (!this.worldObj.isRemote)
         {
-            if (this.getHive() != null && this.worldObj.getWorldTime() % 10 == 0 && rand.nextInt(3) == 0)
+            if (this.targetOvamorph == null)
             {
-                if (this.getJellyLevel() >= 16)
+                if (this.getHive() != null && this.worldObj.getWorldTime() % 10 == 0 && rand.nextInt(3) == 0)
                 {
-                    Pos coord = findNextSuitableResinLocation(3);
-
-                    if (coord != null)
+                    if (this.getJellyLevel() >= 16)
                     {
-                        Block block = coord.getBlock(this.worldObj);
-                        int meta = coord.getBlockMetadata(this.worldObj);
+                        Pos coord = findNextSuitableResinLocation(3);
 
-                        if (block != null)
+                        if (coord != null)
                         {
-                            PathEntity path = this.worldObj.getEntityPathToXYZ(this, (int) coord.x, (int) coord.y, (int) coord.z, 12, true, false, true, false);
+                            Block block = coord.getBlock(this.worldObj);
+                            int meta = coord.getBlockMetadata(this.worldObj);
 
-                            if (path == null)
+                            if (block != null)
                             {
-                                return;
+                                PathEntity path = this.worldObj.getEntityPathToXYZ(this, (int) coord.x, (int) coord.y, (int) coord.z, 12, true, false, true, false);
+
+                                if (path == null)
+                                {
+                                    return;
+                                }
+
+                                this.getNavigator().setPath(path, 0.8D);
+                                this.worldObj.setBlock((int) coord.x, (int) coord.y, (int) coord.z, AliensVsPredator.blocks().terrainHiveResin);
+
+                                TileEntity tileEntity = coord.getTileEntity(this.worldObj);
+
+                                if (tileEntity != null && tileEntity instanceof TileEntityHiveResin)
+                                {
+                                    TileEntityHiveResin resin = (TileEntityHiveResin) tileEntity;
+                                    resin.setHiveSignature(this.getHive().getUniqueIdentifier());
+                                    resin.setBlockCovering(block, 0);
+                                    this.worldObj.setBlockMetadataWithNotify((int) coord.x, (int) coord.y, (int) coord.z, meta, 3);
+                                    this.hive.addResin(resin);
+                                }
+
+                                this.setJellyLevel(this.getJellyLevel() - 16);
                             }
-
-                            this.getNavigator().setPath(path, 0.8D);
-                            this.worldObj.setBlock((int) coord.x, (int) coord.y, (int) coord.z, AliensVsPredator.blocks().terrainHiveResin);
-
-                            TileEntity tileEntity = coord.getTileEntity(this.worldObj);
-
-                            if (tileEntity != null && tileEntity instanceof TileEntityHiveResin)
-                            {
-                                TileEntityHiveResin resin = (TileEntityHiveResin) tileEntity;
-                                resin.setHiveSignature(this.getHive().getUniqueIdentifier());
-                                resin.setBlockCovering(block, 0);
-                                this.worldObj.setBlockMetadataWithNotify((int) coord.x, (int) coord.y, (int) coord.z, meta, 3);
-                                this.hive.addResin(resin);
-                            }
-
-                            this.setJellyLevel(this.getJellyLevel() - 16);
                         }
                     }
                 }
@@ -184,7 +229,7 @@ public class EntityDrone extends EntityXenomorph implements IMaturable
 
         return data.size() > 0 ? data.get(this.rand.nextInt(data.size())) : null;
     }
-    
+
     protected boolean canReplaceWithResin(Block block)
     {
         return !(block == net.minecraft.init.Blocks.air) && !(block instanceof BlockHiveResin) && block.isOpaqueCube();

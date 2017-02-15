@@ -36,7 +36,7 @@ public class EntityOvamorph extends EntitySpeciesAlien implements IMob
         this.hatchingTime = 20 * 30 + (10 * rand.nextInt(24));
         this.experienceValue = 10;
         this.openProgress = -maxOpenProgress;
-        this.hatchWaitTimer = 20 * 5 + (20 * rand.nextInt(3));
+        this.hatchWaitTimer = 20 * 3 + (20 * rand.nextInt(5));
         this.containsFacehugger = true;
         this.sendUpdates = true;
     }
@@ -61,6 +61,7 @@ public class EntityOvamorph extends EntitySpeciesAlien implements IMob
 
         this.containsFacehugger = nbt.getBoolean("containsFacehugger");
         this.openProgress = nbt.getInteger("openProgress");
+        this.sendUpdates = true;
     }
 
     @Override
@@ -146,6 +147,8 @@ public class EntityOvamorph extends EntitySpeciesAlien implements IMob
 
                 if (this.hasHatched || potentialHosts.size() > 0)
                 {
+                    this.hasHatched = true;
+                    
                     if (this.acceleratedHatching || this.hatchingTime <= 0)
                     {
                         this.openProgress = this.openProgress < (maxOpenProgress) ? openProgress + 1 : this.openProgress;
