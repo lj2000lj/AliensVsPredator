@@ -6,6 +6,7 @@ import org.apache.commons.lang3.text.WordUtils;
 import org.avp.AliensVsPredator;
 import org.avp.Settings;
 import org.avp.Settings.ClientSettings;
+import org.avp.entities.EntityAPC;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
@@ -286,37 +287,39 @@ public class GuiModSettings extends GuiCustomScreen
         double memoryUsed = memoryTotal - memoryFree;
         int memoryPercent = (int) (memoryUsed * 100D / memoryTotal);
         int memoryPercentMax = (int) (memoryUsed * 100D / memoryMax);
+        float descTextScale = 0.5F;
 
-        Draw.drawRect(0, 0, resolution.getScaledWidth(), resolution.getScaledHeight(), 0xAA000000);
+        Draw.drawProgressBar(String.format("VM Memory %s/%s %s%%", memoryUsed, memoryTotal, memoryPercent), 100, memoryPercent, 5, yStart + (padding * idx++) - (15 * scroll) - 2, resolution.getScaledWidth() - 10, 5, 0, 0xFF00DDFF, false);
+        Draw.drawProgressBar(String.format("VM Memory Total %s/%s %s%%", memoryUsed, memoryMax, memoryPercentMax), 100, memoryPercentMax, 5, yStart + (padding * idx++) - (15 * scroll) - 2, resolution.getScaledWidth() - 10, 5, 0, 0xFF00DDFF, false);
 
-        Draw.drawProgressBar(String.format("VM Memory %s/%s %s%%", memoryUsed, memoryTotal, memoryPercent), 100, memoryPercent, 5, yStart + (padding * idx++) - (15 * scroll), resolution.getScaledWidth() - 10, 5, 0, 0xFF00DDFF, false);
-        Draw.drawProgressBar(String.format("VM Memory Total %s/%s %s%%", memoryUsed, memoryMax, memoryPercentMax), 100, memoryPercentMax, 5, yStart + (padding * idx++) - (15 * scroll), resolution.getScaledWidth() - 10, 5, 0, 0xFF00DDFF, false);
-
-        Draw.drawString(String.format("VM Memory: %sMB/%sMB MAX: %sMB", Math.round(SystemInfo.toMBFromB(SystemInfo.vmMemoryTotalBytes()) - SystemInfo.toMBFromB(SystemInfo.vmMemoryFreeBytes())), Math.round(SystemInfo.toMBFromB(SystemInfo.vmMemoryTotalBytes())), Math.round(SystemInfo.toMBFromB(SystemInfo.vmMemoryMaxBytes()))), 5, yStart + (padding * idx++) - (15 * scroll), 0xFFAAAAAA, false);
-        Draw.drawString(String.format("CPU: %s (%s Logical Cores)", SystemInfo.cpu(), SystemInfo.cpuCores()), 5, yStart + (padding * idx++) - (15 * scroll), 0xFFAAAAAA, false);
-        Draw.drawString(String.format("GPU: %s (%s)", SystemInfo.gpu(), SystemInfo.gpuVendor()), 5, yStart + (padding * idx++) - (15 * scroll), 0xFFAAAAAA, false);
+        Draw.drawString(String.format("VM Memory: %sMB/%sMB MAX: %sMB", Math.round(SystemInfo.toMBFromB(SystemInfo.vmMemoryTotalBytes()) - SystemInfo.toMBFromB(SystemInfo.vmMemoryFreeBytes())), Math.round(SystemInfo.toMBFromB(SystemInfo.vmMemoryTotalBytes())), Math.round(SystemInfo.toMBFromB(SystemInfo.vmMemoryMaxBytes()))), 5, yStart + (padding * idx++) - (15 * scroll), 0xFFFFFFFF, false);
+        Draw.drawString(String.format("CPU: %s (%s Logical Cores)", SystemInfo.cpu(), SystemInfo.cpuCores()), 5, yStart + (padding * idx++) - (15 * scroll), 0xFFFFFFFF, false);
+        Draw.drawString(String.format("GPU: %s (%s)", SystemInfo.gpu(), SystemInfo.gpuVendor()), 5, yStart + (padding * idx++) - (15 * scroll), 0xFFFFFFFF, false);
         if (SystemInfo.getMemoryCapacity() != 0)
         {
-            Draw.drawString(String.format("RAM: %sGB", (int) SystemInfo.toGBFromB(SystemInfo.getMemoryCapacity())), 5, yStart + (padding * idx++) - (15 * scroll), 0xFFAAAAAA, false);
+            Draw.drawString(String.format("RAM: %sGB", (int) SystemInfo.toGBFromB(SystemInfo.getMemoryCapacity())), 5, yStart + (padding * idx++) - (15 * scroll), 0xFFFFFFFF, false);
         }
-        Draw.drawString(String.format("OS: %s (%s, %s)", SystemInfo.osName(), SystemInfo.osVersion(), SystemInfo.osArchitecture()), 5, yStart + (padding * idx++) - (15 * scroll), 0xFFAAAAAA, false);
-        Draw.drawString(String.format("Java: %s", SystemInfo.javaVersion()), 5, yStart + (padding * idx++) - (15 * scroll), 0xFFAAAAAA, false);
-        float descTextScale = 0.5F;
+        Draw.drawString(String.format("OS: %s (%s, %s)", SystemInfo.osName(), SystemInfo.osVersion(), SystemInfo.osArchitecture()), 5, yStart + (padding * idx++) - (15 * scroll), 0xFFFFFFFF, false);
+        Draw.drawString(String.format("Java: %s", SystemInfo.javaVersion()), 5, yStart + (padding * idx++) - (15 * scroll), 0xFFFFFFFF, false);
 
         for (IGuiElement element : this.elements)
         {
             if (element instanceof GuiCustomButton)
             {
                 GuiCustomButton button = (GuiCustomButton) element;
+                int elementX = (button.xPosition + button.width + 10);
+                int elementY = (button.yPosition + (button.height / 2));
+                OpenGL.enableBlend();
+                Draw.drawRect(button.xPosition, button.yPosition, resolution.getScaledWidth() - 10, button.height, 0x88000000);
                 button.drawButton();
 
                 if (button.tooltip.contains(":"))
                 {
                     String[] info = button.tooltip.split(":");
-                    Draw.drawString(info[0], Math.round((button.xPosition + button.width + 10)), Math.round((button.yPosition + (button.height / 2) - 6)), 0xFFFFFFFF);
+                    Draw.drawString(info[0], elementX, elementY - 6, 0xFFFFFFFF);
                     OpenGL.pushMatrix();
                     OpenGL.scale(descTextScale, descTextScale, descTextScale);
-                    Draw.drawString(info[1], Math.round((button.xPosition + button.width + 10) / descTextScale), Math.round((button.yPosition + (button.height / 2) + 4) / descTextScale), 0xFFFFFFFF);
+                    Draw.drawString(info[1], Math.round(elementX / descTextScale), Math.round((elementY + 4) / descTextScale), 0xFFFFFFFF);
                     OpenGL.popMatrix();
                 }
                 else
@@ -328,15 +331,19 @@ public class GuiModSettings extends GuiCustomScreen
             if (element instanceof GuiCustomTextbox)
             {
                 GuiCustomTextbox textbox = (GuiCustomTextbox) element;
+                int elementX = (textbox.xPosition + textbox.width + 10);
+                int elementY = (textbox.yPosition + (textbox.height / 2));
+                OpenGL.enableBlend();
+                Draw.drawRect(textbox.xPosition, textbox.yPosition, resolution.getScaledWidth() - 10, textbox.height, 0x88000000);
                 textbox.drawTextBox();
 
                 if (textbox.tooltip.contains(":"))
                 {
                     String[] info = textbox.tooltip.split(":");
-                    Draw.drawString(info[0], Math.round((textbox.xPosition + textbox.width + 10)), Math.round((textbox.yPosition + (textbox.height / 2) - 6)), 0xFFFFFFFF);
+                    Draw.drawString(info[0], elementX, elementY - 6, 0xFFFFFFFF);
                     OpenGL.pushMatrix();
                     OpenGL.scale(descTextScale, descTextScale, descTextScale);
-                    Draw.drawString(info[1], Math.round((textbox.xPosition + textbox.width + 10) / descTextScale), Math.round((textbox.yPosition + (textbox.height / 2) + 4) / descTextScale), 0xFFFFFFFF);
+                    Draw.drawString(info[1], Math.round(elementX / descTextScale), Math.round((elementY + 4) / descTextScale), 0xFFFFFFFF);
                     OpenGL.popMatrix();
                 }
                 else
