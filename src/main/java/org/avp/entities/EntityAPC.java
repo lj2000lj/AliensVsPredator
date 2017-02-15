@@ -214,8 +214,11 @@ public class EntityAPC extends Entity
     public void onUpdate()
     {
         super.onUpdate();
-        
-        this.handleKeybindAction();
+
+        if (this.worldObj.isRemote)
+        {
+            this.handleKeybindAction();
+        }
 
         this.speedMultiplier = 1.95D;
         this.fallDistance = 0;
