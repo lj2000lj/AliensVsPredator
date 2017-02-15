@@ -1,5 +1,6 @@
 package org.avp.event;
 
+import org.avp.Settings.ClientSettings;
 import org.avp.entities.extended.Organism;
 import org.avp.entities.fx.EntityBloodFX;
 import org.avp.entities.mob.EntitySpeciesYautja;
@@ -151,7 +152,7 @@ public class EntityImpregnationHandler
     @SideOnly(Side.CLIENT)
     private void bleed(EntityLivingBase host, float spread)
     {
-        if (host == null)
+        if (host == null || !ClientSettings.instance.bloodFX().value())
         {
             return;
         }

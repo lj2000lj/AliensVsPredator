@@ -62,13 +62,17 @@ public class Settings implements IPreInitEvent, IFlexibleConfiguration
         public static final ClientSettings     instance          = new ClientSettings();
         private Configuration                  configuration;
         private final ArrayList<ConfigSetting> allSettings       = new ArrayList<ConfigSetting>();
+        
         private final String                   CATEGORY_GRAPHICS = "graphics";
+        
         private ConfigSettingGraphics          hiveTessellation;
+        private ConfigSettingBoolean           bloodEffects;
 
         public void load(Configuration configuration)
         {
             this.configuration = configuration;
             this.hiveTessellation = new ConfigSettingGraphics(this, configuration.get(CATEGORY_GRAPHICS, "hive_tessellation", GraphicsSetting.ULTRA.ordinal(), "The visual complexity and detail of xenomorph hives."));
+            this.bloodEffects = new ConfigSettingBoolean(this, configuration.get(CATEGORY_GRAPHICS, "blood_fx", true, "Turns blood particle effects on or off."));
         }
 
         public void saveSettings()
@@ -79,6 +83,11 @@ public class Settings implements IPreInitEvent, IFlexibleConfiguration
         public ConfigSettingGraphics hiveTessellation()
         {
             return this.hiveTessellation;
+        }
+        
+        public ConfigSettingBoolean bloodFX()
+        {
+            return bloodEffects;
         }
 
         @Override

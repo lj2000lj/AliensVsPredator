@@ -31,7 +31,6 @@ public class GuiModSettings extends GuiCustomScreen
 {
     private ArrayList<IGuiElement> elements = new ArrayList<IGuiElement>();
     private int                    scroll   = 0;
-    private String                 processorName;
 
     public GuiModSettings(GuiScreen parent)
     {
@@ -107,6 +106,36 @@ public class GuiModSettings extends GuiCustomScreen
                 });
                 textbox.trackElement();
                 this.elements.add(textbox);
+            }
+            
+            if (setting instanceof ConfigSettingBoolean)
+            {
+                element = new GuiCustomButton(2, 0, 0, 0, 10, setting.getStringValue());
+
+                if (setting.property().comment == null || setting.property().comment != null && setting.property().comment.isEmpty())
+                {
+                    element.tooltip = Chat.format(String.format("&c%s", setting.property().getLanguageKey()));
+                }
+                else
+                {
+                    element.tooltip = Chat.format(String.format("&b%s&f &8%s", WordUtils.capitalize(setting.property().getLanguageKey().replace("_", " ")), setting.property().comment));
+                }
+
+                element.setAction(new IAction()
+                {
+                    @Override
+                    public void perform(IGuiElement element)
+                    {
+                        setting.toggle();
+
+                        if (element instanceof GuiCustomButton)
+                        {
+                            GuiCustomButton button = (GuiCustomButton) element;
+                            button.displayString = setting.getStringValue();
+                        }
+                    }
+                });
+                this.elements.add(element);
             }
         }
 
