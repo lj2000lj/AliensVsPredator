@@ -5,6 +5,7 @@ import org.avp.AliensVsPredator;
 import com.arisux.mdxlib.lib.client.Model;
 import com.arisux.mdxlib.lib.client.RenderLivingWrapper;
 import com.arisux.mdxlib.lib.client.TexturedModel;
+import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -29,6 +30,8 @@ public class RenderYautjaMutant extends RenderLivingWrapper
     @Override
     protected void preRenderCallback(EntityLivingBase entityliving, float renderPartialTicks)
     {
+        float scale = 1.25F;
+        OpenGL.scale(scale, scale, scale);
         super.preRenderCallback(entityliving, renderPartialTicks);
     }
 }
