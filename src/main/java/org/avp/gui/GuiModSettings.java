@@ -58,7 +58,7 @@ public class GuiModSettings extends GuiCustomScreen
                 }
                 else
                 {
-                    element.tooltip = Chat.format(String.format("&b%s&f:desc:&7%s", WordUtils.capitalize(setting.property().getLanguageKey().replace("_", " ")), setting.property().comment));
+                    element.tooltip = Chat.format(String.format("&b%s%s&f:s:&7%s", setting.getRequiresRestart() ? "&c[RESTART] &b" : "&b", WordUtils.capitalize(setting.property().getLanguageKey().replace("_", " ")), setting.property().comment));
                 }
 
                 element.setAction(new IAction()
@@ -89,7 +89,7 @@ public class GuiModSettings extends GuiCustomScreen
                 }
                 else
                 {
-                    textbox.tooltip = Chat.format(String.format("&b%s&f:desc:&7%s", WordUtils.capitalize(setting.property().getLanguageKey().replace("_", " ")), setting.property().comment));
+                    textbox.tooltip = Chat.format(String.format("&b%s%s&f:s:&7%s", setting.getRequiresRestart() ? "&c[RESTART] &b" : "&b", WordUtils.capitalize(setting.property().getLanguageKey().replace("_", " ")), setting.property().comment));
                 }
 
                 textbox.setAction(new IAction()
@@ -118,7 +118,7 @@ public class GuiModSettings extends GuiCustomScreen
                 }
                 else
                 {
-                    element.tooltip = Chat.format(String.format("&b%s&f:desc:&7%s", WordUtils.capitalize(setting.property().getLanguageKey().replace("_", " ")), setting.property().comment));
+                    element.tooltip = Chat.format(String.format("&b%s%s&f:s:&7%s", setting.getRequiresRestart() ? "&c[RESTART] &b" : "&b", WordUtils.capitalize(setting.property().getLanguageKey().replace("_", " ")), setting.property().comment));
                 }
 
                 element.setAction(new IAction()
@@ -158,7 +158,7 @@ public class GuiModSettings extends GuiCustomScreen
                 }
                 else
                 {
-                    element.tooltip = Chat.format(String.format("&b%s&f:desc:&7%s", WordUtils.capitalize(setting.property().getLanguageKey().replace("_", " ")), setting.property().comment));
+                    element.tooltip = Chat.format(String.format("&b%s%s&f:s:&7%s", setting.getRequiresRestart() ? "&c[RESTART] &b" : "&b", WordUtils.capitalize(setting.property().getLanguageKey().replace("_", " ")), setting.property().comment));
                 }
 
                 element.setAction(new IAction()
@@ -189,7 +189,7 @@ public class GuiModSettings extends GuiCustomScreen
                 }
                 else
                 {
-                    textbox.tooltip = Chat.format(String.format("&b%s&f:desc:&7%s", WordUtils.capitalize(setting.property().getLanguageKey().replace("_", " ")), setting.property().comment));
+                    textbox.tooltip = Chat.format(String.format("&b%s%s&f:s:&7%s", setting.getRequiresRestart() ? "&c[RESTART] &b" : "&b", WordUtils.capitalize(setting.property().getLanguageKey().replace("_", " ")), setting.property().comment));
                 }
 
                 textbox.setAction(new IAction()
@@ -312,9 +312,9 @@ public class GuiModSettings extends GuiCustomScreen
                 Draw.drawRect(button.xPosition, button.yPosition, resolution.getScaledWidth() - 10, button.height, 0x88000000);
                 button.drawButton();
 
-                if (button.tooltip.contains(":desc:"))
+                if (button.tooltip.contains(":s:"))
                 {
-                    String[] info = button.tooltip.split(":desc:");
+                    String[] info = button.tooltip.split(":s:");
                     Draw.drawString(info[0], elementX, elementY - 6, 0xFFFFFFFF);
                     OpenGL.pushMatrix();
                     OpenGL.scale(descTextScale, descTextScale, descTextScale);
@@ -336,9 +336,9 @@ public class GuiModSettings extends GuiCustomScreen
                 Draw.drawRect(textbox.xPosition, textbox.yPosition, resolution.getScaledWidth() - 10, textbox.height, 0x88000000);
                 textbox.drawTextBox();
 
-                if (textbox.tooltip.contains(":desc:"))
+                if (textbox.tooltip.contains(":s:"))
                 {
-                    String[] info = textbox.tooltip.split(":desc:");
+                    String[] info = textbox.tooltip.split(":s:");
                     Draw.drawString(info[0], elementX, elementY - 6, 0xFFFFFFFF);
                     OpenGL.pushMatrix();
                     OpenGL.scale(descTextScale, descTextScale, descTextScale);
