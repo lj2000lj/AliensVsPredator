@@ -2,6 +2,7 @@ package org.avp.entities.mob;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import org.avp.api.parasitoidic.IHost;
 import org.avp.api.parasitoidic.IParasitoid;
@@ -226,8 +227,26 @@ public class EntityParasitoid extends EntitySpeciesAlien implements IMob, IParas
     }
 
     @Override
+    protected void collideWithNearbyEntities()
+    {
+        List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+
+        if (list != null && !list.isEmpty())
+        {
+            for (int i = 0; i < list.size(); ++i)
+            {
+                Entity entity = (Entity) list.get(i);
+
+                this.collideWithEntity(entity);
+            }
+        }
+    }
+
+    @Override
     public void collideWithEntity(Entity entity)
     {
+        super.collideWithEntity(entity);
+
         if (this.isFertile() && this.canAttach(entity))
         {
             this.attachToEntity(entity);
