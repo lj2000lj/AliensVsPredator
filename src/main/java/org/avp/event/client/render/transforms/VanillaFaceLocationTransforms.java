@@ -422,9 +422,9 @@ public class VanillaFaceLocationTransforms
             public void post(Entity entity, float partialTicks)
             {
                 OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                OpenGL.rotate(140.0F, 0.0F, 1.0F, 0.0F);
+                OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
                 OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                OpenGL.translate(0F, -0.15F, 0.9F);
+                OpenGL.translate(0F, -0.7F, 0.2F);
             }
         });
     }
