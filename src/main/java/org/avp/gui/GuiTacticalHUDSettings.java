@@ -103,15 +103,15 @@ public class GuiTacticalHUDSettings extends GuiCustomScreen
         int elementStart = 30;
         int elementSpacing = 21;
 
-        Draw.drawRect(interfaceStartX, 0, interfaceWidth, height, 0xCC000000);
-        Draw.drawString("Tactical HUD Configuration", interfaceStartX + 10, 10, 0xFF00AAFF);
+        Draw.drawRect(interfaceStartX, 0, interfaceWidth, height, 0x66000000);
+        Draw.drawString("Tactical HUD Configuration", interfaceStartX + 10, 10, 0xCC00DDFF, false);
 
         channel.setMaxStringLength(18);
-        channel.xPosition = interfaceStartX + 10;
-        channel.yPosition = elementStart;
-        channel.height = 15;
-        channel.width = 120;
-        Draw.drawString("Broadcast Channel", channel.xPosition + channel.width + 10, channel.yPosition + 3, 0xFFCCCCCC);
+        channel.setX(interfaceStartX + 10);
+        channel.setY(elementStart);;
+        channel.setHeight(15);
+        channel.setWidth(120);
+        Draw.drawString("Broadcast Channel", channel.x() + channel.width() + 10, channel.y() + 3, 0xFFCCCCCC);
         channel.drawTextBox();
 
         txPower.label = "TX Power";
@@ -120,8 +120,7 @@ public class GuiTacticalHUDSettings extends GuiCustomScreen
         txPower.width = 120;
         txPower.height = 15;
         txPower.sliderMaxValue = 1024;
-        txPower.baseColor = 0x55000000;
-        txPower.sliderButtonColor = 0x9900AAFF;
+        txPower.sliderButtonColor = 0xCC00DDFF;
         txPower.tooltip = "The distance this tactical HUD will connect to other tactical HUDs.";
         Draw.drawString("Transmit Power", txPower.xPosition + txPower.width + 10, txPower.yPosition + 3, 0xFFCCCCCC);
         txPower.drawButton();
@@ -132,8 +131,7 @@ public class GuiTacticalHUDSettings extends GuiCustomScreen
         viewportThreshold.width = 120;
         viewportThreshold.height = 15;
         viewportThreshold.sliderMaxValue = 32;
-        viewportThreshold.baseColor = 0x55000000;
-        viewportThreshold.sliderButtonColor = 0x9900AAFF;
+        viewportThreshold.sliderButtonColor = 0xCC00DDFF;
         viewportThreshold.tooltip = "The amount of users with tactical HUDs to display in the viewport.";
         Draw.drawString("Viewport Threshold", viewportThreshold.xPosition + viewportThreshold.width + 10, viewportThreshold.yPosition + 3, 0xFFCCCCCC);
         viewportThreshold.drawButton();
@@ -143,7 +141,7 @@ public class GuiTacticalHUDSettings extends GuiCustomScreen
         nightvision.yPosition = elementStart += elementSpacing;
         nightvision.width = 120;
         nightvision.height = 18;
-        nightvision.baseColor = 0xAA00AAFF;
+        nightvision.baseColor = 0xCC00DDFF;
         nightvision.drawButton();
         nightvision.tooltip = "Toggle nightvision on or off.";
 
@@ -152,7 +150,7 @@ public class GuiTacticalHUDSettings extends GuiCustomScreen
         entityCulling.yPosition = elementStart += elementSpacing;
         entityCulling.width = 120;
         entityCulling.height = 18;
-        entityCulling.baseColor = 0xAA00AAFF;
+        entityCulling.baseColor = 0xCC00DDFF;
         entityCulling.drawButton();
         entityCulling.tooltip = "";
 
@@ -161,7 +159,7 @@ public class GuiTacticalHUDSettings extends GuiCustomScreen
         save.yPosition = Screen.scaledDisplayResolution().getScaledHeight() - save.height - 10;
         save.width = 50;
         save.height = 20;
-        save.baseColor = 0xAA00AAFF;
+        save.baseColor = 0xCC00DDFF;
         save.drawButton();
     }
 
