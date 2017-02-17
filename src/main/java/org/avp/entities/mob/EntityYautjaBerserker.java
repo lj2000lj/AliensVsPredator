@@ -15,7 +15,7 @@ public class EntityYautjaBerserker extends EntitySpeciesYautja
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(180.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(130.0D);
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.5199999761581421D);
         this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(10.0D);
         this.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(10.0D);

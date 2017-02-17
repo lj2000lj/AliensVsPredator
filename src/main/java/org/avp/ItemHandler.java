@@ -40,7 +40,7 @@ import org.avp.entities.mob.EntitySpitter;
 import org.avp.entities.mob.EntityTrilobite;
 import org.avp.entities.mob.EntityUltramorph;
 import org.avp.entities.mob.EntityUrsuidae;
-import org.avp.entities.mob.EntityVardaMonkey;
+import org.avp.entities.mob.EntityScelemur;
 import org.avp.entities.mob.EntityWarrior;
 import org.avp.entities.mob.EntityYautja;
 import org.avp.entities.mob.EntityYautjaBerserker;
@@ -241,7 +241,7 @@ public class ItemHandler implements IInitEvent
         public ItemEntitySummoner itemSummonerPantheramorph         = (new ItemEntitySummoner(EntityPantheramorph.class));
         public ItemEntitySummoner itemSummonerPredatorHound         = (new ItemEntitySummoner(EntityPredatorHound.class));
         public ItemEntitySummoner itemSummonerUrsuidae              = (new ItemEntitySummoner(EntityUrsuidae.class));
-        public ItemEntitySummoner itemSummonerVardaMonkey           = (new ItemEntitySummoner(EntityVardaMonkey.class));
+        public ItemEntitySummoner itemSummonerVardaMonkey           = (new ItemEntitySummoner(EntityScelemur.class));
         public ItemEntitySummoner itemSummonerYautjaMutant          = (new ItemEntitySummoner(EntityYautjaMutant.class));
     }
 

@@ -66,7 +66,7 @@ import org.avp.entities.mob.EntitySpitter;
 import org.avp.entities.mob.EntityTrilobite;
 import org.avp.entities.mob.EntityUltramorph;
 import org.avp.entities.mob.EntityUrsuidae;
-import org.avp.entities.mob.EntityVardaMonkey;
+import org.avp.entities.mob.EntityScelemur;
 import org.avp.entities.mob.EntityWarrior;
 import org.avp.entities.mob.EntityYautja;
 import org.avp.entities.mob.EntityYautjaBerserker;
@@ -312,7 +312,7 @@ public class Renderers implements IPostInitEvent
         registerEntityRenderingHandler(EntityPantheramorph.class, new RenderXenomorph(AliensVsPredator.resources().models().PANTHERAMORPH, 0.75F));
         registerEntityRenderingHandler(EntityPredatorHound.class, new RenderPredatorHound());
         registerEntityRenderingHandler(EntityUrsuidae.class, new RenderUrsuidae());
-        registerEntityRenderingHandler(EntityVardaMonkey.class, new RenderVardaMonkey());
+        registerEntityRenderingHandler(EntityScelemur.class, new RenderVardaMonkey());
         registerEntityRenderingHandler(EntityYautjaMutant.class, new RenderYautjaMutant());
     }
 

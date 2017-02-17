@@ -15,9 +15,9 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.world.World;
 
-public class EntityVardaMonkey extends EntityMob implements IMob, IHost
+public class EntityScelemur extends EntityMob implements IMob, IHost
 {
-    public EntityVardaMonkey(World world)
+    public EntityScelemur(World world)
     {
         super(world);
         this.experienceValue = 0;
@@ -35,7 +35,7 @@ public class EntityVardaMonkey extends EntityMob implements IMob, IHost
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30D);
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(15D);
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.5599999761581421D);
         this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(2.0D);
         this.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(0.3D);

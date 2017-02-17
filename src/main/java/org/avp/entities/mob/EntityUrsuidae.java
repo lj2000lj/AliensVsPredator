@@ -35,7 +35,7 @@ public class EntityUrsuidae extends EntityMob implements IMob, IHost
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(50D);
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30D);
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.5199999761581421D);
         this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(2.0D);
         this.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(0.3D);

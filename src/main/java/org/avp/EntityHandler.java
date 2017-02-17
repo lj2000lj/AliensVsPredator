@@ -63,7 +63,7 @@ import org.avp.entities.mob.EntitySpitter;
 import org.avp.entities.mob.EntityTrilobite;
 import org.avp.entities.mob.EntityUltramorph;
 import org.avp.entities.mob.EntityUrsuidae;
-import org.avp.entities.mob.EntityVardaMonkey;
+import org.avp.entities.mob.EntityScelemur;
 import org.avp.entities.mob.EntityWarrior;
 import org.avp.entities.mob.EntityYautja;
 import org.avp.entities.mob.EntityYautjaBerserker;
@@ -248,7 +248,7 @@ public class EntityHandler implements IInitEvent
         Game.register(EntityPantheramorph.class, "Pantheramorph", entityId++, AliensVsPredator.instance(), 250, 1, true);
         Game.register(EntityPredatorHound.class, "HellHound", entityId++, AliensVsPredator.instance(), 250, 1, true);
         Game.register(EntityUrsuidae.class, "Ursuidae", entityId++, AliensVsPredator.instance(), 250, 1, true);
-        Game.register(EntityVardaMonkey.class, "VardaMonkey", entityId++, AliensVsPredator.instance(), 250, 1, true);
+        Game.register(EntityScelemur.class, "VardaMonkey", entityId++, AliensVsPredator.instance(), 250, 1, true);
         Game.register(EntityYautjaMutant.class, "YautjaMutant", entityId++, AliensVsPredator.instance(), 250, 1, true);
     }
 
