@@ -334,7 +334,7 @@ public class VanillaFaceLocationTransforms
                 OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
                 OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
                 OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                OpenGL.translate(0F, -0.1F, 0.25F);
+                OpenGL.translate(0F, 0.1F, 0.1F);
             }
         });
 
