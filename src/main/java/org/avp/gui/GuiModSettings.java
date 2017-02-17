@@ -32,6 +32,7 @@ public class GuiModSettings extends GuiCustomScreen
 {
     private ArrayList<IGuiElement> elements = new ArrayList<IGuiElement>();
     private int                    scroll   = 0;
+    private long                   lastApplyTime;
 
     public GuiModSettings(GuiScreen parent)
     {
@@ -58,7 +59,7 @@ public class GuiModSettings extends GuiCustomScreen
                 }
                 else
                 {
-                    element.tooltip = Chat.format(String.format("&b%s%s&f:s:&7%s", setting.getRequiresRestart() ? "&c[RESTART] &b" : "&b", WordUtils.capitalize(setting.property().getLanguageKey().replace("_", " ")), setting.property().comment));
+                    element.setTooltip(Chat.format(String.format("&b%s&f:s:&b%s&7%s", WordUtils.capitalize(setting.property().getLanguageKey().replace("_", " ")), setting.getRequiresRestart() ? "&c[RESTART REQUIRED] " : "&b", setting.property().comment)));
                 }
 
                 element.setAction(new IAction()
@@ -89,7 +90,7 @@ public class GuiModSettings extends GuiCustomScreen
                 }
                 else
                 {
-                    textbox.setTooltip(Chat.format(String.format("&b%s%s&f:s:&7%s", setting.getRequiresRestart() ? "&c[RESTART] &b" : "&b", WordUtils.capitalize(setting.property().getLanguageKey().replace("_", " ")), setting.property().comment)));
+                    element.setTooltip(Chat.format(String.format("&b%s&f:s:&b%s&7%s", WordUtils.capitalize(setting.property().getLanguageKey().replace("_", " ")), setting.getRequiresRestart() ? "&c[RESTART REQUIRED] " : "&b", setting.property().comment)));
                 }
 
                 textbox.setAction(new IAction()
@@ -118,7 +119,7 @@ public class GuiModSettings extends GuiCustomScreen
                 }
                 else
                 {
-                    element.tooltip = Chat.format(String.format("&b%s%s&f:s:&7%s", setting.getRequiresRestart() ? "&c[RESTART] &b" : "&b", WordUtils.capitalize(setting.property().getLanguageKey().replace("_", " ")), setting.property().comment));
+                    element.setTooltip(Chat.format(String.format("&b%s&f:s:&b%s&7%s", WordUtils.capitalize(setting.property().getLanguageKey().replace("_", " ")), setting.getRequiresRestart() ? "&c[RESTART REQUIRED] " : "&b", setting.property().comment)));
                 }
 
                 element.setAction(new IAction()
@@ -159,7 +160,7 @@ public class GuiModSettings extends GuiCustomScreen
                 }
                 else
                 {
-                    element.tooltip = Chat.format(String.format("&b%s%s&f:s:&7%s", setting.getRequiresRestart() ? "&c[RESTART] &b" : "&b", WordUtils.capitalize(setting.property().getLanguageKey().replace("_", " ")), setting.property().comment));
+                    element.setTooltip(Chat.format(String.format("&b%s&f:s:&b%s&7%s", WordUtils.capitalize(setting.property().getLanguageKey().replace("_", " ")), setting.getRequiresRestart() ? "&c[RESTART REQUIRED] " : "&b", setting.property().comment)));
                 }
 
                 element.setAction(new IAction()
@@ -190,7 +191,7 @@ public class GuiModSettings extends GuiCustomScreen
                 }
                 else
                 {
-                    textbox.setTooltip(Chat.format(String.format("&b%s%s&f:s:&7%s", setting.getRequiresRestart() ? "&c[RESTART] &b" : "&b", WordUtils.capitalize(setting.property().getLanguageKey().replace("_", " ")), setting.property().comment)));
+                    textbox.setTooltip(Chat.format(String.format("&b%s&f:s:&b%s&7%s", WordUtils.capitalize(setting.property().getLanguageKey().replace("_", " ")), setting.getRequiresRestart() ? "&c[RESTART REQUIRED] " : "&b", setting.property().comment)));
                 }
 
                 textbox.setAction(new IAction()
@@ -263,7 +264,7 @@ public class GuiModSettings extends GuiCustomScreen
                 textbox.getAction().perform(textbox);
             }
         }
-        Minecraft.getMinecraft().refreshResources();
+        this.lastApplyTime = System.currentTimeMillis();
     }
 
     @Override
@@ -284,6 +285,9 @@ public class GuiModSettings extends GuiCustomScreen
         int memoryPercent = (int) (memoryUsed * 100D / memoryTotal);
         int memoryPercentMax = (int) (memoryUsed * 100D / memoryMax);
         float descTextScale = 0.5F;
+        
+        OpenGL.enableBlend();
+        Draw.drawRect(0, 0, resolution.getScaledWidth(), resolution.getScaledHeight(), 0xAA444444);
 
         for (IGuiElement element : this.elements)
         {
@@ -292,7 +296,7 @@ public class GuiModSettings extends GuiCustomScreen
                 GuiCustomButton button = (GuiCustomButton) element;
                 int elementX = (button.xPosition + button.width + 10);
                 int elementY = (button.yPosition + (button.height / 2));
-                
+
                 OpenGL.enableBlend();
                 Draw.drawRect(button.xPosition, button.yPosition, resolution.getScaledWidth() - 10, button.height, !button.getTooltip().isEmpty() ? 0x44000000 : 0x88000000);
                 button.drawButton();
@@ -318,7 +322,7 @@ public class GuiModSettings extends GuiCustomScreen
                 GuiCustomTextbox textbox = (GuiCustomTextbox) element;
                 int elementX = (textbox.x() + textbox.width() + 10);
                 int elementY = (textbox.y() + (textbox.height() / 2));
-                
+
                 OpenGL.enableBlend();
                 Draw.drawRect(textbox.x(), textbox.y(), resolution.getScaledWidth() - 10, textbox.height(), !textbox.getTooltip().isEmpty() ? 0x44000000 : 0xAAFF0000);
                 textbox.drawTextBox();
@@ -345,14 +349,17 @@ public class GuiModSettings extends GuiCustomScreen
         int idx = 1;
         int yStart = 15;
         int padding = 12;
-
+        
+        String menuName = "[Configuration Editor] ";
+        int titleWidth = Draw.getStringRenderWidth(menuName);
+        
         Draw.drawProgressBar(String.format("VM Memory %s/%s %s%%", memoryUsed, memoryTotal, memoryPercent), 100, memoryPercent, 5, yStart + (padding * idx++) - (15 * scroll) - 2, resolution.getScaledWidth() - 10, 5, 0, 0xFF00DDFF, false);
         Draw.drawProgressBar(String.format("VM Memory Total %s/%s %s%%", memoryUsed, memoryMax, memoryPercentMax), 100, memoryPercentMax, 5, yStart + (padding * idx++) - (15 * scroll) - 2, resolution.getScaledWidth() - 10, 5, 0, 0xFF00DDFF, false);
+        OpenGL.enableBlend();
+        Draw.drawRect(0, 0, resolution.getScaledWidth(), 20, 0xEE222222);
+        Draw.drawString(menuName, 5, 6, 0xFF00CCFF, false);
 
-        Draw.drawRect(0, 0, resolution.getScaledWidth(), 20, 0xAA000000);
-
-        String title = "[Configuration Editor] &8";
-        title = String.format("%s %s", title, SystemInfo.cpu());
+        String title = String.format("%s", SystemInfo.cpu());
         title = String.format("%s, %s", title, SystemInfo.gpu());
         if (SystemInfo.getMemoryCapacity() != 0)
         {
@@ -360,14 +367,43 @@ public class GuiModSettings extends GuiCustomScreen
         }
         title = String.format("%s, %s (%s, %s)", title, SystemInfo.osName(), SystemInfo.osVersion(), SystemInfo.osArchitecture());
         title = String.format("%s, Java %s", title, SystemInfo.javaVersion());
+        
 
-        Draw.drawString(Chat.format(title), 5, 6, 0xFF00CCFF, false);
+        float scale = 0.5F;
+        OpenGL.pushMatrix();
+        OpenGL.scale(scale, scale, scale);
+        Draw.drawString(Chat.format(title), Math.round(15 + titleWidth / scale), Math.round(8 / scale), 0xFF00AACC, false);
+        OpenGL.popMatrix();
+
+
+        if (System.currentTimeMillis() - lastApplyTime <= 3000)
+        {
+            OpenGL.enableBlend();
+            Draw.drawRect(0, 0, resolution.getScaledWidth(), resolution.getScaledHeight(), 0xDD000000);
+            
+            scale = 2F;
+            OpenGL.pushMatrix();
+            OpenGL.scale(scale, scale, scale);
+            Draw.drawStringAlignCenter("Please wait... Applying your settings.", Math.round(resolution.getScaledWidth() / 2 / scale), Math.round(resolution.getScaledHeight() / 2 / scale), 0xFF00CCFF);
+            OpenGL.popMatrix();
+        }
     }
 
     @Override
     public void updateScreen()
     {
         super.updateScreen();
+
+        if (lastApplyTime != 0)
+        {
+            long time = System.currentTimeMillis() - this.lastApplyTime;
+
+            if (time < 1000 && time > 500)
+            {
+                this.lastApplyTime = 0;
+                Minecraft.getMinecraft().refreshResources();
+            }
+        }
 
         this.updateScrolling();
 
