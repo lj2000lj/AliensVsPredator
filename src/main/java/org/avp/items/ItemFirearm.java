@@ -22,6 +22,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
 
 @SuppressWarnings("unchecked")
@@ -72,12 +73,12 @@ public class ItemFirearm extends HookedItem
         {
             if (this.ammoCount > 0 || player.capabilities.isCreativeMode)
             {
-                MovingObjectPosition objMouseOver = Entities.rayTraceAll(player, 128);
+                MovingObjectPosition objMouseOver = Entities.rayTraceSpecial(128, 1.0F);
 
                 this.renderRecoil();
                 this.fixDelay();
 
-                if (objMouseOver != null)
+                if (objMouseOver != null && objMouseOver.typeOfHit == MovingObjectType.ENTITY)
                 {
                     AliensVsPredator.network().sendToServer(new PacketShootEntity(objMouseOver.entityHit, this));
                 }
