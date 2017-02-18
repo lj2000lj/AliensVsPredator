@@ -147,8 +147,6 @@ public class EntityOvamorph extends EntitySpeciesAlien implements IMob
 
                 if (this.hasHatched || potentialHosts.size() > 0)
                 {
-                    this.hasHatched = true;
-                    
                     if (this.acceleratedHatching || this.hatchingTime <= 0)
                     {
                         this.openProgress = this.openProgress < (maxOpenProgress) ? openProgress + 1 : this.openProgress;
