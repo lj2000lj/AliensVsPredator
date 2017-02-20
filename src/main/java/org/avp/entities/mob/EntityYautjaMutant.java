@@ -44,6 +44,7 @@ public class EntityYautjaMutant extends EntityMob implements IMob, IHost
     public EntityYautjaMutant(World world)
     {
         super(world);
+        this.setSize(1.25F, 2.75F);
         this.experienceValue = 150;
         this.getNavigator().setBreakDoors(true);
         this.tasks.addTask(0, new EntityAISwimming(this));

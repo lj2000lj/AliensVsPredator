@@ -52,7 +52,7 @@ public class EntityAethon extends EntityMob implements IMob, IHost
     {
         super(world);
         this.experienceValue = 150;
-        this.setSize(3, 3);
+        this.setSize(3, 7);
         this.getNavigator().setBreakDoors(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityCreature.class, 1.0D, false));

@@ -44,6 +44,7 @@ public class EntityBabyhead extends EntityMob implements IMob, IHost
     public EntityBabyhead(World world)
     {
         super(world);
+        this.setSize(1.0F, 2.75F);
         this.experienceValue = 150;
         this.getNavigator().setBreakDoors(true);
         this.tasks.addTask(0, new EntityAISwimming(this));

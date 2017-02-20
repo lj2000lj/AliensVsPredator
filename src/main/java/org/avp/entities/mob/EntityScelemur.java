@@ -20,6 +20,7 @@ public class EntityScelemur extends EntityMob implements IMob, IHost
     public EntityScelemur(World world)
     {
         super(world);
+        this.setSize(0.5F, 1.0F);
         this.experienceValue = 0;
         this.getNavigator().setBreakDoors(false);
         this.tasks.addTask(0, new EntityAISwimming(this));
