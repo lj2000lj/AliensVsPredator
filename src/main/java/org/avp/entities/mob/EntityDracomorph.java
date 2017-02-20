@@ -56,7 +56,7 @@ public class EntityDracomorph extends EntitySpeciesAlien implements IMob, IHost
     {
         super(world);
         this.experienceValue = 150;
-        this.setSize(6, 7);
+        this.setSize(4, 7);
         this.getNavigator().setBreakDoors(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityCreature.class, 1.0D, false));
