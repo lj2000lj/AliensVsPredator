@@ -28,7 +28,7 @@ public class HiveHandler implements IDataSaveHandler
 {
     public static final HiveHandler  instance = new HiveHandler();
     private ArrayList<XenomorphHive> hives    = null;
-    public ArrayList<Pos>      burntResin;
+    public ArrayList<Pos>            burntResin;
 
     public HiveHandler()
     {
@@ -70,10 +70,9 @@ public class HiveHandler implements IDataSaveHandler
         return null;
     }
 
-    @SubscribeEvent
-    public void breakResin(BlockEvent.BreakEvent event)
+    public static boolean breakResinAt(World world, int x, int y, int z)
     {
-        TileEntity tile = event.world.getTileEntity(event.x, event.y, event.z);
+        TileEntity tile = world.getTileEntity(x, y, z);
 
         if (tile instanceof TileEntityHiveResin)
         {
@@ -81,18 +80,29 @@ public class HiveHandler implements IDataSaveHandler
 
             if (resin != null && resin.getBlockCovering() != null)
             {
-                int meta = event.world.getBlockMetadata(event.x, event.y, event.z);
-                event.world.setBlock(event.x, event.y, event.z, resin.getBlockCovering());
-                event.world.setBlockMetadataWithNotify(event.x, event.y, event.z,  meta, 3);
-                event.setCanceled(true);
+                int meta = world.getBlockMetadata(x, y, z);
+                world.setBlock(x, y, z, resin.getBlockCovering());
+                world.setBlockMetadataWithNotify(x, y, z, meta, 3);
+                return true;
             }
+        }
+
+        return false;
+    }
+
+    @SubscribeEvent
+    public void breakResin(BlockEvent.BreakEvent event)
+    {
+        if (breakResinAt(event.world, event.x, event.y, event.z))
+        {
+            event.setCanceled(true);
         }
     }
 
     @SubscribeEvent
     public void updateHives(TickEvent.WorldTickEvent event)
     {
-        //Murder annoying slimes if this is a dev environment.
+        // Murder annoying slimes if this is a dev environment.
         if (Game.isDevEnvironment())
         {
             for (Object o : new ArrayList(event.world.loadedEntityList))
@@ -110,7 +120,7 @@ public class HiveHandler implements IDataSaveHandler
         {
             int meta = event.world.getBlockMetadata((int) coord.x, (int) coord.y, (int) coord.z);
             event.world.setBlock((int) coord.x, (int) coord.y, (int) coord.z, coord.getBlock(event.world));
-            event.world.setBlockMetadataWithNotify((int) coord.x, (int) coord.y, (int) coord.z,  meta, 3);
+            event.world.setBlockMetadataWithNotify((int) coord.x, (int) coord.y, (int) coord.z, meta, 3);
             this.burntResin.remove(coord);
         }
 
