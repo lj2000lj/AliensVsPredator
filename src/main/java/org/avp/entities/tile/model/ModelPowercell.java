@@ -50,12 +50,12 @@ public class ModelPowercell extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        cell.render(boxTranslation);
-        connector1.render(boxTranslation);
-        connector2.render(boxTranslation);
-        connector3.render(boxTranslation);
-        connector4.render(boxTranslation);        
+        cell.render(DEFAULT_SCALE);
+        connector1.render(DEFAULT_SCALE);
+        connector2.render(DEFAULT_SCALE);
+        connector3.render(DEFAULT_SCALE);
+        connector4.render(DEFAULT_SCALE);        
     }
 }

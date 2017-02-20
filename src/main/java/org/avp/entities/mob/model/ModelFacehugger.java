@@ -329,7 +329,7 @@ public class ModelFacehugger extends Model
                 float tailSpeed = entity.isSprinting() ? 0.75F : 0.15F;
                 float distMulti = 0.075F;
                 float distAdd = 0.05F;
-                float progress = getIdleProgress(entity, partialTickTime) + swingProgress;
+                float progress = idleProgress(entity) + swingProgress;
                 this.tail01.rotateAngleY += MathHelper.sin(progress * tailSpeed) * distMulti + distAdd;
                 this.tail02.rotateAngleY += MathHelper.sin(progress * tailSpeed) * distMulti + distAdd;
                 this.tail03.rotateAngleY += MathHelper.sin(progress * tailSpeed) * distMulti + distAdd;
@@ -380,21 +380,21 @@ public class ModelFacehugger extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        this.bodyMain.render(boxTranslation);
-        this.lAirSac.render(boxTranslation);
-        this.rAirSac.render(boxTranslation);
-        this.lLeg1a.render(boxTranslation);
-        this.rLeg3a.render(boxTranslation);
-        this.lLeg4a.render(boxTranslation);
-        this.spine.render(boxTranslation);
-        this.rLeg1a.render(boxTranslation);
-        this.lLeg2a.render(boxTranslation);
-        this.rLeg2a.render(boxTranslation);
-        this.lLeg3a.render(boxTranslation);
-        this.rLeg4a.render(boxTranslation);
-        this.spine2.render(boxTranslation);
-        this.tail01.render(boxTranslation);
+        draw(bodyMain);
+        draw(lAirSac);
+        draw(rAirSac);
+        draw(lLeg1a);
+        draw(rLeg3a);
+        draw(lLeg4a);
+        draw(spine);
+        draw(rLeg1a);
+        draw(lLeg2a);
+        draw(rLeg2a);
+        draw(lLeg3a);
+        draw(rLeg4a);
+        draw(spine2);
+        draw(tail01);
     }
 }

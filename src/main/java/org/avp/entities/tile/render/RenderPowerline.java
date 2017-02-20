@@ -5,8 +5,6 @@ import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
 import org.avp.AliensVsPredator;
 import org.avp.entities.tile.TileEntityPowerline;
 
-import com.arisux.mdxlib.lib.client.Model;
-import com.arisux.mdxlib.lib.client.Model.RenderObject;
 import com.arisux.mdxlib.lib.client.render.Draw;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.game.Game;
@@ -29,7 +27,7 @@ public class RenderPowerline extends TileEntitySpecialRenderer
             {
                 OpenGL.translate(posX + 0.5F, posY + 0.5F, posZ + 0.5F);
                 OpenGL.scale(1.0F, -1.0F, 1.0F);
-                AliensVsPredator.resources().models().CABLE.draw(new RenderObject(new Object[] { tile, 0F, 0F, 0F, 0F, 0F, Model.DEFAULT_BOX_TRANSLATION }));
+                AliensVsPredator.resources().models().CABLE.draw(tile);
             }
             OpenGL.popMatrix();
 

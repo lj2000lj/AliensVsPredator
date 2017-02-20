@@ -40,7 +40,7 @@ public class RenderMarine extends RenderLivingWrapper
 
         OpenGL.pushMatrix();
         {
-            this.getModel().bipedRightArm.postRender(Model.DEFAULT_BOX_TRANSLATION);
+            this.getModel().bipedRightArm.postRender(Model.DEFAULT_SCALE);
             if (marine.isFiring())
             {
                 this.getModel().aimedBow = true;

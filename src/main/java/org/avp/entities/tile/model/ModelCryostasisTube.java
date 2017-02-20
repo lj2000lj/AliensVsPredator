@@ -183,31 +183,31 @@ public class ModelCryostasisTube extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        cap.render(boxTranslation);
-        capN.render(boxTranslation);
-        glassN.render(boxTranslation);
-        capNE.render(boxTranslation);
-        capE.render(boxTranslation);
-        capSE.render(boxTranslation);
-        supportBar.render(boxTranslation);
-        capSW.render(boxTranslation);
-        capW.render(boxTranslation);
-        capNW.render(boxTranslation);
-        glassNW.render(boxTranslation);
-        glassW.render(boxTranslation);
-        glassSW.render(boxTranslation);
-        glassNE.render(boxTranslation);
-        glassE.render(boxTranslation);
-        glassSE.render(boxTranslation);
-        baseBottom.render(boxTranslation);
-        baseSW.render(boxTranslation);
-        baseW.render(boxTranslation);
-        baseNW.render(boxTranslation);
-        baseN.render(boxTranslation);
-        baseNE.render(boxTranslation);
-        baseE.render(boxTranslation);
-        baseSE.render(boxTranslation);
+        cap.render(DEFAULT_SCALE);
+        capN.render(DEFAULT_SCALE);
+        glassN.render(DEFAULT_SCALE);
+        capNE.render(DEFAULT_SCALE);
+        capE.render(DEFAULT_SCALE);
+        capSE.render(DEFAULT_SCALE);
+        supportBar.render(DEFAULT_SCALE);
+        capSW.render(DEFAULT_SCALE);
+        capW.render(DEFAULT_SCALE);
+        capNW.render(DEFAULT_SCALE);
+        glassNW.render(DEFAULT_SCALE);
+        glassW.render(DEFAULT_SCALE);
+        glassSW.render(DEFAULT_SCALE);
+        glassNE.render(DEFAULT_SCALE);
+        glassE.render(DEFAULT_SCALE);
+        glassSE.render(DEFAULT_SCALE);
+        baseBottom.render(DEFAULT_SCALE);
+        baseSW.render(DEFAULT_SCALE);
+        baseW.render(DEFAULT_SCALE);
+        baseNW.render(DEFAULT_SCALE);
+        baseN.render(DEFAULT_SCALE);
+        baseNE.render(DEFAULT_SCALE);
+        baseE.render(DEFAULT_SCALE);
+        baseSE.render(DEFAULT_SCALE);
     }
 }

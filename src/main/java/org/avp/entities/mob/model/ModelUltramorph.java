@@ -8,6 +8,7 @@ import com.arisux.mdxlib.lib.game.Game;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.MathHelper;
 
 public class ModelUltramorph extends Model
@@ -307,14 +308,14 @@ public class ModelUltramorph extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        RenderObject o = (RenderObject) renderObject;
-        EntityXenomorph xenomorph = (EntityXenomorph) o.getEntity();
+        EntityLivingBase base = (EntityLivingBase) obj;;
+        EntityXenomorph xenomorph = (EntityXenomorph) base;
 
-        float swingProgress = o.swingProgress;
-        float swingProgressPrev = o.swingProgressPrev;
-        float tailAngle = MathHelper.cos((Minecraft.getMinecraft().theWorld.getWorldTime() % 360 + Game.partialTicks()) * (o != null && o.getEntity() != null && o.getEntity().motionX + o.getEntity().motionZ != 0 ? 0.67F : 0.07F));
+        float swingProgress = swingProgress(obj);
+        float swingProgressPrev = swingProgressPrev(obj);
+        float tailAngle = MathHelper.cos((Minecraft.getMinecraft().theWorld.getWorldTime() % 360 + Game.partialTicks()) * (base != null && base.motionX + base.motionZ != 0 ? 0.67F : 0.07F));
 
         if (xenomorph != null)
         {
@@ -329,7 +330,7 @@ public class ModelUltramorph extends Model
             this.innerJaw.offsetZ = (-0.1F * innerJawDistance * Game.partialTicks()) / Game.partialTicks();
         }
 
-        this.head1.rotateAngleY = (float) Math.toRadians(o.headYaw) * 0.75F;
+        this.head1.rotateAngleY = (float) Math.toRadians(headYaw(obj)) * 0.75F;
         this.rThigh.rotateAngleX = MathHelper.cos(swingProgress * 0.3662F + (float) Math.PI) * 0.9F * swingProgressPrev;
         this.lThigh.rotateAngleX = MathHelper.sin(swingProgress * 0.3662F + (float) Math.PI) * 0.9F * swingProgressPrev;
         this.rArmUpper.rotateAngleX = MathHelper.cos(swingProgress * 0.3662F) * 0.6F * swingProgressPrev + 0.6665191F;
@@ -363,6 +364,6 @@ public class ModelUltramorph extends Model
             this.tail5.rotateAngleY = tailAngle * multiplier;
         }
 
-        this.chest.render(boxTranslation);
+        draw(chest);
     }
 }

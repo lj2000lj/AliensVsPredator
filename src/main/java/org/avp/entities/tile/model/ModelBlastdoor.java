@@ -123,10 +123,9 @@ public class ModelBlastdoor extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        RenderObject tileRenderObject = (RenderObject) renderObject;
-        TileEntityBlastdoor tile = (TileEntityBlastdoor) tileRenderObject.getTileEntity();
+        TileEntityBlastdoor tile = (TileEntityBlastdoor) obj;
         
         if (tile != null)
         {
@@ -147,20 +146,20 @@ public class ModelBlastdoor extends Model
             doorLeftDiagonal2.offsetX = doorLeft;
         }
 
-        doorLeftCorner1.render(boxTranslation);
-        doorLeftCorner2.render(boxTranslation);
-        doorLeftMain.render(boxTranslation);
-        doorLeftDiagonal2.render(boxTranslation);
-        doorLeftDiagonal1.render(boxTranslation);
-        doorRightMain.render(boxTranslation);
-        doorRightArrow.render(boxTranslation);
-        frameLeft.render(boxTranslation);
-        frameBaseCenterTop.render(boxTranslation);
-        bar3.render(boxTranslation);
-        frameBaseCenter.render(boxTranslation);
-        bar2.render(boxTranslation);
-        frameRight.render(boxTranslation);
-        bar1.render(boxTranslation);
-        bar4.render(boxTranslation);
+        doorLeftCorner1.render(DEFAULT_SCALE);
+        doorLeftCorner2.render(DEFAULT_SCALE);
+        doorLeftMain.render(DEFAULT_SCALE);
+        doorLeftDiagonal2.render(DEFAULT_SCALE);
+        doorLeftDiagonal1.render(DEFAULT_SCALE);
+        doorRightMain.render(DEFAULT_SCALE);
+        doorRightArrow.render(DEFAULT_SCALE);
+        frameLeft.render(DEFAULT_SCALE);
+        frameBaseCenterTop.render(DEFAULT_SCALE);
+        bar3.render(DEFAULT_SCALE);
+        frameBaseCenter.render(DEFAULT_SCALE);
+        bar2.render(DEFAULT_SCALE);
+        frameRight.render(DEFAULT_SCALE);
+        bar1.render(DEFAULT_SCALE);
+        bar4.render(DEFAULT_SCALE);
     }
 }

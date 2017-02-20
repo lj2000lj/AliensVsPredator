@@ -237,19 +237,19 @@ public class ModelSatelliteDish extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        this.discBaseN.render(boxTranslation);
-        this.base.render(boxTranslation);
-        this.baseLatticeE2.render(boxTranslation);
-        this.swivelJointConnector.render(boxTranslation);
-        this.baseLatticeW2.render(boxTranslation);
-        this.baseLatticeS2.render(boxTranslation);
-        this.baseLatticeN2.render(boxTranslation);
-        this.baseLatticeS.render(boxTranslation);
-        this.baseLatticeE.render(boxTranslation);
-        this.baseLatticeW.render(boxTranslation);
-        this.swivelJoint.render(boxTranslation);
-        this.baseLatticeN.render(boxTranslation);        
+        draw(discBaseN);
+        draw(base);
+        draw(baseLatticeE2);
+        draw(swivelJointConnector);
+        draw(baseLatticeW2);
+        draw(baseLatticeS2);
+        draw(baseLatticeN2);
+        draw(baseLatticeS);
+        draw(baseLatticeE);
+        draw(baseLatticeW);
+        draw(swivelJoint);
+        draw(baseLatticeN);        
     }
 }

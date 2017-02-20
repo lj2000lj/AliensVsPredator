@@ -99,19 +99,19 @@ public class ModelLightPanel extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        side0.render(boxTranslation);
-        side1.render(boxTranslation);
-        side2.render(boxTranslation);
-        side3.render(boxTranslation);
-        side4.render(boxTranslation);
-        side5.render(boxTranslation);
-        side6.render(boxTranslation);
-        side7.render(boxTranslation);
-        side8.render(boxTranslation);
-        side9.render(boxTranslation);
-        side10.render(boxTranslation);
-        side11.render(boxTranslation);
+        side0.render(DEFAULT_SCALE);
+        side1.render(DEFAULT_SCALE);
+        side2.render(DEFAULT_SCALE);
+        side3.render(DEFAULT_SCALE);
+        side4.render(DEFAULT_SCALE);
+        side5.render(DEFAULT_SCALE);
+        side6.render(DEFAULT_SCALE);
+        side7.render(DEFAULT_SCALE);
+        side8.render(DEFAULT_SCALE);
+        side9.render(DEFAULT_SCALE);
+        side10.render(DEFAULT_SCALE);
+        side11.render(DEFAULT_SCALE);
     }
 }

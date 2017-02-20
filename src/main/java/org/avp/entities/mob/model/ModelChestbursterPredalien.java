@@ -1,12 +1,13 @@
 package org.avp.entities.mob.model;
 
 import com.arisux.mdxlib.lib.client.Model;
-import com.arisux.mdxlib.lib.client.Model.RenderObject;
 
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.MathHelper;
 
-public class ModelChestbursterPredalien extends Model {
+public class ModelChestbursterPredalien extends Model
+{
     public ModelRenderer body15;
     public ModelRenderer body16;
     public ModelRenderer body13;
@@ -42,7 +43,8 @@ public class ModelChestbursterPredalien extends Model {
     public ModelRenderer tail6;
     public ModelRenderer tail7;
 
-    public ModelChestbursterPredalien() {
+    public ModelChestbursterPredalien()
+    {
         this.textureWidth = 64;
         this.textureHeight = 32;
         this.body7 = new ModelRenderer(this, 0, 0);
@@ -181,16 +183,16 @@ public class ModelChestbursterPredalien extends Model {
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        RenderObject o = (RenderObject) renderObject;
+        EntityLivingBase base = (EntityLivingBase) obj;;
 
-        float newangle = MathHelper.cos(o.idleProgress * 4.0F * 0.1F) * (float) Math.PI * 0.9F * o.swingProgressPrev;
+        float newangle = MathHelper.cos(idleProgress(obj) * 4.0F * 0.1F) * (float) Math.PI * 0.9F * swingProgressPrev(obj);
         float distMult = 0.05F;
 
-        if (o.getEntity() != null && o.getEntity().prevPosX == o.getEntity().posX && o.getEntity().prevPosY == o.getEntity().posY && o.getEntity().prevPosZ == o.getEntity().posZ)
+        if (base != null && base.prevPosX == base.posX && base.prevPosY == base.posY && base.prevPosZ == base.posZ)
         {
-            newangle = newangle + MathHelper.cos(o.idleProgress * 0.15F);
+            newangle = newangle + MathHelper.cos(idleProgress(obj) * 0.15F);
             distMult = 0.05F;
         }
 
@@ -201,34 +203,34 @@ public class ModelChestbursterPredalien extends Model {
         this.tail5.rotateAngleY = newangle * distMult;
         this.tail6.rotateAngleY = newangle * distMult;
         this.tail7.rotateAngleY = newangle * distMult;
-        
-        this.body7.render(boxTranslation);
-        this.tail2.render(boxTranslation);
-        this.body14.render(boxTranslation);
-        this.lFangTop.render(boxTranslation);
-        this.rtendon.render(boxTranslation);
-        this.body8.render(boxTranslation);
-        this.lMandible1.render(boxTranslation);
-        this.rMandibleTop.render(boxTranslation);
-        this.body1.render(boxTranslation);
-        this.body17.render(boxTranslation);
-        this.body15.render(boxTranslation);
-        this.rFangLower.render(boxTranslation);
-        this.body5.render(boxTranslation);
-        this.body13.render(boxTranslation);
-        this.body3.render(boxTranslation);
-        this.body16.render(boxTranslation);
-        this.body11.render(boxTranslation);
-        this.rFangTop.render(boxTranslation);
-        this.body12.render(boxTranslation);
-        this.mouth.render(boxTranslation);
-        this.body9.render(boxTranslation);
-        this.lMandibleTop.render(boxTranslation);
-        this.ltendon.render(boxTranslation);
-        this.body2.render(boxTranslation);
-        this.body4.render(boxTranslation);
-        this.lFangLower.render(boxTranslation);
-        this.body10.render(boxTranslation);
-        this.rMandible1.render(boxTranslation);
+
+        draw(body7);
+        draw(tail2);
+        draw(body14);
+        draw(lFangTop);
+        draw(rtendon);
+        draw(body8);
+        draw(lMandible1);
+        draw(rMandibleTop);
+        draw(body1);
+        draw(body17);
+        draw(body15);
+        draw(rFangLower);
+        draw(body5);
+        draw(body13);
+        draw(body3);
+        draw(body16);
+        draw(body11);
+        draw(rFangTop);
+        draw(body12);
+        draw(mouth);
+        draw(body9);
+        draw(lMandibleTop);
+        draw(ltendon);
+        draw(body2);
+        draw(body4);
+        draw(lFangLower);
+        draw(body10);
+        draw(rMandible1);
     }
 }

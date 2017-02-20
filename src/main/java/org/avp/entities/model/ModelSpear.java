@@ -11,7 +11,7 @@ public class ModelSpear extends Model
     private final float scale = 0.08F;
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
         OpenGL.scale(scale + 0.02F, scale, scale);
 

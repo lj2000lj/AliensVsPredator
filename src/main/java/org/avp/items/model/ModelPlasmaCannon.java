@@ -75,34 +75,32 @@ public class ModelPlasmaCannon extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        RenderObject obj = (RenderObject) renderObject;
-
-        if (obj.getObject() != null && obj.getObject() instanceof EntityPlayer)
+        if (obj != null && obj instanceof EntityPlayer)
         {
             this.supportBar.rotateAngleX = (float) Math.toRadians(75);
             this.supportBar.rotateAngleZ = 0;
-            this.supportBar.rotateAngleX += MathHelper.sin(obj.idleProgress * 0.067F) * 0.05F;
-            this.supportBar.rotateAngleZ += MathHelper.cos(obj.idleProgress * 0.09F) * 0.05F + 0.05F;
+            this.supportBar.rotateAngleX += MathHelper.sin(idleProgress(obj) * 0.067F) * 0.05F;
+            this.supportBar.rotateAngleZ += MathHelper.cos(idleProgress(obj) * 0.09F) * 0.05F + 0.05F;
 
-            if (obj.swingProgress > -9990.0F)
+            if (swingProgress(obj) > -9990.0F)
             {
-                float progress = obj.swingProgress;
-                progress = 1.0F - obj.swingProgress;
+                float progress = swingProgress(obj);
+                progress = 1.0F - swingProgress(obj);
                 progress *= progress;
                 progress *= progress;
                 progress = 1.0F - progress;
                 float p1 = MathHelper.sin(progress * (float)Math.PI);
-                float p2 = MathHelper.sin(obj.swingProgress * (float)Math.PI) * -(0F - 0.7F) * 0.75F;
+                float p2 = MathHelper.sin(swingProgress(obj) * (float)Math.PI) * -(0F - 0.7F) * 0.75F;
                 this.supportBar.rotateAngleX = (float)((double)this.supportBar.rotateAngleX - ((double)p1 * 1.2D + (double)p2));
-                this.supportBar.rotateAngleZ = MathHelper.sin(obj.swingProgress * (float)Math.PI) * -0.4F;
+                this.supportBar.rotateAngleZ = MathHelper.sin(swingProgress(obj) * (float)Math.PI) * -0.4F;
             }
 
-            this.swivelHinge.rotateAngleX = (float) Math.toRadians(-30 + obj.headPitch);
-            this.swivelHinge.rotateAngleZ = -obj.headYaw / (180F / (float)Math.PI);
+            this.swivelHinge.rotateAngleX = (float) Math.toRadians(-30 + headPitch(obj));
+            this.swivelHinge.rotateAngleZ = -headYaw(obj) / (180F / (float)Math.PI);
         }
 
-        this.supportBar.render(boxTranslation);
+        draw(supportBar);
     }
 }

@@ -388,36 +388,36 @@ public class ModelHiveResin extends Model
     }
     
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
         //BOTTOM
-        this.bResinRibCenter.render(boxTranslation);
+        draw(bResinRibCenter);
         
         //NORTH
-        this.nResinRipCenter.render(boxTranslation);
-        this.webbing01.render(boxTranslation);
-        this.webbing15.render(boxTranslation);
-        this.webbing07.render(boxTranslation);
-        this.webbing13.render(boxTranslation);
-        this.webbing09.render(boxTranslation);
+        draw(nResinRipCenter);
+        draw(webbing01);
+        draw(webbing15);
+        draw(webbing07);
+        draw(webbing13);
+        draw(webbing09);
 
         //WEST
-        this.wResinRipCenter.render(boxTranslation);
-        this.webbing11.render(boxTranslation);
-        this.webbing04.render(boxTranslation);
-        this.webbing05.render(boxTranslation);
+        draw(wResinRipCenter);
+        draw(webbing11);
+        draw(webbing04);
+        draw(webbing05);
 
         //SOUTH
-        this.sResinRipCenter.render(boxTranslation);
-        this.webbing14.render(boxTranslation);
-        this.webbing06.render(boxTranslation);
-        this.webbing10.render(boxTranslation);
-        this.webbing03.render(boxTranslation);
+        draw(sResinRipCenter);
+        draw(webbing14);
+        draw(webbing06);
+        draw(webbing10);
+        draw(webbing03);
         
         //EAST
-        this.eResinRipCenter.render(boxTranslation);
-        this.webbing12.render(boxTranslation);
-        this.webbing08.render(boxTranslation);
-        this.webbing02.render(boxTranslation);
+        draw(eResinRipCenter);
+        draw(webbing12);
+        draw(webbing08);
+        draw(webbing02);
     }
 }

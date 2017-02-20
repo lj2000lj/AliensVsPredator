@@ -458,16 +458,15 @@ public class ModelAethon extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object o)
     {
-        if (renderObject != null && renderObject.getObject() instanceof EntityAethon)
+        if (o != null && o instanceof EntityAethon)
         {
-            RenderObject o = (RenderObject) renderObject;
-            EntityAethon aethon = (EntityAethon) o.getEntity();
+            EntityAethon aethon = (EntityAethon) o;
 
             boolean isFlying = aethon.isFlying();
-            float swingProgress = o.swingProgress;
-            float swingProgressPrev = o.swingProgressPrev;
+            float swingProgress = getSwingProgress(aethon);
+            float swingProgressPrev = getSwingProgressPrev(aethon);
             float wingDistMulti = 5F;
             float wingSpeed = isFlying ? 1.75F : 20F;
             float neckSpeed = isFlying ? 8F : 18F;
@@ -546,21 +545,21 @@ public class ModelAethon extends Model
                     OpenGL.rotate(75F, 1, 0, 0);
                 }
 
-                this.rWingArm.render(boxTranslation);
-                this.rArm.render(boxTranslation);
-                this.lWingArm.render(boxTranslation);
-                this.lArm.render(boxTranslation);
-                this.chest.render(boxTranslation);
+                draw(this.rWingArm);
+                draw(this.rArm);
+                draw(this.lWingArm);
+                draw(this.lArm);
+                draw(this.chest);
             }
             OpenGL.popMatrix();
         }
         else
         {
-            this.rWingArm.render(boxTranslation);
-            this.rArm.render(boxTranslation);
-            this.lWingArm.render(boxTranslation);
-            this.lArm.render(boxTranslation);
-            this.chest.render(boxTranslation);
+            draw(this.rWingArm);
+            draw(this.rArm);
+            draw(this.lWingArm);
+            draw(this.lArm);
+            draw(this.chest);
         }
     }
 }

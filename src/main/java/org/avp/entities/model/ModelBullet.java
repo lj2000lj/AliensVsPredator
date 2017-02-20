@@ -64,14 +64,14 @@ public class ModelBullet extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        caseFR.render(boxTranslation);
-        case2.render(boxTranslation);
-        tip1.render(boxTranslation);
-        tip2.render(boxTranslation);
-        caseBR.render(boxTranslation);
-        caseFL.render(boxTranslation);
-        caseBL.render(boxTranslation);        
+        caseFR.render(DEFAULT_SCALE);
+        case2.render(DEFAULT_SCALE);
+        tip1.render(DEFAULT_SCALE);
+        tip2.render(DEFAULT_SCALE);
+        caseBR.render(DEFAULT_SCALE);
+        caseFL.render(DEFAULT_SCALE);
+        caseBL.render(DEFAULT_SCALE);        
     }
 }

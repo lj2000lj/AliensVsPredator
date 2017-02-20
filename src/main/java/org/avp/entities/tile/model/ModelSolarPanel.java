@@ -22,8 +22,8 @@ public class ModelSolarPanel extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        this.panel.render(boxTranslation);
+        draw(panel);
     }
 }

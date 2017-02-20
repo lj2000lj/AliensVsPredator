@@ -135,25 +135,25 @@ public class ModelAK47 extends Model implements IFirearmModel
     }
     
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        this.handle.render(boxTranslation);
-        this.clip.render(boxTranslation);
-        this.barrel.render(boxTranslation);
-        this.sight1.render(boxTranslation);
-        // this.sightBase.render(boxTranslation);
-        this.rbody1.render(boxTranslation);
-        this.lbody1.render(boxTranslation);
-        this.stockEnd.render(boxTranslation);
-        this.barrelBase.render(boxTranslation);
-        this.rBarrelGrip.render(boxTranslation);
-        this.lBarrelGrip.render(boxTranslation);
-        this.stockAngle.render(boxTranslation);
-        // this.trigger.render(boxTranslation);
-        // this.triggerGuard.render(boxTranslation);
-        // this.sightBase1.render(boxTranslation);
-        this.sight2.render(boxTranslation);
-        this.stockBase.render(boxTranslation);        
+        draw(handle);
+        draw(clip);
+        draw(barrel);
+        draw(sight1);
+        // draw(sightBase);
+        draw(rbody1);
+        draw(lbody1);
+        draw(stockEnd);
+        draw(barrelBase);
+        draw(rBarrelGrip);
+        draw(lBarrelGrip);
+        draw(stockAngle);
+        // draw(trigger);
+        // draw(triggerGuard);
+        // draw(sightBase1);
+        draw(sight2);
+        draw(stockBase);        
     }
 
     @Override

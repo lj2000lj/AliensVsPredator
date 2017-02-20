@@ -5,6 +5,7 @@ import org.avp.entities.mob.EntitySpeciesEngineer;
 import com.arisux.mdxlib.lib.client.Model;
 
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.MathHelper;
 
 public class ModelEngineer extends Model
@@ -137,57 +138,57 @@ public class ModelEngineer extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        RenderObject o = (RenderObject) renderObject;
+        EntityLivingBase base = (EntityLivingBase) obj;;
         
-        this.lShin.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 1.0F * o.swingProgressPrev;
-        this.lThigh.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 1.0F * o.swingProgressPrev - 0.2014257F;
-        this.lFoot.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 1.0F * o.swingProgressPrev;
+        this.lShin.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F) * 1.0F * swingProgressPrev(obj);
+        this.lThigh.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F) * 1.0F * swingProgressPrev(obj) - 0.2014257F;
+        this.lFoot.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F) * 1.0F * swingProgressPrev(obj);
 
-        this.rShin.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1.0F * o.swingProgressPrev;
-        this.rThigh.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1.0F * o.swingProgressPrev - 0.2014257F;
-        this.rFoot.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1.0F * o.swingProgressPrev;
+        this.rShin.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F + (float) Math.PI) * 1.0F * swingProgressPrev(obj);
+        this.rThigh.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F + (float) Math.PI) * 1.0F * swingProgressPrev(obj) - 0.2014257F;
+        this.rFoot.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F + (float) Math.PI) * 1.0F * swingProgressPrev(obj);
 
-        this.rArmUpper.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 1.4F * o.swingProgressPrev - 0.13F;
-        this.lArmLower_1.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 1.4F * o.swingProgressPrev - 0.3F;
+        this.rArmUpper.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F) * 1.4F * swingProgressPrev(obj) - 0.13F;
+        this.lArmLower_1.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F) * 1.4F * swingProgressPrev(obj) - 0.3F;
 
-        this.lArmUpper.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1.1F * o.swingProgressPrev - 0.13F;
-        this.lArmLower.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1.1F * o.swingProgressPrev - 0.3F;
+        this.lArmUpper.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F + (float) Math.PI) * 1.1F * swingProgressPrev(obj) - 0.13F;
+        this.lArmLower.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F + (float) Math.PI) * 1.1F * swingProgressPrev(obj) - 0.3F;
 
-        this.rShin.render(boxTranslation);
-        this.lArmUpper.render(boxTranslation);
-        this.rFoot.render(boxTranslation);
-        this.lThigh.render(boxTranslation);
-        this.lFoot.render(boxTranslation);
-        this.rThigh.render(boxTranslation);
-        this.rArmUpper.render(boxTranslation);
-        this.lShin.render(boxTranslation);
-        this.lArmLower.render(boxTranslation);
-        this.stomach.render(boxTranslation);
-        this.chest.render(boxTranslation);
-        this.lArmLower_1.render(boxTranslation);
-        this.neck.render(boxTranslation);
+        draw(rShin);
+        draw(lArmUpper);
+        draw(rFoot);
+        draw(lThigh);
+        draw(lFoot);
+        draw(rThigh);
+        draw(rArmUpper);
+        draw(lShin);
+        draw(lArmLower);
+        draw(stomach);
+        draw(chest);
+        draw(lArmLower_1);
+        draw(neck);
 
-        EntitySpeciesEngineer engineer = (EntitySpeciesEngineer) o.getEntity();
+        EntitySpeciesEngineer engineer = (EntitySpeciesEngineer) base;
 
         if (engineer != null && engineer.isWearingMask() || engineer == null)
         {
-            this.nozzle3c.render(boxTranslation);
-            this.head1.render(boxTranslation);
-            this.nozzle1.render(boxTranslation);
-            this.nozzle3b.render(boxTranslation);
-            this.nozzle3d.render(boxTranslation);
-            this.head2.render(boxTranslation);
-            this.hose.render(boxTranslation);
-            this.lJaw.render(boxTranslation);
-            this.nozzle3a.render(boxTranslation);
-            this.nozzle2.render(boxTranslation);
-            this.rJaw.render(boxTranslation);
+            draw(nozzle3c);
+            draw(head1);
+            draw(nozzle1);
+            draw(nozzle3b);
+            draw(nozzle3d);
+            draw(head2);
+            draw(hose);
+            draw(lJaw);
+            draw(nozzle3a);
+            draw(nozzle2);
+            draw(rJaw);
         }
         else
         {
-            this.sexyFace.render(boxTranslation);
+            draw(sexyFace);
         }       
     }
 }

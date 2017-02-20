@@ -36,7 +36,7 @@ public class RenderSkull extends TileEntitySpecialRenderer
 
             for (ModelRenderer renderer : skull.getSkullBlock().getSkullModelRenderers())
             {
-                renderer.render(Model.DEFAULT_BOX_TRANSLATION);
+                renderer.render(Model.DEFAULT_SCALE);
             }
             OpenGL.enableCullFace();
         }

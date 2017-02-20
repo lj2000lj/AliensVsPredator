@@ -529,40 +529,40 @@ public class ModelMutantYautja extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
         OpenGL.pushMatrix();
         OpenGL.translate(this.lThigh.offsetX, this.lThigh.offsetY, this.lThigh.offsetZ);
-        OpenGL.translate(this.lThigh.rotationPointX * boxTranslation, this.lThigh.rotationPointY * boxTranslation, this.lThigh.rotationPointZ * boxTranslation);
+        OpenGL.translate(this.lThigh.rotationPointX * DEFAULT_SCALE, this.lThigh.rotationPointY * DEFAULT_SCALE, this.lThigh.rotationPointZ * DEFAULT_SCALE);
         OpenGL.scale(1.1D, 1.0D, 1.0D);
         OpenGL.translate(-this.lThigh.offsetX, -this.lThigh.offsetY, -this.lThigh.offsetZ);
-        OpenGL.translate(-this.lThigh.rotationPointX * boxTranslation, -this.lThigh.rotationPointY * boxTranslation, -this.lThigh.rotationPointZ * boxTranslation);
-        this.lThigh.render(boxTranslation);
+        OpenGL.translate(-this.lThigh.rotationPointX * DEFAULT_SCALE, -this.lThigh.rotationPointY * DEFAULT_SCALE, -this.lThigh.rotationPointZ * DEFAULT_SCALE);
+        draw(lThigh);
         OpenGL.popMatrix();
         OpenGL.pushMatrix();
         OpenGL.translate(this.rArmUpper.offsetX, this.rArmUpper.offsetY, this.rArmUpper.offsetZ);
-        OpenGL.translate(this.rArmUpper.rotationPointX * boxTranslation, this.rArmUpper.rotationPointY * boxTranslation, this.rArmUpper.rotationPointZ * boxTranslation);
+        OpenGL.translate(this.rArmUpper.rotationPointX * DEFAULT_SCALE, this.rArmUpper.rotationPointY * DEFAULT_SCALE, this.rArmUpper.rotationPointZ * DEFAULT_SCALE);
         OpenGL.scale(1.1D, 1.0D, 1.0D);
         OpenGL.translate(-this.rArmUpper.offsetX, -this.rArmUpper.offsetY, -this.rArmUpper.offsetZ);
-        OpenGL.translate(-this.rArmUpper.rotationPointX * boxTranslation, -this.rArmUpper.rotationPointY * boxTranslation, -this.rArmUpper.rotationPointZ * boxTranslation);
-        this.rArmUpper.render(boxTranslation);
+        OpenGL.translate(-this.rArmUpper.rotationPointX * DEFAULT_SCALE, -this.rArmUpper.rotationPointY * DEFAULT_SCALE, -this.rArmUpper.rotationPointZ * DEFAULT_SCALE);
+        draw(rArmUpper);
         OpenGL.popMatrix();
         OpenGL.pushMatrix();
         OpenGL.translate(this.lArmUpper.offsetX, this.lArmUpper.offsetY, this.lArmUpper.offsetZ);
-        OpenGL.translate(this.lArmUpper.rotationPointX * boxTranslation, this.lArmUpper.rotationPointY * boxTranslation, this.lArmUpper.rotationPointZ * boxTranslation);
+        OpenGL.translate(this.lArmUpper.rotationPointX * DEFAULT_SCALE, this.lArmUpper.rotationPointY * DEFAULT_SCALE, this.lArmUpper.rotationPointZ * DEFAULT_SCALE);
         OpenGL.scale(1.1D, 1.0D, 1.0D);
         OpenGL.translate(-this.lArmUpper.offsetX, -this.lArmUpper.offsetY, -this.lArmUpper.offsetZ);
-        OpenGL.translate(-this.lArmUpper.rotationPointX * boxTranslation, -this.lArmUpper.rotationPointY * boxTranslation, -this.lArmUpper.rotationPointZ * boxTranslation);
-        this.lArmUpper.render(boxTranslation);
+        OpenGL.translate(-this.lArmUpper.rotationPointX * DEFAULT_SCALE, -this.lArmUpper.rotationPointY * DEFAULT_SCALE, -this.lArmUpper.rotationPointZ * DEFAULT_SCALE);
+        draw(lArmUpper);
         OpenGL.popMatrix();
         OpenGL.pushMatrix();
         OpenGL.translate(this.rThigh.offsetX, this.rThigh.offsetY, this.rThigh.offsetZ);
-        OpenGL.translate(this.rThigh.rotationPointX * boxTranslation, this.rThigh.rotationPointY * boxTranslation, this.rThigh.rotationPointZ * boxTranslation);
+        OpenGL.translate(this.rThigh.rotationPointX * DEFAULT_SCALE, this.rThigh.rotationPointY * DEFAULT_SCALE, this.rThigh.rotationPointZ * DEFAULT_SCALE);
         OpenGL.scale(1.1D, 1.0D, 1.0D);
         OpenGL.translate(-this.rThigh.offsetX, -this.rThigh.offsetY, -this.rThigh.offsetZ);
-        OpenGL.translate(-this.rThigh.rotationPointX * boxTranslation, -this.rThigh.rotationPointY * boxTranslation, -this.rThigh.rotationPointZ * boxTranslation);
-        this.rThigh.render(boxTranslation);
+        OpenGL.translate(-this.rThigh.rotationPointX * DEFAULT_SCALE, -this.rThigh.rotationPointY * DEFAULT_SCALE, -this.rThigh.rotationPointZ * DEFAULT_SCALE);
+        draw(rThigh);
         OpenGL.popMatrix();
-        this.body.render(boxTranslation);
+        draw(body);
     }
 }

@@ -5,6 +5,7 @@ import org.avp.entities.mob.EntityOvamorph;
 import com.arisux.mdxlib.lib.client.Model;
 
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.MathHelper;
 
 public class ModelOvamorph extends Model
@@ -61,15 +62,15 @@ public class ModelOvamorph extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        RenderObject o = (RenderObject) renderObject;
+        EntityLivingBase base = (EntityLivingBase) obj;
 
-        if (o.getEntity() != null)
+        if (base != null)
         {
-            if (o.getEntity() instanceof EntityOvamorph)
+            if (base instanceof EntityOvamorph)
             {
-                EntityOvamorph ovamorph = (EntityOvamorph) o.getEntity();
+                EntityOvamorph ovamorph = (EntityOvamorph) base;
 
                 float openAngle = 25;
                 float openSpeed = 0.075F;
@@ -97,11 +98,11 @@ public class ModelOvamorph extends Model
             }
         }
 
-        this.rFrontLobe2.render(boxTranslation);
-        this.lBackLobe2.render(boxTranslation);
-        this.base.render(boxTranslation);
-        this.lFrontLobe2.render(boxTranslation);
-        this.center.render(boxTranslation);
-        this.rBackLobe2.render(boxTranslation);
+        draw(this.rFrontLobe2);
+        draw(this.lBackLobe2);
+        draw(this.base);
+        draw(this.lFrontLobe2);
+        draw(this.center);
+        draw(this.rBackLobe2);
     }
 }

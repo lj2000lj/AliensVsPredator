@@ -70,15 +70,15 @@ public class ModelStasisMechanism extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        west.render(boxTranslation);
-        north.render(boxTranslation);
-        northwest.render(boxTranslation);
-        northeast.render(boxTranslation);
-        east.render(boxTranslation);
-        southeast.render(boxTranslation);
-        southwest.render(boxTranslation);
-        south.render(boxTranslation);        
+        west.render(DEFAULT_SCALE);
+        north.render(DEFAULT_SCALE);
+        northwest.render(DEFAULT_SCALE);
+        northeast.render(DEFAULT_SCALE);
+        east.render(DEFAULT_SCALE);
+        southeast.render(DEFAULT_SCALE);
+        southwest.render(DEFAULT_SCALE);
+        south.render(DEFAULT_SCALE);        
     }
 }

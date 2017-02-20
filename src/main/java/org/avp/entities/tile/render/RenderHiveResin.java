@@ -38,7 +38,7 @@ public class RenderHiveResin extends TileEntitySpecialRenderer
                     {
                         model.blockFaceTop.offsetY = 2.002F;
                         model.blockFaceTop.rotateAngleX = (float) Math.toRadians(180);
-                        model.blockFaceTop.render(Model.DEFAULT_BOX_TRANSLATION);
+                        model.blockFaceTop.render(Model.DEFAULT_SCALE);
                     }
                 }
 
@@ -48,7 +48,7 @@ public class RenderHiveResin extends TileEntitySpecialRenderer
                     {
                         model.bResinRibCenter.offsetY = -0.9F;
                         model.bResinRibCenter.rotateAngleX = (float) Math.toRadians(180);
-                        model.bResinRibCenter.render(Model.DEFAULT_BOX_TRANSLATION);
+                        model.bResinRibCenter.render(Model.DEFAULT_SCALE);
                     }
                 }
 
@@ -64,16 +64,16 @@ public class RenderHiveResin extends TileEntitySpecialRenderer
                 {
                     if (hiveTessellation == GraphicsSetting.HIGH || hiveTessellation == GraphicsSetting.ULTRA)
                     {
-                        model.nResinRipCenter.render(Model.DEFAULT_BOX_TRANSLATION);
+                        model.nResinRipCenter.render(Model.DEFAULT_SCALE);
                     }
 
                     if (hiveTessellation == GraphicsSetting.MEDIUM || hiveTessellation == GraphicsSetting.ULTRA)
                     {
-                        model.webbing01.render(Model.DEFAULT_BOX_TRANSLATION);
-                        model.webbing15.render(Model.DEFAULT_BOX_TRANSLATION);
-                        model.webbing07.render(Model.DEFAULT_BOX_TRANSLATION);
-                        model.webbing13.render(Model.DEFAULT_BOX_TRANSLATION);
-                        model.webbing09.render(Model.DEFAULT_BOX_TRANSLATION);
+                        model.webbing01.render(Model.DEFAULT_SCALE);
+                        model.webbing15.render(Model.DEFAULT_SCALE);
+                        model.webbing07.render(Model.DEFAULT_SCALE);
+                        model.webbing13.render(Model.DEFAULT_SCALE);
+                        model.webbing09.render(Model.DEFAULT_SCALE);
                     }
                 }
 
@@ -87,14 +87,14 @@ public class RenderHiveResin extends TileEntitySpecialRenderer
                 {
                     if (hiveTessellation == GraphicsSetting.HIGH || hiveTessellation == GraphicsSetting.ULTRA)
                     {
-                        model.wResinRipCenter.render(Model.DEFAULT_BOX_TRANSLATION);
+                        model.wResinRipCenter.render(Model.DEFAULT_SCALE);
                     }
 
                     if (hiveTessellation == GraphicsSetting.MEDIUM || hiveTessellation == GraphicsSetting.ULTRA)
                     {
-                        model.webbing11.render(Model.DEFAULT_BOX_TRANSLATION);
-                        model.webbing04.render(Model.DEFAULT_BOX_TRANSLATION);
-                        model.webbing05.render(Model.DEFAULT_BOX_TRANSLATION);
+                        model.webbing11.render(Model.DEFAULT_SCALE);
+                        model.webbing04.render(Model.DEFAULT_SCALE);
+                        model.webbing05.render(Model.DEFAULT_SCALE);
                     }
                 }
 
@@ -108,15 +108,15 @@ public class RenderHiveResin extends TileEntitySpecialRenderer
                 {
                     if (hiveTessellation == GraphicsSetting.HIGH || hiveTessellation == GraphicsSetting.ULTRA)
                     {
-                        model.sResinRipCenter.render(Model.DEFAULT_BOX_TRANSLATION);
+                        model.sResinRipCenter.render(Model.DEFAULT_SCALE);
                     }
 
                     if (hiveTessellation == GraphicsSetting.MEDIUM || hiveTessellation == GraphicsSetting.ULTRA)
                     {
-                        model.webbing14.render(Model.DEFAULT_BOX_TRANSLATION);
-                        model.webbing06.render(Model.DEFAULT_BOX_TRANSLATION);
-                        model.webbing10.render(Model.DEFAULT_BOX_TRANSLATION);
-                        model.webbing03.render(Model.DEFAULT_BOX_TRANSLATION);
+                        model.webbing14.render(Model.DEFAULT_SCALE);
+                        model.webbing06.render(Model.DEFAULT_SCALE);
+                        model.webbing10.render(Model.DEFAULT_SCALE);
+                        model.webbing03.render(Model.DEFAULT_SCALE);
                     }
                 }
 
@@ -130,14 +130,14 @@ public class RenderHiveResin extends TileEntitySpecialRenderer
                 {
                     if (hiveTessellation == GraphicsSetting.HIGH || hiveTessellation == GraphicsSetting.ULTRA)
                     {
-                        model.eResinRipCenter.render(Model.DEFAULT_BOX_TRANSLATION);
+                        model.eResinRipCenter.render(Model.DEFAULT_SCALE);
                     }
 
                     if (hiveTessellation == GraphicsSetting.MEDIUM || hiveTessellation == GraphicsSetting.ULTRA)
                     {
-                        model.webbing12.render(Model.DEFAULT_BOX_TRANSLATION);
-                        model.webbing08.render(Model.DEFAULT_BOX_TRANSLATION);
-                        model.webbing02.render(Model.DEFAULT_BOX_TRANSLATION);
+                        model.webbing12.render(Model.DEFAULT_SCALE);
+                        model.webbing08.render(Model.DEFAULT_SCALE);
+                        model.webbing02.render(Model.DEFAULT_SCALE);
                     }
                 }
             }

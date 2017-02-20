@@ -99,13 +99,11 @@ public class ModelMedpod extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        RenderObject o = (RenderObject) renderObject;
-        
-        if (o.getTileEntity() != null)
+        if (obj != null)
         {
-            TileEntityMedpod medpod = (TileEntityMedpod) o.getTileEntity();
+            TileEntityMedpod medpod = (TileEntityMedpod) obj;
 
             float doorRotation = medpod.getDoorProgress() / 2;
             float medpodRotation = (float) Math.toRadians(medpod.getDoorProgress() * 45 / medpod.getMaxDoorProgress());
@@ -115,9 +113,9 @@ public class ModelMedpod extends Model
             this.bedBack.rotateAngleX = -medpodRotation;
         }
 
-        this.baseRod1.render(boxTranslation);
-        this.base.render(boxTranslation);
-        this.baseRod2.render(boxTranslation);
-        this.bedBack.render(boxTranslation);
+        draw(baseRod1);
+        draw(base);
+        draw(baseRod2);
+        draw(bedBack);
     }
 }

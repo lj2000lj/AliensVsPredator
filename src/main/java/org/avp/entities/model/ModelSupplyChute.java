@@ -58,18 +58,18 @@ public class ModelSupplyChute extends Model
     }
     
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        this.casing.render(boxTranslation);
-        this.lHinge.render(boxTranslation);
-        this.wire1.render(boxTranslation);
-        this.rHinge.render(boxTranslation);
-        this.lid.render(boxTranslation);
-        this.chute.render(boxTranslation);
-        this.wire4.render(boxTranslation);
-        this.wire2.render(boxTranslation);
-        this.wire3.render(boxTranslation);
-        this.chuteTop.render(boxTranslation);
+        draw(casing);
+        draw(lHinge);
+        draw(wire1);
+        draw(rHinge);
+        draw(lid);
+        draw(chute);
+        draw(wire4);
+        draw(wire2);
+        draw(wire3);
+        draw(chuteTop);
     }
 
     public void drawCrate()

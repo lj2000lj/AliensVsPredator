@@ -61,18 +61,18 @@ public class Model88MOD4 extends Model implements IFirearmModel
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        this.barrelNose.render(boxTranslation);
-        this.butt1.render(boxTranslation);
-        this.barrelLeft.render(boxTranslation);
-        this.barrelSupport.render(boxTranslation);
-        this.rack.render(boxTranslation);
-        this.gripSupport.render(boxTranslation);
-        this.underGrip.render(boxTranslation);
-        this.trigger.render(boxTranslation);
-        this.barrelRight.render(boxTranslation);
-        this.handleGrip.render(boxTranslation);        
+        draw(barrelNose);
+        draw(butt1);
+        draw(barrelLeft);
+        draw(barrelSupport);
+        draw(rack);
+        draw(gripSupport);
+        draw(underGrip);
+        draw(trigger);
+        draw(barrelRight);
+        draw(handleGrip);        
     }
 
     @Override

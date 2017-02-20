@@ -278,10 +278,10 @@ public class ModelBoiler extends Model
         this.chest.addChild(this.head1);
         this.tail2.addChild(this.tailSpines2);
     }
-
+    
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        this.chest.render(boxTranslation);
+        draw(chest);
     }
 }

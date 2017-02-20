@@ -258,8 +258,8 @@ public class ModelPantheramorph extends Model
     }
     
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        this.chest.render(boxTranslation);
+        draw(chest);
     }
 }

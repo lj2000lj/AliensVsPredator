@@ -104,20 +104,19 @@ public class ModelWorkstation extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        RenderObject tileRenderObject = (RenderObject) renderObject;
-        TileEntityWorkstation tile = (TileEntityWorkstation) tileRenderObject.getTileEntity();
+        TileEntityWorkstation tile = (TileEntityWorkstation) obj;
         
-        stand.render(boxTranslation);
-        standBase.render(boxTranslation);
-        desk.render(boxTranslation);
-        mainArm.render(boxTranslation);
-        // supportLeft.render(boxTranslation);
-        supportCenter.render(boxTranslation);
-        // supportRight.render(boxTranslation);
+        stand.render(DEFAULT_SCALE);
+        standBase.render(DEFAULT_SCALE);
+        desk.render(DEFAULT_SCALE);
+        mainArm.render(DEFAULT_SCALE);
+        // supportLeft.render(DEFAULT_SCALE);
+        supportCenter.render(DEFAULT_SCALE);
+        // supportRight.render(DEFAULT_SCALE);
 
-        screenCenter.render(boxTranslation);
+        screenCenter.render(DEFAULT_SCALE);
 
         if (tile != null)
         {
@@ -164,22 +163,22 @@ public class ModelWorkstation extends Model
 
             if (left != AliensVsPredator.blocks().blockWorkstation && leftUp == Blocks.air && left.getBlockBoundsMaxY() <= 1.5)
             {
-                // leftArm.render(boxTranslation);
-                screenLeft.render(boxTranslation);
+                // leftArm.render(DEFAULT_SCALE);
+                screenLeft.render(DEFAULT_SCALE);
             }
 
             if (right != AliensVsPredator.blocks().blockWorkstation && rightUp == Blocks.air && right.getBlockBoundsMaxY() <= 1.5)
             {
-                // rightArm.render(boxTranslation);
-                screenRight.render(boxTranslation);
+                // rightArm.render(DEFAULT_SCALE);
+                screenRight.render(DEFAULT_SCALE);
             }
         }
         else
         {
-            leftArm.render(boxTranslation);
-            screenLeft.render(boxTranslation);
-            rightArm.render(boxTranslation);
-            screenRight.render(boxTranslation);
+            leftArm.render(DEFAULT_SCALE);
+            screenLeft.render(DEFAULT_SCALE);
+            rightArm.render(DEFAULT_SCALE);
+            screenRight.render(DEFAULT_SCALE);
         }        
     }
 }

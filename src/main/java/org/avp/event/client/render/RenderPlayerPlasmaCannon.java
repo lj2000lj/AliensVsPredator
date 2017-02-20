@@ -13,7 +13,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.util.glu.Project;
 
-import com.arisux.mdxlib.lib.client.Model.RenderObject;
 import com.arisux.mdxlib.lib.client.TexturedModel;
 import com.arisux.mdxlib.lib.client.render.Color;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
@@ -89,7 +88,7 @@ public class RenderPlayerPlasmaCannon implements IEventRenderer, IFirstPersonRen
                         OpenGL.rotate(rotationYaw, 0F, 1F, 0F);
                         OpenGL.translate(-0.75F, -0.125F, -0.55F);
                         MODEL.bindTexture();
-                        MODEL.getModel().render(new RenderObject(new Object[] { entity, swingProgress, swingProgressPrev, idleProgress, rotationYawHead - rotationYaw, rotationPitch }));
+                        MODEL.getModel().render(entity);
                         OpenGL.popMatrix();
                     }
                 }

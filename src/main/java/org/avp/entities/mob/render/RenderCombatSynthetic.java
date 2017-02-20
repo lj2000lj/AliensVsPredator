@@ -37,7 +37,7 @@ public class RenderCombatSynthetic extends RenderLivingWrapper
             OpenGL.pushMatrix();
             {
                 model.aimedBow = true;
-                model.bipedRightArm.postRender(Model.DEFAULT_BOX_TRANSLATION);
+                model.bipedRightArm.postRender(Model.DEFAULT_SCALE);
                 OpenGL.translate(-0.35F, 0.8F, -0.85F);
                 OpenGL.rotate(270.0F, 1.0F, 0.0F, 0.0F);
                 OpenGL.rotate(0.0F, 0.0F, 1.0F, 0.0F);

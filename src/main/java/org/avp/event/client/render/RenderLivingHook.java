@@ -148,16 +148,16 @@ public class RenderLivingHook
                 this.transformEntity(medpod, entity, partialTicks);
                 this.mainModel.setLivingAnimations(entity, swingProgress, swingProgressPrev, partialTicks);
                 Draw.bindTexture(this.getEntityTexture(entity));
-                this.mainModel.render(entity, swingProgress, swingProgressPrev, idleProgress, rotationYawHead - rotationYaw, rotationPitch, Model.DEFAULT_BOX_TRANSLATION);
+                this.mainModel.render(entity, swingProgress, swingProgressPrev, idleProgress, rotationYawHead - rotationYaw, rotationPitch, Model.DEFAULT_SCALE);
                 OpenGL.disableBlend();
             }
             OpenGL.popMatrix();
         }
 
         @Deprecated
-        protected void renderModel(EntityLivingBase entity, float swingProgress, float swingProgressPrev, float idleProgress, float rotationYawHead, float rotationPitch, float boxTranslation)
+        protected void renderModel(EntityLivingBase entity, float swingProgress, float swingProgressPrev, float idleProgress, float rotationYawHead, float rotationPitch, float DEFAULT_SCALE)
         {
-            this.mainModel.setRotationAngles(swingProgress, swingProgressPrev, idleProgress, rotationYawHead, rotationPitch, boxTranslation, entity);
+            this.mainModel.setRotationAngles(swingProgress, swingProgressPrev, idleProgress, rotationYawHead, rotationPitch, DEFAULT_SCALE, entity);
         }
 
         public void transformEntity(EntityMedpod medpod, Entity inMedpod, float partialTicks)
@@ -176,7 +176,7 @@ public class RenderLivingHook
                 }
             }
             
-            OpenGL.translate(0.0F, -24.0F * Model.DEFAULT_BOX_TRANSLATION + 1.5F, 0.0F);
+            OpenGL.translate(0.0F, -24.0F * Model.DEFAULT_SCALE + 1.5F, 0.0F);
             OpenGL.rotate(rotation - 90F, 1F, 0F, 0F);
             
             for (EntityRenderTransforms transform : RenderMedpod.transforms)

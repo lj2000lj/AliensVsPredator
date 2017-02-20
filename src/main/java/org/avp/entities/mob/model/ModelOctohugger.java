@@ -6,6 +6,7 @@ import com.arisux.mdxlib.lib.client.Model;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.MathHelper;
 
 public class ModelOctohugger extends Model
@@ -82,17 +83,18 @@ public class ModelOctohugger extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        RenderObject o = (RenderObject) renderObject;
-        float legMovement = -(MathHelper.cos(o.swingProgress * 2.6662F + (float) Math.PI) * 1F * o.swingProgressPrev * 0.25F) * 90;
+        EntityLivingBase base = (EntityLivingBase) obj;
+        float idleProgress = idleProgress(obj);
+        float legMovement = -(MathHelper.cos(swingProgress(obj) * 2.6662F + (float) Math.PI) * 1F * swingProgressPrev(obj) * 0.25F) * 90;
         float speed = 0.055F;
         float legStart = 15F;
         float legDistance = 0.8F;
 
-        if (o.getEntity() != null && o.getEntity() instanceof EntityOctohugger)
+        if (base != null && base instanceof EntityOctohugger)
         {
-            EntityOctohugger octohugger = (EntityOctohugger) o.getEntity();
+            EntityOctohugger octohugger = (EntityOctohugger) base;
 
             if (octohugger.ridingEntity != null)
             {
@@ -101,61 +103,61 @@ public class ModelOctohugger extends Model
             
             if (octohugger.ridingEntity == null && !octohugger.isFertile())
             {
-                o.idleProgress = 0;
+                idleProgress = 0;
             }
         }
 
-        yOffset = 0.045F + Math.toRadians((MathHelper.sin(o.idleProgress * speed) * (legDistance * 4F)));
-        yOffset = yOffset + MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1F * o.swingProgressPrev * 0.25F;
+        yOffset = 0.045F + Math.toRadians((MathHelper.sin(idleProgress * speed) * (legDistance * 4F)));
+        yOffset = yOffset + MathHelper.cos(swingProgress(obj) * 0.6662F + (float) Math.PI) * 1F * swingProgressPrev(obj) * 0.25F;
         OpenGL.translate(0F, yOffset, 0F);
 
-        this.rFlap1.rotateAngleZ = (float) (Math.toRadians(legStart) + (float) Math.toRadians((MathHelper.sin(o.idleProgress * speed) * legDistance) * 20 + legMovement));
-        this.rFlap2.rotateAngleZ = (float) (Math.toRadians(legStart) + (float) Math.toRadians((MathHelper.sin(o.idleProgress * speed) * legDistance) * 20 + legMovement));
+        this.rFlap1.rotateAngleZ = (float) (Math.toRadians(legStart) + (float) Math.toRadians((MathHelper.sin(idleProgress * speed) * legDistance) * 20 + legMovement));
+        this.rFlap2.rotateAngleZ = (float) (Math.toRadians(legStart) + (float) Math.toRadians((MathHelper.sin(idleProgress * speed) * legDistance) * 20 + legMovement));
 
-        this.bFlap1.rotateAngleX = (float) (Math.toRadians(legStart) + (float) Math.toRadians((MathHelper.sin(o.idleProgress * speed) * legDistance) * 20 + legMovement));
-        this.bFlap2.rotateAngleX = (float) (Math.toRadians(legStart) + (float) Math.toRadians((MathHelper.sin(o.idleProgress * speed) * legDistance) * 20 + legMovement));
+        this.bFlap1.rotateAngleX = (float) (Math.toRadians(legStart) + (float) Math.toRadians((MathHelper.sin(idleProgress * speed) * legDistance) * 20 + legMovement));
+        this.bFlap2.rotateAngleX = (float) (Math.toRadians(legStart) + (float) Math.toRadians((MathHelper.sin(idleProgress * speed) * legDistance) * 20 + legMovement));
 
-        this.lFlap1.rotateAngleZ = (float) -(Math.toRadians(legStart) + (float) Math.toRadians((MathHelper.sin(o.idleProgress * speed) * legDistance) * 20 + legMovement));
-        this.lFlap2.rotateAngleZ = (float) -(Math.toRadians(legStart) + (float) Math.toRadians((MathHelper.sin(o.idleProgress * speed) * legDistance) * 20 + legMovement));
+        this.lFlap1.rotateAngleZ = (float) -(Math.toRadians(legStart) + (float) Math.toRadians((MathHelper.sin(idleProgress * speed) * legDistance) * 20 + legMovement));
+        this.lFlap2.rotateAngleZ = (float) -(Math.toRadians(legStart) + (float) Math.toRadians((MathHelper.sin(idleProgress * speed) * legDistance) * 20 + legMovement));
 
-        this.fFlap1.rotateAngleX = (float) -(Math.toRadians(legStart) + (float) Math.toRadians((MathHelper.sin(o.idleProgress * speed) * legDistance) * 20 + legMovement));
-        this.fFlap2.rotateAngleX = (float) -(Math.toRadians(legStart) + (float) Math.toRadians((MathHelper.sin(o.idleProgress * speed) * legDistance) * 20 + legMovement));
+        this.fFlap1.rotateAngleX = (float) -(Math.toRadians(legStart) + (float) Math.toRadians((MathHelper.sin(idleProgress * speed) * legDistance) * 20 + legMovement));
+        this.fFlap2.rotateAngleX = (float) -(Math.toRadians(legStart) + (float) Math.toRadians((MathHelper.sin(idleProgress * speed) * legDistance) * 20 + legMovement));
 
-        if (o.getEntity() != null && o.getEntity() instanceof EntityOctohugger)
+        if (base != null && base instanceof EntityOctohugger)
         {
-            EntityOctohugger octohugger = (EntityOctohugger) o.getEntity();
+            EntityOctohugger octohugger = (EntityOctohugger) base;
 
             if (octohugger.ridingEntity != null)
             {
                 legDistance = -20F;
-                this.rFlap2.rotateAngleZ = (float) -(Math.toRadians(legStart) + (float) Math.toRadians((MathHelper.sin(o.idleProgress * speed) * legDistance) * 1 + legMovement));
-                this.bFlap2.rotateAngleX = (float) -(Math.toRadians(legStart) + (float) Math.toRadians((MathHelper.sin(o.idleProgress * speed) * legDistance) * 1 + legMovement));
-                this.lFlap2.rotateAngleZ = (float) (Math.toRadians(legStart) + (float) Math.toRadians((MathHelper.sin(o.idleProgress * speed) * legDistance) * 1 + legMovement));
-                this.fFlap2.rotateAngleX = (float) (Math.toRadians(legStart) + (float) Math.toRadians((MathHelper.sin(o.idleProgress * speed) * legDistance) * 1 + legMovement));
+                this.rFlap2.rotateAngleZ = (float) -(Math.toRadians(legStart) + (float) Math.toRadians((MathHelper.sin(idleProgress * speed) * legDistance) * 1 + legMovement));
+                this.bFlap2.rotateAngleX = (float) -(Math.toRadians(legStart) + (float) Math.toRadians((MathHelper.sin(idleProgress * speed) * legDistance) * 1 + legMovement));
+                this.lFlap2.rotateAngleZ = (float) (Math.toRadians(legStart) + (float) Math.toRadians((MathHelper.sin(idleProgress * speed) * legDistance) * 1 + legMovement));
+                this.fFlap2.rotateAngleX = (float) (Math.toRadians(legStart) + (float) Math.toRadians((MathHelper.sin(idleProgress * speed) * legDistance) * 1 + legMovement));
             }
         }
 
-        this.rFlap1.render(boxTranslation);
-        this.bFlap1.render(boxTranslation);
-        this.fFlap1.render(boxTranslation);
-        this.lFlap1.render(boxTranslation);
+        draw(rFlap1);
+        draw(bFlap1);
+        draw(fFlap1);
+        draw(lFlap1);
         OpenGL.pushMatrix();
         OpenGL.translate(this.head2.offsetX, this.head2.offsetY, this.head2.offsetZ);
-        OpenGL.translate(this.head2.rotationPointX * boxTranslation, this.head2.rotationPointY * boxTranslation, this.head2.rotationPointZ * boxTranslation);
+        OpenGL.translate(this.head2.rotationPointX * DEFAULT_SCALE, this.head2.rotationPointY * DEFAULT_SCALE, this.head2.rotationPointZ * DEFAULT_SCALE);
         OpenGL.scale(0.8D, 0.8D, 0.8D);
         OpenGL.translate(-this.head2.offsetX, -this.head2.offsetY, -this.head2.offsetZ);
-        OpenGL.translate(-this.head2.rotationPointX * boxTranslation, -this.head2.rotationPointY * boxTranslation, -this.head2.rotationPointZ * boxTranslation);
-        this.head2.render(boxTranslation);
+        OpenGL.translate(-this.head2.rotationPointX * DEFAULT_SCALE, -this.head2.rotationPointY * DEFAULT_SCALE, -this.head2.rotationPointZ * DEFAULT_SCALE);
+        draw(head2);
         OpenGL.popMatrix();
         OpenGL.pushMatrix();
         OpenGL.translate(this.body2.offsetX, this.body2.offsetY, this.body2.offsetZ);
-        OpenGL.translate(this.body2.rotationPointX * boxTranslation, this.body2.rotationPointY * boxTranslation, this.body2.rotationPointZ * boxTranslation);
+        OpenGL.translate(this.body2.rotationPointX * DEFAULT_SCALE, this.body2.rotationPointY * DEFAULT_SCALE, this.body2.rotationPointZ * DEFAULT_SCALE);
         OpenGL.scale(1.1D, 1.0D, 1.1D);
         OpenGL.translate(-this.body2.offsetX, -this.body2.offsetY, -this.body2.offsetZ);
-        OpenGL.translate(-this.body2.rotationPointX * boxTranslation, -this.body2.rotationPointY * boxTranslation, -this.body2.rotationPointZ * boxTranslation);
-        this.body2.render(boxTranslation);
+        OpenGL.translate(-this.body2.rotationPointX * DEFAULT_SCALE, -this.body2.rotationPointY * DEFAULT_SCALE, -this.body2.rotationPointZ * DEFAULT_SCALE);
+        draw(body2);
         OpenGL.popMatrix();
-        this.body.render(boxTranslation);
+        draw(body);
     }
 
     private double yOffset;

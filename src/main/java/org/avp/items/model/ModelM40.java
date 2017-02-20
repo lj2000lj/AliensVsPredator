@@ -57,13 +57,13 @@ public class ModelM40 extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        cap.render(boxTranslation);
-        core.render(boxTranslation);
-        ridge1.render(boxTranslation);
-        ridge2.render(boxTranslation);
-        grip.render(boxTranslation);
-        bottom.render(boxTranslation);        
+        cap.render(DEFAULT_SCALE);
+        core.render(DEFAULT_SCALE);
+        ridge1.render(DEFAULT_SCALE);
+        ridge2.render(DEFAULT_SCALE);
+        grip.render(DEFAULT_SCALE);
+        bottom.render(DEFAULT_SCALE);        
     }
 }

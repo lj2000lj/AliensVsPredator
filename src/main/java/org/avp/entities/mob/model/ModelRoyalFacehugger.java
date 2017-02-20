@@ -5,6 +5,7 @@ import org.avp.entities.mob.EntityFacehugger;
 import com.arisux.mdxlib.lib.client.Model;
 
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.MathHelper;
 
 public class ModelRoyalFacehugger extends Model
@@ -477,12 +478,12 @@ public class ModelRoyalFacehugger extends Model
     }
     
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        RenderObject o = (RenderObject) renderObject;
+        EntityLivingBase base = (EntityLivingBase) obj;;
         float yRot = -0.0585F;
 
-        this.tail01.rotateAngleY = (MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * o.swingProgressPrev * 0.25F);
+        this.tail01.rotateAngleY = (MathHelper.cos(swingProgress(obj) * 0.6662F + (float) Math.PI) * swingProgressPrev(obj) * 0.25F);
         this.tail02.rotateAngleY = yRot;
         this.tail03.rotateAngleY = yRot;
         this.tail04.rotateAngleY = yRot;
@@ -498,16 +499,16 @@ public class ModelRoyalFacehugger extends Model
         this.tail14.rotateAngleY = yRot;
         this.tail15.rotateAngleY = yRot;
 
-        if (o.getEntity() != null)
+        if (base != null)
         {
-            EntityFacehugger facehugger = (EntityFacehugger) o.getEntity();
+            EntityFacehugger facehugger = (EntityFacehugger) base;
 
             if (facehugger.isFertile())
             {
                 float tailSpeed = 0.15F;
                 float distMulti = 0.075F;
                 float distAdd = 0.05F;
-                float progress = o.idleProgress + o.swingProgress;
+                float progress = idleProgress(obj) + swingProgress(obj);
                 this.tail01.rotateAngleY += MathHelper.sin(progress * tailSpeed) * distMulti + distAdd;
                 this.tail02.rotateAngleY += MathHelper.sin(progress * tailSpeed) * distMulti + distAdd;
                 this.tail03.rotateAngleY += MathHelper.sin(progress * tailSpeed) * distMulti + distAdd;
@@ -525,8 +526,8 @@ public class ModelRoyalFacehugger extends Model
                 this.tail15.rotateAngleY += MathHelper.cos(progress * tailSpeed) * distMulti + distAdd;
             }
 
-            float angle1 = MathHelper.sin(o.swingProgress * 1.1662F + (float) Math.PI) * 30F;
-            float angle2 = MathHelper.cos(o.swingProgress * 1.1662F + (float) Math.PI) * 30F;
+            float angle1 = MathHelper.sin(swingProgress(obj) * 1.1662F + (float) Math.PI) * 30F;
+            float angle2 = MathHelper.cos(swingProgress(obj) * 1.1662F + (float) Math.PI) * 30F;
 
             float lLegMovement1 = (float) Math.toRadians(angle1);
             float lLegMovement2 = (float) Math.toRadians(-angle2);
@@ -556,22 +557,22 @@ public class ModelRoyalFacehugger extends Model
             this.rLeg4a.rotateAngleX = -rLegMovement1;
         }
 
-        this.tail01.render(boxTranslation);
-        this.rLeg4a.render(boxTranslation);
-        this.rLeg3a.render(boxTranslation);
-        this.rAirSac.render(boxTranslation);
-        this.vertebrae01.render(boxTranslation);
-        this.lLeg4a.render(boxTranslation);
-        this.rLeg1a.render(boxTranslation);
-        this.lLeg2a.render(boxTranslation);
-        this.spine.render(boxTranslation);
-        this.vertebrae03.render(boxTranslation);
-        this.lAirSac.render(boxTranslation);
-        this.lLeg1a.render(boxTranslation);
-        this.bodyMain.render(boxTranslation);
-        this.vertebrae02.render(boxTranslation);
-        this.lLeg3a.render(boxTranslation);
-        this.rLeg2a.render(boxTranslation);
-        this.spine2.render(boxTranslation);        
+        draw(tail01);
+        draw(rLeg4a);
+        draw(rLeg3a);
+        draw(rAirSac);
+        draw(vertebrae01);
+        draw(lLeg4a);
+        draw(rLeg1a);
+        draw(lLeg2a);
+        draw(spine);
+        draw(vertebrae03);
+        draw(lAirSac);
+        draw(lLeg1a);
+        draw(bodyMain);
+        draw(vertebrae02);
+        draw(lLeg3a);
+        draw(rLeg2a);
+        draw(spine2);        
     }
 }

@@ -3,6 +3,7 @@ package org.avp.entities.mob.model;
 import com.arisux.mdxlib.lib.client.Model;
 
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.MathHelper;
 
 public class ModelChestburster extends Model
@@ -107,18 +108,17 @@ public class ModelChestburster extends Model
         this.tail1.addChild(this.tail3);
         this.tail6.addChild(this.tail7);
     }
-
+    
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        RenderObject o = (RenderObject) renderObject;
-
-        float newangle = MathHelper.cos(o.idleProgress * 4.0F * 0.1F) * (float) Math.PI * 0.9F * o.swingProgressPrev;
+        EntityLivingBase base = (EntityLivingBase) obj;
+        float newangle = MathHelper.cos(idleProgress(obj) * 4.0F * 0.1F) * (float) Math.PI * 0.9F * swingProgressPrev(obj);
         float distMult = 0.05F;
 
-        if (o.getEntity() != null && o.getEntity().prevPosX == o.getEntity().posX && o.getEntity().prevPosY == o.getEntity().posY && o.getEntity().prevPosZ == o.getEntity().posZ)
+        if (base != null && base.prevPosX == base.posX && base.prevPosY == base.posY && base.prevPosZ == base.posZ)
         {
-            newangle = newangle + MathHelper.cos(o.idleProgress * 0.15F);
+            newangle = newangle + MathHelper.cos(idleProgress(obj) * 0.15F);
             distMult = 0.05F;
         }
 
@@ -130,23 +130,23 @@ public class ModelChestburster extends Model
         this.tail6.rotateAngleY = newangle * distMult;
         this.tail7.rotateAngleY = newangle * distMult;
         
-        this.body4.render(boxTranslation);
-        this.body15.render(boxTranslation);
-        this.body2.render(boxTranslation);
-        this.body16.render(boxTranslation);
-        this.body12.render(boxTranslation);
-        this.body7.render(boxTranslation);
-        this.body9.render(boxTranslation);
-        this.body1.render(boxTranslation);
-        this.body5.render(boxTranslation);
-        this.body13.render(boxTranslation);
-        this.mouth.render(boxTranslation);
-        this.body8.render(boxTranslation);
-        this.tail2.render(boxTranslation);
-        this.body17.render(boxTranslation);
-        this.body14.render(boxTranslation);
-        this.body10.render(boxTranslation);
-        this.body11.render(boxTranslation);
-        this.body3.render(boxTranslation);
+        draw(body4);
+        draw(body15);
+        draw(body2);
+        draw(body16);
+        draw(body12);
+        draw(body7);
+        draw(body9);
+        draw(body1);
+        draw(body5);
+        draw(body13);
+        draw(mouth);
+        draw(body8);
+        draw(tail2);
+        draw(body17);
+        draw(body14);
+        draw(body10);
+        draw(body11);
+        draw(body3);
     }
 }

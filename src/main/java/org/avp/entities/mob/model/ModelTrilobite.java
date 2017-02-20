@@ -4,6 +4,7 @@ import com.arisux.mdxlib.lib.client.Model;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.MathHelper;
 
 public class ModelTrilobite extends Model
@@ -344,54 +345,54 @@ public class ModelTrilobite extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        RenderObject o = (RenderObject) renderObject;
-        float legMovementLeft = (MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1F * o.swingProgressPrev * 0.25F) * 90;
-        float legMovementRight = -(MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1F * o.swingProgressPrev * 0.25F) * 90;
+        EntityLivingBase base = (EntityLivingBase) obj;;
+        float legMovementLeft = (MathHelper.cos(swingProgress(obj) * 0.6662F + (float) Math.PI) * 1F * swingProgressPrev(obj) * 0.25F) * 90;
+        float legMovementRight = -(MathHelper.cos(swingProgress(obj) * 0.6662F + (float) Math.PI) * 1F * swingProgressPrev(obj) * 0.25F) * 90;
         
         OpenGL.translate(0, 0.45F + this.RMiddleTentacle1.rotateAngleZ, 0F);
 
         /** Inner Tentacles **/
-        // this.TailGrossTentacle.render(boxTranslation);
-        // this.LFrontGrossTentacle.render(boxTranslation);
-        // this.LMiddleGrossTentacle.render(boxTranslation);
-        // this.LBackGrossTentacle.render(boxTranslation);
-        // this.RFrontGrossTentacle.render(boxTranslation);
-        // this.RMiddleGrossTentacle.render(boxTranslation);
-        // this.RBackGrossTentacle.render(boxTranslation);
+        // draw(TailGrossTentacle);
+        // draw(LFrontGrossTentacle);
+        // draw(LMiddleGrossTentacle);
+        // draw(LBackGrossTentacle);
+        // draw(RFrontGrossTentacle);
+        // draw(RMiddleGrossTentacle);
+        // draw(RBackGrossTentacle);
 
         /** Render All 7 Tentacles**/
         OpenGL.pushMatrix();
         {
             OpenGL.translate(0, 0, 0.4F);
             OpenGL.rotate(90, 0, 1, 0);
-            OpenGL.rotate((MathHelper.sin(o.idleProgress * 0.1F) * 0.4F) * 20 + legMovementLeft, 0, 1, 0);
-            this.RMiddleTentacle1.render(boxTranslation);
+            OpenGL.rotate((MathHelper.sin(idleProgress(obj) * 0.1F) * 0.4F) * 20 + legMovementLeft, 0, 1, 0);
+            draw(RMiddleTentacle1);
         }
         OpenGL.popMatrix();
         OpenGL.pushMatrix();
         {
             OpenGL.translate(0, 0, 0F);
             OpenGL.rotate(0, 0, 1, 0);
-            OpenGL.rotate((MathHelper.sin(o.idleProgress * 0.1F) * 0.4F) * 20 + legMovementLeft, 0, 1, 0);
-            this.RMiddleTentacle1.render(boxTranslation);
+            OpenGL.rotate((MathHelper.sin(idleProgress(obj) * 0.1F) * 0.4F) * 20 + legMovementLeft, 0, 1, 0);
+            draw(RMiddleTentacle1);
         }
         OpenGL.popMatrix();
         OpenGL.pushMatrix();
         {
             OpenGL.translate(0, 0, 0.2F);
             OpenGL.rotate(35, 0, 1, 0);
-            OpenGL.rotate((MathHelper.sin(o.idleProgress * 0.1F) * 0.4F) * 20 + legMovementRight, 0, 1, 0);
-            this.RMiddleTentacle1.render(boxTranslation);
+            OpenGL.rotate((MathHelper.sin(idleProgress(obj) * 0.1F) * 0.4F) * 20 + legMovementRight, 0, 1, 0);
+            draw(RMiddleTentacle1);
         }
         OpenGL.popMatrix();
         OpenGL.pushMatrix();
         {
             OpenGL.translate(0.2, 0, -0.1F);
             OpenGL.rotate(-45, 0, 1, 0);
-            OpenGL.rotate((MathHelper.sin(o.idleProgress * 0.1F) * 0.4F) * 20 + legMovementRight, 0, 1, 0);
-            this.RMiddleTentacle1.render(boxTranslation);
+            OpenGL.rotate((MathHelper.sin(idleProgress(obj) * 0.1F) * 0.4F) * 20 + legMovementRight, 0, 1, 0);
+            draw(RMiddleTentacle1);
         }
         OpenGL.popMatrix();
         OpenGL.pushMatrix();
@@ -399,8 +400,8 @@ public class ModelTrilobite extends Model
             OpenGL.scale(-1, 1, 1);
             OpenGL.translate(-0.4, 0, 0F);
             OpenGL.rotate(0, 0, 1, 0);
-            OpenGL.rotate((MathHelper.sin(o.idleProgress * 0.1F) * 0.4F) * 20 + legMovementLeft, 0, 1, 0);
-            this.RMiddleTentacle1.render(boxTranslation);
+            OpenGL.rotate((MathHelper.sin(idleProgress(obj) * 0.1F) * 0.4F) * 20 + legMovementLeft, 0, 1, 0);
+            draw(RMiddleTentacle1);
         }
         OpenGL.popMatrix();
         OpenGL.pushMatrix();
@@ -408,8 +409,8 @@ public class ModelTrilobite extends Model
             OpenGL.scale(-1, 1, 1);
             OpenGL.translate(-0.4, 0, 0.2F);
             OpenGL.rotate(35, 0, 1, 0);
-            OpenGL.rotate((MathHelper.sin(o.idleProgress * 0.1F) * 0.4F) * 20 + legMovementRight, 0, 1, 0);
-            this.RMiddleTentacle1.render(boxTranslation);
+            OpenGL.rotate((MathHelper.sin(idleProgress(obj) * 0.1F) * 0.4F) * 20 + legMovementRight, 0, 1, 0);
+            draw(RMiddleTentacle1);
         }
         OpenGL.popMatrix();
         OpenGL.pushMatrix();
@@ -417,40 +418,40 @@ public class ModelTrilobite extends Model
             OpenGL.scale(-1, 1, 1);
             OpenGL.translate(-0.2, 0, -0.1F);
             OpenGL.rotate(-45, 0, 1, 0);
-            OpenGL.rotate((MathHelper.sin(o.idleProgress * 0.1F) * 0.4F) * 20 + legMovementRight, 0, 1, 0);
-            this.RMiddleTentacle1.render(boxTranslation);
+            OpenGL.rotate((MathHelper.sin(idleProgress(obj) * 0.1F) * 0.4F) * 20 + legMovementRight, 0, 1, 0);
+            draw(RMiddleTentacle1);
         }
         OpenGL.popMatrix();
 
-        this.RMiddleTentacle1.rotateAngleZ = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1F * o.swingProgressPrev * 0.25F;
+        this.RMiddleTentacle1.rotateAngleZ = MathHelper.cos(swingProgress(obj) * 0.6662F + (float) Math.PI) * 1F * swingProgressPrev(obj) * 0.25F;
         this.RMiddleTentacle2.rotateAngleZ = -0.1F;
         this.RMiddleTentacle3.rotateAngleZ = -0.1F;
         this.RMiddleTentacle4.rotateAngleZ = -0.1F;
         this.RMiddleTentacle5.rotateAngleZ = -0.1F;
 
-        this.RMiddleTentacle1.rotateAngleZ += MathHelper.sin(o.idleProgress * 0.1F) * 0.4F;
-        this.RMiddleTentacle2.rotateAngleZ += MathHelper.sin(o.idleProgress * 0.1F) * 0.4F;
-        this.RMiddleTentacle3.rotateAngleZ -= MathHelper.sin(o.idleProgress * 0.1F) * 0.4F;
-        this.RMiddleTentacle4.rotateAngleZ -= MathHelper.sin(o.idleProgress * 0.1F) * 0.4F;
-        this.RMiddleTentacle5.rotateAngleZ -= MathHelper.sin(o.idleProgress * 0.1F) * 0.4F;
+        this.RMiddleTentacle1.rotateAngleZ += MathHelper.sin(idleProgress(obj) * 0.1F) * 0.4F;
+        this.RMiddleTentacle2.rotateAngleZ += MathHelper.sin(idleProgress(obj) * 0.1F) * 0.4F;
+        this.RMiddleTentacle3.rotateAngleZ -= MathHelper.sin(idleProgress(obj) * 0.1F) * 0.4F;
+        this.RMiddleTentacle4.rotateAngleZ -= MathHelper.sin(idleProgress(obj) * 0.1F) * 0.4F;
+        this.RMiddleTentacle5.rotateAngleZ -= MathHelper.sin(idleProgress(obj) * 0.1F) * 0.4F;
         this.RMiddleClaw.rotateAngleZ = (float) Math.toRadians(80);
 
         /** Petals **/
-        this.TailPetal.render(boxTranslation);
+        draw(TailPetal);
 
-        this.RFrontPetal.render(boxTranslation);
-        this.RMiddlePetal.render(boxTranslation);
-        this.RBackPetal.render(boxTranslation);
+        draw(RFrontPetal);
+        draw(RMiddlePetal);
+        draw(RBackPetal);
 
-        this.LFrontPetal.render(boxTranslation);
-        this.LMiddlePetal.render(boxTranslation);
-        this.LBackPetal.render(boxTranslation);
+        draw(LFrontPetal);
+        draw(LMiddlePetal);
+        draw(LBackPetal);
 
         /** Body Area **/
-        // this.Ovipositor.render(boxTranslation);
-        this.bodyBack.render(boxTranslation);
-        this.LJaw.render(boxTranslation);
-        this.RJaw.render(boxTranslation);
-        this.bodyFront.render(boxTranslation);        
+        // draw(Ovipositor);
+        draw(bodyBack);
+        draw(LJaw);
+        draw(RJaw);
+        draw(bodyFront);        
     }
 }

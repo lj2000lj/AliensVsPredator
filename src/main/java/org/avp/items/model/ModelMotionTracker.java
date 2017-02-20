@@ -70,15 +70,15 @@ public class ModelMotionTracker extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        handleBottom.render(boxTranslation);
-        handle.render(boxTranslation);
-        display.render(boxTranslation);
-        keypad.render(boxTranslation);
-        handleTop.render(boxTranslation);
-        base.render(boxTranslation);
-        sensorSupport.render(boxTranslation);
-        sensor.render(boxTranslation);        
+        handleBottom.render(DEFAULT_SCALE);
+        handle.render(DEFAULT_SCALE);
+        display.render(DEFAULT_SCALE);
+        keypad.render(DEFAULT_SCALE);
+        handleTop.render(DEFAULT_SCALE);
+        base.render(DEFAULT_SCALE);
+        sensorSupport.render(DEFAULT_SCALE);
+        sensor.render(DEFAULT_SCALE);        
     }
 }

@@ -5,6 +5,7 @@ import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.game.Game;
 
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.MathHelper;
 
 public class ModelProtomorph extends Model
@@ -284,65 +285,65 @@ public class ModelProtomorph extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        RenderObject o = (RenderObject) renderObject;
+        EntityLivingBase base = (EntityLivingBase) obj;;
         
-        this.lThigh.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6562F) * 0.8F * o.swingProgressPrev - 0.5028515F;
-        this.lShin.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6562F) * 0.8F * o.swingProgressPrev - -0.4014257F;
-        this.lFoot.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6562F) * 0.8F * o.swingProgressPrev - -0.5728515F;
-        this.lFootToes.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6562F) * 0.8F * o.swingProgressPrev;
+        this.lThigh.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6562F) * 0.8F * swingProgressPrev(obj) - 0.5028515F;
+        this.lShin.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6562F) * 0.8F * swingProgressPrev(obj) - -0.4014257F;
+        this.lFoot.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6562F) * 0.8F * swingProgressPrev(obj) - -0.5728515F;
+        this.lFootToes.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6562F) * 0.8F * swingProgressPrev(obj);
 
-        this.rThigh.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6562F + (float) Math.PI) * 0.8F * o.swingProgressPrev - 0.5028515F;
-        this.rShin.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6562F + (float) Math.PI) * 0.8F * o.swingProgressPrev - -0.4014257F;
-        this.rFoot.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6562F + (float) Math.PI) * 0.8F * o.swingProgressPrev - -0.5728515F;
-        this.rFootToes.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6562F + (float) Math.PI) * 0.8F * o.swingProgressPrev;
+        this.rThigh.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6562F + (float) Math.PI) * 0.8F * swingProgressPrev(obj) - 0.5028515F;
+        this.rShin.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6562F + (float) Math.PI) * 0.8F * swingProgressPrev(obj) - -0.4014257F;
+        this.rFoot.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6562F + (float) Math.PI) * 0.8F * swingProgressPrev(obj) - -0.5728515F;
+        this.rFootToes.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6562F + (float) Math.PI) * 0.8F * swingProgressPrev(obj);
 
-        torso.render(boxTranslation);
-        abdomen.render(boxTranslation);
-        neck.render(boxTranslation);
-        neckBase.render(boxTranslation);
-        lHip.render(boxTranslation);
-        rHip.render(boxTranslation);
-        lArm.render(boxTranslation);
-        lForearm.render(boxTranslation);
-        lShin.render(boxTranslation);
+        torso.render(DEFAULT_SCALE);
+        abdomen.render(DEFAULT_SCALE);
+        neck.render(DEFAULT_SCALE);
+        neckBase.render(DEFAULT_SCALE);
+        lHip.render(DEFAULT_SCALE);
+        rHip.render(DEFAULT_SCALE);
+        lArm.render(DEFAULT_SCALE);
+        lForearm.render(DEFAULT_SCALE);
+        lShin.render(DEFAULT_SCALE);
 
-        headBase.render(boxTranslation);
+        headBase.render(DEFAULT_SCALE);
 
-        headTop.render(boxTranslation);
-        muzzle.render(boxTranslation);
-        head0.render(boxTranslation);
-        head1.render(boxTranslation);
-        head2.render(boxTranslation);
-        lClaw1.render(boxTranslation);
-        lClaw2.render(boxTranslation);
-        lHand.render(boxTranslation);
-        lClaw5.render(boxTranslation);
-        lClaw4.render(boxTranslation);
-        lClaw3.render(boxTranslation);
-        rArm.render(boxTranslation);
-        rForearm.render(boxTranslation);
-        lThigh.render(boxTranslation);
-        rThigh.render(boxTranslation);
-        rShin.render(boxTranslation);
-        lFoot.render(boxTranslation);
-        lFootToes.render(boxTranslation);
-        rFoot.render(boxTranslation);
-        rFootToes.render(boxTranslation);
-        rHand.render(boxTranslation);
-        rClaw1.render(boxTranslation);
-        rClaw2.render(boxTranslation);
-        rClaw3.render(boxTranslation);
-        rClaw4.render(boxTranslation);
-        rClaw5.render(boxTranslation);
+        headTop.render(DEFAULT_SCALE);
+        muzzle.render(DEFAULT_SCALE);
+        head0.render(DEFAULT_SCALE);
+        head1.render(DEFAULT_SCALE);
+        head2.render(DEFAULT_SCALE);
+        lClaw1.render(DEFAULT_SCALE);
+        lClaw2.render(DEFAULT_SCALE);
+        lHand.render(DEFAULT_SCALE);
+        lClaw5.render(DEFAULT_SCALE);
+        lClaw4.render(DEFAULT_SCALE);
+        lClaw3.render(DEFAULT_SCALE);
+        rArm.render(DEFAULT_SCALE);
+        rForearm.render(DEFAULT_SCALE);
+        lThigh.render(DEFAULT_SCALE);
+        rThigh.render(DEFAULT_SCALE);
+        rShin.render(DEFAULT_SCALE);
+        lFoot.render(DEFAULT_SCALE);
+        lFootToes.render(DEFAULT_SCALE);
+        rFoot.render(DEFAULT_SCALE);
+        rFootToes.render(DEFAULT_SCALE);
+        rHand.render(DEFAULT_SCALE);
+        rClaw1.render(DEFAULT_SCALE);
+        rClaw2.render(DEFAULT_SCALE);
+        rClaw3.render(DEFAULT_SCALE);
+        rClaw4.render(DEFAULT_SCALE);
+        rClaw5.render(DEFAULT_SCALE);
 
         OpenGL.pushMatrix();
         {
             OpenGL.rotate(Game.minecraft().theWorld.getWorldTime() % 10, 1, 0, 0);
-            exteriorJaw.render(boxTranslation);
+            exteriorJaw.render(DEFAULT_SCALE);
         }
         OpenGL.popMatrix();
-        interiorJaw.render(boxTranslation);
+        interiorJaw.render(DEFAULT_SCALE);
     }
 }

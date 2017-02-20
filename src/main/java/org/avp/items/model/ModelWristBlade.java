@@ -114,25 +114,25 @@ public class ModelWristBlade extends Model
         this.setRotation(this.bladeRight, 0.0F, -((float) Math.PI / 4F), 0.0F);
     }
 
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        this.bBase.render(boxTranslation);
-        this.b1.render(boxTranslation);
-        this.b2.render(boxTranslation);
-        this.b3.render(boxTranslation);
-        this.b4.render(boxTranslation);
-        this.b5.render(boxTranslation);
-        this.b7.render(boxTranslation);
-        this.b8.render(boxTranslation);
-        this.b9.render(boxTranslation);
-        this.bladeRight.render(boxTranslation);
-        this.b10.render(boxTranslation);
-        this.b11.render(boxTranslation);
+        draw(bBase);
+        draw(b1);
+        draw(b2);
+        draw(b3);
+        draw(b4);
+        draw(b5);
+        draw(b7);
+        draw(b8);
+        draw(b9);
+        draw(bladeRight);
+        draw(b10);
+        draw(b11);
 
         if (Game.minecraft().thePlayer.inventory.hasItem(AliensVsPredator.items().swordTitanium))
         {
-            this.b6.render(boxTranslation);
-            this.bladeLeft.render(boxTranslation);
+            draw(b6);
+            draw(bladeLeft);
         }        
     }
 }

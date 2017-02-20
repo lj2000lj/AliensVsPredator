@@ -143,10 +143,9 @@ public class ModelTurret extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        RenderObject tileRenderObject = (RenderObject) renderObject;
-        TileEntityTurret tile = (TileEntityTurret) tileRenderObject.getTileEntity();
+        TileEntityTurret tile = (TileEntityTurret) obj;
         
         if (tile != null)
         {
@@ -167,23 +166,23 @@ public class ModelTurret extends Model
             headBase2.rotateAngleX = rotationPitch;
         }
 
-        barrel.render(boxTranslation);
-        supportLeft.render(boxTranslation);
-        headBase2.render(boxTranslation);
-        neckBase.render(boxTranslation);
-        headBase3.render(boxTranslation);
-        headBase.render(boxTranslation);
-        barrelGuard.render(boxTranslation);
-        sightBase3.render(boxTranslation);
-        rightFoot.render(boxTranslation);
-        supportRight.render(boxTranslation);
-        supportCenter.render(boxTranslation);
-        centerFoot.render(boxTranslation);
-        legHub.render(boxTranslation);
-        LeftFoot.render(boxTranslation);
-        neck.render(boxTranslation);
-        leftLeg.render(boxTranslation);
-        rightLeg.render(boxTranslation);
-        centerLeg.render(boxTranslation);
+        barrel.render(DEFAULT_SCALE);
+        supportLeft.render(DEFAULT_SCALE);
+        headBase2.render(DEFAULT_SCALE);
+        neckBase.render(DEFAULT_SCALE);
+        headBase3.render(DEFAULT_SCALE);
+        headBase.render(DEFAULT_SCALE);
+        barrelGuard.render(DEFAULT_SCALE);
+        sightBase3.render(DEFAULT_SCALE);
+        rightFoot.render(DEFAULT_SCALE);
+        supportRight.render(DEFAULT_SCALE);
+        supportCenter.render(DEFAULT_SCALE);
+        centerFoot.render(DEFAULT_SCALE);
+        legHub.render(DEFAULT_SCALE);
+        LeftFoot.render(DEFAULT_SCALE);
+        neck.render(DEFAULT_SCALE);
+        leftLeg.render(DEFAULT_SCALE);
+        rightLeg.render(DEFAULT_SCALE);
+        centerLeg.render(DEFAULT_SCALE);
     }
 }

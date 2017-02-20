@@ -89,7 +89,7 @@ public class RenderItemSkull extends ItemRenderer
 
         for (ModelRenderer renderer : skull.getSkullModelRenderers())
         {
-            renderer.render(Model.DEFAULT_BOX_TRANSLATION);
+            renderer.render(Model.DEFAULT_SCALE);
         }
     }
 }

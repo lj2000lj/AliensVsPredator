@@ -456,25 +456,25 @@ public class ModelDracomorph extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        this.sack0.render(boxTranslation);
+        draw(sack0);
         OpenGL.pushMatrix();
         OpenGL.translate(this.rWingArm1.offsetX, this.rWingArm1.offsetY, this.rWingArm1.offsetZ);
-        OpenGL.translate(this.rWingArm1.rotationPointX * boxTranslation, this.rWingArm1.rotationPointY * boxTranslation, this.rWingArm1.rotationPointZ * boxTranslation);
+        OpenGL.translate(this.rWingArm1.rotationPointX * DEFAULT_SCALE, this.rWingArm1.rotationPointY * DEFAULT_SCALE, this.rWingArm1.rotationPointZ * DEFAULT_SCALE);
         OpenGL.scale(1.5D, 1.5D, 1.5D);
         OpenGL.translate(-this.rWingArm1.offsetX, -this.rWingArm1.offsetY, -this.rWingArm1.offsetZ);
-        OpenGL.translate(-this.rWingArm1.rotationPointX * boxTranslation, -this.rWingArm1.rotationPointY * boxTranslation, -this.rWingArm1.rotationPointZ * boxTranslation);
-        this.rWingArm1.render(boxTranslation);
+        OpenGL.translate(-this.rWingArm1.rotationPointX * DEFAULT_SCALE, -this.rWingArm1.rotationPointY * DEFAULT_SCALE, -this.rWingArm1.rotationPointZ * DEFAULT_SCALE);
+        draw(rWingArm1);
         OpenGL.popMatrix();
-        this.chest.render(boxTranslation);
+        draw(chest);
         OpenGL.pushMatrix();
         OpenGL.translate(this.lWingArm1.offsetX, this.lWingArm1.offsetY, this.lWingArm1.offsetZ);
-        OpenGL.translate(this.lWingArm1.rotationPointX * boxTranslation, this.lWingArm1.rotationPointY * boxTranslation, this.lWingArm1.rotationPointZ * boxTranslation);
+        OpenGL.translate(this.lWingArm1.rotationPointX * DEFAULT_SCALE, this.lWingArm1.rotationPointY * DEFAULT_SCALE, this.lWingArm1.rotationPointZ * DEFAULT_SCALE);
         OpenGL.scale(1.5D, 1.5D, 1.5D);
         OpenGL.translate(-this.lWingArm1.offsetX, -this.lWingArm1.offsetY, -this.lWingArm1.offsetZ);
-        OpenGL.translate(-this.lWingArm1.rotationPointX * boxTranslation, -this.lWingArm1.rotationPointY * boxTranslation, -this.lWingArm1.rotationPointZ * boxTranslation);
-        this.lWingArm1.render(boxTranslation);
+        OpenGL.translate(-this.lWingArm1.rotationPointX * DEFAULT_SCALE, -this.lWingArm1.rotationPointY * DEFAULT_SCALE, -this.lWingArm1.rotationPointZ * DEFAULT_SCALE);
+        draw(lWingArm1);
         OpenGL.popMatrix();
     }
 }

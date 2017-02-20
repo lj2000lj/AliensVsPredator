@@ -64,14 +64,14 @@ public class ModelLaserMine extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        lSupport.render(boxTranslation);
-        rSupport.render(boxTranslation);
-        bSupport.render(boxTranslation);
-        core.render(boxTranslation);
-        tPlate.render(boxTranslation);
-        rPlate.render(boxTranslation);
-        lPlate.render(boxTranslation);        
+        lSupport.render(DEFAULT_SCALE);
+        rSupport.render(DEFAULT_SCALE);
+        bSupport.render(DEFAULT_SCALE);
+        core.render(DEFAULT_SCALE);
+        tPlate.render(DEFAULT_SCALE);
+        rPlate.render(DEFAULT_SCALE);
+        lPlate.render(DEFAULT_SCALE);        
     }
 }

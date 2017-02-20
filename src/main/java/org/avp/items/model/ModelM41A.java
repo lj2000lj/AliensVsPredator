@@ -128,24 +128,24 @@ public class ModelM41A extends Model implements IFirearmModel
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        this.stockEnd.render(boxTranslation);
-        this.stock1.render(boxTranslation);
-        this.sight1.render(boxTranslation);
-        this.sight2.render(boxTranslation);
-        this.underrail.render(boxTranslation);
-        this.underrail2.render(boxTranslation);
-        this.sight3.render(boxTranslation);
-        this.gunBase1.render(boxTranslation);
-        this.gunBase2.render(boxTranslation);
-        this.barrel.render(boxTranslation);
-        this.gunBase3.render(boxTranslation);
-        this.mechanism.render(boxTranslation);
-        this.grip.render(boxTranslation);
-        this.grip2.render(boxTranslation);
-        this.handle.render(boxTranslation);
-        this.gunFrame.render(boxTranslation);        
+        draw(stockEnd);
+        draw(stock1);
+        draw(sight1);
+        draw(sight2);
+        draw(underrail);
+        draw(underrail2);
+        draw(sight3);
+        draw(gunBase1);
+        draw(gunBase2);
+        draw(barrel);
+        draw(gunBase3);
+        draw(mechanism);
+        draw(grip);
+        draw(grip2);
+        draw(handle);
+        draw(gunFrame);        
     }
 
     @Override

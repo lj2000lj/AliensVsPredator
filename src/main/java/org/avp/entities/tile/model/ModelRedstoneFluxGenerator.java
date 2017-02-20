@@ -59,10 +59,10 @@ public class ModelRedstoneFluxGenerator extends Model
         this.base.addChild(this.fluxFaceplate);
     }
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        this.base.render(boxTranslation);
-        this.fluxLightOutput.render(boxTranslation);
-        this.fluxLightInput.render(boxTranslation);
+        draw(base);
+        draw(fluxLightOutput);
+        draw(fluxLightInput);
     }
 }

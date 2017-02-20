@@ -142,31 +142,31 @@ public class ModelSniper extends Model implements IFirearmModel
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        this.barrel.render(boxTranslation);
-        this.clipHolder1.render(boxTranslation);
-        this.clipHolder2.render(boxTranslation);
-        this.base1.render(boxTranslation);
-        this.base2.render(boxTranslation);
-        this.clip.render(boxTranslation);
-        this.handle.render(boxTranslation);
-        this.triggerGuard.render(boxTranslation);
-        this.trigger.render(boxTranslation);
-        this.stock1.render(boxTranslation);
-        this.stock2.render(boxTranslation);
-        this.stockEnd.render(boxTranslation);
-        this.barrelSupport.render(boxTranslation);
-        this.scopeSupport.render(boxTranslation);
-        this.scopeBase.render(boxTranslation);
+        draw(barrel);
+        draw(clipHolder1);
+        draw(clipHolder2);
+        draw(base1);
+        draw(base2);
+        draw(clip);
+        draw(handle);
+        draw(triggerGuard);
+        draw(trigger);
+        draw(stock1);
+        draw(stock2);
+        draw(stockEnd);
+        draw(barrelSupport);
+        draw(scopeSupport);
+        draw(scopeBase);
 
         if (firstPerson)
         {
-            this.scopeFirstPerson.render(boxTranslation);
+            draw(scopeFirstPerson);
         }
         else
         {
-            this.scope.render(boxTranslation);
+            draw(scope);
         }
     }
 

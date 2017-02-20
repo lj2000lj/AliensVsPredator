@@ -128,24 +128,24 @@ public class ModelM4 extends Model implements IFirearmModel
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        this.barrel.render(boxTranslation);
-        this.clip.render(boxTranslation);
-        this.stock1.render(boxTranslation);
-        this.stock2.render(boxTranslation);
-        this.stock3.render(boxTranslation);
-        this.handle.render(boxTranslation);
-        this.mainBody1.render(boxTranslation);
-        this.mainBody2.render(boxTranslation);
-        this.mainBody3.render(boxTranslation);
-        this.triggerGuard.render(boxTranslation);
-        this.barrelGuard.render(boxTranslation);
-        this.sightBase1.render(boxTranslation);
-        this.sightBase2.render(boxTranslation);
-        this.sightBase3.render(boxTranslation);
-        this.sight1.render(boxTranslation);
-        this.sight2.render(boxTranslation);        
+        draw(barrel);
+        draw(clip);
+        draw(stock1);
+        draw(stock2);
+        draw(stock3);
+        draw(handle);
+        draw(mainBody1);
+        draw(mainBody2);
+        draw(mainBody3);
+        draw(triggerGuard);
+        draw(barrelGuard);
+        draw(sightBase1);
+        draw(sightBase2);
+        draw(sightBase3);
+        draw(sight1);
+        draw(sight2);        
     }
 
     @Override

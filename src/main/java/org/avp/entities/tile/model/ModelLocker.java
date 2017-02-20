@@ -38,13 +38,13 @@ public class ModelLocker extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        this.top.render(boxTranslation);
-        this.back.render(boxTranslation);
-        this.floor.render(boxTranslation);
-        this.wallLeft.render(boxTranslation);
-        this.wallRight.render(boxTranslation);
-        this.door.render(boxTranslation);        
+        draw(top);
+        draw(back);
+        draw(floor);
+        draw(wallLeft);
+        draw(wallRight);
+        draw(door);        
     }
 }

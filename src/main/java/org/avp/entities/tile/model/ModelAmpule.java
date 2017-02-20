@@ -98,28 +98,28 @@ public class ModelAmpule extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        this.phialStem3.render(boxTranslation);
-        this.phialTip4.render(boxTranslation);
-        this.phialStem2.render(boxTranslation);
-        this.phialTop3.render(boxTranslation);
-        this.phialTip2.render(boxTranslation);
-        this.canisterBase2.render(boxTranslation);
-        this.phailBase3.render(boxTranslation);
-        this.phialStem4.render(boxTranslation);
-        this.phialTip1.render(boxTranslation);
-        this.canisterLid2.render(boxTranslation);
-        this.phailBase4.render(boxTranslation);
-        this.phailBase.render(boxTranslation);
-        this.canisterLid1.render(boxTranslation);
-        this.canisterMiddle1.render(boxTranslation);
-        this.phialTop4.render(boxTranslation);
-        this.phialStem1.render(boxTranslation);
-        this.canisterBase1.render(boxTranslation);
-        this.phialTip3.render(boxTranslation);
-        this.phialTop2.render(boxTranslation);
-        this.phailBase2.render(boxTranslation);
-        this.phialTop1.render(boxTranslation);
+        draw(phialStem3);
+        draw(phialTip4);
+        draw(phialStem2);
+        draw(phialTop3);
+        draw(phialTip2);
+        draw(canisterBase2);
+        draw(phailBase3);
+        draw(phialStem4);
+        draw(phialTip1);
+        draw(canisterLid2);
+        draw(phailBase4);
+        draw(phailBase);
+        draw(canisterLid1);
+        draw(canisterMiddle1);
+        draw(phialTop4);
+        draw(phialStem1);
+        draw(canisterBase1);
+        draw(phialTip3);
+        draw(phialTop2);
+        draw(phailBase2);
+        draw(phialTop1);
     }
 }

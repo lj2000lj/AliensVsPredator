@@ -42,14 +42,14 @@ public class ModelTransformer extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        this.core.render(boxTranslation);
-        this.base.render(boxTranslation);
-        this.powerInput.render(boxTranslation);
-        this.powerOutput.render(boxTranslation);
-        this.rightSupport.render(boxTranslation);
-        this.leftSupport.render(boxTranslation);
-        this.topSupport.render(boxTranslation);
+        draw(core);
+        draw(base);
+        draw(powerInput);
+        draw(powerOutput);
+        draw(rightSupport);
+        draw(leftSupport);
+        draw(topSupport);
     }
 }

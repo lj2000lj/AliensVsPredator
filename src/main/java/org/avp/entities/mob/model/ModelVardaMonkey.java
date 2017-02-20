@@ -261,16 +261,16 @@ public class ModelVardaMonkey extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
         OpenGL.pushMatrix();
         OpenGL.translate(this.tail3.offsetX, this.tail3.offsetY, this.tail3.offsetZ);
-        OpenGL.translate(this.tail3.rotationPointX * boxTranslation, this.tail3.rotationPointY * boxTranslation, this.tail3.rotationPointZ * boxTranslation);
+        OpenGL.translate(this.tail3.rotationPointX * DEFAULT_SCALE, this.tail3.rotationPointY * DEFAULT_SCALE, this.tail3.rotationPointZ * DEFAULT_SCALE);
         OpenGL.scale(0.5D, 0.5D, 0.5D);
         OpenGL.translate(-this.tail3.offsetX, -this.tail3.offsetY, -this.tail3.offsetZ);
-        OpenGL.translate(-this.tail3.rotationPointX * boxTranslation, -this.tail3.rotationPointY * boxTranslation, -this.tail3.rotationPointZ * boxTranslation);
-        this.tail3.render(boxTranslation);
+        OpenGL.translate(-this.tail3.rotationPointX * DEFAULT_SCALE, -this.tail3.rotationPointY * DEFAULT_SCALE, -this.tail3.rotationPointZ * DEFAULT_SCALE);
+        draw(tail3);
         OpenGL.popMatrix();
-        this.chest.render(boxTranslation);
+        draw(chest);
     }
 }

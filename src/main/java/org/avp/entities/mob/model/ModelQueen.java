@@ -8,6 +8,7 @@ import com.arisux.mdxlib.lib.client.Model;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.MathHelper;
 
 public class ModelQueen extends Model
@@ -460,131 +461,131 @@ public class ModelQueen extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        RenderObject o = (RenderObject) renderObject;
+        EntityLivingBase base = (EntityLivingBase) obj;;
 
-        this.lThigh.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 0.8F * o.swingProgressPrev - 0.6028515F;
-        this.lShin0.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 0.8F * o.swingProgressPrev - 0.6028515F;
-        this.lShin1.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 0.8F * o.swingProgressPrev - 0.8028515F;
-        this.lShinSpike.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 0.8F * o.swingProgressPrev + 0.8028515F;
-        this.lFoot.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 0.8F * o.swingProgressPrev;
+        this.lThigh.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F) * 0.8F * swingProgressPrev(obj) - 0.6028515F;
+        this.lShin0.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F) * 0.8F * swingProgressPrev(obj) - 0.6028515F;
+        this.lShin1.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F) * 0.8F * swingProgressPrev(obj) - 0.8028515F;
+        this.lShinSpike.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F) * 0.8F * swingProgressPrev(obj) + 0.8028515F;
+        this.lFoot.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F) * 0.8F * swingProgressPrev(obj);
 
-        this.rThigh.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 0.8F * o.swingProgressPrev - 0.6028515F;
-        this.rShin0.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 0.8F * o.swingProgressPrev - 0.6028515F;
-        this.rShin1.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 0.8F * o.swingProgressPrev - 0.8028515F;
-        this.rShinSpike.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 0.8F * o.swingProgressPrev + 0.8028515F;
-        this.rFoot.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 0.8F * o.swingProgressPrev;
+        this.rThigh.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F + (float) Math.PI) * 0.8F * swingProgressPrev(obj) - 0.6028515F;
+        this.rShin0.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F + (float) Math.PI) * 0.8F * swingProgressPrev(obj) - 0.6028515F;
+        this.rShin1.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F + (float) Math.PI) * 0.8F * swingProgressPrev(obj) - 0.8028515F;
+        this.rShinSpike.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F + (float) Math.PI) * 0.8F * swingProgressPrev(obj) + 0.8028515F;
+        this.rFoot.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F + (float) Math.PI) * 0.8F * swingProgressPrev(obj);
 
-        this.lArm0.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 1.4F * o.swingProgressPrev + 0.3665191F;
-        this.lArm1.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 1.4F * o.swingProgressPrev + 0.3665191F;
-        this.lHand.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 1.4F * o.swingProgressPrev + 0.3665191F;
-        this.lClaw.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 1.4F * o.swingProgressPrev + 0.3665191F;
+        this.lArm0.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F) * 1.4F * swingProgressPrev(obj) + 0.3665191F;
+        this.lArm1.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F) * 1.4F * swingProgressPrev(obj) + 0.3665191F;
+        this.lHand.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F) * 1.4F * swingProgressPrev(obj) + 0.3665191F;
+        this.lClaw.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F) * 1.4F * swingProgressPrev(obj) + 0.3665191F;
 
-        this.rArm0.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1.4F * o.swingProgressPrev + 0.3665191F;
-        this.rArm1.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1.4F * o.swingProgressPrev + 0.3665191F;
-        this.rHand.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1.4F * o.swingProgressPrev + 0.3665191F;
-        this.rClaw.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1.4F * o.swingProgressPrev + 0.3665191F;
+        this.rArm0.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F + (float) Math.PI) * 1.4F * swingProgressPrev(obj) + 0.3665191F;
+        this.rArm1.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F + (float) Math.PI) * 1.4F * swingProgressPrev(obj) + 0.3665191F;
+        this.rHand.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F + (float) Math.PI) * 1.4F * swingProgressPrev(obj) + 0.3665191F;
+        this.rClaw.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F + (float) Math.PI) * 1.4F * swingProgressPrev(obj) + 0.3665191F;
 
-        this.rArmMini0.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 1.4F * o.swingProgressPrev + 0.0665191F;
-        this.rHandMini.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 1.4F * o.swingProgressPrev + 0.3665191F;
-        this.rArmMini1.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 1.4F * o.swingProgressPrev - 0.6065191F;
-        this.rClawMini.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 1.4F * o.swingProgressPrev + 0.3665191F;
+        this.rArmMini0.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F) * 1.4F * swingProgressPrev(obj) + 0.0665191F;
+        this.rHandMini.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F) * 1.4F * swingProgressPrev(obj) + 0.3665191F;
+        this.rArmMini1.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F) * 1.4F * swingProgressPrev(obj) - 0.6065191F;
+        this.rClawMini.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F) * 1.4F * swingProgressPrev(obj) + 0.3665191F;
 
-        this.lArmMini0.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1.4F * o.swingProgressPrev + 0.0665191F;
-        this.lHandMini.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1.4F * o.swingProgressPrev + 0.3665191F;
-        this.lArmMini1.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1.4F * o.swingProgressPrev - 0.6065191F;
-        this.lClawMini.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1.4F * o.swingProgressPrev + 0.3665191F;
+        this.lArmMini0.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F + (float) Math.PI) * 1.4F * swingProgressPrev(obj) + 0.0665191F;
+        this.lHandMini.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F + (float) Math.PI) * 1.4F * swingProgressPrev(obj) + 0.3665191F;
+        this.lArmMini1.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F + (float) Math.PI) * 1.4F * swingProgressPrev(obj) - 0.6065191F;
+        this.lClawMini.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F + (float) Math.PI) * 1.4F * swingProgressPrev(obj) + 0.3665191F;
 
         OpenGL.enableCullFace();
-        this.torso0.render(boxTranslation);
-        this.torso1.render(boxTranslation);
-        this.rThigh.render(boxTranslation);
-        this.lThigh.render(boxTranslation);
-        this.lShin0.render(boxTranslation);
-        this.lShin1.render(boxTranslation);
-        this.lFoot.render(boxTranslation);
-        this.rShin0.render(boxTranslation);
-        this.rShin1.render(boxTranslation);
-        this.rFoot.render(boxTranslation);
-        this.lArm0.render(boxTranslation);
-        this.lArm1.render(boxTranslation);
-        this.lHand.render(boxTranslation);
-        this.lClaw.render(boxTranslation);
-        this.rArm0.render(boxTranslation);
-        this.rArm1.render(boxTranslation);
-        this.rHand.render(boxTranslation);
-        this.rClaw.render(boxTranslation);
-        this.tail0.render(boxTranslation);
-        this.tail1.render(boxTranslation);
-        this.tail2.render(boxTranslation);
-        this.tail3.render(boxTranslation);
-        this.tail4.render(boxTranslation);
-        this.lArmMini0.render(boxTranslation);
-        this.lArmMini1.render(boxTranslation);
-        this.rArmMini0.render(boxTranslation);
-        this.rArmMini1.render(boxTranslation);
-        this.lHandMini.render(boxTranslation);
-        this.rHandMini.render(boxTranslation);
-        this.lClawMini.render(boxTranslation);
-        this.rClawMini.render(boxTranslation);
-        this.neck.render(boxTranslation);
-        this.bSpines0.render(boxTranslation);
-        this.bSpines1.render(boxTranslation);
-        this.bSpines2.render(boxTranslation);
-        this.bSpines3.render(boxTranslation);
-        this.bSpines4.render(boxTranslation);
-        this.bSpines5.render(boxTranslation);
-        this.bSpines6.render(boxTranslation);
+        draw(torso0);
+        draw(torso1);
+        draw(rThigh);
+        draw(lThigh);
+        draw(lShin0);
+        draw(lShin1);
+        draw(lFoot);
+        draw(rShin0);
+        draw(rShin1);
+        draw(rFoot);
+        draw(lArm0);
+        draw(lArm1);
+        draw(lHand);
+        draw(lClaw);
+        draw(rArm0);
+        draw(rArm1);
+        draw(rHand);
+        draw(rClaw);
+        draw(tail0);
+        draw(tail1);
+        draw(tail2);
+        draw(tail3);
+        draw(tail4);
+        draw(lArmMini0);
+        draw(lArmMini1);
+        draw(rArmMini0);
+        draw(rArmMini1);
+        draw(lHandMini);
+        draw(rHandMini);
+        draw(lClawMini);
+        draw(rClawMini);
+        draw(neck);
+        draw(bSpines0);
+        draw(bSpines1);
+        draw(bSpines2);
+        draw(bSpines3);
+        draw(bSpines4);
+        draw(bSpines5);
+        draw(bSpines6);
         
         OpenGL.disableCullFace();
-        this.bStabber0.render(boxTranslation);
-        this.bStabber1.render(boxTranslation);
-        this.bStabber2.render(boxTranslation);
+        draw(bStabber0);
+        draw(bStabber1);
+        draw(bStabber2);
         this.bStabber3.rotateAngleX = (float) Math.toRadians(-90);
         this.bStabber4.rotateAngleX = (float) Math.toRadians(-75);
         this.bStabber5.rotateAngleX = (float) Math.toRadians(-60);
-        this.bStabber3.render(boxTranslation);
-        this.bStabber4.render(boxTranslation);
-        this.bStabber5.render(boxTranslation);
+        draw(bStabber3);
+        draw(bStabber4);
+        draw(bStabber5);
         
 
         OpenGL.pushMatrix();
         OpenGL.scale(1F, 1F, -1F);
         OpenGL.translate(0F, 0.01F, -9.1F);
-        this.tailStabber.render(boxTranslation);
+        draw(tailStabber);
         OpenGL.popMatrix();
 
         OpenGL.pushMatrix();
         {
-            OpenGL.rotate(((float) Math.toRadians(o.headYaw) + o.swingProgressPrev) * 30F, 0, 1, 0);
-            this.Jaw1.render(boxTranslation);
-            this.head0.render(boxTranslation);
-            this.head1.render(boxTranslation);
-            this.headBase0.render(boxTranslation);
-            this.headFinL0.render(boxTranslation);
-            this.headFinL1.render(boxTranslation);
-            this.headFinL2.render(boxTranslation);
-            this.headFinR0.render(boxTranslation);
-            this.headFinR1.render(boxTranslation);
-            this.headFinR2.render(boxTranslation);
-            this.headWebL.render(boxTranslation);
-            this.headSpinesL.render(boxTranslation);
-            this.headSpinesM.render(boxTranslation);
-            this.headSpinesR.render(boxTranslation);
-            this.headWebR.render(boxTranslation);
+            OpenGL.rotate(((float) Math.toRadians(headYaw(obj)) + swingProgressPrev(obj)) * 30F, 0, 1, 0);
+            draw(Jaw1);
+            draw(head0);
+            draw(head1);
+            draw(headBase0);
+            draw(headFinL0);
+            draw(headFinL1);
+            draw(headFinL2);
+            draw(headFinR0);
+            draw(headFinR1);
+            draw(headFinR2);
+            draw(headWebL);
+            draw(headSpinesL);
+            draw(headSpinesM);
+            draw(headSpinesR);
+            draw(headWebR);
         }
         OpenGL.popMatrix();
 
-        this.rHip.render(boxTranslation);
-        this.lHip.render(boxTranslation);
-        this.lShinSpike.render(boxTranslation);
-        this.rShinSpike.render(boxTranslation);
+        draw(rHip);
+        draw(lHip);
+        draw(lShinSpike);
+        draw(rShinSpike);
 
 
-        if (o.getEntity() != null && o.getEntity() instanceof EntityQueen)
+        if (base != null && base instanceof EntityQueen)
         {
-            EntityQueen queen = (EntityQueen) o.getEntity();
+            EntityQueen queen = (EntityQueen) base;
 
             if (queen.getOvipositorSize() > 0F)
             {

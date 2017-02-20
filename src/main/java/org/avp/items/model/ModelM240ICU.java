@@ -169,30 +169,30 @@ public class ModelM240ICU extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
         OpenGL.rotate(180F, 0, 1, 0);
-        canister.render(boxTranslation);
-        canisterSealTop.render(boxTranslation);
-        canisterSealTopLeft.render(boxTranslation);
-        canisterSealTopRight.render(boxTranslation);
-        canisterSealBottom.render(boxTranslation);
-        canisterSealBottomLeft.render(boxTranslation);
-        canisterSealBottomRight.render(boxTranslation);
-        base.render(boxTranslation);
-        handleSupport.render(boxTranslation);
-        handle.render(boxTranslation);
-        nozzle.render(boxTranslation);
-        ignitor.render(boxTranslation);
-        barrel.render(boxTranslation);
-        stock.render(boxTranslation);
-        stockArch.render(boxTranslation);
-        butt.render(boxTranslation);
-        buttBar.render(boxTranslation);
-        sight.render(boxTranslation);
-        barrelArch.render(boxTranslation);
-        underGrip.render(boxTranslation);
-        underGripArchBack.render(boxTranslation);
-        underGripArchFront.render(boxTranslation);        
+        canister.render(DEFAULT_SCALE);
+        canisterSealTop.render(DEFAULT_SCALE);
+        canisterSealTopLeft.render(DEFAULT_SCALE);
+        canisterSealTopRight.render(DEFAULT_SCALE);
+        canisterSealBottom.render(DEFAULT_SCALE);
+        canisterSealBottomLeft.render(DEFAULT_SCALE);
+        canisterSealBottomRight.render(DEFAULT_SCALE);
+        base.render(DEFAULT_SCALE);
+        handleSupport.render(DEFAULT_SCALE);
+        handle.render(DEFAULT_SCALE);
+        nozzle.render(DEFAULT_SCALE);
+        ignitor.render(DEFAULT_SCALE);
+        barrel.render(DEFAULT_SCALE);
+        stock.render(DEFAULT_SCALE);
+        stockArch.render(DEFAULT_SCALE);
+        butt.render(DEFAULT_SCALE);
+        buttBar.render(DEFAULT_SCALE);
+        sight.render(DEFAULT_SCALE);
+        barrelArch.render(DEFAULT_SCALE);
+        underGrip.render(DEFAULT_SCALE);
+        underGripArchBack.render(DEFAULT_SCALE);
+        underGripArchFront.render(DEFAULT_SCALE);        
     }
 }

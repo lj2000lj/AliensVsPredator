@@ -1,9 +1,9 @@
 package org.avp.entities.mob.model;
 
 import com.arisux.mdxlib.lib.client.Model;
-import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.MathHelper;
 
 public class ModelGooMutant extends Model
@@ -79,20 +79,20 @@ public class ModelGooMutant extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        RenderObject o = (RenderObject) renderObject;
+        EntityLivingBase base = (EntityLivingBase) obj;
 
-        this.head.rotateAngleY = o.headYaw / (180F / (float) Math.PI);
-        this.head.rotateAngleX = o.headPitch / (180F / (float) Math.PI);
+        this.head.rotateAngleY = headYaw(obj) / (180F / (float) Math.PI);
+        this.head.rotateAngleX = headPitch(obj) / (180F / (float) Math.PI);
         this.headOverlay.rotateAngleY = this.head.rotateAngleY;
         this.headOverlay.rotateAngleX = this.head.rotateAngleX;
-        this.rArm.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 2.0F * o.swingProgressPrev * 0.5F;
-        this.lArm.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 2.0F * o.swingProgressPrev * 0.5F;
+        this.rArm.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F + (float) Math.PI) * 2.0F * swingProgressPrev(obj) * 0.5F;
+        this.lArm.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F) * 2.0F * swingProgressPrev(obj) * 0.5F;
         this.rArm.rotateAngleZ = 0.0F;
         this.lArm.rotateAngleZ = 0.0F;
-        this.rLeg.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 1.4F * o.swingProgressPrev;
-        this.lLeg.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1.4F * o.swingProgressPrev;
+        this.rLeg.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F) * 1.4F * swingProgressPrev(obj);
+        this.lLeg.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F + (float) Math.PI) * 1.4F * swingProgressPrev(obj);
         this.rLeg.rotateAngleY = 0.0F;
         this.lLeg.rotateAngleY = 0.0F;
 
@@ -151,17 +151,17 @@ public class ModelGooMutant extends Model
         this.head.rotationPointY = 0.0F;
         this.headOverlay.rotationPointY = 0.0F;
 
-        this.rArm.rotateAngleZ += MathHelper.cos(o.idleProgress * 0.09F) * 0.05F + 0.05F;
-        this.lArm.rotateAngleZ -= MathHelper.cos(o.idleProgress * 0.09F) * 0.05F + 0.05F;
-        this.rArm.rotateAngleX += MathHelper.sin(o.idleProgress * 0.067F) * 0.05F;
-        this.lArm.rotateAngleX -= MathHelper.sin(o.idleProgress * 0.067F) * 0.05F;
+        this.rArm.rotateAngleZ += MathHelper.cos(idleProgress(obj) * 0.09F) * 0.05F + 0.05F;
+        this.lArm.rotateAngleZ -= MathHelper.cos(idleProgress(obj) * 0.09F) * 0.05F + 0.05F;
+        this.rArm.rotateAngleX += MathHelper.sin(idleProgress(obj) * 0.067F) * 0.05F;
+        this.lArm.rotateAngleX -= MathHelper.sin(idleProgress(obj) * 0.067F) * 0.05F;
 
-        this.head.render(boxTranslation);
-        this.body.render(boxTranslation);
-        this.rArm.render(boxTranslation);
-        this.lArm.render(boxTranslation);
-        this.rLeg.render(boxTranslation);
-        this.lLeg.render(boxTranslation);
-        this.headOverlay.render(boxTranslation);
+        draw(head);
+        draw(body);
+        draw(rArm);
+        draw(lArm);
+        draw(rLeg);
+        draw(lLeg);
+        draw(headOverlay);
     }
 }

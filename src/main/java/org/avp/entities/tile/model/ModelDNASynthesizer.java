@@ -223,31 +223,31 @@ public class ModelDNASynthesizer extends Model
     }
     
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        this.base.render(boxTranslation);
-        this.tankLid.render(boxTranslation);
-        this.tankFloor.render(boxTranslation);
-        this.vial1.render(boxTranslation);
-        this.tube3.render(boxTranslation);
-        this.vial1Fluid.render(boxTranslation);
-        this.rFrameSupport.render(boxTranslation);
-        this.lFrameSupport.render(boxTranslation);
-        this.vial3.render(boxTranslation);
-        this.tube1.render(boxTranslation);
-        this.injectorNeedle.render(boxTranslation);
-        this.supportBar.render(boxTranslation);
-        this.glassN.render(boxTranslation);
-        this.tube4.render(boxTranslation);
-        this.injector.render(boxTranslation);
-        this.tube5.render(boxTranslation);
-        this.vial3Fluid.render(boxTranslation);
-        this.vial2.render(boxTranslation);
-        this.injectorFluid.render(boxTranslation);
-        this.capN.render(boxTranslation);
-        this.tube2.render(boxTranslation);
-        this.vial2Fluid.render(boxTranslation);
-        this.baseN.render(boxTranslation);
-        this.frame.render(boxTranslation);
+        draw(base);
+        draw(tankLid);
+        draw(tankFloor);
+        draw(vial1);
+        draw(tube3);
+        draw(vial1Fluid);
+        draw(rFrameSupport);
+        draw(lFrameSupport);
+        draw(vial3);
+        draw(tube1);
+        draw(injectorNeedle);
+        draw(supportBar);
+        draw(glassN);
+        draw(tube4);
+        draw(injector);
+        draw(tube5);
+        draw(vial3Fluid);
+        draw(vial2);
+        draw(injectorFluid);
+        draw(capN);
+        draw(tube2);
+        draw(vial2Fluid);
+        draw(baseN);
+        draw(frame);
     }
 }

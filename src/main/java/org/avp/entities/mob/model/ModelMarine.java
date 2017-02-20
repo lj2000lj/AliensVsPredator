@@ -3,6 +3,7 @@ package org.avp.entities.mob.model;
 import com.arisux.mdxlib.lib.client.Model;
 
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.MathHelper;
 
 public class ModelMarine extends Model
@@ -51,20 +52,20 @@ public class ModelMarine extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        RenderObject o = (RenderObject) renderObject;
+        EntityLivingBase base = (EntityLivingBase) obj;;
 
-        this.bipedHead.rotateAngleY = o.headYaw / (180F / (float) Math.PI);
-        this.bipedHead.rotateAngleX = o.headPitch / (180F / (float) Math.PI);
+        this.bipedHead.rotateAngleY = headYaw(obj) / (180F / (float) Math.PI);
+        this.bipedHead.rotateAngleX = headPitch(obj) / (180F / (float) Math.PI);
         this.bipedHeadwear.rotateAngleY = this.bipedHead.rotateAngleY;
         this.bipedHeadwear.rotateAngleX = this.bipedHead.rotateAngleX;
-        this.bipedRightArm.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 2.0F * o.swingProgressPrev * 0.5F;
-        this.bipedLeftArm.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 2.0F * o.swingProgressPrev * 0.5F;
+        this.bipedRightArm.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F + (float) Math.PI) * 2.0F * swingProgressPrev(obj) * 0.5F;
+        this.bipedLeftArm.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F) * 2.0F * swingProgressPrev(obj) * 0.5F;
         this.bipedRightArm.rotateAngleZ = 0.0F;
         this.bipedLeftArm.rotateAngleZ = 0.0F;
-        this.bipedRightLeg.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 1.4F * o.swingProgressPrev;
-        this.bipedLeftLeg.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1.4F * o.swingProgressPrev;
+        this.bipedRightLeg.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F) * 1.4F * swingProgressPrev(obj);
+        this.bipedLeftLeg.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F + (float) Math.PI) * 1.4F * swingProgressPrev(obj);
         this.bipedRightLeg.rotateAngleY = 0.0F;
         this.bipedLeftLeg.rotateAngleY = 0.0F;
 
@@ -138,10 +139,10 @@ public class ModelMarine extends Model
             this.bipedHeadwear.rotationPointY = 0.0F;
         }
 
-        this.bipedRightArm.rotateAngleZ += MathHelper.cos(o.idleProgress * 0.09F) * 0.05F + 0.05F;
-        this.bipedLeftArm.rotateAngleZ -= MathHelper.cos(o.idleProgress * 0.09F) * 0.05F + 0.05F;
-        this.bipedRightArm.rotateAngleX += MathHelper.sin(o.idleProgress * 0.067F) * 0.05F;
-        this.bipedLeftArm.rotateAngleX -= MathHelper.sin(o.idleProgress * 0.067F) * 0.05F;
+        this.bipedRightArm.rotateAngleZ += MathHelper.cos(idleProgress(obj) * 0.09F) * 0.05F + 0.05F;
+        this.bipedLeftArm.rotateAngleZ -= MathHelper.cos(idleProgress(obj) * 0.09F) * 0.05F + 0.05F;
+        this.bipedRightArm.rotateAngleX += MathHelper.sin(idleProgress(obj) * 0.067F) * 0.05F;
+        this.bipedLeftArm.rotateAngleX -= MathHelper.sin(idleProgress(obj) * 0.067F) * 0.05F;
 
         if (this.aimedBow)
         {
@@ -155,18 +156,18 @@ public class ModelMarine extends Model
             this.bipedLeftArm.rotateAngleX = -((float) Math.PI / 2F) + this.bipedHead.rotateAngleX;
             this.bipedRightArm.rotateAngleX -= var8 * 1.2F - var9 * 0.4F;
             this.bipedLeftArm.rotateAngleX -= var8 * 1.2F - var9 * 0.4F;
-            this.bipedRightArm.rotateAngleZ += MathHelper.cos(o.idleProgress * 0.09F) * 0.05F + 0.05F;
-            this.bipedLeftArm.rotateAngleZ -= MathHelper.cos(o.idleProgress * 0.09F) * 0.05F + 0.05F;
-            this.bipedRightArm.rotateAngleX += MathHelper.sin(o.idleProgress * 0.067F) * 0.05F;
-            this.bipedLeftArm.rotateAngleX -= MathHelper.sin(o.idleProgress * 0.067F) * 0.05F;
+            this.bipedRightArm.rotateAngleZ += MathHelper.cos(idleProgress(obj) * 0.09F) * 0.05F + 0.05F;
+            this.bipedLeftArm.rotateAngleZ -= MathHelper.cos(idleProgress(obj) * 0.09F) * 0.05F + 0.05F;
+            this.bipedRightArm.rotateAngleX += MathHelper.sin(idleProgress(obj) * 0.067F) * 0.05F;
+            this.bipedLeftArm.rotateAngleX -= MathHelper.sin(idleProgress(obj) * 0.067F) * 0.05F;
         }
 
-        this.bipedHead.render(boxTranslation);
-        this.bipedBody.render(boxTranslation);
-        this.bipedRightArm.render(boxTranslation);
-        this.bipedLeftArm.render(boxTranslation);
-        this.bipedRightLeg.render(boxTranslation);
-        this.bipedLeftLeg.render(boxTranslation);
-        this.bipedHeadwear.render(boxTranslation);
+        draw(bipedHead);
+        draw(bipedBody);
+        draw(bipedRightArm);
+        draw(bipedLeftArm);
+        draw(bipedRightLeg);
+        draw(bipedLeftLeg);
+        draw(bipedHeadwear);
     }
 }

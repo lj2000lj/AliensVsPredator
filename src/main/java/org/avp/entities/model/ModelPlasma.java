@@ -50,7 +50,7 @@ public class ModelPlasma extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
         OpenGL.pushMatrix();
         {

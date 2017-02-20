@@ -39,8 +39,8 @@ public class RenderItemWristbracerBlades extends ItemRenderer
         OpenGL.translate(-0.25F, -0.15F, 0.3F);
         OpenGL.scale(2F, 2F, 2F);
         this.getModelTexMap().getTexture().bind();
-        this.getModel().b6.render(Model.DEFAULT_BOX_TRANSLATION);
-        this.getModel().bladeLeft.render(Model.DEFAULT_BOX_TRANSLATION);
+        this.getModel().b6.render(Model.DEFAULT_SCALE);
+        this.getModel().bladeLeft.render(Model.DEFAULT_SCALE);
     }
     
     @Override
@@ -67,8 +67,8 @@ public class RenderItemWristbracerBlades extends ItemRenderer
 
         OpenGL.scale(1.6F, 1.6F, 1.6F);
         this.getModelTexMap().getTexture().bind();
-        this.getModel().b6.render(Model.DEFAULT_BOX_TRANSLATION);
-        this.getModel().bladeLeft.render(Model.DEFAULT_BOX_TRANSLATION);
+        this.getModel().b6.render(Model.DEFAULT_SCALE);
+        this.getModel().bladeLeft.render(Model.DEFAULT_SCALE);
     }
     
     @Override
@@ -82,8 +82,8 @@ public class RenderItemWristbracerBlades extends ItemRenderer
         OpenGL.translate(-24F, -7F, -18F);
         OpenGL.scale(46F, 46F, 46F);
         this.getModelTexMap().getTexture().bind();
-        this.getModel().b6.render(Model.DEFAULT_BOX_TRANSLATION);
-        this.getModel().bladeLeft.render(Model.DEFAULT_BOX_TRANSLATION);
+        this.getModel().b6.render(Model.DEFAULT_SCALE);
+        this.getModel().bladeLeft.render(Model.DEFAULT_SCALE);
     }
     
     @Override

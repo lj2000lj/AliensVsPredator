@@ -3,6 +3,7 @@ package org.avp.entities.mob.model;
 import com.arisux.mdxlib.lib.client.Model;
 
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.MathHelper;
 
 public class ModelPredalien extends Model
@@ -463,38 +464,38 @@ public class ModelPredalien extends Model
     }
     
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        RenderObject o = (RenderObject) renderObject;
+        EntityLivingBase base = (EntityLivingBase) obj;;
 
-        float newangle = MathHelper.cos(o.idleProgress * 4.0F * 0.1F) * (float) Math.PI * 0.5F * o.swingProgressPrev;
+        float newangle = MathHelper.cos(idleProgress(obj) * 4.0F * 0.1F) * (float) Math.PI * 0.5F * swingProgressPrev(obj);
         float distMult = 0.25F;
 
-        if (o.getEntity() != null && o.getEntity().prevPosX == o.getEntity().posX && o.getEntity().prevPosY == o.getEntity().posY && o.getEntity().prevPosZ == o.getEntity().posZ)
+        if (base != null && base.prevPosX == base.posX && base.prevPosY == base.posY && base.prevPosZ == base.posZ)
         {
-            newangle = MathHelper.cos(o.idleProgress * 0.07F);
+            newangle = MathHelper.cos(idleProgress(obj) * 0.07F);
             distMult = 0.95F;
         }
 
         this.doTail(newangle, distMult);
         
-        this.faceTop.rotateAngleY = (float) Math.toRadians(o.headYaw) * 0.75F;
-        this.leftShoulder.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 0.6F * o.swingProgressPrev + 0.1665191F + (MathHelper.sin(o.idleProgress * 0.025F) * 0.2F);
-        this.rightShoulder.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 0.6F * o.swingProgressPrev + 0.1665191F - (MathHelper.sin(o.idleProgress * 0.025F) * 0.2F);
-        this.leftThigh.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 0.8F * o.swingProgressPrev - 0.4014257F;
-        this.RightThigh.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 0.8F * o.swingProgressPrev - 0.4028515F;
+        this.faceTop.rotateAngleY = (float) Math.toRadians(headYaw(obj)) * 0.75F;
+        this.leftShoulder.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F + (float) Math.PI) * 0.6F * swingProgressPrev(obj) + 0.1665191F + (MathHelper.sin(idleProgress(obj) * 0.025F) * 0.2F);
+        this.rightShoulder.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F) * 0.6F * swingProgressPrev(obj) + 0.1665191F - (MathHelper.sin(idleProgress(obj) * 0.025F) * 0.2F);
+        this.leftThigh.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F) * 0.8F * swingProgressPrev(obj) - 0.4014257F;
+        this.RightThigh.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F + (float) Math.PI) * 0.8F * swingProgressPrev(obj) - 0.4028515F;
         
-        this.faceTop.render(boxTranslation);
-        this.leftThigh.render(boxTranslation);
-        this.topTorso.render(boxTranslation);
-        this.rightTopSpike.render(boxTranslation);
-        this.RightThigh.render(boxTranslation);
-        this.rightLowerSpike.render(boxTranslation);
-        this.leftTopSpike.render(boxTranslation);
-        this.leftShoulder.render(boxTranslation);
-        this.rightShoulder.render(boxTranslation);
-        this.leftLowerSpike.render(boxTranslation);
-        this.tailBase.render(boxTranslation);
+        draw(faceTop);
+        draw(leftThigh);
+        draw(topTorso);
+        draw(rightTopSpike);
+        draw(RightThigh);
+        draw(rightLowerSpike);
+        draw(leftTopSpike);
+        draw(leftShoulder);
+        draw(rightShoulder);
+        draw(leftLowerSpike);
+        draw(tailBase);
     }
     
     private void doTail(float angle, float distMult)

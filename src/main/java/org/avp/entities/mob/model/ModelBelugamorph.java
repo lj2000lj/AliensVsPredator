@@ -6,7 +6,6 @@ import org.avp.util.XenomorphJawState;
 import com.arisux.mdxlib.lib.client.Model;
 import com.arisux.mdxlib.lib.game.Game;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.MathHelper;
 
@@ -244,14 +243,13 @@ public class ModelBelugamorph extends Model
         this.rForearm.addChild(this.rHand);
         this.chest.addChild(this.lArmUpper);
     }
-
+    
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        RenderObject o = (RenderObject) renderObject;
-        EntityXenomorph xenomorph = (EntityXenomorph) o.getEntity();
-        float swingProgress = o.swingProgress;
-        float swingProgressPrev = o.swingProgressPrev;
+        EntityXenomorph xenomorph = (EntityXenomorph) obj;
+        float swingProgress = swingProgress(obj);
+        float swingProgressPrev = swingProgressPrev(obj);
 
         if (xenomorph != null)
         {
@@ -264,7 +262,7 @@ public class ModelBelugamorph extends Model
             this.lowerJaw.offsetZ = (-0.075F * innerJawDistance * Game.partialTicks()) / Game.partialTicks();
             this.lowerJaw.rotateAngleX = (float) Math.toRadians((lowerJawAngle - 20) * Game.partialTicks()) / Game.partialTicks();
         }
-        this.headBase.rotateAngleY = (float) Math.toRadians(o.headYaw) * 0.75F;
+        this.headBase.rotateAngleY = (float) Math.toRadians(headYaw(obj)) * 0.75F;
         this.rThigh.rotateAngleX = MathHelper.cos(swingProgress * 0.8662F + (float) Math.PI) * 0.9F * swingProgressPrev - 0.3F;
         this.lThigh.rotateAngleX = MathHelper.sin(swingProgress * 0.8662F + (float) Math.PI) * 0.9F * swingProgressPrev - 0.3F;
         this.rArmUpper.rotateAngleX = MathHelper.cos(swingProgress * 0.3662F) * 0.6F * swingProgressPrev;
@@ -272,6 +270,6 @@ public class ModelBelugamorph extends Model
         this.rShin.rotateAngleX = -this.rThigh.rotateAngleX + 0.3F;
         this.lShin.rotateAngleX = -this.lThigh.rotateAngleX + 0.3F;
         
-        this.chest.render(boxTranslation);
+        draw(chest);
     }
 }

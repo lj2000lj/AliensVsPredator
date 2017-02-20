@@ -91,22 +91,22 @@ public class ModelNostromoFlamethrower extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        this.barrelRod.render(boxTranslation);
-        this.valve.render(boxTranslation);
-        this.ignitionConnector.render(boxTranslation);
-        this.gauge.render(boxTranslation);
-        this.bodySlope1.render(boxTranslation);
-        this.butt1.render(boxTranslation);
-        this.ignitionWire.render(boxTranslation);
-        this.barrel.render(boxTranslation);
-        this.butt2.render(boxTranslation);
-        this.body2.render(boxTranslation);
-        this.stockFront.render(boxTranslation);
-        this.body1.render(boxTranslation);
-        this.buttSlope.render(boxTranslation);
-        this.stockBack.render(boxTranslation);
+        draw(barrelRod);
+        draw(valve);
+        draw(ignitionConnector);
+        draw(gauge);
+        draw(bodySlope1);
+        draw(butt1);
+        draw(ignitionWire);
+        draw(barrel);
+        draw(butt2);
+        draw(body2);
+        draw(stockFront);
+        draw(body1);
+        draw(buttSlope);
+        draw(stockBack);
 
         Minecraft minecraft = Game.minecraft();
         ItemStack currentItemStack = minecraft.thePlayer.inventory.getCurrentItem();
@@ -118,8 +118,8 @@ public class ModelNostromoFlamethrower extends Model
 
             if (minecraft.thePlayer.inventory.hasItem(fuel))
             {
-                this.fuelCanister1.render(boxTranslation);
-                this.fuelCanister2.render(boxTranslation);
+                draw(fuelCanister1);
+                draw(fuelCanister2);
             }
         }
     }

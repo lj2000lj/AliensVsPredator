@@ -55,9 +55,9 @@ public class ModelCable extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        TileEntity tile = (TileEntity) renderObject.getObject();
+        TileEntity tile = (TileEntity) obj;
 
         nodeX.isHidden = false;
         nodeY.isHidden = false;
@@ -107,14 +107,14 @@ public class ModelCable extends Model
             }
         }
 
-        this.cableTop.render(boxTranslation);
-        this.cableEast.render(boxTranslation);
-        this.cableSouth.render(boxTranslation);
-        this.cableWest.render(boxTranslation);
-        this.cableBottom.render(boxTranslation);
-        this.cableNorth.render(boxTranslation);
-        this.nodeX.render(boxTranslation);
-        this.nodeY.render(boxTranslation);
-        this.nodeZ.render(boxTranslation);
+        draw(cableTop);
+        draw(cableEast);
+        draw(cableSouth);
+        draw(cableWest);
+        draw(cableBottom);
+        draw(cableNorth);
+        draw(nodeX);
+        draw(nodeY);
+        draw(nodeZ);
     }
 }

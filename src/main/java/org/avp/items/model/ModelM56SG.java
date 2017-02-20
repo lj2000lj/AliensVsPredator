@@ -149,27 +149,27 @@ public class ModelM56SG extends Model implements IFirearmModel
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        this.handleBase.render(boxTranslation);
-        this.base.render(boxTranslation);
-        this.ammoHolder.render(boxTranslation);
-        this.handleWire.render(boxTranslation);
-        this.autoTargetEye.render(boxTranslation);
-        this.baseUnder.render(boxTranslation);
-        this.topHandle.render(boxTranslation);
-        this.topHandleBase.render(boxTranslation);
-        this.barrelHolderBase.render(boxTranslation);
-        this.barrelSupportLeft.render(boxTranslation);
-        this.barrelSupportRight.render(boxTranslation);
-        this.autoTargetControl.render(boxTranslation);
-        this.barrel.render(boxTranslation);
-        this.handle.render(boxTranslation);
-        this.base2.render(boxTranslation);
-        this.base3.render(boxTranslation);
-        this.baseUnder2.render(boxTranslation);
-        this.handleTop.render(boxTranslation);
-        this.topHandleBase2.render(boxTranslation);        
+        draw(handleBase);
+        draw(base);
+        draw(ammoHolder);
+        draw(handleWire);
+        draw(autoTargetEye);
+        draw(baseUnder);
+        draw(topHandle);
+        draw(topHandleBase);
+        draw(barrelHolderBase);
+        draw(barrelSupportLeft);
+        draw(barrelSupportRight);
+        draw(autoTargetControl);
+        draw(barrel);
+        draw(handle);
+        draw(base2);
+        draw(base3);
+        draw(baseUnder2);
+        draw(handleTop);
+        draw(topHandleBase2);        
     }
 
     @Override

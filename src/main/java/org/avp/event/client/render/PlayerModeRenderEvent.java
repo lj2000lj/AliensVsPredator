@@ -7,7 +7,6 @@ import org.avp.items.ItemFlamethrower;
 import org.avp.util.PlayerMode;
 import org.lwjgl.opengl.GL11;
 
-import com.arisux.mdxlib.lib.client.Model.RenderObject;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.util.MDXMath;
 
@@ -55,7 +54,7 @@ public class PlayerModeRenderEvent
                 OpenGL.disable(GL11.GL_CULL_FACE);
 
                 PlayerModeHandler.instance().getTextureForPlayer((EntityPlayer) entityLiving).bind();
-                PlayerModeHandler.instance().getModelForPlayer((EntityPlayer) entityLiving).render(new RenderObject(new Object[] { entity, swingProgress, swingProgressPrevious, idleProgress, headRotateAngleY, headRotationPitch }));
+                PlayerModeHandler.instance().getModelForPlayer((EntityPlayer) entityLiving).render(entity);
             }
             OpenGL.popMatrix();
         }

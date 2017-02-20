@@ -95,34 +95,33 @@ public class ModelRepulsionGenerator extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        RenderObject tileRenderObject = (RenderObject) renderObject;
-        TileEntity tile = tileRenderObject.getTileEntity();
+        TileEntity tile = (TileEntity) obj;
         
-        base.render(boxTranslation);
-        motor.render(boxTranslation);
-        topSupport2.render(boxTranslation);
-        topSupport3.render(boxTranslation);
-        topSupport4.render(boxTranslation);
-        topSupport1.render(boxTranslation);
-        support4.render(boxTranslation);
-        support1.render(boxTranslation);
-        support2.render(boxTranslation);
-        support3.render(boxTranslation);
+        base.render(DEFAULT_SCALE);
+        motor.render(DEFAULT_SCALE);
+        topSupport2.render(DEFAULT_SCALE);
+        topSupport3.render(DEFAULT_SCALE);
+        topSupport4.render(DEFAULT_SCALE);
+        topSupport1.render(DEFAULT_SCALE);
+        support4.render(DEFAULT_SCALE);
+        support1.render(DEFAULT_SCALE);
+        support2.render(DEFAULT_SCALE);
+        support3.render(DEFAULT_SCALE);
 
         if (tile != null)
         {
             OpenGL.pushMatrix();
             {
                 OpenGL.rotate(tile.getWorld().getWorldTime() % 360 * 48 * Game.partialTicks(), 0F, 1F, 0F);
-                dualMagnet.render(boxTranslation);
+                dualMagnet.render(DEFAULT_SCALE);
             }
             OpenGL.popMatrix();
         }
         else
         {
-            dualMagnet.render(boxTranslation);
+            dualMagnet.render(DEFAULT_SCALE);
         }
     }
 }

@@ -3,6 +3,7 @@ package org.avp.entities.mob.model;
 import com.arisux.mdxlib.lib.client.Model;
 
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.MathHelper;
 
 public class ModelDrone extends Model
@@ -268,85 +269,85 @@ public class ModelDrone extends Model
     }
 
     @Override
-    protected void render(IRenderObject renderObject, float boxTranslation)
+    public void render(Object obj)
     {
-        RenderObject o = (RenderObject) renderObject;
-
-        float newangle = MathHelper.cos(o.idleProgress * 4.0F * 0.1F) * (float) Math.PI * 0.5F * o.swingProgressPrev;
+        EntityLivingBase base = (EntityLivingBase) obj;
+        
+        float newangle = MathHelper.cos(idleProgress(obj) * 4.0F * 0.1F) * (float) Math.PI * 0.5F * swingProgressPrev(obj);
         float distMult = 0.25F;
 
-        if (o.getEntity() != null && o.getEntity().prevPosX == o.getEntity().posX && o.getEntity().prevPosY == o.getEntity().posY && o.getEntity().prevPosZ == o.getEntity().posZ)
+        if (base != null && base.prevPosX == base.posX && base.prevPosY == base.posY && base.prevPosZ == base.posZ)
         {
-            newangle = MathHelper.cos(o.idleProgress * 0.07F);
+            newangle = MathHelper.cos(idleProgress(obj) * 0.07F);
             distMult = 0.95F;
         }
 
         this.doTail(newangle, distMult);
-        this.head1.rotateAngleY = (float) Math.toRadians(o.headYaw) * 0.75F;
-        this.head2.rotateAngleY = (float) Math.toRadians(o.headYaw) * 0.75F;
-        this.head3.rotateAngleY = (float) Math.toRadians(o.headYaw) * 0.75F;
-        this.head4.rotateAngleY = (float) Math.toRadians(o.headYaw) * 0.75F;
-        this.head5.rotateAngleY = (float) Math.toRadians(o.headYaw) * 0.75F;
-        this.head6.rotateAngleY = (float) Math.toRadians(o.headYaw) * 0.75F;
-        this.leftleg1.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 1.4F * o.swingProgressPrev - 0.8028515F;
-        this.leftleg2.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 1.4F * o.swingProgressPrev - 0.4014257F;
-        this.leftleg3.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 1.4F * o.swingProgressPrev - 0.8028515F;
-        this.leftleg4.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 1.4F * o.swingProgressPrev;
-        this.rightleg1.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1.4F * o.swingProgressPrev - 0.8028515F;
-        this.rightleg2.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1.4F * o.swingProgressPrev - 0.4014257F;
-        this.rightleg3.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1.4F * o.swingProgressPrev - 0.8028515F;
-        this.rightleg4.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1.4F * o.swingProgressPrev;
-        this.rightarm1.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 1.4F * o.swingProgressPrev + 0.3665191F;
-        this.rightarm2.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 1.4F * o.swingProgressPrev + 0.3665191F;
-        this.rightarm3.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 1.4F * o.swingProgressPrev + 0.3665191F;
-        this.rightarm4.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F) * 1.4F * o.swingProgressPrev + 0.3665191F;
-        this.leftarm1.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1.4F * o.swingProgressPrev + 0.3665191F;
-        this.leftarm2.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1.4F * o.swingProgressPrev + 0.3665191F;
-        this.leftarm3.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1.4F * o.swingProgressPrev + 0.3665191F;
-        this.leftarm4.rotateAngleX = MathHelper.cos(o.swingProgress * 0.6662F + (float) Math.PI) * 1.4F * o.swingProgressPrev + 0.3665191F;
+        this.head1.rotateAngleY = (float) Math.toRadians(headYaw(obj)) * 0.75F;
+        this.head2.rotateAngleY = (float) Math.toRadians(headYaw(obj)) * 0.75F;
+        this.head3.rotateAngleY = (float) Math.toRadians(headYaw(obj)) * 0.75F;
+        this.head4.rotateAngleY = (float) Math.toRadians(headYaw(obj)) * 0.75F;
+        this.head5.rotateAngleY = (float) Math.toRadians(headYaw(obj)) * 0.75F;
+        this.head6.rotateAngleY = (float) Math.toRadians(headYaw(obj)) * 0.75F;
+        this.leftleg1.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F) * 1.4F * swingProgressPrev(obj) - 0.8028515F;
+        this.leftleg2.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F) * 1.4F * swingProgressPrev(obj) - 0.4014257F;
+        this.leftleg3.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F) * 1.4F * swingProgressPrev(obj) - 0.8028515F;
+        this.leftleg4.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F) * 1.4F * swingProgressPrev(obj);
+        this.rightleg1.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F + (float) Math.PI) * 1.4F * swingProgressPrev(obj) - 0.8028515F;
+        this.rightleg2.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F + (float) Math.PI) * 1.4F * swingProgressPrev(obj) - 0.4014257F;
+        this.rightleg3.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F + (float) Math.PI) * 1.4F * swingProgressPrev(obj) - 0.8028515F;
+        this.rightleg4.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F + (float) Math.PI) * 1.4F * swingProgressPrev(obj);
+        this.rightarm1.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F) * 1.4F * swingProgressPrev(obj) + 0.3665191F;
+        this.rightarm2.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F) * 1.4F * swingProgressPrev(obj) + 0.3665191F;
+        this.rightarm3.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F) * 1.4F * swingProgressPrev(obj) + 0.3665191F;
+        this.rightarm4.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F) * 1.4F * swingProgressPrev(obj) + 0.3665191F;
+        this.leftarm1.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F + (float) Math.PI) * 1.4F * swingProgressPrev(obj) + 0.3665191F;
+        this.leftarm2.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F + (float) Math.PI) * 1.4F * swingProgressPrev(obj) + 0.3665191F;
+        this.leftarm3.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F + (float) Math.PI) * 1.4F * swingProgressPrev(obj) + 0.3665191F;
+        this.leftarm4.rotateAngleX = MathHelper.cos(swingProgress(obj) * 0.6662F + (float) Math.PI) * 1.4F * swingProgressPrev(obj) + 0.3665191F;
 
-        this.body1.render(boxTranslation);
-        this.body2.render(boxTranslation);
-        this.rightleg1.render(boxTranslation);
-        this.leftleg1.render(boxTranslation);
-        this.leftleg2.render(boxTranslation);
-        this.rightleg2.render(boxTranslation);
-        this.leftleg3.render(boxTranslation);
-        this.rightleg3.render(boxTranslation);
-        this.leftleg4.render(boxTranslation);
-        this.rightleg4.render(boxTranslation);
-        this.leftarm1.render(boxTranslation);
-        this.rightarm1.render(boxTranslation);
-        this.leftarm2.render(boxTranslation);
-        this.rightarm2.render(boxTranslation);
-        this.neck.render(boxTranslation);
-        this.head1.render(boxTranslation);
-        this.head2.render(boxTranslation);
-        this.head3.render(boxTranslation);
-        this.head4.render(boxTranslation);
-        this.head5.render(boxTranslation);
-        this.head6.render(boxTranslation);
-        this.leftarm3.render(boxTranslation);
-        this.rightarm3.render(boxTranslation);
-        this.leftarm4.render(boxTranslation);
-        this.rightarm4.render(boxTranslation);
-        this.back1.render(boxTranslation);
-        this.back2.render(boxTranslation);
-        this.tail1.render(boxTranslation);
-        this.tail2.render(boxTranslation);
-        this.tail3.render(boxTranslation);
-        this.tail4.render(boxTranslation);
-        this.tail5.render(boxTranslation);
-        this.tailSpikes1.render(boxTranslation);
-        this.tailSpikes2.render(boxTranslation);
-        this.tailSpikes3.render(boxTranslation);
-        this.tailSpikes4.render(boxTranslation);
-        this.tailSpikes5.render(boxTranslation);
-        this.stabber.render(boxTranslation);
-        this.backhorn1.render(boxTranslation);
-        this.backhorn2.render(boxTranslation);
-        this.backhorn3.render(boxTranslation);
-        this.backhorn4.render(boxTranslation);
+        draw(body1);
+        draw(body2);
+        draw(rightleg1);
+        draw(leftleg1);
+        draw(leftleg2);
+        draw(rightleg2);
+        draw(leftleg3);
+        draw(rightleg3);
+        draw(leftleg4);
+        draw(rightleg4);
+        draw(leftarm1);
+        draw(rightarm1);
+        draw(leftarm2);
+        draw(rightarm2);
+        draw(neck);
+        draw(head1);
+        draw(head2);
+        draw(head3);
+        draw(head4);
+        draw(head5);
+        draw(head6);
+        draw(leftarm3);
+        draw(rightarm3);
+        draw(leftarm4);
+        draw(rightarm4);
+        draw(back1);
+        draw(back2);
+        draw(tail1);
+        draw(tail2);
+        draw(tail3);
+        draw(tail4);
+        draw(tail5);
+        draw(tailSpikes1);
+        draw(tailSpikes2);
+        draw(tailSpikes3);
+        draw(tailSpikes4);
+        draw(tailSpikes5);
+        draw(stabber);
+        draw(backhorn1);
+        draw(backhorn2);
+        draw(backhorn3);
+        draw(backhorn4);
     }
 
     private void doTail(float angle, float distMult)
