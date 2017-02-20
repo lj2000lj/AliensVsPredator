@@ -30,7 +30,7 @@ public abstract class ItemFlamethrower extends HookedItem
     @Override
     public ItemStack onItemRightClick(ItemStack itemstack, World worldObj, EntityPlayer entityPlayer)
     {
-        if (this.canThrowFlame(worldObj, entityPlayer))
+        if (this.hasAmmo(worldObj, entityPlayer))
         {
             if (!worldObj.isRemote)
             {
@@ -66,8 +66,13 @@ public abstract class ItemFlamethrower extends HookedItem
         return false;
     }
 
-    public boolean canThrowFlame(World worldObj, EntityPlayer playerIn)
+    public boolean hasAmmo(World worldObj, EntityPlayer playerIn)
     {
+        if (playerIn.capabilities.isCreativeMode)
+        {
+            return true;
+        }
+        
         if (playerIn.inventory.hasItem(this.ammo))
         {
             ItemStack ammoStack = playerIn.inventory.getStackInSlot(Inventories.getSlotForItemIn(this.ammo, playerIn.inventory));
