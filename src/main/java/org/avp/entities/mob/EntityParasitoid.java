@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.avp.api.parasitoidic.IHost;
 import org.avp.api.parasitoidic.IParasitoid;
+import org.avp.entities.EntityLiquidPool;
 import org.avp.entities.extended.Organism;
 
 import net.minecraft.command.IEntitySelector;
@@ -51,6 +52,11 @@ public class EntityParasitoid extends EntitySpeciesAlien implements IMob, IParas
                                                                {
                                                                    return false;
                                                                }
+                                                           }
+                                                           
+                                                           if (potentialTarget instanceof EntityLiquidPool)
+                                                           {
+                                                               return false;
                                                            }
 
                                                            if (potentialTarget instanceof IParasitoid)
