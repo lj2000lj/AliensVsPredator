@@ -60,7 +60,7 @@ If you experience any new errors, it may be due to a dependency change. Please r
 ## Gradle Properties ##
 
 Before you can initiate the build process, you must create a new text document with the name `gradle.properties` in the 
-root directory of the repository. Then add the following entries to the gradle properties file you just created:
+root directory of the repository. Then add the following entries to the gradle properties file you just created on their own respective lines:
 `curseForgeApiKey=00000-00000-00000-00000-00000`
 `mavenUsername=null`
 `mavenPassword=null`
