@@ -22,7 +22,7 @@ import org.avp.packets.server.PacketPlasmaDischarge;
 import org.avp.packets.server.PacketReadFromDataDevice;
 import org.avp.packets.server.PacketReloadFirearm;
 import org.avp.packets.server.PacketRemoveTurretTarget;
-import org.avp.packets.server.PacketShootEntity;
+import org.avp.packets.server.PacketFirearmSync;
 import org.avp.packets.server.PacketSpawnEntity;
 import org.avp.packets.server.PacketSpawnNuke;
 import org.avp.packets.server.PacketTurretTargetUpdate;
@@ -57,7 +57,7 @@ public class NetworkHandler extends SimpleNetworkWrapper implements IInitEvent
         this.registerMessage(Side.SERVER, PacketFireAPC.class);
         this.registerMessage(Side.SERVER, PacketDamageEntity.class);
         this.registerMessage(Side.SERVER, PacketRemoveTurretTarget.class);
-        this.registerMessage(Side.SERVER, PacketShootEntity.class);
+        this.registerMessage(Side.SERVER, PacketFirearmSync.class);
         this.registerMessage(Side.SERVER, PacketSpawnEntity.class);
         this.registerMessage(Side.SERVER, PacketSpawnNuke.class);
         this.registerMessage(Side.SERVER, PacketPlasmaDischarge.class);

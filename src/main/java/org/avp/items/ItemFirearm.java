@@ -3,8 +3,8 @@ package org.avp.items;
 import java.util.List;
 
 import org.avp.AliensVsPredator;
+import org.avp.packets.server.PacketFirearmSync;
 import org.avp.packets.server.PacketReloadFirearm;
-import org.avp.packets.server.PacketShootEntity;
 
 import com.arisux.mdxlib.lib.client.Sound;
 import com.arisux.mdxlib.lib.game.Game;
@@ -29,16 +29,18 @@ import net.minecraft.world.World;
 public class ItemFirearm extends HookedItem
 {
     private ItemAmmo ammoType;
-    private float recoil;
-    private double fireRate;
-    private int maxAmmoCount;
-    private int ammoCount;
-    private int reloadRate;
-    private int reload;
-    private int ammoConsumptionRate;
-    private Sound sound;
-    private double soundLength;
-    private long lastSoundPlayed;
+    private float    recoil;
+    private double   fireRate;
+    private int      maxAmmoCount;
+    private int      ammoCount;
+    private int      reloadRate;
+    private int      reload;
+    private int      ammoConsumptionRate;
+    private Sound    sound;
+    private double   soundLength;
+    private long     lastSoundPlayed;
+    private float    breakProgress;
+    private int    breakingIndex;
 
     public ItemFirearm(int maxAmmoCount, float recoil, double fireRate, int reloadRate, ItemAmmo item, Sound sound)
     {
@@ -73,14 +75,19 @@ public class ItemFirearm extends HookedItem
         {
             if (this.ammoCount > 0 || player.capabilities.isCreativeMode)
             {
-                MovingObjectPosition objMouseOver = Entities.rayTraceSpecial(128, 1.0F);
+                MovingObjectPosition trace = Entities.rayTraceSpecial(128, 1.0F);
 
                 this.renderRecoil();
                 this.fixDelay();
 
-                if (objMouseOver != null && objMouseOver.typeOfHit == MovingObjectType.ENTITY)
+                if (trace != null && trace.typeOfHit == MovingObjectType.BLOCK)
                 {
-                    AliensVsPredator.network().sendToServer(new PacketShootEntity(objMouseOver.entityHit, this));
+                    AliensVsPredator.network().sendToServer(new PacketFirearmSync(trace.typeOfHit, trace.entityHit, trace.blockX, trace.blockY, trace.blockZ, this.getAmmoType().getInflictionDamage(), this.getFireSound().getKey()));
+                }
+
+                if (trace != null && trace.typeOfHit == MovingObjectType.ENTITY)
+                {
+                    AliensVsPredator.network().sendToServer(new PacketFirearmSync(trace.typeOfHit, trace.entityHit, 0, 0, 0, this.getAmmoType().getInflictionDamage(), this.getFireSound().getKey()));
                 }
 
                 if (!player.capabilities.isCreativeMode)
@@ -232,6 +239,26 @@ public class ItemFirearm extends HookedItem
     public EnumAction getItemUseAction(ItemStack stack)
     {
         return EnumAction.bow;
+    }
+
+    public float getBreakProgress()
+    {
+        return breakProgress;
+    }
+
+    public int getBlockBreakingIndex()
+    {
+        return breakingIndex;
+    }
+
+    public void setBlockBreakingIndex(int breakingIndex)
+    {
+        this.breakingIndex = breakingIndex;
+    }
+
+    public void setBreakProgress(float breakProgress)
+    {
+        this.breakProgress = breakProgress;
     }
 
     public static class ItemAmmo extends HookedItem
