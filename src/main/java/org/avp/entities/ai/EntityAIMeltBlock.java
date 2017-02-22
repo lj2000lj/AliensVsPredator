@@ -17,8 +17,7 @@ public class EntityAIMeltBlock extends EntityAIYOffsetBlockInteract
 {
     private static final ArrayList<Block> blockBlacklist = new ArrayList<Block>();
     private EntityLiving                  theEntity;
-    private int                           breakingTime;
-    private int                           breakProgress  = -1;
+    private float                         breakProgress  = -1;
 
     public EntityAIMeltBlock(EntityLiving theEntity)
     {
@@ -89,31 +88,31 @@ public class EntityAIMeltBlock extends EntityAIYOffsetBlockInteract
     public void startExecuting()
     {
         super.startExecuting();
-        this.breakingTime = 0;
     }
 
     @Override
     public boolean continueExecuting()
     {
-        return this.breakingTime <= (12 * 20) && this.theEntity.getDistanceSq((int) this.theEntity.posX, (int) this.theEntity.posY + yOffset, (int) this.theEntity.posZ) < 4.0D && block != Blocks.air && block != AliensVsPredator.blocks().terrainHiveResin && block != Blocks.bedrock;
+        return (this.theEntity.worldObj.difficultySetting == EnumDifficulty.NORMAL || this.theEntity.worldObj.difficultySetting == EnumDifficulty.HARD) && this.theEntity.getDistanceSq((int) this.theEntity.posX, (int) this.theEntity.posY + yOffset, (int) this.theEntity.posZ) < 4.0D && block != Blocks.air && block != AliensVsPredator.blocks().terrainHiveResin && block != Blocks.bedrock;
     }
 
     @Override
     public void resetTask()
     {
         super.resetTask();
-        this.theEntity.worldObj.destroyBlockInWorldPartially(this.theEntity.getEntityId(), (int) this.theEntity.posX, (int) this.theEntity.posY + yOffset, (int) this.theEntity.posZ, -1);
+        this.breakProgress = 0F;
     }
 
     @Override
     public void updateTask()
     {
         super.updateTask();
-
+        
         int targetX = (int) Math.floor(this.theEntity.posX);
         int targetY = (int) this.theEntity.posY - 1;
         int targetZ = (int) Math.floor(this.theEntity.posZ);
         Block target = this.theEntity.worldObj.getBlock(targetX, targetY, targetZ);
+        float hardness = 1F / target.getBlockHardness(this.theEntity.worldObj, targetX, targetY, targetZ) / 100F;
 
         if (this.theEntity.getRNG().nextInt(20) == 0)
         {
@@ -125,24 +124,16 @@ public class EntityAIMeltBlock extends EntityAIYOffsetBlockInteract
             return;
         }
 
-        this.breakingTime++;
+        this.breakProgress += hardness;
+        this.theEntity.worldObj.destroyBlockInWorldPartially(this.theEntity.getEntityId(), (int) Math.floor(this.theEntity.posX), (int) this.theEntity.posY + yOffset, (int) Math.floor(this.theEntity.posZ), (int) (this.breakProgress * 10.0F) - 1);
 
-        int progress = (int) (this.breakingTime / 240.0F * 10.0F);
-
-        if (progress != this.breakProgress)
-        {
-            this.theEntity.worldObj.destroyBlockInWorldPartially(this.theEntity.getEntityId(), (int) Math.floor(this.theEntity.posX), (int) this.theEntity.posY + yOffset, (int) Math.floor(this.theEntity.posZ), progress);
-            this.breakProgress = progress;
-        }
-
-        if (this.breakingTime == 240 && (this.theEntity.worldObj.difficultySetting == EnumDifficulty.NORMAL || this.theEntity.worldObj.difficultySetting == EnumDifficulty.HARD))
+        if (this.breakProgress >= 1F)
         {
             if (block != Blocks.air)
             {
-                this.theEntity.worldObj.setBlockToAir(targetX, targetY, targetZ);
+                this.theEntity.worldObj.breakBlock(targetX, targetY, targetZ, true);
                 this.theEntity.worldObj.playAuxSFX(2001, (int) Math.floor(this.theEntity.posX), (int) this.theEntity.posY + yOffset, (int) Math.floor(this.theEntity.posZ), Block.getIdFromBlock(this.block));
                 this.resetTask();
-                this.theEntity = (EntityLiving) this.theEntity.worldObj.getEntityByID(this.theEntity.getEntityId());
             }
         }
     }

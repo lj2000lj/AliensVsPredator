@@ -123,7 +123,10 @@ public class EntityAcidPool extends EntityLiquidPool implements IMob, IEntitySel
     {
         if (!this.worldObj.isRemote)
         {
-            player.addPotionEffect(new PotionEffect(Potion.poison.id, (14 * 20), 0));
+            if (!player.capabilities.isCreativeMode)
+            {
+                player.addPotionEffect(new PotionEffect(Potion.poison.id, (14 * 20), 0));
+            }
         }
     }
 
