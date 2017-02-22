@@ -72,4 +72,4 @@ __Note:__ If the above entry is not added, the build process and setup process w
 [IntelliJ IDEA]: https://www.jetbrains.com/idea/
 [Eclipse]: https://www.eclipse.org/
 [Gradle]: https://www.gradle.org/
-[Java Development Kit 7 or Newer]: http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
+[Java Development Kit 8 or Newer]: http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
