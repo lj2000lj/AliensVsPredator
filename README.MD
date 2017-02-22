@@ -6,7 +6,7 @@ AliensVsPredator (Minecraft Mod)
 * [Issues]
 
 ## Prerequisites ##
-* [Java Development Kit 7 or Newer]
+* [Java Development Kit 8 or Newer]
 * [Gradle]
 
 ## Contributing ##
@@ -23,10 +23,11 @@ Open your command line, and execute the following commands:
 __Note:__ If [Gradle] is not installed on your system, you may use ./gradlew on Unix based platforms or ./gradlew.bat
 on Windows platforms.
 
-1. Run `gradle setupDecompWorkspace` and wait for it to complete.
-2. Once completed, copy `mdxlib_at.cfg` from the mdxlib jar located in your .gradle cache directory with the following structure `.gradle\caches\modules-2\files-2.1\com.arisux\mdxlib\X.X.X.X\0000000000000000000000000000000000000000\mdxlib-X.X.X.X-deobf.jar`.
-3. Paste `mdxlib_at.cfg` into this repo's `src\main\resources\` directory.
-4. Run `gradle setupDecompWorkspace` once more. This time, it should detect an Access Transformer. If it does not, then you have copied it to the wrong location.
+1. Please complete the steps listed under the Gradle Properties section before moving on.
+2. Run `gradle setupDecompWorkspace` and wait for it to complete.
+3. Once completed, copy `mdxlib_at.cfg` from the mdxlib jar located in your .gradle cache directory with the following structure `.gradle\caches\modules-2\files-2.1\com.arisux\mdxlib\X.X.X.X\0000000000000000000000000000000000000000\mdxlib-X.X.X.X-deobf.jar`.
+4. Paste `mdxlib_at.cfg` into this repo's `src\main\resources\` directory.
+5. Run `gradle setupDecompWorkspace` once more. This time, it should detect an Access Transformer. If it does not, then you have copied it to the wrong location.
 
 ## 3) Setup your IDE ##
 
@@ -50,18 +51,21 @@ Run the following to sync your copy of the repository up with the latest changes
 If you experience any new errors, it may be due to a dependency change. Please refresh your dependencies:
 * `gradle --refresh-dependencies`
 
-## Building the Project ##
+## Building The Project ##
+
+1. Please complete the steps listed under the Gradle Properties section before building the project.
+2. To initiate the build process, run `gradle build`.
+3. You can find the compiled project artifacts in `./build/libs`.
+
+## Gradle Properties ##
 
 Before you can initiate the build process, you must create a new text document with the name `gradle.properties` in the 
-root directory of the repository. Then add `curseForgeApiKey=00000-00000-00000-00000-00000` to the start of the configuration
-and save it.
+root directory of the repository. Then add the following entries to the gradle properties file you just created:
+`curseForgeApiKey=00000-00000-00000-00000-00000`
+`mavenUsername=null`
+`mavenPassword=null`
 
-__Note:__ If the above entry is not added, the build process will fail.
-
-If you run into build problems, you may also need to add `mavenUsername=null` and `mavenPassword=null` on their own respective lines.
-
-To initiate the build process, run `gradle build`.
-You can find the compiled project artifacts in `./build/libs`.
+__Note:__ If the above entry is not added, the build process and setup process will fail.
 
 [Source]: https://github.com/Ri5ux/AliensVsPredator
 [Issues]: https://github.com/Ri5ux/AliensVsPredator/issues
