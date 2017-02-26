@@ -9,7 +9,6 @@ import org.avp.entities.ai.EntityAICustomAttackOnCollide;
 import org.avp.entities.ai.alien.EntitySelectorXenomorph;
 import org.avp.event.HiveHandler;
 import org.avp.packets.server.PacketSpawnEntity;
-import org.avp.util.XenomorphHive;
 
 import com.arisux.mdxlib.lib.game.Game;
 import com.arisux.mdxlib.lib.world.Pos;
@@ -114,7 +113,7 @@ public class EntityQueen extends EntityXenomorph implements IMob
 
                 if (this.hive == null)
                 {
-                    HiveHandler.instance.getHives().add(new XenomorphHive(this.worldObj, this.getUniqueID()).setLocation(this.posX, this.posY, this.posZ));
+                    HiveHandler.instance.createHive(this);
                 }
             }
         }

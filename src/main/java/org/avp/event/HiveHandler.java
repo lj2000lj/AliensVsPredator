@@ -3,6 +3,7 @@ package org.avp.event;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import org.avp.entities.mob.EntityQueen;
 import org.avp.entities.mob.EntitySpeciesAlien;
 import org.avp.entities.tile.TileEntityHiveResin;
 import org.avp.util.IDataSaveHandler;
@@ -34,6 +35,13 @@ public class HiveHandler implements IDataSaveHandler
     {
         this.hives = new ArrayList<XenomorphHive>();
         this.burntResin = new ArrayList<Pos>();
+    }
+    
+    public XenomorphHive createHive(EntityQueen queen)
+    {
+        XenomorphHive hive = new XenomorphHive(queen.worldObj, queen.getUniqueID()).setLocation(queen.posX, queen.posY, queen.posZ);
+        HiveHandler.instance.getHives().add(hive);
+        return hive;
     }
 
     public ArrayList<XenomorphHive> getHives()
@@ -154,6 +162,7 @@ public class HiveHandler implements IDataSaveHandler
                 {
                     if (hive.getDimensionId() == world.provider.dimensionId)
                     {
+                        MDX.log().info(String.format("Saving Hive(%s) at %s, %s, %s", hive.getUniqueIdentifier(), hive.xCoord(), hive.yCoord(), hive.zCoord()));
                         hiveCount++;
                         NBTTagCompound tagHive = new NBTTagCompound();
                         hive.save(world, tagHive);
@@ -185,26 +194,32 @@ public class HiveHandler implements IDataSaveHandler
 
             if ((tagHives.tagCount()) > 0)
             {
-                for (int i = 0; i < tagHives.tagCount(); i++)
+                for (int idx = tagHives.tagCount() - 1; idx >= 0; idx--)
                 {
-                    NBTTagCompound tagHive = tagHives.getCompoundTagAt(i);
-                    UUID uniqueIdentifier = Worlds.uuidFromNBT(tagHive, "UUID");
-                    XenomorphHive hive = getHiveForUUID(uniqueIdentifier);
+                    NBTTagCompound tagHive = tagHives.getCompoundTagAt(idx);
+                    UUID uuid = Worlds.uuidFromNBT(tagHive, "UUID");
+                    XenomorphHive hive = this.getHiveForUUID(uuid);
 
-                    if (hive == null)
+                    if (hive == null && uuid != null)
                     {
-                        hive = new XenomorphHive(world, uniqueIdentifier);
+                        hive = new XenomorphHive(world, uuid);
 
                         if (!this.hives.contains(hive))
                         {
                             this.hives.add(hive);
                         }
                     }
+                    
+                    if (hive == null || uuid == null)
+                    {
+                        MDX.log().warn(String.format("Failed to load a hive, Debug Information: UUID(%s), Instance(%s)", uuid, hive));
+                    }
 
                     if (hive != null)
                     {
                         hiveCount++;
-                        hive.load(world, uniqueIdentifier, tagHive);
+                        hive.load(world, uuid, tagHive);
+                        MDX.log().info(String.format("Loaded Hive(%s) at %s, %s, %s", hive.getUniqueIdentifier(), hive.xCoord(), hive.yCoord(), hive.zCoord()));
                     }
                 }
             }
@@ -215,7 +230,6 @@ public class HiveHandler implements IDataSaveHandler
         }
 
         MDX.log().info(String.format("%s hives have been loaded for level '%s'/%s. %s hives are globally accessable.", hiveCount, world.getSaveHandler().getWorldDirectoryName(), world.provider.getDimensionName(), this.hives.size()));
-        System.out.println(this.hives);
 
         return true;
     }

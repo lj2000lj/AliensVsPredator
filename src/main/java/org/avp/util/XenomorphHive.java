@@ -8,6 +8,7 @@ import org.avp.entities.mob.EntitySpeciesAlien;
 import org.avp.entities.tile.TileEntityHiveResin;
 import org.avp.event.HiveHandler;
 
+import com.arisux.mdxlib.MDX;
 import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.Worlds;
 
@@ -206,7 +207,16 @@ public class XenomorphHive
 
     public void save(World world, NBTTagCompound nbt)
     {
-        nbt.setString("UUID", this.uuid.toString());
+        if (this.uuid != null)
+        {
+            nbt.setString("UUID", this.uuid.toString());
+        }
+        else
+        {
+            MDX.log().warn(String.format("A hive's UUID was null during the save process. This hive was not saved. Debug information: DIM(%s) XYZ(%s, %s, %s)", this.dimensionId, this.xCoord, this.yCoord, this.zCoord));
+            return;
+        }
+
         nbt.setInteger("DimID", this.dimensionId);
         nbt.setInteger("X", this.xCoord);
         nbt.setInteger("Y", this.yCoord);
