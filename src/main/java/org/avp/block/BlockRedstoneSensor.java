@@ -1,6 +1,6 @@
 package org.avp.block;
 
-import org.avp.entities.tile.TileEntityRedstoneSensor;
+import org.avp.tile.TileEntityRedstoneSensor;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

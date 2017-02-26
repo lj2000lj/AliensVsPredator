@@ -1,6 +1,6 @@
 package org.avp.inventory;
 
-import org.avp.entities.tile.TileEntityAssembler;
+import org.avp.tile.TileEntityAssembler;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;

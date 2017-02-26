@@ -1,50 +1,51 @@
 package org.avp;
 
-import org.avp.entities.mob.EntityAethon;
-import org.avp.entities.mob.EntityAqua;
-import org.avp.entities.mob.EntityBabyhead;
-import org.avp.entities.mob.EntityBatXeno;
-import org.avp.entities.mob.EntityBelugaburster;
-import org.avp.entities.mob.EntityBelugamorph;
-import org.avp.entities.mob.EntityBoiler;
-import org.avp.entities.mob.EntityChestburster;
-import org.avp.entities.mob.EntityCombatSynthetic;
-import org.avp.entities.mob.EntityCrusher;
-import org.avp.entities.mob.EntityDeacon;
-import org.avp.entities.mob.EntityDeaconShark;
-import org.avp.entities.mob.EntityDracoEgg;
-import org.avp.entities.mob.EntityDracoburster;
-import org.avp.entities.mob.EntityDracomorph;
-import org.avp.entities.mob.EntityDrone;
-import org.avp.entities.mob.EntityEngineer;
-import org.avp.entities.mob.EntityFacehugger;
-import org.avp.entities.mob.EntityGooMutant;
-import org.avp.entities.mob.EntityHammerpede;
-import org.avp.entities.mob.EntityMarine;
-import org.avp.entities.mob.EntityMyceliomorph;
-import org.avp.entities.mob.EntityOctohugger;
-import org.avp.entities.mob.EntityOvamorph;
-import org.avp.entities.mob.EntityPantheramorph;
-import org.avp.entities.mob.EntityPraetorian;
-import org.avp.entities.mob.EntityPredalien;
-import org.avp.entities.mob.EntityPredalienChestburster;
-import org.avp.entities.mob.EntityPredatorHound;
-import org.avp.entities.mob.EntityQueen;
-import org.avp.entities.mob.EntityQueenChestburster;
-import org.avp.entities.mob.EntityRoyalFacehugger;
-import org.avp.entities.mob.EntityRunnerChestburster;
-import org.avp.entities.mob.EntityRunnerDrone;
-import org.avp.entities.mob.EntityRunnerWarrior;
-import org.avp.entities.mob.EntityScelemur;
-import org.avp.entities.mob.EntitySpaceJockey;
-import org.avp.entities.mob.EntitySpitter;
-import org.avp.entities.mob.EntityTrilobite;
-import org.avp.entities.mob.EntityUltramorph;
-import org.avp.entities.mob.EntityUrsuidae;
-import org.avp.entities.mob.EntityWarrior;
-import org.avp.entities.mob.EntityYautja;
-import org.avp.entities.mob.EntityYautjaBerserker;
-import org.avp.entities.mob.EntityYautjaMutant;
+import org.avp.client.Sounds;
+import org.avp.entities.living.EntityAethon;
+import org.avp.entities.living.EntityAqua;
+import org.avp.entities.living.EntityBabyhead;
+import org.avp.entities.living.EntityBatXeno;
+import org.avp.entities.living.EntityBelugaburster;
+import org.avp.entities.living.EntityBelugamorph;
+import org.avp.entities.living.EntityBoiler;
+import org.avp.entities.living.EntityChestburster;
+import org.avp.entities.living.EntityCombatSynthetic;
+import org.avp.entities.living.EntityCrusher;
+import org.avp.entities.living.EntityDeacon;
+import org.avp.entities.living.EntityDeaconShark;
+import org.avp.entities.living.EntityDracoEgg;
+import org.avp.entities.living.EntityDracoburster;
+import org.avp.entities.living.EntityDracomorph;
+import org.avp.entities.living.EntityDrone;
+import org.avp.entities.living.EntityEngineer;
+import org.avp.entities.living.EntityFacehugger;
+import org.avp.entities.living.EntityGooMutant;
+import org.avp.entities.living.EntityHammerpede;
+import org.avp.entities.living.EntityMarine;
+import org.avp.entities.living.EntityMyceliomorph;
+import org.avp.entities.living.EntityOctohugger;
+import org.avp.entities.living.EntityOvamorph;
+import org.avp.entities.living.EntityPantheramorph;
+import org.avp.entities.living.EntityPraetorian;
+import org.avp.entities.living.EntityPredalien;
+import org.avp.entities.living.EntityPredalienChestburster;
+import org.avp.entities.living.EntityPredatorHound;
+import org.avp.entities.living.EntityQueen;
+import org.avp.entities.living.EntityQueenChestburster;
+import org.avp.entities.living.EntityRoyalFacehugger;
+import org.avp.entities.living.EntityRunnerChestburster;
+import org.avp.entities.living.EntityRunnerDrone;
+import org.avp.entities.living.EntityRunnerWarrior;
+import org.avp.entities.living.EntityScelemur;
+import org.avp.entities.living.EntitySpaceJockey;
+import org.avp.entities.living.EntitySpitter;
+import org.avp.entities.living.EntityTrilobite;
+import org.avp.entities.living.EntityUltramorph;
+import org.avp.entities.living.EntityUrsuidae;
+import org.avp.entities.living.EntityWarrior;
+import org.avp.entities.living.EntityYautja;
+import org.avp.entities.living.EntityYautjaBerserker;
+import org.avp.entities.living.EntityYautjaMutant;
 import org.avp.item.ItemAPC;
 import org.avp.item.ItemArmorMK50;
 import org.avp.item.ItemArmorMarine;
@@ -69,13 +70,16 @@ import org.avp.item.ItemSupplyChute;
 import org.avp.item.ItemSupplyChute.SupplyChuteType;
 import org.avp.item.ItemWristbracer;
 
+import com.arisux.mdxlib.MDX;
 import com.arisux.mdxlib.lib.game.Game;
 import com.arisux.mdxlib.lib.game.IInitEvent;
+import com.arisux.mdxlib.lib.game.IPreInitEvent;
 import com.arisux.mdxlib.lib.world.item.HookedItem;
 import com.arisux.mdxlib.lib.world.item.ItemToolMaterialAxe;
 import com.arisux.mdxlib.lib.world.item.ItemToolMaterialPickaxe;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemFood;
@@ -83,7 +87,7 @@ import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemSword;
 
-public class ItemHandler implements IInitEvent
+public class ItemHandler implements IInitEvent, IPreInitEvent
 {
     public static final ItemHandler instance                 = new ItemHandler();
     public final Summoners          summoners                = new Summoners();
@@ -243,6 +247,12 @@ public class ItemHandler implements IInitEvent
         public ItemEntitySummoner itemSummonerUrsuidae              = (new ItemEntitySummoner(EntityUrsuidae.class));
         public ItemEntitySummoner itemSummonerVardaMonkey           = (new ItemEntitySummoner(EntityScelemur.class));
         public ItemEntitySummoner itemSummonerYautjaMutant          = (new ItemEntitySummoner(EntityYautjaMutant.class));
+    }
+
+    @Override
+    public void pre(FMLPreInitializationEvent event)
+    {
+        MDX.registerMappingInfo("summon.protomorph", "summon.deacon", AliensVsPredator.ID);
     }
 
     @Override

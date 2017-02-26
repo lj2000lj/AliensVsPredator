@@ -1,8 +1,8 @@
 package org.avp.item;
 
 import org.avp.AliensVsPredator;
-import org.avp.entities.extended.ModPlayer;
-import org.avp.event.client.render.VisionModeRenderEvent;
+import org.avp.client.render.VisionModeRenderEvent;
+import org.avp.entities.SharedPlayer;
 import org.lwjgl.input.Keyboard;
 
 import com.arisux.mdxlib.lib.client.render.Draw;
@@ -47,7 +47,7 @@ public class ItemArmorTitanium extends ItemArmor
     {
         if (player.inventory.armorItemInSlot(3) != null && player.inventory.armorItemInSlot(3).getItem() == AliensVsPredator.items().helmTitanium)
         {
-            ModPlayer specialPlayer = ModPlayer.get(player);
+            SharedPlayer specialPlayer = SharedPlayer.get(player);
             player.fallDistance = 0.0F;
 
             if (world.isRemote)
@@ -58,7 +58,7 @@ public class ItemArmorTitanium extends ItemArmor
     }
 
     @SideOnly(Side.CLIENT)
-    public void controlledAbility(ModPlayer specialPlayer)
+    public void controlledAbility(SharedPlayer specialPlayer)
     {
         if (Game.minecraft().inGameHasFocus)
         {

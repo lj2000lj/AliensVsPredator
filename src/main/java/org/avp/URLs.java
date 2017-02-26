@@ -2,15 +2,14 @@ package org.avp;
 
 public class URLs
 {
-    public static String server = "https://aliensvspredator.org";
-    public static String urlUpdater = server + "/page/beta/aliensvspredator/latest.php";
-    public static String urlChangelog = server + "/changelog.txt";
-    public static String urlSubmitFeedback = server + "/page/beta/submit.php?user=%s&uuid=%s&info=%s";
-    public static String urlFeedbackValidation = server + "/page/beta/validate.php?uuid=%s";
-    public static String urlSkins = server + "/page/skins";
-    public static String urlSkinAk47 = urlSkins + "/ak47/%s.png";
-    public static String urlSkinM4 = urlSkins + "/m4/%s.png";
-    public static String urlSkinM41a = urlSkins + "/m41a/%s.png";
-    public static String urlSkinM56sg = urlSkins + "/m56sg/%s.png";
-    public static String urlSkinSniper = urlSkins + "/sniper/%s.png";
+    public static final String DOMAIN              = "http://aliensvspredator.org";
+    public static final String UPDATER             = DOMAIN + "/page/beta/aliensvspredator/latest.php";
+    public static final String SUBMIT_FEEDBACK     = DOMAIN + "/page/beta/submit.php?user=%s&uuid=%s&info=%s";
+    public static final String FEEDBACK_VALIDATION = DOMAIN + "/page/beta/validate.php?uuid=%s";
+    public static final String SKINS               = DOMAIN + "/page/skins";
+    public static final String SKIN_AK47           = SKINS + "/ak47/%s.png";
+    public static final String SKIN_M4             = SKINS + "/m4/%s.png";
+    public static final String SKIN_M41A           = SKINS + "/m41a/%s.png";
+    public static final String SKIN_M56SG          = SKINS + "/m56sg/%s.png";
+    public static final String SKIN_SNIPER         = SKINS + "/sniper/%s.png";
 }

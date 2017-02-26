@@ -1,6 +1,6 @@
 package org.avp.block;
 
-import org.avp.entities.tile.TileEntitySolarPanel;
+import org.avp.tile.TileEntitySolarPanel;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

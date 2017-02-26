@@ -3,8 +3,8 @@ package org.avp.block;
 import java.util.ArrayList;
 
 import org.avp.AliensVsPredator;
-import org.avp.entities.tile.TileEntityRedstoneFluxGenerator;
 import org.avp.packets.client.PacketRotateRotatable;
+import org.avp.tile.TileEntityRedstoneFluxGenerator;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

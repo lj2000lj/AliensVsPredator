@@ -29,14 +29,14 @@ public class CommandSettings extends CommandBase
     {
         if (FMLCommonHandler.instance().getSide() == Side.SERVER)
         {
-            AliensVsPredator.network().sendTo(new PacketOpenGui(AliensVsPredator.properties().GUI_GRAPHICSSETTINGS), (EntityPlayerMP) commandSender);
+            AliensVsPredator.network().sendTo(new PacketOpenGui(AliensVsPredator.interfaces().GUI_GRAPHICSSETTINGS), (EntityPlayerMP) commandSender);
             return;
         }
 
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
         {
             EntityPlayerMP player = (EntityPlayerMP) commandSender;
-            GuiScreen gui = (GuiScreen) AliensVsPredator.interfaces().getClientGuiElement(AliensVsPredator.properties().GUI_GRAPHICSSETTINGS, player, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
+            GuiScreen gui = (GuiScreen) AliensVsPredator.interfaces().getClientGuiElement(AliensVsPredator.interfaces().GUI_GRAPHICSSETTINGS, player, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
             FMLCommonHandler.instance().showGuiScreen(gui);
         }
     }

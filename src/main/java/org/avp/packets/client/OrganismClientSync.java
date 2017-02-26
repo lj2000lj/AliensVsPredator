@@ -1,6 +1,6 @@
 package org.avp.packets.client;
 
-import org.avp.entities.extended.Organism;
+import org.avp.entities.Organism;
 
 import com.arisux.mdxlib.lib.game.Game;
 

@@ -1,7 +1,7 @@
 package org.avp.world.dimension.varda;
 
 import org.avp.AliensVsPredator;
-import org.avp.entities.mob.EntityDeaconShark;
+import org.avp.entities.living.EntityDeaconShark;
 import org.avp.world.dimension.BiomeGenLV;
 
 import net.minecraft.world.biome.BiomeGenBase;

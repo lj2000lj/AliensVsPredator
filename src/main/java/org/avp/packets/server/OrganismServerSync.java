@@ -1,6 +1,6 @@
 package org.avp.packets.server;
 
-import org.avp.entities.extended.Organism;
+import org.avp.entities.Organism;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;

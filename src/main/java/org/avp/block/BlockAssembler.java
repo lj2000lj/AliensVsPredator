@@ -3,7 +3,7 @@ package org.avp.block;
 import java.util.Random;
 
 import org.avp.AliensVsPredator;
-import org.avp.entities.tile.TileEntityAssembler;
+import org.avp.tile.TileEntityAssembler;
 
 import com.arisux.mdxlib.lib.world.entity.player.inventory.Inventories;
 

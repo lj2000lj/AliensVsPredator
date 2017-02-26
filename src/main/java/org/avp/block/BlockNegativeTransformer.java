@@ -1,6 +1,6 @@
 package org.avp.block;
 
-import org.avp.entities.tile.TileEntityNegativeTransformer;
+import org.avp.tile.TileEntityNegativeTransformer;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;

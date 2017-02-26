@@ -11,7 +11,6 @@ public class OreDictionarySupport implements IInitEvent
 
     public void init(FMLInitializationEvent event)
     {
-        OreDictionary.registerOre("copper", AliensVsPredator.items().itemAPC);
         OreDictionary.registerOre("copper", AliensVsPredator.items().itemIngotCopper);
         OreDictionary.registerOre("ingotCopper", AliensVsPredator.items().itemIngotCopper);
         OreDictionary.registerOre("lithium", AliensVsPredator.items().itemIngotLithium);

@@ -1,6 +1,6 @@
 package org.avp.packets.server;
 
-import org.avp.entities.tile.TileEntityTurret;
+import org.avp.tile.TileEntityTurret;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;

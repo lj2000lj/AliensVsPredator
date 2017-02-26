@@ -2,7 +2,7 @@ package org.avp.item;
 
 import java.util.List;
 
-import org.avp.Sounds;
+import org.avp.client.Sounds;
 import org.avp.entities.EntityFlame;
 
 import com.arisux.mdxlib.lib.world.entity.player.inventory.Inventories;

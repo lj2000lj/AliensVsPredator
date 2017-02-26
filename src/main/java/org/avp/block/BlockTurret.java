@@ -3,8 +3,8 @@ package org.avp.block;
 import java.util.Random;
 
 import org.avp.AliensVsPredator;
-import org.avp.entities.tile.TileEntityTurret;
 import org.avp.packets.server.PacketAddTuretTarget;
+import org.avp.tile.TileEntityTurret;
 
 import com.arisux.mdxlib.lib.world.entity.Entities;
 
@@ -104,7 +104,7 @@ public class BlockTurret extends Block
             }
         }
 
-        FMLNetworkHandler.openGui(player, AliensVsPredator.instance(), AliensVsPredator.properties().GUI_TURRET, worldObj, xCoord, yCoord, zCoord);
+        FMLNetworkHandler.openGui(player, AliensVsPredator.instance(), AliensVsPredator.interfaces().GUI_TURRET, worldObj, xCoord, yCoord, zCoord);
 
         return true;
     }

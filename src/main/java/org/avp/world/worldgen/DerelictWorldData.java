@@ -2,12 +2,12 @@ package org.avp.world.worldgen;
 
 import java.util.ArrayList;
 
-import org.avp.util.IDataSaveHandler;
+import org.avp.api.storage.IWorldSaveHandler;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-public class DerelictWorldData implements IDataSaveHandler
+public class DerelictWorldData implements IWorldSaveHandler
 {
     public static final DerelictWorldData instance = new DerelictWorldData();
     private ArrayList<DerelictLocation> derelictLocations;

@@ -1,6 +1,6 @@
 package org.avp.inventory;
 
-import org.avp.entities.tile.TileEntityLocker;
+import org.avp.tile.TileEntityLocker;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;

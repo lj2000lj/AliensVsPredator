@@ -1,8 +1,8 @@
 package org.avp;
 
-import org.avp.entities.extended.ModPlayer;
-import org.avp.util.LevelData;
-import org.avp.util.PlayerMode;
+import org.avp.entities.SharedPlayer;
+import org.avp.world.playermode.LevelData;
+import org.avp.world.playermode.PlayerMode;
 
 import com.arisux.mdxlib.lib.client.Model;
 import com.arisux.mdxlib.lib.client.TexturedModel;
@@ -61,7 +61,7 @@ public class PlayerModeHandler implements IInitEvent
         if (event.entity instanceof EntityPlayer)
         {
             EntityPlayer player = (EntityPlayer) event.entity;
-            ModPlayer playerExtension = (ModPlayer) player.getExtendedProperties(ModPlayer.IDENTIFIER);
+            SharedPlayer playerExtension = (SharedPlayer) player.getExtendedProperties(SharedPlayer.IDENTIFIER);
 
             playerExtension.setPlayerMode(PlayerMode.NORMAL);
             {
@@ -93,7 +93,7 @@ public class PlayerModeHandler implements IInitEvent
 
     public static boolean isPlayerInMode(EntityPlayer player, PlayerMode playerMode)
     {
-        return ((ModPlayer) player.getExtendedProperties(ModPlayer.IDENTIFIER)).getPlayerMode() == playerMode;
+        return ((SharedPlayer) player.getExtendedProperties(SharedPlayer.IDENTIFIER)).getPlayerMode() == playerMode;
     }
 
     public static boolean isNormal(EntityPlayer player)
@@ -118,7 +118,7 @@ public class PlayerModeHandler implements IInitEvent
 
     public PlayerMode getPlayerModeForPlayer(EntityPlayer player)
     {
-        return ((ModPlayer) player.getExtendedProperties(ModPlayer.IDENTIFIER)).getPlayerMode();
+        return ((SharedPlayer) player.getExtendedProperties(SharedPlayer.IDENTIFIER)).getPlayerMode();
     }
 
     public LevelData getLevelMappingForPlayer(EntityPlayer player)

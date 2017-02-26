@@ -1,6 +1,6 @@
 package org.avp.packets.server;
 
-import org.avp.util.IDataDevice;
+import org.avp.api.machines.IDataDevice;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;

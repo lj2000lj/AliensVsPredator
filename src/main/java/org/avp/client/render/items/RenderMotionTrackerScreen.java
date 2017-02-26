@@ -3,7 +3,7 @@ package org.avp.client.render.items;
 import java.util.ArrayList;
 
 import org.avp.AliensVsPredator;
-import org.avp.Sounds;
+import org.avp.client.Sounds;
 import org.lwjgl.opengl.GL11;
 
 import com.arisux.mdxlib.lib.client.render.Draw;

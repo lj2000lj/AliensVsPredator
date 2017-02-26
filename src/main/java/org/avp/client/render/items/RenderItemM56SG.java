@@ -49,7 +49,7 @@ public class RenderItemM56SG extends ItemRenderer
             OpenGL.rotate(80.0F, 0.0F, 0.0F, 1.0F);
             OpenGL.disable(GL11.GL_CULL_FACE);
             OpenGL.scale(2.0F, 2.0F, 2.0F);
-            new Texture(Remote.downloadResource(String.format(URLs.urlSkinM56sg, Game.session().getPlayerID()), this.getModelTexMap().getTexture())).bind();
+            new Texture(Remote.downloadResource(String.format(URLs.SKIN_M56SG, Game.session().getPlayerID()), this.getModelTexMap().getTexture())).bind();
             this.getModelTexMap().getModel().render();
         }
     }
@@ -66,7 +66,7 @@ public class RenderItemM56SG extends ItemRenderer
             OpenGL.rotate(45.0F, 0.0F, 1.0F, 0.0F);
             OpenGL.rotate(-93.0F, 0.0F, 0.0F, 1.0F);
             OpenGL.scale(1.3F, 1.3F, 1.3F);
-            new Texture (Remote.downloadResource(String.format(URLs.urlSkinM56sg, player.playerUUID()), this.getModelTexMap().getTexture())).bind();;
+            new Texture (Remote.downloadResource(String.format(URLs.SKIN_M56SG, player.playerUUID()), this.getModelTexMap().getTexture())).bind();;
             this.getModelTexMap().getModel().render();
         }
     }
@@ -78,7 +78,7 @@ public class RenderItemM56SG extends ItemRenderer
         OpenGL.rotate(45F, 0.0F, 1.0F, 0.0F);
         OpenGL.translate(16F, -8F, -14F);
         OpenGL.scale(20F, 20F, 20F);
-        new Texture(Remote.downloadResource(String.format(URLs.urlSkinM56sg, Game.session().getPlayerID()), this.getModelTexMap().getTexture())).bind();
+        new Texture(Remote.downloadResource(String.format(URLs.SKIN_M56SG, Game.session().getPlayerID()), this.getModelTexMap().getTexture())).bind();
         this.getModelTexMap().getModel().render();
     }
 }

@@ -1,8 +1,8 @@
 package org.avp.entities.ai.alien;
 
 import org.avp.entities.EntityLiquidPool;
-import org.avp.entities.extended.Organism;
-import org.avp.entities.mob.EntitySpeciesAlien;
+import org.avp.entities.Organism;
+import org.avp.entities.living.EntitySpeciesAlien;
 
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;

@@ -5,8 +5,8 @@ import java.util.List;
 import org.avp.AliensVsPredator;
 import org.avp.DamageSources;
 import org.avp.Settings;
-import org.avp.Sounds;
-import org.avp.entities.fx.EntityFXElectricArc;
+import org.avp.client.Sounds;
+import org.avp.client.entityfx.EntityFXElectricArc;
 
 import com.arisux.mdxlib.lib.game.Game;
 import com.arisux.mdxlib.lib.world.Pos;

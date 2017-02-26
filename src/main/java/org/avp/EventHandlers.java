@@ -2,22 +2,22 @@ package org.avp;
 
 import java.util.ArrayList;
 
+import org.avp.client.input.InputHandler;
+import org.avp.client.render.AmmoIndicatorRenderEvent;
+import org.avp.client.render.BossBarEvent;
+import org.avp.client.render.ChestbursterOverlayEvent;
+import org.avp.client.render.FacehuggerRenderEvent;
+import org.avp.client.render.LightmapUpdateEvent;
+import org.avp.client.render.PlayerModeRenderEvent;
+import org.avp.client.render.PressureHUDRenderEvent;
+import org.avp.client.render.RenderLivingHook;
+import org.avp.client.render.RenderPlayerAPCEvent;
+import org.avp.client.render.RenderPlayerHotbarAPCEvent;
+import org.avp.client.render.TacticalHUDRenderEvent;
+import org.avp.client.render.VisionModeRenderEvent;
 import org.avp.client.render.items.RenderMotionTrackerScreen;
-import org.avp.event.EntityImpregnationHandler;
-import org.avp.event.ExtendedEntityRegistrationHandler;
-import org.avp.event.client.input.InputHandler;
-import org.avp.event.client.render.AmmoIndicatorRenderEvent;
-import org.avp.event.client.render.BossBarEvent;
-import org.avp.event.client.render.ChestbursterOverlayEvent;
-import org.avp.event.client.render.FacehuggerRenderEvent;
-import org.avp.event.client.render.LightmapUpdateEvent;
-import org.avp.event.client.render.PlayerModeRenderEvent;
-import org.avp.event.client.render.PressureHUDRenderEvent;
-import org.avp.event.client.render.RenderLivingHook;
-import org.avp.event.client.render.RenderPlayerAPCEvent;
-import org.avp.event.client.render.RenderPlayerHotbarAPCEvent;
-import org.avp.event.client.render.TacticalHUDRenderEvent;
-import org.avp.event.client.render.VisionModeRenderEvent;
+import org.avp.world.EntityImpregnationHandler;
+import org.avp.world.ExtendedEntityHandler;
 import org.avp.world.fluids.BucketHandlingEvent;
 import org.avp.world.hives.HiveHandler;
 import org.avp.world.hooks.FarmlandRegistry;
@@ -62,7 +62,7 @@ public class EventHandlers implements IInitEvent
         }
 
         this.registerEvent(EntityImpregnationHandler.instance);
-        this.registerEvent(ExtendedEntityRegistrationHandler.instance);
+        this.registerEvent(ExtendedEntityHandler.instance);
         this.registerEvent(SaveHandler.instance);
         this.registerEvent(FarmlandRegistry.instance);
         this.registerEvent(BucketHandlingEvent.instance);

@@ -1,6 +1,6 @@
 package org.avp.packets.client;
 
-import org.avp.entities.tile.TileEntityRedstoneFluxGenerator;
+import org.avp.tile.TileEntityRedstoneFluxGenerator;
 
 import com.arisux.mdxlib.lib.game.Game;
 

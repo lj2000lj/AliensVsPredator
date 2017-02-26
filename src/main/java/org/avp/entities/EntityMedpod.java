@@ -3,9 +3,8 @@ package org.avp.entities;
 import java.util.List;
 import java.util.UUID;
 
-import org.avp.entities.extended.Organism;
-import org.avp.entities.mob.EntitySpeciesAlien;
-import org.avp.entities.tile.TileEntityMedpod;
+import org.avp.entities.living.EntitySpeciesAlien;
+import org.avp.tile.TileEntityMedpod;
 
 import com.arisux.mdxlib.lib.world.Worlds;
 

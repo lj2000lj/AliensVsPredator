@@ -1,17 +1,17 @@
 package org.avp;
 
-import org.avp.entities.tile.TileEntityAssembler;
-import org.avp.entities.tile.TileEntityLocker;
-import org.avp.entities.tile.TileEntitySupplyCrate;
-import org.avp.entities.tile.TileEntityTurret;
-import org.avp.gui.GuiAssembler;
-import org.avp.gui.GuiLocker;
-import org.avp.gui.GuiModSettings;
-import org.avp.gui.GuiSupplyCrate;
-import org.avp.gui.GuiTurret;
-import org.avp.gui.GuiWristbracer;
+import org.avp.client.gui.GuiAssembler;
+import org.avp.client.gui.GuiLocker;
+import org.avp.client.gui.GuiModSettings;
+import org.avp.client.gui.GuiSupplyCrate;
+import org.avp.client.gui.GuiTurret;
+import org.avp.client.gui.GuiWristbracer;
 import org.avp.inventory.ContainerWristbracer;
 import org.avp.item.ItemWristbracer;
+import org.avp.tile.TileEntityAssembler;
+import org.avp.tile.TileEntityLocker;
+import org.avp.tile.TileEntitySupplyCrate;
+import org.avp.tile.TileEntityTurret;
 
 import com.arisux.mdxlib.lib.game.IInitEvent;
 
@@ -25,7 +25,13 @@ import net.minecraft.world.World;
 
 public class GuiHandler implements IGuiHandler, IInitEvent
 {
-    public static final GuiHandler instance = new GuiHandler();
+    public static final GuiHandler instance             = new GuiHandler();
+    public final int               GUI_ASSEMBLER        = 0;
+    public final int               GUI_TURRET           = 1;
+    public final int               GUI_WRISTBRACER      = 2;
+    public final int               GUI_LOCKER           = 3;
+    public final int               GUI_SUPPLYCRATE      = 4;
+    public final int               GUI_GRAPHICSSETTINGS = 5;
 
     @Override
     public void init(FMLInitializationEvent event)
@@ -34,15 +40,15 @@ public class GuiHandler implements IGuiHandler, IInitEvent
     }
 
     @Override
-    public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
+    public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z)
     {
-        if (ID == AliensVsPredator.properties().GUI_ASSEMBLER)
+        if (id == GUI_ASSEMBLER)
             return ((TileEntityAssembler) world.getTileEntity(x, y, z)).getNewContainer(player);
 
-        if (ID == AliensVsPredator.properties().GUI_TURRET)
+        if (id == GUI_TURRET)
             return ((TileEntityTurret) world.getTileEntity(x, y, z)).getNewContainer(player);
 
-        if (ID == AliensVsPredator.properties().GUI_WRISTBRACER && player != null && player.getCurrentEquippedItem() != null)
+        if (id == GUI_WRISTBRACER && player != null && player.getCurrentEquippedItem() != null)
         {
             Item item = player.getCurrentEquippedItem().getItem();
 
@@ -52,15 +58,15 @@ public class GuiHandler implements IGuiHandler, IInitEvent
             }
         }
 
-        if (ID == AliensVsPredator.properties().GUI_LOCKER)
+        if (id == GUI_LOCKER)
         {
             TileEntityLocker locker = (TileEntityLocker) (world.getTileEntity(x, y, z));
             return locker.getNewContainer(player);
         }
-        
-        if (ID == AliensVsPredator.properties().GUI_SUPPLYCRATE)
+
+        if (id == GUI_SUPPLYCRATE)
         {
-        	TileEntitySupplyCrate supplyCrate = (TileEntitySupplyCrate) (world.getTileEntity(x, y, z));
+            TileEntitySupplyCrate supplyCrate = (TileEntitySupplyCrate) (world.getTileEntity(x, y, z));
             return supplyCrate.getNewContainer(player);
         }
 
@@ -68,19 +74,19 @@ public class GuiHandler implements IGuiHandler, IInitEvent
     }
 
     @Override
-    public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
+    public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z)
     {
-        if (ID == AliensVsPredator.properties().GUI_ASSEMBLER)
+        if (id == GUI_ASSEMBLER)
         {
             return new GuiAssembler(player.inventory, (TileEntityAssembler) world.getTileEntity(x, y, z), world, x, y, z);
         }
 
-        if (ID == AliensVsPredator.properties().GUI_TURRET)
+        if (id == GUI_TURRET)
         {
             return new GuiTurret(player, (TileEntityTurret) world.getTileEntity(x, y, z), world, x, y, z);
         }
 
-        if (ID == AliensVsPredator.properties().GUI_WRISTBRACER)
+        if (id == GUI_WRISTBRACER)
         {
             Item item = player.getCurrentEquippedItem().getItem();
 
@@ -90,17 +96,17 @@ public class GuiHandler implements IGuiHandler, IInitEvent
             }
         }
 
-        if (ID == AliensVsPredator.properties().GUI_LOCKER)
+        if (id == GUI_LOCKER)
         {
             return new GuiLocker(player, (TileEntityLocker) (world.getTileEntity(x, y, z)));
         }
-        
-        if (ID == AliensVsPredator.properties().GUI_SUPPLYCRATE)
+
+        if (id == GUI_SUPPLYCRATE)
         {
             return new GuiSupplyCrate(player, (TileEntitySupplyCrate) (world.getTileEntity(x, y, z)));
         }
-        
-        if (ID == AliensVsPredator.properties().GUI_GRAPHICSSETTINGS)
+
+        if (id == GUI_GRAPHICSSETTINGS)
         {
             return new GuiModSettings(Minecraft.getMinecraft().currentScreen);
         }

@@ -1,0 +1,25 @@
+package org.avp.client.model.entities;
+
+import org.lwjgl.opengl.GL11;
+
+import com.arisux.mdxlib.lib.client.Model;
+import com.arisux.mdxlib.lib.client.render.Draw;
+import com.arisux.mdxlib.lib.client.render.OpenGL;
+
+public class ModelSpear extends Model
+{
+    private final float scale = 0.08F;
+
+    @Override
+    public void render(Object obj)
+    {
+        OpenGL.scale(scale + 0.02F, scale, scale);
+
+        for (int x = 0; x < 4; ++x)
+        {
+            OpenGL.rotate(90.0F, 1.0F, 0.0F, 0.0F);
+            GL11.glNormal3f(0.0F, 0.0F, scale);
+            Draw.drawQuad(-20, 3, 40, -6, 0, 0F, 1F, 0, 0.155F);
+        }
+    }
+}

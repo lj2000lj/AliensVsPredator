@@ -1,0 +1,29 @@
+package org.avp.client.render.entities.living;
+
+import org.avp.AliensVsPredator;
+
+import com.arisux.mdxlib.lib.client.RenderLivingWrapper;
+import com.arisux.mdxlib.lib.client.render.OpenGL;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+
+public class RenderQueen extends RenderLivingWrapper
+{
+    public RenderQueen()
+    {
+        super(AliensVsPredator.resources().models().XENOQUEEN);
+    }
+
+    @Override
+    public void doRender(Entity entity, double posX, double posY, double posZ, float yaw, float renderPartialTicks)
+    {
+        super.doRender(entity, posX, posY, posZ, yaw, renderPartialTicks);
+    }
+
+    @Override
+    protected void preRenderCallback(EntityLivingBase entityliving, float partialTicks)
+    {
+        OpenGL.scale(1.75F, 1.75F, 1.75F);
+    }
+}

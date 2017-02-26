@@ -3,10 +3,10 @@ package org.avp.world.hives;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import org.avp.entities.mob.EntityQueen;
-import org.avp.entities.mob.EntitySpeciesAlien;
-import org.avp.entities.tile.TileEntityHiveResin;
-import org.avp.util.IDataSaveHandler;
+import org.avp.api.storage.IWorldSaveHandler;
+import org.avp.entities.living.EntityQueen;
+import org.avp.entities.living.EntitySpeciesAlien;
+import org.avp.tile.TileEntityHiveResin;
 
 import com.arisux.mdxlib.MDX;
 import com.arisux.mdxlib.lib.game.Game;
@@ -24,7 +24,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.event.world.BlockEvent;
 
-public class HiveHandler implements IDataSaveHandler
+public class HiveHandler implements IWorldSaveHandler
 {
     public static final HiveHandler  instance = new HiveHandler();
     private ArrayList<XenomorphHive> hives    = null;

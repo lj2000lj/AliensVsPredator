@@ -1,8 +1,8 @@
 package org.avp.block;
 
 import org.avp.AliensVsPredator;
-import org.avp.entities.mob.EntityOvamorph;
-import org.avp.entities.mob.EntityQueen;
+import org.avp.entities.living.EntityOvamorph;
+import org.avp.entities.living.EntityQueen;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

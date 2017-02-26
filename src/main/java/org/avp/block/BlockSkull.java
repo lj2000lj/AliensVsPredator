@@ -2,7 +2,7 @@ package org.avp.block;
 
 import java.util.Random;
 
-import org.avp.entities.tile.TileEntitySkull;
+import org.avp.tile.TileEntitySkull;
 
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.client.render.Texture;

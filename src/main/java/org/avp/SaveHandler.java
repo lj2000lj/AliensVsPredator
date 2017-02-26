@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.avp.util.IDataSaveHandler;
+import org.avp.api.storage.IWorldSaveHandler;
 import org.avp.world.hives.HiveHandler;
 
 import com.arisux.mdxlib.MDX;
@@ -19,11 +19,11 @@ import net.minecraftforge.event.world.WorldEvent;
 public class SaveHandler
 {
     public static SaveHandler           instance = new SaveHandler();
-    private ArrayList<IDataSaveHandler> dataHandlers;
+    private ArrayList<IWorldSaveHandler> dataHandlers;
 
     public SaveHandler()
     {
-        this.dataHandlers = new ArrayList<IDataSaveHandler>();
+        this.dataHandlers = new ArrayList<IWorldSaveHandler>();
         this.addDataHandlers();
     }
 
@@ -52,7 +52,7 @@ public class SaveHandler
 
         try
         {
-            for (IDataSaveHandler dataHandler : this.dataHandlers)
+            for (IWorldSaveHandler dataHandler : this.dataHandlers)
             {
                 if (dataHandler != null)
                 {
@@ -88,7 +88,7 @@ public class SaveHandler
                     NBTTagCompound read = NBTStorage.readCompressed(worldSave.getAbsoluteFile());
                     tag = read == null ? tag : read;
 
-                    for (IDataSaveHandler dataHandler : this.dataHandlers)
+                    for (IWorldSaveHandler dataHandler : this.dataHandlers)
                     {
                         if (dataHandler != null)
                         {

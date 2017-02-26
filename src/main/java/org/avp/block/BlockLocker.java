@@ -1,6 +1,6 @@
 package org.avp.block;
 
-import org.avp.entities.tile.TileEntityLocker;
+import org.avp.tile.TileEntityLocker;
 
 import com.arisux.mdxlib.lib.world.tile.IRotatable;
 

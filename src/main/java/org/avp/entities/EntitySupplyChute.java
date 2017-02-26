@@ -3,8 +3,8 @@ package org.avp.entities;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.avp.entities.tile.TileEntitySupplyCrate;
 import org.avp.item.ItemSupplyChute.SupplyChuteType;
+import org.avp.tile.TileEntitySupplyCrate;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

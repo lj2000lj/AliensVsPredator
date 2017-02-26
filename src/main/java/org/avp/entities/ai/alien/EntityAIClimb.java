@@ -1,6 +1,6 @@
 package org.avp.entities.ai.alien;
 
-import org.avp.entities.mob.EntityXenomorph;
+import org.avp.entities.living.EntityXenomorph;
 
 import net.minecraft.entity.ai.EntityAIBase;
 

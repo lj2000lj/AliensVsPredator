@@ -88,7 +88,7 @@ public class RenderItemSniper extends ItemRenderer
             OpenGL.translate(0.1F, -0.0F, 0.8F);
             float glScale = 1.2F;
             OpenGL.scale(glScale, glScale, glScale);
-            new Texture(Remote.downloadResource(String.format(URLs.urlSkinSniper, player.playerUUID()), this.getModelTexMap().getTexture())).bind();
+            new Texture(Remote.downloadResource(String.format(URLs.SKIN_SNIPER, player.playerUUID()), this.getModelTexMap().getTexture())).bind();
             this.getModelTexMap().getModel().render();
         }
     }
@@ -117,7 +117,7 @@ public class RenderItemSniper extends ItemRenderer
                 OpenGL.scale(2.2F, 2.2F, 2.2F);
             }
             OpenGL.disable(GL11.GL_CULL_FACE);
-            new Texture(Remote.downloadResource(String.format(URLs.urlSkinSniper, Game.session().getPlayerID()), this.getModelTexMap().getTexture())).bind();;
+            new Texture(Remote.downloadResource(String.format(URLs.SKIN_SNIPER, Game.session().getPlayerID()), this.getModelTexMap().getTexture())).bind();;
             this.getModel().render();
         }
     }
@@ -130,7 +130,7 @@ public class RenderItemSniper extends ItemRenderer
         OpenGL.translate(12F, 0F, 0F);
         float glScale = 20F;
         OpenGL.scale(glScale, glScale, glScale);
-        new Texture(Remote.downloadResource(String.format(URLs.urlSkinSniper, Game.session().getPlayerID()), this.getModelTexMap().getTexture())).bind();;
+        new Texture(Remote.downloadResource(String.format(URLs.SKIN_SNIPER, Game.session().getPlayerID()), this.getModelTexMap().getTexture())).bind();;
         this.getModel().render();
     }
 }

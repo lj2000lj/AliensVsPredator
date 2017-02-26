@@ -57,7 +57,7 @@ public class RenderItemM41A extends ItemRenderer
             OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
             OpenGL.translate(0.28F, -0.77F, 0.85F);
             OpenGL.scale(glScale, glScale, glScale);
-            new Texture(Remote.downloadResource(String.format(URLs.urlSkinM41a, player.playerUUID()), this.getModelTexMap().getTexture())).bind();
+            new Texture(Remote.downloadResource(String.format(URLs.SKIN_M41A, player.playerUUID()), this.getModelTexMap().getTexture())).bind();
             this.getModelTexMap().getModel().render();
         }
     }
@@ -88,7 +88,7 @@ public class RenderItemM41A extends ItemRenderer
 
             OpenGL.disable(GL11.GL_CULL_FACE);
             OpenGL.scale(glScale, glScale, glScale);
-            new Texture(Remote.downloadResource(String.format(URLs.urlSkinM41a, Game.session().getPlayerID()), this.getModelTexMap().getTexture())).bind();
+            new Texture(Remote.downloadResource(String.format(URLs.SKIN_M41A, Game.session().getPlayerID()), this.getModelTexMap().getTexture())).bind();
             this.getModelTexMap().getModel().render();
 
             if (mc.thePlayer.getCurrentEquippedItem() != null && mc.thePlayer.getCurrentEquippedItem().getItem() instanceof ItemFirearm)
@@ -124,7 +124,7 @@ public class RenderItemM41A extends ItemRenderer
         OpenGL.translate(14F, -7F, 0F);
         OpenGL.scale(20F, 20F, 20F);
         OpenGL.disable(GL11.GL_CULL_FACE);
-        new Texture(Remote.downloadResource(String.format(URLs.urlSkinM41a, Game.session().getPlayerID()), this.getModelTexMap().getTexture())).bind();
+        new Texture(Remote.downloadResource(String.format(URLs.SKIN_M41A, Game.session().getPlayerID()), this.getModelTexMap().getTexture())).bind();
         this.getModelTexMap().getModel().render();
     }
 

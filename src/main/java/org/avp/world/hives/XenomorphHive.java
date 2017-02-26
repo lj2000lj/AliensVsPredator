@@ -3,9 +3,9 @@ package org.avp.world.hives;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import org.avp.entities.mob.EntityQueen;
-import org.avp.entities.mob.EntitySpeciesAlien;
-import org.avp.entities.tile.TileEntityHiveResin;
+import org.avp.entities.living.EntityQueen;
+import org.avp.entities.living.EntitySpeciesAlien;
+import org.avp.tile.TileEntityHiveResin;
 
 import com.arisux.mdxlib.MDX;
 import com.arisux.mdxlib.lib.world.Pos;

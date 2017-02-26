@@ -1,6 +1,6 @@
 package org.avp.packets.server;
 
-import org.avp.Sounds;
+import org.avp.client.Sounds;
 import org.avp.entities.EntityPlasma;
 
 import com.arisux.mdxlib.lib.util.MDXMath;

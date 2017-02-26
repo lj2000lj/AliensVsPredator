@@ -1,7 +1,7 @@
 package org.avp.block;
 
-import org.avp.entities.tile.TileEntityBlastdoor;
 import org.avp.item.ItemMaintenanceJack;
+import org.avp.tile.TileEntityBlastdoor;
 
 import com.arisux.mdxlib.MDX;
 import com.arisux.mdxlib.lib.client.Notification;

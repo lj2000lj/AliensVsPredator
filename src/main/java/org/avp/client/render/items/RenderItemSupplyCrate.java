@@ -1,6 +1,6 @@
 package org.avp.client.render.items;
 
-import org.avp.entities.model.ModelSupplyChute;
+import org.avp.client.model.entities.ModelSupplyChute;
 import org.avp.item.ItemSupplyChute.SupplyChuteType;
 import org.lwjgl.opengl.GL11;
 

@@ -1,10 +1,10 @@
 package org.avp.item;
 
 import org.avp.AliensVsPredator;
+import org.avp.client.model.entities.ModelSupplyChute;
 import org.avp.entities.EntitySupplyChute;
 import org.avp.entities.EntitySupplyChuteMarines;
 import org.avp.entities.EntitySupplyChuteSeegson;
-import org.avp.entities.model.ModelSupplyChute;
 
 import com.arisux.mdxlib.lib.client.TexturedModel;
 import com.arisux.mdxlib.lib.world.item.HookedItem;

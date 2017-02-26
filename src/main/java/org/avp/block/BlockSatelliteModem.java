@@ -2,7 +2,7 @@ package org.avp.block;
 
 import java.util.Random;
 
-import org.avp.entities.tile.TileEntitySatelliteModem;
+import org.avp.tile.TileEntitySatelliteModem;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

@@ -1,7 +1,7 @@
 package org.avp.block;
 
-import org.avp.entities.tile.TileEntityMedpod;
-import org.avp.util.IOpenable;
+import org.avp.api.machines.IOpenable;
+import org.avp.tile.TileEntityMedpod;
 
 import com.arisux.mdxlib.lib.world.tile.IRotatable;
 

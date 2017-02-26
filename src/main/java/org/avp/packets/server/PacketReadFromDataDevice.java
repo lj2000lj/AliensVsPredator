@@ -1,7 +1,7 @@
 package org.avp.packets.server;
 
-import org.avp.entities.tile.TileEntityTurret;
-import org.avp.util.IDataDevice;
+import org.avp.api.machines.IDataDevice;
+import org.avp.tile.TileEntityTurret;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;

@@ -1,6 +1,6 @@
 package org.avp.block;
 
-import org.avp.entities.tile.TileEntityPowercell;
+import org.avp.tile.TileEntityPowercell;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

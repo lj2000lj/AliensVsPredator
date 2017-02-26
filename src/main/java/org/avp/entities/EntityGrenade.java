@@ -3,7 +3,7 @@ package org.avp.entities;
 import java.util.List;
 
 import org.avp.AliensVsPredator;
-import org.avp.entities.mob.EntityXenomorph;
+import org.avp.entities.living.EntityXenomorph;
 
 import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.Worlds;

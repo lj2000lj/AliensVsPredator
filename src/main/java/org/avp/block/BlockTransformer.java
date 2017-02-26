@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import org.avp.AliensVsPredator;
-import org.avp.entities.tile.TileEntityTransformer;
 import org.avp.packets.client.PacketRotateRotatable;
+import org.avp.tile.TileEntityTransformer;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

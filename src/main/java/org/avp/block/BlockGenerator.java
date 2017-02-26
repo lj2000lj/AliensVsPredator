@@ -1,6 +1,6 @@
 package org.avp.block;
 
-import org.avp.entities.tile.TileEntityRepulsionGenerator;
+import org.avp.tile.TileEntityRepulsionGenerator;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

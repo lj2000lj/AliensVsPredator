@@ -1,6 +1,6 @@
 package org.avp.packets.server;
 
-import org.avp.entities.tile.TileEntityTurret;
+import org.avp.tile.TileEntityTurret;
 
 import com.arisux.mdxlib.lib.client.render.Rotation;
 import com.arisux.mdxlib.lib.game.Game;

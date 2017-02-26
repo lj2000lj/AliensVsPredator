@@ -1,7 +1,7 @@
 package org.avp.block.materials;
 
-import org.avp.api.material.IMaterialPhysics;
-import org.avp.api.material.IMaterialRenderer;
+import org.avp.api.blocks.material.IMaterialPhysics;
+import org.avp.api.blocks.material.IMaterialRenderer;
 import org.avp.client.render.materials.RenderMaterialMist;
 
 import cpw.mods.fml.relauncher.Side;

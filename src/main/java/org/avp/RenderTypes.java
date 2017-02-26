@@ -4,6 +4,8 @@ import com.arisux.mdxlib.lib.game.IPreInitEvent;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class RenderTypes implements IPreInitEvent
 {

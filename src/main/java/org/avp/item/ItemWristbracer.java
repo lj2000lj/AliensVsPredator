@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import org.avp.AliensVsPredator;
 import org.avp.DamageSources;
-import org.avp.Sounds;
+import org.avp.client.Sounds;
 import org.avp.inventory.ContainerWristbracer;
 import org.avp.packets.server.PacketSpawnNuke;
 

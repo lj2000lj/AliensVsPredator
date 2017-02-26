@@ -3,7 +3,7 @@ package org.avp.entities;
 import java.util.List;
 
 import org.avp.DamageSources;
-import org.avp.entities.mob.EntityMarine;
+import org.avp.entities.living.EntityMarine;
 
 import com.arisux.mdxlib.lib.game.GameSounds;
 

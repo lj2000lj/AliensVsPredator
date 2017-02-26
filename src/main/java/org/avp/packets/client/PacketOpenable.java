@@ -1,6 +1,6 @@
 package org.avp.packets.client;
 
-import org.avp.util.IOpenable;
+import org.avp.api.machines.IOpenable;
 
 import com.arisux.mdxlib.lib.game.Game;
 

@@ -2,8 +2,8 @@ package org.avp.block;
 
 import java.util.Random;
 
-import org.avp.entities.tile.TileEntityStasisMechanism;
 import org.avp.item.ItemEntitySummoner;
+import org.avp.tile.TileEntityStasisMechanism;
 
 import com.arisux.mdxlib.lib.world.entity.player.inventory.Inventories;
 

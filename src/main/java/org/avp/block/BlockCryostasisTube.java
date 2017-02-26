@@ -1,7 +1,7 @@
 package org.avp.block;
 
-import org.avp.entities.tile.TileEntityCryostasisTube;
 import org.avp.item.ItemEntitySummoner;
+import org.avp.tile.TileEntityCryostasisTube;
 
 import com.arisux.mdxlib.lib.world.entity.player.inventory.Inventories;
 

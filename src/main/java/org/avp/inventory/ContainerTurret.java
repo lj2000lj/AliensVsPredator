@@ -1,6 +1,6 @@
 package org.avp.inventory;
 
-import org.avp.entities.tile.TileEntityTurret;
+import org.avp.tile.TileEntityTurret;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;

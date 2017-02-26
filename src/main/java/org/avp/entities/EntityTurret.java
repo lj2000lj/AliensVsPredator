@@ -1,6 +1,6 @@
 package org.avp.entities;
 
-import org.avp.entities.tile.TileEntityTurret;
+import org.avp.tile.TileEntityTurret;
 
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;

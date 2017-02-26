@@ -1,6 +1,6 @@
 package org.avp.packets.client;
 
-import org.avp.entities.mob.EntityOvamorph;
+import org.avp.entities.living.EntityOvamorph;
 
 import com.arisux.mdxlib.lib.game.Game;
 

@@ -52,7 +52,7 @@ public class RenderItemAK47 extends ItemRenderer
             OpenGL.rotate(80.0F, 0.0F, 0.0F, 1.0F);
             OpenGL.disable(GL11.GL_CULL_FACE);
             OpenGL.scale(1.3F, 1.3F, 1.3F);
-            new Texture(Remote.downloadResource(String.format(URLs.urlSkinAk47, player.playerUUID()), this.getModelTexMap().getTexture())).bind();
+            new Texture(Remote.downloadResource(String.format(URLs.SKIN_AK47, player.playerUUID()), this.getModelTexMap().getTexture())).bind();
             this.getModelTexMap().getModel().render();
         }
     }
@@ -81,7 +81,7 @@ public class RenderItemAK47 extends ItemRenderer
 
             float glScale = 2.0F;
             OpenGL.scale(glScale, glScale, glScale);
-            new Texture(Remote.downloadResource(String.format(URLs.urlSkinAk47, Game.session().getPlayerID()), this.getModelTexMap().getTexture())).bind();
+            new Texture(Remote.downloadResource(String.format(URLs.SKIN_AK47, Game.session().getPlayerID()), this.getModelTexMap().getTexture())).bind();
             this.getModelTexMap().getModel().render();
         }
     }
@@ -94,7 +94,7 @@ public class RenderItemAK47 extends ItemRenderer
         OpenGL.translate(15F, -8F, -18F);
         float glScale = 22F;
         OpenGL.scale(glScale, glScale, glScale);
-        new Texture(Remote.downloadResource(String.format(URLs.urlSkinAk47, Game.session().getPlayerID()), this.getModelTexMap().getTexture())).bind();
+        new Texture(Remote.downloadResource(String.format(URLs.SKIN_AK47, Game.session().getPlayerID()), this.getModelTexMap().getTexture())).bind();
         this.getModelTexMap().getModel().render();
     }
 }

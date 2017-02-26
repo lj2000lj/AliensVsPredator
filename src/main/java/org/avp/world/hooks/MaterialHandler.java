@@ -1,7 +1,7 @@
 package org.avp.world.hooks;
 
-import org.avp.api.material.IMaterialPhysics;
-import org.avp.api.material.IMaterialRenderer;
+import org.avp.api.blocks.material.IMaterialPhysics;
+import org.avp.api.blocks.material.IMaterialRenderer;
 
 import com.arisux.mdxlib.MDX;
 import com.arisux.mdxlib.lib.game.Game;

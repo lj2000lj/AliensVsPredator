@@ -1,6 +1,6 @@
 package org.avp.packets.client;
 
-import org.avp.entities.tile.TileEntityBlastdoor;
+import org.avp.tile.TileEntityBlastdoor;
 
 import com.arisux.mdxlib.lib.game.Game;
 

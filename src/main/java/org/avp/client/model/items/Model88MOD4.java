@@ -1,6 +1,6 @@
 package org.avp.client.model.items;
 
-import org.avp.util.IFirearmModel;
+import org.avp.api.client.render.IFirearmModel;
 
 import com.arisux.mdxlib.lib.client.Model;
 

@@ -1,8 +1,8 @@
 package org.avp.item;
 
 import org.avp.AliensVsPredator;
-import org.avp.entities.extended.ModPlayer;
-import org.avp.entities.mob.model.ModelDrone;
+import org.avp.client.model.entities.living.ModelDrone;
+import org.avp.entities.SharedPlayer;
 
 import com.arisux.mdxlib.lib.client.render.Draw;
 import com.arisux.mdxlib.lib.game.Game;
@@ -66,7 +66,7 @@ public class ItemArmorXeno extends ItemArmor
     {
         if (isPlayerWearingXenoArmorSet(player))
         {
-            ModPlayer specialPlayer = ModPlayer.get(player);
+            SharedPlayer specialPlayer = SharedPlayer.get(player);
 
             if (world.isRemote)
             {
@@ -83,7 +83,7 @@ public class ItemArmorXeno extends ItemArmor
     }
 
     @SideOnly(Side.CLIENT)
-    public void controlledAbility(ModPlayer specialPlayer)
+    public void controlledAbility(SharedPlayer specialPlayer)
     {
         boolean canClimbPrev = specialPlayer.canClimb();
 

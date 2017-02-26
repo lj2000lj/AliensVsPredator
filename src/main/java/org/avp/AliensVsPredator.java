@@ -1,6 +1,10 @@
 /** AliensVsPredator Minecraft Mod - Copyright (C) 2012-2017 Arisux Technology Group **/
 package org.avp;
 
+import org.avp.client.KeybindHandler;
+import org.avp.client.Renderers;
+import org.avp.client.Resources;
+import org.avp.client.Sounds;
 import org.avp.world.hives.HiveHandler;
 
 import com.arisux.mdxlib.MDX;
@@ -28,7 +32,7 @@ public class AliensVsPredator implements IMod
 
     @Mod.Instance(AliensVsPredator.ID)
     private static AliensVsPredator instance;
-    
+
     private ModContainer            container;
 
     @Override
@@ -199,18 +203,18 @@ public class AliensVsPredator implements IMod
         {
             return;
         }
-        
-        MDX.log().info("[AliensVsPredator] Copyright(C) 2012-2017 Arisux Technology Group");
+
+        MDX.log().info("[AliensVsPredator] Copyright(C) 2012-2017 ASX");
         MDX.log().info("[AliensVsPredator] Pre-Initialization");
 
         settings().pre(event);
-        renderTypes().pre(event);
-        this.remapItemIdentities();
-    }
+        fluids().pre(event);
+        items().pre(event);
 
-    private void remapItemIdentities()
-    {
-        MDX.registerMappingInfo("summon.protomorph", "summon.deacon", AliensVsPredator.ID);
+        if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
+        {
+            renderTypes().pre(event);
+        }
     }
 
     @Override
@@ -221,10 +225,9 @@ public class AliensVsPredator implements IMod
         {
             return;
         }
-        
-        MDX.log().info("[AliensVsPredator] Initialization");
 
-        fluids().init(event);
+        MDX.log().info("[AliensVsPredator] Initialization");
+        
         network().init(event);
         materials().init(event);
         items().init(event);
@@ -249,7 +252,7 @@ public class AliensVsPredator implements IMod
         {
             return;
         }
-        
+
         MDX.log().info("[AliensVsPredator] Post-Initialization");
 
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
@@ -267,7 +270,7 @@ public class AliensVsPredator implements IMod
         {
             return;
         }
-        
+
         commands().onServerStarting(event);
     }
 

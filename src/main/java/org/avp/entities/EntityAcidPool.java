@@ -2,7 +2,7 @@ package org.avp.entities;
 
 import org.avp.DamageSources;
 import org.avp.entities.ai.EntityAIMeltBlock;
-import org.avp.entities.mob.EntitySpeciesAlien;
+import org.avp.entities.living.EntitySpeciesAlien;
 
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;

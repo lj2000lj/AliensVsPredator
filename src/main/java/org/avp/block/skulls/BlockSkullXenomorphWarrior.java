@@ -2,7 +2,7 @@ package org.avp.block.skulls;
 
 import org.avp.AliensVsPredator;
 import org.avp.block.BlockSkull;
-import org.avp.entities.mob.model.ModelWarrior;
+import org.avp.client.model.entities.living.ModelWarrior;
 
 import com.arisux.mdxlib.lib.client.TexturedModel;
 import com.arisux.mdxlib.lib.client.render.OpenGL;

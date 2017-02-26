@@ -1,7 +1,7 @@
 package org.avp.packets.client;
 
-import org.avp.entities.extended.ModPlayer;
-import org.avp.util.PlayerMode;
+import org.avp.entities.SharedPlayer;
+import org.avp.world.playermode.PlayerMode;
 
 import com.arisux.mdxlib.lib.game.Game;
 
@@ -39,7 +39,7 @@ public class PacketPlayerModeUpdate implements IMessage, IMessageHandler<PacketP
     @Override
     public PacketPlayerModeUpdate onMessage(PacketPlayerModeUpdate packet, MessageContext ctx)
     {
-        ModPlayer playerExtension = (ModPlayer) Game.minecraft().thePlayer.getExtendedProperties(ModPlayer.IDENTIFIER);
+        SharedPlayer playerExtension = (SharedPlayer) Game.minecraft().thePlayer.getExtendedProperties(SharedPlayer.IDENTIFIER);
         playerExtension.setPlayerMode(PlayerMode.get(packet.mode));
 
         return null;

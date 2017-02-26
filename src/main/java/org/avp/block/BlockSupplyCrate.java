@@ -3,8 +3,8 @@ package org.avp.block;
 import java.util.Random;
 
 import org.avp.entities.EntitySupplyChute;
-import org.avp.entities.tile.TileEntitySupplyCrate;
 import org.avp.item.ItemSupplyChute.SupplyChuteType;
+import org.avp.tile.TileEntitySupplyCrate;
 
 import com.arisux.mdxlib.lib.world.tile.IRotatable;
 
