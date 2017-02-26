@@ -33,7 +33,7 @@ apply plugin: 'maven'
 version = "4.0.0.${System.env.BUILD_NUMBER}"
 group = "org.avp"
 archivesBaseName = "aliensvspredator"
-project.ext.set("mdxversion", "1.0.0.60")
+project.ext.set("mdxversion", "1.0.0.62")
 
 tasks.withType(JavaCompile) {
 	sourceCompatibility = "1.8"
