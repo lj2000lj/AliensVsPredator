@@ -1,6 +1,6 @@
 package org.avp.packets.server;
 
-import org.avp.items.ItemFirearm;
+import org.avp.item.ItemFirearm;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;

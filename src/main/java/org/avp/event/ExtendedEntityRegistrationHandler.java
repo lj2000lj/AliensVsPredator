@@ -1,7 +1,7 @@
 package org.avp.event;
 
-import org.avp.entities.extended.Organism;
 import org.avp.entities.extended.ModPlayer;
+import org.avp.entities.extended.Organism;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.Entity;

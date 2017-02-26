@@ -1,4 +1,4 @@
-package org.avp.items;
+package org.avp.item;
 
 import com.arisux.mdxlib.lib.world.item.HookedItem;
 

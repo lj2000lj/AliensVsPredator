@@ -2,7 +2,7 @@ package org.avp.packets.server;
 
 import org.avp.DamageSources;
 import org.avp.block.BlockHiveResin;
-import org.avp.items.ItemFirearm;
+import org.avp.item.ItemFirearm;
 import org.avp.world.hives.HiveHandler;
 
 import com.arisux.mdxlib.lib.world.entity.Entities;
@@ -14,7 +14,6 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;

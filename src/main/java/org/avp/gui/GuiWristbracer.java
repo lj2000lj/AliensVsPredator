@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.avp.AliensVsPredator;
 import org.avp.inventory.ContainerWristbracer;
-import org.avp.items.ItemWristbracer;
+import org.avp.item.ItemWristbracer;
 import org.lwjgl.opengl.GL11;
 
 import com.arisux.mdxlib.lib.client.gui.GuiCustomButton;

@@ -1,6 +1,6 @@
 package org.avp.client.render.items;
 
-import org.avp.items.ItemSupplyChute;
+import org.avp.item.ItemSupplyChute;
 import org.lwjgl.opengl.GL11;
 
 import com.arisux.mdxlib.lib.client.render.ItemRenderer;

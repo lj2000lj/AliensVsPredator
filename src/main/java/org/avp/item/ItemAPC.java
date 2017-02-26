@@ -1,4 +1,4 @@
-package org.avp.items;
+package org.avp.item;
 
 import java.util.List;
 

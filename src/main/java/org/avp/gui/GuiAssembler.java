@@ -4,8 +4,9 @@ import java.util.ArrayList;
 
 import org.avp.AliensVsPredator;
 import org.avp.entities.tile.TileEntityAssembler;
-import org.avp.init.Assembler.AssemblerSchematic;
-import org.avp.packets.server.PacketAssembleCurrentSchematic;
+import org.avp.item.crafting.AssemblyManager;
+import org.avp.item.crafting.Schematic;
+import org.avp.packets.server.PacketAssemble;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
@@ -15,7 +16,6 @@ import com.arisux.mdxlib.lib.client.gui.IGuiElement;
 import com.arisux.mdxlib.lib.client.render.Draw;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.game.Game;
-import com.arisux.mdxlib.lib.world.entity.player.inventory.Inventories;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -29,7 +29,7 @@ import net.minecraft.world.World;
 
 public class GuiAssembler extends GuiContainer
 {
-    private ArrayList<AssemblerSchematic> schematics;
+    private ArrayList<Schematic> schematics;
     private GuiCustomButton buttonScrollUp;
     private GuiCustomButton buttonScrollDown;
     private GuiCustomButton buttonAssemble;
@@ -44,8 +44,7 @@ public class GuiAssembler extends GuiContainer
     public GuiAssembler(InventoryPlayer invPlayer, TileEntityAssembler assembler, World world, int x, int y, int z)
     {
         super(assembler.getNewContainer(invPlayer.player));
-        this.schematics = AliensVsPredator.assembler().getSchematicRegistry();
-
+        this.schematics = AssemblyManager.instance.schematics();
         this.xSize = 256;
         this.ySize = 170;
     }
@@ -71,7 +70,7 @@ public class GuiAssembler extends GuiContainer
     {
         if (schematics != null)
         {
-            AssemblerSchematic selectedSchematic = schematics.get(getScroll());
+            Schematic selectedSchematic = schematics.get(getScroll());
 
             if (selectedSchematic != null)
             {
@@ -82,11 +81,12 @@ public class GuiAssembler extends GuiContainer
                 for (ItemStack stack : selectedSchematic.getItemsRequired())
                 {
                     curStack++;
-                    int amountOfStack = Inventories.getAmountOfItemPlayerHas(stack.getItem(), Game.minecraft().thePlayer);
+                    int amountOfStack = AssemblyManager.amountForMatchingStack(Game.minecraft().thePlayer, stack);
                     boolean playerHasItemstack = amountOfStack > 0;
                     int stackY = this.ySize + 12 + (curStack * 12);
                     int curStackSize = (amountOfStack > stack.stackSize ? stack.stackSize : amountOfStack);
-                    Draw.drawRect(2, stackY - 2, this.xSize - 4, 12, 0x11FFFFFF);
+                    OpenGL.enableBlend();
+                    Draw.drawRect(2, stackY - 2, this.xSize - 4, 12, 0x22FFFFFF);
                     Draw.drawString(curStackSize + "/" + stack.stackSize, 220, stackY, curStackSize >= stack.stackSize ? 0xFF00AAFF : curStackSize < stack.stackSize && curStackSize > 0 ? 0xFFFFAA00 : 0xFF888888);
                     Draw.drawString(stack.getDisplayName(), 20, stackY, 0xFF888888);
                     Draw.drawItemIcon(stack.getItem(), 5, stackY, 8, 8);
@@ -117,7 +117,7 @@ public class GuiAssembler extends GuiContainer
              */
             int curItem = -1;
 
-            for (AssemblerSchematic schematic : schematics)
+            for (Schematic schematic : schematics)
             {
                 if (schematic != null && schematic.getItemStackAssembled() != null)
                 {
@@ -195,9 +195,9 @@ public class GuiAssembler extends GuiContainer
             @Override
             public void perform(IGuiElement element)
             {
-                AssemblerSchematic selectedSchematic = schematics.get(getScroll());
-                AliensVsPredator.assembler().assembleSchematicAsPlayer(selectedSchematic, Game.minecraft().thePlayer);
-                AliensVsPredator.network().sendToServer(new PacketAssembleCurrentSchematic(selectedSchematic.getSchematicId(), 1));
+                Schematic selectedSchematic = schematics.get(getScroll());
+                AssemblyManager.handleAssembly(selectedSchematic, Game.minecraft().thePlayer);
+                AliensVsPredator.network().sendToServer(new PacketAssemble(selectedSchematic.getId(), 1));
             }
         });
 
@@ -212,9 +212,9 @@ public class GuiAssembler extends GuiContainer
             @Override
             public void perform(IGuiElement element)
             {
-                AssemblerSchematic selectedSchematic = schematics.get(getScroll());
-                AliensVsPredator.assembler().assembleSchematicAsPlayer(selectedSchematic, Game.minecraft().thePlayer);
-                AliensVsPredator.network().sendToServer(new PacketAssembleCurrentSchematic(selectedSchematic.getSchematicId(), 4));
+                Schematic selectedSchematic = schematics.get(getScroll());
+                AssemblyManager.handleAssembly(selectedSchematic, Game.minecraft().thePlayer);
+                AliensVsPredator.network().sendToServer(new PacketAssemble(selectedSchematic.getId(), 4));
             }
         });
 
@@ -229,9 +229,9 @@ public class GuiAssembler extends GuiContainer
             @Override
             public void perform(IGuiElement element)
             {
-                AssemblerSchematic selectedSchematic = schematics.get(getScroll());
-                AliensVsPredator.assembler().assembleSchematicAsPlayer(selectedSchematic, Game.minecraft().thePlayer);
-                AliensVsPredator.network().sendToServer(new PacketAssembleCurrentSchematic(selectedSchematic.getSchematicId(), 8));
+                Schematic selectedSchematic = schematics.get(getScroll());
+                AssemblyManager.handleAssembly(selectedSchematic, Game.minecraft().thePlayer);
+                AliensVsPredator.network().sendToServer(new PacketAssemble(selectedSchematic.getId(), 8));
             }
         });
 
@@ -246,9 +246,9 @@ public class GuiAssembler extends GuiContainer
             @Override
             public void perform(IGuiElement element)
             {
-                AssemblerSchematic selectedSchematic = schematics.get(getScroll());
-                AliensVsPredator.assembler().assembleSchematicAsPlayer(selectedSchematic, Game.minecraft().thePlayer);
-                AliensVsPredator.network().sendToServer(new PacketAssembleCurrentSchematic(selectedSchematic.getSchematicId(), 16));
+                Schematic selectedSchematic = schematics.get(getScroll());
+                AssemblyManager.handleAssembly(selectedSchematic, Game.minecraft().thePlayer);
+                AliensVsPredator.network().sendToServer(new PacketAssemble(selectedSchematic.getId(), 16));
             }
         });
 
@@ -263,9 +263,9 @@ public class GuiAssembler extends GuiContainer
             @Override
             public void perform(IGuiElement element)
             {
-                AssemblerSchematic selectedSchematic = schematics.get(getScroll());
-                AliensVsPredator.assembler().assembleSchematicAsPlayer(selectedSchematic, Game.minecraft().thePlayer);
-                AliensVsPredator.network().sendToServer(new PacketAssembleCurrentSchematic(selectedSchematic.getSchematicId(), 32));
+                Schematic selectedSchematic = schematics.get(getScroll());
+                AssemblyManager.handleAssembly(selectedSchematic, Game.minecraft().thePlayer);
+                AliensVsPredator.network().sendToServer(new PacketAssemble(selectedSchematic.getId(), 32));
             }
         });
 
@@ -280,9 +280,9 @@ public class GuiAssembler extends GuiContainer
             @Override
             public void perform(IGuiElement element)
             {
-                AssemblerSchematic selectedSchematic = schematics.get(getScroll());
-                AliensVsPredator.assembler().assembleSchematicAsPlayer(selectedSchematic, Game.minecraft().thePlayer);
-                AliensVsPredator.network().sendToServer(new PacketAssembleCurrentSchematic(selectedSchematic.getSchematicId(), 64));
+                Schematic selectedSchematic = schematics.get(getScroll());
+                AssemblyManager.handleAssembly(selectedSchematic, Game.minecraft().thePlayer);
+                AliensVsPredator.network().sendToServer(new PacketAssemble(selectedSchematic.getId(), 64));
             }
         });
 

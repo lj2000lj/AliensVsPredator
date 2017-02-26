@@ -11,7 +11,7 @@ import org.avp.gui.GuiSupplyCrate;
 import org.avp.gui.GuiTurret;
 import org.avp.gui.GuiWristbracer;
 import org.avp.inventory.ContainerWristbracer;
-import org.avp.items.ItemWristbracer;
+import org.avp.item.ItemWristbracer;
 
 import com.arisux.mdxlib.lib.game.IInitEvent;
 

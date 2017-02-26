@@ -42,7 +42,7 @@ import org.avp.block.skulls.BlockSkullSpaceJockey;
 import org.avp.block.skulls.BlockSkullXenomorph;
 import org.avp.block.skulls.BlockSkullXenomorphWarrior;
 import org.avp.block.skulls.BlockSkullYautja;
-import org.avp.items.ItemSupplyChute.SupplyChuteType;
+import org.avp.item.ItemSupplyChute.SupplyChuteType;
 
 import com.arisux.mdxlib.lib.game.Game;
 import com.arisux.mdxlib.lib.game.IInitEvent;

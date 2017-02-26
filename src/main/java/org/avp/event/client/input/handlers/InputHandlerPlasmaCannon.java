@@ -3,7 +3,7 @@ package org.avp.event.client.input.handlers;
 import org.avp.AliensVsPredator;
 import org.avp.Sounds;
 import org.avp.event.client.input.IInputHandler;
-import org.avp.items.ItemWristbracer;
+import org.avp.item.ItemWristbracer;
 import org.avp.packets.server.PacketPlasmaDischarge;
 
 import com.arisux.mdxlib.lib.game.Game;

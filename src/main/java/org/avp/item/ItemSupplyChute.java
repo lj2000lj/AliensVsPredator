@@ -1,4 +1,4 @@
-package org.avp.items;
+package org.avp.item;
 
 import org.avp.AliensVsPredator;
 import org.avp.entities.EntitySupplyChute;

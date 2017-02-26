@@ -5,21 +5,25 @@ import com.arisux.mdxlib.lib.game.IInitEvent;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class OreHandler implements IInitEvent
+public class OreDictionarySupport implements IInitEvent
 {
-    public static OreHandler instance = new OreHandler();
+    public static OreDictionarySupport instance = new OreDictionarySupport();
 
     public void init(FMLInitializationEvent event)
     {
-        OreDictionary.registerOre("oreCopper", AliensVsPredator.blocks().oreCopper);
+        OreDictionary.registerOre("copper", AliensVsPredator.items().itemAPC);
+        OreDictionary.registerOre("copper", AliensVsPredator.items().itemIngotCopper);
         OreDictionary.registerOre("ingotCopper", AliensVsPredator.items().itemIngotCopper);
-        OreDictionary.registerOre("oreLithium", AliensVsPredator.blocks().oreLithium);
         OreDictionary.registerOre("lithium", AliensVsPredator.items().itemIngotLithium);
         OreDictionary.registerOre("itemLithium", AliensVsPredator.items().itemIngotLithium);
-        OreDictionary.registerOre("oreAluminum", AliensVsPredator.blocks().oreBauxite);
+        OreDictionary.registerOre("aluminum", AliensVsPredator.items().itemIngotAluminum);
         OreDictionary.registerOre("ingotAluminum", AliensVsPredator.items().itemIngotAluminum);
-        OreDictionary.registerOre("oreAluminium", AliensVsPredator.blocks().oreBauxite);
+        OreDictionary.registerOre("aluminium", AliensVsPredator.items().itemIngotAluminum);
         OreDictionary.registerOre("ingotAluminium", AliensVsPredator.items().itemIngotAluminum);
+        OreDictionary.registerOre("oreCopper", AliensVsPredator.blocks().oreCopper);
+        OreDictionary.registerOre("oreLithium", AliensVsPredator.blocks().oreLithium);
+        OreDictionary.registerOre("oreAluminum", AliensVsPredator.blocks().oreBauxite);
+        OreDictionary.registerOre("oreAluminium", AliensVsPredator.blocks().oreBauxite);
         OreDictionary.registerOre("oreSilicon", AliensVsPredator.blocks().oreSilicon);
         OreDictionary.registerOre("silicon", AliensVsPredator.items().itemSilicon);
         OreDictionary.registerOre("itemSilicon", AliensVsPredator.items().itemSilicon);
@@ -28,5 +32,6 @@ public class OreHandler implements IInitEvent
         OreDictionary.registerOre("plastic", AliensVsPredator.items().itemPolycarbonate);
         OreDictionary.registerOre("itemPlastic", AliensVsPredator.items().itemPolycarbonate);
         OreDictionary.registerOre("logWood", AliensVsPredator.blocks().terrainUniTreeLog);
+        OreDictionary.registerOre("log", AliensVsPredator.blocks().terrainUniTreeLog);
     }
 }

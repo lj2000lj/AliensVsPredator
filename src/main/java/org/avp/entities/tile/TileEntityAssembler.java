@@ -4,6 +4,7 @@ import java.util.Random;
 
 import org.avp.AliensVsPredator;
 import org.avp.inventory.ContainerAssembler;
+import org.avp.item.crafting.AssemblyManager;
 
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import net.minecraft.block.Block;
@@ -53,7 +54,7 @@ public class TileEntityAssembler extends TileEntity implements IInventory
 
 			if (rand.nextInt(3) == 0)
 			{
-				this.randomItem = AliensVsPredator.assembler().getSchematicRegistry().get(rand.nextInt(AliensVsPredator.assembler().getSchematicRegistry().size())).getItemStackAssembled().getItem();
+				this.randomItem = AssemblyManager.instance.schematics().get(rand.nextInt(AssemblyManager.instance.schematics().size())).getItemStackAssembled().getItem();
 			}
 		}
 

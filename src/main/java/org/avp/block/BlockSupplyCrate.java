@@ -4,7 +4,7 @@ import java.util.Random;
 
 import org.avp.entities.EntitySupplyChute;
 import org.avp.entities.tile.TileEntitySupplyCrate;
-import org.avp.items.ItemSupplyChute.SupplyChuteType;
+import org.avp.item.ItemSupplyChute.SupplyChuteType;
 
 import com.arisux.mdxlib.lib.world.tile.IRotatable;
 

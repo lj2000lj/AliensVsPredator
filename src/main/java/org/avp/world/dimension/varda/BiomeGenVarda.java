@@ -1,14 +1,9 @@
 package org.avp.world.dimension.varda;
 
 import org.avp.AliensVsPredator;
-import org.avp.entities.mob.EntityDeacon;
 import org.avp.entities.mob.EntityDeaconShark;
-import org.avp.entities.mob.EntityEngineer;
-import org.avp.entities.mob.EntityHammerpede;
-import org.avp.entities.mob.EntityTrilobite;
 import org.avp.world.dimension.BiomeGenLV;
 
-import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.world.biome.BiomeGenBase;
 
 public class BiomeGenVarda extends BiomeGenLV

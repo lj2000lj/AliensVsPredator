@@ -1,6 +1,7 @@
 package org.avp.entities.ai;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.avp.AliensVsPredator;
 import org.avp.api.blocks.IAcidResistant;
@@ -11,7 +12,6 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.EnumDifficulty;
-import java.util.Arrays;
 
 public class EntityAIMeltBlock extends EntityAIYOffsetBlockInteract
 {

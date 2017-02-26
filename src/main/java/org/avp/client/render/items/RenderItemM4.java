@@ -5,8 +5,8 @@ import org.avp.URLs;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.client.render.ItemRenderer;
+import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.client.render.PlayerResource;
 import com.arisux.mdxlib.lib.client.render.Texture;
 import com.arisux.mdxlib.lib.game.Game;

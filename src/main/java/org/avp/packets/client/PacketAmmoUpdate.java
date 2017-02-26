@@ -1,6 +1,6 @@
 package org.avp.packets.client;
 
-import org.avp.items.ItemFirearm;
+import org.avp.item.ItemFirearm;
 
 import com.arisux.mdxlib.lib.game.Game;
 

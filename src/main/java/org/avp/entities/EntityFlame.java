@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import org.avp.AliensVsPredator;
 import org.avp.DamageSources;
 import org.avp.entities.tile.TileEntityCryostasisTube;
-import org.avp.items.ItemFlamethrower;
-import org.avp.items.ItemM240IncineratorUnit;
-import org.avp.items.ItemNostromoFlamethrower;
+import org.avp.item.ItemFlamethrower;
+import org.avp.item.ItemM240IncineratorUnit;
+import org.avp.item.ItemNostromoFlamethrower;
 
 import com.arisux.mdxlib.lib.game.Game;
 import com.arisux.mdxlib.lib.world.Pos;

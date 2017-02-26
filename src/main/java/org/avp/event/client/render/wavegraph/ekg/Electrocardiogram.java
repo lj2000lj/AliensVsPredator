@@ -3,9 +3,9 @@ package org.avp.event.client.render.wavegraph.ekg;
 import java.util.ArrayList;
 
 import org.avp.event.client.render.wavegraph.DataEntry;
-import org.avp.event.client.render.wavegraph.Wavegraph;
 import org.avp.event.client.render.wavegraph.DataEntry.Interval;
 import org.avp.event.client.render.wavegraph.DataEntry.Segment;
+import org.avp.event.client.render.wavegraph.Wavegraph;
 import org.avp.event.client.render.wavegraph.ekg.DataEntryEKG.DisplayDataEKG;
 
 import com.arisux.mdxlib.lib.client.render.Draw;

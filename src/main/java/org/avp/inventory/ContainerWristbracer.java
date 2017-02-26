@@ -1,6 +1,6 @@
 package org.avp.inventory;
 
-import org.avp.items.ItemWristbracer;
+import org.avp.item.ItemWristbracer;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;

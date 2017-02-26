@@ -2,7 +2,7 @@ package org.avp.entities.tile;
 
 import org.avp.AliensVsPredator;
 import org.avp.inventory.ContainerSupplyCrate;
-import org.avp.items.ItemSupplyChute.SupplyChuteType;
+import org.avp.item.ItemSupplyChute.SupplyChuteType;
 import org.avp.packets.client.PacketOpenable;
 import org.avp.util.IOpenable;
 

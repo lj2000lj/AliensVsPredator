@@ -2,8 +2,8 @@ package org.avp.event.client.render;
 
 import org.avp.PlayerModeHandler;
 import org.avp.entities.extended.ModPlayer;
-import org.avp.items.ItemFirearm;
-import org.avp.items.ItemFlamethrower;
+import org.avp.item.ItemFirearm;
+import org.avp.item.ItemFlamethrower;
 import org.avp.util.PlayerMode;
 import org.lwjgl.opengl.GL11;
 

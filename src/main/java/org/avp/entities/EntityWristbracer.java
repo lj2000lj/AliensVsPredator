@@ -17,13 +17,13 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
-public class EntityNuke extends EntityThrowable
+public class EntityWristbracer extends EntityThrowable
 {
     private int preInitTicks;
     private int initTicks;
     private int postInitTicks;
 
-    public EntityNuke(World world)
+    public EntityWristbracer(World world)
     {
         super(world);
         this.setSize(0.5F, 0.5F);

@@ -1,6 +1,6 @@
 package org.avp.client.model.items;
 
-import org.avp.items.ItemFlamethrower;
+import org.avp.item.ItemFlamethrower;
 
 import com.arisux.mdxlib.lib.client.Model;
 import com.arisux.mdxlib.lib.game.Game;

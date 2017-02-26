@@ -1,7 +1,7 @@
 package org.avp.util;
 
 import org.avp.AliensVsPredator;
-import org.avp.items.ItemFirearm;
+import org.avp.item.ItemFirearm;
 
 import com.arisux.mdxlib.lib.client.Model;
 import com.arisux.mdxlib.lib.client.TexturedModel;

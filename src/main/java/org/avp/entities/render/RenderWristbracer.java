@@ -1,9 +1,11 @@
 package org.avp.entities.render;
 
 import org.avp.AliensVsPredator;
-import org.avp.entities.EntityNuke;
+import org.avp.client.model.items.ModelWristBlade;
+import org.avp.entities.EntityWristbracer;
 import org.avp.entities.model.ModelPlasma;
 
+import com.arisux.mdxlib.lib.client.TexturedModel;
 import com.arisux.mdxlib.lib.client.render.Color;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
@@ -11,28 +13,28 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 
-public class RenderNuke extends Render
+public class RenderWristbracer extends Render
 {
-    private ModelPlasma model = new ModelPlasma();
-    private float       rotation;
-    private float       rotationPrev;
-    private float       scale;
-    private float       scalePrev;
+    private final TexturedModel<ModelWristBlade> wristbracer = AliensVsPredator.resources().models().WRISTBLADES.clone();
+    private final ModelPlasma                    model       = new ModelPlasma();
+    private float                                rotation;
+    private float                                rotationPrev;
+    private float                                scale;
+    private float                                scalePrev;
 
-    public RenderNuke()
+    public RenderWristbracer()
     {
-        this.model.setColor(new Color(0.3F, 0.6F, 1F, 0.7F));
+        this.model.setColor(new Color(0.5F, 0.6F, 1F, 0.4F));
     }
 
     @Override
     public void doRender(Entity entity, double posX, double posY, double posZ, float yaw, float partialTicks)
     {
-        EntityNuke nuke = (EntityNuke) entity;
+        EntityWristbracer nuke = (EntityWristbracer) entity;
+
         rotationPrev = rotation;
         rotation = nuke.ticksExisted % 360;
         rotation = rotationPrev + (rotation - rotationPrev) * partialTicks;
-        this.model.setColor(new Color(0.5F, 0.6F, 1F, 0.4F));
-
         scalePrev = scale;
         scale = nuke.getPostInitTicks() * 200 / nuke.getPostInitTicksMax();
         scale = scalePrev + (scale - scalePrev) * partialTicks;
@@ -41,7 +43,7 @@ public class RenderNuke extends Render
         {
             OpenGL.translate(posX, posY, posZ);
             OpenGL.rotate(180F, 1F, 0F, 0F);
-            AliensVsPredator.resources().models().WRISTBLADES.draw();
+            wristbracer.draw();
             OpenGL.rotate(entity.rotationYaw - 90.0F, 0.0F, 1.0F, 0.0F);
             OpenGL.rotate(entity.rotationPitch - 90.0F, 0.0F, 0.0F, 1.0F);
             OpenGL.scale(scale, scale, scale);

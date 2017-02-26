@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.avp.entities.tile.TileEntitySupplyCrate;
-import org.avp.items.ItemSupplyChute.SupplyChuteType;
+import org.avp.item.ItemSupplyChute.SupplyChuteType;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

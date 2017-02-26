@@ -1,11 +1,10 @@
 /** AliensVsPredator Minecraft Mod - Copyright (C) 2012-2017 Arisux Technology Group **/
 package org.avp;
 
-import org.avp.init.Assembler;
 import org.avp.world.hives.HiveHandler;
 
-import com.arisux.mdxlib.MDXModule;
 import com.arisux.mdxlib.MDX;
+import com.arisux.mdxlib.MDXModule;
 import com.arisux.mdxlib.lib.game.Game;
 import com.arisux.mdxlib.lib.game.IMod;
 
@@ -59,9 +58,9 @@ public class AliensVsPredator implements IMod
         return BlockHandler.instance;
     }
 
-    public static OreHandler ores()
+    public static OreDictionarySupport ores()
     {
-        return OreHandler.instance;
+        return OreDictionarySupport.instance;
     }
 
     public static FluidHandler fluids()
@@ -145,11 +144,6 @@ public class AliensVsPredator implements IMod
     public static PlayerModeHandler playermodehandler()
     {
         return PlayerModeHandler.instance;
-    }
-
-    public static Assembler assembler()
-    {
-        return Assembler.instance;
     }
 
     public static Schematics schematics()
@@ -244,7 +238,6 @@ public class AliensVsPredator implements IMod
         commands().init(event);
         playermodehandler().init(event);
         schematics().init(event);
-        assembler().init(event);
         entities().init(event);
     }
 

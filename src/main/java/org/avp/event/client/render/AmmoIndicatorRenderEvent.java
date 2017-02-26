@@ -1,6 +1,6 @@
 package org.avp.event.client.render;
 
-import org.avp.items.ItemFirearm;
+import org.avp.item.ItemFirearm;
 
 import com.arisux.mdxlib.lib.client.render.Draw;
 import com.arisux.mdxlib.lib.client.render.Screen;

@@ -1,7 +1,7 @@
 package org.avp.entities.tile;
 
 import org.avp.entities.EntityMechanism;
-import org.avp.items.ItemEntitySummoner;
+import org.avp.item.ItemEntitySummoner;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

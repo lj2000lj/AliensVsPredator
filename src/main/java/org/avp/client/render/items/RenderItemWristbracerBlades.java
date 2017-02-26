@@ -5,8 +5,8 @@ import org.avp.client.model.items.ModelWristBlade;
 import org.lwjgl.opengl.GL11;
 
 import com.arisux.mdxlib.lib.client.Model;
-import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.client.render.ItemRenderer;
+import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.game.Game;
 
 import net.minecraft.client.gui.inventory.GuiContainerCreative;

@@ -12,9 +12,10 @@ import org.avp.packets.client.PacketTurretSync;
 import org.avp.packets.client.SpecialPlayerClientSync;
 import org.avp.packets.server.OrganismServerSync;
 import org.avp.packets.server.PacketAddTuretTarget;
-import org.avp.packets.server.PacketAssembleCurrentSchematic;
+import org.avp.packets.server.PacketAssemble;
 import org.avp.packets.server.PacketDamageEntity;
 import org.avp.packets.server.PacketFireAPC;
+import org.avp.packets.server.PacketFirearmSync;
 import org.avp.packets.server.PacketLaunchGrenade;
 import org.avp.packets.server.PacketOpenContainer;
 import org.avp.packets.server.PacketOpenGui;
@@ -22,7 +23,6 @@ import org.avp.packets.server.PacketPlasmaDischarge;
 import org.avp.packets.server.PacketReadFromDataDevice;
 import org.avp.packets.server.PacketReloadFirearm;
 import org.avp.packets.server.PacketRemoveTurretTarget;
-import org.avp.packets.server.PacketFirearmSync;
 import org.avp.packets.server.PacketSpawnEntity;
 import org.avp.packets.server.PacketSpawnNuke;
 import org.avp.packets.server.PacketTurretTargetUpdate;
@@ -50,7 +50,7 @@ public class NetworkHandler extends SimpleNetworkWrapper implements IInitEvent
     @Override
     public void init(FMLInitializationEvent event)
     {
-        this.registerMessage(Side.SERVER, PacketAssembleCurrentSchematic.class);
+        this.registerMessage(Side.SERVER, PacketAssemble.class);
         this.registerMessage(Side.SERVER, PacketOpenContainer.class);
         this.registerMessage(Side.SERVER, PacketReloadFirearm.class);
         this.registerMessage(Side.SERVER, PacketLaunchGrenade.class);

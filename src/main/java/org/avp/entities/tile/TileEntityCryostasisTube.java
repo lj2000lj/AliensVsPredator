@@ -1,6 +1,6 @@
 package org.avp.entities.tile;
 
-import org.avp.items.ItemEntitySummoner;
+import org.avp.item.ItemEntitySummoner;
 import org.avp.util.IVoltageReceiver;
 
 import com.arisux.mdxlib.lib.world.tile.IRotatable;

@@ -1,7 +1,7 @@
 package org.avp.packets.server;
 
 import org.avp.AliensVsPredator;
-import org.avp.entities.EntityNuke;
+import org.avp.entities.EntityWristbracer;
 
 import com.arisux.mdxlib.MDX;
 import com.arisux.mdxlib.lib.world.entity.player.inventory.Inventories;
@@ -39,7 +39,7 @@ public class PacketSpawnNuke implements IMessage, IMessageHandler<PacketSpawnNuk
         if (player != null && AliensVsPredator.settings().areNukesEnabled())
         {
             MDX.log().info(String.format("Player %s has just initiated a nuclear explosion at %s, %s, %s", player.getCommandSenderName(), player.posX, player.posY, player.posZ));
-            EntityNuke nuke = new EntityNuke(ctx.getServerHandler().playerEntity.worldObj);
+            EntityWristbracer nuke = new EntityWristbracer(ctx.getServerHandler().playerEntity.worldObj);
             nuke.setLocationAndAngles(ctx.getServerHandler().playerEntity.posX, ctx.getServerHandler().playerEntity.posY, ctx.getServerHandler().playerEntity.posZ, 0F, 0F);
             ctx.getServerHandler().playerEntity.worldObj.spawnEntityInWorld(nuke);
             Inventories.consumeItem(ctx.getServerHandler().playerEntity, ctx.getServerHandler().playerEntity.getCurrentEquippedItem().getItem());

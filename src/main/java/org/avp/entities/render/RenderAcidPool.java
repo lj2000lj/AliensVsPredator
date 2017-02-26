@@ -1,7 +1,6 @@
 package org.avp.entities.render;
 
 import org.avp.AliensVsPredator;
-import org.avp.entities.EntityAcidPool;
 import org.lwjgl.opengl.GL11;
 
 import com.arisux.mdxlib.lib.client.render.OpenGL;

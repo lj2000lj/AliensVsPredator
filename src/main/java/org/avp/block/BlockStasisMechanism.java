@@ -3,7 +3,7 @@ package org.avp.block;
 import java.util.Random;
 
 import org.avp.entities.tile.TileEntityStasisMechanism;
-import org.avp.items.ItemEntitySummoner;
+import org.avp.item.ItemEntitySummoner;
 
 import com.arisux.mdxlib.lib.world.entity.player.inventory.Inventories;
 

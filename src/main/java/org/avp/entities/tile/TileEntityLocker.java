@@ -2,7 +2,7 @@ package org.avp.entities.tile;
 
 import org.avp.AliensVsPredator;
 import org.avp.inventory.ContainerLocker;
-import org.avp.items.ItemFirearm;
+import org.avp.item.ItemFirearm;
 import org.avp.packets.client.PacketOpenable;
 import org.avp.util.IOpenable;
 

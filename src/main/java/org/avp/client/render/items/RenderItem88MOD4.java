@@ -4,9 +4,9 @@ import org.avp.AliensVsPredator;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
+import com.arisux.mdxlib.lib.client.render.ItemRenderer;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.game.Game;
-import com.arisux.mdxlib.lib.client.render.ItemRenderer;
 
 import net.minecraft.item.ItemStack;
 
