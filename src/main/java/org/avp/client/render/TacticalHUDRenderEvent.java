@@ -1,11 +1,9 @@
 package org.avp.client.render;
 
-import static org.lwjgl.opengl.GL11.GL_ALPHA_TEST;
 import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_CONSTANT_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.glDepthMask;
 
 import java.util.ArrayList;
 
@@ -13,8 +11,8 @@ import org.avp.AliensVsPredator;
 import org.avp.client.gui.GuiTacticalHUDSettings;
 import org.avp.client.render.wavegraph.Wavegraph;
 import org.avp.client.render.wavegraph.ekg.Electrocardiogram;
-import org.avp.entities.SharedPlayer;
 import org.avp.entities.Organism;
+import org.avp.entities.SharedPlayer;
 import org.lwjgl.opengl.GL11;
 
 import com.arisux.mdxlib.lib.client.gui.GuiCustomButton;
@@ -184,27 +182,19 @@ public class TacticalHUDRenderEvent
             {
                 if (Inventories.getHelmSlotItemStack(Game.minecraft().thePlayer) != null && Game.minecraft().gameSettings.thirdPersonView == 0 && Inventories.getHelmSlotItemStack(Game.minecraft().thePlayer).getItem() == AliensVsPredator.items().helmMarine)
                 {
-                    SharedPlayer playerProperties = SharedPlayer.get(Game.minecraft().thePlayer);
+                    SharedPlayer player = SharedPlayer.get(Game.minecraft().thePlayer);
 
                     this.gammaRestored = false;
-                    LightmapUpdateEvent.instance.gammaValue = playerProperties.isNightvisionEnabled() ? 8F : 0F;
+                    LightmapUpdateEvent.instance.gammaValue = player.isNightvisionEnabled() ? 8F : 0F;
                     this.scanForNearbyPlayers();
-                    OpenGL.disableLight();
-                    OpenGL.disableLightMapping();
-
-                    OpenGL.enable(GL_BLEND);
+                    OpenGL.enableBlend();
+                    OpenGL.blendClear();
                     OpenGL.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_CONSTANT_ALPHA);
-                    OpenGL.disable(GL_DEPTH_TEST);
-                    glDepthMask(false);
                     OpenGL.color(1F, 1F, 1F, 1F);
-                    OpenGL.disable(GL_ALPHA_TEST);
                     AliensVsPredator.resources().BLUR_TACTICAL_HUD.bind();
                     Draw.drawQuad(0, 0, Screen.scaledDisplayResolution().getScaledWidth(), Screen.scaledDisplayResolution().getScaledHeight());
-                    glDepthMask(true);
-                    OpenGL.enable(GL_DEPTH_TEST);
-                    OpenGL.enable(GL_ALPHA_TEST);
-                    OpenGL.color(1.0F, 1.0F, 1.0F, 1.0F);
-                    OpenGL.disable(GL_BLEND);
+                    OpenGL.color(1F, 1F, 1F, 1F);
+                    OpenGL.blendClear();
 
                     this.drawInfoBar(event);
                     this.drawImpregnationIndicator(getPlayerOrganism());
