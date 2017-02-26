@@ -1,12 +1,12 @@
 package org.avp.event.client.render;
 
 import org.avp.AliensVsPredator;
+import org.avp.client.model.items.ModelPlasmaCannon;
 import org.avp.entities.EntityMedpod;
 import org.avp.entities.extended.ModPlayer;
 import org.avp.entities.model.ModelPlasma;
 import org.avp.event.client.input.handlers.InputHandlerPlasmaCannon;
 import org.avp.items.ItemWristbracer;
-import org.avp.items.model.ModelPlasmaCannon;
 import org.avp.util.IEventRenderer;
 import org.avp.util.IFirstPersonRenderer;
 import org.lwjgl.opengl.GL11;

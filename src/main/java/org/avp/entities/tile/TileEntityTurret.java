@@ -35,7 +35,7 @@ import org.avp.entities.mob.EntitySpitter;
 import org.avp.entities.mob.EntityTrilobite;
 import org.avp.entities.mob.EntityUltramorph;
 import org.avp.entities.mob.EntityWarrior;
-import org.avp.inventory.container.ContainerTurret;
+import org.avp.inventory.ContainerTurret;
 import org.avp.packets.client.PacketTurretSync;
 import org.avp.packets.server.PacketTurretTargetUpdate;
 import org.avp.util.IDataDevice;

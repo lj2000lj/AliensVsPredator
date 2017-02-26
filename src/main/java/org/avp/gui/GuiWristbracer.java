@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.avp.AliensVsPredator;
-import org.avp.init.Wristbracer;
-import org.avp.inventory.container.ContainerWristbracer;
+import org.avp.inventory.ContainerWristbracer;
+import org.avp.items.ItemWristbracer;
 import org.lwjgl.opengl.GL11;
 
 import com.arisux.mdxlib.lib.client.gui.GuiCustomButton;
@@ -25,7 +25,7 @@ import net.minecraft.world.EnumDifficulty;
 public class GuiWristbracer extends GuiContainer
 {
     private HashMap<GuiButton, Integer> displays   = new HashMap<GuiButton, Integer>();
-    protected List<GuiButton>           buttonList = new ArrayList<GuiButton>();
+    protected List<GuiButton>           buttons = new ArrayList<GuiButton>();
     public ContainerWristbracer         container;
 
     public GuiWristbracer(EntityPlayer player, ContainerWristbracer container)
@@ -38,8 +38,8 @@ public class GuiWristbracer extends GuiContainer
 
         for (int x = 1; x <= 6; x++)
         {
-            this.buttonList.add(new GuiCustomButton(x, 0, 0, 50, 100, "X"));
-            this.displays.put(this.buttonList.get(x - 1), 0);
+            this.buttons.add(new GuiCustomButton(x, 0, 0, 50, 100, "X"));
+            this.displays.put(this.buttons.get(x - 1), 0);
         }
     }
 
@@ -77,7 +77,7 @@ public class GuiWristbracer extends GuiContainer
 
         for (int x1 = 1; x1 <= 6; x1++)
         {
-            GuiCustomButton button = (GuiCustomButton) this.buttonList.get(x1 - 1);
+            GuiCustomButton button = (GuiCustomButton) this.buttons.get(x1 - 1);
 
             if (mc.gameSettings.difficulty == EnumDifficulty.EASY || mc.gameSettings.difficulty == EnumDifficulty.PEACEFUL)
             {
@@ -96,6 +96,7 @@ public class GuiWristbracer extends GuiContainer
             button.baseColor = 0x00000000;
             button.overlayColorHover = 0x22FF0000;
             button.drawButton();
+            button.drawTooltip();
 
             button.setAction(new IAction()
             {
@@ -109,17 +110,17 @@ public class GuiWristbracer extends GuiContainer
             drawYautjaDigit(this.displays.get(button), guiLeft + 13 + 27 * (x1 - 1), guiTop + 49);
         }
 
-        String combonation = Wristbracer.instance.getComboFromDisplays(displays.get(this.buttonList.get(0)), displays.get(this.buttonList.get(1)), displays.get(this.buttonList.get(2)), displays.get(this.buttonList.get(3)), displays.get(this.buttonList.get(4)), displays.get(this.buttonList.get(5)));
+        String combonation = ItemWristbracer.code(displays.get(buttons.get(0)), displays.get(buttons.get(1)), displays.get(buttons.get(2)), displays.get(buttons.get(3)), displays.get(buttons.get(4)), displays.get(buttons.get(5)));
 
-        if (Wristbracer.instance.isComboValid(combonation))
+        if (ItemWristbracer.isCodeValid(combonation))
         {
-            Wristbracer.instance.getActionForCombo(combonation).actionPerformed(combonation, container);
+            ItemWristbracer.getAction(combonation).onAction(combonation, container);
         }
     }
 
     public void updateScreenDigit(int displayId, int digit)
     {
-        GuiCustomButton button = (GuiCustomButton) this.buttonList.get(displayId - 1);
+        GuiCustomButton button = (GuiCustomButton) this.buttons.get(displayId - 1);
         displays.remove(button);
         displays.put(button, digit);
     }

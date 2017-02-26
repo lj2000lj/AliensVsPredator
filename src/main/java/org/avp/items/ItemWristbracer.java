@@ -1,12 +1,15 @@
 package org.avp.items;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.avp.AliensVsPredator;
 import org.avp.DamageSources;
 import org.avp.Sounds;
-import org.avp.inventory.container.ContainerWristbracer;
+import org.avp.inventory.ContainerWristbracer;
+import org.avp.packets.server.PacketSpawnNuke;
 
+import com.arisux.mdxlib.lib.game.Game;
 import com.arisux.mdxlib.lib.world.item.HookedItem;
 
 import net.minecraft.entity.Entity;
@@ -22,6 +25,49 @@ public class ItemWristbracer extends HookedItem
 {
     public static final String TAG_WRISTBRACER_ITEMS = "WristbracerItems";
     public static final String TAG_WRISTBRACER_ITEMS_SLOT = "Slot";
+
+    private static final HashMap<String, IActionCode> codes = new HashMap<String, IActionCode>();
+
+    public static interface IActionCode
+    {
+        public void onAction(String combonation, Object... args);
+    }
+
+    public static String code(int d1, int d2, int d3, int d4, int d5, int d6)
+    {
+        return String.format("%s%s%s%s%s%s", d1, d2, d3, d4, d5, d6);
+    }
+
+    public static IActionCode getAction(String combonation)
+    {
+        return codes.get(combonation);
+    }
+
+    public static boolean isCodeValid(String combonation)
+    {
+        return codes.get(combonation) != null;
+    }
+
+    public static void addCode(String combonation, IActionCode action)
+    {
+        if (!isCodeValid(combonation))
+        {
+            codes.put(combonation, action);
+        }
+    }
+    
+    static
+    {
+        addCode("009001", new IActionCode()
+        {
+            @Override
+            public void onAction(String combonation, Object... args)
+            {
+                AliensVsPredator.network().sendToServer(new PacketSpawnNuke());
+                Game.minecraft().currentScreen = null;
+            }
+        });
+    }
     
     @Override
     public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity)

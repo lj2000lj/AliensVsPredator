@@ -7,8 +7,8 @@ import org.avp.AliensVsPredator;
 import org.avp.Sounds;
 import org.avp.entities.ai.EntityAICustomAttackOnCollide;
 import org.avp.entities.ai.alien.EntitySelectorXenomorph;
-import org.avp.event.HiveHandler;
 import org.avp.packets.server.PacketSpawnEntity;
+import org.avp.world.hives.HiveHandler;
 
 import com.arisux.mdxlib.lib.game.Game;
 import com.arisux.mdxlib.lib.world.Pos;
@@ -28,16 +28,16 @@ import net.minecraft.world.World;
 
 public class EntityQueen extends EntityXenomorph implements IMob
 {
-    public static final float    OVIPOSITOR_THRESHOLD_SIZE          = 1.3F;
-    public static final float    OVIPOSITOR_PROGRESSIVE_GROWTH_SIZE = 0.00225F;
-    public static final int      OVIPOSITOR_UNHEALTHY_THRESHOLD     = 50;
-    public static final int      OVIPOSITOR_JELLYLEVEL_THRESHOLD    = 1000;
-    public static final int      OVIPOSITOR_JELLYLEVEL_GROWTH_USE   = 1;
+    public static final float OVIPOSITOR_THRESHOLD_SIZE          = 1.3F;
+    public static final float OVIPOSITOR_PROGRESSIVE_GROWTH_SIZE = 0.00225F;
+    public static final int   OVIPOSITOR_UNHEALTHY_THRESHOLD     = 50;
+    public static final int   OVIPOSITOR_JELLYLEVEL_THRESHOLD    = 1000;
+    public static final int   OVIPOSITOR_JELLYLEVEL_GROWTH_USE   = 1;
 
-    public boolean               growingOvipositor;
-    public boolean               reproducing;
+    public boolean            growingOvipositor;
+    public boolean            reproducing;
 
-    private ArrayList<Pos> pathPoints                         = new ArrayList<Pos>();
+    private ArrayList<Pos>    pathPoints                         = new ArrayList<Pos>();
 
     public EntityQueen(World world)
     {
@@ -123,7 +123,7 @@ public class EntityQueen extends EntityXenomorph implements IMob
     {
         if (this.reproducing)
         {
-            if (!this.worldObj.isRemote && this.worldObj.getWorldTime() % (20 * 120) == 0 && this.getJellyLevel() >= OVIPOSITOR_UNHEALTHY_THRESHOLD)
+            if (this.worldObj.getWorldTime() % (20 * 120) == 0 && this.getJellyLevel() >= OVIPOSITOR_UNHEALTHY_THRESHOLD)
             {
                 int ovipositorDist = 10;
                 double rotationYawRadians = Math.toRadians(this.rotationYawHead - 90);
@@ -131,7 +131,11 @@ public class EntityQueen extends EntityXenomorph implements IMob
                 double ovamorphZ = (this.posZ + (ovipositorDist * (Math.sin(rotationYawRadians))));
 
                 this.worldObj.playSoundAtEntity(this, AliensVsPredator.sounds().SOUND_QUEEN_HURT.getKey(), 1F, this.rand.nextInt(10) / 100);
-                AliensVsPredator.network().sendToServer(new PacketSpawnEntity(ovamorphX, this.posY, ovamorphZ, Entities.getEntityRegistrationId(EntityOvamorph.class)));
+
+                if (this.worldObj.isRemote)
+                {
+                    AliensVsPredator.network().sendToServer(new PacketSpawnEntity(ovamorphX, this.posY, ovamorphZ, Entities.getEntityRegistrationId(EntityOvamorph.class)));
+                }
                 this.setJellyLevel(this.getJellyLevel() - 100);
             }
         }
@@ -204,8 +208,8 @@ public class EntityQueen extends EntityXenomorph implements IMob
                     {
                         if (Game.isDevEnvironment() && this.worldObj.getWorldTime() % (20 * 3) == 0)
                         {
-//                            System.out.println("Unable to pathfind to closest point, too far: " + this.pathPoints.size() + " Points, " + ((int) closestPoint.distanceFrom(this)) + " Meters, " + closestPoint);
-//                            System.out.println(this.pathPoints);
+                            // System.out.println("Unable to pathfind to closest point, too far: " + this.pathPoints.size() + " Points, " + ((int) closestPoint.distanceFrom(this)) + " Meters, " + closestPoint);
+                            // System.out.println(this.pathPoints);
                         }
                     }
                     else
@@ -254,7 +258,7 @@ public class EntityQueen extends EntityXenomorph implements IMob
         this.jumpBoost();
         this.pathfindToHive();
         this.heal();
-        
+
         // this.getHive().destroy();
         // this.setDead();
 
@@ -380,13 +384,13 @@ public class EntityQueen extends EntityXenomorph implements IMob
     {
         return false;
     }
-    
+
     @Override
     protected boolean canDespawn()
     {
         return false;
     }
-    
+
     @Override
     protected int getJellyLevelStart()
     {

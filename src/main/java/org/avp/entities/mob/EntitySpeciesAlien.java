@@ -8,8 +8,8 @@ import org.avp.DamageSources;
 import org.avp.api.parasitoidic.IMaturable;
 import org.avp.api.parasitoidic.IRoyalOrganism;
 import org.avp.entities.EntityAcidPool;
-import org.avp.event.HiveHandler;
-import org.avp.util.XenomorphHive;
+import org.avp.world.hives.HiveHandler;
+import org.avp.world.hives.XenomorphHive;
 
 import com.arisux.mdxlib.lib.world.Worlds;
 import com.arisux.mdxlib.lib.world.entity.Entities;

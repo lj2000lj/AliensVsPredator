@@ -8,7 +8,6 @@ import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.glDepthMask;
 
 import org.avp.AliensVsPredator;
-import org.avp.dimension.varda.ProviderVarda;
 import org.avp.entities.extended.Organism;
 import org.avp.entities.extended.ModPlayer;
 import org.avp.entities.mob.EntityChestburster;
@@ -17,6 +16,7 @@ import org.avp.entities.mob.EntitySpeciesAlien;
 import org.avp.entities.tile.TileEntityPowercell;
 import org.avp.entities.tile.TileEntityStasisMechanism;
 import org.avp.util.IVoltageReceiver;
+import org.avp.world.dimension.varda.ProviderVarda;
 
 import com.arisux.mdxlib.lib.client.render.Draw;
 import com.arisux.mdxlib.lib.client.render.OpenGL;

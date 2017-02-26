@@ -1,9 +1,8 @@
 /** AliensVsPredator Minecraft Mod - Copyright (C) 2012-2017 Arisux Technology Group **/
 package org.avp;
 
-import org.avp.event.HiveHandler;
 import org.avp.init.Assembler;
-import org.avp.init.Wristbracer;
+import org.avp.world.hives.HiveHandler;
 
 import com.arisux.mdxlib.MDXModule;
 import com.arisux.mdxlib.MDX;
@@ -153,12 +152,6 @@ public class AliensVsPredator implements IMod
         return Assembler.instance;
     }
 
-    @SideOnly(Side.CLIENT)
-    public static Wristbracer wristbracer()
-    {
-        return Wristbracer.instance;
-    }
-
     public static Schematics schematics()
     {
         return Schematics.instance;
@@ -253,11 +246,6 @@ public class AliensVsPredator implements IMod
         schematics().init(event);
         assembler().init(event);
         entities().init(event);
-
-        if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
-        {
-            wristbracer().init(event);
-        }
     }
 
     @Override

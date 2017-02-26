@@ -4,7 +4,7 @@ import java.util.Random;
 
 import org.avp.AliensVsPredator;
 import org.avp.entities.tile.TileEntityHiveResin;
-import org.avp.event.HiveHandler;
+import org.avp.world.hives.HiveHandler;
 
 import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.Pos.BlockDataStore;

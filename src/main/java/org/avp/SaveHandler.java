@@ -5,8 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.avp.event.HiveHandler;
 import org.avp.util.IDataSaveHandler;
+import org.avp.world.hives.HiveHandler;
 
 import com.arisux.mdxlib.MDX;
 import com.arisux.mdxlib.lib.world.storage.NBTStorage;

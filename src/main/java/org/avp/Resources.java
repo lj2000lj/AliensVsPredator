@@ -1,5 +1,17 @@
 package org.avp;
 
+import org.avp.client.model.items.Model88MOD4;
+import org.avp.client.model.items.ModelAK47;
+import org.avp.client.model.items.ModelM240ICU;
+import org.avp.client.model.items.ModelM4;
+import org.avp.client.model.items.ModelM40;
+import org.avp.client.model.items.ModelM41A;
+import org.avp.client.model.items.ModelM56SG;
+import org.avp.client.model.items.ModelMotionTracker;
+import org.avp.client.model.items.ModelNostromoFlamethrower;
+import org.avp.client.model.items.ModelPlasmaCannon;
+import org.avp.client.model.items.ModelSniper;
+import org.avp.client.model.items.ModelWristBlade;
 import org.avp.entities.mob.model.ModelAethon;
 import org.avp.entities.mob.model.ModelAqua;
 import org.avp.entities.mob.model.ModelBabyhead;
@@ -64,18 +76,6 @@ import org.avp.entities.tile.model.ModelStasisMechanism;
 import org.avp.entities.tile.model.ModelTransformer;
 import org.avp.entities.tile.model.ModelTurret;
 import org.avp.entities.tile.model.ModelWorkstation;
-import org.avp.items.model.Model88MOD4;
-import org.avp.items.model.ModelAK47;
-import org.avp.items.model.ModelM240ICU;
-import org.avp.items.model.ModelM4;
-import org.avp.items.model.ModelM40;
-import org.avp.items.model.ModelM41A;
-import org.avp.items.model.ModelM56SG;
-import org.avp.items.model.ModelMotionTracker;
-import org.avp.items.model.ModelNostromoFlamethrower;
-import org.avp.items.model.ModelPlasmaCannon;
-import org.avp.items.model.ModelSniper;
-import org.avp.items.model.ModelWristBlade;
 
 import com.arisux.mdxlib.MDX;
 import com.arisux.mdxlib.lib.client.SpecialModelBiped;

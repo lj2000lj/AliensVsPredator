@@ -2,8 +2,8 @@ package org.avp.packets.server;
 
 import org.avp.DamageSources;
 import org.avp.block.BlockHiveResin;
-import org.avp.event.HiveHandler;
 import org.avp.items.ItemFirearm;
+import org.avp.world.hives.HiveHandler;
 
 import com.arisux.mdxlib.lib.world.entity.Entities;
 

@@ -1,8 +1,8 @@
 package org.avp;
 
-import org.avp.dimension.TeleporterLV;
-import org.avp.dimension.acheron.ProviderAcheron;
-import org.avp.dimension.varda.ProviderVarda;
+import org.avp.world.dimension.TeleporterLV;
+import org.avp.world.dimension.acheron.ProviderAcheron;
+import org.avp.world.dimension.varda.ProviderVarda;
 
 import com.arisux.mdxlib.lib.game.IInitEvent;
 import com.arisux.mdxlib.lib.world.Pos;

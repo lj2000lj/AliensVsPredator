@@ -3,7 +3,7 @@ package org.avp.entities.tile;
 import java.util.Random;
 
 import org.avp.AliensVsPredator;
-import org.avp.inventory.container.ContainerAssembler;
+import org.avp.inventory.ContainerAssembler;
 
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import net.minecraft.block.Block;

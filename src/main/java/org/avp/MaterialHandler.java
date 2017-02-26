@@ -1,7 +1,7 @@
 package org.avp;
 
-import org.avp.materials.MaterialBlackGoo;
-import org.avp.materials.MaterialMist;
+import org.avp.block.materials.MaterialBlackGoo;
+import org.avp.block.materials.MaterialMist;
 
 import com.arisux.mdxlib.lib.game.IInitEvent;
 

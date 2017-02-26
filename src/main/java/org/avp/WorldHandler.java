@@ -1,8 +1,8 @@
 package org.avp;
 
-import org.avp.dimension.acheron.WorldGeneratorAcheron;
-import org.avp.world.WorldGenerator;
-import org.avp.world.WorldGeneratorDerelict;
+import org.avp.world.dimension.acheron.WorldGeneratorAcheron;
+import org.avp.world.worldgen.WorldGenerator;
+import org.avp.world.worldgen.WorldGeneratorDerelict;
 
 import com.arisux.mdxlib.lib.game.IInitEvent;
 

@@ -1,8 +1,8 @@
 package org.avp;
 
-import org.avp.event.BucketHandlingEvent;
-import org.avp.fluids.FluidBlackGoo;
-import org.avp.fluids.FluidMist;
+import org.avp.world.fluids.BucketHandlingEvent;
+import org.avp.world.fluids.FluidBlackGoo;
+import org.avp.world.fluids.FluidMist;
 
 import com.arisux.mdxlib.lib.game.IInitEvent;
 

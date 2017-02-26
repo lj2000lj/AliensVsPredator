@@ -3,8 +3,6 @@ package org.avp;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.avp.dimension.BiomeGenLV;
-import org.avp.dimension.varda.BiomeGenVarda;
 import org.avp.entities.EntityAPC;
 import org.avp.entities.EntityAcidPool;
 import org.avp.entities.EntityAcidProjectile;
@@ -93,6 +91,8 @@ import org.avp.entities.tile.TileEntitySupplyCrate;
 import org.avp.entities.tile.TileEntityTransformer;
 import org.avp.entities.tile.TileEntityTurret;
 import org.avp.entities.tile.TileEntityWorkstation;
+import org.avp.world.dimension.BiomeGenLV;
+import org.avp.world.dimension.varda.BiomeGenVarda;
 
 import com.arisux.mdxlib.MDX;
 import com.arisux.mdxlib.lib.game.Game;

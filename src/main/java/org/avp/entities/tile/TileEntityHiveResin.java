@@ -3,8 +3,8 @@ package org.avp.entities.tile;
 import java.util.Random;
 import java.util.UUID;
 
-import org.avp.event.HiveHandler;
-import org.avp.util.XenomorphHive;
+import org.avp.world.hives.HiveHandler;
+import org.avp.world.hives.XenomorphHive;
 
 import com.arisux.mdxlib.lib.world.Worlds;
 
