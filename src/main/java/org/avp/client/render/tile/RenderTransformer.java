@@ -8,7 +8,8 @@ import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+
 
 public class RenderTransformer extends TileEntitySpecialRenderer
 {
@@ -26,22 +27,22 @@ public class RenderTransformer extends TileEntitySpecialRenderer
                 OpenGL.scale(1F, -1F, 1F);
                 OpenGL.translate(0.5F, -1.5F, 0.5F);
 
-                if (transformer.getDirection() == ForgeDirection.EAST)
+                if (transformer.getDirection() == EnumFacing.EAST)
                 {
                     OpenGL.rotate(90F, 0F, 1F, 0F);
                 }
 
-                if (transformer.getDirection() == ForgeDirection.WEST)
+                if (transformer.getDirection() == EnumFacing.WEST)
                 {
                     OpenGL.rotate(-90F, 0F, 1F, 0F);
                 }
 
-                if (transformer.getDirection() == ForgeDirection.NORTH)
+                if (transformer.getDirection() == EnumFacing.NORTH)
                 {
                     OpenGL.rotate(180F, 0F, 1F, 0F);
                 }
 
-                if (transformer.getDirection() == ForgeDirection.SOUTH)
+                if (transformer.getDirection() == EnumFacing.SOUTH)
                 {
                     OpenGL.rotate(0F, 0F, 1F, 0F);
                 }

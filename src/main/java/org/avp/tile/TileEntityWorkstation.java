@@ -7,7 +7,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+
 
 public class TileEntityWorkstation extends TileEntityElectrical implements INetworkDevice, IVoltageReceiver
 {
@@ -84,19 +85,19 @@ public class TileEntityWorkstation extends TileEntityElectrical implements INetw
     }
 
     @Override
-    public boolean canConnectPower(ForgeDirection from)
+    public boolean canConnectPower(EnumFacing from)
     {
         return true;
     }
 
     @Override
-    public double getCurrentVoltage(ForgeDirection from)
+    public double getCurrentVoltage(EnumFacing from)
     {
         return this.voltage;
     }
 
     @Override
-    public double getMaxVoltage(ForgeDirection from)
+    public double getMaxVoltage(EnumFacing from)
     {
         return 120;
     }

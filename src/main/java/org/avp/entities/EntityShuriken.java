@@ -7,8 +7,6 @@ import org.avp.DamageSources;
 
 import com.arisux.mdxlib.lib.game.GameSounds;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -16,19 +14,20 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class EntityShuriken extends Entity
 {
     private int xTile = -1;
     private int yTile = -1;
     private int zTile = -1;
-    private Block inTile = Blocks.air;
+    private Block inTile = Blocks.AIR;
     private int inData = 0;
     private boolean inGround = false;
     public boolean doesArrowBelongToPlayer = false;
@@ -131,15 +130,15 @@ public class EntityShuriken extends Entity
 
         Block block = this.worldObj.getBlock(this.xTile, this.yTile, this.zTile);
 
-        if (block != Blocks.air)
+        if (block != Blocks.AIR)
         {
             block.setBlockBoundsBasedOnState(this.worldObj, this.xTile, this.yTile, this.zTile);
 
             if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
             {
-                AxisAlignedBB vec3d = block.getSelectedBoundingBoxFromPool(this.worldObj, this.xTile, this.yTile, this.zTile);
+                AxisAlignedBB Vec3dd = block.getSelectedBoundingBoxFromPool(this.worldObj, this.xTile, this.yTile, this.zTile);
 
-                if (vec3d != null && vec3d.isVecInside(Vec3.createVectorHelper(this.posX, this.posY, this.posZ)))
+                if (Vec3dd != null && Vec3dd.isVecInside(new Vec3d(this.posX, this.posY, this.posZ)))
                 {
                     this.inGround = true;
                 }
@@ -178,15 +177,15 @@ public class EntityShuriken extends Entity
         else
         {
             ++this.ticksInAir;
-            Vec3 var17 = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
-            Vec3 vec3d1 = Vec3.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-            MovingObjectPosition movingobjectposition = this.worldObj.rayTraceBlocks(var17, vec3d1, false, true, true);
-            var17 = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
-            vec3d1 = Vec3.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+            Vec3d var17 = new Vec3d(this.posX, this.posY, this.posZ);
+            Vec3d Vec3dd1 = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+            MovingObjectPosition movingobjectposition = this.worldObj.rayTraceBlocks(var17, Vec3dd1, false, true, true);
+            var17 = new Vec3d(this.posX, this.posY, this.posZ);
+            Vec3dd1 = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
             if (movingobjectposition != null)
             {
-                vec3d1 = Vec3.createVectorHelper(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord, movingobjectposition.hitVec.zCoord);
+                Vec3dd1 = new Vec3d(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord, movingobjectposition.hitVec.zCoord);
             }
 
             Entity entity = null;
@@ -203,7 +202,7 @@ public class EntityShuriken extends Entity
                 {
                     f6 = 0.3F;
                     AxisAlignedBB k1 = f4.boundingBox.expand(f6, f6, f6);
-                    MovingObjectPosition f7 = k1.calculateIntercept(var17, vec3d1);
+                    MovingObjectPosition f7 = k1.calculateIntercept(var17, Vec3dd1);
 
                     if (f7 != null)
                     {

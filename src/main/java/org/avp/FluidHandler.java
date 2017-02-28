@@ -6,12 +6,12 @@ import org.avp.world.fluids.FluidMist;
 
 import com.arisux.mdxlib.lib.game.IPreInitEvent;
 
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class FluidHandler implements IPreInitEvent
 {
@@ -36,8 +36,8 @@ public class FluidHandler implements IPreInitEvent
 
     private void registerFluidContainers(FMLPreInitializationEvent event)
     {
-        FluidContainerRegistry.registerFluidContainer(fluidBlackGoo, new ItemStack(AliensVsPredator.items().blackGooBucket), new ItemStack(Items.bucket));
-        FluidContainerRegistry.registerFluidContainer(fluidMist, new ItemStack(AliensVsPredator.items().mistBucket), new ItemStack(Items.bucket));
+        FluidContainerRegistry.registerFluidContainer(fluidBlackGoo, new ItemStack(AliensVsPredator.items().blackGooBucket), new ItemStack(Items.BUCKET));
+        FluidContainerRegistry.registerFluidContainer(fluidMist, new ItemStack(AliensVsPredator.items().mistBucket), new ItemStack(Items.BUCKET));
     }
 
     private void registerBucketEvents(FMLPreInitializationEvent event)

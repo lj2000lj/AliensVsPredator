@@ -78,14 +78,14 @@ public abstract class GenerationHelper extends WorldGenerator
             {
                 Block var11 = var1.getBlock(var9, var4, var10);
 
-                if ((var11 != Blocks.air) && (var11.getMaterial().isLiquid()))
+                if ((var11 != Blocks.AIR) && (var11.getMaterial().isLiquid()))
                 {
                     return true;
                 }
 
                 var11 = var1.getBlock(var9, var7, var10);
 
-                if ((var11 != Blocks.air) && (var11.getMaterial().isLiquid()))
+                if ((var11 != Blocks.AIR) && (var11.getMaterial().isLiquid()))
                 {
                     return true;
                 }
@@ -98,14 +98,14 @@ public abstract class GenerationHelper extends WorldGenerator
             {
                 Block var11 = var1.getBlock(var9, var10, var5);
 
-                if ((var11 != Blocks.air) && (var11.getMaterial().isLiquid()))
+                if ((var11 != Blocks.AIR) && (var11.getMaterial().isLiquid()))
                 {
                     return true;
                 }
 
                 var11 = var1.getBlock(var9, var10, var8);
 
-                if ((var11 != Blocks.air) && (var11.getMaterial().isLiquid()))
+                if ((var11 != Blocks.AIR) && (var11.getMaterial().isLiquid()))
                 {
                     return true;
                 }
@@ -118,14 +118,14 @@ public abstract class GenerationHelper extends WorldGenerator
             {
                 Block var11 = var1.getBlock(var3, var10, var9);
 
-                if ((var11 != Blocks.air) && (var11.getMaterial().isLiquid()))
+                if ((var11 != Blocks.AIR) && (var11.getMaterial().isLiquid()))
                 {
                     return true;
                 }
 
                 var11 = var1.getBlock(var6, var10, var9);
 
-                if ((var11 != Blocks.air) && (var11.getMaterial().isLiquid()))
+                if ((var11 != Blocks.AIR) && (var11.getMaterial().isLiquid()))
                 {
                     return true;
                 }
@@ -527,7 +527,7 @@ public abstract class GenerationHelper extends WorldGenerator
         int var6 = getXWithOffset(var2, var4);
         int var7 = getYWithOffset(var3);
         int var8 = getZWithOffset(var2, var4);
-        return !var5.isVecInside(var6, var7, var8) ? Blocks.air : var1.getBlock(var6, var7, var8);
+        return !var5.isVecInside(var6, var7, var8) ? Blocks.AIR : var1.getBlock(var6, var7, var8);
     }
 
     protected void fillWithAir(World var1, StructureBoundingBox var2, int var3, int var4, int var5, int var6, int var7, int var8)
@@ -552,7 +552,7 @@ public abstract class GenerationHelper extends WorldGenerator
             {
                 for (int var14 = var5; var14 <= var8; var14++)
                 {
-                    if ((var11) && (getBlockAtCurrentPosition(var1, var13, var12, var14, var2) == Blocks.air))
+                    if ((var11) && (getBlockAtCurrentPosition(var1, var13, var12, var14, var2) == Blocks.AIR))
                         continue;
                     if ((var12 != var4) && (var12 != var7) && (var13 != var3) && (var13 != var6) && (var14 != var5) && (var14 != var8))
                     {
@@ -575,7 +575,7 @@ public abstract class GenerationHelper extends WorldGenerator
             {
                 for (int var16 = var5; var16 <= var8; var16++)
                 {
-                    if ((var13) && (getBlockAtCurrentPosition(var1, var15, var14, var16, var2) == Blocks.air))
+                    if ((var13) && (getBlockAtCurrentPosition(var1, var15, var14, var16, var2) == Blocks.AIR))
                         continue;
                     if ((var14 != var4) && (var14 != var7) && (var15 != var3) && (var15 != var6) && (var16 != var5) && (var16 != var8))
                     {
@@ -603,7 +603,7 @@ public abstract class GenerationHelper extends WorldGenerator
             {
                 for (int var16 = var7; var16 <= var10; var16++)
                 {
-                    if ((var3.nextFloat() > var4) || ((var13) && (getBlockAtCurrentPosition(var1, var15, var14, var16, var2) == Blocks.air)))
+                    if ((var3.nextFloat() > var4) || ((var13) && (getBlockAtCurrentPosition(var1, var15, var14, var16, var2) == Blocks.AIR)))
                         continue;
                     if ((var14 != var6) && (var14 != var9) && (var15 != var5) && (var15 != var8) && (var16 != var7) && (var16 != var10))
                     {
@@ -646,7 +646,7 @@ public abstract class GenerationHelper extends WorldGenerator
                 {
                     float var21 = (var20 - var15) / (var13 * 0.5F);
 
-                    if ((var10) && (getBlockAtCurrentPosition(var1, var18, var16, var20, var2) == Blocks.air))
+                    if ((var10) && (getBlockAtCurrentPosition(var1, var18, var16, var20, var2) == Blocks.AIR))
                         continue;
                     float var22 = var19 * var19 + var17 * var17 + var21 * var21;
 

@@ -4,10 +4,12 @@ import org.avp.AliensVsPredator;
 import org.avp.tile.TileEntityWorkstation;
 
 import com.arisux.mdxlib.lib.client.Model;
+import com.arisux.mdxlib.lib.game.Game;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 
 public class ModelWorkstation extends Model
 {
@@ -107,7 +109,7 @@ public class ModelWorkstation extends Model
     public void render(Object obj)
     {
         TileEntityWorkstation tile = (TileEntityWorkstation) obj;
-        
+
         stand.render(DEFAULT_SCALE);
         standBase.render(DEFAULT_SCALE);
         desk.render(DEFAULT_SCALE);
@@ -120,38 +122,40 @@ public class ModelWorkstation extends Model
 
         if (tile != null)
         {
-            Block block = tile.getWorld().getBlock(tile.xCoord, tile.yCoord, tile.zCoord);
-            Block left, leftUp, right, rightUp;
+            IBlockState block = tile.getWorld().getBlockState(tile.getPos());
+            IBlockState left, leftUp, right, rightUp;
+            BlockPos posLeft = tile.getPos();
+            BlockPos posRight = tile.getPos();
 
             switch (tile.rotation)
             {
                 case 3:
                     /* Left is plus z, right is minus z */
-                    leftUp = tile.getWorld().getBlock(tile.xCoord, tile.yCoord + 1, tile.zCoord + 1);
-                    rightUp = tile.getWorld().getBlock(tile.xCoord, tile.yCoord + 1, tile.zCoord - 1);
-                    left = tile.getWorld().getBlock(tile.xCoord, tile.yCoord, tile.zCoord + 1);
-                    right = tile.getWorld().getBlock(tile.xCoord, tile.yCoord, tile.zCoord - 1);
+                    leftUp = tile.getWorld().getBlockState(tile.getPos().add(0, 1, 1));
+                    rightUp = tile.getWorld().getBlockState(tile.getPos().add(0, 1, -1));
+                    left = tile.getWorld().getBlockState(posLeft = tile.getPos().add(0, 0, 1));
+                    right = tile.getWorld().getBlockState(posRight = tile.getPos().add(0, 0, -1));
                     break;
                 case 2:
                     /* Left is minus x, right is plus x */
-                    leftUp = tile.getWorld().getBlock(tile.xCoord + 1, tile.yCoord + 1, tile.zCoord);
-                    rightUp = tile.getWorld().getBlock(tile.xCoord - 1, tile.yCoord + 1, tile.zCoord);
-                    left = tile.getWorld().getBlock(tile.xCoord + 1, tile.yCoord, tile.zCoord);
-                    right = tile.getWorld().getBlock(tile.xCoord - 1, tile.yCoord, tile.zCoord);
+                    leftUp = tile.getWorld().getBlockState(tile.getPos().add(1, 1, 0));
+                    rightUp = tile.getWorld().getBlockState(tile.getPos().add(-1, 1, 0));
+                    left = tile.getWorld().getBlockState(posLeft = tile.getPos().add(1, 0, 0));
+                    right = tile.getWorld().getBlockState(posRight = tile.getPos().add(-1, 0, 0));
                     break;
                 case 1:
                     /* Left is minus z, right is plus z */
-                    leftUp = tile.getWorld().getBlock(tile.xCoord, tile.yCoord + 1, tile.zCoord - 1);
-                    rightUp = tile.getWorld().getBlock(tile.xCoord, tile.yCoord + 1, tile.zCoord + 1);
-                    left = tile.getWorld().getBlock(tile.xCoord, tile.yCoord, tile.zCoord - 1);
-                    right = tile.getWorld().getBlock(tile.xCoord, tile.yCoord, tile.zCoord + 1);
+                    leftUp = tile.getWorld().getBlockState(tile.getPos().add(0, 1, -1));
+                    rightUp = tile.getWorld().getBlockState(tile.getPos().add(0, 1, 1));
+                    left = tile.getWorld().getBlockState(posLeft = tile.getPos().add(0, 0, -1));
+                    right = tile.getWorld().getBlockState(posRight = tile.getPos().add(0, 0, 1));
                     break;
                 case 0:
                     /* Left is plus x, right is minus x, case 4 */
-                    leftUp = tile.getWorld().getBlock(tile.xCoord - 1, tile.yCoord + 1, tile.zCoord);
-                    rightUp = tile.getWorld().getBlock(tile.xCoord + 1, tile.yCoord + 1, tile.zCoord);
-                    left = tile.getWorld().getBlock(tile.xCoord - 1, tile.yCoord, tile.zCoord);
-                    right = tile.getWorld().getBlock(tile.xCoord + 1, tile.yCoord, tile.zCoord);
+                    leftUp = tile.getWorld().getBlockState(tile.getPos().add(-1, 1, 0));
+                    rightUp = tile.getWorld().getBlockState(tile.getPos().add(1, 1, 0));
+                    left = tile.getWorld().getBlockState(posLeft = tile.getPos().add(-1, 0, 0));
+                    right = tile.getWorld().getBlockState(posRight = tile.getPos().add(1, 0, 0));
                     break;
                 default:
                     left = block;
@@ -161,13 +165,13 @@ public class ModelWorkstation extends Model
                     break;
             }
 
-            if (left != AliensVsPredator.blocks().blockWorkstation && leftUp == Blocks.air && left.getBlockBoundsMaxY() <= 1.5)
+            if (left != AliensVsPredator.blocks().blockWorkstation && leftUp == Blocks.AIR && left.getCollisionBoundingBox(Game.minecraft().theWorld, posLeft).maxY <= 1.5)
             {
                 // leftArm.render(DEFAULT_SCALE);
                 screenLeft.render(DEFAULT_SCALE);
             }
 
-            if (right != AliensVsPredator.blocks().blockWorkstation && rightUp == Blocks.air && right.getBlockBoundsMaxY() <= 1.5)
+            if (right != AliensVsPredator.blocks().blockWorkstation && rightUp == Blocks.AIR && right.getCollisionBoundingBox(Game.minecraft().theWorld, posRight).maxY <= 1.5)
             {
                 // rightArm.render(DEFAULT_SCALE);
                 screenRight.render(DEFAULT_SCALE);
@@ -179,6 +183,6 @@ public class ModelWorkstation extends Model
             screenLeft.render(DEFAULT_SCALE);
             rightArm.render(DEFAULT_SCALE);
             screenRight.render(DEFAULT_SCALE);
-        }        
+        }
     }
 }

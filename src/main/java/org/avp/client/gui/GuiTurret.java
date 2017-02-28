@@ -22,8 +22,6 @@ import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.game.Game;
 import com.arisux.mdxlib.lib.world.entity.Entities;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -32,6 +30,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GuiTurret extends GuiContainer
@@ -55,7 +55,7 @@ public class GuiTurret extends GuiContainer
         this.xSize = 225;
         this.ySize = 200;
         this.tile = turret;
-        this.entityList = new ArrayList<Class<? extends Entity>>(EntityList.stringToClassMapping.values());
+        this.entityList = new ArrayList<Class<? extends Entity>>(EntityList.NAME_TO_CLASS.values());
         this.entityLivingList = new ArrayList<EntityLiving>();
 
         for (Class<?> c : this.entityList)
@@ -109,7 +109,7 @@ public class GuiTurret extends GuiContainer
 
         for (Class<? extends Entity> c : this.tile.getDangerousTargets())
         {
-            AliensVsPredator.network().sendToServer(new PacketAddTuretTarget(this.tile.xCoord, this.tile.yCoord, this.tile.zCoord, Entities.getEntityRegistrationId(c)));
+            AliensVsPredator.network().sendToServer(new PacketAddTuretTarget(this.tile.getPos().getX(), this.tile.getPos().getY(), this.tile.getPos().getZ(), Entities.getEntityRegistrationId(c)));
         }
     }
 
@@ -156,7 +156,7 @@ public class GuiTurret extends GuiContainer
             if (entity != null && yEntryPos <= yPos + 50)
             {
                 Draw.drawRectWithOutline(3, yEntryPos - 4, 134, 12, 1, 0x00000000, 0xFF444444);
-                Draw.drawString(entity.getCommandSenderName(), 6, yEntryPos - 2, this.tile.canTargetType(entity.getClass()) ? (getCurrentSelectedEntity() == entity ? 0xFFFF8800 : 0xFFFF0000) : (getCurrentSelectedEntity() == entity ? 0xFFFFFFFF : 0xFF444444), false);
+                Draw.drawString(entity.getName(), 6, yEntryPos - 2, this.tile.canTargetType(entity.getClass()) ? (getCurrentSelectedEntity() == entity ? 0xFFFF8800 : 0xFFFF0000) : (getCurrentSelectedEntity() == entity ? 0xFFFFFFFF : 0xFF444444), false);
             }
         }
 
@@ -236,12 +236,12 @@ public class GuiTurret extends GuiContainer
                     if (!tile.canTargetType(getCurrentSelectedEntity().getClass()))
                     {
                         tile.addTargetType(getCurrentSelectedEntity().getClass());
-                        AliensVsPredator.network().sendToServer(new PacketAddTuretTarget(tile.xCoord, tile.yCoord, tile.zCoord, Entities.getEntityRegistrationId(getCurrentSelectedEntity())));
+                        AliensVsPredator.network().sendToServer(new PacketAddTuretTarget(tile.getPos().getX(), tile.getPos().getY(), tile.getPos().getZ(), Entities.getEntityRegistrationId(getCurrentSelectedEntity())));
                     }
                     else
                     {
                         tile.removeTargetType(getCurrentSelectedEntity().getClass());
-                        AliensVsPredator.network().sendToServer(new PacketRemoveTurretTarget(tile.xCoord, tile.yCoord, tile.zCoord, Entities.getEntityRegistrationId(getCurrentSelectedEntity())));
+                        AliensVsPredator.network().sendToServer(new PacketRemoveTurretTarget(tile.getPos().getX(), tile.getPos().getY(), tile.getPos().getZ(), Entities.getEntityRegistrationId(getCurrentSelectedEntity())));
                     }
                 }
             }
@@ -257,7 +257,7 @@ public class GuiTurret extends GuiContainer
             @Override
             public void perform(IGuiElement element)
             {
-                AliensVsPredator.network().sendToServer(new PacketWriteToDataDevice(tile.xCoord, tile.yCoord, tile.zCoord, 0));
+                AliensVsPredator.network().sendToServer(new PacketWriteToDataDevice(tile.getPos().getX(), tile.getPos().getY(), tile.getPos().getZ(), 0));
                 tile.writeToOtherDevice(0);
             }
         });
@@ -273,7 +273,7 @@ public class GuiTurret extends GuiContainer
             public void perform(IGuiElement element)
             {
                 tile.getDangerousTargets().clear();
-                AliensVsPredator.network().sendToServer(new PacketReadFromDataDevice(tile.xCoord, tile.yCoord, tile.zCoord, 0));
+                AliensVsPredator.network().sendToServer(new PacketReadFromDataDevice(tile.getPos().getX(), tile.getPos().getY(), tile.getPos().getZ(), 0));
                 tile.readFromOtherDevice(0);
             }
         });

@@ -14,8 +14,6 @@ import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.block.Blocks;
 import com.arisux.mdxlib.lib.world.entity.Entities;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.particle.EntityFlameFX;
 import net.minecraft.entity.Entity;
@@ -23,9 +21,10 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityFlame extends EntityThrowable
 {
@@ -57,11 +56,11 @@ public class EntityFlame extends EntityThrowable
     {
         super.entityInit();
 
-        if (this.getThrower() != null && this.getThrower().getHeldItem() != null)
+        if (this.getThrower() != null && this.getThrower().getHeldItemMainhand() != null)
         {
-            if (this.getThrower().getHeldItem().getItem() == AliensVsPredator.items().itemM240ICU || this.getThrower().getHeldItem().getItem() == AliensVsPredator.items().itemNostromoFlamethrower)
+            if (this.getThrower().getHeldItemMainhand().getItem() == AliensVsPredator.items().itemM240ICU || this.getThrower().getHeldItemMainhand().getItem() == AliensVsPredator.items().itemNostromoFlamethrower)
             {
-                ItemFlamethrower flamethrower = (ItemFlamethrower) this.getThrower().getHeldItem().getItem();
+                ItemFlamethrower flamethrower = (ItemFlamethrower) this.getThrower().getHeldItemMainhand().getItem();
 
                 if (flamethrower instanceof ItemM240IncineratorUnit)
                 {
@@ -83,7 +82,7 @@ public class EntityFlame extends EntityThrowable
     public void onUpdate()
     {
         this.moveEntity(this.motionX, this.motionY, this.motionZ);
-        MovingObjectPosition movingObjectPosition = this.worldObj.rayTraceBlocks(Vec3.createVectorHelper(this.posX, this.posY, this.posZ), Vec3.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ));
+        MovingObjectPosition movingObjectPosition = this.worldObj.rayTraceBlocks(new Vec3d(this.posX, this.posY, this.posZ), new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ));
 
         if (!this.worldObj.isRemote)
         {
@@ -189,11 +188,11 @@ public class EntityFlame extends EntityThrowable
             }
         }
 
-        if (this.getThrower() != null && this.getThrower().getHeldItem() != null)
+        if (this.getThrower() != null && this.getThrower().getHeldItemMainhand() != null)
         {
-            if (this.getThrower().getHeldItem().getItem() == AliensVsPredator.items().itemM240ICU || this.getThrower().getHeldItem().getItem() == AliensVsPredator.items().itemNostromoFlamethrower)
+            if (this.getThrower().getHeldItemMainhand().getItem() == AliensVsPredator.items().itemM240ICU || this.getThrower().getHeldItemMainhand().getItem() == AliensVsPredator.items().itemNostromoFlamethrower)
             {
-                ItemFlamethrower flamethrower = (ItemFlamethrower) this.getThrower().getHeldItem().getItem();
+                ItemFlamethrower flamethrower = (ItemFlamethrower) this.getThrower().getHeldItemMainhand().getItem();
 
                 if (flamethrower instanceof ItemM240IncineratorUnit)
                 {
@@ -218,7 +217,7 @@ public class EntityFlame extends EntityThrowable
     {
         Block block = this.worldObj.getBlock(posX, posY, posZ);
 
-        if (block == net.minecraft.init.Blocks.air)
+        if (block == net.minecraft.init.Blocks.AIR)
         {
             this.worldObj.setBlock(posX, posY, posZ, net.minecraft.init.Blocks.fire);
         }

@@ -7,8 +7,6 @@ import org.avp.tile.TileEntitySkull;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.client.render.Texture;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.model.ModelRenderer;
@@ -18,10 +16,12 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class BlockSkull extends Block
 {
@@ -105,9 +105,9 @@ public abstract class BlockSkull extends Block
         return false;
     }
 
-    public static ForgeDirection getFacing(Entity entity)
+    public static EnumFacing getFacing(Entity entity)
     {
         int dir = MathHelper.floor_double((entity.rotationYaw / 90) + 0.5) & 3;
-        return ForgeDirection.VALID_DIRECTIONS[Direction.directionToFacing[dir]];
+        return EnumFacing.VALID_DIRECTIONS[Direction.directionToFacing[dir]];
     }
 }

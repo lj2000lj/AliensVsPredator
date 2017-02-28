@@ -11,9 +11,10 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+
 
 public class BlockRedstoneFluxGenerator extends Block
 {
@@ -57,28 +58,28 @@ public class BlockRedstoneFluxGenerator extends Block
         {
             TileEntityRedstoneFluxGenerator generator = (TileEntityRedstoneFluxGenerator) te;
 
-            ArrayList<ForgeDirection> forgeDirections = new ArrayList<ForgeDirection>();
+            ArrayList<EnumFacing> EnumFacings = new ArrayList<EnumFacing>();
 
-            for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+            for (EnumFacing dir : EnumFacing.VALID_DIRECTIONS)
             {
-                if (dir != ForgeDirection.UP && dir != ForgeDirection.DOWN)
+                if (dir != EnumFacing.UP && dir != EnumFacing.DOWN)
                 {
-                    forgeDirections.add(dir);
+                    EnumFacings.add(dir);
                 }
             }
 
             if (generator.getDirection() != null)
             {
-                int index = forgeDirections.indexOf(generator.getDirection());
+                int index = EnumFacings.indexOf(generator.getDirection());
 
-                if (index + 1 >= forgeDirections.size())
+                if (index + 1 >= EnumFacings.size())
                 {
                     index = -1;
                 }
 
-                if (forgeDirections.get(index + 1) != null)
+                if (EnumFacings.get(index + 1) != null)
                 {
-                    generator.setDirection(forgeDirections.get(index + 1));
+                    generator.setDirection(EnumFacings.get(index + 1));
                 }
 
                 if (!worldObj.isRemote)

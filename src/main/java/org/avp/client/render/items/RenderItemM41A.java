@@ -47,7 +47,7 @@ public class RenderItemM41A extends ItemRenderer
     @Override
     public void renderThirdPerson(ItemStack item, Object... data)
     {
-        PlayerResource player = resourceStorage.create(((EntityPlayer) data[1]).getCommandSenderName());
+        PlayerResource player = resourceStorage.create(((EntityPlayer) data[1]).getName());
         float glScale = 1.3F;
 
         if (player != null)
@@ -91,7 +91,7 @@ public class RenderItemM41A extends ItemRenderer
             new Texture(Remote.downloadResource(String.format(URLs.SKIN_M41A, Game.session().getPlayerID()), this.getModelTexMap().getTexture())).bind();
             this.getModelTexMap().getModel().render();
 
-            if (mc.thePlayer.getCurrentEquippedItem() != null && mc.thePlayer.getCurrentEquippedItem().getItem() instanceof ItemFirearm)
+            if (mc.thePlayer.getHeldItemMainhand() != null && mc.thePlayer.getHeldItemMainhand().getItem() instanceof ItemFirearm)
             {
                 OpenGL.disable(GL11.GL_LIGHTING);
                 OpenGL.translate(-0.3439F, 0.6F, 0.04F);

@@ -6,9 +6,9 @@ import org.avp.world.worldgen.WorldGeneratorDerelict;
 
 import com.arisux.mdxlib.lib.game.IInitEvent;
 
-import cpw.mods.fml.common.IWorldGenerator;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.IWorldGenerator;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class WorldHandler implements IInitEvent
 {

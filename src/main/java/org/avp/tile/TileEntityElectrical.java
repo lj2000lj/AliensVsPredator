@@ -7,7 +7,8 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+
 
 public abstract class TileEntityElectrical extends TileEntity
 {
@@ -108,10 +109,10 @@ public abstract class TileEntityElectrical extends TileEntity
     }
 
     /**
-     * @param side - ForgeDirection from the receiver. 
+     * @param side - EnumFacing from the receiver. 
      * @return If this side can provide energy to the receiver.
      */
-    public boolean canProvideEnergyToReceiver(ForgeDirection side)
+    public boolean canProvideEnergyToReceiver(EnumFacing side)
     {
         return true;
     }
@@ -175,7 +176,7 @@ public abstract class TileEntityElectrical extends TileEntity
     /**
      * @return The Source Direction that a receiver can extract from
      */
-    public ForgeDirection getSourcePowerDirection()
+    public EnumFacing getSourcePowerDirection()
     {
         return null;
     }
@@ -211,7 +212,7 @@ public abstract class TileEntityElectrical extends TileEntity
     {
         this.voltagePrev = this.voltage;
 
-        for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+        for (EnumFacing direction : EnumFacing.VALID_DIRECTIONS)
         {
             TileEntity tile = this.worldObj.getTileEntity(this.xCoord + direction.offsetX, this.yCoord + direction.offsetY, this.zCoord + direction.offsetZ);
 
@@ -233,7 +234,7 @@ public abstract class TileEntityElectrical extends TileEntity
 
         TileEntity surroundingTile = null;
 
-        for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+        for (EnumFacing direction : EnumFacing.VALID_DIRECTIONS)
         {
             TileEntity tile = this.worldObj.getTileEntity(this.xCoord + direction.offsetX, this.yCoord + direction.offsetY, this.zCoord + direction.offsetZ);
 
@@ -267,7 +268,7 @@ public abstract class TileEntityElectrical extends TileEntity
      * @param simulate - If true, this request will only be simulated.
      * @return - The amount of energy to be extracted.
      */
-    public double extractVoltage(ForgeDirection from, double maxExtract, boolean simulate)
+    public double extractVoltage(EnumFacing from, double maxExtract, boolean simulate)
     {
         TileEntity tile = this.worldObj.getTileEntity(this.xCoord + from.offsetX, this.yCoord + from.offsetY, this.zCoord + from.offsetZ);
 
@@ -289,7 +290,7 @@ public abstract class TileEntityElectrical extends TileEntity
      * @return The amount of energy this component will contain after adding 
      * the specified amount of energy.
      */
-    public double receiveVoltage(ForgeDirection from, double maxReceive, boolean simulate)
+    public double receiveVoltage(EnumFacing from, double maxReceive, boolean simulate)
     {
         double result = this.getVoltage() + maxReceive;
 

@@ -6,25 +6,25 @@ import org.avp.api.blocks.material.IMaterialRenderer;
 import com.arisux.mdxlib.MDX;
 import com.arisux.mdxlib.lib.game.Game;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.Phase;
-import cpw.mods.fml.common.gameevent.TickEvent.Type;
+
+import cpw.mods.fml.common.gameevent.Tickevent.getType();
 import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.client.event.EntityViewRenderEvent.FogColors;
-import net.minecraftforge.client.event.EntityViewRenderEvent.RenderFogEvent;
+import net.minecraftforge.client.event.getEntity()ViewRenderEvent.FogColors;
+import net.minecraftforge.client.event.getEntity()ViewRenderEvent.RenderFogEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class MaterialHandler
 {
@@ -45,7 +45,7 @@ public class MaterialHandler
 
                 if (renderer != null)
                 {
-                    if (event.type == ElementType.HELMET)
+                    if (event.getType() == ElementType.HELMET)
                     {
                         if (Game.minecraft().thePlayer.isInsideOfMaterial(materialInside))
                         {
@@ -108,7 +108,7 @@ public class MaterialHandler
 
                     if (renderer != null)
                     {
-                        Vec3 fogColor = renderer.getFogColor();
+                        Vec3d fogColor = renderer.getFogColor();
 
                         event.red = (float) fogColor.xCoord;
                         event.green = (float) fogColor.yCoord;
@@ -122,7 +122,7 @@ public class MaterialHandler
     @SubscribeEvent
     public void onUpdate(WorldTickEvent event)
     {
-        if (event.type == Type.WORLD && event.phase == Phase.END)
+        if (event.getType() == Type.WORLD && event.phase == Phase.END)
         {
             this.update(event.world);
         }
@@ -143,7 +143,7 @@ public class MaterialHandler
                     if (material instanceof IMaterialPhysics)
                     {
                         IMaterialPhysics physics = (IMaterialPhysics) material;
-                        Vec3 motion = MaterialHandler.instance.handleMaterialAcceleration(entity, material, physics);
+                        Vec3d motion = MaterialHandler.instance.handleMaterialAcceleration(entity, material, physics);
 
                         if (motion != null)
                         {
@@ -202,7 +202,7 @@ public class MaterialHandler
         return null;
     }
 
-    public Vec3 handleMaterialAcceleration(Entity entity, Material material, IMaterialPhysics physics)
+    public Vec3d handleMaterialAcceleration(Entity entity, Material material, IMaterialPhysics physics)
     {
         AxisAlignedBB box = entity.boundingBox.expand(0.0D, -0.4D, 0.0D).contract(0.001D, 0.001D, 0.001D);
 
@@ -219,7 +219,7 @@ public class MaterialHandler
         }
         else
         {
-            Vec3 motion = null;
+            Vec3d motion = null;
 
             for (int x = minX; x < maxX; ++x)
             {
@@ -235,7 +235,7 @@ public class MaterialHandler
 
                             if ((double) maxY >= lhp)
                             {
-                                block.modifyEntityVelocity(entity.worldObj, x, y, z, entity, motion = Vec3.createVectorHelper(0.0D, 0.0D, 0.0D));
+                                block.modifyEntityVelocity(entity.worldObj, x, y, z, entity, motion = new Vec3d(0.0D, 0.0D, 0.0D));
                             }
                         }
                     }

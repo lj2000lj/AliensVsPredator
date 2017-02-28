@@ -7,8 +7,6 @@ import org.avp.entities.SharedPlayer;
 import com.arisux.mdxlib.lib.client.render.Draw;
 import com.arisux.mdxlib.lib.game.Game;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -16,6 +14,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemArmorXeno extends ItemArmor
 {
@@ -91,7 +91,7 @@ public class ItemArmorXeno extends ItemArmor
         {
             specialPlayer.setCanClimb(true);
         }
-        else if (!Game.minecraft().gameSettings.keyBindJump.getIsKeyPressed())
+        else if (!Game.minecraft().gameSettings.keyBindJump.isPressed())
         {
             specialPlayer.setCanClimb(false);
         }

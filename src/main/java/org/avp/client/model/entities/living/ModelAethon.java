@@ -7,7 +7,8 @@ import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.game.Game;
 
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
+
 
 public class ModelAethon extends Model
 {

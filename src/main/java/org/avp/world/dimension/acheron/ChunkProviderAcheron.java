@@ -10,11 +10,11 @@ import net.minecraft.block.BlockSand;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.IProgressUpdate;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.SpawnerAnimals;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
@@ -27,7 +27,7 @@ public class ChunkProviderAcheron implements IChunkProvider
 	private double[] noiseArray;
 	private double[] stoneNoise = new double[256];
 
-	private BiomeGenBase[] biomesForGeneration;
+	private Biome[] biomesForGeneration;
 	private double[] noise3;
 	private double[] noise1;
 	private double[] noise2;
@@ -108,7 +108,7 @@ public class ChunkProviderAcheron implements IChunkProvider
 								{
 									int tmp563_562 = (var43 + var44);
 									var43 = tmp563_562;
-									blocksInChunk[tmp563_562] = Blocks.air;
+									blocksInChunk[tmp563_562] = Blocks.AIR;
 								}
 							}
 
@@ -126,7 +126,7 @@ public class ChunkProviderAcheron implements IChunkProvider
 		}
 	}
 
-	public void replaceBlocksForBiome(int var1, int var2, Block[] var3, BiomeGenBase[] var4)
+	public void replaceBlocksForBiome(int var1, int var2, Block[] var3, Biome[] var4)
 	{
 		byte var5 = 63;
 		double var6 = 0.03125D;
@@ -136,7 +136,7 @@ public class ChunkProviderAcheron implements IChunkProvider
 		{
 			for (int var9 = 0; var9 < 16; var9++)
 			{
-				BiomeGenBase var10 = var4[(var9 + var8 * 16)];
+				Biome var10 = var4[(var9 + var8 * 16)];
 				// float var11 =
 				// var10.getFloatTemperature(p_150564_1_,
 				// p_150564_2_, p_150564_3_)
@@ -157,7 +157,7 @@ public class ChunkProviderAcheron implements IChunkProvider
 					{
 						Block var18 = var3[var17];
 
-						if (var18 == Blocks.air)
+						if (var18 == Blocks.AIR)
 						{
 							var13 = -1;
 						}
@@ -169,7 +169,7 @@ public class ChunkProviderAcheron implements IChunkProvider
 							{
 								if (var12 <= 0)
 								{
-									var14 = Blocks.air;
+									var14 = Blocks.AIR;
 									var15 = AliensVsPredator.blocks().terrainUniStone;
 								}
 								else if ((var16 >= var5 - 4) && (var16 <= var5 + 1))
@@ -178,7 +178,7 @@ public class ChunkProviderAcheron implements IChunkProvider
 									var15 = var10.fillerBlock;
 								}
 
-								if ((var16 < var5) && (var14 == Blocks.air))
+								if ((var16 < var5) && (var14 == Blocks.AIR))
 								{
 									var14 = Blocks.water;
 								}
@@ -279,13 +279,13 @@ public class ChunkProviderAcheron implements IChunkProvider
 				float var19 = 0.0F;
 				float var20 = 0.0F;
 				byte var21 = 2;
-				BiomeGenBase var22 = this.biomesForGeneration[(var16 + 2 + (var17 + 2) * (var5 + 5))];
+				Biome var22 = this.biomesForGeneration[(var16 + 2 + (var17 + 2) * (var5 + 5))];
 
 				for (int var23 = -var21; var23 <= var21; var23++)
 				{
 					for (int var24 = -var21; var24 <= var21; var24++)
 					{
-						BiomeGenBase var25 = this.biomesForGeneration[(var16 + var23 + 2 + (var17 + var24 + 2) * (var5 + 5))];
+						Biome var25 = this.biomesForGeneration[(var16 + var23 + 2 + (var17 + var24 + 2) * (var5 + 5))];
 						float var26 = this.field_35388_l[(var23 + 2 + (var24 + 2) * 5)] / (var25.minHeight + 2.0F);
 
 						if (var25.minHeight > var22.minHeight)
@@ -397,7 +397,7 @@ public class ChunkProviderAcheron implements IChunkProvider
 		BlockSand.fallInstantly = true;
 		int posX = chunkX * 16;
 		int posZ = chunkZ * 16;
-		BiomeGenBase biome = this.world.getBiomeGenForCoords(posX + 16, posZ + 16);
+		Biome biome = this.world.getBiomeGenForCoords(posX + 16, posZ + 16);
 		this.randomSeed.setSeed(this.world.getSeed());
 		this.randomSeed.setSeed(chunkX * (this.randomSeed.nextLong() / 2L * 2L + 1L) + chunkZ * (this.randomSeed.nextLong() / 2L * 2L + 1L) ^ this.world.getSeed());
 
@@ -448,7 +448,7 @@ public class ChunkProviderAcheron implements IChunkProvider
 	@Override
 	public List<?> getPossibleCreatures(EnumCreatureType creatureType, int posX, int posY, int posZ)
 	{
-		BiomeGenBase biome = this.world.getBiomeGenForCoords(posX, posZ);
+		Biome biome = this.world.getBiomeGenForCoords(posX, posZ);
 		return biome == null ? null : biome.getSpawnableList(creatureType);
 	}
 

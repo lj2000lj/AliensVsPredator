@@ -8,26 +8,18 @@ import com.arisux.mdxlib.lib.client.RenderLivingWrapper;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.entity.EntityLivingBase;
 
-public class RenderBoiler extends RenderLivingWrapper
+public class RenderBoiler extends RenderLivingWrapper<EntityBoiler>
 {
     public RenderBoiler()
     {
         super(AliensVsPredator.resources().models().BOILER);
-        this.setRenderPassModel(this.getModelTexMap().getModel());
     }
 
     @Override
-    protected void preRenderCallback(EntityLivingBase entityLivingBase, float shadowSize)
+    protected void preRenderCallback(EntityBoiler entityLivingBase, float shadowSize)
     {
         super.preRenderCallback(entityLivingBase, shadowSize);
-    }
-
-    @Override
-    protected int shouldRenderPass(EntityLivingBase entityLivingBase, int par2, float par3)
-    {
-        return this.setRenderPassModelBrightness((EntityBoiler) entityLivingBase, par2);
     }
 
     protected int setRenderPassModelBrightness(EntityBoiler entity, int brightness)

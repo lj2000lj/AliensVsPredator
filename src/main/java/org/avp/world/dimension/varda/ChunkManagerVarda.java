@@ -7,19 +7,19 @@ import java.util.Random;
 
 import org.avp.world.dimension.varda.gen.layer.GenLayerVarda;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.util.ReportedException;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeCache;
-import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ChunkManagerVarda extends WorldChunkManager
 {
@@ -56,7 +56,7 @@ public class ChunkManagerVarda extends WorldChunkManager
     }
 
     @Override
-    public BiomeGenBase getBiomeGenAt(int chunkX, int chunkZ)
+    public Biome getBiomeGenAt(int chunkX, int chunkZ)
     {
         return this.biomeCache.getBiomeGenAt(chunkX, chunkZ);
     }
@@ -77,7 +77,7 @@ public class ChunkManagerVarda extends WorldChunkManager
         {
             try
             {
-                float rainfall = (float) BiomeGenBase.getBiome(indexes[idx]).getIntRainfall() / 65536.0F;
+                float rainfall = (float) Biome.getBiome(indexes[idx]).getIntRainfall() / 65536.0F;
 
                 if (rainfall > 1.0F)
                 {
@@ -111,13 +111,13 @@ public class ChunkManagerVarda extends WorldChunkManager
     }
 
     @Override
-    public BiomeGenBase[] getBiomesForGeneration(BiomeGenBase[] biomes, int chunkX, int chunkZ, int width, int depth)
+    public Biome[] getBiomesForGeneration(Biome[] biomes, int chunkX, int chunkZ, int width, int depth)
     {
         IntCache.resetIntCache();
 
         if (biomes == null || biomes.length < width * depth)
         {
-            biomes = new BiomeGenBase[width * depth];
+            biomes = new Biome[width * depth];
         }
 
         int[] indexes = this.genBiomes.getInts(chunkX, chunkZ, width, depth);
@@ -145,25 +145,25 @@ public class ChunkManagerVarda extends WorldChunkManager
     }
 
     @Override
-    public BiomeGenBase[] loadBlockGeneratorData(BiomeGenBase[] oldBiomes, int chunkX, int chunkZ, int width, int depth)
+    public Biome[] loadBlockGeneratorData(Biome[] oldBiomes, int chunkX, int chunkZ, int width, int depth)
     {
         return this.getBiomeGenAt(oldBiomes, chunkX, chunkZ, width, depth, true);
     }
 
     @Override
-    public BiomeGenBase[] getBiomeGenAt(BiomeGenBase[] biomes, int chunkX, int chunkZ, int width, int depth, boolean checkCache)
+    public Biome[] getBiomeGenAt(Biome[] biomes, int chunkX, int chunkZ, int width, int depth, boolean checkCache)
     {
         IntCache.resetIntCache();
 
         if (biomes == null || biomes.length < width * depth)
         {
-            biomes = new BiomeGenBase[width * depth];
+            biomes = new Biome[width * depth];
         }
 
         if (checkCache && width == 16 && depth == 16 && (chunkX & 15) == 0 && (chunkZ & 15) == 0)
         {
-            BiomeGenBase[] abiomegenbase1 = this.biomeCache.getCachedBiomes(chunkX, chunkZ);
-            System.arraycopy(abiomegenbase1, 0, biomes, 0, width * depth);
+            Biome[] aBiome1 = this.biomeCache.getCachedBiomes(chunkX, chunkZ);
+            System.arraycopy(aBiome1, 0, biomes, 0, width * depth);
             return biomes;
         }
         else
@@ -172,7 +172,7 @@ public class ChunkManagerVarda extends WorldChunkManager
 
             for (int idx = 0; idx < width * depth; ++idx)
             {
-                biomes[idx] = BiomeGenBase.getBiome(indexes[idx]);
+                biomes[idx] = Biome.getBiome(indexes[idx]);
             }
 
             return biomes;
@@ -195,9 +195,9 @@ public class ChunkManagerVarda extends WorldChunkManager
         {
             for (int idx = 0; idx < width * depth; ++idx)
             {
-                BiomeGenBase biomegenbase = BiomeGenBase.getBiome(indexes[idx]);
+                Biome Biome = Biome.getBiome(indexes[idx]);
 
-                if (!allowedBiomes.contains(biomegenbase))
+                if (!allowedBiomes.contains(Biome))
                 {
                     return false;
                 }
@@ -236,7 +236,7 @@ public class ChunkManagerVarda extends WorldChunkManager
         {
             int biomeChunkX = chunkMinX + idx % width << 2;
             int biomeChunkZ = chunkMinZ + idx / width << 2;
-            BiomeGenBase biomegen = BiomeGenBase.getBiome(indexes[idx]);
+            Biome biomegen = Biome.getBiome(indexes[idx]);
 
             if (biomes.contains(biomegen) && (chunkposition == null || seed.nextInt(count + 1) == 0))
             {

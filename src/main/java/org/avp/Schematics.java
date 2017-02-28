@@ -6,7 +6,9 @@ import com.arisux.mdxlib.MDX;
 import com.arisux.mdxlib.lib.game.IInitEvent;
 import com.arisux.mdxlib.lib.world.storage.Schematic;
 
-import cpw.mods.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+
+
 
 public class Schematics implements IInitEvent
 {

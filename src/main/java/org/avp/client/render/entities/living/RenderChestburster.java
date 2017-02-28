@@ -1,13 +1,12 @@
 package org.avp.client.render.entities.living;
 
 import org.avp.AliensVsPredator;
+import org.avp.entities.living.EntityChestburster;
 
 import com.arisux.mdxlib.lib.client.RenderLivingWrapper;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
-import net.minecraft.entity.EntityLivingBase;
-
-public class RenderChestburster extends RenderLivingWrapper
+public class RenderChestburster extends RenderLivingWrapper<EntityChestburster>
 {
     public RenderChestburster()
     {
@@ -15,7 +14,7 @@ public class RenderChestburster extends RenderLivingWrapper
     }
 
     @Override
-    protected void preRenderCallback(EntityLivingBase entitylivingBase, float partialTicks)
+    protected void preRenderCallback(EntityChestburster entitylivingBase, float partialTicks)
     {
         super.preRenderCallback(entitylivingBase, shadowSize);
         OpenGL.scale(0.55F, 0.55F, 0.55F);

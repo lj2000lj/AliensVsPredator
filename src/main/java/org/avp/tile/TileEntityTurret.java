@@ -48,8 +48,6 @@ import com.arisux.mdxlib.lib.world.entity.Entities;
 import com.arisux.mdxlib.lib.world.storage.NBTStorage;
 
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -66,11 +64,12 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.Constants.NBT;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileEntityTurret extends TileEntityElectrical implements IDataDevice, IVoltageReceiver
 {
@@ -844,25 +843,25 @@ public class TileEntityTurret extends TileEntityElectrical implements IDataDevic
     }
 
     @Override
-    public boolean canConnectPower(ForgeDirection from)
+    public boolean canConnectPower(EnumFacing from)
     {
         return true;
     }
 
     @Override
-    public double receiveVoltage(ForgeDirection from, double maxReceive, boolean simulate)
+    public double receiveVoltage(EnumFacing from, double maxReceive, boolean simulate)
     {
         return super.receiveVoltage(from, maxReceive, simulate);
     }
 
     @Override
-    public double getCurrentVoltage(ForgeDirection from)
+    public double getCurrentVoltage(EnumFacing from)
     {
         return this.getVoltage();
     }
 
     @Override
-    public double getMaxVoltage(ForgeDirection from)
+    public double getMaxVoltage(EnumFacing from)
     {
         return 220;
     }

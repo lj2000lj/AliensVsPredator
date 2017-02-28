@@ -20,13 +20,14 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.common.util.ForgeDirection;
+
 
 public class TileEntityLocker extends TileEntity implements IOpenable, IRotatable
 {
     public IInventory inventory;
-    private ForgeDirection direction;
+    private EnumFacing direction;
     public Container container;
     private boolean isOpen;
 
@@ -105,9 +106,9 @@ public class TileEntityLocker extends TileEntity implements IOpenable, IRotatabl
     {
         super.readFromNBT(nbt);
 
-        if (ForgeDirection.getOrientation(nbt.getInteger("Direction")) != null)
+        if (EnumFacing.getOrientation(nbt.getInteger("Direction")) != null)
         {
-            this.direction = ForgeDirection.getOrientation(nbt.getInteger("Direction"));
+            this.direction = EnumFacing.getOrientation(nbt.getInteger("Direction"));
         }
 
         this.readInventoryFromNBT(nbt, this.inventory);
@@ -145,13 +146,13 @@ public class TileEntityLocker extends TileEntity implements IOpenable, IRotatabl
     }
 
     @Override
-    public ForgeDirection getDirection()
+    public EnumFacing getDirection()
     {
         return direction;
     }
 
     @Override
-    public void setDirection(ForgeDirection direction)
+    public void setDirection(EnumFacing direction)
     {
         this.direction = direction;
     }

@@ -13,11 +13,12 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Direction;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+
 
 public class BlockLocker extends Block
 {
@@ -126,10 +127,10 @@ public class BlockLocker extends Block
         return -1;
     }
 
-    public static ForgeDirection getFacing(Entity entity)
+    public static EnumFacing getFacing(Entity entity)
     {
         int dir = MathHelper.floor_double((entity.rotationYaw / 90) + 0.5) & 3;
-        return ForgeDirection.VALID_DIRECTIONS[Direction.directionToFacing[dir]];
+        return EnumFacing.VALID_DIRECTIONS[Direction.directionToFacing[dir]];
     }
 
     @Override

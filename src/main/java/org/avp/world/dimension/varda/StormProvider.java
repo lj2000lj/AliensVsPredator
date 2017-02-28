@@ -10,18 +10,17 @@ import com.arisux.mdxlib.lib.game.Game;
 import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.Worlds;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class StormProvider implements IEntitySelector
 {
@@ -148,9 +147,9 @@ public class StormProvider implements IEntitySelector
 
                 float rX = stormX[idx] * 0.5F;
                 float rZ = stormZ[idx] * 0.5F;
-                BiomeGenBase biomegenbase = worldclient.getBiomeGenForCoords(vX, vZ);
+                Biome Biome = worldclient.getBiomeGenForCoords(vX, vZ);
 
-                if (biomegenbase == BiomeGenVarda.vardaBadlands)
+                if (Biome == BiomeGenVarda.vardaBadlands)
                 {
                     int stormHeight = worldclient.getPrecipitationHeight(vX, vZ);
                     int minY = posY - (Game.minecraft().gameSettings.fancyGraphics ? 64 : 16);

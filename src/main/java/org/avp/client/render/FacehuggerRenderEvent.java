@@ -6,10 +6,11 @@ import org.avp.entities.living.EntityFacehugger;
 import com.arisux.mdxlib.lib.client.render.Draw;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.world.entity.Entities;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class FacehuggerRenderEvent
 {
@@ -20,9 +21,9 @@ public class FacehuggerRenderEvent
     {
         if (Game.minecraft().thePlayer != null)
         {
-            if (event.type == RenderGameOverlayEvent.ElementType.AIR)
+            if (event.getType() == RenderGameOverlayEvent.ElementType.AIR)
             {
-                if (Game.minecraft().gameSettings.thirdPersonView == 0 && Game.minecraft().thePlayer.riddenByEntity != null && Game.minecraft().thePlayer.riddenByEntity instanceof EntityFacehugger)
+                if (Game.minecraft().gameSettings.thirdPersonView == 0 && Entities.isRiding(Game.minecraft().thePlayer, EntityFacehugger.class))
                 {
                     OpenGL.pushMatrix();
                     {
@@ -33,7 +34,7 @@ public class FacehuggerRenderEvent
             }
         }
     }
-
+    
     @SubscribeEvent
     public void entityRenderEvent(RenderLivingEvent.Pre event)
     {

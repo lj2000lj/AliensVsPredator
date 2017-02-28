@@ -7,7 +7,7 @@ import org.avp.AliensVsPredator;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.WorldServer;
 
@@ -55,7 +55,7 @@ public class TeleporterLV extends Teleporter
                         int l1 = j + j1;
                         int i2 = k + i1 * b1 - l * b0;
                         boolean flag = j1 < 0;
-                        this.worldServer.setBlock(k1, l1, i2, flag ? AliensVsPredator.blocks().blockEngineerShipFloor : Blocks.air);
+                        this.worldServer.setBlock(k1, l1, i2, flag ? AliensVsPredator.blocks().blockEngineerShipFloor : Blocks.AIR);
                     }
                 }
             }
@@ -254,7 +254,7 @@ public class TeleporterLV extends Teleporter
                         i4 = j2 + k3;
                         j4 = k2 + (j3 - 1) * l2 - i3 * l5;
                         flag = k3 < 0;
-                        this.worldServer.setBlock(l3, i4, j4, flag ? AliensVsPredator.blocks().blockEngineerShipFloor : Blocks.air);
+                        this.worldServer.setBlock(l3, i4, j4, flag ? AliensVsPredator.blocks().blockEngineerShipFloor : Blocks.AIR);
                     }
                 }
             }

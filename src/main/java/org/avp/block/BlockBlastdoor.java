@@ -15,11 +15,12 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Direction;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+
 
 public class BlockBlastdoor extends Block
 {
@@ -78,12 +79,12 @@ public class BlockBlastdoor extends Block
             blastdoor.setDoorProgress(blastdoor.getDoorProgress() + 0.05F);
             int percentOpen = (int) (((blastdoor.getDoorProgress() >= blastdoor.getMaxDoorPryProgress() ? blastdoor.getMaxDoorPryProgress() : blastdoor.getDoorProgress()) * 100) / blastdoor.getMaxDoorPryProgress());
 
-            ItemMaintenanceJack jack = (ItemMaintenanceJack) player.getCurrentEquippedItem().getItem();
-            jack.onPryBlastDoor(player, player.getCurrentEquippedItem());
+            ItemMaintenanceJack jack = (ItemMaintenanceJack) player.getHeldItemMainhand().getItem();
+            jack.onPryBlastDoor(player, player.getHeldItemMainhand());
 
             if (percentOpen >= 100)
             {
-                jack.onOpenBlastDoor(player, player.getCurrentEquippedItem());
+                jack.onOpenBlastDoor(player, player.getHeldItemMainhand());
             }
 
             if (world.isRemote)
@@ -120,7 +121,7 @@ public class BlockBlastdoor extends Block
 
     private boolean isOpenedByJack(TileEntityBlastdoor blastdoor, EntityPlayer player)
     {
-        return player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof ItemMaintenanceJack && !blastdoor.isOperational() && !blastdoor.isOpen();
+        return player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() instanceof ItemMaintenanceJack && !blastdoor.isOperational() && !blastdoor.isOpen();
     }
 
     private boolean canOpen(TileEntityBlastdoor blastdoor, EntityPlayer player)
@@ -220,9 +221,9 @@ public class BlockBlastdoor extends Block
         return -1;
     }
 
-    public static ForgeDirection getFacing(Entity entity)
+    public static EnumFacing getFacing(Entity entity)
     {
         int dir = MathHelper.floor_double((entity.rotationYaw / 90) + 0.5) & 3;
-        return ForgeDirection.VALID_DIRECTIONS[Direction.directionToFacing[dir]];
+        return EnumFacing.VALID_DIRECTIONS[Direction.directionToFacing[dir]];
     }
 }

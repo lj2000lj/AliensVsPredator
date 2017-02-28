@@ -15,8 +15,8 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class BlockStasisMechanism extends Block
@@ -71,13 +71,13 @@ public class BlockStasisMechanism extends Block
 
         if (tile != null)
         {
-            if (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof ItemEntitySummoner)
+            if (player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() instanceof ItemEntitySummoner)
             {
-                ItemEntitySummoner item = (ItemEntitySummoner) player.getCurrentEquippedItem().getItem();
+                ItemEntitySummoner item = (ItemEntitySummoner) player.getHeldItemMainhand().getItem();
                 tile.itemstack = new ItemStack(item, 1);
                 Inventories.consumeItem(player, item);
             }
-            else if (player.getCurrentEquippedItem() == null)
+            else if (player.getHeldItemMainhand() == null)
             {
                 player.inventory.addItemStackToInventory(tile.itemstack);
                 tile.itemstack = null;

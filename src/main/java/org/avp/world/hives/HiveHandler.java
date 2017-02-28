@@ -13,8 +13,7 @@ import com.arisux.mdxlib.lib.game.Game;
 import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.Worlds;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,6 +22,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class HiveHandler implements IWorldSaveHandler
 {
@@ -100,7 +100,7 @@ public class HiveHandler implements IWorldSaveHandler
     @SubscribeEvent
     public void breakResin(BlockEvent.BreakEvent event)
     {
-        if (breakResinAt(event.world, event.x, event.y, event.z))
+        if (breakResinAt(event.world, event.getX(), event.getY(), event.getZ()))
         {
             event.setCanceled(true);
         }

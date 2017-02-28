@@ -13,12 +13,12 @@ import com.arisux.mdxlib.lib.client.render.Draw;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.game.Game;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 
 public class BossBarEvent
 {
@@ -67,7 +67,7 @@ public class BossBarEvent
     @SubscribeEvent
     public void renderTick(RenderGameOverlayEvent event)
     {
-        if (event.type == ElementType.BOSSHEALTH)
+        if (event.getType() == ElementType.BOSSHEALTH)
         {
             OpenGL.pushMatrix();
             {
@@ -92,7 +92,7 @@ public class BossBarEvent
         int offset = tW * 30 / 100;
         int health = (int) (boss.getHealth() * 100 / boss.getMaxHealth());
         int color = health < 50 ? health < 20 ? 0xFFFF0000 : 0xFFFFCC00 : 0xFF00FF00;
-        String label = String.format("%s [%s]", boss.getCommandSenderName(), health + "%%");
+        String label = String.format("%s [%s]", boss.getName(), health + "%%");
 
         OpenGL.pushMatrix();
         {

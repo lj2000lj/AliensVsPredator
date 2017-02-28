@@ -7,9 +7,9 @@ import org.avp.world.dimension.acheron.worldgen.TerrainFormation;
 import org.avp.world.dimension.acheron.worldgen.TerrainFormation1;
 import org.avp.world.dimension.acheron.worldgen.TerrainFormation2;
 
-import cpw.mods.fml.common.IWorldGenerator;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraftforge.fml.common.IWorldGenerator;
 
 public class WorldGeneratorAcheron implements IWorldGenerator
 {

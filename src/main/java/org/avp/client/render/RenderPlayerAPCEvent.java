@@ -2,8 +2,8 @@ package org.avp.client.render;
 
 import org.avp.entities.EntityAPC;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class RenderPlayerAPCEvent
 {
@@ -12,7 +12,7 @@ public class RenderPlayerAPCEvent
     @SubscribeEvent
     public void onRenderPlayerEvent(RenderPlayerEvent.Pre event)
     {
-        if (event.entityPlayer.isRiding() && event.entityPlayer.ridingEntity instanceof EntityAPC)
+        if (event.getEntityPlayer().isRiding() && event.getEntityPlayer().getRidingEntity()instanceof EntityAPC)
         {
             event.setCanceled(true);
         }

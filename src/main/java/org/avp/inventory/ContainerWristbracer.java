@@ -21,7 +21,7 @@ public class ContainerWristbracer extends Container
     public ContainerWristbracer(EntityPlayer player)
     {
         this.inventory = new InventoryBasic("container.wristbracer.slots", true, 5);
-        this.stack = player.getCurrentEquippedItem();
+        this.stack = player.getHeldItemMainhand();
         this.player = player;
         this.initialize();
     }
@@ -43,9 +43,9 @@ public class ContainerWristbracer extends Container
 
     public NBTTagCompound saveToNBT()
     {
-        if (player.getCurrentEquippedItem() != null)
+        if (player.getHeldItemMainhand() != null)
         {
-            NBTTagCompound wristbracerTag = player.getCurrentEquippedItem().getTagCompound();
+            NBTTagCompound wristbracerTag = player.getHeldItemMainhand().getTagCompound();
             NBTTagList items = new NBTTagList();
 
             if (wristbracerTag == null)
@@ -67,7 +67,7 @@ public class ContainerWristbracer extends Container
             }
 
             wristbracerTag.setTag(ItemWristbracer.TAG_WRISTBRACER_ITEMS, items);
-            player.getCurrentEquippedItem().setTagCompound(wristbracerTag);
+            player.getHeldItemMainhand().setTagCompound(wristbracerTag);
             return wristbracerTag;
         }
 

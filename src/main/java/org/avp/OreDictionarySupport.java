@@ -2,7 +2,7 @@ package org.avp;
 
 import com.arisux.mdxlib.lib.game.IInitEvent;
 
-import cpw.mods.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class OreDictionarySupport implements IInitEvent

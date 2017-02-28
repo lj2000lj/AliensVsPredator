@@ -9,7 +9,8 @@ import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.client.render.Screen;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
+
 
 public class RenderMaterialBlackGoo implements IMaterialRenderer
 {
@@ -34,9 +35,9 @@ public class RenderMaterialBlackGoo implements IMaterialRenderer
     }
 
     @Override
-    public Vec3 getFogColor()
+    public Vec3d getFogColor()
     {
-        return Vec3.createVectorHelper(0.0, 0.0, 0.0);
+        return new Vec3d(0.0, 0.0, 0.0);
     }
 
     @Override

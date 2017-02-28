@@ -8,26 +8,18 @@ import com.arisux.mdxlib.lib.client.RenderLivingWrapper;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.entity.EntityLivingBase;
 
-public class RenderAqua extends RenderLivingWrapper
+public class RenderAqua extends RenderLivingWrapper<EntityAqua>
 {
     public RenderAqua()
     {
         super(AliensVsPredator.resources().models().AQUA_XENOMORPH);
-        this.setRenderPassModel(this.getModelTexMap().getModel());
     }
 
     @Override
-    protected void preRenderCallback(EntityLivingBase entityliving, float partialTicks)
+    protected void preRenderCallback(EntityAqua entityliving, float partialTicks)
     {
         OpenGL.scale(0.8F, 0.8F, 0.8F);
-    }
-
-    @Override
-    protected int shouldRenderPass(EntityLivingBase living, int brightness, float partialTicks)
-    {
-        return this.setRenderPassModelBrightness((EntityAqua) living, brightness);
     }
 
     protected int setRenderPassModelBrightness(EntityAqua entity, int brightness)

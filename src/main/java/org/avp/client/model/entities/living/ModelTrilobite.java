@@ -5,7 +5,8 @@ import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
+
 
 public class ModelTrilobite extends Model
 {

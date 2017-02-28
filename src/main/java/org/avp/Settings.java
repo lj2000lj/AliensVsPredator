@@ -11,12 +11,12 @@ import com.arisux.mdxlib.config.GraphicsSetting;
 import com.arisux.mdxlib.config.IFlexibleConfiguration;
 import com.arisux.mdxlib.lib.game.IPreInitEvent;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class Settings implements IPreInitEvent, IFlexibleConfiguration
 {
@@ -140,71 +140,71 @@ public class Settings implements IPreInitEvent, IFlexibleConfiguration
 
     public boolean areOverworldSpawnsEnabled()
     {
-        return (boolean) overworldSpawnsEnabled.value();
+        return (Boolean) overworldSpawnsEnabled.value();
     }
 
     public boolean areAutoSpawnsEnabled()
     {
-        return (boolean) autoSpawnsEnabled.value();
+        return (Boolean) autoSpawnsEnabled.value();
     }
 
     public boolean arePlasmaCannonExplosionsEnabled()
     {
-        return (boolean) plasmaCannonExplosions.value();
+        return (Boolean) plasmaCannonExplosions.value();
     }
 
     public boolean shouldEvolvedXenomorphsSpawn()
     {
-        return (boolean) evolvedXenomorphSpawns.value();
+        return (Boolean) evolvedXenomorphSpawns.value();
     }
 
     public boolean areExplosionsEnabled()
     {
-        return (boolean) this.explosionsEnabled.value();
+        return (Boolean) this.explosionsEnabled.value();
     }
 
     public boolean isUpdaterEnabled()
     {
-        return (boolean) this.updaterEnabled.value();
+        return (Boolean) this.updaterEnabled.value();
     }
 
     public boolean areDebugToolsEnabled()
     {
-        return (boolean) this.debugToolsEnabled.value();
+        return (Boolean) this.debugToolsEnabled.value();
     }
 
     public boolean areNukesEnabled()
     {
-        return (boolean) this.nukesEnabled.value();
+        return (Boolean) this.nukesEnabled.value();
     }
 
     public int dimensionIdVarda()
     {
-        return (int) this.dimVarda.value();
+        return (Integer) this.dimVarda.value();
     }
 
     public int dimensionIdAcheron()
     {
-        return (int) this.dimAcheron.value();
+        return (Integer) this.dimAcheron.value();
     }
 
     public int biomeIdVardaBadlands()
     {
-        return (int) this.biomeVarda.value();
+        return (Integer) this.biomeVarda.value();
     }
 
     public int biomeIdVardaForest()
     {
-        return (int) this.biomeVardaForest.value();
+        return (Integer) this.biomeVardaForest.value();
     }
 
     public int biomeIdAcheron()
     {
-        return (int) this.biomeAcheron.value();
+        return (Integer) this.biomeAcheron.value();
     }
 
     public float globalSoundVolume()
     {
-        return (float) ((int) this.globalSoundVolume.value()) / 100F;
+        return (float) ((Integer) this.globalSoundVolume.value()) / 100F;
     }
 }

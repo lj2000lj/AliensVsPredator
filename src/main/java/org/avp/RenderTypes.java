@@ -2,10 +2,9 @@ package org.avp;
 
 import com.arisux.mdxlib.lib.game.IPreInitEvent;
 
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+
 
 public class RenderTypes implements IPreInitEvent
 {

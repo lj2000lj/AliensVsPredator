@@ -5,8 +5,8 @@ import org.lwjgl.input.Keyboard;
 import com.arisux.mdxlib.lib.game.Game;
 import com.arisux.mdxlib.lib.game.IPostInitEvent;
 
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 
 public class KeybindHandler implements IPostInitEvent
 {

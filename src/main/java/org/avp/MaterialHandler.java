@@ -5,11 +5,11 @@ import org.avp.block.materials.MaterialMist;
 
 import com.arisux.mdxlib.lib.game.IInitEvent;
 
-import cpw.mods.fml.common.event.FMLInitializationEvent;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
 public class MaterialHandler implements IInitEvent
 {

@@ -5,9 +5,6 @@ import java.util.List;
 import com.arisux.mdxlib.lib.game.GameSounds;
 import com.arisux.mdxlib.lib.world.entity.Entities;
 
-import cpw.mods.fml.common.registry.IThrowableEntity;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -18,12 +15,13 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.play.server.S2BPacketChangeGameState;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.IThrowableEntity;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class EntityProjectile extends EntityArrow implements IThrowableEntity
 {
@@ -136,7 +134,7 @@ public abstract class EntityProjectile extends EntityArrow implements IThrowable
             block.setBlockBoundsBasedOnState(this.worldObj, this.xTile, this.yTile, this.zTile);
             AxisAlignedBB blockBounds = block.getCollisionBoundingBoxFromPool(this.worldObj, this.xTile, this.yTile, this.zTile);
 
-            if (blockBounds != null && blockBounds.isVecInside(Vec3.createVectorHelper(this.posX, this.posY, this.posZ)))
+            if (blockBounds != null && blockBounds.isVecInside(new Vec3d(this.posX, this.posY, this.posZ)))
             {
                 this.inGround = true;
             }
@@ -175,13 +173,13 @@ public abstract class EntityProjectile extends EntityArrow implements IThrowable
 
         ticksInAir++;
 
-        Vec3 vecPos = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
-        Vec3 vecPosNext = Vec3.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+        Vec3d vecPos = new Vec3d(this.posX, this.posY, this.posZ);
+        Vec3d vecPosNext = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
         MovingObjectPosition hit = worldObj.rayTraceBlocks(vecPos, vecPosNext, false, true, false);
 
         if (hit != null)
         {
-            vecPosNext = Vec3.createVectorHelper(hit.hitVec.xCoord, hit.hitVec.yCoord, hit.hitVec.zCoord);
+            vecPosNext = new Vec3d(hit.hitVec.xCoord, hit.hitVec.yCoord, hit.hitVec.zCoord);
         }
 
         Entity target = null;

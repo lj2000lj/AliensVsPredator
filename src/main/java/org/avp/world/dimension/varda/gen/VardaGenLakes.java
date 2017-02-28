@@ -101,7 +101,7 @@ public class VardaGenLakes extends WorldGenerator
                 {
                     if (var6[((var8 * 16 + var32) * 8 + var10)] == false)
                         continue;
-                    var1.setBlock(var3 + var8, var4 + var10, var5 + var32, var10 >= 4 ? Blocks.air : this.blockIndex);
+                    var1.setBlock(var3 + var8, var4 + var10, var5 + var32, var10 >= 4 ? Blocks.AIR : this.blockIndex);
                 }
             }
 

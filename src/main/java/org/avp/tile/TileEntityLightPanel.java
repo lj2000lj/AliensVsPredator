@@ -2,7 +2,9 @@ package org.avp.tile;
 
 import org.avp.api.power.IVoltageReceiver;
 
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+
+
 
 public class TileEntityLightPanel extends TileEntityElectrical implements IVoltageReceiver
 {
@@ -12,25 +14,25 @@ public class TileEntityLightPanel extends TileEntityElectrical implements IVolta
     }
 
     @Override
-    public boolean canConnectPower(ForgeDirection from)
+    public boolean canConnectPower(EnumFacing from)
     {
         return true;
     }
 
     @Override
-    public double receiveVoltage(ForgeDirection from, double maxReceive, boolean simulate)
+    public double receiveVoltage(EnumFacing from, double maxReceive, boolean simulate)
     {
         return 0;
     }
 
     @Override
-    public double getCurrentVoltage(ForgeDirection from)
+    public double getCurrentVoltage(EnumFacing from)
     {
         return this.voltage;
     }
 
     @Override
-    public double getMaxVoltage(ForgeDirection from)
+    public double getMaxVoltage(EnumFacing from)
     {
         return 10000;
     }

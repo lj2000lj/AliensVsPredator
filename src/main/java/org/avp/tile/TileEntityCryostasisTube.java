@@ -13,11 +13,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+
 
 public class TileEntityCryostasisTube extends TileEntityElectrical implements IVoltageReceiver, IRotatable
 {
-    private ForgeDirection direction;
+    private EnumFacing direction;
     public Entity stasisEntity;
     public ItemStack stasisItemstack;
     private boolean cracked;
@@ -131,9 +132,9 @@ public class TileEntityCryostasisTube extends TileEntityElectrical implements IV
         this.cracked = nbt.getBoolean("Cracked");
         this.shattered = nbt.getBoolean("Shattered");
 
-        if (ForgeDirection.getOrientation(nbt.getInteger("Direction")) != null)
+        if (EnumFacing.getOrientation(nbt.getInteger("Direction")) != null)
         {
-            this.direction = ForgeDirection.getOrientation(nbt.getInteger("Direction"));
+            this.direction = EnumFacing.getOrientation(nbt.getInteger("Direction"));
         }
 
         NBTTagCompound nbtStack = nbt.getCompoundTag("StasisItemstack");
@@ -166,19 +167,19 @@ public class TileEntityCryostasisTube extends TileEntityElectrical implements IV
     }
 
     @Override
-    public boolean canConnectPower(ForgeDirection from)
+    public boolean canConnectPower(EnumFacing from)
     {
         return true;
     }
 
     @Override
-    public double getCurrentVoltage(ForgeDirection from)
+    public double getCurrentVoltage(EnumFacing from)
     {
         return this.getVoltage();
     }
 
     @Override
-    public double getMaxVoltage(ForgeDirection from)
+    public double getMaxVoltage(EnumFacing from)
     {
         return 120;
     }
@@ -189,13 +190,13 @@ public class TileEntityCryostasisTube extends TileEntityElectrical implements IV
     }
 
     @Override
-    public ForgeDirection getDirection()
+    public EnumFacing getDirection()
     {
         return this.direction;
     }
 
     @Override
-    public void setDirection(ForgeDirection facing)
+    public void setDirection(EnumFacing facing)
     {
         this.direction = facing;
     }

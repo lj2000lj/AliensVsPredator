@@ -3,18 +3,18 @@ package org.avp.client.render.wavegraph.ekg;
 import java.util.ArrayList;
 
 import org.avp.client.render.wavegraph.DataEntry;
-import org.avp.client.render.wavegraph.Wavegraph;
 import org.avp.client.render.wavegraph.DataEntry.Interval;
 import org.avp.client.render.wavegraph.DataEntry.Segment;
+import org.avp.client.render.wavegraph.Wavegraph;
 import org.avp.client.render.wavegraph.ekg.DataEntryEKG.DisplayDataEKG;
 
 import com.arisux.mdxlib.lib.client.render.Draw;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.game.Game;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class Electrocardiogram extends Wavegraph

@@ -6,7 +6,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.pathfinding.PathPoint;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
+
 
 public class EntityAICustomAttackOnCollide extends EntityAIBase
 {
@@ -156,7 +157,7 @@ public class EntityAICustomAttackOnCollide extends EntityAIBase
                 {
                     this.attackTick = 20;
 
-                    if (this.attacker.getHeldItem() != null)
+                    if (this.attacker.getHeldItemMainhand() != null)
                     {
                         this.attacker.swingItem();
                     }

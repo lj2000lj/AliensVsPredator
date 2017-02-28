@@ -8,7 +8,6 @@ import org.avp.entities.EntityBullet;
 import org.avp.entities.EntityLiquidLatexPool;
 import org.avp.entities.EntityLiquidPool;
 
-import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
@@ -44,7 +43,7 @@ public class EntityCombatSynthetic extends EntityCreature implements IMob, IRang
         this.dataWatcher.addObject(17, "");
         this.dataWatcher.addObject(16, Byte.valueOf((byte) 0));
         this.tasks.addTask(1, this.aiRangedAttack);
-        this.tasks.addTask(2, new EntityAIWander(this, this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getAttributeValue()));
+        this.tasks.addTask(2, new EntityAIWander(this, this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue()));
         this.tasks.addTask(3, new EntityAISwimming(this));
         this.tasks.addTask(4, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
         this.tasks.addTask(5, new EntityAILookIdle(this));
@@ -56,8 +55,8 @@ public class EntityCombatSynthetic extends EntityCreature implements IMob, IRang
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(50.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.5499999761581421D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(50.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5499999761581421D);
     }
     
     @Override
@@ -79,7 +78,7 @@ public class EntityCombatSynthetic extends EntityCreature implements IMob, IRang
     }
 
     @Override
-    public ItemStack getHeldItem()
+    public ItemStack getHeldItemMainhand()
     {
         return new ItemStack(AliensVsPredator.items().itemM41A);
     }

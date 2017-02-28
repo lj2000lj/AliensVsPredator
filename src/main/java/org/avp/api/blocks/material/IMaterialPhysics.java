@@ -1,9 +1,12 @@
 package org.avp.api.blocks.material;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
+
 import net.minecraft.entity.Entity;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
 
 public interface IMaterialPhysics
 {
@@ -13,7 +16,7 @@ public interface IMaterialPhysics
         entity.extinguish();
     }
 
-    public default void handleForce(Entity entity, Vec3 motion)
+    public default void handleForce(Entity entity, Vec3d motion)
     {
         if (this.getForceVelocity() == 0D)
         {

@@ -12,10 +12,9 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class ItemAPC extends HookedItem
@@ -35,7 +34,7 @@ public class ItemAPC extends HookedItem
         double d0 = playerIn.prevPosX + (playerIn.posX - playerIn.prevPosX) * (double) f;
         double d1 = playerIn.prevPosY + (playerIn.posY - playerIn.prevPosY) * (double) f + 1.62D - (double) playerIn.yOffset;
         double d2 = playerIn.prevPosZ + (playerIn.posZ - playerIn.prevPosZ) * (double) f;
-        Vec3 vec3 = Vec3.createVectorHelper(d0, d1, d2);
+        Vec3d Vec3d = new Vec3d(d0, d1, d2);
         float f3 = MathHelper.cos(-f2 * 0.017453292F - (float) Math.PI);
         float f4 = MathHelper.sin(-f2 * 0.017453292F - (float) Math.PI);
         float f5 = -MathHelper.cos(-f1 * 0.017453292F);
@@ -43,8 +42,8 @@ public class ItemAPC extends HookedItem
         float f7 = f4 * f5;
         float f8 = f3 * f5;
         double d3 = 5.0D;
-        Vec3 vec31 = vec3.addVector((double) f7 * d3, (double) f6 * d3, (double) f8 * d3);
-        MovingObjectPosition movingobjectposition = worldIn.rayTraceBlocks(vec3, vec31, true);
+        Vec3d Vec3d1 = Vec3d.addVector((double) f7 * d3, (double) f6 * d3, (double) f8 * d3);
+        MovingObjectPosition movingobjectposition = worldIn.rayTraceBlocks(Vec3d, Vec3d1, true);
 
         if (movingobjectposition == null)
         {
@@ -52,10 +51,10 @@ public class ItemAPC extends HookedItem
         }
         else
         {
-            Vec3 vec32 = playerIn.getLook(f);
+            Vec3d Vec3d2 = playerIn.getLook(f);
             boolean flag = false;
             float f9 = 1.0F;
-            List list = worldIn.getEntitiesWithinAABBExcludingEntity(playerIn, playerIn.boundingBox.addCoord(vec32.xCoord * d3, vec32.yCoord * d3, vec32.zCoord * d3).expand((double) f9, (double) f9, (double) f9));
+            List list = worldIn.getEntitiesWithinAABBExcludingEntity(playerIn, playerIn.boundingBox.addCoord(Vec3d2.xCoord * d3, Vec3d2.yCoord * d3, Vec3d2.zCoord * d3).expand((double) f9, (double) f9, (double) f9));
             int i;
 
             for (i = 0; i < list.size(); ++i)
@@ -67,7 +66,7 @@ public class ItemAPC extends HookedItem
                     float f10 = entity.getCollisionBorderSize();
                     AxisAlignedBB axisalignedbb = entity.boundingBox.expand((double) f10, (double) f10, (double) f10);
 
-                    if (axisalignedbb.isVecInside(vec3))
+                    if (axisalignedbb.isVecInside(Vec3d))
                     {
                         flag = true;
                     }

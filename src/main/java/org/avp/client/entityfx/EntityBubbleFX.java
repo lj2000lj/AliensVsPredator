@@ -2,14 +2,14 @@ package org.avp.client.entityfx;
 
 import com.arisux.mdxlib.lib.client.render.Draw;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class EntityBubbleFX extends EntityFX
+public class EntityBubbleFX extends Particle
 {
     public EntityBubbleFX(World world, double posX, double posY, double posZ, double motionX, double motionY, double motionZ)
     {

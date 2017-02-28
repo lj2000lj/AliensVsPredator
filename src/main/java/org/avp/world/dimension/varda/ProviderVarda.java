@@ -2,16 +2,16 @@ package org.avp.world.dimension.varda;
 
 import org.avp.AliensVsPredator;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.client.IRenderHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ProviderVarda extends WorldProvider
 {
@@ -121,15 +121,15 @@ public class ProviderVarda extends WorldProvider
 
     @Override
     @SideOnly(Side.CLIENT)
-    public Vec3 getFogColor(float var1, float var2)
+    public Vec3d getFogColor(float var1, float var2)
     {
-        return Vec3.createVectorHelper(0.0F, 0.0F, 0.01F);
+        return new Vec3d(0.0F, 0.0F, 0.01F);
     }
 
     @Override
-    public Vec3 drawClouds(float partialTicks)
+    public Vec3d drawClouds(float partialTicks)
     {
-        return Vec3.createVectorHelper(0.0F, 0.0F, 0.0F);
+        return new Vec3d(0.0F, 0.0F, 0.0F);
     }
 
     @Override

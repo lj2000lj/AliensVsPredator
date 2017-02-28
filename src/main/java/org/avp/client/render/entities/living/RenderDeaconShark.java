@@ -1,13 +1,12 @@
 package org.avp.client.render.entities.living;
 
 import org.avp.AliensVsPredator;
+import org.avp.entities.living.EntityDeaconShark;
 
 import com.arisux.mdxlib.lib.client.RenderLivingWrapper;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
-import net.minecraft.entity.EntityLivingBase;
-
-public class RenderDeaconShark extends RenderLivingWrapper
+public class RenderDeaconShark extends RenderLivingWrapper<EntityDeaconShark>
 {
     public RenderDeaconShark()
     {
@@ -15,7 +14,7 @@ public class RenderDeaconShark extends RenderLivingWrapper
     }
 
     @Override
-    protected void preRenderCallback(EntityLivingBase entitylivingBase, float partialTicks)
+    protected void preRenderCallback(EntityDeaconShark entitylivingBase, float partialTicks)
     {
         super.preRenderCallback(entitylivingBase, shadowSize);
         float scale = 1.7F;

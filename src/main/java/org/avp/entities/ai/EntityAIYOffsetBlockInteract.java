@@ -16,7 +16,7 @@ public abstract class EntityAIYOffsetBlockInteract extends EntityAIBase
     {
         this.theEntity = theEntity;
         this.yOffset = yOffset;
-        this.block = Blocks.air;
+        this.block = Blocks.AIR;
     }
 
     @Override
@@ -46,7 +46,7 @@ public abstract class EntityAIYOffsetBlockInteract extends EntityAIBase
 
     public void getOffsetBlock()
     {
-        if (this.block == Blocks.air)
+        if (this.block == Blocks.AIR)
         {
             this.block = this.theEntity.worldObj.getBlock((int) this.theEntity.posX, (int) this.theEntity.posY + this.yOffset, (int) this.theEntity.posZ);
         }

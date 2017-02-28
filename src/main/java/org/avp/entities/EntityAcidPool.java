@@ -4,7 +4,6 @@ import org.avp.DamageSources;
 import org.avp.entities.ai.EntityAIMeltBlock;
 import org.avp.entities.living.EntitySpeciesAlien;
 
-import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -62,8 +61,8 @@ public class EntityAcidPool extends EntityLiquidPool implements IMob, IEntitySel
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0D);
     }
 
     @Override

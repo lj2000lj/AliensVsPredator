@@ -39,7 +39,7 @@ public class InputHandlerPlasmaCannon implements IInputHandler
                 this.recharging = false;
             }
 
-            if (AliensVsPredator.keybinds().specialSecondary.getIsKeyPressed())
+            if (AliensVsPredator.keybinds().specialSecondary.isPressed())
             {
                 if (this.energy >= potentialEnergyUsed && !this.recharging)
                 {

@@ -19,11 +19,12 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.util.ChatComponentText;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+
 
 public class TileEntityBlastdoor extends TileEntityElectrical implements IVoltageReceiver, IRotatable, IOpenable
 {
-    private ForgeDirection direction;
+    private EnumFacing direction;
     private float doorProgress;
     private float doorProgressPrev;
     private boolean doorOpen;
@@ -100,9 +101,9 @@ public class TileEntityBlastdoor extends TileEntityElectrical implements IVoltag
     {
         super.readFromNBT(nbt);
 
-        if (ForgeDirection.getOrientation(nbt.getInteger("Direction")) != null)
+        if (EnumFacing.getOrientation(nbt.getInteger("Direction")) != null)
         {
-            this.direction = ForgeDirection.getOrientation(nbt.getInteger("Direction"));
+            this.direction = EnumFacing.getOrientation(nbt.getInteger("Direction"));
         }
 
         this.doorProgress = nbt.getFloat("DoorProgress");
@@ -172,19 +173,19 @@ public class TileEntityBlastdoor extends TileEntityElectrical implements IVoltag
     }
 
     @Override
-    public boolean canConnectPower(ForgeDirection from)
+    public boolean canConnectPower(EnumFacing from)
     {
         return true;
     }
 
     @Override
-    public double getCurrentVoltage(ForgeDirection from)
+    public double getCurrentVoltage(EnumFacing from)
     {
         return this.getVoltage();
     }
 
     @Override
-    public double getMaxVoltage(ForgeDirection from)
+    public double getMaxVoltage(EnumFacing from)
     {
         return 220;
     }
@@ -236,7 +237,7 @@ public class TileEntityBlastdoor extends TileEntityElectrical implements IVoltag
     {
         Block block = worldObj.getBlock(posX, posY, posZ);
 
-        if (block.getMaterial() != Material.air && block != AliensVsPredator.blocks().blockBlastdoor)
+        if (block.getMaterial() != Material.AIR && block != AliensVsPredator.blocks().blockBlastdoor)
         {
             if (this.worldObj.isRemote)
             {
@@ -294,29 +295,29 @@ public class TileEntityBlastdoor extends TileEntityElectrical implements IVoltag
 
     public boolean setup(boolean placedByPlayer)
     {
-        ForgeDirection direction = this.direction;
+        EnumFacing direction = this.direction;
 
         this.isParent = true;
         this.placedByPlayer = true;
 
         if (direction != null)
         {
-            if (direction == ForgeDirection.SOUTH)
+            if (direction == EnumFacing.SOUTH)
             {
                 return this.setChildTile(this.xCoord + 1, this.yCoord, this.zCoord) && this.setChildTile(this.xCoord + 2, this.yCoord, this.zCoord) && this.setChildTile(this.xCoord + 3, this.yCoord, this.zCoord) && this.setChildTile(this.xCoord, this.yCoord + 1, this.zCoord) && this.setChildTile(this.xCoord, this.yCoord + 2, this.zCoord) && this.setChildTile(this.xCoord + 1, this.yCoord + 2, this.zCoord) && this.setChildTile(this.xCoord + 1, this.yCoord + 1, this.zCoord) && this.setChildTile(this.xCoord + 2, this.yCoord + 2, this.zCoord) && this.setChildTile(this.xCoord + 2, this.yCoord + 1, this.zCoord) && this.setChildTile(this.xCoord + 3, this.yCoord + 2, this.zCoord) && this.setChildTile(this.xCoord + 3, this.yCoord + 1, this.zCoord);
             }
 
-            if (direction == ForgeDirection.NORTH)
+            if (direction == EnumFacing.NORTH)
             {
                 return this.setChildTile(this.xCoord - 1, this.yCoord, this.zCoord) && this.setChildTile(this.xCoord - 2, this.yCoord, this.zCoord) && this.setChildTile(this.xCoord - 3, this.yCoord, this.zCoord) && this.setChildTile(this.xCoord, this.yCoord + 1, this.zCoord) && this.setChildTile(this.xCoord, this.yCoord + 2, this.zCoord) && this.setChildTile(this.xCoord - 1, this.yCoord + 2, this.zCoord) && this.setChildTile(this.xCoord - 1, this.yCoord + 1, this.zCoord) && this.setChildTile(this.xCoord - 2, this.yCoord + 2, this.zCoord) && this.setChildTile(this.xCoord - 2, this.yCoord + 1, this.zCoord) && this.setChildTile(this.xCoord - 3, this.yCoord + 2, this.zCoord) && this.setChildTile(this.xCoord - 3, this.yCoord + 1, this.zCoord);
             }
 
-            if (direction == ForgeDirection.EAST)
+            if (direction == EnumFacing.EAST)
             {
                 return this.setChildTile(this.xCoord, this.yCoord, this.zCoord - 1) && this.setChildTile(this.xCoord, this.yCoord, this.zCoord - 2) && this.setChildTile(this.xCoord, this.yCoord, this.zCoord - 3) && this.setChildTile(this.xCoord, this.yCoord + 1, this.zCoord) && this.setChildTile(this.xCoord, this.yCoord + 2, this.zCoord) && this.setChildTile(this.xCoord, this.yCoord + 2, this.zCoord - 1) && this.setChildTile(this.xCoord, this.yCoord + 1, this.zCoord - 1) && this.setChildTile(this.xCoord, this.yCoord + 2, this.zCoord - 2) && this.setChildTile(this.xCoord, this.yCoord + 1, this.zCoord - 2) && this.setChildTile(this.xCoord, this.yCoord + 2, this.zCoord - 3) && this.setChildTile(this.xCoord, this.yCoord + 1, this.zCoord - 3);
             }
 
-            if (direction == ForgeDirection.WEST)
+            if (direction == EnumFacing.WEST)
             {
                 return this.setChildTile(this.xCoord, this.yCoord, this.zCoord + 1) && this.setChildTile(this.xCoord, this.yCoord, this.zCoord + 2) && this.setChildTile(this.xCoord, this.yCoord, this.zCoord + 3) && this.setChildTile(this.xCoord, this.yCoord + 1, this.zCoord) && this.setChildTile(this.xCoord, this.yCoord + 2, this.zCoord) && this.setChildTile(this.xCoord, this.yCoord + 2, this.zCoord + 1) && this.setChildTile(this.xCoord, this.yCoord + 1, this.zCoord + 1) && this.setChildTile(this.xCoord, this.yCoord + 2, this.zCoord + 2) && this.setChildTile(this.xCoord, this.yCoord + 1, this.zCoord + 2) && this.setChildTile(this.xCoord, this.yCoord + 2, this.zCoord + 3) && this.setChildTile(this.xCoord, this.yCoord + 1, this.zCoord + 3);
             }
@@ -326,13 +327,13 @@ public class TileEntityBlastdoor extends TileEntityElectrical implements IVoltag
     }
 
     @Override
-    public ForgeDirection getDirection()
+    public EnumFacing getDirection()
     {
         return direction;
     }
 
     @Override
-    public void setDirection(ForgeDirection direction)
+    public void setDirection(EnumFacing direction)
     {
         this.direction = direction;
     }

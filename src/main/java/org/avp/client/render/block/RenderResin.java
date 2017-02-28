@@ -6,9 +6,7 @@ import org.avp.tile.TileEntityHiveResin;
 
 import com.arisux.mdxlib.config.GraphicsSetting;
 
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.world.IBlockAccess;
 
 public class RenderResin implements ISimpleBlockRenderingHandler

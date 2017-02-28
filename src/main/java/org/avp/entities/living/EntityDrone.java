@@ -17,9 +17,8 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class EntityDrone extends EntityXenomorph implements IMaturable
@@ -44,9 +43,9 @@ public class EntityDrone extends EntityXenomorph implements IMaturable
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.53D);
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(2.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.53D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
     }
 
     @Override
@@ -204,8 +203,8 @@ public class EntityDrone extends EntityXenomorph implements IMaturable
 
                     if (this.canReplaceWithResin(block))
                     {
-                        Vec3 start = Vec3.createVectorHelper(this.posX, this.posY + (double) this.getEyeHeight(), this.posZ);
-                        Vec3 end = Vec3.createVectorHelper(x, y, z);
+                        Vec3d start = new Vec3d(this.posX, this.posY + (double) this.getEyeHeight(), this.posZ);
+                        Vec3d end = new Vec3d(x, y, z);
                         MovingObjectPosition hit = this.worldObj.rayTraceBlocks(start, end);
 
                         if (hit != null && hit.typeOfHit == MovingObjectType.BLOCK || hit == null)
@@ -232,7 +231,7 @@ public class EntityDrone extends EntityXenomorph implements IMaturable
 
     protected boolean canReplaceWithResin(Block block)
     {
-        return !(block == net.minecraft.init.Blocks.air) && !(block instanceof BlockHiveResin) && block.isOpaqueCube();
+        return !(block == net.minecraft.init.Blocks.AIR) && !(block instanceof BlockHiveResin) && block.isOpaqueCube();
     }
 
     @Override

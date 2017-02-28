@@ -21,7 +21,7 @@ public class TerrainFormation extends WorldGenerator
         int airDist = 0;
         Block checkID = world.getBlock(posX, posY, posZ);
 
-        while (checkID != Blocks.air)
+        while (checkID != Blocks.AIR)
         {
             airDist++;
             checkID = world.getBlock(posX, posY + airDist, posZ);
@@ -39,7 +39,7 @@ public class TerrainFormation extends WorldGenerator
 
         for (Block target : getValidTargetBlocks())
         {
-            if (above != Blocks.air)
+            if (above != Blocks.AIR)
             {
                 return false;
             }

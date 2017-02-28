@@ -1,18 +1,18 @@
 package org.avp.world;
 
-import org.avp.entities.SharedPlayer;
 import org.avp.entities.Organism;
+import org.avp.entities.SharedPlayer;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EntityTracker;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.getEntity().Entityevent.getEntity()Constructing;
+import net.minecraftforge.event.getEntity().EntityJoinWorldEvent;
+import net.minecraftforge.event.getEntity().player.PlayerEvent;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class ExtendedEntityHandler
 {
@@ -27,9 +27,9 @@ public class ExtendedEntityHandler
     @SubscribeEvent
     public void onEntityConstructing(EntityConstructing event)
     {
-        if (event.entity instanceof EntityPlayer)
+        if (event.getEntity() instanceof EntityPlayer)
         {
-            EntityPlayer thePlayer = (EntityPlayer) event.entity;
+            EntityPlayer thePlayer = (EntityPlayer) event.getEntity();
 
             if (thePlayer != null)
             {
@@ -38,9 +38,9 @@ public class ExtendedEntityHandler
             }
         }
 
-        if (event.entity instanceof EntityLivingBase)
+        if (event.getEntity() instanceof EntityLivingBase)
         {
-            EntityLivingBase entityLiving = (EntityLivingBase) event.entity;
+            EntityLivingBase entityLiving = (EntityLivingBase) event.getEntity();
 
             if (entityLiving != null)
             {
@@ -53,9 +53,9 @@ public class ExtendedEntityHandler
     @SubscribeEvent
     public void onEntitySpawnInWorld(EntityJoinWorldEvent event)
     {
-        if (event.entity != null && !event.entity.worldObj.isRemote)
+        if (event.getEntity() != null && !event.getEntity().worldObj.isRemote)
         {
-            this.syncEntity(event.entity);
+            this.syncEntity(event.getEntity());
         }
     }
 

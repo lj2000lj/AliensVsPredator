@@ -2,7 +2,9 @@ package org.avp.tile;
 
 import org.avp.api.power.IVoltageProvider;
 
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+
+
 
 public class TileEntityRepulsionGenerator extends TileEntityElectrical implements IVoltageProvider
 {
@@ -28,25 +30,25 @@ public class TileEntityRepulsionGenerator extends TileEntityElectrical implement
     }
 
     @Override
-    public boolean canConnectPower(ForgeDirection from)
+    public boolean canConnectPower(EnumFacing from)
     {
         return true;
     }
 
     @Override
-    public double extractVoltage(ForgeDirection from, double maxExtract, boolean simulate)
+    public double extractVoltage(EnumFacing from, double maxExtract, boolean simulate)
     {
         return super.extractVoltage(from, maxExtract, simulate);
     }
 
     @Override
-    public double getCurrentVoltage(ForgeDirection from)
+    public double getCurrentVoltage(EnumFacing from)
     {
         return this.voltage;
     }
 
     @Override
-    public double getMaxVoltage(ForgeDirection from)
+    public double getMaxVoltage(EnumFacing from)
     {
         return 10000;
     }

@@ -52,9 +52,9 @@ public class RenderItemSniper extends ItemRenderer
 
     public void renderZoom()
     {
-        if (mc.gameSettings.thirdPersonView == 0 && mc.thePlayer.getHeldItem() != null)
+        if (mc.gameSettings.thirdPersonView == 0 && mc.thePlayer.getHeldItemMainhand() != null)
         {
-            if (mc.thePlayer.getHeldItem().getItem() == AliensVsPredator.items().itemSniper)
+            if (mc.thePlayer.getHeldItemMainhand().getItem() == AliensVsPredator.items().itemSniper)
             {
                 if (!mc.inGameHasFocus)
                 {
@@ -76,7 +76,7 @@ public class RenderItemSniper extends ItemRenderer
     @Override
     public void renderThirdPerson(ItemStack item, Object... data)
     {
-        PlayerResource player = resourceStorage.create(((EntityPlayer) data[1]).getCommandSenderName());
+        PlayerResource player = resourceStorage.create(((EntityPlayer) data[1]).getName());
 
         if (player != null)
         {

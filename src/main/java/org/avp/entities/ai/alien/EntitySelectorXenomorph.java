@@ -4,7 +4,6 @@ import org.avp.entities.EntityLiquidPool;
 import org.avp.entities.Organism;
 import org.avp.entities.living.EntitySpeciesAlien;
 
-import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;

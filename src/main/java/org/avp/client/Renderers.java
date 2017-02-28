@@ -1,9 +1,7 @@
 package org.avp.client;
 
-import static cpw.mods.fml.client.registry.ClientRegistry.bindTileEntitySpecialRenderer;
-import static cpw.mods.fml.client.registry.RenderingRegistry.registerBlockHandler;
-import static cpw.mods.fml.client.registry.RenderingRegistry.registerEntityRenderingHandler;
-import static net.minecraftforge.client.MinecraftForgeClient.registerItemRenderer;
+import static net.minecraftforge.fml.client.registry.ClientRegistry.bindTileEntitySpecialRenderer;
+import static net.minecraftforge.fml.client.registry.RenderingRegistry.registerEntityRenderingHandler;
 
 import org.avp.AliensVsPredator;
 import org.avp.ItemHandler;
@@ -243,12 +241,13 @@ import org.avp.tile.TileEntityTurret;
 import org.avp.tile.TileEntityWorkstation;
 
 import com.arisux.mdxlib.lib.client.TexturedModel;
+import com.arisux.mdxlib.lib.client.render.ItemRenderer;
 import com.arisux.mdxlib.lib.game.IPostInitEvent;
 
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.item.Item;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class Renderers implements IPostInitEvent
@@ -338,6 +337,11 @@ public class Renderers implements IPostInitEvent
         registerEntityRenderingHandler(EntitySupplyChute.class, new RenderSupplyChute());
         registerEntityRenderingHandler(EntitySupplyChuteMarines.class, new RenderSupplyChute());
         registerEntityRenderingHandler(EntitySupplyChuteSeegson.class, new RenderSupplyChute());
+    }
+    
+    private void registerItemRenderer(Item item, ItemRenderer renderer)
+    {
+        com.arisux.mdxlib.lib.game.Renderers.register(item, renderer);
     }
 
     private void registerItemRenderers(ItemHandler items)

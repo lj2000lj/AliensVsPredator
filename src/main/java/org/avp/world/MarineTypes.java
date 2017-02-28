@@ -6,8 +6,8 @@ import org.avp.item.ItemFirearm;
 import com.arisux.mdxlib.lib.client.Model;
 import com.arisux.mdxlib.lib.client.TexturedModel;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public enum MarineTypes
 {

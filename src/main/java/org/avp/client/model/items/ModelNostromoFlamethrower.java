@@ -4,6 +4,7 @@ import org.avp.item.ItemFlamethrower;
 
 import com.arisux.mdxlib.lib.client.Model;
 import com.arisux.mdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.world.entity.player.inventory.Inventories;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelRenderer;
@@ -116,7 +117,7 @@ public class ModelNostromoFlamethrower extends Model
             ItemFlamethrower currentFlamethrower = (ItemFlamethrower) currentItemStack.getItem();
             Item fuel = currentFlamethrower.getAmmo();
 
-            if (minecraft.thePlayer.inventory.hasItem(fuel))
+            if (Inventories.getAmountOfItemPlayerHas(fuel, minecraft.thePlayer) > 0)
             {
                 draw(fuelCanister1);
                 draw(fuelCanister2);

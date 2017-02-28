@@ -1,6 +1,6 @@
 package org.avp;
 
-import cpw.mods.fml.common.ModMetadata;
+import net.minecraftforge.fml.common.ModMetadata;
 
 public class Properties
 {

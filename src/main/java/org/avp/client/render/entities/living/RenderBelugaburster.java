@@ -1,13 +1,12 @@
 package org.avp.client.render.entities.living;
 
 import org.avp.AliensVsPredator;
+import org.avp.entities.living.EntityBelugaburster;
 
 import com.arisux.mdxlib.lib.client.RenderLivingWrapper;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
-import net.minecraft.entity.EntityLivingBase;
-
-public class RenderBelugaburster extends RenderLivingWrapper
+public class RenderBelugaburster extends RenderLivingWrapper<EntityBelugaburster>
 {
     public RenderBelugaburster()
     {
@@ -15,7 +14,7 @@ public class RenderBelugaburster extends RenderLivingWrapper
     }
 
     @Override
-    protected void preRenderCallback(EntityLivingBase entitylivingBase, float partialTicks)
+    protected void preRenderCallback(EntityBelugaburster entitylivingBase, float partialTicks)
     {
         super.preRenderCallback(entitylivingBase, shadowSize);
         OpenGL.scale(0.55F, 0.55F, 0.55F);

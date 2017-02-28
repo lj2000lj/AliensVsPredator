@@ -42,7 +42,7 @@ public class RenderItemAK47 extends ItemRenderer
     @Override
     public void renderThirdPerson(ItemStack item, Object... data)
     {
-        PlayerResource player = resourceStorage.create(((EntityPlayer) data[1]).getCommandSenderName());
+        PlayerResource player = resourceStorage.create(((EntityPlayer) data[1]).getName());
 
         if (player != null)
         {

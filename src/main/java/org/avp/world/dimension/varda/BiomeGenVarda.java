@@ -4,7 +4,9 @@ import org.avp.AliensVsPredator;
 import org.avp.entities.living.EntityDeaconShark;
 import org.avp.world.dimension.BiomeGenLV;
 
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
+
+
 
 public class BiomeGenVarda extends BiomeGenLV
 {
@@ -17,7 +19,7 @@ public class BiomeGenVarda extends BiomeGenLV
         this.topBlock = AliensVsPredator.blocks().terrainUniDirt;
         this.fillerBlock = AliensVsPredator.blocks().terrainUniStone;
         this.setBiomeName(AliensVsPredator.properties().BIOME_NAME_VARDA_BADLANDS);
-        this.setHeight(new BiomeGenBase.Height(1.0F, 8.0F));
+        this.setHeight(new Biome.Height(1.0F, 8.0F));
         this.setTemperatureRainfall(0.7F, 0.1F);
         this.setDisableRain();
         this.theBiomeDecorator = new BiomeDecoratorVarda(this);
@@ -26,7 +28,7 @@ public class BiomeGenVarda extends BiomeGenLV
         this.spawnableCreatureList.clear();
         this.spawnableMonsterList.clear();
         this.spawnableWaterCreatureList.clear();
-        this.spawnableWaterCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityDeaconShark.class, 1, 0, 1));
+        this.spawnableWaterCreatureList.add(new Biome.SpawnListEntry(EntityDeaconShark.class, 1, 0, 1));
     }
 
     @Override

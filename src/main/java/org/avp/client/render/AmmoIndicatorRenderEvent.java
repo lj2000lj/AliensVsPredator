@@ -6,9 +6,9 @@ import com.arisux.mdxlib.lib.client.render.Draw;
 import com.arisux.mdxlib.lib.client.render.Screen;
 import com.arisux.mdxlib.lib.game.Game;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class AmmoIndicatorRenderEvent
 {
@@ -18,16 +18,16 @@ public class AmmoIndicatorRenderEvent
     @SubscribeEvent
     public void renderTick(RenderGameOverlayEvent.Pre event)
     {
-        if (Game.minecraft().thePlayer != null && event.type == RenderGameOverlayEvent.ElementType.HOTBAR)
+        if (Game.minecraft().thePlayer != null && event.getType() == RenderGameOverlayEvent.ElementType.HOTBAR)
         {
             helmSlot = Game.minecraft().thePlayer.inventory.armorItemInSlot(3);
             chestplateSlot = Game.minecraft().thePlayer.inventory.armorItemInSlot(2);
             leggingsSlot = Game.minecraft().thePlayer.inventory.armorItemInSlot(1);
             bootsSlot = Game.minecraft().thePlayer.inventory.armorItemInSlot(0);
 
-            if (Game.minecraft().thePlayer.getHeldItem() != null && Game.minecraft().thePlayer.getHeldItem().getItem() instanceof ItemFirearm)
+            if (Game.minecraft().thePlayer.getHeldItemMainhand() != null && Game.minecraft().thePlayer.getHeldItemMainhand().getItem() instanceof ItemFirearm)
             {
-                ItemFirearm itemFireArm = (ItemFirearm) Game.minecraft().thePlayer.getHeldItem().getItem();
+                ItemFirearm itemFireArm = (ItemFirearm) Game.minecraft().thePlayer.getHeldItemMainhand().getItem();
                 String displayStatus = " " + itemFireArm.getAmmoCount() + "/" + itemFireArm.getMaxAmmoCount();
                 int barWidth = 0;
 

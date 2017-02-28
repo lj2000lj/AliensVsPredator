@@ -8,6 +8,7 @@ import org.avp.entities.EntityWristbracer;
 import com.arisux.mdxlib.lib.client.TexturedModel;
 import com.arisux.mdxlib.lib.client.render.Color;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
+import com.arisux.mdxlib.lib.game.Game;
 
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
@@ -24,6 +25,7 @@ public class RenderWristbracer extends Render
 
     public RenderWristbracer()
     {
+        super(Game.renderManager());
         this.model.setColor(new Color(0.5F, 0.6F, 1F, 0.4F));
     }
 

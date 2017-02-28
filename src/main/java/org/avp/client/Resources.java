@@ -81,15 +81,11 @@ import org.avp.client.model.tile.ModelWorkstation;
 import com.arisux.mdxlib.MDX;
 import com.arisux.mdxlib.lib.client.SpecialModelBiped;
 import com.arisux.mdxlib.lib.client.TexturedModel;
-import com.arisux.mdxlib.lib.client.render.IconSet;
-import com.arisux.mdxlib.lib.client.render.IconSet.BlockIconSet;
-import com.arisux.mdxlib.lib.client.render.IconSet.LiquidIconSet;
 import com.arisux.mdxlib.lib.client.render.Texture;
 import com.arisux.mdxlib.lib.client.render.wavefront.TriangulatedWavefrontModel;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class Resources
@@ -182,7 +178,7 @@ public class Resources
         public final TexturedModel<ModelSupplyChute>           SUPPLY_CHUTE                   = new TexturedModel(new ModelSupplyChute(), new Texture(AliensVsPredator.ID, "textures/tile/supplychute.png"));
         public final TexturedModel<ModelSupplyChute>           SUPPLY_CHUTE_MARINES           = new TexturedModel(new ModelSupplyChute(), new Texture(AliensVsPredator.ID, "textures/tile/supplychute.marines.png"));
         public final TexturedModel<ModelSupplyChute>           SUPPLY_CHUTE_SEEGSON           = new TexturedModel(new ModelSupplyChute(), new Texture(AliensVsPredator.ID, "textures/tile/supplychute.seegson.png"));
-        public final TexturedModel<SpecialModelBiped>          BIPED                          = new TexturedModel(new SpecialModelBiped(), new Texture(AbstractClientPlayer.locationStevePng));
+        public final TexturedModel<SpecialModelBiped>          BIPED                          = new TexturedModel(new SpecialModelBiped(), new Texture(""));
         public final TexturedModel<ModelLaserMine>             LASER_MINE                     = new TexturedModel(new ModelLaserMine(), new Texture(AliensVsPredator.ID, "textures/misc/proximity-mine.png"));
         public final TexturedModel<ModelDNASynthesizer>        DNA_SYNTHESIZER                = new TexturedModel(new ModelDNASynthesizer(), new Texture(AliensVsPredator.ID, "textures/tile/dna-synthesizer.png"));
         public final TexturedModel<ModelHiveResin>             HIVE_RESIN                     = new TexturedModel(new ModelHiveResin(), new Texture(AliensVsPredator.ID, "textures/tile/hive-resin.png"));
@@ -202,9 +198,9 @@ public class Resources
         public final TexturedModel<ModelDracoburster>          DRACOBURSTER                   = new TexturedModel(new ModelDracoburster(), new Texture(AliensVsPredator.ID, "textures/mob/dracoburster.png"));
         public final TexturedModel<ModelDracomorph>            DRACOMORPH                     = new TexturedModel(new ModelDracomorph(), new Texture(AliensVsPredator.ID, "textures/mob/dracomorph.png"));
         public final TexturedModel<ModelDracoOvamorph>         DRACO_OVAMORPH                 = new TexturedModel(new ModelDracoOvamorph(), new Texture(AliensVsPredator.ID, "textures/mob/dracomorphegg.png"));
-        public final TexturedModel<ModelMutantYautja>          MUTANT_YAUTJA                   = new TexturedModel(new ModelMutantYautja(), new Texture(AliensVsPredator.ID, "textures/mob/yautjamutant.png"));
+        public final TexturedModel<ModelMutantYautja>          MUTANT_YAUTJA                  = new TexturedModel(new ModelMutantYautja(), new Texture(AliensVsPredator.ID, "textures/mob/yautjamutant.png"));
         public final TexturedModel<ModelMyceliomorph>          MYCELIOMORPH                   = new TexturedModel(new ModelMyceliomorph(), new Texture(AliensVsPredator.ID, "textures/mob/myceliomorph.png"));
-        public final TexturedModel<ModelMyceliomorph>          MYCELIOMORPH_MASK                   = new TexturedModel(new ModelMyceliomorph(), new Texture(AliensVsPredator.ID, "textures/mob/myceliomorph_glow.png"));
+        public final TexturedModel<ModelMyceliomorph>          MYCELIOMORPH_MASK              = new TexturedModel(new ModelMyceliomorph(), new Texture(AliensVsPredator.ID, "textures/mob/myceliomorph_glow.png"));
         public final TexturedModel<ModelPantheramorph>         PANTHERAMORPH                  = new TexturedModel(new ModelPantheramorph(), new Texture(AliensVsPredator.ID, "textures/mob/pantheramorph.png"));
         public final TexturedModel<ModelPredatorHound>         PREDATOR_HOUND                 = new TexturedModel(new ModelPredatorHound(), new Texture(AliensVsPredator.ID, "textures/mob/predatorhound.png"));
         public final TexturedModel<ModelUrsuidae>              URSUIDAE                       = new TexturedModel(new ModelUrsuidae(), new Texture(AliensVsPredator.ID, "textures/mob/vardaboar.png"));
@@ -263,10 +259,5 @@ public class Resources
     public final Texture BLANK                    = new Texture(AliensVsPredator.ID, "textures/misc/blank.png");
     public final Texture MIST                     = new Texture(AliensVsPredator.ID, "textures/blocks/mist.still.png");
     public final Texture BLACKGOO                 = new Texture(AliensVsPredator.ID, "textures/blocks/blackgoo.png");
-
-    public final IconSet ICONSET_WALLW            = new BlockIconSet("avp:wall_top", "avp:wall_top", "avp:wall_top", "avp:wall_side", "avp:wall_side", "avp:wall_side", "avp:wall_side");
-    public final IconSet ICONSET_SPAWNER          = new BlockIconSet("avp:spawner_side", "avp:spawner_top", "avp:spawner_bottom", "avp:spawner_side", "avp:spawner_side", "avp:spawner_side", "avp:spawner_side");
-    public final IconSet ICONSET_ASSEMBLER        = new BlockIconSet("avp:assembler.top", "avp:assembler.top", "avp:assembler.top", "avp:assembler.side", "avp:assembler.side", "avp:assembler.side", "avp:assembler.side");
-    public final IconSet ICONSET_BLACK_GOO        = new LiquidIconSet("avp:blackgoo.still", "avp:blackgoo.flowing", "avp:blackgoo.still");
-    public final IconSet ICONSET_MIST             = new LiquidIconSet("avp:mist.still", "avp:mist.flowing", "avp:mist.still");
+    public final Texture RES_UNDERWATER_OVERLAY   = new Texture("textures/misc/underwater.png");
 }

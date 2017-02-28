@@ -13,9 +13,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+
 
 public class BlockHiveResin extends Block
 {
@@ -26,13 +27,13 @@ public class BlockHiveResin extends Block
     }
 
     @Override
-    public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face)
+    public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, EnumFacing face)
     {
         return 5;
     }
 
     @Override
-    public int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face)
+    public int getFlammability(IBlockAccess world, int x, int y, int z, EnumFacing face)
     {
         return 5;
     }

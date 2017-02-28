@@ -6,22 +6,21 @@ import org.avp.api.client.render.IFirstPersonRenderer;
 import org.avp.client.input.handlers.InputHandlerPlasmaCannon;
 import org.avp.client.model.entities.ModelPlasma;
 import org.avp.client.model.items.ModelPlasmaCannon;
-import org.avp.entities.SharedPlayer;
 import org.avp.entities.EntityMedpod;
+import org.avp.entities.SharedPlayer;
 import org.avp.item.ItemWristbracer;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.util.glu.Project;
 
+import com.arisux.mdxlib.MDX;
 import com.arisux.mdxlib.lib.client.TexturedModel;
 import com.arisux.mdxlib.lib.client.render.Color;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.game.Game;
 import com.arisux.mdxlib.lib.util.MDXMath;
+import com.arisux.mdxlib.lib.world.Worlds;
 
-import cpw.mods.fml.common.eventhandler.Event;
-import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.EntityRenderer;
@@ -29,10 +28,13 @@ import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 
 public class RenderPlayerPlasmaCannon implements IEventRenderer, IFirstPersonRenderer
 {
@@ -66,11 +68,11 @@ public class RenderPlayerPlasmaCannon implements IEventRenderer, IFirstPersonRen
         {
             RenderLivingEvent.Pre pre = (RenderLivingEvent.Pre) event;
 
-            if (pre.entity instanceof EntityPlayer)
+            if (pre.getEntity() instanceof EntityPlayer)
             {
-                SharedPlayer player = SharedPlayer.get((EntityPlayer) pre.entity);
+                SharedPlayer player = SharedPlayer.get((EntityPlayer) pre.getEntity());
 
-                if (!(player.getEntity().ridingEntity instanceof EntityMedpod))
+                if (!(player.getEntity().getRidingEntity()instanceof EntityMedpod))
                 {
                     if (ItemWristbracer.hasPlasmaCannon(ItemWristbracer.wristbracer(player.getEntity())))
                     {
@@ -110,38 +112,38 @@ public class RenderPlayerPlasmaCannon implements IEventRenderer, IFirstPersonRen
         ItemRenderer ir = Game.minecraft().entityRenderer.itemRenderer;
         float rotationYawHead = MDXMath.interpolateRotation(entity.prevRotationYawHead, entity.rotationYawHead, partialTicks);
         float rotationPitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
-        float equippedProgress = ir.prevEquippedProgress + (ir.equippedProgress - ir.prevEquippedProgress) * partialTicks;
+        float equippedProgress = MDX.access().getEquippedProgressPrev() + (MDX.access().getEquippedProgress() - MDX.access().getEquippedProgressPrev()) * partialTicks;
 
         if (ItemWristbracer.hasPlasmaCannon(ItemWristbracer.wristbracer(Game.minecraft().thePlayer)))
         {
             if (Game.minecraft().gameSettings.thirdPersonView == 0)
             {
-                if (entityRenderer.debugViewDirection <= 0)
+                if (MDX.access().getDebugViewDirection() <= 0)
                 {
-                    entityRenderer.enableLightmap(partialTicks);
+                    entityRenderer.enableLightmap();
                     GL11.glMatrixMode(GL11.GL_PROJECTION);
                     GL11.glLoadIdentity();
 
-                    if (entityRenderer.cameraZoom != 1.0D)
+                    if (MDX.access().getCameraZoom() != 1.0D)
                     {
-                        OpenGL.translate((float) entityRenderer.cameraYaw, (float) (-entityRenderer.cameraPitch), 0.0F);
-                        GL11.glScaled(entityRenderer.cameraZoom, entityRenderer.cameraZoom, 1.0D);
+                        OpenGL.translate((float) MDX.access().getCameraYaw(), (float) (-MDX.access().getCameraPitch()), 0.0F);
+                        GL11.glScaled(MDX.access().getCameraZoom(), MDX.access().getCameraZoom(), 1.0D);
                     }
 
-                    Project.gluPerspective(entityRenderer.getFOVModifier(partialTicks, false), (float) entityRenderer.mc.displayWidth / (float) entityRenderer.mc.displayHeight, 0.05F, entityRenderer.farPlaneDistance * 2.0F);
+                    Project.gluPerspective(MDX.access().getFOVModifier(partialTicks, false), (float) Game.minecraft().displayWidth / (float) Game.minecraft().displayHeight, 0.05F, MDX.access().getFarPlaneDistance() * 2.0F);
 
                     GL11.glMatrixMode(GL11.GL_MODELVIEW);
                     GL11.glLoadIdentity();
 
-                    if (entityRenderer.mc.gameSettings.viewBobbing)
+                    if (Game.minecraft().gameSettings.viewBobbing)
                     {
-                        entityRenderer.setupViewBobbing(partialTicks);
+                        MDX.access().setupViewBobbing(partialTicks);
                     }
                 }
 
                 OpenGL.pushMatrix();
                 {
-                    int brightness = Game.minecraft().theWorld.getLightBrightnessForSkyBlocks(MathHelper.floor_double(entity.posX), MathHelper.floor_double(entity.posY), MathHelper.floor_double(entity.posZ), 0);
+                    int brightness = Worlds.getLightAtCoord(Game.minecraft().theWorld, entity.getPosition());
                     int ltu = brightness % 65536;
                     int ltv = brightness / 65536;
                     OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) ltu / 1.0F, (float) ltv / 1.0F);
@@ -242,7 +244,7 @@ public class RenderPlayerPlasmaCannon implements IEventRenderer, IFirstPersonRen
                 }
                 OpenGL.popMatrix();
 
-                entityRenderer.enableLightmap(partialTicks);
+                entityRenderer.enableLightmap();
                 OpenGL.blendClear();
             }
         }

@@ -1,6 +1,7 @@
 package org.avp.client.render.entities.living;
 
 import org.avp.AliensVsPredator;
+import org.avp.entities.living.EntityCombatSynthetic;
 import org.lwjgl.opengl.GL11;
 
 import com.arisux.mdxlib.lib.client.Model;
@@ -8,9 +9,7 @@ import com.arisux.mdxlib.lib.client.RenderLivingWrapper;
 import com.arisux.mdxlib.lib.client.SpecialModelBiped;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
-import net.minecraft.entity.EntityLivingBase;
-
-public class RenderCombatSynthetic extends RenderLivingWrapper
+public class RenderCombatSynthetic extends RenderLivingWrapper<EntityCombatSynthetic>
 {
     public RenderCombatSynthetic()
     {
@@ -18,15 +17,15 @@ public class RenderCombatSynthetic extends RenderLivingWrapper
     }
 
     @Override
-    protected void preRenderCallback(EntityLivingBase base, float partialTicks)
+    protected void preRenderCallback(EntityCombatSynthetic base, float partialTicks)
     {
         super.preRenderCallback(base, partialTicks);
     }
 
-    @Override
-    protected void renderEquippedItems(EntityLivingBase entityLiving, float partialTicks)
+    //TODO: FIX
+    protected void renderEquippedItems(EntityCombatSynthetic entityLiving, float partialTicks)
     {
-        super.renderEquippedItems(entityLiving, partialTicks);
+        //super.renderEquippedItems(entityLiving, partialTicks);
 
         float glScale = 1.2F;
 

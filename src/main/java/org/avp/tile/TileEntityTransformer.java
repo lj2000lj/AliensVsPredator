@@ -10,17 +10,18 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+
 
 public class TileEntityTransformer extends TileEntityElectrical implements IVoltageProvider, IVoltageReceiver, IRotatable
 {
-    private ForgeDirection direction;
+    private EnumFacing direction;
 
     public TileEntityTransformer()
     {
         super(false);
         this.boost = 24;
-        this.direction = ForgeDirection.SOUTH;
+        this.direction = EnumFacing.SOUTH;
     }
 
     @Override
@@ -53,7 +54,7 @@ public class TileEntityTransformer extends TileEntityElectrical implements IVolt
     {
         super.readFromNBT(nbt);
 
-        this.direction = ForgeDirection.getOrientation(nbt.getInteger("Direction"));
+        this.direction = EnumFacing.getOrientation(nbt.getInteger("Direction"));
     }
 
     @Override
@@ -86,25 +87,25 @@ public class TileEntityTransformer extends TileEntityElectrical implements IVolt
     }
 
     @Override
-    public ForgeDirection getSourcePowerDirection()
+    public EnumFacing getSourcePowerDirection()
     {
         return direction;
     }
 
     @Override
-    public boolean canConnectPower(ForgeDirection from)
+    public boolean canConnectPower(EnumFacing from)
     {
         return from == direction;
     }
 
     @Override
-    public double getCurrentVoltage(ForgeDirection from)
+    public double getCurrentVoltage(EnumFacing from)
     {
         return this.voltage;
     }
 
     @Override
-    public double extractVoltage(ForgeDirection from, double maxExtract, boolean simulate)
+    public double extractVoltage(EnumFacing from, double maxExtract, boolean simulate)
     {
         TileEntity tile = this.worldObj.getTileEntity(this.xCoord + from.offsetX, this.yCoord + from.offsetY, this.zCoord + from.offsetZ);
 
@@ -117,25 +118,25 @@ public class TileEntityTransformer extends TileEntityElectrical implements IVolt
     }
 
     @Override
-    public boolean canProvideEnergyToReceiver(ForgeDirection side)
+    public boolean canProvideEnergyToReceiver(EnumFacing side)
     {
         return side == direction || side == direction.getOpposite();
     }
 
     @Override
-    public double getMaxVoltage(ForgeDirection from)
+    public double getMaxVoltage(EnumFacing from)
     {
         return 10000;
     }
 
     @Override
-    public ForgeDirection getDirection()
+    public EnumFacing getDirection()
     {
         return direction;
     }
 
     @Override
-    public void setDirection(ForgeDirection direction)
+    public void setDirection(EnumFacing direction)
     {
         this.direction = direction;
     }

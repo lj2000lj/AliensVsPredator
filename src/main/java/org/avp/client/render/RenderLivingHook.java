@@ -11,17 +11,16 @@ import com.arisux.mdxlib.lib.game.Game;
 import com.arisux.mdxlib.lib.util.MDXMath;
 import com.arisux.mdxlib.lib.world.entity.Entities;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.RendererLivingEntity;
+import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 
 public class RenderLivingHook
 {
@@ -38,23 +37,23 @@ public class RenderLivingHook
     @SubscribeEvent
     public void renderHand(RenderHandEvent event)
     {
-        renderplasmacannon.renderFirstPerson(event, event.partialTicks);
+        renderplasmacannon.renderFirstPerson(event, event.getPartialTicks());
     }
 
     @SubscribeEvent
     public void entityRenderEventPre(RenderLivingEvent.Pre event)
     {
-        if (event.entity != null)
+        if (event.getEntity() != null)
         {
-            if (event.entity instanceof EntityPlayer)
+            if (event.getEntity() instanceof EntityPlayer)
             {
                 renderplasmacannon.render(event, Game.partialTicks());
             }
 
-            if (event.entity.ridingEntity instanceof EntityMedpod)
+            if (event.getEntity().getRidingEntity() instanceof EntityMedpod)
             {
                 event.setCanceled(true);
-                renderer.render(event.entity, event.renderer, event.x, event.y, event.z, Game.partialTicks());
+                renderer.render(event.getEntity(), event.getRenderer(), event.getX(), event.getY(), event.getZ(), Game.partialTicks());
             }
         }
     }
@@ -62,14 +61,14 @@ public class RenderLivingHook
     @SubscribeEvent
     public void entityRenderEventPost(RenderLivingEvent.Post event)
     {
-        if (event.entity != null)
+        if (event.getEntity() != null)
         {
-            if (event.entity instanceof EntityPlayer)
+            if (event.getEntity() instanceof EntityPlayer)
             {
                 renderplasmacannon.render(event, Game.partialTicks());
             }
 
-            if (event.entity.ridingEntity instanceof EntityMedpod)
+            if (event.getEntity().getRidingEntity() instanceof EntityMedpod)
             {
                 event.setCanceled(true);
             }
@@ -81,18 +80,17 @@ public class RenderLivingHook
         return renderer;
     }
 
-    public class RenderLiving extends RendererLivingEntity
+    public class RenderLiving extends RenderLivingBase<EntityLivingBase>
     {
-        private RendererLivingEntity cache;
+        private RenderLivingBase<EntityLivingBase> cache;
 
         public RenderLiving()
         {
-            super(null, 0F);
-            this.renderManager = RenderManager.instance;
+            super(Game.renderManager(), null, 0F);
         }
 
         @Override
-        protected ResourceLocation getEntityTexture(Entity entity)
+        protected ResourceLocation getEntityTexture(EntityLivingBase entity)
         {
             ResourceLocation resource = Entities.getEntityTexture(this.cache, entity);
 
@@ -104,9 +102,9 @@ public class RenderLivingHook
             return resource;
         }
 
-        public void render(EntityLivingBase entity, RendererLivingEntity renderer, double posX, double posY, double posZ, float partialTicks)
+        public void render(EntityLivingBase entity, RenderLivingBase<EntityLivingBase> renderer, double posX, double posY, double posZ, float partialTicks)
         {
-            EntityMedpod medpod = (EntityMedpod) entity.ridingEntity;
+            EntityMedpod medpod = (EntityMedpod) entity.getRidingEntity();
 
             if (this.cache != renderer)
             {
@@ -136,12 +134,7 @@ public class RenderLivingHook
                 this.mainModel.swingProgress = this.getSwingProgress(entity, partialTicks);
                 this.mainModel.isRiding = false;
                 this.mainModel.isChild = entity.isChild();
-
-                if (this.renderPassModel != null)
-                {
-                    this.renderPassModel.isChild = this.mainModel.isChild;
-                }
-
+                
                 OpenGL.enableBlend();
                 OpenGL.blendClear();
                 OpenGL.translate(posX, posY, posZ);

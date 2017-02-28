@@ -11,11 +11,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+
 
 public class TileEntityRedstoneFluxGenerator extends TileEntityElectrical implements IVoltageProvider, IEnergyReceiver, IRotatable
 {
-    private ForgeDirection direction;
+    private EnumFacing direction;
     protected int rfEnergy;
     protected int rfStoredPerTick;
     protected int rfUsedPerTick;
@@ -25,7 +26,7 @@ public class TileEntityRedstoneFluxGenerator extends TileEntityElectrical implem
         super(true);
         this.rfStoredPerTick = 25;
         this.rfUsedPerTick = 20;
-        this.direction = ForgeDirection.SOUTH;
+        this.direction = EnumFacing.SOUTH;
     }
 
     @Override
@@ -52,25 +53,25 @@ public class TileEntityRedstoneFluxGenerator extends TileEntityElectrical implem
     }
 
     @Override
-    public boolean canConnectPower(ForgeDirection from)
+    public boolean canConnectPower(EnumFacing from)
     {
         return true;
     }
 
     @Override
-    public double extractVoltage(ForgeDirection from, double maxExtract, boolean simulate)
+    public double extractVoltage(EnumFacing from, double maxExtract, boolean simulate)
     {
         return super.extractVoltage(from, maxExtract, simulate);
     }
 
     @Override
-    public double getCurrentVoltage(ForgeDirection from)
+    public double getCurrentVoltage(EnumFacing from)
     {
         return this.voltage;
     }
 
     @Override
-    public double getMaxVoltage(ForgeDirection from)
+    public double getMaxVoltage(EnumFacing from)
     {
         return 10000;
     }
@@ -81,13 +82,13 @@ public class TileEntityRedstoneFluxGenerator extends TileEntityElectrical implem
     }
 
     @Override
-    public boolean canConnectEnergy(ForgeDirection from)
+    public boolean canConnectEnergy(EnumFacing from)
     {
         return true;
     }
 
     @Override
-    public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
+    public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate)
     {
         int usedRF = 0;
         
@@ -101,13 +102,13 @@ public class TileEntityRedstoneFluxGenerator extends TileEntityElectrical implem
     }
 
     @Override
-    public int getEnergyStored(ForgeDirection from)
+    public int getEnergyStored(EnumFacing from)
     {
         return this.rfEnergy;
     }
 
     @Override
-    public int getMaxEnergyStored(ForgeDirection from)
+    public int getMaxEnergyStored(EnumFacing from)
     {
         return 10000;
     }
@@ -143,17 +144,17 @@ public class TileEntityRedstoneFluxGenerator extends TileEntityElectrical implem
     {
         super.readFromNBT(nbt);
         this.rfEnergy = nbt.getInteger("RFEnergy");
-        this.direction = ForgeDirection.getOrientation(nbt.getInteger("Direction"));
+        this.direction = EnumFacing.getOrientation(nbt.getInteger("Direction"));
     }
 
     @Override
-    public ForgeDirection getDirection()
+    public EnumFacing getDirection()
     {
         return direction;
     }
 
     @Override
-    public void setDirection(ForgeDirection direction)
+    public void setDirection(EnumFacing direction)
     {
         this.direction = direction;
     }

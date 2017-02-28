@@ -9,12 +9,12 @@ import static org.lwjgl.opengl.GL11.glDepthMask;
 
 import org.avp.AliensVsPredator;
 import org.avp.api.power.IVoltageReceiver;
+import org.avp.entities.Organism;
 import org.avp.entities.SharedPlayer;
 import org.avp.entities.living.EntityMarine;
 import org.avp.entities.living.EntitySpeciesAlien;
 import org.avp.tile.TileEntityPowercell;
 import org.avp.tile.TileEntityStasisMechanism;
-import org.avp.entities.Organism;
 import org.avp.world.dimension.varda.ProviderVarda;
 
 import com.arisux.mdxlib.lib.client.render.Draw;
@@ -24,24 +24,26 @@ import com.arisux.mdxlib.lib.client.render.Screen;
 import com.arisux.mdxlib.lib.game.Game;
 import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.Worlds;
-import com.arisux.mdxlib.lib.world.block.BlockSide;
 import com.arisux.mdxlib.lib.world.block.Blocks;
 import com.arisux.mdxlib.lib.world.entity.player.inventory.Inventories;
 
-import cpw.mods.fml.common.ModContainer;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.RenderTickEvent;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fml.common.ModContainer;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
+
 
 public class PressureHUDRenderEvent
 {
@@ -59,7 +61,7 @@ public class PressureHUDRenderEvent
     {
         if (Game.minecraft().thePlayer != null)
         {
-            if (event.type == RenderGameOverlayEvent.ElementType.HOTBAR)
+            if (event.getType() == RenderGameOverlayEvent.ElementType.HOTBAR)
             {
                 if (Inventories.getHelmSlotItemStack(Game.minecraft().thePlayer) != null && Game.minecraft().gameSettings.thirdPersonView == 0 && Inventories.getHelmSlotItemStack(Game.minecraft().thePlayer).getItem() == AliensVsPredator.items().pressureMask)
                 {
@@ -143,12 +145,12 @@ public class PressureHUDRenderEvent
             {
                 float nameScale = 1.5F;
                 OpenGL.scale(nameScale, nameScale, nameScale);
-                Draw.drawString("[" + 100 + "%%] " + Game.minecraft().thePlayer.getCommandSenderName(), (int) ((barPadding) / nameScale), (int) (10 / nameScale), 0xFFFFAA00, false);
+                Draw.drawString("[" + 100 + "%%] " + Game.minecraft().thePlayer.getName(), (int) ((barPadding) / nameScale), (int) (10 / nameScale), 0xFFFFAA00, false);
             }
             OpenGL.popMatrix();
             OpenGL.color4i(0xFFFFFFFF);
 
-            Draw.drawPlayerFace(Game.minecraft().thePlayer.getCommandSenderName(), 0, 0, 32, 32);
+            Draw.drawPlayerFace(Game.minecraft().thePlayer.getName(), 0, 0, 32, 32);
 
             /** Silica storm detection indicator **/
             WorldProvider provider = Game.minecraft().theWorld.provider;
@@ -180,7 +182,7 @@ public class PressureHUDRenderEvent
                         int actualY = (int) ((indicatorY) / nameScale);
                         int actualWidth = (int) (indicatorWidth / nameScale);
                         int actualHeight = (int) (indicatorHeight / nameScale);
-                        fontrenderer.drawString("Storm Indicator for " + provider.getDimensionName(), actualX + 7, actualY + 7, 0xFFAA00);
+                        fontrenderer.drawString("Storm Indicator for " + provider.getDimensionType().getName(), actualX + 7, actualY + 7, 0xFFAA00);
 
                         if (Worlds.canSeeSky(new Pos(Game.minecraft().thePlayer), Game.minecraft().theWorld))
                         {
@@ -213,7 +215,7 @@ public class PressureHUDRenderEvent
                     int subEntrySpacing = 10;
                     int curEntry = 0;
 
-                    if (Game.minecraft().objectMouseOver.typeOfHit == MovingObjectType.ENTITY)
+                    if (Game.minecraft().objectMouseOver.typeOfHit == RayTraceResult.Type.ENTITY)
                     {
                         Entity entity = Game.minecraft().objectMouseOver.entityHit;
 
@@ -225,7 +227,7 @@ public class PressureHUDRenderEvent
                             {
                                 float nameScale = 1.5F;
                                 OpenGL.scale(nameScale, nameScale, nameScale);
-                                fontrenderer.drawString("" + entity.getCommandSenderName(), (int) ((subMenuX + subMenuPadding) / nameScale), (int) ((subMenuStartY + (curEntry++ * subEntrySpacing)) / nameScale), 0xFFAA00);
+                                fontrenderer.drawString("" + entity.getName(), (int) ((subMenuX + subMenuPadding) / nameScale), (int) ((subMenuStartY + (curEntry++ * subEntrySpacing)) / nameScale), 0xFFAA00);
                             }
                             OpenGL.popMatrix();
 
@@ -243,14 +245,13 @@ public class PressureHUDRenderEvent
                             subMenuStartY = subMenuStartY + 20;
 
                             fontrenderer.drawString("Entity Type: " + entity.getClass().getSuperclass().getSimpleName(), subMenuX + subMenuPadding, subMenuStartY + (curEntry++ * subEntrySpacing), 0x666666);
-                            fontrenderer.drawString("Eating: " + entity.isEating(), subMenuX + subMenuPadding, subMenuStartY + (curEntry++ * subEntrySpacing), 0x666666);
 
                             if (entity instanceof EntityLiving)
                             {
 
                                 if (((EntityLiving) entity).getAttackTarget() != null)
                                 {
-                                    fontrenderer.drawString("AttackTarget: " + ((EntityLiving) entity).getAttackTarget().getCommandSenderName(), subMenuX + subMenuPadding, subMenuStartY + (curEntry++ * subEntrySpacing), 0x666666);
+                                    fontrenderer.drawString("AttackTarget: " + ((EntityLiving) entity).getAttackTarget().getName(), subMenuX + subMenuPadding, subMenuStartY + (curEntry++ * subEntrySpacing), 0x666666);
                                     fontrenderer.drawString("Distance to Target: " + (((EntityLiving) entity).getAttackTarget() != null ? entity.getDistanceToEntity(((EntityLiving) entity).getAttackTarget()) : 0), subMenuX + subMenuPadding, subMenuStartY + (curEntry++ * subEntrySpacing), 0x666666);
                                 }
 
@@ -258,7 +259,7 @@ public class PressureHUDRenderEvent
 
                                 if (((EntityLiving) entity).getLastAttacker() != null)
                                 {
-                                    fontrenderer.drawString("LastAttacker: " + ((EntityLiving) entity).getLastAttacker().getCommandSenderName(), subMenuX + subMenuPadding, subMenuStartY + (curEntry++ * subEntrySpacing), 0x666666);
+                                    fontrenderer.drawString("LastAttacker: " + ((EntityLiving) entity).getLastAttacker().getName(), subMenuX + subMenuPadding, subMenuStartY + (curEntry++ * subEntrySpacing), 0x666666);
                                 }
 
                                 fontrenderer.drawString("Armor: " + ((EntityLiving) entity).getTotalArmorValue(), subMenuX + subMenuPadding, subMenuStartY + (curEntry++ * subEntrySpacing), 0x666666);
@@ -268,7 +269,7 @@ public class PressureHUDRenderEvent
                             if (entity instanceof EntityLivingBase)
                             {
                                 EntityLivingBase entityLiving = (EntityLivingBase) entity;
-                                Organism extendedLiving = (Organism) entityLiving.getExtendedProperties(Organism.IDENTIFIER);
+//                                Organism extendedLiving = (Organism) entityLiving.getExtendedProperties(Organism.IDENTIFIER);
 
                                 fontrenderer.drawString("Age: " + entityLiving.getAge(), subMenuX + subMenuPadding, subMenuStartY + (curEntry++ * subEntrySpacing), 0x666666);
 
@@ -314,15 +315,16 @@ public class PressureHUDRenderEvent
                         }
                     }
 
-                    if (Game.minecraft().objectMouseOver.typeOfHit == MovingObjectType.BLOCK)
+                    if (Game.minecraft().objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK)
                     {
                         /** Block Information **/
-                        Pos coord = new Pos(Game.minecraft().objectMouseOver.blockX, Game.minecraft().objectMouseOver.blockY, Game.minecraft().objectMouseOver.blockZ);
-                        Block block = Game.minecraft().theWorld.getBlock((int) coord.x(), (int) coord.y(), (int) coord.z());
-                        BlockSide side = BlockSide.getSide(Game.minecraft().objectMouseOver.sideHit);
-                        TileEntity tile = coord.getTileEntity(Game.minecraft().thePlayer.worldObj);
+//                        Pos coord = new Pos(Game.minecraft().objectMouseOver.getBlockPos().getX(), Game.minecraft().objectMouseOver.getBlockPos().getY(), Game.minecraft().objectMouseOver.blockZ);
+                        BlockPos blockpos = Game.minecraft().objectMouseOver.getBlockPos();
+                        IBlockState blockstate = Game.minecraft().theWorld.getBlockState(blockpos);
+                        Block block = blockstate.getBlock();
+                        TileEntity tile = Game.minecraft().thePlayer.worldObj.getTileEntity(blockpos);
 
-                        Draw.drawBlockSide(block, side.getId(), subMenuX + subMenuPadding - 56, 0, 48, 48);
+                        Draw.drawBlockSide(block, Game.minecraft().objectMouseOver.sideHit.ordinal(), subMenuX + subMenuPadding - 56, 0, 48, 48);
 
                         OpenGL.pushMatrix();
                         {
@@ -338,7 +340,7 @@ public class PressureHUDRenderEvent
                         ModContainer modContainer = Game.getModContainer(blockDomain.replace(":", ""));
                         String mod = modContainer != null ? modContainer.getName() : "???";
                         fontrenderer.drawString("From " + mod, subMenuX + subMenuPadding, subMenuStartY + (curEntry++ * subEntrySpacing), 0x666666);
-                        fontrenderer.drawString("Looking at " + ForgeDirection.getOrientation(side.getId()) + " face", subMenuX + subMenuPadding, subMenuStartY + (curEntry++ * subEntrySpacing), 0x666666);
+                        fontrenderer.drawString("Looking at " + (Game.minecraft().objectMouseOver.sideHit.name()) + " face", subMenuX + subMenuPadding, subMenuStartY + (curEntry++ * subEntrySpacing), 0x666666);
 
                         if (tile instanceof TileEntity)
                         {
@@ -348,7 +350,7 @@ public class PressureHUDRenderEvent
                         if (tile instanceof IVoltageReceiver)
                         {
                             IVoltageReceiver poweredTile = (IVoltageReceiver) tile;
-                            fontrenderer.drawString("Voltage: " + ((float) poweredTile.getCurrentVoltage(ForgeDirection.SOUTH)) + "V", subMenuX + subMenuPadding, subMenuStartY + (curEntry++ * subEntrySpacing), 0xFFAA00);
+                            fontrenderer.drawString("Voltage: " + ((float) poweredTile.getCurrentVoltage(EnumFacing.SOUTH)) + "V", subMenuX + subMenuPadding, subMenuStartY + (curEntry++ * subEntrySpacing), 0xFFAA00);
                         }
 
                         if (tile instanceof TileEntityPowercell)

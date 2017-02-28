@@ -73,7 +73,7 @@ public enum VisionMode
         @Override
         public void renderEntityPre(RenderLivingEvent.Pre event)
         {
-            if (isEntityTypeAllowed(event.entity))
+            if (isEntityTypeAllowed(event.getEntity()))
             {
                 OpenGL.disableLight();
                 OpenGL.disableLightMapping();
@@ -84,7 +84,7 @@ public enum VisionMode
         @Override
         public void renderEntityPost(RenderLivingEvent.Post event)
         {
-            if (isEntityTypeAllowed(event.entity))
+            if (isEntityTypeAllowed(event.getEntity()))
             {
                 OpenGL.enableLight();
                 OpenGL.enableLightMapping();
@@ -135,7 +135,7 @@ public enum VisionMode
         @Override
         public void renderEntityPre(RenderLivingEvent.Pre event)
         {
-            if (event.entity.getCreatureAttribute() != EnumCreatureAttribute.UNDEAD && !(event.entity instanceof EntityXenomorph))
+            if (event.getEntity().getCreatureAttribute() != EnumCreatureAttribute.UNDEAD && !(event.getEntity() instanceof EntityXenomorph))
             {
                 OpenGL.disableLight();
                 OpenGL.disableLightMapping();
@@ -146,7 +146,7 @@ public enum VisionMode
         @Override
         public void renderEntityPost(RenderLivingEvent.Post event)
         {
-            if (event.entity.getCreatureAttribute() != EnumCreatureAttribute.UNDEAD)
+            if (event.getEntity().getCreatureAttribute() != EnumCreatureAttribute.UNDEAD)
             {
                 OpenGL.enableLight();
                 OpenGL.enableLightMapping();

@@ -5,33 +5,33 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.world.ChunkPosition;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.WorldChunkManager;
 
 @SuppressWarnings("all")
 public class ChunkManagerAcheron extends WorldChunkManager
 {
-    private BiomeGenBase biome;
+    private Biome biome;
     private float hellTemperature;
     private float rainfall;
 
-    public ChunkManagerAcheron(BiomeGenBase biome)
+    public ChunkManagerAcheron(Biome biome)
     {
         this.biome = biome;
     }
 
     @Override
-    public BiomeGenBase getBiomeGenAt(int chunkX, int chunkZ)
+    public Biome getBiomeGenAt(int chunkX, int chunkZ)
     {
         return this.biome;
     }
 
     @Override
-    public BiomeGenBase[] getBiomesForGeneration(BiomeGenBase[] biomeList, int posX, int posZ, int width, int height)
+    public Biome[] getBiomesForGeneration(Biome[] biomeList, int posX, int posZ, int width, int height)
     {
         if ((biomeList == null) || (biomeList.length < width * height))
         {
-            biomeList = new BiomeGenBase[width * height];
+            biomeList = new Biome[width * height];
         }
 
         Arrays.fill(biomeList, 0, width * height, this.biome);
@@ -39,11 +39,11 @@ public class ChunkManagerAcheron extends WorldChunkManager
     }
 
     @Override
-    public BiomeGenBase[] loadBlockGeneratorData(BiomeGenBase[] biomeList, int posX, int posZ, int width, int height)
+    public Biome[] loadBlockGeneratorData(Biome[] biomeList, int posX, int posZ, int width, int height)
     {
         if ((biomeList == null) || (biomeList.length < width * height))
         {
-            biomeList = new BiomeGenBase[width * height];
+            biomeList = new Biome[width * height];
         }
 
         Arrays.fill(biomeList, 0, width * height, this.biome);
@@ -69,7 +69,7 @@ public class ChunkManagerAcheron extends WorldChunkManager
     }
 
     @Override
-    public BiomeGenBase[] getBiomeGenAt(BiomeGenBase[] biomeList, int posX, int posZ, int width, int height, boolean checkCache)
+    public Biome[] getBiomeGenAt(Biome[] biomeList, int posX, int posZ, int width, int height, boolean checkCache)
     {
         return loadBlockGeneratorData(biomeList, posX, posZ, width, height);
     }

@@ -32,7 +32,7 @@ public class RenderHiveResin extends TileEntitySpecialRenderer
                 ModelHiveResin model = AliensVsPredator.resources().models().HIVE_RESIN.getModel();
                 OpenGL.enableCullFace();
 
-                if (resin.topBlock == Blocks.air)
+                if (resin.topBlock == Blocks.AIR)
                 {
                     if (hiveTessellation == GraphicsSetting.MEDIUM ||hiveTessellation == GraphicsSetting.HIGH || hiveTessellation == GraphicsSetting.ULTRA)
                     {
@@ -42,7 +42,7 @@ public class RenderHiveResin extends TileEntitySpecialRenderer
                     }
                 }
 
-                if (resin.bottomBlock == Blocks.air)
+                if (resin.bottomBlock == Blocks.AIR)
                 {
                     if (hiveTessellation == GraphicsSetting.HIGH || hiveTessellation == GraphicsSetting.ULTRA)
                     {
@@ -56,11 +56,11 @@ public class RenderHiveResin extends TileEntitySpecialRenderer
 
                 // if (hiveTessellation == GraphicsSetting.HIGH || hiveTessellation == GraphicsSetting.ULTRA)
                 {
-                    model.nBottomRoot01.isHidden = resin.northTopBlock == Blocks.air;
-                    model.nTopRoot01.isHidden = resin.northBottomBlock == Blocks.air;
+                    model.nBottomRoot01.isHidden = resin.northTopBlock == Blocks.AIR;
+                    model.nTopRoot01.isHidden = resin.northBottomBlock == Blocks.AIR;
                 }
 
-                if (resin.northBlock == Blocks.air)
+                if (resin.northBlock == Blocks.AIR)
                 {
                     if (hiveTessellation == GraphicsSetting.HIGH || hiveTessellation == GraphicsSetting.ULTRA)
                     {
@@ -79,11 +79,11 @@ public class RenderHiveResin extends TileEntitySpecialRenderer
 
                 // if (hiveTessellation == GraphicsSetting.HIGH || hiveTessellation == GraphicsSetting.ULTRA)
                 {
-                    model.wBottomRoot01.isHidden = resin.westTopBlock == Blocks.air;
-                    model.wTopRoot01.isHidden = resin.westBottomBlock == Blocks.air;
+                    model.wBottomRoot01.isHidden = resin.westTopBlock == Blocks.AIR;
+                    model.wTopRoot01.isHidden = resin.westBottomBlock == Blocks.AIR;
                 }
 
-                if (resin.westBlock == Blocks.air)
+                if (resin.westBlock == Blocks.AIR)
                 {
                     if (hiveTessellation == GraphicsSetting.HIGH || hiveTessellation == GraphicsSetting.ULTRA)
                     {
@@ -100,11 +100,11 @@ public class RenderHiveResin extends TileEntitySpecialRenderer
 
                 // if (hiveTessellation == GraphicsSetting.HIGH || hiveTessellation == GraphicsSetting.ULTRA)
                 {
-                    model.sBottomRoot01.isHidden = resin.southTopBlock == Blocks.air;
-                    model.sTopRoot01.isHidden = resin.southBottomBlock == Blocks.air;
+                    model.sBottomRoot01.isHidden = resin.southTopBlock == Blocks.AIR;
+                    model.sTopRoot01.isHidden = resin.southBottomBlock == Blocks.AIR;
                 }
 
-                if (resin.southBlock == Blocks.air)
+                if (resin.southBlock == Blocks.AIR)
                 {
                     if (hiveTessellation == GraphicsSetting.HIGH || hiveTessellation == GraphicsSetting.ULTRA)
                     {
@@ -122,11 +122,11 @@ public class RenderHiveResin extends TileEntitySpecialRenderer
 
 //                if (hiveTessellation == GraphicsSetting.HIGH || hiveTessellation == GraphicsSetting.ULTRA)
                 {
-                    model.eBottomRoot01.isHidden = resin.eastTopBlock == Blocks.air;
-                    model.eTopRoot01.isHidden = resin.eastBottomBlock == Blocks.air;
+                    model.eBottomRoot01.isHidden = resin.eastTopBlock == Blocks.AIR;
+                    model.eTopRoot01.isHidden = resin.eastBottomBlock == Blocks.AIR;
                 }
 
-                if (resin.eastBlock == Blocks.air)
+                if (resin.eastBlock == Blocks.AIR)
                 {
                     if (hiveTessellation == GraphicsSetting.HIGH || hiveTessellation == GraphicsSetting.ULTRA)
                     {

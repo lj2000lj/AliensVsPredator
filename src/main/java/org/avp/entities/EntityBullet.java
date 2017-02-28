@@ -14,11 +14,10 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class EntityBullet extends Entity
@@ -44,7 +43,7 @@ public class EntityBullet extends Entity
         this.xTile = -1;
         this.yTile = -1;
         this.zTile = -1;
-        this.inTile = Blocks.air;
+        this.inTile = Blocks.AIR;
         this.inData = 0;
         this.inGround = false;
         this.doesArrowBelongToPlayer = false;
@@ -60,7 +59,7 @@ public class EntityBullet extends Entity
         this.xTile = -1;
         this.yTile = -1;
         this.zTile = -1;
-        this.inTile = Blocks.air;
+        this.inTile = Blocks.AIR;
         this.inData = 0;
         this.inGround = false;
         this.doesArrowBelongToPlayer = false;
@@ -79,7 +78,7 @@ public class EntityBullet extends Entity
         this.xTile = -1;
         this.yTile = -1;
         this.zTile = -1;
-        this.inTile = Blocks.air;
+        this.inTile = Blocks.AIR;
         this.inData = 0;
         this.inGround = false;
         this.physics = true;
@@ -118,7 +117,7 @@ public class EntityBullet extends Entity
         this.xTile = -1;
         this.yTile = -1;
         this.zTile = -1;
-        this.inTile = Blocks.air;
+        this.inTile = Blocks.AIR;
         this.inData = 0;
         this.inGround = false;
         this.physics = true;
@@ -235,12 +234,12 @@ public class EntityBullet extends Entity
 
         Block block = this.worldObj.getBlock(this.xTile, this.yTile, this.zTile);
 
-        if (block != Blocks.air)
+        if (block != Blocks.AIR)
         {
             block.setBlockBoundsBasedOnState(this.worldObj, this.xTile, this.yTile, this.zTile);
-            AxisAlignedBB vec3d = block.getCollisionBoundingBoxFromPool(this.worldObj, this.xTile, this.yTile, this.zTile);
+            AxisAlignedBB Vec3dd = block.getCollisionBoundingBoxFromPool(this.worldObj, this.xTile, this.yTile, this.zTile);
 
-            if (vec3d != null && vec3d.isVecInside(Vec3.createVectorHelper(this.posX, this.posY, this.posZ)))
+            if (Vec3dd != null && Vec3dd.isVecInside(new Vec3d(this.posX, this.posY, this.posZ)))
             {
                 this.inGround = true;
             }
@@ -294,15 +293,15 @@ public class EntityBullet extends Entity
         else
         {
             ++this.ticksInAir;
-            Vec3 vecAt = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
-            Vec3 vecNext = Vec3.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+            Vec3d vecAt = new Vec3d(this.posX, this.posY, this.posZ);
+            Vec3d vecNext = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
             MovingObjectPosition movingobjectposition = this.worldObj.rayTraceBlocks(vecAt, vecNext, false, true, false);
-            vecAt = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
-            vecNext = Vec3.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+            vecAt = new Vec3d(this.posX, this.posY, this.posZ);
+            vecNext = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
             if (movingobjectposition != null)
             {
-                vecNext = Vec3.createVectorHelper(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord, movingobjectposition.hitVec.zCoord);
+                vecNext = new Vec3d(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord, movingobjectposition.hitVec.zCoord);
             }
 
             Entity entity = null;
@@ -373,7 +372,7 @@ public class EntityBullet extends Entity
 
                     if (movingobjectposition.entityHit instanceof EntityLivingBase)
                     {
-                        ((EntityLivingBase) movingobjectposition.entityHit).getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(0.9);
+                        ((EntityLivingBase) movingobjectposition.entityHit).getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(0.9);
                         movingobjectposition.entityHit.attackEntityFrom(damagesource, attackDamage);
                         this.setDead();
                     }

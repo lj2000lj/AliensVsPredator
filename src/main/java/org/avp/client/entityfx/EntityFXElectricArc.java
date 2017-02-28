@@ -8,13 +8,13 @@ import org.lwjgl.opengl.GL11;
 import com.arisux.mdxlib.lib.client.render.Draw;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
-import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-public class EntityFXElectricArc extends EntityFX
+public class EntityFXElectricArc extends Particle
 {
     private static final ResourceLocation particleTextures = new ResourceLocation("textures/particle/particles.png");
 

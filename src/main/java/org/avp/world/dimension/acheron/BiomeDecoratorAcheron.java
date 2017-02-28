@@ -9,8 +9,8 @@ import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.Worlds;
 
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeDecorator;
-import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.feature.WorldGenFlowers;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraft.world.gen.feature.WorldGenerator;
@@ -29,7 +29,7 @@ public class BiomeDecoratorAcheron extends BiomeDecorator
     }
 
     @Override
-    public void decorateChunk(World world, Random seed, BiomeGenBase biome, int chunkX, int chunkZ)
+    public void decorateChunk(World world, Random seed, Biome biome, int chunkX, int chunkZ)
     {
         if (this.world != null)
         {
@@ -46,7 +46,7 @@ public class BiomeDecoratorAcheron extends BiomeDecorator
     }
 
     @Override
-    protected void genDecorations(BiomeGenBase biome)
+    protected void genDecorations(Biome biome)
     {
         this.generateOres();
 

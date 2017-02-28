@@ -6,7 +6,7 @@ import org.avp.AliensVsPredator;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.MapGenBase;
 
@@ -190,7 +190,7 @@ public class VardaGenCaves extends MapGenBase
                                 }
                                 else
                                 {
-                                    blocks[at] = Blocks.air;
+                                    blocks[at] = Blocks.AIR;
 
                                     if ((atSurface) && (blocks[(at - 1)] == AliensVsPredator.blocks().terrainUniDirt))
                                     {

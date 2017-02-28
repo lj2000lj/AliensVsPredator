@@ -8,45 +8,32 @@ import org.avp.world.playermode.PlayerMode;
 import org.lwjgl.opengl.GL11;
 
 import com.arisux.mdxlib.lib.client.render.OpenGL;
-import com.arisux.mdxlib.lib.util.MDXMath;
+import com.arisux.mdxlib.lib.game.Game;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.RendererLivingEntity;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class PlayerModeRenderEvent
 {
     public static final PlayerModeRenderEvent instance = new PlayerModeRenderEvent();
-    private RenderPlayer renderLiving = new RenderPlayer();
+    private RenderPlayer2 renderLiving = new RenderPlayer2();
 
-    private class RenderPlayer extends RendererLivingEntity
+    private class RenderPlayer2 extends RenderLivingBase<EntityLivingBase>
     {
-        public RenderPlayer()
+        public RenderPlayer2()
         {
-            super(new ModelBiped(), 0F);
-            this.renderManager = RenderManager.instance;
+            super(Game.renderManager(), new ModelBiped(), 0F);
         }
-
+        
         @Override
-        public void doRender(Entity entity, double posX, double posY, double posZ, float yaw, float renderPartialTicks)
+        public void doRender(EntityLivingBase entityLiving, double posX, double posY, double posZ, float yaw, float renderPartialTicks)
         {
-            EntityLivingBase entityLiving = (EntityLivingBase) entity;
-            float yawOffset = MDXMath.interpolateRotation(entityLiving.prevRenderYawOffset, entityLiving.renderYawOffset, renderPartialTicks);
-            float yawHead = MDXMath.interpolateRotation(entityLiving.prevRotationYawHead, entityLiving.rotationYawHead, renderPartialTicks);
-            float swingProgress = (entityLiving.limbSwing - entityLiving.limbSwingAmount * (1.0F - renderPartialTicks));
-            float swingProgressPrevious = (entityLiving.prevLimbSwingAmount + (entityLiving.limbSwingAmount - entityLiving.prevLimbSwingAmount) * renderPartialTicks);
-            float idleProgress = (entityLiving.ticksExisted + renderPartialTicks);
-            float headRotateAngleY = (yawHead - yaw);
-            float headRotationPitch = (entityLiving.prevRotationPitch + (entityLiving.rotationPitch - entityLiving.prevRotationPitch) * renderPartialTicks);
-            
-
             OpenGL.pushMatrix();
             {
                 OpenGL.rotate(-yaw, 0F, 1F, 0F);
@@ -54,13 +41,13 @@ public class PlayerModeRenderEvent
                 OpenGL.disable(GL11.GL_CULL_FACE);
 
                 PlayerModeHandler.instance().getTextureForPlayer((EntityPlayer) entityLiving).bind();
-                PlayerModeHandler.instance().getModelForPlayer((EntityPlayer) entityLiving).render(entity);
+                PlayerModeHandler.instance().getModelForPlayer((EntityPlayer) entityLiving).render(entityLiving);
             }
             OpenGL.popMatrix();
         }
 
         @Override
-        protected ResourceLocation getEntityTexture(Entity entity)
+        protected ResourceLocation getEntityTexture(EntityLivingBase entity)
         {
             return null;
         }
@@ -69,21 +56,21 @@ public class PlayerModeRenderEvent
     @SubscribeEvent
     public void renderEntityTick(RenderPlayerEvent.Pre event)
     {
-        SharedPlayer extendedPlayer = (SharedPlayer) event.entityPlayer.getExtendedProperties(SharedPlayer.IDENTIFIER);
-        ItemStack itemstack = event.entityPlayer.inventory.getCurrentItem();
+        SharedPlayer extendedPlayer = (SharedPlayer) event.getEntityPlayer().getExtendedProperties(SharedPlayer.IDENTIFIER);
+        ItemStack itemstack = event.getEntityPlayer().inventory.getCurrentItem();
 
         if (itemstack != null && (itemstack.getItem() instanceof ItemFirearm || itemstack.getItem() instanceof ItemFlamethrower))
         {
-            event.renderer.modelArmor.aimedBow = event.renderer.modelArmorChestplate.aimedBow = event.renderer.modelBipedMain.aimedBow = true;
+            event.getRenderer().getMainModel().rightArmPose = ModelBiped.ArmPose.BOW_AND_ARROW;
         }
         else
         {
-            event.renderer.modelArmor.aimedBow = event.renderer.modelArmorChestplate.aimedBow = event.renderer.modelBipedMain.aimedBow = false;
+            event.getRenderer().getMainModel().rightArmPose = ModelBiped.ArmPose.EMPTY;
         }
 
-        if (event.entity != null && extendedPlayer.getPlayerMode() != PlayerMode.NORMAL)
+        if (event.getEntity() != null && extendedPlayer.getPlayerMode() != PlayerMode.NORMAL)
         {
-            renderLiving.doRender(event.entity, event.entity.posX, event.entity.posY, event.entity.posZ, event.entity.rotationYaw, event.partialRenderTick);
+            renderLiving.doRender((EntityLivingBase) event.getEntity(), event.getEntity().posX, event.getEntity().posY, event.getEntity().posZ, event.getEntity().rotationYaw, event.getPartialRenderTick());
             event.setCanceled(true);
         }
     }

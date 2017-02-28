@@ -2,7 +2,7 @@ package org.avp.entities.ai.pathfinding;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.util.IntHashMap;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 
 public abstract class NodeProcessor

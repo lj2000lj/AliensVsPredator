@@ -4,14 +4,14 @@ import java.util.Random;
 
 import org.avp.DimensionHandler;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockPortal extends Block
 {
@@ -64,7 +64,7 @@ public class BlockPortal extends Block
     @Override
     public void onEntityCollidedWithBlock(World world, int posX, int posY, int posZ, Entity entity)
     {
-        if ((entity.ridingEntity == null) && (entity.riddenByEntity == null) && ((entity instanceof EntityPlayerMP)))
+        if ((entity.getRidingEntity()== null) && (entity.riddenByEntity == null) && ((entity instanceof EntityPlayerMP)))
         {
             EntityPlayerMP player = (EntityPlayerMP) entity;
 

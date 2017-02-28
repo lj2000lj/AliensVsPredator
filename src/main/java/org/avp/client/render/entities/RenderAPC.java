@@ -8,12 +8,13 @@ import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.client.render.wavefront.Part;
 import com.arisux.mdxlib.lib.client.render.wavefront.TriangulatedWavefrontModel;
 import com.arisux.mdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.world.entity.Entities;
 
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 
 public class RenderAPC extends Render
 {
@@ -95,6 +96,11 @@ public class RenderAPC extends Render
     private Part                 turret6    = model.getPart("Mesh19_APCAmHdl2_Group5_Model");
     private Part                 turret7    = model.getPart("Mesh20_APCAmHdl2_Group5_Model");
     private Part                 turret8    = model.getPart("Mesh21_APCAmHdl2_Group5_Model");
+    
+    public RenderAPC()
+    {
+        super(Game.renderManager());
+    }
 
     public void doRender(EntityAPC apc, double posX, double posY, double posZ, float yaw, float partialTicks)
     {
@@ -146,11 +152,11 @@ public class RenderAPC extends Render
 
                 if (this.isPartOfTurret(p))
                 {
-                    if (apc.riddenByEntity != null && apc.riddenByEntity instanceof EntityPlayer)
+                    if (Entities.isRiding(apc, EntityPlayer.class))
                     {
                         OpenGL.pushMatrix();
                         {
-                            EntityPlayer playerIn = (EntityPlayer) apc.riddenByEntity;
+                            EntityPlayer playerIn = (EntityPlayer) apc.getPassengers().get(0);
                             OpenGL.translate(-2.9F, 0.75F, -0.25F);
                             OpenGL.rotate(-90, 0F, 1F, 0F);
                             OpenGL.rotate(apc.rotationYaw - 108, 0, 1, 0);
@@ -163,7 +169,7 @@ public class RenderAPC extends Render
                     }
                 }
 
-                if (((this.isPartOfTurret(p) && apc.riddenByEntity == null)))
+                if (((this.isPartOfTurret(p) && apc.getPassengers().get(0) == null)))
                 {
                     p.draw();
                 }

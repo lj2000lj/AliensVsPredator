@@ -4,12 +4,12 @@ import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.particle.EntityDropParticleFX;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-public class EntityBloodFX extends EntityDropParticleFX
+public class EntityBloodFX extends Particle
 {
     private int bobTimer;
     private int color;

@@ -2,13 +2,14 @@ package org.avp.client.render;
 
 import com.arisux.mdxlib.lib.game.Game;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.RenderTickEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.potion.Potion;
-import net.minecraft.util.MathHelper;
+import net.minecraft.init.MobEffects;
+import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
+
 
 public class LightmapUpdateEvent
 {
@@ -31,12 +32,12 @@ public class LightmapUpdateEvent
             for (int i = 0; i < 256; ++i)
             {
                 float f1 = worldclient.getSunBrightness(1.0F) * 0.95F + 0.05F;
-                float f2 = worldclient.provider.lightBrightnessTable[i / 16] * f1;
-                float f3 = worldclient.provider.lightBrightnessTable[i % 16] * (Game.getTorchFlickerX() * 0.1F + 1.5F);
+                float f2 = worldclient.provider.getLightBrightnessTable()[i / 16] * f1;
+                float f3 = worldclient.provider.getLightBrightnessTable()[i % 16] * (Game.getTorchFlickerX() * 0.1F + 1.5F);
 
-                if (worldclient.lastLightningBolt > 0)
+                if (worldclient.getLastLightningBolt() > 0)
                 {
-                    f2 = worldclient.provider.lightBrightnessTable[i / 16];
+                    f2 = worldclient.provider.getLightBrightnessTable()[i / 16];
                 }
 
                 float f4 = f2 * (worldclient.getSunBrightness(1.0F) * 0.65F + 0.35F);
@@ -59,7 +60,7 @@ public class LightmapUpdateEvent
                     f10 = f10 * (1.0F - gamma) + f10 * 0.6F * gamma;
                 }
 
-                if (worldclient.provider.dimensionId == 1)
+                if (worldclient.provider.getDimension() == 1)
                 {
                     f8 = 0.22F + f3 * 0.75F;
                     f9 = 0.28F + f6 * 0.75F;
@@ -68,7 +69,7 @@ public class LightmapUpdateEvent
 
                 float f12;
 
-                if (mc.thePlayer.isPotionActive(Potion.nightVision))
+                if (mc.thePlayer.isPotionActive(MobEffects.NIGHT_VISION))
                 {
                     gamma = this.getNightVisionBrightness(mc.thePlayer, partialTicks);
                     f12 = 1.0F / f8;
@@ -161,6 +162,6 @@ public class LightmapUpdateEvent
 
     private float getNightVisionBrightness(EntityPlayer entityPlayer, float partialTicks)
     {
-        return entityPlayer.getActivePotionEffect(Potion.nightVision).getDuration() > 200 ? 1.0F : 0.7F + MathHelper.sin((entityPlayer.getActivePotionEffect(Potion.nightVision).getDuration() - partialTicks) * (float) Math.PI * 0.2F) * 0.3F;
+        return entityPlayer.getActivePotionEffect(MobEffects.NIGHT_VISION).getDuration() > 200 ? 1.0F : 0.7F + MathHelper.sin((entityPlayer.getActivePotionEffect(MobEffects.NIGHT_VISION).getDuration() - partialTicks) * (float) Math.PI * 0.2F) * 0.3F;
     }
 }

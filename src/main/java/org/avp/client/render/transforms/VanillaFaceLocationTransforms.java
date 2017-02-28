@@ -71,7 +71,7 @@ public class VanillaFaceLocationTransforms
                 OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
                 OpenGL.translate(0F, -0.2F, 0F);
 
-                if (entity.ridingEntity instanceof EntityZombie)
+                if (entity.getRidingEntity()instanceof EntityZombie)
                 {
                     EntityZombie zombie = (EntityZombie) entity.ridingEntity;
 

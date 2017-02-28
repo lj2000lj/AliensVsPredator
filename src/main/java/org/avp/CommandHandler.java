@@ -6,10 +6,10 @@ import org.avp.command.CommandSettings;
 
 import com.arisux.mdxlib.lib.game.IInitEvent;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 public class CommandHandler implements IInitEvent
 {
@@ -21,7 +21,7 @@ public class CommandHandler implements IInitEvent
     @Override
     public void init(FMLInitializationEvent event)
     {
-        FMLCommonHandler.instance().bus().register(this);
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     @Mod.EventHandler

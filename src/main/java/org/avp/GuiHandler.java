@@ -15,13 +15,14 @@ import org.avp.tile.TileEntityTurret;
 
 import com.arisux.mdxlib.lib.game.IInitEvent;
 
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.network.IGuiHandler;
-import cpw.mods.fml.common.network.NetworkRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.network.IGuiHandler;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 public class GuiHandler implements IGuiHandler, IInitEvent
 {
@@ -42,15 +43,17 @@ public class GuiHandler implements IGuiHandler, IInitEvent
     @Override
     public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z)
     {
+        BlockPos blockpos = new BlockPos(x, y, z);
+        
         if (id == GUI_ASSEMBLER)
-            return ((TileEntityAssembler) world.getTileEntity(x, y, z)).getNewContainer(player);
+            return ((TileEntityAssembler) world.getTileEntity(blockpos)).getNewContainer(player);
 
         if (id == GUI_TURRET)
-            return ((TileEntityTurret) world.getTileEntity(x, y, z)).getNewContainer(player);
+            return ((TileEntityTurret) world.getTileEntity(blockpos)).getNewContainer(player);
 
-        if (id == GUI_WRISTBRACER && player != null && player.getCurrentEquippedItem() != null)
+        if (id == GUI_WRISTBRACER && player != null && player.getHeldItemMainhand() != null)
         {
-            Item item = player.getCurrentEquippedItem().getItem();
+            Item item = player.getHeldItemMainhand().getItem();
 
             if (item instanceof ItemWristbracer)
             {
@@ -60,13 +63,13 @@ public class GuiHandler implements IGuiHandler, IInitEvent
 
         if (id == GUI_LOCKER)
         {
-            TileEntityLocker locker = (TileEntityLocker) (world.getTileEntity(x, y, z));
+            TileEntityLocker locker = (TileEntityLocker) (world.getTileEntity(blockpos));
             return locker.getNewContainer(player);
         }
 
         if (id == GUI_SUPPLYCRATE)
         {
-            TileEntitySupplyCrate supplyCrate = (TileEntitySupplyCrate) (world.getTileEntity(x, y, z));
+            TileEntitySupplyCrate supplyCrate = (TileEntitySupplyCrate) (world.getTileEntity(blockpos));
             return supplyCrate.getNewContainer(player);
         }
 
@@ -76,19 +79,21 @@ public class GuiHandler implements IGuiHandler, IInitEvent
     @Override
     public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z)
     {
+        BlockPos blockpos = new BlockPos(x, y, z);
+        
         if (id == GUI_ASSEMBLER)
         {
-            return new GuiAssembler(player.inventory, (TileEntityAssembler) world.getTileEntity(x, y, z), world, x, y, z);
+            return new GuiAssembler(player.inventory, (TileEntityAssembler) world.getTileEntity(blockpos), world, x, y, z);
         }
 
         if (id == GUI_TURRET)
         {
-            return new GuiTurret(player, (TileEntityTurret) world.getTileEntity(x, y, z), world, x, y, z);
+            return new GuiTurret(player, (TileEntityTurret) world.getTileEntity(blockpos), world, x, y, z);
         }
 
         if (id == GUI_WRISTBRACER)
         {
-            Item item = player.getCurrentEquippedItem().getItem();
+            Item item = player.getHeldItemMainhand().getItem();
 
             if (item == AliensVsPredator.items().itemWristbracer)
             {
@@ -98,12 +103,12 @@ public class GuiHandler implements IGuiHandler, IInitEvent
 
         if (id == GUI_LOCKER)
         {
-            return new GuiLocker(player, (TileEntityLocker) (world.getTileEntity(x, y, z)));
+            return new GuiLocker(player, (TileEntityLocker) (world.getTileEntity(blockpos)));
         }
 
         if (id == GUI_SUPPLYCRATE)
         {
-            return new GuiSupplyCrate(player, (TileEntitySupplyCrate) (world.getTileEntity(x, y, z)));
+            return new GuiSupplyCrate(player, (TileEntitySupplyCrate) (world.getTileEntity(blockpos)));
         }
 
         if (id == GUI_GRAPHICSSETTINGS)

@@ -8,15 +8,14 @@ import org.avp.world.hives.HiveHandler;
 import com.arisux.mdxlib.lib.world.entity.Entities;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 
 public class PacketFirearmSync implements IMessage, IMessageHandler<PacketFirearmSync, PacketFirearmSync>
 {
@@ -72,11 +71,11 @@ public class PacketFirearmSync implements IMessage, IMessageHandler<PacketFirear
     @Override
     public PacketFirearmSync onMessage(PacketFirearmSync packet, MessageContext ctx)
     {
-        if (ctx.getServerHandler().playerEntity.getCurrentEquippedItem() != null)
+        if (ctx.getServerHandler().playerEntity.getHeldItemMainhand() != null)
         {
             World world = ctx.getServerHandler().playerEntity.worldObj;
             MovingObjectPosition.MovingObjectType hitType = Entities.getMovingObjectType(packet.hitType);
-            ItemFirearm firearm = (ItemFirearm) ctx.getServerHandler().playerEntity.getCurrentEquippedItem().getItem();
+            ItemFirearm firearm = (ItemFirearm) ctx.getServerHandler().playerEntity.getHeldItemMainhand().getItem();
 
             if (firearm != null && firearm.canSoundPlay())
             {

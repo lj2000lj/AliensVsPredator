@@ -98,12 +98,13 @@ import com.arisux.mdxlib.MDX;
 import com.arisux.mdxlib.lib.game.Game;
 import com.arisux.mdxlib.lib.game.IInitEvent;
 
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.init.Biomes;
+import net.minecraft.world.biome.Biome;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class EntityHandler implements IInitEvent
 {
@@ -259,60 +260,60 @@ public class EntityHandler implements IInitEvent
     {
         if (AliensVsPredator.settings().areAutoSpawnsEnabled())
         {
-            BiomeGenBase[] xenomorphBiomes = this.getFilteredBiomeArray(BiomeGenBase.birchForest, BiomeGenBase.birchForestHills, BiomeGenBase.coldBeach, BiomeGenBase.coldTaiga, BiomeGenBase.coldTaigaHills, BiomeGenBase.desertHills, BiomeGenBase.extremeHills, BiomeGenBase.extremeHillsEdge, BiomeGenBase.extremeHillsPlus, BiomeGenBase.forest, BiomeGenBase.forestHills, BiomeGenBase.iceMountains, BiomeGenBase.icePlains, BiomeGenBase.jungle, BiomeGenBase.jungleEdge, BiomeGenBase.jungleHills, BiomeGenBase.plains, BiomeGenBase.roofedForest, BiomeGenBase.swampland, BiomeGenBase.taiga, BiomeGenBase.taigaHills, BiomeGenLV.acheron);
+            Biome[] xenomorphBiomes = this.getFilteredBiomeArray(Biomes.BIRCH_FOREST, Biomes.BIRCH_FOREST_HILLS, Biomes.COLD_BEACH, Biomes.COLD_TAIGA, Biomes.COLD_TAIGA_HILLS, Biomes.DESERT_HILLS, Biomes.EXTREME_HILLS, Biomes.EXTREME_HILLS_EDGE, Biomes.EXTREME_HILLS_WITH_TREES, Biomes.FOREST, Biomes.FOREST_HILLS, Biomes.ICE_MOUNTAINS, Biomes.ICE_PLAINS, Biomes.JUNGLE, Biomes.JUNGLE_EDGE, Biomes.JUNGLE_HILLS, Biomes.PLAINS, Biomes.ROOFED_FOREST, Biomes.SWAMPLAND, Biomes.TAIGA, Biomes.TAIGA_HILLS, BiomeGenLV.acheron);
 
-            BiomeGenBase[] predatorBiomes = this.getFilteredBiomeArray(BiomeGenBase.birchForest, BiomeGenBase.birchForestHills, BiomeGenBase.desert, BiomeGenBase.desertHills, BiomeGenBase.extremeHills, BiomeGenBase.extremeHillsEdge, BiomeGenBase.extremeHillsPlus, BiomeGenBase.forest, BiomeGenBase.forestHills, BiomeGenBase.frozenOcean, BiomeGenBase.frozenRiver, BiomeGenBase.icePlains, BiomeGenBase.jungle, BiomeGenBase.jungleEdge, BiomeGenBase.jungleHills, BiomeGenBase.taiga, BiomeGenBase.taigaHills);
+            Biome[] predatorBiomes = this.getFilteredBiomeArray(Biomes.BIRCH_FOREST, Biomes.BIRCH_FOREST_HILLS, Biomes.DESERT, Biomes.DESERT_HILLS, Biomes.EXTREME_HILLS, Biomes.EXTREME_HILLS_EDGE, Biomes.EXTREME_HILLS_WITH_TREES, Biomes.FOREST, Biomes.FOREST_HILLS, Biomes.FROZEN_OCEAN, Biomes.FROZEN_RIVER, Biomes.ICE_PLAINS, Biomes.JUNGLE, Biomes.JUNGLE_EDGE, Biomes.JUNGLE_HILLS, Biomes.TAIGA, Biomes.TAIGA_HILLS);
 
-            BiomeGenBase[] vardaBiomes = this.getFilteredBiomeArray(BiomeGenVarda.vardaBadlands, BiomeGenVarda.vardaForest);
+            Biome[] vardaBiomes = this.getFilteredBiomeArray(BiomeGenVarda.vardaBadlands, BiomeGenVarda.vardaForest);
 
-            BiomeGenBase[] aquaXenomorphBiomes = this.getFilteredBiomeArray(BiomeGenBase.river, BiomeGenBase.beach, BiomeGenBase.stoneBeach);
+            Biome[] aquaXenomorphBiomes = this.getFilteredBiomeArray(Biomes.RIVER, Biomes.BEACH, Biomes.STONE_BEACH);
 
             if (AliensVsPredator.settings().shouldEvolvedXenomorphsSpawn())
             {
-                EntityRegistry.addSpawn(EntityAqua.class, 5, 1, 2, EnumCreatureType.monster, aquaXenomorphBiomes);
-                EntityRegistry.addSpawn(EntityDrone.class, 50, 1, 3, EnumCreatureType.monster, xenomorphBiomes);
-                EntityRegistry.addSpawn(EntityWarrior.class, 20, 1, 3, EnumCreatureType.monster, xenomorphBiomes);
-                EntityRegistry.addSpawn(EntityPraetorian.class, 5, 1, 2, EnumCreatureType.monster, xenomorphBiomes);
-                EntityRegistry.addSpawn(EntityChestburster.class, 5, 1, 3, EnumCreatureType.monster, xenomorphBiomes);
-                EntityRegistry.addSpawn(EntityFacehugger.class, 5, 1, 2, EnumCreatureType.monster, xenomorphBiomes);
+                EntityRegistry.addSpawn(EntityAqua.class, 5, 1, 2, EnumCreatureType.MONSTER, aquaXenomorphBiomes);
+                EntityRegistry.addSpawn(EntityDrone.class, 50, 1, 3, EnumCreatureType.MONSTER, xenomorphBiomes);
+                EntityRegistry.addSpawn(EntityWarrior.class, 20, 1, 3, EnumCreatureType.MONSTER, xenomorphBiomes);
+                EntityRegistry.addSpawn(EntityPraetorian.class, 5, 1, 2, EnumCreatureType.MONSTER, xenomorphBiomes);
+                EntityRegistry.addSpawn(EntityChestburster.class, 5, 1, 3, EnumCreatureType.MONSTER, xenomorphBiomes);
+                EntityRegistry.addSpawn(EntityFacehugger.class, 5, 1, 2, EnumCreatureType.MONSTER, xenomorphBiomes);
             }
             else
             {
-                EntityRegistry.addSpawn(EntityFacehugger.class, 30, 1, 2, EnumCreatureType.monster, xenomorphBiomes);
+                EntityRegistry.addSpawn(EntityFacehugger.class, 30, 1, 2, EnumCreatureType.MONSTER, xenomorphBiomes);
             }
 
-            EntityRegistry.addSpawn(EntityYautja.class, 1, 0, 1, EnumCreatureType.monster, predatorBiomes);
-            EntityRegistry.addSpawn(EntityYautjaBerserker.class, 1, 0, 1, EnumCreatureType.monster, predatorBiomes);
-            EntityRegistry.addSpawn(EntityMarine.class, 2, 1, 1, EnumCreatureType.creature, new BiomeGenBase[] { BiomeGenBase.swampland, BiomeGenBase.forest, BiomeGenBase.forestHills, BiomeGenBase.taiga, BiomeGenBase.taigaHills, BiomeGenBase.plains
+            EntityRegistry.addSpawn(EntityYautja.class, 1, 0, 1, EnumCreatureType.MONSTER, predatorBiomes);
+            EntityRegistry.addSpawn(EntityYautjaBerserker.class, 1, 0, 1, EnumCreatureType.MONSTER, predatorBiomes);
+            EntityRegistry.addSpawn(EntityMarine.class, 2, 1, 1, EnumCreatureType.CREATURE, new Biome[] { Biomes.SWAMPLAND, Biomes.FOREST, Biomes.FOREST_HILLS, Biomes.TAIGA, Biomes.TAIGA_HILLS, Biomes.PLAINS
             });
-            EntityRegistry.addSpawn(EntityEngineer.class, 5, 1, 1, EnumCreatureType.monster, vardaBiomes);
-            EntityRegistry.addSpawn(EntitySpaceJockey.class, 2, 1, 1, EnumCreatureType.monster, vardaBiomes);
+            EntityRegistry.addSpawn(EntityEngineer.class, 5, 1, 1, EnumCreatureType.MONSTER, vardaBiomes);
+            EntityRegistry.addSpawn(EntitySpaceJockey.class, 2, 1, 1, EnumCreatureType.MONSTER, vardaBiomes);
 
-            EntityRegistry.addSpawn(EntityHammerpede.class, 1, 0, 3, EnumCreatureType.monster, vardaBiomes);
-            EntityRegistry.addSpawn(EntityOctohugger.class, 20, 0, 3, EnumCreatureType.monster, vardaBiomes);
-            EntityRegistry.addSpawn(EntityDeacon.class, 1, 0, 1, EnumCreatureType.monster, vardaBiomes);
-            EntityRegistry.addSpawn(EntityEngineer.class, 1, 0, 1, EnumCreatureType.monster, vardaBiomes);
-            EntityRegistry.addSpawn(EntityTrilobite.class, 1, 0, 1, EnumCreatureType.monster, vardaBiomes);
+            EntityRegistry.addSpawn(EntityHammerpede.class, 1, 0, 3, EnumCreatureType.MONSTER, vardaBiomes);
+            EntityRegistry.addSpawn(EntityOctohugger.class, 20, 0, 3, EnumCreatureType.MONSTER, vardaBiomes);
+            EntityRegistry.addSpawn(EntityDeacon.class, 1, 0, 1, EnumCreatureType.MONSTER, vardaBiomes);
+            EntityRegistry.addSpawn(EntityEngineer.class, 1, 0, 1, EnumCreatureType.MONSTER, vardaBiomes);
+            EntityRegistry.addSpawn(EntityTrilobite.class, 1, 0, 1, EnumCreatureType.MONSTER, vardaBiomes);
         }
     }
 
-    public BiomeGenBase[] getFilteredBiomeArray(BiomeGenBase... biomes)
+    public Biome[] getFilteredBiomeArray(Biome... biomes)
     {
-        ArrayList<BiomeGenBase> biomeList = new ArrayList<BiomeGenBase>(Arrays.asList(biomes));
+        ArrayList<Biome> biomeList = new ArrayList<Biome>(Arrays.asList(biomes));
 
         if (!AliensVsPredator.settings().areOverworldSpawnsEnabled())
         {
             biomeList = this.clearVanillaBiomes(biomeList);
         }
 
-        return (BiomeGenBase[]) Arrays.copyOf(biomeList.toArray(), biomeList.toArray().length, BiomeGenBase[].class);
+        return (Biome[]) Arrays.copyOf(biomeList.toArray(), biomeList.toArray().length, Biome[].class);
     }
 
-    private ArrayList<BiomeGenBase> clearVanillaBiomes(ArrayList<BiomeGenBase> biomeList)
+    private ArrayList<Biome> clearVanillaBiomes(ArrayList<Biome> biomeList)
     {
-        ArrayList<BiomeGenBase> newList = new ArrayList<BiomeGenBase>(biomeList);
+        ArrayList<Biome> newList = new ArrayList<Biome>(biomeList);
 
-        for (BiomeGenBase biome : biomeList)
+        for (Biome biome : biomeList)
         {
             if (!(biome instanceof BiomeGenLV))
             {

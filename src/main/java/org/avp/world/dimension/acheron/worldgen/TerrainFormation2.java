@@ -4,12 +4,12 @@ import java.util.Random;
 
 import org.avp.AliensVsPredator;
 
-import cpw.mods.fml.common.IWorldGenerator;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraftforge.fml.common.IWorldGenerator;
 
 public class TerrainFormation2 extends WorldGenerator implements IWorldGenerator
 {
@@ -21,7 +21,7 @@ public class TerrainFormation2 extends WorldGenerator implements IWorldGenerator
         int distanceToAir = 0;
         Block check = world.getBlock(x, y, z);
 
-        while (check != Blocks.air)
+        while (check != Blocks.AIR)
         {
             if (distanceToAir > 3)
             {
@@ -40,7 +40,7 @@ public class TerrainFormation2 extends WorldGenerator implements IWorldGenerator
 
         for (Block validBlock : validBlocks)
         {
-            if (blockAbove != Blocks.air)
+            if (blockAbove != Blocks.AIR)
             {
                 return false;
             }

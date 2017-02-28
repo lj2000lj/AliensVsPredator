@@ -8,9 +8,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
-import net.minecraft.pathfinding.PathEntity;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.ChunkCache;
 import net.minecraft.world.World;
 
@@ -23,7 +22,7 @@ public abstract class PathNavigate extends net.minecraft.pathfinding.PathNavigat
     private final IAttributeInstance pathSearchRange;
     private int totalTicks;
     private int ticksAtLastPos;
-    private Vec3 lastPosCheck = Vec3.createVectorHelper(0, 0, 0);
+    private Vec3d lastPosCheck = new Vec3d(0, 0, 0);
     private float heightRequirement = 1.0F;
     private final PathFinder pathFinder;
 
@@ -32,7 +31,7 @@ public abstract class PathNavigate extends net.minecraft.pathfinding.PathNavigat
         super(entityLiving, worldIn);
         this.theEntity = entityLiving;
         this.worldObj = worldIn;
-        this.pathSearchRange = entityLiving.getEntityAttribute(SharedMonsterAttributes.followRange);
+        this.pathSearchRange = entityLiving.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE);
         this.pathFinder = this.getPathFinder();
     }
 
@@ -141,9 +140,9 @@ public abstract class PathNavigate extends net.minecraft.pathfinding.PathNavigat
             else
             {
                 this.speed = speedIn;
-                Vec3 vec3 = this.getEntityPosition();
+                Vec3d Vec3d = this.getEntityPosition();
                 this.ticksAtLastPos = this.totalTicks;
-                this.lastPosCheck = vec3;
+                this.lastPosCheck = Vec3d;
                 return true;
             }
         }
@@ -162,7 +161,7 @@ public abstract class PathNavigate extends net.minecraft.pathfinding.PathNavigat
 
         if (!this.noPath())
         {
-            Vec3 vec3;
+            Vec3d Vec3d;
 
             if (this.canNavigate())
             {
@@ -170,10 +169,10 @@ public abstract class PathNavigate extends net.minecraft.pathfinding.PathNavigat
             }
             else if (this.currentPath != null && this.currentPath.getCurrentPathIndex() < this.currentPath.getCurrentPathLength())
             {
-                vec3 = this.getEntityPosition();
-                Vec3 vec31 = this.currentPath.getVectorFromIndex(this.theEntity, this.currentPath.getCurrentPathIndex());
+                Vec3d = this.getEntityPosition();
+                Vec3d Vec3d1 = this.currentPath.getVectorFromIndex(this.theEntity, this.currentPath.getCurrentPathIndex());
 
-                if (vec3.yCoord > vec31.yCoord && !this.theEntity.onGround && MathHelper.floor_double(vec3.xCoord) == MathHelper.floor_double(vec31.xCoord) && MathHelper.floor_double(vec3.zCoord) == MathHelper.floor_double(vec31.zCoord))
+                if (Vec3d.yCoord > Vec3d1.yCoord && !this.theEntity.onGround && MathHelper.floor_double(Vec3d.xCoord) == MathHelper.floor_double(Vec3d1.xCoord) && MathHelper.floor_double(Vec3d.zCoord) == MathHelper.floor_double(Vec3d1.zCoord))
                 {
                     this.currentPath.setCurrentPathIndex(this.currentPath.getCurrentPathIndex() + 1);
                 }
@@ -181,11 +180,11 @@ public abstract class PathNavigate extends net.minecraft.pathfinding.PathNavigat
 
             if (!this.noPath())
             {
-                vec3 = this.currentPath.getPosition(this.theEntity);
+                Vec3d = this.currentPath.getPosition(this.theEntity);
 
-                if (vec3 != null)
+                if (Vec3d != null)
                 {
-                    this.theEntity.getMoveHelper().setMoveTo(vec3.xCoord, vec3.yCoord, vec3.zCoord, this.speed);
+                    this.theEntity.getMoveHelper().setMoveTo(Vec3d.xCoord, Vec3d.yCoord, Vec3d.zCoord, this.speed);
                 }
             }
         }
@@ -193,12 +192,12 @@ public abstract class PathNavigate extends net.minecraft.pathfinding.PathNavigat
 
     protected void pathFollow()
     {
-        Vec3 vec3 = this.getEntityPosition();
+        Vec3d Vec3d = this.getEntityPosition();
         int i = this.currentPath.getCurrentPathLength();
 
         for (int j = this.currentPath.getCurrentPathIndex(); j < this.currentPath.getCurrentPathLength(); ++j)
         {
-            if (this.currentPath.getPathPointFromIndex(j).yCoord != (int) vec3.yCoord)
+            if (this.currentPath.getPathPointFromIndex(j).yCoord != (int) Vec3d.yCoord)
             {
                 i = j;
                 break;
@@ -210,9 +209,9 @@ public abstract class PathNavigate extends net.minecraft.pathfinding.PathNavigat
 
         for (k = this.currentPath.getCurrentPathIndex(); k < i; ++k)
         {
-            Vec3 vec31 = this.currentPath.getVectorFromIndex(this.theEntity, k);
+            Vec3d Vec3d1 = this.currentPath.getVectorFromIndex(this.theEntity, k);
 
-            if (vec3.squareDistanceTo(vec31) < (double) f)
+            if (Vec3d.squareDistanceTo(Vec3d1) < (double) f)
             {
                 this.currentPath.setCurrentPathIndex(k + 1);
             }
@@ -224,27 +223,27 @@ public abstract class PathNavigate extends net.minecraft.pathfinding.PathNavigat
 
         for (int i1 = i - 1; i1 >= this.currentPath.getCurrentPathIndex(); --i1)
         {
-            if (this.isDirectPathBetweenPoints(vec3, this.currentPath.getVectorFromIndex(this.theEntity, i1), k, j1, l))
+            if (this.isDirectPathBetweenPoints(Vec3d, this.currentPath.getVectorFromIndex(this.theEntity, i1), k, j1, l))
             {
                 this.currentPath.setCurrentPathIndex(i1);
                 break;
             }
         }
 
-        this.checkForStuck(vec3);
+        this.checkForStuck(Vec3d);
     }
 
-    protected void checkForStuck(Vec3 vec3)
+    protected void checkForStuck(Vec3d Vec3d)
     {
         if (this.totalTicks - this.ticksAtLastPos > 100)
         {
-            if (vec3.squareDistanceTo(this.lastPosCheck) < 2.25D)
+            if (Vec3d.squareDistanceTo(this.lastPosCheck) < 2.25D)
             {
                 this.clearPathEntity();
             }
 
             this.ticksAtLastPos = this.totalTicks;
-            this.lastPosCheck = vec3;
+            this.lastPosCheck = Vec3d;
         }
     }
 
@@ -260,7 +259,7 @@ public abstract class PathNavigate extends net.minecraft.pathfinding.PathNavigat
         this.currentPath = null;
     }
 
-    protected abstract Vec3 getEntityPosition();
+    protected abstract Vec3d getEntityPosition();
 
     protected abstract boolean canNavigate();
 
@@ -273,5 +272,5 @@ public abstract class PathNavigate extends net.minecraft.pathfinding.PathNavigat
     {
     }
 
-    protected abstract boolean isDirectPathBetweenPoints(Vec3 posVec31, Vec3 posVec32, int sizeX, int sizeY, int sizeZ);
+    protected abstract boolean isDirectPathBetweenPoints(Vec3d posVec3d1, Vec3d posVec3d2, int sizeX, int sizeY, int sizeZ);
 }

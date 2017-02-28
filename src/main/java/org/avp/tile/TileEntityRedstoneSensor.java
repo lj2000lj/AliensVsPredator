@@ -8,8 +8,9 @@ import com.arisux.mdxlib.lib.world.Pos;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+
 
 public class TileEntityRedstoneSensor extends TileEntityElectrical implements IVoltageProvider
 {
@@ -34,25 +35,25 @@ public class TileEntityRedstoneSensor extends TileEntityElectrical implements IV
     }
 
     @Override
-    public boolean canConnectPower(ForgeDirection from)
+    public boolean canConnectPower(EnumFacing from)
     {
         return true;
     }
 
     @Override
-    public double extractVoltage(ForgeDirection from, double maxExtract, boolean simulate)
+    public double extractVoltage(EnumFacing from, double maxExtract, boolean simulate)
     {
         return super.extractVoltage(from, maxExtract, simulate);
     }
 
     @Override
-    public double getCurrentVoltage(ForgeDirection from)
+    public double getCurrentVoltage(EnumFacing from)
     {
         return this.voltage;
     }
 
     @Override
-    public double getMaxVoltage(ForgeDirection from)
+    public double getMaxVoltage(EnumFacing from)
     {
         return 10000;
     }

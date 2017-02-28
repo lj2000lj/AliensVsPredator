@@ -42,7 +42,7 @@ public class RenderItemM4 extends ItemRenderer
     @Override
     public void renderThirdPerson(ItemStack item, Object... data)
     {
-        PlayerResource resource = resourceStorage.create(((EntityPlayer) data[1]).getCommandSenderName());
+        PlayerResource resource = resourceStorage.create(((EntityPlayer) data[1]).getName());
 
         if (resource != null)
         {

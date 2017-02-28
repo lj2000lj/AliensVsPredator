@@ -11,12 +11,10 @@ import org.avp.world.dimension.varda.gen.VardaTreeGenerator;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSapling;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
@@ -51,18 +49,6 @@ public class BlockUnidentifiedTreeSapling extends BlockSapling
         return false;
     }
 
-    @Override
-    public void registerIcons(IIconRegister register)
-    {
-        this.blockIcon = register.registerIcon(this.getTextureName());
-    }
-
-    @Override
-    public IIcon getIcon(int side, int meta)
-    {
-        return this.blockIcon;
-    }
-    
     @SuppressWarnings("unchecked")
     @Override
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List list)
@@ -118,7 +104,7 @@ public class BlockUnidentifiedTreeSapling extends BlockSapling
             }
         }
 
-        Block block = Blocks.air;
+        Block block = Blocks.AIR;
 
         if (largeTree)
         {

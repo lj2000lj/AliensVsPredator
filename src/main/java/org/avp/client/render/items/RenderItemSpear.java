@@ -4,6 +4,7 @@ import org.avp.AliensVsPredator;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
+import com.arisux.mdxlib.lib.client.render.ItemRenderer;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.game.Game;
 
@@ -12,9 +13,8 @@ import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.client.IItemRenderer;
 
-public class RenderItemSpear implements IItemRenderer
+public class RenderItemSpear extends ItemRenderer
 {
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type)

@@ -1,23 +1,30 @@
 package org.avp.client.render.entities;
 
 import org.avp.client.model.entities.ModelBullet;
+import org.avp.entities.EntityBullet;
+
+import com.arisux.mdxlib.lib.game.Game;
 
 import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 
-public class RenderBullet extends Render
+public class RenderBullet extends Render<EntityBullet>
 {
+    public RenderBullet()
+    {
+        super(Game.renderManager());
+    }
+
     public static ModelBullet model = new ModelBullet();
 
     @Override
-    public void doRender(Entity entity, double posX, double posY, double posZ, float yaw, float renderPartialTicks)
+    public void doRender(EntityBullet entity, double posX, double posY, double posZ, float yaw, float renderPartialTicks)
     {
         ;
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(Entity entity)
+    protected ResourceLocation getEntityTexture(EntityBullet entity)
     {
         return null;
     }

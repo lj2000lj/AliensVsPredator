@@ -9,13 +9,13 @@ import com.arisux.mdxlib.lib.client.render.Draw;
 import com.arisux.mdxlib.lib.game.Game;
 import com.arisux.mdxlib.lib.world.entity.player.inventory.Inventories;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemArmorTitanium extends ItemArmor
 {

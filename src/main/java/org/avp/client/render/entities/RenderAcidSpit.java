@@ -4,6 +4,7 @@ import org.avp.client.model.entities.ModelPlasma;
 
 import com.arisux.mdxlib.lib.client.render.Color;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
+import com.arisux.mdxlib.lib.game.Game;
 
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
@@ -12,9 +13,10 @@ import net.minecraft.util.ResourceLocation;
 public class RenderAcidSpit extends Render
 {
     private ModelPlasma model = new ModelPlasma();
-    
+
     public RenderAcidSpit()
     {
+        super(Game.renderManager());
         this.model.setColor(new Color(0.2F, 1.0F, 0.0F, 0.7F));
     }
 

@@ -60,7 +60,7 @@ public class RenderOctohugger extends RenderLivingWrapper
     {
         EntityOctohugger octohugger = (EntityOctohugger) entityliving;
 
-        if (octohugger.ridingEntity == null && !octohugger.isFertile())
+        if (octohugger.getRidingEntity()== null && !octohugger.isFertile())
         {
             OpenGL.rotate(90F, 1F, 0F, 0F);
         }
@@ -68,7 +68,7 @@ public class RenderOctohugger extends RenderLivingWrapper
         OpenGL.translate(0F, 1.2F, 0F);
         this.scale(octohugger, 1.1F);
 
-        if (octohugger != null && octohugger.ridingEntity != null && octohugger.ridingEntity.ridingEntity != null && octohugger.ridingEntity.ridingEntity instanceof EntityMedpod)
+        if (octohugger != null && octohugger.getRidingEntity()!= null && octohugger.ridingEntity.getRidingEntity()!= null && octohugger.ridingEntity.getRidingEntity()instanceof EntityMedpod)
         {
             Entity entity = octohugger.ridingEntity;
             EntityMedpod medpod = (EntityMedpod) entity.ridingEntity;
@@ -77,7 +77,7 @@ public class RenderOctohugger extends RenderLivingWrapper
             RenderLivingHook.instance.getRenderer().transformEntity(medpod, entity, partialTicks);
         }
 
-        if (octohugger.ridingEntity != null && octohugger.ridingEntity instanceof EntityLivingBase)
+        if (octohugger.getRidingEntity()!= null && octohugger.getRidingEntity()instanceof EntityLivingBase)
         {
             OpenGL.translate(0F, -1.5F, 0F);
             OpenGL.translate(0F, 0F, 1.25F);
@@ -88,7 +88,7 @@ public class RenderOctohugger extends RenderLivingWrapper
                 {
                     transform.post(octohugger, partialTicks);
                     
-                    if (octohugger.ridingEntity instanceof EntityPlayer)
+                    if (octohugger.getRidingEntity()instanceof EntityPlayer)
                     {
                         
                     }

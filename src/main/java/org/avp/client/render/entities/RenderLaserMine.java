@@ -4,15 +4,21 @@ import org.avp.AliensVsPredator;
 import org.avp.entities.EntityLaserMine;
 import org.lwjgl.opengl.GL11;
 
+import com.arisux.mdxlib.lib.client.render.Draw;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
+import com.arisux.mdxlib.lib.game.Game;
 
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 
 public class RenderLaserMine extends Render
 {
+    public RenderLaserMine()
+    {
+        super(Game.renderManager());
+    }
+
     @Override
     public void doRender(Entity entity, double posX, double posY, double posZ, float yaw, float renderPartialTicks)
     {
@@ -59,26 +65,20 @@ public class RenderLaserMine extends Render
             OpenGL.enable(GL11.GL_BLEND);
             OpenGL.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
             GL11.glShadeModel(GL11.GL_SMOOTH);
-            Tessellator tessellator = Tessellator.instance;
-            tessellator.startDrawingQuads();
-            tessellator.setColorRGBA_F((color2 >> 16 & 255) / 255.0F, (color2 >> 8 & 255) / 255.0F, (color2 & 255) / 255.0F, (color2 >> 24 & 255) / 255.0F);
-            tessellator.addVertex(w, y, zLevel);
-            tessellator.addVertex(x, y, zLevel);
-            tessellator.setColorRGBA_F((color1 >> 16 & 255) / 255.0F, (color1 >> 8 & 255) / 255.0F, (color1 & 255) / 255.0F, (color1 >> 24 & 255) / 255.0F);
-            tessellator.addVertex(x, l, zLevel);
-            tessellator.addVertex(w, h, zLevel);
-            tessellator.draw();
-
+            Draw.startQuadsColored();
+            Draw.vertex(w, y, zLevel).color((color2 >> 16 & 255) / 255.0F, (color2 >> 8 & 255) / 255.0F, (color2 & 255) / 255.0F, (color2 >> 24 & 255) / 255.0F).endVertex();
+            Draw.vertex(x, y, zLevel).color((color2 >> 16 & 255) / 255.0F, (color2 >> 8 & 255) / 255.0F, (color2 & 255) / 255.0F, (color2 >> 24 & 255) / 255.0F).endVertex();
+            Draw.vertex(x, l, zLevel).color((color1 >> 16 & 255) / 255.0F, (color1 >> 8 & 255) / 255.0F, (color1 & 255) / 255.0F, (color1 >> 24 & 255) / 255.0F).endVertex();
+            Draw.vertex(w, h, zLevel).color((color1 >> 16 & 255) / 255.0F, (color1 >> 8 & 255) / 255.0F, (color1 & 255) / 255.0F, (color1 >> 24 & 255) / 255.0F).endVertex();
+            Draw.tessellate();
             OpenGL.translate(0F, -0.5F, 0.5F);
             OpenGL.rotate(90F, 1F, 0F, 0F);
-            tessellator.startDrawingQuads();
-            tessellator.setColorRGBA_F((color2 >> 16 & 255) / 255.0F, (color2 >> 8 & 255) / 255.0F, (color2 & 255) / 255.0F, (color2 >> 24 & 255) / 255.0F);
-            tessellator.addVertex(w, y, zLevel);
-            tessellator.addVertex(x, y, zLevel);
-            tessellator.setColorRGBA_F((color1 >> 16 & 255) / 255.0F, (color1 >> 8 & 255) / 255.0F, (color1 & 255) / 255.0F, (color1 >> 24 & 255) / 255.0F);
-            tessellator.addVertex(x, l, zLevel);
-            tessellator.addVertex(w, h, zLevel);
-            tessellator.draw();
+            Draw.startQuadsColored();
+            Draw.vertex(w, y, zLevel).color((color2 >> 16 & 255) / 255.0F, (color2 >> 8 & 255) / 255.0F, (color2 & 255) / 255.0F, (color2 >> 24 & 255) / 255.0F).endVertex();
+            Draw.vertex(x, y, zLevel).color((color2 >> 16 & 255) / 255.0F, (color2 >> 8 & 255) / 255.0F, (color2 & 255) / 255.0F, (color2 >> 24 & 255) / 255.0F).endVertex();
+            Draw.vertex(x, l, zLevel).color((color1 >> 16 & 255) / 255.0F, (color1 >> 8 & 255) / 255.0F, (color1 & 255) / 255.0F, (color1 >> 24 & 255) / 255.0F).endVertex();
+            Draw.vertex(w, h, zLevel).color((color1 >> 16 & 255) / 255.0F, (color1 >> 8 & 255) / 255.0F, (color1 & 255) / 255.0F, (color1 >> 24 & 255) / 255.0F).endVertex();
+            Draw.tessellate();
             GL11.glShadeModel(GL11.GL_FLAT);
             OpenGL.enable(GL11.GL_LIGHTING);
             OpenGL.enableLight();

@@ -4,12 +4,12 @@ import java.util.Random;
 
 import org.avp.AliensVsPredator;
 
-import cpw.mods.fml.common.IWorldGenerator;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraftforge.fml.common.IWorldGenerator;
 
 public class VardaTreeGenerator extends WorldGenerator implements IWorldGenerator
 {
@@ -32,7 +32,7 @@ public class VardaTreeGenerator extends WorldGenerator implements IWorldGenerato
         int airDist = 0;
         Block check = world.getBlock(x, y, z);
 
-        while (check != Blocks.air)
+        while (check != Blocks.AIR)
         {
             if (airDist > 3)
             {
@@ -51,7 +51,7 @@ public class VardaTreeGenerator extends WorldGenerator implements IWorldGenerato
 
         for (Block validBlock : getValidTargetBlocks())
         {
-            if (blockAbove != Blocks.air)
+            if (blockAbove != Blocks.AIR)
             {
                 return false;
             }

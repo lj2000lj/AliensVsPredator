@@ -9,7 +9,6 @@ import org.avp.api.parasitoidic.IParasitoid;
 import org.avp.entities.EntityLiquidPool;
 import org.avp.entities.Organism;
 
-import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;

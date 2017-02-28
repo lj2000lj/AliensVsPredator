@@ -8,11 +8,8 @@ import org.avp.entities.living.EntitySpeciesYautja;
 import com.arisux.mdxlib.lib.game.Game;
 
 import cpw.mods.fml.common.eventhandler.Event.Result;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
@@ -26,7 +23,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
-import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import net.minecraftforge.event.getEntity().living.LivingSpawnEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityImpregnationHandler
 {
@@ -224,7 +224,7 @@ public class EntityImpregnationHandler
     @SubscribeEvent
     public void despawnEvent(LivingSpawnEvent.AllowDespawn event)
     {
-        EntityLivingBase living = (EntityLivingBase) event.entityLiving;
+        EntityLivingBase living = (EntityLivingBase) event.getEntity()Living;
         Organism livingProperties = (Organism) living.getExtendedProperties(Organism.IDENTIFIER);
 
         if (livingProperties.hasEmbryo())

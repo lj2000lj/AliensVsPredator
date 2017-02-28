@@ -10,11 +10,11 @@ import com.arisux.mdxlib.lib.client.render.Screen;
 import com.arisux.mdxlib.lib.game.Game;
 import com.arisux.mdxlib.lib.world.entity.player.inventory.Inventories;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.Pre;
 import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class VisionModeRenderEvent
 {
@@ -34,7 +34,7 @@ public class VisionModeRenderEvent
     {
         if (Game.minecraft().thePlayer != null)
         {
-            if (event.type == RenderGameOverlayEvent.ElementType.HOTBAR && Game.minecraft().gameSettings.thirdPersonView == 0)
+            if (event.getType() == RenderGameOverlayEvent.ElementType.HOTBAR && Game.minecraft().gameSettings.thirdPersonView == 0)
             {
                 if (Inventories.getHelmSlotItemStack(Game.minecraft().thePlayer) != null && Inventories.getHelmSlotItemStack(Game.minecraft().thePlayer).getItem() == AliensVsPredator.items().helmTitanium)
                 {

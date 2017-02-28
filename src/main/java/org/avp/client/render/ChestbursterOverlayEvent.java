@@ -6,9 +6,9 @@ import org.avp.entities.Organism;
 import com.arisux.mdxlib.lib.client.render.Draw;
 import com.arisux.mdxlib.lib.game.Game;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.Pre;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class ChestbursterOverlayEvent
 {
@@ -19,7 +19,7 @@ public class ChestbursterOverlayEvent
     {
         if (Game.minecraft().thePlayer != null)
         {
-            if (event.type == RenderGameOverlayEvent.ElementType.HOTBAR)
+            if (event.getType() == RenderGameOverlayEvent.ElementType.HOTBAR)
             {
                 Organism livingBaseProperties = (Organism) Game.minecraft().thePlayer.getExtendedProperties(Organism.IDENTIFIER);
 

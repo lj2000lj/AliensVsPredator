@@ -7,7 +7,8 @@ import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
+
 
 public class ModelOctohugger extends Model
 {
@@ -96,12 +97,12 @@ public class ModelOctohugger extends Model
         {
             EntityOctohugger octohugger = (EntityOctohugger) base;
 
-            if (octohugger.ridingEntity != null)
+            if (octohugger.getRidingEntity() != null)
             {
                 legMovement = 40F;
             }
             
-            if (octohugger.ridingEntity == null && !octohugger.isFertile())
+            if (octohugger.getRidingEntity() == null && !octohugger.isFertile())
             {
                 idleProgress = 0;
             }
@@ -127,7 +128,7 @@ public class ModelOctohugger extends Model
         {
             EntityOctohugger octohugger = (EntityOctohugger) base;
 
-            if (octohugger.ridingEntity != null)
+            if (octohugger.getRidingEntity() != null)
             {
                 legDistance = -20F;
                 this.rFlap2.rotateAngleZ = (float) -(Math.toRadians(legStart) + (float) Math.toRadians((MathHelper.sin(idleProgress * speed) * legDistance) * 1 + legMovement));

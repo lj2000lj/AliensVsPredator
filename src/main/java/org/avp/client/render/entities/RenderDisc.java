@@ -5,13 +5,20 @@ import org.lwjgl.opengl.GL11;
 
 import com.arisux.mdxlib.lib.client.render.Draw;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
+import com.arisux.mdxlib.lib.game.Game;
 
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 
 public class RenderDisc extends Render
 {
+    public RenderDisc()
+    {
+        super(Game.renderManager());
+    }
+
     @Override
     public void doRender(Entity entity, double posX, double posY, double posZ, float yaw, float renderPartialTicks)
     {

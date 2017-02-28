@@ -3,10 +3,10 @@ package org.avp.world.playermode;
 import com.arisux.mdxlib.lib.client.Model;
 import com.arisux.mdxlib.lib.client.TexturedModel;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.stats.Achievement;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class LevelData
 {

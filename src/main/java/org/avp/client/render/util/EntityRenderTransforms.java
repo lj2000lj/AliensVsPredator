@@ -3,9 +3,9 @@ package org.avp.client.render.util;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public abstract class EntityRenderTransforms

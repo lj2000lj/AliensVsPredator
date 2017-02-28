@@ -1,6 +1,6 @@
 package org.avp.entities.ai.pathfinding;
 
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 
 public class PathPoint extends net.minecraft.pathfinding.PathPoint
 {

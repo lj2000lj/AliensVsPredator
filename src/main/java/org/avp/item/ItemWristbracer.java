@@ -79,8 +79,8 @@ public class ItemWristbracer extends HookedItem
 
             if (!player.worldObj.isRemote && !player.capabilities.isCreativeMode)
             {
-                ItemStack bladesStack = getBlades(player.getCurrentEquippedItem());
-                NBTTagCompound nbt = player.getCurrentEquippedItem().getTagCompound();
+                ItemStack bladesStack = getBlades(player.getHeldItemMainhand());
+                NBTTagCompound nbt = player.getHeldItemMainhand().getTagCompound();
                 NBTTagList wristbracerContents = nbt.getTagList(TAG_WRISTBRACER_ITEMS, Constants.NBT.TAG_COMPOUND);
 
                 if (bladesStack != null && !player.worldObj.isRemote)
@@ -103,7 +103,7 @@ public class ItemWristbracer extends HookedItem
                 }
 
                 nbt.setTag(TAG_WRISTBRACER_ITEMS, wristbracerContents);
-                player.getCurrentEquippedItem().setTagCompound(nbt);
+                player.getHeldItemMainhand().setTagCompound(nbt);
                 ((ContainerWristbracer) getNewContainer(player)).saveToNBT();
             }
         }
@@ -177,11 +177,11 @@ public class ItemWristbracer extends HookedItem
 
     public static ItemStack currentWristbracer(EntityPlayer player)
     {
-        if (player.getCurrentEquippedItem() != null)
+        if (player.getHeldItemMainhand() != null)
         {
-            if (player.getCurrentEquippedItem().getItem() instanceof ItemWristbracer)
+            if (player.getHeldItemMainhand().getItem() instanceof ItemWristbracer)
             {
-                return player.getCurrentEquippedItem();
+                return player.getHeldItemMainhand();
             }
         }
 

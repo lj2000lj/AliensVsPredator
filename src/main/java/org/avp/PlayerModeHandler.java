@@ -10,16 +10,16 @@ import com.arisux.mdxlib.lib.client.render.Texture;
 import com.arisux.mdxlib.lib.game.IInitEvent;
 import com.arisux.mdxlib.lib.world.entity.player.Players;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
+import net.minecraftforge.event.getEntity().EntityJoinWorldEvent;
+import net.minecraftforge.event.getEntity().player.PlayerPickupXpEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class PlayerModeHandler implements IInitEvent
 {
@@ -28,7 +28,6 @@ public class PlayerModeHandler implements IInitEvent
     @Override
     public void init(FMLInitializationEvent event)
     {
-        FMLCommonHandler.instance().bus().register(this);
         MinecraftForge.EVENT_BUS.register(this);
 
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
@@ -58,9 +57,9 @@ public class PlayerModeHandler implements IInitEvent
     @SubscribeEvent
     public void onEntityJoinWorldEvent(EntityJoinWorldEvent event)
     {
-        if (event.entity instanceof EntityPlayer)
+        if (event.getEntity() instanceof EntityPlayer)
         {
-            EntityPlayer player = (EntityPlayer) event.entity;
+            EntityPlayer player = (EntityPlayer) event.getEntity();
             SharedPlayer playerExtension = (SharedPlayer) player.getExtendedProperties(SharedPlayer.IDENTIFIER);
 
             playerExtension.setPlayerMode(PlayerMode.NORMAL);
@@ -73,9 +72,9 @@ public class PlayerModeHandler implements IInitEvent
     @SubscribeEvent
     public void onPlayerPickupXP(PlayerPickupXpEvent event)
     {
-        EntityPlayer player = event.entityPlayer;
+        EntityPlayer player = event.getEntityPlayer();
 
-        if (Players.getXPCurrentLevel(player) + event.orb.getXpValue() >= Players.getXPCurrentLevelMax(player))
+        if (Players.getXPCurrentLevel(player) + event.getOrb().getXpValue() >= Players.getXPCurrentLevelMax(player))
         {
             this.onPlayerLevelUp(player, (int) Players.getXPLevel(player) + 1);
         }

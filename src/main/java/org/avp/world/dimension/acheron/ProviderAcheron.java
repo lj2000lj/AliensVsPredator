@@ -3,15 +3,15 @@ package org.avp.world.dimension.acheron;
 import org.avp.AliensVsPredator;
 import org.avp.world.dimension.BiomeGenLV;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.client.IRenderHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ProviderAcheron extends WorldProvider
 {
@@ -112,15 +112,15 @@ public class ProviderAcheron extends WorldProvider
 
     @Override
     @SideOnly(Side.CLIENT)
-    public Vec3 getFogColor(float var1, float var2)
+    public Vec3d getFogColor(float var1, float var2)
     {
-        return Vec3.createVectorHelper(0.0F, 0.0F, 0.0F);
+        return new Vec3d(0.0F, 0.0F, 0.0F);
     }
 
     @Override
-    public Vec3 drawClouds(float partialTicks)
+    public Vec3d drawClouds(float partialTicks)
     {
-        return Vec3.createVectorHelper(0.0F, 0.0F, 0.0F);
+        return new Vec3d(0.0F, 0.0F, 0.0F);
     }
 
     @Override

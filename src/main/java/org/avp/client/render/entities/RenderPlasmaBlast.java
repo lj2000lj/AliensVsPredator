@@ -5,6 +5,7 @@ import org.avp.entities.EntityPlasma;
 
 import com.arisux.mdxlib.lib.client.render.Color;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
+import com.arisux.mdxlib.lib.game.Game;
 
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
@@ -17,6 +18,7 @@ public class RenderPlasmaBlast extends Render
 
     public RenderPlasmaBlast()
     {
+        super(Game.renderManager());
         model.setColor(color);
     }
 

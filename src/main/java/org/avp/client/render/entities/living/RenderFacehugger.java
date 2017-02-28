@@ -16,7 +16,7 @@ import com.arisux.mdxlib.lib.client.render.OpenGL;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 
-public class RenderFacehugger extends RenderLivingWrapper
+public class RenderFacehugger extends RenderLivingWrapper<EntityFacehugger>
 {
     public static ArrayList<EntityRenderTransforms> transforms = new ArrayList<EntityRenderTransforms>();
 
@@ -31,19 +31,17 @@ public class RenderFacehugger extends RenderLivingWrapper
     }
 
     @Override
-    public void doRender(Entity entity, double posX, double posY, double posZ, float yaw, float renderPartialTicks)
+    public void doRender(EntityFacehugger entity, double posX, double posY, double posZ, float yaw, float renderPartialTicks)
     {
         super.doRender(entity, posX, posY, posZ, yaw, renderPartialTicks);
     }
 
     @Override
-    protected void preRenderCallback(EntityLivingBase entityliving, float partialTicks)
+    protected void preRenderCallback(EntityFacehugger facehugger, float partialTicks)
     {
-        EntityFacehugger facehugger = (EntityFacehugger) entityliving;
-
         this.scale(facehugger, 0.9F);
 
-        if (facehugger != null && facehugger.ridingEntity == null)
+        if (facehugger != null && facehugger.getRidingEntity()== null)
         {
             if (facehugger.motionY > 0 || facehugger.motionY < -0.1)
             {
@@ -51,20 +49,20 @@ public class RenderFacehugger extends RenderLivingWrapper
             }
         }
 
-        if (facehugger != null && facehugger.ridingEntity != null && facehugger.ridingEntity.ridingEntity != null && facehugger.ridingEntity.ridingEntity instanceof EntityMedpod)
+        if (facehugger != null && facehugger.getRidingEntity()!= null && facehugger.getRidingEntity().getRidingEntity()!= null && facehugger.getRidingEntity().getRidingEntity()instanceof EntityMedpod)
         {
-            Entity entity = facehugger.ridingEntity;
-            EntityMedpod medpod = (EntityMedpod) entity.ridingEntity;
+            Entity entity = facehugger.getRidingEntity();
+            EntityMedpod medpod = (EntityMedpod) entity.getRidingEntity();
 
             OpenGL.rotate(medpod.getTileEntity());
             RenderLivingHook.instance.getRenderer().transformEntity(medpod, entity, partialTicks);
         }
 
-        if (facehugger.ridingEntity != null && facehugger.ridingEntity instanceof EntityLivingBase)
+        if (facehugger.getRidingEntity()!= null && facehugger.getRidingEntity()instanceof EntityLivingBase)
         {
             for (EntityRenderTransforms transform : transforms)
             {
-                if (transform.isApplicable(facehugger.ridingEntity))
+                if (transform.isApplicable(facehugger.getRidingEntity()))
                 {
                     transform.post(facehugger, partialTicks);
                     break;
@@ -75,7 +73,7 @@ public class RenderFacehugger extends RenderLivingWrapper
 
     protected void scale(EntityFacehugger facehugger, float glScale)
     {
-        if (facehugger != null && !facehugger.isFertile() && facehugger.ridingEntity == null)
+        if (facehugger != null && !facehugger.isFertile() && facehugger.getRidingEntity()== null)
         {
             OpenGL.scale(1F, -1F, 1F);
             OpenGL.translate(0F, 0.25F, 0F);

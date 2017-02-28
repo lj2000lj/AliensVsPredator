@@ -8,13 +8,13 @@ import org.avp.entities.EntityFlame;
 import com.arisux.mdxlib.lib.world.entity.player.inventory.Inventories;
 import com.arisux.mdxlib.lib.world.item.HookedItem;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class ItemFlamethrower extends HookedItem
 {

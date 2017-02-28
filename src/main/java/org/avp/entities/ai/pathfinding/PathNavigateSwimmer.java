@@ -1,8 +1,7 @@
 package org.avp.entities.ai.pathfinding;
 
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class PathNavigateSwimmer extends PathNavigate
@@ -25,15 +24,15 @@ public class PathNavigateSwimmer extends PathNavigate
     }
 
     @Override
-    protected Vec3 getEntityPosition()
+    protected Vec3d getEntityPosition()
     {
-        return Vec3.createVectorHelper(this.theEntity.posX, this.theEntity.posY + (double) this.theEntity.height * 0.5D, this.theEntity.posZ);
+        return new Vec3d(this.theEntity.posX, this.theEntity.posY + (double) this.theEntity.height * 0.5D, this.theEntity.posZ);
     }
 
     @Override
     protected void pathFollow()
     {
-        Vec3 entityPos = this.getEntityPosition();
+        Vec3d entityPos = this.getEntityPosition();
         float widthSquared = this.theEntity.width * this.theEntity.width;
 
         if (entityPos.squareDistanceTo(this.currentPath.getVectorFromIndex(this.theEntity, this.currentPath.getCurrentPathIndex())) < (double) widthSquared)
@@ -43,7 +42,7 @@ public class PathNavigateSwimmer extends PathNavigate
 
         for (int i = Math.min(this.currentPath.getCurrentPathIndex() + 6, this.currentPath.getCurrentPathLength() - 1); i > this.currentPath.getCurrentPathIndex(); --i)
         {
-            Vec3 currentPathVec = this.currentPath.getVectorFromIndex(this.theEntity, i);
+            Vec3d currentPathVec = this.currentPath.getVectorFromIndex(this.theEntity, i);
 
             if (currentPathVec.squareDistanceTo(entityPos) <= 36.0D && this.isDirectPathBetweenPoints(entityPos, currentPathVec, 0, 0, 0))
             {
@@ -62,9 +61,9 @@ public class PathNavigateSwimmer extends PathNavigate
     }
 
     @Override
-    protected boolean isDirectPathBetweenPoints(Vec3 posVec31, Vec3 posVec32, int sizeX, int sizeY, int sizeZ)
+    protected boolean isDirectPathBetweenPoints(Vec3d posVec3d1, Vec3d posVec3d2, int sizeX, int sizeY, int sizeZ)
     {
-        MovingObjectPosition movingobjectposition = this.worldObj.rayTraceBlocks(posVec31, Vec3.createVectorHelper(posVec32.xCoord, posVec32.yCoord + (double) this.theEntity.height * 0.5D, posVec32.zCoord), false);
+        MovingObjectPosition movingobjectposition = this.worldObj.rayTraceBlocks(posVec3d1, new Vec3d(posVec3d2.xCoord, posVec3d2.yCoord + (double) this.theEntity.height * 0.5D, posVec3d2.zCoord), false);
         return movingobjectposition == null || movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.MISS;
     }
 }

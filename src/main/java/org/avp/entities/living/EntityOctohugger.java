@@ -19,7 +19,7 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 
@@ -62,10 +62,10 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
     {
         super.applyEntityAttributes();
 
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(14.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.55D);
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(0.50D);
-        this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(4.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(14.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.55D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(0.50D);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(4.0D);
     }
 
     private Pos hangingLocation = null;
@@ -131,17 +131,17 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
             {
                 Pos loc = potentialLocations.get(this.rand.nextInt(potentialLocations.size()));
 
-                if (loc.getBlock(this.worldObj) != net.minecraft.init.Blocks.air)
+                if (loc.getBlock(this.worldObj) != net.minecraft.init.Blocks.AIR)
                 {
-                    if (this.worldObj.getBlock((int) loc.x, (int) loc.y - 1, (int) loc.z) == net.minecraft.init.Blocks.air)
+                    if (this.worldObj.getBlock((int) loc.x, (int) loc.y - 1, (int) loc.z) == net.minecraft.init.Blocks.AIR)
                     {
-                        if (this.worldObj.getBlock((int) loc.x - 1, (int) loc.y - 1, (int) loc.z) == net.minecraft.init.Blocks.air)
+                        if (this.worldObj.getBlock((int) loc.x - 1, (int) loc.y - 1, (int) loc.z) == net.minecraft.init.Blocks.AIR)
                         {
-                            if (this.worldObj.getBlock((int) loc.x, (int) loc.y - 1, (int) loc.z - 1) == net.minecraft.init.Blocks.air)
+                            if (this.worldObj.getBlock((int) loc.x, (int) loc.y - 1, (int) loc.z - 1) == net.minecraft.init.Blocks.AIR)
                             {
-                                if (this.worldObj.getBlock((int) loc.x + 1, (int) loc.y - 1, (int) loc.z) == net.minecraft.init.Blocks.air)
+                                if (this.worldObj.getBlock((int) loc.x + 1, (int) loc.y - 1, (int) loc.z) == net.minecraft.init.Blocks.AIR)
                                 {
-                                    if (this.worldObj.getBlock((int) loc.x, (int) loc.y - 1, (int) loc.z + 1) == net.minecraft.init.Blocks.air)
+                                    if (this.worldObj.getBlock((int) loc.x, (int) loc.y - 1, (int) loc.z + 1) == net.minecraft.init.Blocks.AIR)
                                     {
                                         if (Entities.canEntityBeSeenBy(this, loc))
                                         {
@@ -209,7 +209,7 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
             this.motionZ = 0;
         }
 
-        if (this.ridingEntity != null || !this.isFertile() || this.isHanging() && this.getHangingLocation() != null && this.getHangingLocation().getBlock(this.worldObj) == net.minecraft.init.Blocks.air)
+        if (this.getRidingEntity()!= null || !this.isFertile() || this.isHanging() && this.getHangingLocation() != null && this.getHangingLocation().getBlock(this.worldObj) == net.minecraft.init.Blocks.AIR)
         {
             this.setHanging(false);
             this.updateHangingLocation(new Pos(0, 0, 0));

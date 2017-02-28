@@ -5,8 +5,6 @@ import org.avp.tile.TileEntityCryostasisTube;
 
 import com.arisux.mdxlib.lib.world.entity.player.inventory.Inventories;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -16,9 +14,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockCryostasisTube extends Block
 {
@@ -68,14 +68,14 @@ public class BlockCryostasisTube extends Block
 
             if (tile != null)
             {
-                if (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof ItemEntitySummoner)
+                if (player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() instanceof ItemEntitySummoner)
                 {
-                    ItemEntitySummoner item = (ItemEntitySummoner) player.getCurrentEquippedItem().getItem();
+                    ItemEntitySummoner item = (ItemEntitySummoner) player.getHeldItemMainhand().getItem();
                     tile.stasisItemstack = new ItemStack(item, 1);
                     tile.stasisEntity = item.createNewEntity(worldObj);
                     Inventories.consumeItem(player, item);
                 }
-                else if (player.getCurrentEquippedItem() == null)
+                else if (player.getHeldItemMainhand() == null)
                 {
                     player.inventory.addItemStackToInventory(tile.stasisItemstack);
                     tile.stasisEntity = null;
@@ -103,10 +103,10 @@ public class BlockCryostasisTube extends Block
         }
     }
 
-    public static ForgeDirection getFacing(Entity entity)
+    public static EnumFacing getFacing(Entity entity)
     {
         int dir = MathHelper.floor_double((entity.rotationYaw / 90) + 0.5) & 3;
-        return ForgeDirection.VALID_DIRECTIONS[Direction.directionToFacing[dir]];
+        return EnumFacing.VALID_DIRECTIONS[Direction.directionToFacing[dir]];
     }
 
     @Override

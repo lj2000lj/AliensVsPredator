@@ -11,10 +11,10 @@ import org.avp.world.hives.HiveHandler;
 import com.arisux.mdxlib.MDX;
 import com.arisux.mdxlib.lib.world.storage.NBTStorage;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class SaveHandler
 {
@@ -35,7 +35,7 @@ public class SaveHandler
 
     public File getSaveFile(World world)
     {
-        return new File(world.getSaveHandler().getWorldDirectory(), String.format(this.getSaveFilename(), world.provider.dimensionId));
+        return new File(world.getSaveHandler().getWorldDirectory(), String.format(this.getSaveFilename(), world.provider.getDimension()));
     }
 
     public String getSaveFilename()
@@ -46,7 +46,7 @@ public class SaveHandler
     @SubscribeEvent
     public void onWorldSave(WorldEvent.Save event)
     {
-        World world = event.world;
+        World world = event.getWorld();
         File worldSave = this.getSaveFile(world);
         NBTTagCompound tag = new NBTTagCompound();
 
@@ -74,7 +74,7 @@ public class SaveHandler
     @SubscribeEvent
     public void onWorldLoad(WorldEvent.Load event)
     {
-        World world = event.world;
+        World world = event.getWorld();
         NBTTagCompound tag = new NBTTagCompound();
         File worldSave = this.getSaveFile(world);
 

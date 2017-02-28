@@ -4,6 +4,7 @@ import org.avp.AliensVsPredator;
 import org.lwjgl.opengl.GL12;
 
 import com.arisux.mdxlib.lib.client.render.OpenGL;
+import com.arisux.mdxlib.lib.game.Game;
 
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
@@ -11,6 +12,11 @@ import net.minecraft.util.ResourceLocation;
 
 public class RenderSpear extends Render
 {
+    protected RenderSpear()
+    {
+        super(Game.renderManager());
+    }
+
     @Override
     public void doRender(Entity entity, double posX, double posY, double posZ, float rotationYaw, float renderPartialTicks)
     {

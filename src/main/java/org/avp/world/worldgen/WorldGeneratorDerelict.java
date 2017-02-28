@@ -2,9 +2,9 @@ package org.avp.world.worldgen;
 
 import java.util.Random;
 
-import cpw.mods.fml.common.IWorldGenerator;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraftforge.fml.common.IWorldGenerator;
 
 public class WorldGeneratorDerelict implements IWorldGenerator
 {

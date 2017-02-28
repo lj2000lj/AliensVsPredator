@@ -16,8 +16,8 @@ import com.arisux.mdxlib.lib.world.Worlds;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeDecorator;
-import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.feature.WorldGenFlowers;
 import net.minecraft.world.gen.feature.WorldGenLakes;
 import net.minecraft.world.gen.feature.WorldGenMinable;
@@ -51,7 +51,7 @@ public class BiomeDecoratorVarda extends BiomeDecorator
     }
 
     @Override
-    public void decorateChunk(World world, Random seed, BiomeGenBase biome, int chunkX, int chunkZ)
+    public void decorateChunk(World world, Random seed, Biome biome, int chunkX, int chunkZ)
     {
         if (this.world != null)
         {
@@ -68,7 +68,7 @@ public class BiomeDecoratorVarda extends BiomeDecorator
     }
 
     @Override
-    protected void genDecorations(BiomeGenBase biome)
+    protected void genDecorations(Biome biome)
     {
         this.generateOres();
 

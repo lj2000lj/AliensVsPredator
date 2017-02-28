@@ -14,9 +14,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
@@ -24,13 +25,12 @@ public class EntityLaserMine extends Entity
 {
     private String ownerUUID;
     public int direction;
-    public MovingObjectPosition laserHit;
+    public RayTraceResult laserHit;
 
     public EntityLaserMine(World world)
     {
         super(world);
         this.ignoreFrustumCheck = true;
-        this.yOffset = 0.0F;
         this.setSize(0.5F, 0.5F);
     }
 
@@ -52,7 +52,7 @@ public class EntityLaserMine extends Entity
     @SuppressWarnings("unchecked")
     public boolean canStay()
     {
-        List<Entity> entities = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox);
+        List<Entity> entities = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox());
 
         for (Entity entity : entities)
         {
@@ -72,13 +72,13 @@ public class EntityLaserMine extends Entity
     }
 
     @Override
-    public Vec3 getLookVec()
+    public Vec3d getLookVec()
     {
         float f1 = MathHelper.cos(-this.rotationYaw * 0.017453292F - (float) Math.PI);
         float f2 = MathHelper.sin(-this.rotationYaw * 0.017453292F - (float) Math.PI);
         float f3 = -MathHelper.cos(-this.rotationPitch * 0.017453292F);
         float f4 = MathHelper.sin(-this.rotationPitch * 0.017453292F);
-        return Vec3.createVectorHelper((f2 * f3), f4, -(f1 * f3));
+        return new Vec3d((f2 * f3), f4, -(f1 * f3));
     }
 
     @Override
@@ -115,7 +115,7 @@ public class EntityLaserMine extends Entity
         }
     }
 
-    public MovingObjectPosition getLaserHit()
+    public RayTraceResult getLaserHit()
     {
         return laserHit;
     }
@@ -148,8 +148,7 @@ public class EntityLaserMine extends Entity
 
     public void explode(Entity entityHit)
     {
-        Explosion explosion = new Explosion(worldObj, this, this.posX, this.posY, this.posZ, 4F);
-        explosion.isSmoking = true;
+        Explosion explosion = new Explosion(worldObj, this, this.posX, this.posY, this.posZ, 4F, false, false);
         explosion.doExplosionB(true);
 
         if (entityHit != null)
@@ -216,7 +215,7 @@ public class EntityLaserMine extends Entity
 
         yPos += 0.0F;
         this.setPosition(xPos, yPos, zPos);
-        this.boundingBox.setBounds(xPos - f - bounds, yPos - f1 - bounds, zPos - f2 - bounds, xPos + f + bounds, yPos + f1 + bounds, zPos + f2 + bounds);
+        this.setEntityBoundingBox(new AxisAlignedBB(xPos - f - bounds, yPos - f1 - bounds, zPos - f2 - bounds, xPos + f + bounds, yPos + f1 + bounds, zPos + f2 + bounds));
     }
 
     @Override

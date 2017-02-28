@@ -3,10 +3,11 @@ package org.avp.world.dimension;
 import org.avp.AliensVsPredator;
 import org.avp.world.dimension.acheron.BiomeAcheron;
 
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeDecorator;
-import net.minecraft.world.biome.BiomeGenBase;
 
-public abstract class BiomeGenLV extends BiomeGenBase
+
+public abstract class BiomeGenLV extends Biome
 {
     public static BiomeGenLV acheron     = new BiomeAcheron(AliensVsPredator.settings().biomeIdAcheron()).setColor(0x353825);
     

@@ -1,13 +1,12 @@
 package org.avp.client.render.entities.living;
 
 import org.avp.AliensVsPredator;
+import org.avp.entities.living.EntityDracoEgg;
 
 import com.arisux.mdxlib.lib.client.RenderLivingWrapper;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
-import net.minecraft.entity.EntityLivingBase;
-
-public class RenderDracoEgg extends RenderLivingWrapper
+public class RenderDracoEgg extends RenderLivingWrapper<EntityDracoEgg>
 {
     public RenderDracoEgg()
     {
@@ -15,7 +14,7 @@ public class RenderDracoEgg extends RenderLivingWrapper
     }
 
     @Override
-    protected void preRenderCallback(EntityLivingBase entityLiving, float partialTicks)
+    protected void preRenderCallback(EntityDracoEgg entityLiving, float partialTicks)
     {
         super.preRenderCallback(entityLiving, partialTicks);
         OpenGL.scale(1.75F, 1.75F, 1.75F);

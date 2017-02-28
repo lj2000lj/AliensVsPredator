@@ -3,13 +3,14 @@ package org.avp.packets.client;
 import com.arisux.mdxlib.lib.game.Game;
 import com.arisux.mdxlib.lib.world.tile.IRotatable;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+
 
 public class PacketRotateRotatable implements IMessage, IMessageHandler<PacketRotateRotatable, PacketRotateRotatable>
 {
@@ -61,7 +62,7 @@ public class PacketRotateRotatable implements IMessage, IMessageHandler<PacketRo
             if (tile != null && tile instanceof IRotatable)
             {
                 IRotatable rotatable = (IRotatable) tile;
-                rotatable.setDirection(ForgeDirection.getOrientation(packet.direction));
+                rotatable.setDirection(EnumFacing.getOrientation(packet.direction));
             }
         }
 

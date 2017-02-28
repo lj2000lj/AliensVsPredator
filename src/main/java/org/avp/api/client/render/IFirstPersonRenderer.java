@@ -1,6 +1,6 @@
 package org.avp.api.client.render;
 
-import cpw.mods.fml.common.eventhandler.Event;
+import net.minecraftforge.fml.common.eventhandler.Event;
 
 public interface IFirstPersonRenderer
 {

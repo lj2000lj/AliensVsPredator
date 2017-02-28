@@ -26,19 +26,19 @@ import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.entity.Entities;
 import com.arisux.mdxlib.lib.world.entity.player.inventory.Inventories;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 
 public class TacticalHUDRenderEvent
 {
@@ -83,7 +83,7 @@ public class TacticalHUDRenderEvent
 
                 if (trackedEntities != null)
                 {
-                    Vec3 p = Game.minecraft().thePlayer.getLookVec();
+                    Vec3d p = Game.minecraft().thePlayer.getLookVec();
                     float scale = 24.0F;
 
                     OpenGL.pushMatrix();
@@ -99,10 +99,10 @@ public class TacticalHUDRenderEvent
                                 {
                                     Organism livingProperties = Organism.get((EntityLivingBase) entity);
 
-                                    Vec3 t = Vec3.createVectorHelper(entity.posX, entity.posY, entity.posZ).addVector(0, entity.getEyeHeight() / 2, 0);
-                                    t = t.subtract(Game.minecraft().thePlayer.getPosition(Game.partialTicks()));
-                                    Vec3 tmp = p.addVector(t.xCoord, t.yCoord, t.zCoord).normalize();
-                                    Vec3 res = p.addVector(tmp.xCoord, tmp.yCoord, tmp.zCoord);
+                                    Vec3d t = new Vec3d(entity.posX, entity.posY, entity.posZ).addVector(0, entity.getEyeHeight() / 2, 0);
+                                    t = t.subtract(new Vec3d(Game.minecraft().thePlayer.getPosition().getX(), Game.minecraft().thePlayer.getPosition().getY(), Game.minecraft().thePlayer.getPosition().getZ()));
+                                    Vec3d tmp = p.addVector(t.xCoord, t.yCoord, t.zCoord).normalize();
+                                    Vec3d res = p.addVector(tmp.xCoord, tmp.yCoord, tmp.zCoord);
 
                                     OpenGL.pushMatrix();
                                     {
@@ -178,7 +178,7 @@ public class TacticalHUDRenderEvent
     {
         if (Game.minecraft().thePlayer != null)
         {
-            if (event.type == RenderGameOverlayEvent.ElementType.HOTBAR)
+            if (event.getType() == RenderGameOverlayEvent.ElementType.HOTBAR)
             {
                 if (Inventories.getHelmSlotItemStack(Game.minecraft().thePlayer) != null && Game.minecraft().gameSettings.thirdPersonView == 0 && Inventories.getHelmSlotItemStack(Game.minecraft().thePlayer).getItem() == AliensVsPredator.items().helmMarine)
                 {
@@ -212,7 +212,7 @@ public class TacticalHUDRenderEvent
     @SubscribeEvent
     public void renderTick(RenderGameOverlayEvent event)
     {
-        if (Game.minecraft().thePlayer != null && event.type == ElementType.HOTBAR)
+        if (Game.minecraft().thePlayer != null && event.getType() == ElementType.HOTBAR)
         {
             this.renderInventoryElements(event);
         }
@@ -299,10 +299,10 @@ public class TacticalHUDRenderEvent
                 this.electrocardiogram.setWidth(140).setHeight(50).setBackgroundColor(0x00000000).setBacklightColor(0x00000000).setLineWidth(4F).setColor(0xFF0088FF);
                 this.electrocardiogram.setX(0).setY(0);
                 OpenGL.scale(scale, scale, scale);
-                OpenGL.translate(20F, event.resolution.getScaledHeight() * 2 - 100F, 0F);
+                OpenGL.translate(20F, event.getResolution().getScaledHeight() * 2 - 100F, 0F);
                 OpenGL.rotate(-15F, 0F, 0F, 1F);
                 OpenGL.rotate(-25F, 0F, 1F, 0F);
-                this.electrocardiogram.render(event.partialTicks);
+                this.electrocardiogram.render(event.getPartialTicks());
             }
             OpenGL.popMatrix();
             OpenGL.pushMatrix();
@@ -311,10 +311,10 @@ public class TacticalHUDRenderEvent
                 this.wavegraph1.setWidth(140).setHeight(50).setBackgroundColor(0x00000000).setBacklightColor(0x00000000).setLineWidth(4F).setColor(0xFF0088FF);
                 this.wavegraph1.setX(0).setY(0);
                 OpenGL.scale(scale, scale, scale);
-                OpenGL.translate(20F, event.resolution.getScaledHeight() * 2 - 50F, 0F);
+                OpenGL.translate(20F, event.getResolution().getScaledHeight() * 2 - 50F, 0F);
                 OpenGL.rotate(-15F, 0F, 0F, 1F);
                 OpenGL.rotate(-25F, 0F, 1F, 0F);
-                this.wavegraph1.render(event.partialTicks);
+                this.wavegraph1.render(event.getPartialTicks());
             }
             OpenGL.popMatrix();
             OpenGL.pushMatrix();
@@ -323,11 +323,11 @@ public class TacticalHUDRenderEvent
                 this.wavegraph2.setWidth(140).setHeight(50).setBackgroundColor(0x00000000).setBacklightColor(0x00000000).setLineWidth(4F).setColor(0xFF0088FF);
                 this.wavegraph2.setX(0).setY(0);
                 OpenGL.scale(scale, scale, scale);
-                OpenGL.translate(event.resolution.getScaledWidth() * 2 - 30F, event.resolution.getScaledHeight() * 2 - 60F, 0F);
+                OpenGL.translate(event.getResolution().getScaledWidth() * 2 - 30F, event.getResolution().getScaledHeight() * 2 - 60F, 0F);
                 OpenGL.rotate(-180 + 15F, 0F, 0F, 1F);
                 OpenGL.rotate(25F, 0F, 1F, 0F);
                 OpenGL.rotate(180F, 1F, 0F, 0F);
-                this.wavegraph2.render(event.partialTicks);
+                this.wavegraph2.render(event.getPartialTicks());
             }
             OpenGL.popMatrix();
             OpenGL.enableBlend();
@@ -346,7 +346,7 @@ public class TacticalHUDRenderEvent
                 {
                     float scale = 0.5F;
                     OpenGL.scale(scale, scale, scale);
-                    OpenGL.translate(event.resolution.getScaledWidth() * 2 - 30F, event.resolution.getScaledHeight() * 2 - 60F, 0F);
+                    OpenGL.translate(event.getResolution().getScaledWidth() * 2 - 30F, event.getResolution().getScaledHeight() * 2 - 60F, 0F);
                     OpenGL.rotate(-180 + 15F, 0F, 0F, 1F);
                     OpenGL.rotate(25F, 0F, 1F, 0F);
 
@@ -374,7 +374,7 @@ public class TacticalHUDRenderEvent
                 {
                     float nameScale = 1.5F;
                     OpenGL.scale(nameScale, nameScale, nameScale);
-                    Draw.drawString(Game.minecraft().thePlayer.getCommandSenderName().toUpperCase(), 0, 0, 0xFF00AAFF, false);
+                    Draw.drawString(Game.minecraft().thePlayer.getName().toUpperCase(), 0, 0, 0xFF00AAFF, false);
                 }
                 OpenGL.popMatrix();
 
@@ -475,11 +475,11 @@ public class TacticalHUDRenderEvent
                 if (Game.minecraft().thePlayer.getDistanceToEntity(player) <= this.specialPlayer.getBroadcastRadius() && signal <= maxSignal / 1.3)
                 {
                     OpenGL.color(1F, 1F, 1F, 1F);
-                    Draw.bindTexture(Gui.icons);
+                    Draw.bindTexture(Gui.ICONS);
                     Draw.drawQuad(Screen.scaledDisplayResolution().getScaledWidth() - 135, 36 + barSpace * x, 10, 8, 0, (176 + pxMultiplier * 8));
 
-                    Draw.drawProgressBar(player.getCommandSenderName(), (int) player.getMaxHealth(), (int) player.getHealth(), Screen.scaledDisplayResolution().getScaledWidth() - 105, 40 + barSpace * x, 100, 1, 0, 0xFF00AAFF, false);
-                    Draw.drawPlayerFace(player.getCommandSenderName(), Screen.scaledDisplayResolution().getScaledWidth() - 122, 35 + barSpace * x, 11, 11);
+                    Draw.drawProgressBar(player.getName(), (int) player.getMaxHealth(), (int) player.getHealth(), Screen.scaledDisplayResolution().getScaledWidth() - 105, 40 + barSpace * x, 100, 1, 0, 0xFF00AAFF, false);
+                    Draw.drawPlayerFace(player.getName(), Screen.scaledDisplayResolution().getScaledWidth() - 122, 35 + barSpace * x, 11, 11);
                 }
                 else
                 {
@@ -498,7 +498,7 @@ public class TacticalHUDRenderEvent
         {
             for (int x = 0; x < playersInHUD.size(); x++)
             {
-                if (playersInHUD.get(x) != null && player.getCommandSenderName().equals(playersInHUD.get(x).getCommandSenderName()))
+                if (playersInHUD.get(x) != null && player.getName().equals(playersInHUD.get(x).getName()))
                     return true;
             }
         }

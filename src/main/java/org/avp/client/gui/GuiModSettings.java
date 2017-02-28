@@ -53,13 +53,13 @@ public class GuiModSettings extends GuiCustomScreen
             {
                 element = new GuiCustomButton(2, 0, 0, 0, 10, setting.getStringValue());
 
-                if (setting.property().comment == null || setting.property().comment != null && setting.property().comment.isEmpty())
+                if (setting.property().getComment() == null || setting.property().getComment() != null && setting.property().getComment().isEmpty())
                 {
                     element.tooltip = Chat.format(String.format("&c%s", setting.property().getLanguageKey()));
                 }
                 else
                 {
-                    element.setTooltip(Chat.format(String.format("&b%s&f:s:&b%s&7%s", WordUtils.capitalize(setting.property().getLanguageKey().replace("_", " ")), setting.getRequiresRestart() ? "&c[RESTART REQUIRED] " : "&b", setting.property().comment)));
+                    element.setTooltip(Chat.format(String.format("&b%s&f:s:&b%s&7%s", WordUtils.capitalize(setting.property().getLanguageKey().replace("_", " ")), setting.getRequiresRestart() ? "&c[RESTART REQUIRED] " : "&b", setting.property().getComment())));
                 }
 
                 element.setAction(new IAction()
@@ -90,7 +90,7 @@ public class GuiModSettings extends GuiCustomScreen
                 }
                 else
                 {
-                    element.setTooltip(Chat.format(String.format("&b%s&f:s:&b%s&7%s", WordUtils.capitalize(setting.property().getLanguageKey().replace("_", " ")), setting.getRequiresRestart() ? "&c[RESTART REQUIRED] " : "&b", setting.property().comment)));
+                    element.setTooltip(Chat.format(String.format("&b%s&f:s:&b%s&7%s", WordUtils.capitalize(setting.property().getLanguageKey().replace("_", " ")), setting.getRequiresRestart() ? "&c[RESTART REQUIRED] " : "&b", setting.property().getComment())));
                 }
 
                 textbox.setAction(new IAction()
@@ -113,7 +113,7 @@ public class GuiModSettings extends GuiCustomScreen
             {
                 element = new GuiCustomButton(2, 0, 0, 0, 10, setting.getStringValue());
 
-                if (setting.property().comment == null || setting.property().comment != null && setting.property().comment.isEmpty())
+                if (setting.property().getComment() == null || setting.property().getComment() != null && setting.property().getComment().isEmpty())
                 {
                     element.tooltip = Chat.format(String.format("&c%s", setting.property().getLanguageKey()));
                 }
@@ -154,7 +154,7 @@ public class GuiModSettings extends GuiCustomScreen
             {
                 element = new GuiCustomButton(2, 0, 0, 0, 10, setting.getStringValue());
 
-                if (setting.property().comment == null || setting.property().comment != null && setting.property().comment.isEmpty())
+                if (setting.property().getComment() == null || setting.property().getComment() != null && setting.property().getComment().isEmpty())
                 {
                     element.tooltip = Chat.format(String.format("&c%s", setting.property().getLanguageKey()));
                 }
@@ -185,13 +185,13 @@ public class GuiModSettings extends GuiCustomScreen
                 textbox = new GuiCustomTextbox(0, 0, 0, 0);
                 textbox.setText(setting.getStringValue());
 
-                if (setting.property().comment == null || setting.property().comment != null && setting.property().comment.isEmpty())
+                if (setting.property().getComment() == null || setting.property().getComment() != null && setting.property().getComment().isEmpty())
                 {
                     textbox.setTooltip(Chat.format(String.format("&c%s", setting.property().getLanguageKey())));
                 }
                 else
                 {
-                    textbox.setTooltip(Chat.format(String.format("&b%s&f:s:&b%s&7%s", WordUtils.capitalize(setting.property().getLanguageKey().replace("_", " ")), setting.getRequiresRestart() ? "&c[RESTART REQUIRED] " : "&b", setting.property().comment)));
+                    textbox.setTooltip(Chat.format(String.format("&b%s&f:s:&b%s&7%s", WordUtils.capitalize(setting.property().getLanguageKey().replace("_", " ")), setting.getRequiresRestart() ? "&c[RESTART REQUIRED] " : "&b", setting.property().getComment())));
                 }
 
                 textbox.setAction(new IAction()

@@ -6,7 +6,8 @@ import com.arisux.mdxlib.lib.client.Model;
 
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+
 
 public class ModelCable extends Model
 {
@@ -72,23 +73,23 @@ public class ModelCable extends Model
         
         if (tile != null)
         {
-            TileEntity leftTile = tile.getWorld().getTileEntity(tile.xCoord + 1, tile.yCoord, tile.zCoord);
-            cableWest.isHidden = !(leftTile instanceof TileEntityElectrical && ((TileEntityElectrical) leftTile).canProvideEnergyToReceiver(ForgeDirection.EAST));
+            TileEntity leftTile = tile.getWorld().getTileEntity(tile.getPos().add(1, 0, 0));
+            cableWest.isHidden = !(leftTile instanceof TileEntityElectrical && ((TileEntityElectrical) leftTile).canProvideEnergyToReceiver(EnumFacing.EAST));
 
-            TileEntity rightTile = tile.getWorld().getTileEntity(tile.xCoord - 1, tile.yCoord, tile.zCoord);
-            cableEast.isHidden = !(rightTile instanceof TileEntityElectrical && ((TileEntityElectrical) rightTile).canProvideEnergyToReceiver(ForgeDirection.WEST));
+            TileEntity rightTile = tile.getWorld().getTileEntity(tile.getPos().add(-1, 0, 0));
+            cableEast.isHidden = !(rightTile instanceof TileEntityElectrical && ((TileEntityElectrical) rightTile).canProvideEnergyToReceiver(EnumFacing.WEST));
 
-            TileEntity topTile = tile.getWorld().getTileEntity(tile.xCoord, tile.yCoord + 1, tile.zCoord);
-            cableTop.isHidden = !(topTile instanceof TileEntityElectrical && ((TileEntityElectrical) topTile).canProvideEnergyToReceiver(ForgeDirection.UP));
+            TileEntity topTile = tile.getWorld().getTileEntity(tile.getPos().add(0, 1, 0));
+            cableTop.isHidden = !(topTile instanceof TileEntityElectrical && ((TileEntityElectrical) topTile).canProvideEnergyToReceiver(EnumFacing.UP));
 
-            TileEntity bottomTile = tile.getWorld().getTileEntity(tile.xCoord, tile.yCoord - 1, tile.zCoord);
-            cableBottom.isHidden = !(bottomTile instanceof TileEntityElectrical && ((TileEntityElectrical) bottomTile).canProvideEnergyToReceiver(ForgeDirection.DOWN));
+            TileEntity bottomTile = tile.getWorld().getTileEntity(tile.getPos().add(0, -1, 0));
+            cableBottom.isHidden = !(bottomTile instanceof TileEntityElectrical && ((TileEntityElectrical) bottomTile).canProvideEnergyToReceiver(EnumFacing.DOWN));
 
-            TileEntity backTile = tile.getWorld().getTileEntity(tile.xCoord, tile.yCoord, tile.zCoord + 1);
-            cableSouth.isHidden = !(backTile instanceof TileEntityElectrical && ((TileEntityElectrical) backTile).canProvideEnergyToReceiver(ForgeDirection.NORTH));
+            TileEntity backTile = tile.getWorld().getTileEntity(tile.getPos().add(0, 0, 1));
+            cableSouth.isHidden = !(backTile instanceof TileEntityElectrical && ((TileEntityElectrical) backTile).canProvideEnergyToReceiver(EnumFacing.NORTH));
 
-            TileEntity frontTile = tile.getWorld().getTileEntity(tile.xCoord, tile.yCoord, tile.zCoord - 1);
-            cableNorth.isHidden = !(frontTile instanceof TileEntityElectrical && ((TileEntityElectrical) frontTile).canProvideEnergyToReceiver(ForgeDirection.SOUTH));
+            TileEntity frontTile = tile.getWorld().getTileEntity(tile.getPos().add(0, 0, -1));
+            cableNorth.isHidden = !(frontTile instanceof TileEntityElectrical && ((TileEntityElectrical) frontTile).canProvideEnergyToReceiver(EnumFacing.SOUTH));
 
             nodeX.isHidden = cableEast.isHidden && cableWest.isHidden;
             nodeY.isHidden = cableTop.isHidden && cableBottom.isHidden;

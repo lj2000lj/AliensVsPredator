@@ -7,11 +7,12 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+
 
 public class TileEntityAmpule extends TileEntity implements IRotatable
 {
-    private ForgeDirection direction;
+    private EnumFacing direction;
 
     @Override
     public void updateEntity()
@@ -49,20 +50,20 @@ public class TileEntityAmpule extends TileEntity implements IRotatable
     {
         super.readFromNBT(nbt);
 
-        if (ForgeDirection.getOrientation(nbt.getInteger("Direction")) != null)
+        if (EnumFacing.getOrientation(nbt.getInteger("Direction")) != null)
         {
-            this.direction = ForgeDirection.getOrientation(nbt.getInteger("Direction"));
+            this.direction = EnumFacing.getOrientation(nbt.getInteger("Direction"));
         }
     }
 
     @Override
-    public ForgeDirection getDirection()
+    public EnumFacing getDirection()
     {
         return direction;
     }
 
     @Override
-    public void setDirection(ForgeDirection direction)
+    public void setDirection(EnumFacing direction)
     {
         this.direction = direction;
     }

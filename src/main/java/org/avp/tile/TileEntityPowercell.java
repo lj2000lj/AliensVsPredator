@@ -5,7 +5,8 @@ import org.avp.api.power.IVoltageReceiver;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+
 
 public class TileEntityPowercell extends TileEntityElectrical implements IVoltageReceiver, IVoltageProvider
 {
@@ -18,7 +19,7 @@ public class TileEntityPowercell extends TileEntityElectrical implements IVoltag
     }
 
     @Override
-    public boolean canConnectPower(ForgeDirection from)
+    public boolean canConnectPower(EnumFacing from)
     {
         return true;
     }
@@ -28,7 +29,7 @@ public class TileEntityPowercell extends TileEntityElectrical implements IVoltag
     {
         super.updateEntity();
 
-        for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS)
+        for (EnumFacing direction : EnumFacing.VALID_DIRECTIONS)
         {
             TileEntity tile = this.worldObj.getTileEntity(this.xCoord + direction.offsetX, this.yCoord + direction.offsetY, this.zCoord + direction.offsetZ);
 
@@ -86,19 +87,19 @@ public class TileEntityPowercell extends TileEntityElectrical implements IVoltag
     }
 
     @Override
-    public double receiveVoltage(ForgeDirection from, double maxReceive, boolean simulate)
+    public double receiveVoltage(EnumFacing from, double maxReceive, boolean simulate)
     {
         return super.receiveVoltage(from, maxReceive, simulate);
     }
 
     @Override
-    public double getCurrentVoltage(ForgeDirection from)
+    public double getCurrentVoltage(EnumFacing from)
     {
         return this.voltage;
     }
 
     @Override
-    public double getMaxVoltage(ForgeDirection from)
+    public double getMaxVoltage(EnumFacing from)
     {
         return 10000;
     }

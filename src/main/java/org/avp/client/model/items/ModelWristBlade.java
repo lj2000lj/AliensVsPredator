@@ -4,6 +4,7 @@ import org.avp.AliensVsPredator;
 
 import com.arisux.mdxlib.lib.client.Model;
 import com.arisux.mdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.world.entity.player.inventory.Inventories;
 
 import net.minecraft.client.model.ModelRenderer;
 
@@ -129,7 +130,7 @@ public class ModelWristBlade extends Model
         draw(b10);
         draw(b11);
 
-        if (Game.minecraft().thePlayer.inventory.hasItem(AliensVsPredator.items().swordTitanium))
+        if (Inventories.getAmountOfItemPlayerHas(AliensVsPredator.items().swordTitanium, Game.minecraft().thePlayer) > 0)
         {
             draw(b6);
             draw(bladeLeft);
