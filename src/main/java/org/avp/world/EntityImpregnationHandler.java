@@ -33,6 +33,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.S04PacketEntityEquipment;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
@@ -219,82 +220,6 @@ public class EntityImpregnationHandler
         }
 
         Game.minecraft().effectRenderer.addEffect(new EntityBloodFX(host.worldObj, pX, pY, pZ, particleColor, glow));
-    }
-
-    @SubscribeEvent
-    public void livingUpdateEvent(LivingUpdateEvent event)
-    {
-        Organism organism = Organism.get(event.entityLiving);
-
-        if (organism.hasEmbryo() && !(event.entityLiving instanceof EntityPlayer))
-        {
-            EntityLivingBase host = event.entityLiving;
-            event.setCanceled(true);
-
-            host.noClip = false;
-            host.motionY -= 0.001D;
-            host.moveStrafing = 0;
-            host.moveForward = 0;
-            host.moveEntityWithHeading(host.moveStrafing, host.moveForward);
-            host.setJumping(false);
-
-            if (host.hurtTime > 0)
-            {
-                --host.hurtTime;
-            }
-
-            if (host.attackTime > 0)
-            {
-                --host.attackTime;
-            }
-
-            if (host.hurtTime > 0)
-            {
-                --host.hurtTime;
-            }
-
-            if (host.hurtResistantTime > 0 && !(host instanceof EntityPlayerMP))
-            {
-                --host.hurtResistantTime;
-            }
-
-            if (!host.worldObj.isRemote)
-            {
-                List list = host.worldObj.getEntitiesWithinAABBExcludingEntity(host, host.boundingBox.expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
-
-                if (list != null && !list.isEmpty())
-                {
-                    for (int i = 0; i < list.size(); ++i)
-                    {
-                        Entity entity = (Entity) list.get(i);
-
-                        if (entity.canBePushed() && !(entity instanceof EntityParasitoid))
-                        {
-                            entity.applyEntityCollision(host);
-                        }
-                    }
-                }
-            }
-            
-            if (host instanceof EntityDragon)
-            {
-                EntityDragon dragon = (EntityDragon) host;
-
-                float time = 0.2F / (MathHelper.sqrt_double(dragon.motionX * dragon.motionX + dragon.motionZ * dragon.motionZ) * 10.0F + 1.0F);
-                time *= (float) Math.pow(2.0D, dragon.motionY);
-
-                dragon.prevAnimTime = dragon.animTime;
-                dragon.animTime += time * 0.1F;
-
-                if (++dragon.ringBufferIndex == dragon.ringBuffer.length)
-                {
-                    dragon.ringBufferIndex = 0;
-                }
-
-                dragon.ringBuffer[dragon.ringBufferIndex][0] = (double) dragon.rotationYaw;
-                dragon.ringBuffer[dragon.ringBufferIndex][1] = dragon.posY;
-            }
-        }
     }
 
     @SubscribeEvent
