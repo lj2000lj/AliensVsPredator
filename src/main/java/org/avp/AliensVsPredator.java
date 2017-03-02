@@ -213,6 +213,7 @@ public class AliensVsPredator implements IMod
 
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
         {
+            sounds().pre(event);
             renderTypes().pre(event);
         }
     }
@@ -227,7 +228,7 @@ public class AliensVsPredator implements IMod
         }
 
         MDX.log().info("[AliensVsPredator] Initialization");
-        
+
         network().init(event);
         materials().init(event);
         items().init(event);
@@ -257,7 +258,6 @@ public class AliensVsPredator implements IMod
 
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
         {
-            sounds().post(event);
             renderers().post(event);
             keybinds().post(event);
         }
