@@ -17,12 +17,9 @@ import net.minecraft.world.World;
 
 public class EntityDracoburster extends EntityChestburster implements IMob, INascentic
 {
-    private Class<? extends Entity> matureState;
-
     public EntityDracoburster(World world)
     {
         super(world);
-        this.matureState = EntityDracomorph.class;
         this.setSize(1.0F, 0.4F);
         this.experienceValue = 16;
         this.getNavigator().setCanSwim(true);
@@ -75,7 +72,7 @@ public class EntityDracoburster extends EntityChestburster implements IMob, INas
     @Override
     public Class<? extends Entity> getMatureState()
     {
-        return this.matureState;
+        return EntityDracomorph.class;
     }
 
     @Override

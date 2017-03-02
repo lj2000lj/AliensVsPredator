@@ -17,12 +17,9 @@ import net.minecraft.world.World;
 
 public class EntityBelugaburster extends EntityChestburster implements IMob, INascentic
 {
-    private Class<? extends Entity> matureState;
-
     public EntityBelugaburster(World world)
     {
         super(world);
-        this.matureState = EntityBelugamorph.class;
         this.setSize(1.0F, 0.4F);
         this.experienceValue = 16;
         this.getNavigator().setCanSwim(true);
@@ -75,7 +72,7 @@ public class EntityBelugaburster extends EntityChestburster implements IMob, INa
     @Override
     public Class<? extends Entity> getMatureState()
     {
-        return this.matureState;
+        return EntityBelugamorph.class;
     }
 
     @Override

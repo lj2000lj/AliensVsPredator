@@ -1,8 +1,11 @@
 package org.avp.world;
 
+import java.util.List;
+
 import org.avp.Settings.ClientSettings;
 import org.avp.client.entityfx.EntityBloodFX;
 import org.avp.entities.Organism;
+import org.avp.entities.living.EntityParasitoid;
 import org.avp.entities.living.EntitySpeciesYautja;
 
 import com.arisux.mdxlib.lib.game.Game;
@@ -14,8 +17,10 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
+import net.minecraft.entity.boss.EntityDragonPart;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntityGhast;
@@ -23,9 +28,16 @@ import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.passive.EntityMooshroom;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.server.S04PacketEntityEquipment;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 
 public class EntityImpregnationHandler
@@ -124,7 +136,7 @@ public class EntityImpregnationHandler
                                 if (world.isRemote && age >= timeBleed)
                                 {
                                     this.bleed(host, 0.25F);
-                                    
+
                                     if (host.getRNG().nextInt(100) == 0)
                                     {
                                         for (int i = 64; i > 0; i--)
@@ -181,32 +193,108 @@ public class EntityImpregnationHandler
             particleColor = 0x507d2a;
             glow = false;
         }
-        
+
         if (host instanceof EntityGhast)
         {
             particleColor = 0xF0F0F0;
             glow = false;
         }
-        
+
         if (host instanceof EntityMooshroom)
         {
             particleColor = 0xCD8C6F;
             glow = false;
         }
-        
+
         if (host instanceof EntityEnderman)
         {
             particleColor = 0xCC00FA;
             glow = true;
         }
-        
+
         if (host instanceof EntityDragon)
         {
             particleColor = 0xA831FF;
             glow = true;
         }
-        
+
         Game.minecraft().effectRenderer.addEffect(new EntityBloodFX(host.worldObj, pX, pY, pZ, particleColor, glow));
+    }
+
+    @SubscribeEvent
+    public void livingUpdateEvent(LivingUpdateEvent event)
+    {
+        Organism organism = Organism.get(event.entityLiving);
+
+        if (organism.hasEmbryo())
+        {
+            EntityLivingBase host = event.entityLiving;
+            event.setCanceled(true);
+
+            host.noClip = false;
+            host.motionY -= 0.001D;
+            host.moveStrafing = 0;
+            host.moveForward = 0;
+            host.moveEntityWithHeading(host.moveStrafing, host.moveForward);
+            host.setJumping(false);
+
+            if (host.hurtTime > 0)
+            {
+                --host.hurtTime;
+            }
+
+            if (host.attackTime > 0)
+            {
+                --host.attackTime;
+            }
+
+            if (host.hurtTime > 0)
+            {
+                --host.hurtTime;
+            }
+
+            if (host.hurtResistantTime > 0 && !(host instanceof EntityPlayerMP))
+            {
+                --host.hurtResistantTime;
+            }
+
+            if (!host.worldObj.isRemote)
+            {
+                List list = host.worldObj.getEntitiesWithinAABBExcludingEntity(host, host.boundingBox.expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+
+                if (list != null && !list.isEmpty())
+                {
+                    for (int i = 0; i < list.size(); ++i)
+                    {
+                        Entity entity = (Entity) list.get(i);
+
+                        if (entity.canBePushed() && !(entity instanceof EntityParasitoid))
+                        {
+                            entity.applyEntityCollision(host);
+                        }
+                    }
+                }
+            }
+            
+            if (host instanceof EntityDragon)
+            {
+                EntityDragon dragon = (EntityDragon) host;
+
+                float time = 0.2F / (MathHelper.sqrt_double(dragon.motionX * dragon.motionX + dragon.motionZ * dragon.motionZ) * 10.0F + 1.0F);
+                time *= (float) Math.pow(2.0D, dragon.motionY);
+
+                dragon.prevAnimTime = dragon.animTime;
+                dragon.animTime += time * 0.1F;
+
+                if (++dragon.ringBufferIndex == dragon.ringBuffer.length)
+                {
+                    dragon.ringBufferIndex = 0;
+                }
+
+                dragon.ringBuffer[dragon.ringBufferIndex][0] = (double) dragon.rotationYaw;
+                dragon.ringBuffer[dragon.ringBufferIndex][1] = dragon.posY;
+            }
+        }
     }
 
     @SubscribeEvent

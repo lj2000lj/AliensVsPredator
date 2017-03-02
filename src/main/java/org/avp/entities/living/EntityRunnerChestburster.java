@@ -17,12 +17,9 @@ import net.minecraft.world.World;
 
 public class EntityRunnerChestburster extends EntityChestburster implements IMob, INascentic
 {
-    private Class<? extends Entity> matureState;
-
     public EntityRunnerChestburster(World world)
     {
         super(world);
-        this.matureState = EntityRunnerDrone.class;
         this.setSize(1.0F, 0.4F);
         this.experienceValue = 16;
         this.getNavigator().setCanSwim(true);
@@ -75,7 +72,7 @@ public class EntityRunnerChestburster extends EntityChestburster implements IMob
     @Override
     public Class<? extends Entity> getMatureState()
     {
-        return this.matureState;
+        return EntityRunnerDrone.class;
     }
 
     @Override

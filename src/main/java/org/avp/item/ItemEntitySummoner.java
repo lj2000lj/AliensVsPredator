@@ -12,6 +12,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
 
 public class ItemEntitySummoner extends HookedItem
@@ -34,8 +35,19 @@ public class ItemEntitySummoner extends HookedItem
 
         if (world.isRemote && entity != null)
         {
-            MovingObjectPosition ray = player.rayTrace(50D, 1F);
-            AliensVsPredator.network().sendToServer(new PacketSpawnEntity(ray.blockX + 0.5, ray.blockY + 1D, ray.blockZ + 0.5, Entities.getEntityRegistrationId(c)));
+            MovingObjectPosition ray = Entities.rayTraceSpecial(50F, 1F);
+
+            if (ray != null)
+            {
+                if (ray.typeOfHit == MovingObjectType.ENTITY && ray.entityHit != null)
+                {
+                    AliensVsPredator.network().sendToServer(new PacketSpawnEntity(ray.entityHit.posX, ray.entityHit.posY + 1D, ray.entityHit.posZ, Entities.getEntityRegistrationId(c)));
+                }
+                else
+                {
+                    AliensVsPredator.network().sendToServer(new PacketSpawnEntity(ray.blockX + 0.5, ray.blockY + 1D, ray.blockZ + 0.5, Entities.getEntityRegistrationId(c)));
+                }
+            }
         }
 
         return super.onItemRightClick(stack, world, player);

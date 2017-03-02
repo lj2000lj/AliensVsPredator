@@ -83,6 +83,7 @@ public class EntityChestburster extends EntitySpeciesAlien implements IMob, INas
     public void onUpdate()
     {
         super.onUpdate();
+        this.fallDistance = 0F;
     }
 
     @Override
@@ -218,6 +219,8 @@ public class EntityChestburster extends EntitySpeciesAlien implements IMob, INas
     {
         Organism hostOrganism = (Organism) host.getExtendedProperties(Organism.IDENTIFIER);
         this.matureState = hostOrganism.getEmbryo().getResultingOrganism();
+        DamageSources.causeChestbursterDamage(this, host);
+        host.setHealth(0F);
         
         Pos safeLocation = Entities.getSafeLocationAround(this, new Pos((int)host.posX, (int)host.posY, (int)host.posZ));
         
@@ -230,7 +233,12 @@ public class EntityChestburster extends EntitySpeciesAlien implements IMob, INas
         host.worldObj.spawnEntityInWorld(this);
         hostOrganism.removeEmbryo();
         host.getActivePotionEffects().clear();
-        host.attackEntityFrom(DamageSources.causeChestbursterDamage(this, host), 100000F);
+    }
+    
+    @Override
+    public void applyEntityCollision(Entity entityIn)
+    {
+        super.applyEntityCollision(entityIn);
     }
     
     @Override

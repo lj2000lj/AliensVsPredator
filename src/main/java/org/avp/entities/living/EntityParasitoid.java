@@ -18,6 +18,7 @@ import net.minecraft.entity.ai.EntityAILeapAtTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
+import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.monster.EntityGolem;
 import net.minecraft.entity.monster.EntityPigZombie;
@@ -31,6 +32,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
 public class EntityParasitoid extends EntitySpeciesAlien implements IMob, IParasitoid
@@ -314,6 +316,17 @@ public class EntityParasitoid extends EntitySpeciesAlien implements IMob, IParas
     protected boolean canTriggerWalking()
     {
         return false;
+    }
+    
+    @Override
+    public boolean attackEntityFrom(DamageSource source, float amount)
+    {
+        if (source.getEntity() instanceof EntityDragon)
+        {
+            return false;
+        }
+        
+        return super.attackEntityFrom(source, amount);
     }
 
     @SuppressWarnings("all")

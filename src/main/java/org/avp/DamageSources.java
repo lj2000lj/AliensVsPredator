@@ -3,6 +3,8 @@ package org.avp;
 import org.avp.entities.EntityFlame;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
@@ -63,9 +65,11 @@ public class DamageSources extends DamageSource
         return (new EntityDamageSource(bullet.getDamageType(), sourceEntity)).setProjectile();
     }
 
-    public static DamageSource causeChestbursterDamage(Entity sourceEntity, Entity entity)
+    public static DamageSource causeChestbursterDamage(Entity sourceEntity, EntityLivingBase entity)
     {
-        return (new EntityDamageSourceIndirect(chestburster.getDamageType(), sourceEntity, entity)).setDamageIsAbsolute().setDamageBypassesArmor();
+        DamageSource source = (new EntityDamageSourceIndirect(chestburster.getDamageType(), sourceEntity, entity)).setDamageIsAbsolute().setDamageBypassesArmor();
+        entity.attackEntityFrom(source, entity.getHealth());
+        return source;
     }
 
     public static DamageSource causeAcidicProjectileDamage(Entity sourceEntity, Entity entity)
