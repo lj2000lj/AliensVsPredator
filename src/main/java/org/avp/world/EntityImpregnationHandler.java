@@ -226,7 +226,7 @@ public class EntityImpregnationHandler
     {
         Organism organism = Organism.get(event.entityLiving);
 
-        if (organism.hasEmbryo())
+        if (organism.hasEmbryo() && !(event.entityLiving instanceof EntityPlayer))
         {
             EntityLivingBase host = event.entityLiving;
             event.setCanceled(true);
