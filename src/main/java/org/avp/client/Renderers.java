@@ -243,20 +243,19 @@ import org.avp.tile.TileEntityTurret;
 import org.avp.tile.TileEntityWorkstation;
 
 import com.arisux.mdxlib.lib.client.TexturedModel;
-import com.arisux.mdxlib.lib.game.IPostInitEvent;
+import com.arisux.mdxlib.lib.game.IInitEvent;
 
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.item.Item;
 
 @SideOnly(Side.CLIENT)
-public class Renderers implements IPostInitEvent
+public class Renderers implements IInitEvent
 {
     public static Renderers instance = new Renderers();
 
-    @Override
-    public void post(FMLPostInitializationEvent event)
+    public void init(FMLInitializationEvent event)
     {
         registerSimpleBlockRenderingHandlers();
         registerTileEntitySpecialRenderers();
@@ -268,7 +267,7 @@ public class Renderers implements IPostInitEvent
         FaceLocationTransforms.register();
         VanillaFaceLocationTransforms.register();
     }
-
+    
     private void registerLivingEntityRenderers()
     {
         registerEntityRenderingHandler(EntityEngineer.class, new RenderEngineer());

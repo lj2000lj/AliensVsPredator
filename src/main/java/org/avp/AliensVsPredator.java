@@ -242,6 +242,11 @@ public class AliensVsPredator implements IMod
         playermodehandler().init(event);
         schematics().init(event);
         entities().init(event);
+
+        if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
+        {
+            renderers().init(event);
+        }
     }
 
     @Override
@@ -258,7 +263,6 @@ public class AliensVsPredator implements IMod
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
         {
             sounds().post(event);
-            renderers().post(event);
             keybinds().post(event);
         }
     }
