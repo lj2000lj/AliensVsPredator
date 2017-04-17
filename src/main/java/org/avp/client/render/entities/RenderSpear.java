@@ -1,24 +1,24 @@
 package org.avp.client.render.entities;
 
 import org.avp.AliensVsPredator;
+import org.avp.entities.EntitySpear;
 import org.lwjgl.opengl.GL12;
 
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.game.Game;
 
 import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 
-public class RenderSpear extends Render
+public class RenderSpear extends Render<EntitySpear>
 {
-    protected RenderSpear()
+    public RenderSpear()
     {
         super(Game.renderManager());
     }
 
     @Override
-    public void doRender(Entity entity, double posX, double posY, double posZ, float rotationYaw, float renderPartialTicks)
+    public void doRender(EntitySpear entity, double posX, double posY, double posZ, float rotationYaw, float renderPartialTicks)
     {
         OpenGL.pushMatrix();
         {
@@ -32,7 +32,7 @@ public class RenderSpear extends Render
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(Entity entity)
+    protected ResourceLocation getEntityTexture(EntitySpear entity)
     {
         return null;
     }

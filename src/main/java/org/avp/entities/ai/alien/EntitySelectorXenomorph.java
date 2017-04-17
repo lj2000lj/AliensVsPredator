@@ -1,19 +1,21 @@
 package org.avp.entities.ai.alien;
 
 import org.avp.entities.EntityLiquidPool;
-import org.avp.entities.Organism;
 import org.avp.entities.living.EntitySpeciesAlien;
+import org.avp.world.capabilities.IOrganism.Organism;
+import org.avp.world.capabilities.IOrganism.Provider;
 
-import net.minecraft.entity.Entity;
+import com.google.common.base.Predicate;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 
-public class EntitySelectorXenomorph implements IEntitySelector
+public class EntitySelectorXenomorph implements Predicate<EntityLivingBase>
 {
     public static final EntitySelectorXenomorph instance = new EntitySelectorXenomorph();
 
     @Override
-    public boolean isEntityApplicable(Entity potentialTarget)
+    public boolean apply(EntityLivingBase potentialTarget)
     {
         if (potentialTarget instanceof EntitySpeciesAlien)
             return false;
@@ -24,9 +26,9 @@ public class EntitySelectorXenomorph implements IEntitySelector
         if (potentialTarget instanceof EntityLivingBase)
         {
             EntityLivingBase livingBase = (EntityLivingBase) potentialTarget;
-            Organism livingProperties = Organism.get(livingBase);
+            Organism organism = (Organism) livingBase.getCapability(Provider.CAPABILITY, null);
             
-            if (livingProperties.hasEmbryo())
+            if (organism.hasEmbryo())
             {
                 return false;
             }

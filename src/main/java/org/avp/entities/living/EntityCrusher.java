@@ -5,6 +5,7 @@ import org.avp.client.Sounds;
 
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAISwimming;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
 public class EntityCrusher extends EntityPraetorian implements IMaturable
@@ -15,9 +16,9 @@ public class EntityCrusher extends EntityPraetorian implements IMaturable
         this.jumpMovementFactor = 0.2F;
         this.experienceValue = 300;
         this.setSize(1.0F, 3.0F);
-        this.getNavigator().setCanSwim(true);
-        this.getNavigator().setAvoidsWater(true);
-        this.getNavigator().setBreakDoors(true);
+        
+        
+        
         this.tasks.addTask(0, new EntityAISwimming(this));
     }
 
@@ -32,27 +33,27 @@ public class EntityCrusher extends EntityPraetorian implements IMaturable
     }
 
     @Override
-    protected boolean isAIEnabled()
+    public boolean isAIDisabled()
     {
-        return true;
+        return false;
     }
 
     @Override
-    protected String getHurtSound()
+    protected SoundEvent getHurtSound()
     {
-        return Sounds.SOUND_CRUSHER_HURT.getKey();
+        return Sounds.SOUND_CRUSHER_HURT.event();
     }
 
     @Override
-    protected String getLivingSound()
+    protected SoundEvent getAmbientSound()
     {
-        return Sounds.SOUND_CRUSHER_LIVING.getKey();
+        return Sounds.SOUND_CRUSHER_LIVING.event();
     }
 
     @Override
-    protected String getDeathSound()
+    protected SoundEvent getDeathSound()
     {
-        return Sounds.SOUND_CRUSHER_DEATH.getKey();
+        return Sounds.SOUND_CRUSHER_DEATH.event();
     }
 
     @Override

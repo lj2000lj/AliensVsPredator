@@ -7,11 +7,15 @@ import org.avp.entities.EntitySupplyChuteMarines;
 import org.avp.entities.EntitySupplyChuteSeegson;
 
 import com.arisux.mdxlib.lib.client.TexturedModel;
+import com.arisux.mdxlib.lib.world.entity.player.inventory.Inventories;
 import com.arisux.mdxlib.lib.world.item.HookedItem;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -145,11 +149,11 @@ public class ItemSupplyChute extends HookedItem
         setMaxStackSize(1);
         this.type = type;
     }
-
+    
     @Override
-    public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn)
+    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
     {
-        if (playerIn.capabilities.isCreativeMode || playerIn.inventory.consumeInventoryItem(this))
+        if (playerIn.capabilities.isCreativeMode || Inventories.consumeItem(playerIn, this))
         {
             int x = (int) (playerIn.posX + 1);
             int y = (int) (playerIn.posY + 80);
@@ -157,12 +161,10 @@ public class ItemSupplyChute extends HookedItem
 
             if (!worldIn.isRemote)
             {
-                worldIn.setBlock(x, y, z, this.type.getBlock());
+                worldIn.setBlockState(new BlockPos(x, y, z), this.type.getBlock().getDefaultState());
             }
-
-            return itemStackIn;
         }
-        return itemStackIn;
+        return super.onItemRightClick(itemStackIn, worldIn, playerIn, hand);
     }
 
     public SupplyChuteType getType()

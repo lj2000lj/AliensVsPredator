@@ -4,38 +4,34 @@ import com.arisux.mdxlib.lib.world.tile.IRotatable;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-
 
 public class TileEntityAmpule extends TileEntity implements IRotatable
 {
     private EnumFacing direction;
 
     @Override
-    public void updateEntity()
+    public SPacketUpdateTileEntity getUpdatePacket()
     {
-        ;
+        return new SPacketUpdateTileEntity(this.getPos(), 1, this.getUpdateTag());
     }
 
     @Override
-    public Packet getDescriptionPacket()
+    public NBTTagCompound getUpdateTag()
     {
-        NBTTagCompound nbtTag = new NBTTagCompound();
-        this.writeToNBT(nbtTag);
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbtTag);
+        return this.writeToNBT(new NBTTagCompound());
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet)
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet)
     {
-        readFromNBT(packet.getNbtCompound());
+        this.readFromNBT(packet.getNbtCompound());
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
 
@@ -43,6 +39,8 @@ public class TileEntityAmpule extends TileEntity implements IRotatable
         {
             nbt.setInteger("Direction", this.direction.ordinal());
         }
+
+        return nbt;
     }
 
     @Override
@@ -50,9 +48,9 @@ public class TileEntityAmpule extends TileEntity implements IRotatable
     {
         super.readFromNBT(nbt);
 
-        if (EnumFacing.getOrientation(nbt.getInteger("Direction")) != null)
+        if (EnumFacing.getFront(nbt.getInteger("Direction")) != null)
         {
-            this.direction = EnumFacing.getOrientation(nbt.getInteger("Direction"));
+            this.direction = EnumFacing.getFront(nbt.getInteger("Direction"));
         }
     }
 

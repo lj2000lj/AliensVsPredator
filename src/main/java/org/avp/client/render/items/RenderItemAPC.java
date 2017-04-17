@@ -3,14 +3,17 @@ package org.avp.client.render.items;
 import org.avp.AliensVsPredator;
 import org.lwjgl.opengl.GL11;
 
+import com.arisux.mdxlib.lib.client.Model;
 import com.arisux.mdxlib.lib.client.render.ItemRenderer;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.client.render.wavefront.Part;
 import com.arisux.mdxlib.lib.game.Game;
 
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 
-public class RenderItemAPC extends ItemRenderer
+public class RenderItemAPC extends ItemRenderer<Model>
 {
     public RenderItemAPC()
     {
@@ -18,10 +21,8 @@ public class RenderItemAPC extends ItemRenderer
     }
 
     @Override
-    public void renderFirstPerson(ItemStack item, Object... data)
+    public void renderFirstPersonRight(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        super.renderFirstPerson(item, data);
-
         OpenGL.pushMatrix();
         {
             float scale = 0.25F;
@@ -39,10 +40,8 @@ public class RenderItemAPC extends ItemRenderer
     }
 
     @Override
-    public void renderThirdPerson(ItemStack item, Object... data)
+    public void renderThirdPersonRight(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        super.renderThirdPerson(item, data);
-
         OpenGL.pushMatrix();
         {
             float scale = 0.75F;
@@ -61,10 +60,8 @@ public class RenderItemAPC extends ItemRenderer
     }
 
     @Override
-    public void renderInInventory(ItemStack item, Object... data)
+    public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        super.renderInInventory(item, data);
-
         OpenGL.pushMatrix();
         {
             float scale = 2.5F;
@@ -81,9 +78,9 @@ public class RenderItemAPC extends ItemRenderer
     }
 
     @Override
-    public void renderInWorld(ItemStack item, Object... data)
+    public void renderInWorld(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        super.renderInWorld(item, data);
+        
 
         OpenGL.pushMatrix();
         {
@@ -97,5 +94,19 @@ public class RenderItemAPC extends ItemRenderer
             }
         }
         OpenGL.popMatrix();
+    }
+
+    @Override
+    public void renderThirdPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void renderFirstPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
+    {
+        // TODO Auto-generated method stub
+        
     }
 }

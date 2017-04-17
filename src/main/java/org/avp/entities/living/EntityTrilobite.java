@@ -1,20 +1,21 @@
 package org.avp.entities.living;
 
 import org.avp.client.Sounds;
+import org.avp.entities.ai.EntityAICustomAttackOnCollide;
 import org.avp.entities.ai.alien.EntitySelectorXenomorph;
 
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.monster.IMob;
+import net.minecraft.init.MobEffects;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
 public class EntityTrilobite extends EntitySpeciesAlien implements IMob
@@ -25,17 +26,13 @@ public class EntityTrilobite extends EntitySpeciesAlien implements IMob
 
         this.setSize(1.5F, 1.5F);
         this.experienceValue = 32;
-        this.getNavigator().setCanSwim(true);
-        this.getNavigator().setAvoidsWater(false);
+
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(3, new EntityAIAttackOnCollide(this, 0.800000011920929D, true));
+        this.tasks.addTask(3, new EntityAICustomAttackOnCollide(this, 0.800000011920929D, true));
         this.tasks.addTask(8, new EntityAIWander(this, 0.800000011920929D));
         this.targetTasks.addTask(0, new EntityAIHurtByTarget(this, true));
         this.targetTasks.addTask(2, new EntityAILeapAtTarget(this, 1.0F));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, Entity.class, /** targetChance **/
-            0, /** shouldCheckSight **/
-            false, /** nearbyOnly **/
-            false, EntitySelectorXenomorph.instance));
+        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<EntityLivingBase>(this, EntityLivingBase.class, 0, false, false, EntitySelectorXenomorph.instance));
     }
 
     @Override
@@ -47,12 +44,6 @@ public class EntityTrilobite extends EntitySpeciesAlien implements IMob
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(32.0D);
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1F);
-    }
-
-    @Override
-    protected boolean isAIEnabled()
-    {
-        return true;
     }
 
     @Override
@@ -69,21 +60,21 @@ public class EntityTrilobite extends EntitySpeciesAlien implements IMob
     }
 
     @Override
-    protected String getHurtSound()
+    protected SoundEvent getHurtSound()
     {
-        return Sounds.SOUND_FACEHUGGER_HURT.getKey();
+        return Sounds.SOUND_FACEHUGGER_HURT.event();
     }
 
     @Override
-    protected String getDeathSound()
+    protected SoundEvent getDeathSound()
     {
-        return Sounds.SOUND_CHESTBURSTER_BURST.getKey();
+        return Sounds.SOUND_CHESTBURSTER_BURST.event();
     }
 
     @Override
-    protected String getLivingSound()
+    protected SoundEvent getAmbientSound()
     {
-        return Sounds.SOUND_FACEHUGGER_LIVING.getKey();
+        return Sounds.SOUND_FACEHUGGER_LIVING.event();
     }
 
     @Override
@@ -112,7 +103,7 @@ public class EntityTrilobite extends EntitySpeciesAlien implements IMob
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect)
     {
-        return potionEffect.getPotionID() == Potion.poison.id ? false : super.isPotionApplicable(potionEffect);
+        return potionEffect.getPotion() == MobEffects.POISON ? false : super.isPotionApplicable(potionEffect);
     }
 
     @Override

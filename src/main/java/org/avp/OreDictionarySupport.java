@@ -2,6 +2,7 @@ package org.avp;
 
 import com.arisux.mdxlib.lib.game.IInitEvent;
 
+import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -19,6 +20,7 @@ public class OreDictionarySupport implements IInitEvent
         OreDictionary.registerOre("ingotAluminum", AliensVsPredator.items().itemIngotAluminum);
         OreDictionary.registerOre("aluminium", AliensVsPredator.items().itemIngotAluminum);
         OreDictionary.registerOre("ingotAluminium", AliensVsPredator.items().itemIngotAluminum);
+        System.out.println("COPPER: " + Item.getItemFromBlock(AliensVsPredator.blocks().oreCopper));
         OreDictionary.registerOre("oreCopper", AliensVsPredator.blocks().oreCopper);
         OreDictionary.registerOre("oreLithium", AliensVsPredator.blocks().oreLithium);
         OreDictionary.registerOre("oreAluminum", AliensVsPredator.blocks().oreBauxite);

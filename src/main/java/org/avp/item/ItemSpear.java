@@ -6,10 +6,13 @@ import org.avp.entities.EntitySpear;
 import com.arisux.mdxlib.lib.game.GameSounds;
 import com.arisux.mdxlib.lib.world.entity.player.inventory.Inventories;
 
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
 public class ItemSpear extends ItemSword
@@ -17,35 +20,40 @@ public class ItemSpear extends ItemSword
     public ItemSpear(ToolMaterial material)
     {
         super(material);
-        this.setMaxDurability(120);
+        this.setMaxDamage(120);
         this.maxStackSize = 1;
     }
 
     @Override
-    public void onPlayerStoppedUsing(ItemStack itemstack, World world, EntityPlayer entityplayer, int itemInUseCount)
+    public void onPlayerStoppedUsing(ItemStack itemstack, World world, EntityLivingBase entityLiving, int timeLeft)
     {
-        if (entityplayer.inventory.hasItem(AliensVsPredator.items().itemSpear))
+        if (entityLiving instanceof EntityPlayer)
         {
-            float charge = (this.getMaxItemUseDuration(itemstack) - itemInUseCount * 1F) / 9F;
-            float maxCharge = 3.5F;
-
-            charge = charge >= maxCharge ? maxCharge : charge;
-
-            if (charge < 0.1D)
+            EntityPlayer player = (EntityPlayer) entityLiving;
+            
+            if (Inventories.playerHas(AliensVsPredator.items().itemSpear, player))
             {
-                return;
-            }
+                float charge = (this.getMaxItemUseDuration(itemstack) - timeLeft * 1F) / 9F;
+                float maxCharge = 3.5F;
 
-            if (!world.isRemote)
-            {
-                EntitySpear entityspear = new EntitySpear(world, entityplayer, itemstack);
-                entityspear.setThrowableHeading(entityspear.motionX, entityspear.motionY, entityspear.motionZ, 0.8F * charge, 0.1F);
-                GameSounds.fxPop.playSound(entityplayer, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + charge * 0.5F);
-                world.spawnEntityInWorld(entityspear);
+                charge = charge >= maxCharge ? maxCharge : charge;
 
-                if (!entityplayer.capabilities.isCreativeMode)
+                if (charge < 0.1D)
                 {
-                    Inventories.consumeItem(entityplayer, AliensVsPredator.items().itemSpear, true);
+                    return;
+                }
+
+                if (!world.isRemote)
+                {
+                    EntitySpear entityspear = new EntitySpear(world, player, itemstack);
+                    entityspear.setThrowableHeading(entityspear.motionX, entityspear.motionY, entityspear.motionZ, 0.8F * charge, 0.1F);
+                    GameSounds.fxPop.playSound(player, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + charge * 0.5F);
+                    world.spawnEntityInWorld(entityspear);
+
+                    if (!player.capabilities.isCreativeMode)
+                    {
+                        Inventories.consumeItem(player, AliensVsPredator.items().itemSpear, true);
+                    }
                 }
             }
         }
@@ -60,17 +68,17 @@ public class ItemSpear extends ItemSword
     @Override
     public EnumAction getItemUseAction(ItemStack itemstack)
     {
-        return EnumAction.bow;
+        return EnumAction.BOW;
     }
-
+    
     @Override
-    public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer)
+    public ActionResult<ItemStack> onItemRightClick(ItemStack itemstack, World world, EntityPlayer player, EnumHand hand)
     {
-        if (entityplayer.inventory.hasItem(AliensVsPredator.items().itemSpear))
+        if (Inventories.playerHas(AliensVsPredator.items().itemSpear, player))
         {
-            entityplayer.setItemInUse(itemstack, this.getMaxItemUseDuration(itemstack));
+            player.setActiveHand(hand);
         }
-
-        return itemstack;
+        
+        return super.onItemRightClick(itemstack, world, player, hand);
     }
 }

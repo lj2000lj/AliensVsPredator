@@ -92,7 +92,8 @@ import org.avp.tile.TileEntityTransformer;
 import org.avp.tile.TileEntityTurret;
 import org.avp.tile.TileEntityWorkstation;
 import org.avp.world.dimension.BiomeGenLV;
-import org.avp.world.dimension.varda.BiomeGenVarda;
+import org.avp.world.dimension.acheron.BiomeAcheron;
+import org.avp.world.dimension.varda.BiomeVarda;
 
 import com.arisux.mdxlib.MDX;
 import com.arisux.mdxlib.lib.game.Game;
@@ -254,17 +255,17 @@ public class EntityHandler implements IInitEvent
     }
 
     private static final Class<?>[][]    PARAM_TYPES   = new Class[][] { { EnumCreatureType.class, Class.class, int.class, Material.class, boolean.class, boolean.class } };
-//    public static final EnumCreatureType WATER_MONSTER = EnumHelper.addEnum(PARAM_TYPES, EnumCreatureType.class, "water_monster", IMob.class, 20, Material.water, false, false);
+//    public static final EnumCreatureType WATER_MONSTER = EnumHelper.addEnum(PARAM_TYPES, EnumCreatureType.class, "water_monster", IMob.class, 20, Material.WATER, false, false);
 
     private void registerSpawns()
     {
         if (AliensVsPredator.settings().areAutoSpawnsEnabled())
         {
-            Biome[] xenomorphBiomes = this.getFilteredBiomeArray(Biomes.BIRCH_FOREST, Biomes.BIRCH_FOREST_HILLS, Biomes.COLD_BEACH, Biomes.COLD_TAIGA, Biomes.COLD_TAIGA_HILLS, Biomes.DESERT_HILLS, Biomes.EXTREME_HILLS, Biomes.EXTREME_HILLS_EDGE, Biomes.EXTREME_HILLS_WITH_TREES, Biomes.FOREST, Biomes.FOREST_HILLS, Biomes.ICE_MOUNTAINS, Biomes.ICE_PLAINS, Biomes.JUNGLE, Biomes.JUNGLE_EDGE, Biomes.JUNGLE_HILLS, Biomes.PLAINS, Biomes.ROOFED_FOREST, Biomes.SWAMPLAND, Biomes.TAIGA, Biomes.TAIGA_HILLS, BiomeGenLV.acheron);
+            Biome[] xenomorphBiomes = this.getFilteredBiomeArray(Biomes.BIRCH_FOREST, Biomes.BIRCH_FOREST_HILLS, Biomes.COLD_BEACH, Biomes.COLD_TAIGA, Biomes.COLD_TAIGA_HILLS, Biomes.DESERT_HILLS, Biomes.EXTREME_HILLS, Biomes.EXTREME_HILLS_EDGE, Biomes.EXTREME_HILLS_WITH_TREES, Biomes.FOREST, Biomes.FOREST_HILLS, Biomes.ICE_MOUNTAINS, Biomes.ICE_PLAINS, Biomes.JUNGLE, Biomes.JUNGLE_EDGE, Biomes.JUNGLE_HILLS, Biomes.PLAINS, Biomes.ROOFED_FOREST, Biomes.SWAMPLAND, Biomes.TAIGA, Biomes.TAIGA_HILLS, BiomeAcheron.acheron);
 
             Biome[] predatorBiomes = this.getFilteredBiomeArray(Biomes.BIRCH_FOREST, Biomes.BIRCH_FOREST_HILLS, Biomes.DESERT, Biomes.DESERT_HILLS, Biomes.EXTREME_HILLS, Biomes.EXTREME_HILLS_EDGE, Biomes.EXTREME_HILLS_WITH_TREES, Biomes.FOREST, Biomes.FOREST_HILLS, Biomes.FROZEN_OCEAN, Biomes.FROZEN_RIVER, Biomes.ICE_PLAINS, Biomes.JUNGLE, Biomes.JUNGLE_EDGE, Biomes.JUNGLE_HILLS, Biomes.TAIGA, Biomes.TAIGA_HILLS);
 
-            Biome[] vardaBiomes = this.getFilteredBiomeArray(BiomeGenVarda.vardaBadlands, BiomeGenVarda.vardaForest);
+            Biome[] vardaBiomes = this.getFilteredBiomeArray(BiomeVarda.vardaBadlands, BiomeVarda.vardaForest);
 
             Biome[] aquaXenomorphBiomes = this.getFilteredBiomeArray(Biomes.RIVER, Biomes.BEACH, Biomes.STONE_BEACH);
 

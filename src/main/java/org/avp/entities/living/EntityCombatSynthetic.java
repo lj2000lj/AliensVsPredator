@@ -8,12 +8,13 @@ import org.avp.entities.EntityBullet;
 import org.avp.entities.EntityLiquidLatexPool;
 import org.avp.entities.EntityLiquidPool;
 
-import net.minecraft.entity.Entity;
+import com.google.common.base.Predicate;
+
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIArrowAttack;
+import net.minecraft.entity.ai.EntityAIAttackRanged;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
@@ -27,9 +28,12 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class EntityCombatSynthetic extends EntityCreature implements IMob, IRangedAttackMob, IHost, IEntitySelector
+public class EntityCombatSynthetic extends EntityCreature implements IMob, IRangedAttackMob, IHost, Predicate<EntityLivingBase>
 {
     private EntityAIBase aiRangedAttack;
     
@@ -38,10 +42,7 @@ public class EntityCombatSynthetic extends EntityCreature implements IMob, IRang
         super(word);
         this.setSize(1, 2);
         this.experienceValue = 40;
-        this.aiRangedAttack = new EntityAIArrowAttack(this, 0.4D, 20, 24);
-        this.dataWatcher.addObject(18, new Integer(15));
-        this.dataWatcher.addObject(17, "");
-        this.dataWatcher.addObject(16, Byte.valueOf((byte) 0));
+        this.aiRangedAttack = new EntityAIAttackRanged(this, 0.4D, 20, 24);
         this.tasks.addTask(1, this.aiRangedAttack);
         this.tasks.addTask(2, new EntityAIWander(this, this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue()));
         this.tasks.addTask(3, new EntityAISwimming(this));
@@ -66,27 +67,21 @@ public class EntityCombatSynthetic extends EntityCreature implements IMob, IRang
     }
 
     @Override
-    protected String getHurtSound()
+    protected SoundEvent getHurtSound()
     {
-        return Sounds.SOUND_MARINE_HURT.getKey();
+        return Sounds.SOUND_MARINE_HURT.event();
     }
 
     @Override
-    protected String getDeathSound()
+    protected SoundEvent getDeathSound()
     {
-        return Sounds.SOUND_MARINE_DEATH.getKey();
+        return Sounds.SOUND_MARINE_DEATH.event();
     }
 
     @Override
     public ItemStack getHeldItemMainhand()
     {
         return new ItemStack(AliensVsPredator.items().itemM41A);
-    }
-
-    @Override
-    protected boolean isAIEnabled()
-    {
-        return true;
     }
 
     @Override
@@ -110,11 +105,11 @@ public class EntityCombatSynthetic extends EntityCreature implements IMob, IRang
         {
         }
     }
-
+    
     @Override
-    public float getBlockPathWeight(int posX, int posY, int posZ)
+    public float getBlockPathWeight(BlockPos pos)
     {
-        return 0.5F - this.worldObj.getLightBrightness(posX, posY, posZ);
+        return 0.5F - this.worldObj.getLightBrightness(pos);
     }
 
     @Override
@@ -126,16 +121,10 @@ public class EntityCombatSynthetic extends EntityCreature implements IMob, IRang
             EntityBullet entityBullet = new EntityBullet(this.worldObj, this, targetEntity, 10F, 0.5F);
             entityBullet.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
             this.worldObj.spawnEntityInWorld(entityBullet);
-            this.worldObj.spawnParticle("largesmoke", this.posX, this.posY + this.getEyeHeight(), this.posZ, 1, 1, 1);
+            this.worldObj.spawnParticle(EnumParticleTypes.SMOKE_LARGE, this.posX, this.posY + this.getEyeHeight(), this.posZ, 1, 1, 1);
         }
     }
 
-    @Override
-    protected void updateAITick()
-    {
-        this.dataWatcher.updateObject(18, Integer.valueOf(15));
-    }
-    
     @Override
     public void onDeath(DamageSource damagesource)
     {
@@ -152,7 +141,7 @@ public class EntityCombatSynthetic extends EntityCreature implements IMob, IRang
     }
 
     @Override
-    public boolean isEntityApplicable(Entity entity)
+    public boolean apply(EntityLivingBase entity)
     {
         if (entity instanceof EntitySpeciesAlien)
             return true;

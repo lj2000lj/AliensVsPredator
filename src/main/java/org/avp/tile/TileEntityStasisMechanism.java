@@ -3,17 +3,19 @@ package org.avp.tile;
 import org.avp.entities.EntityMechanism;
 import org.avp.item.ItemEntitySummoner;
 
+import com.arisux.mdxlib.lib.world.entity.Entities;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
 import net.minecraft.world.World;
 
-public class TileEntityStasisMechanism extends TileEntity
+public class TileEntityStasisMechanism extends TileEntity implements ITickable
 {
     private int direction;
     public EntityMechanism dummyEntity;
@@ -28,24 +30,22 @@ public class TileEntityStasisMechanism extends TileEntity
     }
 
     @Override
-    public void updateEntity()
+    public void update()
     {
-        super.updateEntity();
-
         if (this.dummyEntity == null && this.worldObj.getWorldTime() % 20 == 0)
         {
             this.dummyEntity = (EntityMechanism) getEntityForUUID(this.worldObj, this.readOnlyDmmyEntityUUID);
 
             if (this.dummyEntity != null)
             {
-                this.stasisEntity = this.dummyEntity.riddenByEntity;
+                this.stasisEntity = Entities.getEntityRiddenBy(this.dummyEntity);
             }
         }
 
         if (this.dummyEntity == null && !this.worldObj.isRemote)
         {
             this.dummyEntity = new EntityMechanism(this.worldObj);
-            this.dummyEntity.setLocationAndAngles(this.xCoord + 0.5, this.yCoord, this.zCoord + 0.5, 0, 0);
+            this.dummyEntity.setLocationAndAngles(this.getPos().getX() + 0.5, this.getPos().getY(), this.getPos().getZ() + 0.5, 0, 0);
             this.worldObj.spawnEntityInWorld(this.dummyEntity);
         }
 
@@ -53,28 +53,30 @@ public class TileEntityStasisMechanism extends TileEntity
         {
             ItemEntitySummoner summoner = (ItemEntitySummoner) this.itemstack.getItem();
             this.stasisEntity = summoner.createNewEntity(this.worldObj);
-            this.stasisEntity.setLocationAndAngles(this.xCoord + 0.5, this.yCoord, this.zCoord + 0.5, 0, 0);
+            this.stasisEntity.setLocationAndAngles(this.getPos().getX() + 0.5, this.getPos().getY(), this.getPos().getZ() + 0.5, 0, 0);
             this.worldObj.spawnEntityInWorld(this.stasisEntity);
         }
 
         if (this.dummyEntity != null)
         {
-            this.dummyEntity.setLocationAndAngles(this.xCoord + 0.5, this.yCoord, this.zCoord + 0.5, 0, 0);
+            this.dummyEntity.setLocationAndAngles(this.getPos().getX() + 0.5, this.getPos().getY(), this.getPos().getZ() + 0.5, 0, 0);
 
-            if (this.dummyEntity.riddenByEntity == null)
+            Entity riddenBy = Entities.getEntityRiddenBy(this.dummyEntity);
+            
+            if (riddenBy == null)
             {
                 this.itemstack = null;
             }
 
-            if (this.dummyEntity.riddenByEntity != null && this.dummyEntity.riddenByEntity instanceof EntityLivingBase)
+            if (riddenBy != null && riddenBy instanceof EntityLivingBase)
             {
-                ((EntityLivingBase) this.dummyEntity.riddenByEntity).rotationYawHead = direction * 90;
+                ((EntityLivingBase) riddenBy).rotationYawHead = direction * 90;
             }
         }
 
         if (this.stasisEntity != null)
         {
-            this.stasisEntity.mountEntity(this.dummyEntity);
+            this.stasisEntity.startRiding(this.dummyEntity);
         }
     }
 
@@ -89,21 +91,25 @@ public class TileEntityStasisMechanism extends TileEntity
     }
 
     @Override
-    public Packet getDescriptionPacket()
+    public SPacketUpdateTileEntity getUpdatePacket()
     {
-        NBTTagCompound nbtTag = new NBTTagCompound();
-        this.writeToNBT(nbtTag);
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbtTag);
+        return new SPacketUpdateTileEntity(this.getPos(), 1, this.getUpdateTag());
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet)
+    public NBTTagCompound getUpdateTag()
     {
-        readFromNBT(packet.getNbtCompound());
+        return this.writeToNBT(new NBTTagCompound());
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet)
+    {
+        this.readFromNBT(packet.getNbtCompound());
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
         nbt.setInteger("Direction", this.direction);
@@ -112,9 +118,11 @@ public class TileEntityStasisMechanism extends TileEntity
         {
             nbt.setString("DummyEntity", this.dummyEntity.getUniqueID().toString());
 
-            if (this.dummyEntity.riddenByEntity != null)
+            Entity riddenBy = Entities.getEntityRiddenBy(this.dummyEntity);
+            
+            if (riddenBy != null)
             {
-                nbt.setInteger("StasisEntity", this.dummyEntity.riddenByEntity.getEntityId());
+                nbt.setInteger("StasisEntity", riddenBy.getEntityId());
             }
         }
 
@@ -124,6 +132,8 @@ public class TileEntityStasisMechanism extends TileEntity
             this.itemstack.writeToNBT(nbtStack);
             nbt.setTag("StasisItemstack", nbtStack);
         }
+        
+        return nbt;
     }
 
     @Override

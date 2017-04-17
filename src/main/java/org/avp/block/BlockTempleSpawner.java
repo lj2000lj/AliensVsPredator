@@ -1,17 +1,14 @@
 package org.avp.block;
 
-import org.avp.AliensVsPredator;
 import org.avp.entities.living.EntityOvamorph;
 import org.avp.entities.living.EntityQueen;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockTempleSpawner extends Block
 {
@@ -24,38 +21,27 @@ public class BlockTempleSpawner extends Block
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta)
+    public void onNeighborChange(IBlockAccess access, BlockPos pos, BlockPos neighbor)
     {
-        return AliensVsPredator.resources().ICONSET_SPAWNER.getIconForSide(side);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister register)
-    {
-        AliensVsPredator.resources().ICONSET_SPAWNER.registerIcons(register);
-    }
-
-    @Override
-    public void onNeighborBlockChange(World worldObj, int posX, int posY, int posZ, Block block)
-    {
-        super.onNeighborBlockChange(worldObj, posX, posY, posZ, block);
-
-        int range = 25;
-        boolean isQueenNear = worldObj.getEntitiesWithinAABB(EntityQueen.class, AxisAlignedBB.getBoundingBox(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).expand(range * 2, 50.0D, range * 2)).size() >= 1;
-
-        if (!worldObj.isRemote)
+        if (access instanceof World)
         {
-            if (!worldObj.isBlockIndirectlyGettingPowered(posX, posY, posZ))
+            World worldObj = (World) access;
+            int range = 25;
+
+            boolean isQueenNear = worldObj.getEntitiesWithinAABB(EntityQueen.class, new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).expand(range * 2, 50.0D, range * 2)).size() >= 1;
+
+            if (!worldObj.isRemote)
             {
-                worldObj.scheduleBlockUpdate(posX, posY, posZ, this, 4);
-            }
-            else if (worldObj.isBlockIndirectlyGettingPowered(posX, posY, posZ) && isQueenNear || worldObj.isBlockIndirectlyGettingPowered(posX, posY, posZ) && creativeOnly)
-            {
-                EntityOvamorph entityEgg = new EntityOvamorph(worldObj);
-                entityEgg.setLocationAndAngles(posX + 0.5D, posY + 1.0D, posZ + 0.5D, 0.0F, 0.0F);
-                worldObj.spawnEntityInWorld(entityEgg);
+                if (!(worldObj.isBlockIndirectlyGettingPowered(pos) > 0))
+                {
+                    worldObj.scheduleBlockUpdate(pos, this, 4, 1);
+                }
+                else if (worldObj.isBlockIndirectlyGettingPowered(pos) > 0 && isQueenNear || worldObj.isBlockIndirectlyGettingPowered(pos) > 0 && creativeOnly)
+                {
+                    EntityOvamorph entityEgg = new EntityOvamorph(worldObj);
+                    entityEgg.setLocationAndAngles(pos.getX() + 0.5D, pos.getY() + 1.0D, pos.getZ() + 0.5D, 0.0F, 0.0F);
+                    worldObj.spawnEntityInWorld(entityEgg);
+                }
             }
         }
     }

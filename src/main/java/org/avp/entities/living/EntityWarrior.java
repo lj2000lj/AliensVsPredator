@@ -7,6 +7,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.monster.IMob;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
 public class EntityWarrior extends EntityXenomorph implements IMob, IMaturable
@@ -16,8 +17,8 @@ public class EntityWarrior extends EntityXenomorph implements IMob, IMaturable
         super(world);
         this.experienceValue = 175;
         this.setSize(1.0F, 2.5F);
-        this.getNavigator().setCanSwim(true);
-        this.getNavigator().setAvoidsWater(true);
+        
+        
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.addStandardXenomorphAISet();
     }
@@ -32,27 +33,21 @@ public class EntityWarrior extends EntityXenomorph implements IMob, IMaturable
     }
 
     @Override
-    protected boolean isAIEnabled()
+    protected SoundEvent getHurtSound()
     {
-        return true;
+        return Sounds.SOUND_WARRIOR_HURT.event();
     }
 
     @Override
-    protected String getHurtSound()
+    protected SoundEvent getAmbientSound()
     {
-        return Sounds.SOUND_WARRIOR_HURT.getKey();
+        return Sounds.SOUND_WARRIOR_LIVING.event();
     }
 
     @Override
-    protected String getLivingSound()
+    protected SoundEvent getDeathSound()
     {
-        return Sounds.SOUND_WARRIOR_LIVING.getKey();
-    }
-
-    @Override
-    protected String getDeathSound()
-    {
-        return Sounds.SOUND_WARRIOR_DEATH.getKey();
+        return Sounds.SOUND_WARRIOR_DEATH.event();
     }
 
     @Override

@@ -1,20 +1,16 @@
 package org.avp.tile;
 
-import org.avp.AliensVsPredator;
 import org.avp.api.power.IVoltageProvider;
-import org.avp.packets.client.PacketSyncRF;
 
 import com.arisux.mdxlib.lib.world.tile.IRotatable;
 
-import cofh.api.energy.IEnergyReceiver;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 
-
-public class TileEntityRedstoneFluxGenerator extends TileEntityElectrical implements IVoltageProvider, IEnergyReceiver, IRotatable
+//TODO: Re-implement IEnergyReceiver from the COFH API
+public class TileEntityRedstoneFluxGenerator extends TileEntityElectrical implements IVoltageProvider, IRotatable
 {
     private EnumFacing direction;
     protected int rfEnergy;
@@ -30,26 +26,11 @@ public class TileEntityRedstoneFluxGenerator extends TileEntityElectrical implem
     }
 
     @Override
-    public void updateEntity()
+    public void update()
     {
-        super.updateEntity();
-        
+        super.update();
         this.updateEnergyAsReceiver();
-
-        if (rfEnergy >= rfUsedPerTick)
-        {
-            this.setVoltage(240);
-            rfEnergy = rfEnergy - rfUsedPerTick;
-        }
-        else
-        {
-            this.setVoltage(0);
-        }
-
-        if (!this.worldObj.isRemote && this.worldObj.getWorldTime() % 20 == 0)
-        {
-            AliensVsPredator.network().sendToAll(new PacketSyncRF(this.getEnergyStored(null), this.xCoord, this.yCoord, this.zCoord));
-        }
+        //this.updateRF();
     }
 
     @Override
@@ -80,55 +61,77 @@ public class TileEntityRedstoneFluxGenerator extends TileEntityElectrical implem
     {
         this.rfEnergy = rfEnergy;
     }
+    
+//    public void updateRF()
+//    {
+//        if (rfEnergy >= rfUsedPerTick)
+//        {
+//            this.setVoltage(240);
+//            rfEnergy = rfEnergy - rfUsedPerTick;
+//        }
+//        else
+//        {
+//            this.setVoltage(0);
+//        }
+//
+//        if (!this.worldObj.isRemote && this.worldObj.getWorldTime() % 20 == 0)
+//        {
+//            AliensVsPredator.network().sendToAll(new PacketSyncRF(this.getEnergyStored(null), this.xCoord, this.yCoord, this.zCoord));
+//        }
+//    }
+//
+//    @Override
+//    public boolean canConnectEnergy(EnumFacing from)
+//    {
+//        return true;
+//    }
+//
+//    @Override
+//    public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate)
+//    {
+//        int usedRF = 0;
+//        
+//        if (maxReceive >= this.rfStoredPerTick && this.rfEnergy < this.getMaxEnergyStored(from))
+//        {
+//            this.rfEnergy = this.rfEnergy + rfStoredPerTick;
+//            usedRF = Math.min(maxReceive, rfStoredPerTick);
+//        }
+//        
+//        return usedRF;
+//    }
+//
+//    @Override
+//    public int getEnergyStored(EnumFacing from)
+//    {
+//        return this.rfEnergy;
+//    }
+//
+//    @Override
+//    public int getMaxEnergyStored(EnumFacing from)
+//    {
+//        return 10000;
+//    }
 
     @Override
-    public boolean canConnectEnergy(EnumFacing from)
+    public SPacketUpdateTileEntity getUpdatePacket()
     {
-        return true;
+        return new SPacketUpdateTileEntity(this.getPos(), 1, this.getUpdateTag());
     }
 
     @Override
-    public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate)
+    public NBTTagCompound getUpdateTag()
     {
-        int usedRF = 0;
-        
-        if (maxReceive >= this.rfStoredPerTick && this.rfEnergy < this.getMaxEnergyStored(from))
-        {
-            this.rfEnergy = this.rfEnergy + rfStoredPerTick;
-            usedRF = Math.min(maxReceive, rfStoredPerTick);
-        }
-        
-        return usedRF;
+        return this.writeToNBT(new NBTTagCompound());
     }
 
     @Override
-    public int getEnergyStored(EnumFacing from)
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet)
     {
-        return this.rfEnergy;
+        this.readFromNBT(packet.getNbtCompound());
     }
 
     @Override
-    public int getMaxEnergyStored(EnumFacing from)
-    {
-        return 10000;
-    }
-
-    @Override
-    public Packet getDescriptionPacket()
-    {
-        NBTTagCompound nbtTag = new NBTTagCompound();
-        this.writeToNBT(nbtTag);
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbtTag);
-    }
-
-    @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet)
-    {
-        readFromNBT(packet.getNbtCompound());
-    }
-
-    @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
         nbt.setInteger("RFEnergy", this.rfEnergy);
@@ -137,6 +140,8 @@ public class TileEntityRedstoneFluxGenerator extends TileEntityElectrical implem
         {
             nbt.setInteger("Direction", this.direction.ordinal());
         }
+        
+        return nbt;
     }
 
     @Override
@@ -144,7 +149,7 @@ public class TileEntityRedstoneFluxGenerator extends TileEntityElectrical implem
     {
         super.readFromNBT(nbt);
         this.rfEnergy = nbt.getInteger("RFEnergy");
-        this.direction = EnumFacing.getOrientation(nbt.getInteger("Direction"));
+        this.direction = EnumFacing.getFront(nbt.getInteger("Direction"));
     }
 
     @Override

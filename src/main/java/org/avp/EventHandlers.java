@@ -17,7 +17,7 @@ import org.avp.client.render.TacticalHUDRenderEvent;
 import org.avp.client.render.VisionModeRenderEvent;
 import org.avp.client.render.items.RenderMotionTrackerScreen;
 import org.avp.world.EntityImpregnationHandler;
-import org.avp.world.ExtendedEntityHandler;
+import org.avp.world.CapabilityHandler;
 import org.avp.world.fluids.BucketHandlingEvent;
 import org.avp.world.hives.HiveHandler;
 import org.avp.world.hooks.FarmlandRegistry;
@@ -63,7 +63,7 @@ public class EventHandlers implements IInitEvent
         }
 
         this.registerEvent(EntityImpregnationHandler.instance);
-        this.registerEvent(ExtendedEntityHandler.instance);
+        this.registerEvent(CapabilityHandler.instance);
         this.registerEvent(SaveHandler.instance);
         this.registerEvent(FarmlandRegistry.instance);
         this.registerEvent(BucketHandlingEvent.instance);

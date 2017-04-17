@@ -5,10 +5,16 @@ import org.avp.AliensVsPredator;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class EntityMechanism extends Entity
 {
+    private static final DataParameter<Integer> CONTAINED_ID = EntityDataManager.<Integer> createKey(EntityMechanism.class, DataSerializers.VARINT);
+    
     public EntityMechanism(World world)
     {
         super(world);
@@ -18,7 +24,7 @@ public class EntityMechanism extends Entity
     @Override
     protected void entityInit()
     {
-        this.dataWatcher.addObject(14, 0);
+        this.getDataManager().register(CONTAINED_ID, 0);
     }
 
     @Override
@@ -28,7 +34,7 @@ public class EntityMechanism extends Entity
 
         if (this.worldObj.getWorldTime() % 20 == 0)
         {
-            Block block = this.worldObj.getBlock((int) this.posX, (int) this.posY, (int) this.posZ - 1);
+            Block block = this.worldObj.getBlockState(new BlockPos((int) this.posX, (int) this.posY, (int) this.posZ - 1)).getBlock();
 
             if (block != AliensVsPredator.blocks().blockStasisMechanism)
             {
@@ -40,7 +46,7 @@ public class EntityMechanism extends Entity
     @Override
     protected void readEntityFromNBT(NBTTagCompound tag)
     {
-        this.dataWatcher.updateObject(14, tag.getInteger("EntityContainedId"));
+        this.getDataManager().set(CONTAINED_ID, tag.getInteger("EntityContainedId"));
     }
 
     @Override
@@ -51,11 +57,11 @@ public class EntityMechanism extends Entity
 
     public int getEntityContainedId()
     {
-        return this.dataWatcher.getWatchableObjectInt(14);
+        return this.getDataManager().get(CONTAINED_ID);
     }
 
     public void setEntityContainedId(Entity entityContained)
     {
-        this.dataWatcher.updateObject(14, entityContained.getEntityId());
+        this.getDataManager().set(CONTAINED_ID, entityContained.getEntityId());
     }
 }

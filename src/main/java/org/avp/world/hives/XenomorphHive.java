@@ -16,6 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
 
@@ -40,7 +41,7 @@ public class XenomorphHive
 
         if (this.getQueen() != null)
         {
-            this.dimensionId = this.getQueen().worldObj.provider.dimensionId;
+            this.dimensionId = this.getQueen().worldObj.provider.getDimension();
         }
     }
 
@@ -137,7 +138,7 @@ public class XenomorphHive
 
         if (this.getQueen() != null)
         {
-            this.dimensionId = this.getQueen().worldObj.provider.dimensionId;
+            this.dimensionId = this.getQueen().worldObj.provider.getDimension();
         }
 
         if (world.getWorldTime() % (20 * 5) == 0)
@@ -158,7 +159,7 @@ public class XenomorphHive
         {
             if (resin != null)
             {
-                this.world.setBlock(resin.xCoord, resin.yCoord, resin.zCoord, resin.getBlockCovering());
+                this.world.setBlockState(resin.getPos(), resin.getBlockCovering());
             }
         }
 
@@ -194,7 +195,7 @@ public class XenomorphHive
             int y = Integer.parseInt(coordSet[1].trim());
             int z = Integer.parseInt(coordSet[2].trim());
 
-            TileEntity tile = world.getTileEntity(x, y, z);
+            TileEntity tile = world.getTileEntity(new BlockPos(x, y, z));
 
             if (tile instanceof TileEntityHiveResin)
             {
@@ -225,7 +226,7 @@ public class XenomorphHive
 
         for (TileEntityHiveResin resin : this.resinInHive)
         {
-            list.appendTag(new NBTTagString(String.format("%s, %s, %s", resin.xCoord, resin.yCoord, resin.zCoord)));
+            list.appendTag(new NBTTagString(String.format("%s", resin.getPos())));
         }
 
         nbt.setTag("Resin", list);

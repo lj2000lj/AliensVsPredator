@@ -6,6 +6,7 @@ import org.avp.item.ItemFirearm;
 import com.arisux.mdxlib.lib.client.Model;
 import com.arisux.mdxlib.lib.client.TexturedModel;
 
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -27,9 +28,9 @@ public enum MarineTypes
         return id;
     }
 
-    public String getGunfireSound()
+    public SoundEvent getGunfireSound()
     {
-        return itemFirearm.getFireSound().getKey();
+        return itemFirearm.getProfile().getSound().event();
     }
 
     public ItemFirearm getFirearmItem()

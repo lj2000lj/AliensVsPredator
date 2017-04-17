@@ -2,17 +2,17 @@ package org.avp.entities.living;
 
 import org.avp.api.parasitoidic.IParasitoid;
 import org.avp.client.Sounds;
+import org.avp.entities.ai.EntityAICustomAttackOnCollide;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
 public class EntityFacehugger extends EntityParasitoid implements IMob, IParasitoid
@@ -25,8 +25,8 @@ public class EntityFacehugger extends EntityParasitoid implements IMob, IParasit
         this.setSize(0.8F, 0.8F);
         this.experienceValue = 10;
         this.jumpMovementFactor = 0.3F;
-        this.getNavigator().setCanSwim(true);
-        this.getNavigator().setAvoidsWater(true);
+        
+        
         this.addTasks();
     }
 
@@ -34,7 +34,7 @@ public class EntityFacehugger extends EntityParasitoid implements IMob, IParasit
     protected void addTasks()
     {
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(3, new EntityAIAttackOnCollide(this, 0.55D, true));
+        this.tasks.addTask(3, new EntityAICustomAttackOnCollide(this, 0.55D, true));
         this.tasks.addTask(8, new EntityAIWander(this, 0.55D));
         this.targetTasks.addTask(2, new EntityAILeapAtTarget(this, 0.8F));
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, Entity.class, 0, false, false, this.getEntitySelector()));
@@ -61,12 +61,6 @@ public class EntityFacehugger extends EntityParasitoid implements IMob, IParasit
     public boolean isOnLadder()
     {
         return this.motionY > 1.0099999997764826D;
-    }
-
-    @Override
-    protected boolean isAIEnabled()
-    {
-        return true;
     }
 
     @Override
@@ -101,20 +95,8 @@ public class EntityFacehugger extends EntityParasitoid implements IMob, IParasit
     }
 
     @Override
-    protected String getDeathSound()
+    protected SoundEvent getDeathSound()
     {
-        return Sounds.SOUND_FACEHUGGER_DEATH.getKey();
-    }
-
-    @Override
-    public void readFromNBT(NBTTagCompound nbt)
-    {
-        super.readFromNBT(nbt);
-    }
-
-    @Override
-    public void writeToNBT(NBTTagCompound nbt)
-    {
-        super.writeToNBT(nbt);
+        return Sounds.SOUND_FACEHUGGER_DEATH.event();
     }
 }

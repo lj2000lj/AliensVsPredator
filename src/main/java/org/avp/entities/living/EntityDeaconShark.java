@@ -3,15 +3,16 @@ package org.avp.entities.living;
 import java.util.List;
 
 import org.avp.entities.EntityAcidPool;
+import org.avp.entities.ai.EntityAICustomAttackOnCollide;
 import org.avp.entities.ai.helpers.EntityExtendedLookHelper;
 import org.avp.entities.ai.pathfinding.PathNavigateSwimmer;
 
 import com.arisux.mdxlib.lib.world.entity.Entities;
+import com.google.common.base.Predicate;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
@@ -23,6 +24,7 @@ import net.minecraft.entity.ai.EntityLookHelper;
 import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
@@ -31,10 +33,10 @@ public class EntityDeaconShark extends EntitySpeciesAlien
     private EntityAIWander                 wander;
     private EntityAIMoveTowardsRestriction moveTowardsRestriction;
     private double                         distanceToTargetLastTick;
-    private IEntitySelector                entitySelector = new IEntitySelector()
+    private Predicate<EntityLivingBase>                entitySelector = new Predicate<EntityLivingBase>()
                                                           {
                                                               @Override
-                                                              public boolean isEntityApplicable(Entity target)
+                                                              public boolean apply(EntityLivingBase target)
                                                               {
                                                                   if (target instanceof EntityAcidPool)
                                                                   {
@@ -50,7 +52,7 @@ public class EntityDeaconShark extends EntitySpeciesAlien
         super(worldIn);
         this.experienceValue = 10;
         this.setSize(2F, 1F);
-        this.tasks.addTask(2, new EntityAIAttackOnCollide(this, 0.8D, true));
+        this.tasks.addTask(2, new EntityAICustomAttackOnCollide(this, 0.8D, true));
         this.tasks.addTask(5, moveTowardsRestriction = new EntityAIMoveTowardsRestriction(this, 1.0D));
         this.tasks.addTask(7, this.wander = new EntityAIWander(this, 1.0D));
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
@@ -88,12 +90,6 @@ public class EntityDeaconShark extends EntitySpeciesAlien
     }
 
     @Override
-    protected boolean isAIEnabled()
-    {
-        return true;
-    }
-
-    @Override
     public int getTalkInterval()
     {
         return 160;
@@ -113,12 +109,12 @@ public class EntityDeaconShark extends EntitySpeciesAlien
 
     public EntityLivingBase findTarget()
     {
-        List<? extends EntityLivingBase> targets =  worldObj.getEntitiesWithinAABB(EntityLivingBase.class, this.boundingBox.expand(24, 32, 24));
+        List<? extends EntityLivingBase> targets =  worldObj.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().expand(24, 32, 24));
         Entity attackTarget = null;
     
         for (EntityLivingBase target : targets)
         {
-            if (this.entitySelector.isEntityApplicable(target) && this.canEntityBeSeen(target))
+            if (this.entitySelector.apply(target) && this.canEntityBeSeen(target))
             {
                 attackTarget = target;
             }
@@ -203,19 +199,19 @@ public class EntityDeaconShark extends EntitySpeciesAlien
             return false;
         }
 
-        return this.worldObj.checkNoEntityCollision(this.boundingBox.expand(16, 32, 16));
+        return this.worldObj.checkNoEntityCollision(this.getEntityBoundingBox().expand(16, 32, 16));
     }
 
     @Override
     protected boolean canDespawn()
     {
-        return !this.hasCustomNameTag();
+        return !this.hasCustomName();
     }
 
     @Override
-    protected void attackEntity(Entity entity, float damage)
+    public boolean attackEntityFrom(DamageSource source, float damage)
     {
-        super.attackEntity(entity, damage);
+        return super.attackEntityFrom(source, damage);
     }
 
     @Override
@@ -243,7 +239,7 @@ public class EntityDeaconShark extends EntitySpeciesAlien
         {
             if (this.isInWater())
             {
-                this.moveFlying(strafe, forward, 0.1F);
+                this.moveRelative(strafe, forward, 0.1F);
                 this.moveEntity(this.motionX, this.motionY, this.motionZ);
                 this.motionX *= 0.8999999761581421D;
                 this.motionY *= 0.8999999761581421D;

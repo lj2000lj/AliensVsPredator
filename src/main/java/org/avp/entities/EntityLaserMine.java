@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -34,12 +35,12 @@ public class EntityLaserMine extends Entity
         this.setSize(0.5F, 0.5F);
     }
 
-    public EntityLaserMine(World world, int posX, int posY, int posZ, int direction, String ownerUUID)
+    public EntityLaserMine(World world, BlockPos pos, int direction, String ownerUUID)
     {
         this(world);
         this.direction = direction;
         this.ownerUUID = ownerUUID;
-        this.setLocationAndAngles(posX, posY, posZ, 0, 0);
+        this.moveToBlockPosAndAngles(pos, 0F, 0F);
         this.setDirectionBasedBounds(direction);
     }
 
@@ -48,8 +49,7 @@ public class EntityLaserMine extends Entity
     {
         ;
     }
-
-    @SuppressWarnings("unchecked")
+    
     public boolean canStay()
     {
         List<Entity> entities = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox());

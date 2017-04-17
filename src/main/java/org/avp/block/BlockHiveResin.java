@@ -1,22 +1,27 @@
 package org.avp.block;
 
-import java.util.Random;
-
-import org.avp.AliensVsPredator;
 import org.avp.tile.TileEntityHiveResin;
 import org.avp.world.hives.HiveHandler;
 
 import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.Pos.BlockDataStore;
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
+import net.minecraftforge.common.property.IUnlistedProperty;
 
 public class BlockHiveResin extends Block
 {
@@ -27,64 +32,73 @@ public class BlockHiveResin extends Block
     }
 
     @Override
-    public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, EnumFacing face)
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, new IProperty[0])
+        {
+            @Override
+            protected StateImplementation createState(Block block, ImmutableMap<IProperty<?>, Comparable<?>> properties, ImmutableMap<IUnlistedProperty<?>, Optional<?>> unlistedProperties)
+            {
+                return new StateImplementation(block, properties)
+                {
+                    @Override
+                    public boolean isOpaqueCube()
+                    {
+                        return false;
+                    }
+
+                    @Override
+                    public EnumBlockRenderType getRenderType()
+                    {
+                        // AliensVsPredator.renderTypes().RENDER_TYPE_RESIN
+                        return EnumBlockRenderType.MODEL;
+                    }
+                };
+            }
+        };
+    }
+
+    @Override
+    public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face)
     {
         return 5;
     }
 
     @Override
-    public int getFlammability(IBlockAccess world, int x, int y, int z, EnumFacing face)
+    public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face)
     {
         return 5;
     }
 
     @Override
-    public boolean isOpaqueCube()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean renderAsNormalBlock()
-    {
-        return false;
-    }
-
-    @Override
-    public void updateTick(World worldObj, int posX, int posY, int posZ, Random rand)
-    {
-        super.updateTick(worldObj, posX, posY, posZ, rand);
-    }
-
-    @Override
-    public TileEntity createTileEntity(World world, int metadata)
+    public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TileEntityHiveResin();
     }
 
     @Override
-    public boolean hasTileEntity(int metadata)
+    public boolean hasTileEntity(IBlockState state)
     {
         return true;
     }
 
     @Override
-    public void onBlockPreDestroy(World world, int posX, int posY, int posZ, int oldMetadata)
+    public void onBlockClicked(World world, BlockPos pos, EntityPlayer playerIn)
     {
-        TileEntity tile = world.getTileEntity(posX, posY, posZ);
+        TileEntity tile = world.getTileEntity(pos);
 
         if (tile instanceof TileEntityHiveResin)
         {
-            Pos coord = new Pos(posX, posY, posZ);
+            Pos coord = new Pos(pos);
             TileEntityHiveResin resin = (TileEntityHiveResin) tile;
 
             if (resin != null)
             {
-                if (coord.isAnySurfaceNextTo(world, Blocks.fire))
+                if (coord.isAnySurfaceNextTo(world, Blocks.FIRE))
                 {
                     if (resin != null && resin.getBlockCovering() != null)
                     {
-                        HiveHandler.instance.burntResin.add(new Pos(posX, posY, posZ).store(new BlockDataStore(resin.getBlockCovering(), (byte)0)));
+                        HiveHandler.instance.burntResin.add(new Pos(pos).store(new BlockDataStore(resin.getBlockCovering().getBlock(), (byte) 0)));
                     }
                 }
 
@@ -95,18 +109,6 @@ public class BlockHiveResin extends Block
             }
         }
 
-        super.onBlockPreDestroy(world, posX, posY, posZ, oldMetadata);
-    }
-
-    @Override
-    public void onBlockDestroyedByPlayer(World world, int posX, int posY, int posZ, int metadata)
-    {
-        super.onBlockDestroyedByPlayer(world, posX, posY, posZ, metadata);
-    }
-
-    @Override
-    public int getRenderType()
-    {
-        return AliensVsPredator.renderTypes().RENDER_TYPE_RESIN;
+        super.onBlockClicked(world, pos, playerIn);
     }
 }

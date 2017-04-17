@@ -17,9 +17,9 @@ public class EntityLiquidLatexPool extends EntityLiquidPool
     }
 
     @Override
-    protected boolean isAIEnabled()
+    public boolean isAIDisabled()
     {
-        return true;
+        return false;
     }
 
     @Override

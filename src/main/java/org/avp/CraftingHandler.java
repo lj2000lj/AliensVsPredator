@@ -20,7 +20,7 @@ public class CraftingHandler implements IInitEvent
 
     public CraftingHandler()
     {
-        charcoal.setMetadata(1);
+        charcoal.setItemDamage(1);
     }
 
     @Override
@@ -128,7 +128,6 @@ public class CraftingHandler implements IInitEvent
         AssemblyManager.instance.add(new Schematic("sniperMagazine", Inventories.newStack(items.itemAmmoSniper, 1), Inventories.newStack(items.itemIngotAluminum, 5), Inventories.newStack(Items.GUNPOWDER, 1)));
         AssemblyManager.instance.add(new Schematic("pistolMagazine", Inventories.newStack(items.itemAmmoPistol, 3), Inventories.newStack(items.itemIngotAluminum, 4), Inventories.newStack(Items.GUNPOWDER, 2), Inventories.newStack(items.itemIngotCopper, 1)));
         AssemblyManager.instance.add(new Schematic("ARAmmo", Inventories.newStack(items.itemAmmoAR, 1), Inventories.newStack(items.itemIngotAluminum, 5), Inventories.newStack(Items.IRON_INGOT, 1), Inventories.newStack(Items.GUNPOWDER, 1)));
-        AssemblyManager.instance.add(new Schematic("ACAmmo", Inventories.newStack(items.itemAmmoAC, 1), Inventories.newStack(items.itemIngotAluminum, 5), Inventories.newStack(Items.GUNPOWDER, 2)));
         AssemblyManager.instance.add(new Schematic("SMGAmmo", Inventories.newStack(items.itemAmmoSMG, 1), Inventories.newStack(items.itemIngotAluminum, 4), Inventories.newStack(Items.IRON_INGOT, 4), Inventories.newStack(Items.GUNPOWDER, 1)));
         AssemblyManager.instance.add(new Schematic("m56sg", Inventories.newStack(items.itemM56SG, 1), Inventories.newStack(items.itemM56SGAimingModule, 1), Inventories.newStack(items.itemM56SGStock, 1), Inventories.newStack(items.itemM56SGBarrel, 1), Inventories.newStack(items.itemM56SGSupportFrame, 1)));
         AssemblyManager.instance.add(new Schematic("sniper", Inventories.newStack(items.itemSniper, 1), Inventories.newStack(items.itemSniperScope, 1), Inventories.newStack(items.itemSniperAction, 1), Inventories.newStack(items.itemSniperPeripherals, 1), Inventories.newStack(items.itemSniperBarrel, 1), Inventories.newStack(items.itemSniperStock, 1)));

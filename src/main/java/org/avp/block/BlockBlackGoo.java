@@ -2,13 +2,10 @@ package org.avp.block;
 
 import org.avp.AliensVsPredator;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidClassic;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockBlackGoo extends BlockFluidClassic
 {
@@ -16,41 +13,26 @@ public class BlockBlackGoo extends BlockFluidClassic
     {
         super(AliensVsPredator.fluids().fluidBlackGoo, AliensVsPredator.materials().blackgoo);
     }
-
+    
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta)
+    public boolean canDisplace(IBlockAccess world, BlockPos pos)
     {
-        return AliensVsPredator.resources().ICONSET_BLACK_GOO.getIconForSide(side);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister register)
-    {
-        AliensVsPredator.resources().ICONSET_BLACK_GOO.registerIcons(register);
-        AliensVsPredator.fluids().fluidBlackGoo.setIcons(AliensVsPredator.resources().ICONSET_BLACK_GOO.getIconForSide(1), AliensVsPredator.resources().ICONSET_BLACK_GOO.getIconForSide(2));
-    }
-
-    @Override
-    public boolean canDisplace(IBlockAccess world, int x, int y, int z)
-    {
-        if (world.getBlock(x, y, z).getMaterial().isLiquid())
+        if (world.getBlockState(pos).getMaterial().isLiquid())
         {
             return false;
         }
-
-        return super.canDisplace(world, x, y, z);
+        
+        return super.canDisplace(world, pos);
     }
-
+    
     @Override
-    public boolean displaceIfPossible(World world, int x, int y, int z)
+    public boolean displaceIfPossible(World world, BlockPos pos)
     {
-        if (world.getBlock(x, y, z).getMaterial().isLiquid())
+        if (world.getBlockState(pos).getMaterial().isLiquid())
         {
             return false;
         }
-
-        return super.displaceIfPossible(world, x, y, z);
+        
+        return super.displaceIfPossible(world, pos);
     }
 }

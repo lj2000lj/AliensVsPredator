@@ -4,67 +4,79 @@ import org.avp.item.ItemEntitySummoner;
 import org.avp.tile.TileEntityCryostasisTube;
 
 import com.arisux.mdxlib.lib.world.entity.player.inventory.Inventories;
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.common.property.IUnlistedProperty;
 
 public class BlockCryostasisTube extends Block
 {
     public BlockCryostasisTube(Material material)
     {
         super(material);
-        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 2F, 1.0F);
         this.setTickRandomly(true);
     }
 
     @Override
-    public void registerIcons(IIconRegister register)
+    protected BlockStateContainer createBlockState()
     {
-        return;
+        return new BlockStateContainer(this, new IProperty[0])
+        {
+            @Override
+            protected StateImplementation createState(Block block, ImmutableMap<IProperty<?>, Comparable<?>> properties, ImmutableMap<IUnlistedProperty<?>, Optional<?>> unlistedProperties)
+            {
+                return new StateImplementation(block, properties)
+                {
+                    @Override
+                    public boolean isOpaqueCube()
+                    {
+                        return false;
+                    }
+                    
+                    @Override
+                    public EnumBlockRenderType getRenderType()
+                    {
+                        return EnumBlockRenderType.INVISIBLE;
+                    }
+                };
+            }
+        };
     }
-
+    
     @Override
-    public boolean renderAsNormalBlock()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isOpaqueCube()
-    {
-        return false;
-    }
-
-    @Override
-    public TileEntity createTileEntity(World world, int metadata)
+    public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TileEntityCryostasisTube();
     }
-
+    
     @Override
-    public boolean hasTileEntity(int metadata)
+    public boolean hasTileEntity(IBlockState state)
     {
         return true;
     }
-
+    
     @Override
-    public boolean onBlockActivated(World worldObj, int xCoord, int yCoord, int zCoord, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_)
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof ItemEntitySummoner)
         {
-            TileEntityCryostasisTube tile = (TileEntityCryostasisTube) worldObj.getTileEntity(xCoord, yCoord, zCoord);
+            TileEntityCryostasisTube tile = (TileEntityCryostasisTube) world.getTileEntity(pos);
 
             if (tile != null)
             {
@@ -72,7 +84,7 @@ public class BlockCryostasisTube extends Block
                 {
                     ItemEntitySummoner item = (ItemEntitySummoner) player.getHeldItemMainhand().getItem();
                     tile.stasisItemstack = new ItemStack(item, 1);
-                    tile.stasisEntity = item.createNewEntity(worldObj);
+                    tile.stasisEntity = item.createNewEntity(world);
                     Inventories.consumeItem(player, item);
                 }
                 else if (player.getHeldItemMainhand() == null)
@@ -88,42 +100,24 @@ public class BlockCryostasisTube extends Block
 
         return false;
     }
-
+    
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase living, ItemStack stack)
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        super.onBlockPlacedBy(world, x, y, z, living, stack);
+        super.onBlockPlacedBy(world, pos, state, placer, stack);
 
-        TileEntityCryostasisTube tile = (TileEntityCryostasisTube) world.getTileEntity(x, y, z);
+        TileEntityCryostasisTube tile = (TileEntityCryostasisTube) world.getTileEntity(pos);
 
         if (tile != null)
         {
-            tile.setDirection(getFacing(living));
-            world.markBlockForUpdate(tile.xCoord, tile.yCoord, tile.zCoord);
+            tile.setDirection(getFacing(placer));
+            world.markBlockRangeForRenderUpdate(pos, pos);
         }
     }
 
     public static EnumFacing getFacing(Entity entity)
     {
         int dir = MathHelper.floor_double((entity.rotationYaw / 90) + 0.5) & 3;
-        return EnumFacing.VALID_DIRECTIONS[Direction.directionToFacing[dir]];
-    }
-
-    @Override
-    public int getRenderType()
-    {
-        return -1;
-    }
-
-    @SideOnly(Side.CLIENT)
-    public int getRenderBlockPass()
-    {
-        return 0;
-    }
-
-    @Override
-    public boolean canRenderInPass(int pass)
-    {
-        return super.canRenderInPass(pass);
+        return EnumFacing.getFront(dir);
     }
 }

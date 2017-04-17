@@ -18,6 +18,10 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -25,6 +29,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityPlasma extends EntityThrowable
 {
+    private static final DataParameter<Float> PLASMA_SIZE = EntityDataManager.<Float> createKey(EntityPlasma.class, DataSerializers.FLOAT);
+    private static final DataParameter<Integer> IMPACT_TIMER = EntityDataManager.<Integer> createKey(EntityPlasma.class, DataSerializers.VARINT);
     public float    syncSize;
     public boolean  synced;
     private boolean impacted;
@@ -46,8 +52,8 @@ public class EntityPlasma extends EntityThrowable
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(30, 1F);
-        this.dataWatcher.addObject(31, -1);
+        this.getDataManager().register(PLASMA_SIZE, 1F);
+        this.getDataManager().register(IMPACT_TIMER, -1);
     }
 
     @Override
@@ -57,7 +63,7 @@ public class EntityPlasma extends EntityThrowable
 
         if (!this.worldObj.isRemote && !this.synced)
         {
-            this.dataWatcher.updateObject(30, this.syncSize);
+            this.getDataManager().set(PLASMA_SIZE, this.syncSize);
             this.synced = true;
         }
 
@@ -65,7 +71,7 @@ public class EntityPlasma extends EntityThrowable
         {
             if (this.getImpactTimer() == this.getMaxImpactTimer())
             {
-                this.dataWatcher.updateObject(31, this.getImpactTimer());
+                this.getDataManager().set(IMPACT_TIMER, this.getImpactTimer());
             }
         }
 
@@ -85,7 +91,7 @@ public class EntityPlasma extends EntityThrowable
             }
         }
 
-        MovingObjectPosition movingObjectPosition = this.worldObj.rayTraceBlocks(new Vec3d(this.posX, this.posY, this.posZ), new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ));
+        RayTraceResult RayTraceResult = this.worldObj.rayTraceBlocks(new Vec3d(this.posX, this.posY, this.posZ), new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ));
 
         if (!this.worldObj.isRemote)
         {
@@ -93,13 +99,13 @@ public class EntityPlasma extends EntityThrowable
 
             if (entityHit != null)
             {
-                this.onImpact(movingObjectPosition);
+                this.onImpact(RayTraceResult);
             }
         }
 
-        if (movingObjectPosition != null || this.isCollidedHorizontally)
+        if (RayTraceResult != null || this.isCollidedHorizontally)
         {
-            this.onImpact(movingObjectPosition);
+            this.onImpact(RayTraceResult);
         }
     }
 
@@ -124,7 +130,7 @@ public class EntityPlasma extends EntityThrowable
     }
 
     @Override
-    public void onImpact(MovingObjectPosition movingObjectPosition)
+    public void onImpact(RayTraceResult RayTraceResult)
     {
         if (!this.worldObj.isRemote)
         {
@@ -181,17 +187,17 @@ public class EntityPlasma extends EntityThrowable
 
     public float getPlasmaSize()
     {
-        return this.dataWatcher.getWatchableObjectFloat(30);
+        return this.getDataManager().get(PLASMA_SIZE);
     }
 
     public int getImpactTimer()
     {
-        return this.dataWatcher.getWatchableObjectInt(31);
+        return this.getDataManager().get(IMPACT_TIMER);
     }
 
     public void updateImpactTimer(int time)
     {
-        this.dataWatcher.updateObject(31, time);
+        this.getDataManager().set(IMPACT_TIMER, time);
     }
 
     public int getImpactPrev()

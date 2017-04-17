@@ -6,16 +6,19 @@ import java.util.Iterator;
 import org.avp.item.ItemSupplyChute.SupplyChuteType;
 import org.avp.tile.TileEntitySupplyCrate;
 
+import com.arisux.mdxlib.lib.world.entity.Entities;
+
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockFalling;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -53,7 +56,6 @@ public class EntitySupplyChute extends Entity
         this.metadata = meta;
         this.preventEntitySpawning = true;
         this.setSize(0.98F, 0.98F);
-        this.yOffset = this.height / 2.0F;
         this.setPosition(posX, posY, posZ);
         this.motionX = 0.0D;
         this.motionY = 0.0D;
@@ -86,7 +88,7 @@ public class EntitySupplyChute extends Entity
 
             if (i > 0)
             {
-                ArrayList arraylist = new ArrayList(this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox));
+                ArrayList arraylist = new ArrayList(this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox()));
                 DamageSource damagesource = DamageSource.fallingBlock;
                 Iterator iterator = arraylist.iterator();
 
@@ -170,7 +172,7 @@ public class EntitySupplyChute extends Entity
     @Override
     public void onUpdate()
     {
-        if (this.getBlock() == null || this.getBlock().getMaterial() == Material.AIR)
+        if (this.getBlock() == null || this.getBlock().getDefaultState().getMaterial() == Material.AIR)
         {
             this.setDead();
         }
@@ -191,16 +193,20 @@ public class EntitySupplyChute extends Entity
                 int x = MathHelper.floor_double(this.posX);
                 int y = MathHelper.floor_double(this.posY);
                 int z = MathHelper.floor_double(this.posZ);
+                BlockPos pos = new BlockPos(x, y, z);
+                BlockPos posBelow = new BlockPos(x, y - 1, z);
+                IBlockState blockstate = this.worldObj.getBlockState(pos);
+                Block block = blockstate.getBlock();
 
                 if (this.fallTime == 1)
                 {
-                    if (this.worldObj.getBlock(x, y, z) != this.getBlock())
+                    if (block != this.getBlock())
                     {
                         this.setDead();
                         return;
                     }
 
-                    this.worldObj.setBlockToAir(x, y, z);
+                    this.worldObj.setBlockToAir(pos);
                 }
 
                 if (this.onGround)
@@ -209,20 +215,15 @@ public class EntitySupplyChute extends Entity
                     this.motionZ *= 0.699999988079071D;
                     this.motionY *= -0.5D;
 
-                    if (this.worldObj.getBlock(x, y, z) != Blocks.piston_extension)
+                    if (block != Blocks.PISTON_EXTENSION)
                     {
                         this.setDead();
 
-                        if (this.worldObj.canPlaceEntityOnSide(this.getBlock(), x, y, z, true, 1, (Entity) null, (ItemStack) null) && !BlockFalling.canFallBelow(this.worldObj, x, y - 1, z) && this.worldObj.setBlock(x, y, z, this.getBlock(), this.metadata, 3))
+                        if (Entities.canPlaceEntityOnSide(this.worldObj, this.getBlock(), pos, true, 1, (Entity) null, (ItemStack) null) && !canFallBelow(this.worldObj, posBelow) && this.worldObj.setBlockState(pos, this.getBlock().getDefaultState()))
                         {
-                            if (this.getBlock() instanceof BlockFalling)
-                            {
-                                ((BlockFalling) this.getBlock()).playSoundWhenFallen(this.worldObj, x, y, z, this.metadata);
-                            }
-
                             if (this.tileEntityData != null && this.getBlock() instanceof ITileEntityProvider)
                             {
-                                TileEntitySupplyCrate crate = (TileEntitySupplyCrate) this.worldObj.getTileEntity(x, y, z);
+                                TileEntitySupplyCrate crate = (TileEntitySupplyCrate) this.worldObj.getTileEntity(pos);
 
                                 if (crate != null)
                                 {
@@ -250,7 +251,7 @@ public class EntitySupplyChute extends Entity
                         }
                         else if (this.shouldDropItem)
                         {
-                            this.entityDropItem(new ItemStack(this.getBlock(), 1, this.getBlock().damageDropped(this.metadata)), 0.0F);
+                            this.entityDropItem(new ItemStack(this.getBlock(), 1, this.getBlock().damageDropped(this.getBlock().getStateFromMeta(this.metadata))), 0.0F);
                         }
                     }
                 }
@@ -258,12 +259,33 @@ public class EntitySupplyChute extends Entity
                 {
                     if (this.shouldDropItem)
                     {
-                        this.entityDropItem(new ItemStack(this.getBlock(), 1, this.getBlock().damageDropped(this.metadata)), 0.0F);
+                        this.entityDropItem(new ItemStack(this.getBlock(), 1, this.getBlock().damageDropped(this.getBlock().getStateFromMeta(this.metadata))), 0.0F);
                     }
 
                     this.setDead();
                 }
             }
+        }
+    }
+    
+
+    public static boolean canFallBelow(World world, BlockPos pos)
+    {
+        IBlockState blockstate = world.getBlockState(pos);
+        Block block = blockstate.getBlock();
+
+        if (block.isAir(blockstate, world, pos))
+        {
+            return true;
+        }
+        else if (block == Blocks.FIRE)
+        {
+            return true;
+        }
+        else
+        {
+            Material material = blockstate.getMaterial();
+            return material == Material.WATER ? true : material == Material.LAVA;
         }
     }
 

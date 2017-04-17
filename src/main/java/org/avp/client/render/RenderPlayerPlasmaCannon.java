@@ -7,8 +7,8 @@ import org.avp.client.input.handlers.InputHandlerPlasmaCannon;
 import org.avp.client.model.entities.ModelPlasma;
 import org.avp.client.model.items.ModelPlasmaCannon;
 import org.avp.entities.EntityMedpod;
-import org.avp.entities.SharedPlayer;
 import org.avp.item.ItemWristbracer;
+import org.avp.world.capabilities.ISpecialPlayer.SpecialPlayer;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.util.glu.Project;
@@ -28,7 +28,6 @@ import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
@@ -70,19 +69,19 @@ public class RenderPlayerPlasmaCannon implements IEventRenderer, IFirstPersonRen
 
             if (pre.getEntity() instanceof EntityPlayer)
             {
-                SharedPlayer player = SharedPlayer.get((EntityPlayer) pre.getEntity());
+                EntityPlayer player = (EntityPlayer) pre.getEntity();
+                SpecialPlayer specialPlayer = (SpecialPlayer) player.getCapability(SpecialPlayer.Provider.CAPABILITY, null);
 
-                if (!(player.getEntity().getRidingEntity()instanceof EntityMedpod))
+                if (!(player.getRidingEntity() instanceof EntityMedpod))
                 {
-                    if (ItemWristbracer.hasPlasmaCannon(ItemWristbracer.wristbracer(player.getEntity())))
+                    if (ItemWristbracer.hasPlasmaCannon(ItemWristbracer.wristbracer(player)))
                     {
-                        EntityPlayer entity = player.getEntity();
-                        float rotationYaw = MDXMath.interpolateRotation(entity.prevRenderYawOffset, entity.renderYawOffset, partialTicks);
-                        float rotationYawHead = MDXMath.interpolateRotation(entity.prevRotationYawHead, entity.rotationYawHead, partialTicks);
-                        float rotationPitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
-                        float idleProgress = entity.ticksExisted + partialTicks;
-                        float swingProgress = entity.getSwingProgress(partialTicks);
-                        float swingProgressPrev = entity.prevSwingProgress;
+                        float rotationYaw = MDXMath.interpolateRotation(player.prevRenderYawOffset, player.renderYawOffset, partialTicks);
+                        float rotationYawHead = MDXMath.interpolateRotation(player.prevRotationYawHead, player.rotationYawHead, partialTicks);
+                        float rotationPitch = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * partialTicks;
+                        float idleProgress = player.ticksExisted + partialTicks;
+                        float swingProgress = player.getSwingProgress(partialTicks);
+                        float swingProgressPrev = player.prevSwingProgress;
                         float scale = 0.5F;
 
                         OpenGL.pushMatrix();
@@ -90,7 +89,7 @@ public class RenderPlayerPlasmaCannon implements IEventRenderer, IFirstPersonRen
                         OpenGL.rotate(rotationYaw, 0F, 1F, 0F);
                         OpenGL.translate(-0.75F, -0.125F, -0.55F);
                         MODEL.bindTexture();
-                        MODEL.getModel().render(entity);
+                        MODEL.getModel().render(player);
                         OpenGL.popMatrix();
                     }
                 }

@@ -15,9 +15,9 @@ public class TileEntityPowerline extends TileEntityElectrical implements IVoltag
     }
 
     @Override
-    public void updateEntity()
+    public void update()
     {
-        super.updateEntity();
+        super.update();
         this.updateEnergyAsReceiver();
     }
 

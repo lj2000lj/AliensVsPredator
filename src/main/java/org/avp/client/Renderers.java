@@ -6,6 +6,13 @@ import static net.minecraftforge.fml.client.registry.RenderingRegistry.registerE
 import org.avp.AliensVsPredator;
 import org.avp.ItemHandler;
 import org.avp.ItemHandler.Summoners;
+import org.avp.client.model.entities.living.ModelCrusher;
+import org.avp.client.model.entities.living.ModelDrone;
+import org.avp.client.model.entities.living.ModelPraetorian;
+import org.avp.client.model.entities.living.ModelProtomorph;
+import org.avp.client.model.entities.living.ModelRunnerDrone;
+import org.avp.client.model.entities.living.ModelRunnerWarrior;
+import org.avp.client.model.entities.living.ModelWarrior;
 import org.avp.client.model.items.Model88MOD4;
 import org.avp.client.model.items.ModelAK47;
 import org.avp.client.model.items.ModelM4;
@@ -244,7 +251,10 @@ import com.arisux.mdxlib.lib.client.TexturedModel;
 import com.arisux.mdxlib.lib.client.render.ItemRenderer;
 import com.arisux.mdxlib.lib.game.IPostInitEvent;
 
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.item.Item;
+import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -257,7 +267,6 @@ public class Renderers implements IPostInitEvent
     @Override
     public void post(FMLPostInitializationEvent event)
     {
-        registerSimpleBlockRenderingHandlers();
         registerTileEntitySpecialRenderers();
         registerItemRenderers(AliensVsPredator.items());
         registerLivingEntityRenderers();
@@ -270,18 +279,25 @@ public class Renderers implements IPostInitEvent
 
     private void registerLivingEntityRenderers()
     {
-        registerEntityRenderingHandler(EntityEngineer.class, new RenderEngineer());
+        registerEntityRenderingHandler(EntityEngineer.class, new IRenderFactory<EntityEngineer>()
+        {
+            @Override
+            public Render<? super EntityEngineer> createRenderFor(RenderManager manager)
+            {
+                return new RenderEngineer();
+            }
+        });
         registerEntityRenderingHandler(EntitySpaceJockey.class, new RenderEngineer(AliensVsPredator.resources().models().SPACE_JOCKEY));
         registerEntityRenderingHandler(EntityYautjaBerserker.class, new RenderYautjaBerserker());
         registerEntityRenderingHandler(EntityTrilobite.class, new RenderTrilobite());
         registerEntityRenderingHandler(EntityHammerpede.class, new RenderHammerpede());
-        registerEntityRenderingHandler(EntityDeacon.class, new RenderXenomorph(AliensVsPredator.resources().models().PROTOMORPH, 1.4F));
-        registerEntityRenderingHandler(EntityDrone.class, new RenderXenomorph(AliensVsPredator.resources().models().DRONE_ADVANCED, 0.9F));
-        registerEntityRenderingHandler(EntityWarrior.class, new RenderXenomorph(AliensVsPredator.resources().models().WARRIOR, 1F));
-        registerEntityRenderingHandler(EntityPraetorian.class, new RenderXenomorph(AliensVsPredator.resources().models().PRAETORIAN, 1.4F));
-        registerEntityRenderingHandler(EntityRunnerDrone.class, new RenderXenomorph(AliensVsPredator.resources().models().RUNNER_DRONE, 0.9F));
-        registerEntityRenderingHandler(EntityRunnerWarrior.class, new RenderXenomorph(AliensVsPredator.resources().models().RUNNER_WARRIOR, 1F));
-        registerEntityRenderingHandler(EntityCrusher.class, new RenderXenomorph(AliensVsPredator.resources().models().CRUSHER, 1F));
+        registerEntityRenderingHandler(EntityDeacon.class, new RenderXenomorph<ModelProtomorph>(AliensVsPredator.resources().models().PROTOMORPH, 1.4F));
+        registerEntityRenderingHandler(EntityDrone.class, new RenderXenomorph<ModelDrone>(AliensVsPredator.resources().models().DRONE_ADVANCED, 0.9F));
+        registerEntityRenderingHandler(EntityWarrior.class, new RenderXenomorph<ModelWarrior>(AliensVsPredator.resources().models().WARRIOR, 1F));
+        registerEntityRenderingHandler(EntityPraetorian.class, new RenderXenomorph<ModelPraetorian>(AliensVsPredator.resources().models().PRAETORIAN, 1.4F));
+        registerEntityRenderingHandler(EntityRunnerDrone.class, new RenderXenomorph<ModelRunnerDrone>(AliensVsPredator.resources().models().RUNNER_DRONE, 0.9F));
+        registerEntityRenderingHandler(EntityRunnerWarrior.class, new RenderXenomorph<ModelRunnerWarrior>(AliensVsPredator.resources().models().RUNNER_WARRIOR, 1F));
+        registerEntityRenderingHandler(EntityCrusher.class, new RenderXenomorph<ModelCrusher>(AliensVsPredator.resources().models().CRUSHER, 1F));
         registerEntityRenderingHandler(EntityAqua.class, new RenderAqua());
         registerEntityRenderingHandler(EntityPredalien.class, new RenderPredalien());
         registerEntityRenderingHandler(EntitySpitter.class, new RenderSpitter());
@@ -289,7 +305,7 @@ public class Renderers implements IPostInitEvent
         registerEntityRenderingHandler(EntityCombatSynthetic.class, new RenderCombatSynthetic());
         registerEntityRenderingHandler(EntityYautja.class, new RenderYautja());
         registerEntityRenderingHandler(EntityQueen.class, new RenderQueen());
-        registerEntityRenderingHandler(EntityFacehugger.class, new RenderFacehugger());
+        registerEntityRenderingHandler(EntityFacehugger.class, new RenderFacehugger(AliensVsPredator.resources().models().FACEHUGGER));
         registerEntityRenderingHandler(EntityRoyalFacehugger.class, new RenderRoyalFacehugger());
         registerEntityRenderingHandler(EntityChestburster.class, new RenderChestburster());
         registerEntityRenderingHandler(EntityOvamorph.class, new RenderOvamorph());
@@ -505,11 +521,5 @@ public class Renderers implements IPostInitEvent
         bindTileEntitySpecialRenderer(TileEntitySupplyCrate.class, new RenderSupplyCrate());
         bindTileEntitySpecialRenderer(TileEntityHiveResin.class, new RenderHiveResin());
         bindTileEntitySpecialRenderer(TileEntitySkull.class, new RenderSkull());
-    }
-
-    private void registerSimpleBlockRenderingHandlers()
-    {
-        registerBlockHandler(new RenderShape(AliensVsPredator.renderTypes().RENDER_TYPE_SHAPED));
-        registerBlockHandler(new RenderResin(AliensVsPredator.renderTypes().RENDER_TYPE_RESIN));
     }
 }

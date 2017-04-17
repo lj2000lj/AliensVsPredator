@@ -1,12 +1,12 @@
 package org.avp.entities.living;
 
 import org.avp.EntityItemDrops;
+import org.avp.entities.ai.EntityAICustomAttackOnCollide;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
@@ -15,29 +15,34 @@ import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.Potion;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
 public abstract class EntitySpeciesEngineer extends EntityMob
 {
+    private static final DataParameter<Boolean> WEARING_MASK = EntityDataManager.createKey(EntitySpeciesEngineer.class, DataSerializers.BOOLEAN);
+    
     public EntitySpeciesEngineer(World world)
     {
         super(world);
         this.experienceValue = 250;
         this.setSize(1.0F, 2.5F);
-        this.getNavigator().setCanSwim(true);
+        
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIAttackOnCollide(this, 0.800000011920929D, true));
+        this.tasks.addTask(2, new EntityAICustomAttackOnCollide(this, 0.800000011920929D, true));
         this.tasks.addTask(8, new EntityAIWander(this, 0.800000011920929D));
         this.targetTasks.addTask(0, new EntityAIHurtByTarget(this, true));
         this.targetTasks.addTask(2, new EntityAILeapAtTarget(this, 0.4F));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntitySpeciesAlien.class, 0, true));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntitySpeciesYautja.class, 0, true));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityMarine.class, 0, true));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntitySpeciesAlien.class, true));
+        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntitySpeciesYautja.class, true));
+        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityMarine.class, true));
+        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
     }
 
     @Override
@@ -55,7 +60,7 @@ public abstract class EntitySpeciesEngineer extends EntityMob
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(17, String.valueOf(this.rand.nextBoolean()));
+        this.getDataManager().register(WEARING_MASK, this.rand.nextBoolean());
     }
 
     @Override
@@ -69,54 +74,21 @@ public abstract class EntitySpeciesEngineer extends EntityMob
     }
 
     @Override
-    protected void attackEntity(Entity entity, float damage)
-    {
-        if (this.attackTime <= 0 && damage < 2.0F && entity.boundingBox.maxY > this.boundingBox.minY && entity.boundingBox.minY < this.boundingBox.maxY)
-        {
-            this.attackTime = 20;
-            this.attackEntityAsMob(entity);
-        }
-
-        if (damage > 2.0F && damage < 6.0F && this.rand.nextInt(10) == 0)
-        {
-            if (this.onGround)
-            {
-                double dX = entity.posX - this.posX;
-                double dZ = entity.posZ - this.posZ;
-                float speed = MathHelper.sqrt_double(dX * dX + dZ * dZ);
-                this.motionX = dX / speed * 0.5D * 0.800000011920929D + this.motionX * 0.20000000298023224D;
-                this.motionZ = dZ / speed * 0.5D * 0.800000011920929D + this.motionZ * 0.20000000298023224D;
-                this.motionY = 0.4000000059604645D;
-            }
-        }
-        else
-        {
-            super.attackEntity(entity, damage);
-        }
-    }
-
-    @Override
     public boolean attackEntityAsMob(Entity entity)
     {
         int damage = 5;
 
-        if (this.isPotionActive(Potion.damageBoost))
+        if (this.isPotionActive(MobEffects.INSTANT_DAMAGE))
         {
-            damage += 3 << this.getActivePotionEffect(Potion.damageBoost).getAmplifier();
+            damage += 3 << this.getActivePotionEffect(MobEffects.INSTANT_DAMAGE).getAmplifier();
         }
 
-        if (this.isPotionActive(Potion.weakness))
+        if (this.isPotionActive(MobEffects.WEAKNESS))
         {
-            damage -= 2 << this.getActivePotionEffect(Potion.weakness).getAmplifier();
+            damage -= 2 << this.getActivePotionEffect(MobEffects.WEAKNESS).getAmplifier();
         }
 
         return entity.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
-    }
-
-    @Override
-    protected boolean isAIEnabled()
-    {
-        return true;
     }
 
     @Override
@@ -140,23 +112,23 @@ public abstract class EntitySpeciesEngineer extends EntityMob
     @Override
     public boolean isInWater()
     {
-        return this.worldObj.handleMaterialAcceleration(this.boundingBox.expand(0.0D, -0.900000023841858D, 0.0D), Material.water, this);
+        return this.worldObj.handleMaterialAcceleration(this.getEntityBoundingBox().expand(0.0D, -0.900000023841858D, 0.0D), Material.WATER, this);
     }
 
     @Override
-    protected String getLivingSound()
+    protected SoundEvent getAmbientSound()
     {
         return null;
     }
 
     @Override
-    protected String getHurtSound()
+    protected SoundEvent getHurtSound()
     {
         return null;
     }
 
     @Override
-    protected String getDeathSound()
+    protected SoundEvent getDeathSound()
     {
         return null;
     }
@@ -183,14 +155,14 @@ public abstract class EntitySpeciesEngineer extends EntityMob
 
     public boolean isWearingMask()
     {
-        return Boolean.parseBoolean(this.dataWatcher.getWatchableObjectString(17));
+        return this.getDataManager().get(WEARING_MASK);
     }
 
     public void setWearingMask(boolean wearingMask)
     {
         if (!this.worldObj.isRemote)
         {
-            this.dataWatcher.updateObject(17, String.valueOf(wearingMask));
+            this.getDataManager().set(WEARING_MASK, wearingMask);
         }
     }
 }

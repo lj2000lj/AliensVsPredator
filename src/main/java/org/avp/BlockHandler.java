@@ -48,15 +48,15 @@ import org.avp.item.ItemSupplyChute.SupplyChuteType;
 import com.arisux.mdxlib.lib.game.Game;
 import com.arisux.mdxlib.lib.game.IInitEvent;
 import com.arisux.mdxlib.lib.world.block.BlockMaterial;
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.util.Facing;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockHandler implements IInitEvent
 {
@@ -151,10 +151,10 @@ public class BlockHandler implements IInitEvent
     public Block               blockPortalVarda            = (new BlockPortal(AliensVsPredator.settings().dimensionIdVarda()).setHardness(-1.0F).setLightLevel(2.0F));
     public Block               blockPortalAcheron          = (new BlockPortal(AliensVsPredator.settings().dimensionIdAcheron()).setHardness(-1.0F).setLightLevel(2.0F));
     public Block               blockAssembler              = (new BlockAssembler(Material.IRON).setHardness(1.5F).setResistance(10.0F));
-    public Block               blockFloorGrillStairs       = (new BlockCustomStairs(blockFloorGrill)).setHardness(5F).setResistance(15.0F).setLightOpacity(4);
-    public Block               blockCeilingGrillStairs     = (new BlockCustomStairs(blockCeilingGrill)).setHardness(5F).setResistance(15.0F).setLightOpacity(4);
-    public Block               blockIronBricksStairs       = (new BlockCustomStairs(blockIronBricks)).setHardness(5F).setResistance(15.0F).setLightOpacity(255);
-    public Block               blockWallStairs             = (new BlockCustomStairs(blockWall)).setHardness(5F).setResistance(15.0F).setLightOpacity(255);
+    public Block               blockFloorGrillStairs       = (new BlockCustomStairs(blockFloorGrill.getDefaultState())).setHardness(5F).setResistance(15.0F).setLightOpacity(4);
+    public Block               blockCeilingGrillStairs     = (new BlockCustomStairs(blockCeilingGrill.getDefaultState())).setHardness(5F).setResistance(15.0F).setLightOpacity(4);
+    public Block               blockIronBricksStairs       = (new BlockCustomStairs(blockIronBricks.getDefaultState())).setHardness(5F).setResistance(15.0F).setLightOpacity(255);
+    public Block               blockWallStairs             = (new BlockCustomStairs(blockWall.getDefaultState())).setHardness(5F).setResistance(15.0F).setLightOpacity(255);
     public Block               terrainUniDirt              = (new BlockUnidentifiedDirt()).setHardness(0.5F).setResistance(2.0F).setLightOpacity(255);
     public Block               terrainStalagmite           = (new BlockStalagmite(Material.PLANTS)).setHardness(0.0F).setLightOpacity(0);
     public Block               terrainUniTreeLog           = (new BlockUnidentifiedLog()).setHardness(0.0F).setLightOpacity(0);
@@ -189,92 +189,45 @@ public class BlockHandler implements IInitEvent
     public Block               blockWallW                  = (new BlockWall(Material.IRON).setHardness(5F).setResistance(15.0F).setLightOpacity(255));
     public Block               blockRelicTile              = (new BlockMaterial(Material.ROCK)
                                                            {
-                                                               @Override
-                                                               public void registerIcons(IIconRegister register)
-                                                               {
-                                                                   this.blockIcon = register.registerIcon("avp:spawner");
-                                                               };
                                                            }.setHardness(5F).setResistance(15.0F).setLightOpacity(255));
     public Block               blockIndustrialGlass        = (new BlockMaterial(Material.IRON)
                                                            {
                                                                @Override
-                                                               public boolean renderAsNormalBlock()
+                                                               protected BlockStateContainer createBlockState()
                                                                {
-                                                                   return false;
-                                                               }
-
-                                                               @Override
-                                                               public boolean isOpaqueCube()
-                                                               {
-                                                                   return false;
-                                                               }
-
-                                                               @SideOnly(Side.CLIENT)
-                                                               public int getRenderBlockPass()
-                                                               {
-                                                                   return 0;
-                                                               }
-
-                                                               @SideOnly(Side.CLIENT)
-                                                               public boolean shouldSideBeRendered(IBlockAccess worldIn, int x, int y, int z, int side)
-                                                               {
-                                                                   Block block = worldIn.getBlock(x, y, z);
-                                                                   boolean ignoreSimilarity = false;
-                                                                   
-                                                                   if (worldIn.getBlockMetadata(x, y, z) != worldIn.getBlockMetadata(x - Facing.offsetsXForSide[side], y - Facing.offsetsYForSide[side], z - Facing.offsetsZForSide[side]))
-                                                                   {
-                                                                       return true;
-                                                                   }
-
-                                                                   if (block == this)
-                                                                   {
-                                                                       return false;
-                                                                   }
-
-                                                                   return !ignoreSimilarity && block == this ? false : super.shouldSideBeRendered(worldIn, x, y, z, side);
+                                                                   return new BlockStateContainer(this, new IProperty[0])
+                                                                                                                          {
+                                                                                                                              @Override
+                                                                                                                              protected StateImplementation createState(Block block, ImmutableMap<IProperty<?>, Comparable<?>> properties, ImmutableMap<IUnlistedProperty<?>, Optional<?>> unlistedProperties)
+                                                                                                                              {
+                                                                                                                                  return new StateImplementation(block, properties)
+                                                                                                                                                                                         {
+                                                                                                                                                                                             @Override
+                                                                                                                                                                                             public boolean isOpaqueCube()
+                                                                                                                                                                                             {
+                                                                                                                                                                                                 return false;
+                                                                                                                                                                                             }
+                                                                                                                                                                                         };
+                                                                                                                              }
+                                                                                                                          };
                                                                }
                                                            }).setHardness(5F).setResistance(15.0F).setLightOpacity(0);
-    public Block               blockFloorGrillSlab         = (new BlockCustomSlab(Material.IRON)
+    public Block               blockFloorGrillSlab         = (new BlockCustomSlab(Material.IRON, false)
                                                            {
-                                                               @Override
-                                                               public void registerIcons(IIconRegister register)
-                                                               {
-                                                                   this.blockIcon = register.registerIcon("avp:floorgrill");
-                                                               };
                                                            }).setHardness(5F).setResistance(15.0F).setLightOpacity(4);
-    public Block               blockCeilingGrillSlab       = (new BlockCustomSlab(Material.IRON)
+    public Block               blockCeilingGrillSlab       = (new BlockCustomSlab(Material.IRON, false)
                                                            {
-                                                               @Override
-                                                               public void registerIcons(IIconRegister register)
-                                                               {
-                                                                   this.blockIcon = register.registerIcon("avp:ceilinggrill");
-                                                               };
                                                            }).setHardness(5F).setResistance(15.0F).setLightOpacity(4);
-    public Block               blockWallSlab               = (new BlockCustomSlab(Material.IRON)
+    public Block               blockWallSlab               = (new BlockCustomSlab(Material.IRON, false)
                                                            {
-                                                               @Override
-                                                               public void registerIcons(IIconRegister register)
-                                                               {
-                                                                   this.blockIcon = register.registerIcon("avp:wall_top");
-                                                               };
                                                            }).setHardness(5F).setResistance(15.0F).setLightOpacity(255);
-    public Block               blockIronBricksSlab         = (new BlockCustomSlab(Material.IRON)
+    public Block               blockIronBricksSlab         = (new BlockCustomSlab(Material.IRON, false)
                                                            {
-                                                               @Override
-                                                               public void registerIcons(IIconRegister register)
-                                                               {
-                                                                   this.blockIcon = register.registerIcon("avp:industrialbricks");
-                                                               };
                                                            }).setHardness(5F).setResistance(15.0F).setLightOpacity(255);
-    public Block               blockIndustrialGlassSlab    = (new BlockCustomSlab(Material.IRON)
+    public Block               blockIndustrialGlassSlab    = (new BlockCustomSlab(Material.IRON, false)
                                                            {
-                                                               @Override
-                                                               public void registerIcons(IIconRegister register)
-                                                               {
-                                                                   this.blockIcon = register.registerIcon("avp:industrialglass");
-                                                               };
                                                            }).setHardness(5F).setResistance(15.0F).setLightOpacity(0);
-    public Block               blockIndustrialGlassStairs  = (new BlockCustomStairs(blockIndustrialGlass)).setHardness(5F).setResistance(15.0F).setLightOpacity(0);
+    public Block               blockIndustrialGlassStairs  = (new BlockCustomStairs(blockIndustrialGlass.getDefaultState())).setHardness(5F).setResistance(15.0F).setLightOpacity(0);
 
     public Block               blockSkullEngineer          = new BlockSkullEngineer();
     public Block               blockSkullSpaceJockey       = new BlockSkullSpaceJockey();

@@ -23,7 +23,12 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
 public class EntityQueen extends EntityXenomorph implements IMob
@@ -34,6 +39,8 @@ public class EntityQueen extends EntityXenomorph implements IMob
     public static final int   OVIPOSITOR_JELLYLEVEL_THRESHOLD    = 1000;
     public static final int   OVIPOSITOR_JELLYLEVEL_GROWTH_USE   = 1;
 
+    private static final DataParameter<Float> OVIPOSITOR_SIZE = EntityDataManager.createKey(EntityQueen.class, DataSerializers.FLOAT);
+    
     public boolean            growingOvipositor;
     public boolean            reproducing;
 
@@ -48,26 +55,25 @@ public class EntityQueen extends EntityXenomorph implements IMob
         this.jumpMovementFactor = 0.2F;
         this.hurtResistantTime = 0;
         this.ignoreFrustumCheck = true;
-        this.getNavigator().setCanSwim(true);
-        this.dataWatcher.addObject(14, 0F);
-        this.addStandardXenomorphAISet();
         this.jellyLimitOverride = true;
+        this.addStandardXenomorphAISet();
     }
 
     public float getOvipositorSize()
     {
-        return this.dataWatcher.getWatchableObjectFloat(14);
+        return this.getDataManager().get(OVIPOSITOR_SIZE);
     }
 
     public void setOvipositorSize(float value)
     {
-        this.dataWatcher.updateObject(14, value);
+        this.getDataManager().set(OVIPOSITOR_SIZE, value);
     }
 
     @Override
     protected void entityInit()
     {
         super.entityInit();
+        this.getDataManager().register(OVIPOSITOR_SIZE, 0F);
     }
 
     @Override
@@ -130,7 +136,7 @@ public class EntityQueen extends EntityXenomorph implements IMob
                 double ovamorphX = (this.posX + (ovipositorDist * (Math.cos(rotationYawRadians))));
                 double ovamorphZ = (this.posZ + (ovipositorDist * (Math.sin(rotationYawRadians))));
 
-                this.worldObj.playSoundAtEntity(this, AliensVsPredator.sounds().SOUND_QUEEN_HURT.getKey(), 1F, this.rand.nextInt(10) / 100);
+                this.worldObj.playSound(this.getPosition().getX(), this.getPosition().getY(), this.getPosition().getZ(), AliensVsPredator.sounds().SOUND_QUEEN_HURT.event(), SoundCategory.HOSTILE, 1F, this.rand.nextInt(10) / 100, true);
 
                 if (this.worldObj.isRemote)
                 {
@@ -312,9 +318,9 @@ public class EntityQueen extends EntityXenomorph implements IMob
     }
 
     @Override
-    protected void attackEntity(Entity entity, float damage)
+    public boolean attackEntityFrom(DamageSource source, float damage)
     {
-        super.attackEntity(entity, damage);
+        return super.attackEntityFrom(source, damage);
     }
 
     @Override
@@ -324,39 +330,27 @@ public class EntityQueen extends EntityXenomorph implements IMob
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource source, float amount)
-    {
-        return super.attackEntityFrom(source, amount);
-    }
-
-    @Override
     public UUID getHiveSignature()
     {
         return this.hive != null ? this.hive.getUniqueIdentifier() : this.getUniqueID();
     }
 
     @Override
-    protected boolean isAIEnabled()
+    protected SoundEvent getHurtSound()
     {
-        return true;
+        return Sounds.SOUND_QUEEN_HURT.event();
     }
 
     @Override
-    protected String getHurtSound()
+    protected SoundEvent getAmbientSound()
     {
-        return Sounds.SOUND_QUEEN_HURT.getKey();
+        return this.getHealth() > this.getMaxHealth() / 4 ? Sounds.SOUND_QUEEN_LIVING_CONSTANT.event() : Sounds.SOUND_QUEEN_LIVING.event();
     }
 
     @Override
-    protected String getLivingSound()
+    protected SoundEvent getDeathSound()
     {
-        return this.getHealth() > this.getMaxHealth() / 4 ? Sounds.SOUND_QUEEN_LIVING.getKey() + ".constant" : Sounds.SOUND_QUEEN_LIVING.getKey();
-    }
-
-    @Override
-    protected String getDeathSound()
-    {
-        return Sounds.SOUND_QUEEN_DEATH.getKey();
+        return Sounds.SOUND_QUEEN_DEATH.event();
     }
 
     @Override

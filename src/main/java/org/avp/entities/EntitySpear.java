@@ -7,14 +7,18 @@ import org.avp.DamageSources;
 import com.arisux.mdxlib.lib.game.GameSounds;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -45,7 +49,6 @@ public class EntitySpear extends EntityItemStackProjectile
         this.posY -= 0.1D;
         this.posZ -= MathHelper.sin((rotationYaw / 180F) * 3.141593F) * 0.16F;
         this.setPosition(this.posX, this.posY, this.posZ);
-        this.yOffset = 0.0F;
         this.motionX = -MathHelper.sin((rotationYaw / 180F) * 3.141593F) * MathHelper.cos((rotationPitch / 180F) * 3.141593F);
         this.motionY = -MathHelper.sin((rotationPitch / 180F) * 3.141593F);
         this.motionZ = MathHelper.cos((rotationYaw / 180F) * 3.141593F) * MathHelper.cos((rotationPitch / 180F) * 3.141593F);
@@ -62,17 +65,17 @@ public class EntitySpear extends EntityItemStackProjectile
             this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(this.motionY, i) * 180.0D / Math.PI);
         }
 
-        Block block = this.worldObj.getBlock(this.xTile, this.yTile, this.zTile);
+        BlockPos pos = new BlockPos(this.xTile, this.yTile, this.zTile);
+        IBlockState blockstate = this.worldObj.getBlockState(pos);
+        Block block = blockstate.getBlock();
 
         if (block != Blocks.AIR)
         {
-            block.setBlockBoundsBasedOnState(this.worldObj, this.xTile, this.yTile, this.zTile);
-
             if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
             {
-                AxisAlignedBB Vec3dd = block.getSelectedBoundingBoxFromPool(this.worldObj, this.xTile, this.yTile, this.zTile);
+                AxisAlignedBB box = blockstate.getBoundingBox(this.worldObj, pos);
 
-                if (Vec3dd != null && Vec3dd.isVecInside(new Vec3d(this.posX, this.posY, this.posZ)))
+                if (box != null && box.isVecInside(new Vec3d(this.posX, this.posY, this.posZ)))
                 {
                     this.inGround = true;
                 }
@@ -86,10 +89,7 @@ public class EntitySpear extends EntityItemStackProjectile
 
         if (this.inGround)
         {
-            Block var18 = this.worldObj.getBlock(this.xTile, this.yTile, this.zTile);
-            int var19 = this.worldObj.getBlockMetadata(this.xTile, this.yTile, this.zTile);
-
-            if (var18 == this.inTile && var19 == this.inData)
+            if (block == this.inTile)
             {
                 ++this.ticksInGround;
             }
@@ -108,19 +108,19 @@ public class EntitySpear extends EntityItemStackProjectile
             ++this.ticksInAir;
             Vec3d var17 = new Vec3d(this.posX, this.posY, this.posZ);
             Vec3d Vec3dd1 = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-            MovingObjectPosition movingobjectposition = this.worldObj.rayTraceBlocks(var17, Vec3dd1, false, true, true);
+            RayTraceResult result = this.worldObj.rayTraceBlocks(var17, Vec3dd1, false, true, true);
             var17 = new Vec3d(this.posX, this.posY, this.posZ);
             Vec3dd1 = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
-            if (movingobjectposition != null)
+            if (result != null)
             {
-                Vec3dd1 = new Vec3d(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord, movingobjectposition.hitVec.zCoord);
+                Vec3dd1 = new Vec3d(result.hitVec.xCoord, result.hitVec.yCoord, result.hitVec.zCoord);
             }
 
             Entity entity = null;
 
             @SuppressWarnings("unchecked")
-            List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
+            List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
 
             double d = 0.0D;
             int f3;
@@ -133,8 +133,8 @@ public class EntitySpear extends EntityItemStackProjectile
                 if (f4.canBeCollidedWith() && (f4 != this.shootingEntity || this.ticksInAir >= 5))
                 {
                     f6 = 0.3F;
-                    AxisAlignedBB k1 = f4.boundingBox.expand(f6, f6, f6);
-                    MovingObjectPosition f7 = k1.calculateIntercept(var17, Vec3dd1);
+                    AxisAlignedBB k1 = f4.getEntityBoundingBox().expand(f6, f6, f6);
+                    RayTraceResult f7 = k1.calculateIntercept(var17, Vec3dd1);
 
                     if (f7 != null)
                     {
@@ -151,14 +151,14 @@ public class EntitySpear extends EntityItemStackProjectile
 
             if (entity != null)
             {
-                movingobjectposition = new MovingObjectPosition(entity);
+                result = new RayTraceResult(entity);
             }
 
             float var20;
 
-            if (movingobjectposition != null)
+            if (result != null)
             {
-                if (movingobjectposition.entityHit != null)
+                if (result.entityHit != null)
                 {
                     var20 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
                     int var23 = (int) Math.ceil(var20 * 2.0D);
@@ -174,11 +174,11 @@ public class EntitySpear extends EntityItemStackProjectile
                         damagesource = DamageSources.causeShurikenDamage(this.shootingEntity);
                     }
 
-                    if (movingobjectposition.entityHit.attackEntityFrom(damagesource, var23))
+                    if (result.entityHit.attackEntityFrom(damagesource, var23))
                     {
-                        if (movingobjectposition.entityHit instanceof EntityLivingBase)
+                        if (result.entityHit instanceof EntityLivingBase)
                         {
-                            ++((EntityLivingBase) movingobjectposition.entityHit).arrowHitTimer;
+                            ++((EntityLivingBase) result.entityHit).arrowHitTimer;
                         }
 
                         GameSounds.fxBowHit.playSound(this, 1.0F, 1.2F / (this.rand.nextFloat() * 0.4F + 0.9F));
@@ -195,14 +195,13 @@ public class EntitySpear extends EntityItemStackProjectile
                 }
                 else
                 {
-                    this.xTile = movingobjectposition.blockX;
-                    this.yTile = movingobjectposition.blockY;
-                    this.zTile = movingobjectposition.blockZ;
-                    this.inTile = this.worldObj.getBlock(this.xTile, this.yTile, this.zTile);
-                    this.inData = this.worldObj.getBlockMetadata(this.xTile, this.yTile, this.zTile);
-                    this.motionX = ((float) (movingobjectposition.hitVec.xCoord - this.posX));
-                    this.motionY = ((float) (movingobjectposition.hitVec.yCoord - this.posY));
-                    this.motionZ = ((float) (movingobjectposition.hitVec.zCoord - this.posZ));
+                    this.xTile = (int) result.hitVec.xCoord;
+                    this.yTile = (int) result.hitVec.yCoord;
+                    this.zTile = (int) result.hitVec.zCoord;
+                    this.inTile = this.worldObj.getBlockState(new BlockPos(this.xTile, this.yTile, this.zTile)).getBlock();
+                    this.motionX = ((float) (result.hitVec.xCoord - this.posX));
+                    this.motionY = ((float) (result.hitVec.yCoord - this.posY));
+                    this.motionZ = ((float) (result.hitVec.zCoord - this.posZ));
                     var20 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
                     this.posX -= this.motionX / var20 * 0.05000000074505806D;
                     this.posY -= this.motionY / var20 * 0.05000000074505806D;
@@ -241,22 +240,22 @@ public class EntitySpear extends EntityItemStackProjectile
 
             this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.2F;
             this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
-            float var22 = 0.99F;
+            float v = 0.99F;
 
             if (this.isInWater())
             {
                 for (int var24 = 0; var24 < 4; ++var24)
                 {
-                    float var25 = 0.25F;
-                    this.worldObj.spawnParticle("bubble", this.posX - this.motionX * var25, this.posY - this.motionY * var25, this.posZ - this.motionZ * var25, this.motionX, this.motionY, this.motionZ);
+                    float r = 0.25F;
+                    this.worldObj.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * r, this.posY - this.motionY * r, this.posZ - this.motionZ * r, this.motionX, this.motionY, this.motionZ);
                 }
 
-                var22 = 0.8F;
+                v = 0.8F;
             }
 
-            this.motionX *= var22;
-            this.motionY *= var22;
-            this.motionZ *= var22;
+            this.motionX *= v;
+            this.motionY *= v;
+            this.motionZ *= v;
             this.motionY -= this.motionX + this.motionZ > 0.7 ? 0.01F : 0.09F;
             this.setPosition(this.posX, this.posY, this.posZ);
         }
@@ -283,7 +282,7 @@ public class EntitySpear extends EntityItemStackProjectile
                 this.applyEntityHitEffects(entity);
                 this.playHitSound();
 
-                if (itemstack.getCurrentDurability() + 1 > itemstack.getMaxDurability())
+                if (itemstack.getMaxDamage() + 1 > itemstack.getMaxDamage())
                 {
                     itemstack.stackSize--;
                     this.setDead();
@@ -336,5 +335,11 @@ public class EntitySpear extends EntityItemStackProjectile
     public boolean canPickup(EntityPlayer entityplayer)
     {
         return true;
+    }
+
+    @Override
+    protected ItemStack getArrowStack()
+    {
+        return null;
     }
 }

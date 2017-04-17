@@ -9,8 +9,10 @@ import org.avp.api.blocks.IAcidResistant;
 import com.arisux.mdxlib.lib.game.GameSounds;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumDifficulty;
 
 public class EntityAIMeltBlock extends EntityAIYOffsetBlockInteract
@@ -29,9 +31,9 @@ public class EntityAIMeltBlock extends EntityAIYOffsetBlockInteract
         super(theEntity, yOffset);
         this.theEntity = theEntity;
         this.yOffset = yOffset;
-        blacklist(Blocks.obsidian);
-        blacklist(Blocks.bedrock);
-        blacklist(Blocks.end_portal_frame);
+        blacklist(Blocks.OBSIDIAN);
+        blacklist(Blocks.BEDROCK);
+        blacklist(Blocks.END_PORTAL_FRAME);
         blacklist(AliensVsPredator.blocks().industrialGlassShapes);
         blacklist(AliensVsPredator.blocks().blockIndustrialGlass);
         blacklist(AliensVsPredator.blocks().blockIndustrialGlassSlab);
@@ -81,7 +83,7 @@ public class EntityAIMeltBlock extends EntityAIYOffsetBlockInteract
     @Override
     public boolean shouldExecute()
     {
-        return this.theEntity.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing");
+        return this.theEntity.worldObj.getGameRules().getBoolean("mobGriefing");
     }
 
     @Override
@@ -93,7 +95,7 @@ public class EntityAIMeltBlock extends EntityAIYOffsetBlockInteract
     @Override
     public boolean continueExecuting()
     {
-        return (this.theEntity.worldObj.difficultySetting == EnumDifficulty.NORMAL || this.theEntity.worldObj.difficultySetting == EnumDifficulty.HARD) && this.theEntity.getDistanceSq((int) this.theEntity.posX, (int) this.theEntity.posY + yOffset, (int) this.theEntity.posZ) < 4.0D && block != Blocks.AIR && block != AliensVsPredator.blocks().terrainHiveResin && block != Blocks.bedrock;
+        return (this.theEntity.worldObj.getDifficulty() == EnumDifficulty.NORMAL || this.theEntity.worldObj.getDifficulty() == EnumDifficulty.HARD) && this.theEntity.getDistanceSq((int) this.theEntity.posX, (int) this.theEntity.posY + yOffset, (int) this.theEntity.posZ) < 4.0D && block != Blocks.AIR && block != AliensVsPredator.blocks().terrainHiveResin && block != Blocks.BEDROCK;
     }
 
     @Override
@@ -108,31 +110,30 @@ public class EntityAIMeltBlock extends EntityAIYOffsetBlockInteract
     {
         super.updateTask();
         
-        int targetX = (int) Math.floor(this.theEntity.posX);
-        int targetY = (int) this.theEntity.posY - 1;
-        int targetZ = (int) Math.floor(this.theEntity.posZ);
-        Block target = this.theEntity.worldObj.getBlock(targetX, targetY, targetZ);
-        float hardness = 1F / target.getBlockHardness(this.theEntity.worldObj, targetX, targetY, targetZ) / 100F;
+        BlockPos pos = new BlockPos((int) Math.floor(this.theEntity.posX), (int) this.theEntity.posY - 1, (int) Math.floor(this.theEntity.posZ));
+        IBlockState blockstate = this.theEntity.worldObj.getBlockState(pos);
+        Block destroy = blockstate.getBlock();
+        float hardness = 1F / blockstate.getBlockHardness(this.theEntity.worldObj, pos) / 100F;
 
         if (this.theEntity.getRNG().nextInt(20) == 0)
         {
-            GameSounds.fxMinecraftFizz.playSound(this.theEntity.worldObj, this.theEntity.posX, this.theEntity.posY, this.theEntity.posZ);
+            GameSounds.fxMinecraftFizz.playSound(this.theEntity.worldObj, this.theEntity.getPosition(), 1F, 1F);
         }
 
-        if (blockBlacklist.contains(target) || target instanceof IAcidResistant && ((IAcidResistant) target).canAcidDestroy(this.theEntity.worldObj, targetX, targetY, targetZ, this.theEntity))
+        if (blockBlacklist.contains(destroy) || destroy instanceof IAcidResistant && ((IAcidResistant) destroy).canAcidDestroy(this.theEntity.worldObj, pos, this.theEntity))
         {
             return;
         }
 
         this.breakProgress += hardness;
-        this.theEntity.worldObj.destroyBlockInWorldPartially(this.theEntity.getEntityId(), (int) Math.floor(this.theEntity.posX), (int) this.theEntity.posY + yOffset, (int) Math.floor(this.theEntity.posZ), (int) (this.breakProgress * 10.0F) - 1);
+        //this.theEntity.worldObj.destroyBlockInWorldPartially(this.theEntity.getEntityId(), (int) Math.floor(this.theEntity.posX), (int) this.theEntity.posY + yOffset, (int) Math.floor(this.theEntity.posZ), (int) (this.breakProgress * 10.0F) - 1);
 
         if (this.breakProgress >= 1F)
         {
             if (block != Blocks.AIR)
             {
-                this.theEntity.worldObj.breakBlock(targetX, targetY, targetZ, true);
-                this.theEntity.worldObj.playAuxSFX(2001, (int) Math.floor(this.theEntity.posX), (int) this.theEntity.posY + yOffset, (int) Math.floor(this.theEntity.posZ), Block.getIdFromBlock(this.block));
+                this.theEntity.worldObj.destroyBlock(pos, true);
+                //this.theEntity.worldObj.playAuxSFX(2001, (int) Math.floor(this.theEntity.posX), (int) this.theEntity.posY + yOffset, (int) Math.floor(this.theEntity.posZ), Block.getIdFromBlock(this.block));
                 this.resetTask();
             }
         }

@@ -1,17 +1,20 @@
 package org.avp.command;
 
 import org.avp.AliensVsPredator;
-import org.avp.entities.SharedPlayer;
+
 import org.avp.packets.client.PacketPlayerModeUpdate;
+import org.avp.world.capabilities.ISpecialPlayer.SpecialPlayer;
 import org.avp.world.playermode.PlayerMode;
 
 import com.arisux.mdxlib.lib.world.entity.player.Players;
 
 import net.minecraft.command.CommandBase;
+import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.text.TextComponentString;
 
 public class CommandPlayerMode extends CommandBase
 {
@@ -28,14 +31,14 @@ public class CommandPlayerMode extends CommandBase
     }
 
     @Override
-    public void processCommand(ICommandSender commandSender, String[] args)
+    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
-        EntityPlayer player = Players.getPlayerForCommandSender(commandSender);
-        SharedPlayer playerExtension = (SharedPlayer) player.getExtendedProperties(SharedPlayer.IDENTIFIER);
+        EntityPlayer player = Players.getPlayerForCommandSender(sender);
+        SpecialPlayer specialPlayer = (SpecialPlayer) player.getCapability(SpecialPlayer.Provider.CAPABILITY, null);
         PlayerMode playerMode = PlayerMode.get(Integer.valueOf(args[0]));
 
-        playerExtension.setPlayerMode(playerMode);
-        AliensVsPredator.network().sendTo(new PacketPlayerModeUpdate(playerMode.id), (EntityPlayerMP) Players.getPlayerForCommandSender(commandSender));
-        commandSender.addChatMessage(new ChatComponentText("You have changed to the " + playerMode.toString().toLowerCase() + " player mode."));
+        specialPlayer.setPlayerMode(playerMode);
+        AliensVsPredator.network().sendTo(new PacketPlayerModeUpdate(playerMode.id), (EntityPlayerMP) Players.getPlayerForCommandSender(sender));
+        sender.addChatMessage(new TextComponentString("You have changed to the " + playerMode.toString().toLowerCase() + " player mode."));
     }
 }

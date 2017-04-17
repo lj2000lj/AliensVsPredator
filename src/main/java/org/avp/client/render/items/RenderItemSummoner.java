@@ -1,13 +1,16 @@
 package org.avp.client.render.items;
 
+import com.arisux.mdxlib.lib.client.Model;
 import com.arisux.mdxlib.lib.client.TexturedModel;
 import com.arisux.mdxlib.lib.client.render.ItemRenderer;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.game.Game;
 
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 
-public class RenderItemSummoner extends ItemRenderer
+public class RenderItemSummoner extends ItemRenderer<Model>
 {
     private float                   scale;
     private float                   x;
@@ -39,12 +42,6 @@ public class RenderItemSummoner extends ItemRenderer
         return this;
     }
 
-    @Override
-    public void renderItem(ItemRenderType type, ItemStack item, Object... data)
-    {
-        super.renderItem(type, item, data);
-    }
-
     public void renderCachedModel()
     {
         OpenGL.pushMatrix();
@@ -64,7 +61,7 @@ public class RenderItemSummoner extends ItemRenderer
     }
 
     @Override
-    public void renderThirdPerson(ItemStack item, Object... data)
+    public void renderThirdPersonRight(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         scale = 0.5F;
         OpenGL.rotate(195F, 1.0F, 0.0F, 0.0F);
@@ -76,7 +73,7 @@ public class RenderItemSummoner extends ItemRenderer
     }
 
     @Override
-    public void renderFirstPerson(ItemStack item, Object... data)
+    public void renderFirstPersonRight(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         OpenGL.rotate(195F, 1.0F, 0.0F, 0.0F);
         OpenGL.rotate(180F, 0.0F, 1.0F, 0.0F);
@@ -87,7 +84,7 @@ public class RenderItemSummoner extends ItemRenderer
     }
 
     @Override
-    public void renderInInventory(ItemStack item, Object... data)
+    public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         OpenGL.translate(8F + x, -2F + y, 4F);
         OpenGL.rotate(0F, 1.0F, 0.0F, 0.0F);
@@ -96,13 +93,27 @@ public class RenderItemSummoner extends ItemRenderer
     }
 
     @Override
-    public void renderInWorld(ItemStack item, Object... data)
+    public void renderInWorld(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         OpenGL.rotate(180F, 0.0F, 0.0F, 1F);
         OpenGL.rotate(90F, 0.0F, 1F, 0F);
-        OpenGL.rotate((this.mc.theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
+        OpenGL.rotate((mc.theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
         OpenGL.scale(0.25F, 0.25F, 0.25F);
         OpenGL.translate(0F, -2.5F, 0F);
         this.renderCachedModel();
+    }
+
+    @Override
+    public void renderThirdPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void renderFirstPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
+    {
+        // TODO Auto-generated method stub
+        
     }
 }

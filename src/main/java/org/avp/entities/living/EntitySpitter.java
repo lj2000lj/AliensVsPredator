@@ -8,6 +8,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAISwimming;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
 public class EntitySpitter extends EntityXenomorph implements IRangedAttackMob
@@ -17,8 +18,8 @@ public class EntitySpitter extends EntityXenomorph implements IRangedAttackMob
         super(par1World);
         this.experienceValue = 275;
         this.setSize(1.0F, 3.0F);
-        this.getNavigator().setCanSwim(true);
-        this.getNavigator().setAvoidsWater(true);
+        
+        
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.addStandardXenomorphAISet();
     }
@@ -31,29 +32,23 @@ public class EntitySpitter extends EntityXenomorph implements IRangedAttackMob
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5500000238418579D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
     }
-
+    
     @Override
-    protected boolean isAIEnabled()
+    protected SoundEvent getHurtSound()
     {
-        return true;
+        return Sounds.SOUND_SPITTER_HURT.event();
     }
 
     @Override
-    protected String getHurtSound()
+    protected SoundEvent getAmbientSound()
     {
-        return Sounds.SOUND_SPITTER_HURT.getKey();
+        return Sounds.SOUND_SPITTER_LIVING.event();
     }
 
     @Override
-    protected String getLivingSound()
+    protected SoundEvent getDeathSound()
     {
-        return Sounds.SOUND_SPITTER_LIVING.getKey();
-    }
-
-    @Override
-    protected String getDeathSound()
-    {
-        return Sounds.SOUND_SPITTER_DEATH.getKey();
+        return Sounds.SOUND_SPITTER_DEATH.event();
     }
 
     @Override

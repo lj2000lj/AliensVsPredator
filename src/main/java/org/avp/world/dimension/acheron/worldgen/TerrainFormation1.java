@@ -5,21 +5,25 @@ import java.util.Random;
 import org.avp.AliensVsPredator;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
 public class TerrainFormation1 extends WorldGenerator implements IWorldGenerator
 {
+    private static final IBlockState block = AliensVsPredator.blocks().blockEngineerShipRock0.getDefaultState();
     Block[] validBlocks = new Block[] { AliensVsPredator.blocks().terrainUniDirt
     };
 
-    public boolean locationIsValidSpawn(World world, int x, int y, int z)
+    public boolean locationIsValidSpawn(World world, BlockPos pos)
     {
         int distanceToAir = 0;
-        Block check = world.getBlock(x, y, z);
+        Block check = world.getBlockState(pos).getBlock();
 
         while (check != Blocks.AIR)
         {
@@ -29,14 +33,14 @@ public class TerrainFormation1 extends WorldGenerator implements IWorldGenerator
             }
 
             distanceToAir++;
-            check = world.getBlock(x, y + distanceToAir, z);
+            check = world.getBlockState(pos.add(0, distanceToAir, 0)).getBlock();
         }
 
-        y += distanceToAir - 1;
+        pos = pos.add(0, distanceToAir - 1, 0);
 
-        Block block = world.getBlock(x, y, z);
-        Block blockAbove = world.getBlock(x, y + 1, z);
-        Block blockBelow = world.getBlock(x, y - 1, z);
+        Block block = world.getBlockState(pos).getBlock();
+        Block blockAbove = world.getBlockState(pos.add(0, 1, 0)).getBlock();
+        Block blockBelow = world.getBlockState(pos.add(0, -1, 0)).getBlock();
 
         for (Block validBlock : validBlocks)
         {
@@ -48,7 +52,7 @@ public class TerrainFormation1 extends WorldGenerator implements IWorldGenerator
             {
                 return true;
             }
-            else if (block == Blocks.snow && blockBelow == validBlock)
+            else if (block == Blocks.SNOW && blockBelow == validBlock)
             {
                 return true;
             }
@@ -57,66 +61,66 @@ public class TerrainFormation1 extends WorldGenerator implements IWorldGenerator
         return false;
     }
 
-    @Override
-    public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider)
+    public void setBlock(World world, BlockPos posStart, int offsetX, int offsetY, int offsetZ, IBlockState state)
     {
-        ;
-    }
+        BlockPos pos = posStart.add(offsetX, offsetY, offsetZ);
+        IBlockState s1 = world.getBlockState(pos);
+        Block b1 = s1.getBlock();
 
-    public void setBlock(World world, int x, int y, int z, Block block, int metadata)
-    {
-        Block b1 = world.getBlock(x, y, z);
-
-        if (b1.isAir(world, x, y, z) || b1.isLeaves(world, x, y, z))
+        if (b1.isAir(s1, world, pos) || b1.isLeaves(s1, world, pos))
         {
-            world.setBlock(x, y, z, block, metadata, 2);
+            world.setBlockState(pos, state, 2);
         }
     }
 
     @Override
-    public boolean generate(World world, Random rand, int x, int y, int z)
+    public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)
     {
-        if (!locationIsValidSpawn(world, x, y, z))
+        ;
+    }
+    
+    @Override
+    public boolean generate(World world, Random rand, BlockPos position)
+    {
+        if (!locationIsValidSpawn(world, position))
         {
             return false;
         }
 
-        Block block = AliensVsPredator.blocks().blockEngineerShipRock0;
-
-        this.setBlock(world, x + 0, y + 6, z + 1, block, 0);
-        this.setBlock(world, x + 0, y + 7, z + 1, block, 0);
-        this.setBlock(world, x + 1, y + 5, z + 1, block, 0);
-        this.setBlock(world, x + 1, y + 5, z + 2, block, 0);
-        this.setBlock(world, x + 1, y + 6, z + 1, block, 0);
-        this.setBlock(world, x + 2, y + 3, z + 1, block, 0);
-        this.setBlock(world, x + 2, y + 4, z + 0, block, 0);
-        this.setBlock(world, x + 2, y + 4, z + 1, block, 0);
-        this.setBlock(world, x + 2, y + 4, z + 2, block, 0);
-        this.setBlock(world, x + 2, y + 5, z + 1, block, 0);
-        this.setBlock(world, x + 3, y + 2, z + 1, block, 0);
-        this.setBlock(world, x + 3, y + 3, z + 0, block, 0);
-        this.setBlock(world, x + 3, y + 3, z + 1, block, 0);
-        this.setBlock(world, x + 3, y + 3, z + 2, block, 0);
-        this.setBlock(world, x + 3, y + 4, z + 1, block, 0);
-        this.setBlock(world, x + 4, y + 1, z + 0, block, 0);
-        this.setBlock(world, x + 4, y + 1, z + 1, block, 0);
-        this.setBlock(world, x + 4, y + 2, z + 0, block, 0);
-        this.setBlock(world, x + 4, y + 2, z + 1, block, 0);
-        this.setBlock(world, x + 4, y + 2, z + 2, block, 0);
-        this.setBlock(world, x + 4, y + 3, z + 1, block, 0);
-        this.setBlock(world, x + 5, y + 0, z + 0, block, 0);
-        this.setBlock(world, x + 5, y + 0, z + 1, block, 0);
-        this.setBlock(world, x + 5, y + 0, z + 2, block, 0);
-        this.setBlock(world, x + 5, y + 1, z + 0, block, 0);
-        this.setBlock(world, x + 5, y + 1, z + 1, block, 0);
-        this.setBlock(world, x + 5, y + 1, z + 2, block, 0);
-        this.setBlock(world, x + 5, y + 2, z + 1, block, 0);
-        this.setBlock(world, x + 6, y + 0, z + 0, block, 0);
-        this.setBlock(world, x + 6, y + 0, z + 1, block, 0);
-        this.setBlock(world, x + 6, y + 0, z + 2, block, 0);
-        this.setBlock(world, x + 6, y + 1, z + 1, block, 0);
-        this.setBlock(world, x + 7, y + 0, z + 1, block, 0);
-
+        this.setBlock(world, position, 0, 6, 1, block);
+        this.setBlock(world, position, 0, 7, 1, block);
+        this.setBlock(world, position, 1, 5, 1, block);
+        this.setBlock(world, position, 1, 5, 2, block);
+        this.setBlock(world, position, 1, 6, 1, block);
+        this.setBlock(world, position, 2, 3, 1, block);
+        this.setBlock(world, position, 2, 4, 0, block);
+        this.setBlock(world, position, 2, 4, 1, block);
+        this.setBlock(world, position, 2, 4, 2, block);
+        this.setBlock(world, position, 2, 5, 1, block);
+        this.setBlock(world, position, 3, 2, 1, block);
+        this.setBlock(world, position, 3, 3, 0, block);
+        this.setBlock(world, position, 3, 3, 1, block);
+        this.setBlock(world, position, 3, 3, 2, block);
+        this.setBlock(world, position, 3, 4, 1, block);
+        this.setBlock(world, position, 4, 1, 0, block);
+        this.setBlock(world, position, 4, 1, 1, block);
+        this.setBlock(world, position, 4, 2, 0, block);
+        this.setBlock(world, position, 4, 2, 1, block);
+        this.setBlock(world, position, 4, 2, 2, block);
+        this.setBlock(world, position, 4, 3, 1, block);
+        this.setBlock(world, position, 5, 0, 0, block);
+        this.setBlock(world, position, 5, 0, 1, block);
+        this.setBlock(world, position, 5, 0, 2, block);
+        this.setBlock(world, position, 5, 1, 0, block);
+        this.setBlock(world, position, 5, 1, 1, block);
+        this.setBlock(world, position, 5, 1, 2, block);
+        this.setBlock(world, position, 5, 2, 1, block);
+        this.setBlock(world, position, 6, 0, 0, block);
+        this.setBlock(world, position, 6, 0, 1, block);
+        this.setBlock(world, position, 6, 0, 2, block);
+        this.setBlock(world, position, 6, 1, 1, block);
+        this.setBlock(world, position, 7, 0, 1, block);
+        
         return true;
     }
 }

@@ -4,27 +4,37 @@ import java.util.ArrayList;
 
 import org.avp.api.parasitoidic.IParasitoid;
 import org.avp.client.Sounds;
-import org.avp.entities.Organism;
+import org.avp.entities.ai.EntityAICustomAttackOnCollide;
 import org.avp.world.Embryo;
+import org.avp.world.capabilities.IOrganism.Organism;
+import org.avp.world.capabilities.IOrganism.Provider;
 
-import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.block.Blocks;
 import com.arisux.mdxlib.lib.world.entity.Entities;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 
 public class EntityOctohugger extends EntityParasitoid implements IMob, IParasitoid
 {
+    private static final DataParameter<BlockPos> HANGING_POSITION = EntityDataManager.createKey(EntityOctohugger.class, DataSerializers.BLOCK_POS);
+    private static final DataParameter<Boolean>  HANGING          = EntityDataManager.createKey(EntityOctohugger.class, DataSerializers.BOOLEAN);
+
+    private BlockPos                             hangingLocation  = null;
+
     public EntityOctohugger(World world)
     {
         super(world);
@@ -32,8 +42,7 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
         this.experienceValue = 10;
         this.ignoreFrustumCheck = true;
         this.jumpMovementFactor = 0.3F;
-        this.getNavigator().setCanSwim(true);
-        this.getNavigator().setAvoidsWater(true);
+
         this.addTasks();
     }
 
@@ -41,7 +50,7 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
     protected void addTasks()
     {
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIAttackOnCollide(this, 0.55D, true));
+        this.tasks.addTask(1, new EntityAICustomAttackOnCollide(this, 0.55D, true));
         this.tasks.addTask(2, new EntityAIWander(this, 0.55D));
         // this.targetTasks.addTask(0, new EntityAILeapAtTarget(this, 0.8F));
         // this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, Entity.class, 0, false, false, this.getEntitySelector()));
@@ -51,10 +60,8 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(27, (float) 0);
-        this.dataWatcher.addObject(28, (float) 0);
-        this.dataWatcher.addObject(29, (float) 0);
-        this.dataWatcher.addObject(31, 0);
+        this.getDataManager().register(HANGING_POSITION, new BlockPos(0, 0, 0));
+        this.getDataManager().register(HANGING, false);
     }
 
     @Override
@@ -68,45 +75,27 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(4.0D);
     }
 
-    private Pos hangingLocation = null;
-
     public boolean isHanging()
     {
-        return this.dataWatcher.getWatchableObjectInt(31) == 1;
+        return this.getDataManager().get(HANGING);
     }
 
-    public void setHanging(boolean isHanging)
+    public void setHanging(boolean value)
     {
-        this.dataWatcher.updateObject(31, isHanging ? 1 : 0);
+        this.getDataManager().set(HANGING, value);
     }
 
-    public Pos getHangingLocation()
+    public BlockPos getHangingLocation()
     {
-        double x = this.dataWatcher.getWatchableObjectFloat(27);
-        double y = this.dataWatcher.getWatchableObjectFloat(28);
-        double z = this.dataWatcher.getWatchableObjectFloat(29);
-
-        if (this.hangingLocation != null)
-        {
-            this.hangingLocation.x = x;
-            this.hangingLocation.y = y;
-            this.hangingLocation.z = z;
-        }
-        else
-        {
-            this.hangingLocation = new Pos(x, y, z);
-        }
-
-        return this.hangingLocation;
+        return this.hangingLocation = this.getDataManager().get(HANGING_POSITION);
     }
 
-    public void updateHangingLocation(Pos location)
+    public void updateHangingLocation(BlockPos location)
     {
         if (location != null)
         {
-            this.dataWatcher.updateObject(27, (float) location.x);
-            this.dataWatcher.updateObject(28, (float) location.y);
-            this.dataWatcher.updateObject(29, (float) location.z);
+
+            this.getDataManager().set(HANGING_POSITION, location);
         }
 
         this.hangingLocation = location;
@@ -114,7 +103,7 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
 
     public boolean isHangingLocationStale()
     {
-        return (this.getHangingLocation() == null || this.getHangingLocation().x() == 0 && this.getHangingLocation().y() == 0 && this.getHangingLocation().z() == 0);
+        return (this.getHangingLocation() == null || this.getHangingLocation().getX() == 0 && this.getHangingLocation().getY() == 0 && this.getHangingLocation().getZ() == 0);
     }
 
     @Override
@@ -125,33 +114,39 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
 
         if (!this.worldObj.isRemote && this.worldObj.getWorldTime() % 60 == 0 && isHangingLocationStale())
         {
-            ArrayList<Pos> potentialLocations = Blocks.getCoordDataInRange((int) this.posX, (int) this.posY, (int) this.posZ, 8);
+            ArrayList<BlockPos> locations = Blocks.getPositionsInRange((int) this.posX, (int) this.posY, (int) this.posZ, 8);
 
-            for (int x = 0; x < potentialLocations.size(); x++)
+            for (int x = 0; x < locations.size(); x++)
             {
-                Pos loc = potentialLocations.get(this.rand.nextInt(potentialLocations.size()));
+                BlockPos pos = locations.get(this.rand.nextInt(locations.size()));
+                IBlockState state = this.worldObj.getBlockState(pos);
 
-                if (loc.getBlock(this.worldObj) != net.minecraft.init.Blocks.AIR)
+                if (state.getBlock() != net.minecraft.init.Blocks.AIR)
                 {
-                    if (this.worldObj.getBlock((int) loc.x, (int) loc.y - 1, (int) loc.z) == net.minecraft.init.Blocks.AIR)
+                    ArrayList<IBlockState> check = new ArrayList<IBlockState>();
+                    BlockPos locBelow = pos.add(0, -1, 0);
+
+                    check.add(this.worldObj.getBlockState(locBelow));
+                    check.add(this.worldObj.getBlockState(locBelow.add(-1, 0, 0)));
+                    check.add(this.worldObj.getBlockState(locBelow.add(0, 0, -1)));
+                    check.add(this.worldObj.getBlockState(locBelow.add(+1, 0, 0)));
+                    check.add(this.worldObj.getBlockState(locBelow.add(0, 0, +1)));
+
+                    boolean validPosition = true;
+
+                    for (IBlockState blockstate : check)
                     {
-                        if (this.worldObj.getBlock((int) loc.x - 1, (int) loc.y - 1, (int) loc.z) == net.minecraft.init.Blocks.AIR)
+                        if (blockstate != net.minecraft.init.Blocks.AIR)
                         {
-                            if (this.worldObj.getBlock((int) loc.x, (int) loc.y - 1, (int) loc.z - 1) == net.minecraft.init.Blocks.AIR)
-                            {
-                                if (this.worldObj.getBlock((int) loc.x + 1, (int) loc.y - 1, (int) loc.z) == net.minecraft.init.Blocks.AIR)
-                                {
-                                    if (this.worldObj.getBlock((int) loc.x, (int) loc.y - 1, (int) loc.z + 1) == net.minecraft.init.Blocks.AIR)
-                                    {
-                                        if (Entities.canEntityBeSeenBy(this, loc))
-                                        {
-                                            this.updateHangingLocation(loc.add(0.5D + (this.rand.nextDouble() / 2) - (this.rand.nextDouble() / 2), 0, 0.5D + (this.rand.nextDouble() / 2) - (this.rand.nextDouble() / 2)));
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
+                            validPosition = false;
+                            break;
                         }
+                    }
+
+                    if (validPosition && Entities.canEntityBeSeenBy(this, pos))
+                    {
+                        this.updateHangingLocation(pos.add(0.5D + (this.rand.nextDouble() / 2) - (this.rand.nextDouble() / 2), 0, 0.5D + (this.rand.nextDouble() / 2) - (this.rand.nextDouble() / 2)));
+                        break;
                     }
                 }
             }
@@ -160,15 +155,15 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
         double maxStringStrength = 0.085D;
         double stringStrength = maxStringStrength;
 
-        if (this.boundingBox != null)
+        if (this.getEntityBoundingBox() != null)
         {
-            ArrayList<Entity> entities = (ArrayList<Entity>) worldObj.getEntitiesWithinAABB(EntityLivingBase.class, this.boundingBox.expand(0, 16, 0));
+            ArrayList<EntityLivingBase> entities = (ArrayList<EntityLivingBase>) worldObj.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().expand(0, 16, 0));
 
             if (entities != null)
             {
-                for (Entity entity : new ArrayList<Entity>(entities))
+                for (EntityLivingBase entity : new ArrayList<EntityLivingBase>(entities))
                 {
-                    if (!parasiteSelector.isEntityApplicable(entity) || entity instanceof EntityParasitoid)
+                    if (!parasiteSelector.apply(entity) || entity instanceof EntityParasitoid)
                     {
                         entities.remove(entity);
                     }
@@ -188,9 +183,9 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
 
         if (!this.isHangingLocationStale())
         {
-            double hangingX = this.getHangingLocation().x;
-            double hangingY = this.getHangingLocation().y;
-            double hangingZ = this.getHangingLocation().z;
+            double hangingX = this.getHangingLocation().getX();
+            double hangingY = this.getHangingLocation().getY();
+            double hangingZ = this.getHangingLocation().getZ();
             this.motionX += (hangingX - this.posX) * stringStrength * 1.4;
             this.motionY += (hangingY - this.posY) * (stringStrength * 0.85);
             this.motionZ += (hangingZ - this.posZ) * stringStrength * 1.4;
@@ -209,10 +204,10 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
             this.motionZ = 0;
         }
 
-        if (this.getRidingEntity()!= null || !this.isFertile() || this.isHanging() && this.getHangingLocation() != null && this.getHangingLocation().getBlock(this.worldObj) == net.minecraft.init.Blocks.AIR)
+        if (this.getRidingEntity() != null || !this.isFertile() || this.isHanging() && this.getHangingLocation() != null && this.worldObj.getBlockState(this.getHangingLocation()).getBlock() == net.minecraft.init.Blocks.AIR)
         {
             this.setHanging(false);
-            this.updateHangingLocation(new Pos(0, 0, 0));
+            this.updateHangingLocation(new BlockPos(0, 0, 0));
         }
 
         if (this.isHanging())
@@ -221,12 +216,6 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
             this.motionY = 0;
             this.motionZ = 0;
         }
-    }
-
-    @Override
-    protected boolean isAIEnabled()
-    {
-        return true;
     }
 
     @Override
@@ -240,34 +229,25 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
     {
         return false;
     }
-    
+
     @Override
     public boolean getCanSpawnHere()
     {
-        int x = MathHelper.floor_double(this.posX);
-        int y = MathHelper.floor_double(this.boundingBox.minY);
-        int z = MathHelper.floor_double(this.posZ);
-
-        return super.getCanSpawnHere() && isValidLightLevel() && !this.worldObj.canBlockSeeTheSky(x, y, z);
+        BlockPos pos = this.getPosition().add(0, -(this.getPosition().getY() - this.getEntityBoundingBox().minY), 0);
+        return super.getCanSpawnHere() && isValidLightLevel() && !this.worldObj.canBlockSeeSky(pos);
     }
-    
+
     @Override
     protected boolean isValidLightLevel()
     {
-        int x = MathHelper.floor_double(this.posX);
-        int y = MathHelper.floor_double(this.boundingBox.minY);
-        int z = MathHelper.floor_double(this.posZ);
+        BlockPos pos = this.getPosition().add(0, -(this.getPosition().getY() - this.getEntityBoundingBox().minY), 0);
 
-        if (this.worldObj.getSavedLightValue(EnumSkyBlock.Sky, x, y, z) > this.rand.nextInt(32))
+        if (this.worldObj.getLightFor(EnumSkyBlock.SKY, pos) > this.rand.nextInt(32))
         {
             return false;
         }
-        else
-        {
-            int light = this.worldObj.getBlockLightValue(x, y, z);
-
-            return light <= this.rand.nextInt(8);
-        }
+        
+        return this.worldObj.getLight(pos) <= this.rand.nextInt(8);
     }
 
     @Override
@@ -277,17 +257,17 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
     }
 
     @Override
-    protected String getDeathSound()
+    protected SoundEvent getDeathSound()
     {
-        return Sounds.SOUND_FACEHUGGER_DEATH.getKey();
+        return Sounds.SOUND_FACEHUGGER_DEATH.event();
     }
 
     @Override
     public void implantEmbryo(EntityLivingBase living)
     {
-        Organism organism = (Organism) living.getExtendedProperties(Organism.IDENTIFIER);
+        Organism organism = (Organism) living.getCapability(Provider.CAPABILITY, null);
         organism.impregnate(Embryo.BELUGA);
-        organism.syncWithClients();
+        organism.syncWithClients(living);
         this.setFertility(false);
     }
 
@@ -296,29 +276,30 @@ public class EntityOctohugger extends EntityParasitoid implements IMob, IParasit
     {
         super.readFromNBT(nbt);
         this.setHanging(nbt.getInteger("IsHanging") == 1);
-        this.updateHangingLocation(new Pos(nbt.getDouble("HangingX"), nbt.getDouble("HangingY"), nbt.getDouble("HangingZ")));
+        this.updateHangingLocation(new BlockPos(nbt.getDouble("HangingX"), nbt.getDouble("HangingY"), nbt.getDouble("HangingZ")));
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
         nbt.setInteger("IsHanging", this.isHanging() ? 1 : 0);
 
         if (!this.isHangingLocationStale())
         {
-            nbt.setDouble("HangingX", this.getHangingLocation().x);
-            nbt.setDouble("HangingY", this.getHangingLocation().y);
-            nbt.setDouble("HangingZ", this.getHangingLocation().z);
+            nbt.setDouble("HangingX", this.getHangingLocation().getX());
+            nbt.setDouble("HangingY", this.getHangingLocation().getY());
+            nbt.setDouble("HangingZ", this.getHangingLocation().getZ());
         }
+        return nbt;
     }
-    
+
     @Override
     protected void findRoyalJelly()
     {
         ;
     }
-    
+
     @Override
     public void identifyHive()
     {

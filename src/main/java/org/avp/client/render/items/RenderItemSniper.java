@@ -1,23 +1,20 @@
 package org.avp.client.render.items;
 
 import org.avp.AliensVsPredator;
-import org.avp.URLs;
 import org.avp.client.model.items.ModelSniper;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import com.arisux.mdxlib.lib.client.render.ItemRenderer;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
-import com.arisux.mdxlib.lib.client.render.PlayerResource;
-import com.arisux.mdxlib.lib.client.render.Texture;
 import com.arisux.mdxlib.lib.game.Game;
-import com.arisux.mdxlib.lib.util.Remote;
 
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.settings.GameSettings;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 
-public class RenderItemSniper extends ItemRenderer
+public class RenderItemSniper extends ItemRenderer<ModelSniper>
 {
     private float defaultFOV = mc.gameSettings.getOptionFloatValue(GameSettings.Options.FOV);
 
@@ -25,29 +22,15 @@ public class RenderItemSniper extends ItemRenderer
     {
         super(AliensVsPredator.resources().models().SNIPER);
     }
-    
-    @Override
-    public ModelSniper getModel()
-    {
-        return (ModelSniper) this.getModelTexMap().getModel();
-    }
 
     @Override
-    public void renderItem(ItemRenderType type, ItemStack item, Object... data)
+    public void renderInWorld(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        super.renderItem(type, item, data);
-        this.renderZoom();
-    }
-
-    @Override
-    public void renderInWorld(ItemStack item, Object... data)
-    {
-        super.renderInWorld(item, data);
         OpenGL.translate(-0.1F, 0.5F, 0F);
         OpenGL.rotate((Game.minecraft().theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
         OpenGL.scale(1F, -1F, 1F);
         OpenGL.disable(GL11.GL_CULL_FACE);
-        this.getModelTexMap().draw();
+        this.getModel().draw();
     }
 
     public void renderZoom()
@@ -74,33 +57,27 @@ public class RenderItemSniper extends ItemRenderer
     }
 
     @Override
-    public void renderThirdPerson(ItemStack item, Object... data)
+    public void renderThirdPersonRight(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        PlayerResource player = resourceStorage.create(((EntityPlayer) data[1]).getName());
-
-        if (player != null)
-        {
-            OpenGL.translate(0.2F, 0.3F, -0.17F);
-            OpenGL.rotate(180.0F, 1.0F, 0.0F, 0.0F);
-            OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
-            OpenGL.rotate(40.0F, 1.0F, 0.0F, 0.0F);
-            OpenGL.disable(GL11.GL_CULL_FACE);
-            OpenGL.translate(0.1F, -0.0F, 0.8F);
-            float glScale = 1.2F;
-            OpenGL.scale(glScale, glScale, glScale);
-            new Texture(Remote.downloadResource(String.format(URLs.SKIN_SNIPER, player.playerUUID()), this.getModelTexMap().getTexture())).bind();
-            this.getModelTexMap().getModel().render();
-        }
+        OpenGL.translate(0.2F, 0.3F, -0.17F);
+        OpenGL.rotate(180.0F, 1.0F, 0.0F, 0.0F);
+        OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
+        OpenGL.rotate(40.0F, 1.0F, 0.0F, 0.0F);
+        OpenGL.disable(GL11.GL_CULL_FACE);
+        OpenGL.translate(0.1F, -0.0F, 0.8F);
+        float glScale = 1.2F;
+        OpenGL.scale(glScale, glScale, glScale);
+        this.getModel().draw();
     }
 
     @Override
-    public void renderFirstPerson(ItemStack item, Object... data)
+    public void renderFirstPersonRight(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        if (firstPersonRenderCheck(data[1]))
+        if (firstPersonRenderCheck(entity))
         {
             if (Mouse.isButtonDown(0) && mc.inGameHasFocus)
             {
-                this.getModel().setFirstPerson(true);
+                this.getModel().getModel().setFirstPerson(true);
                 OpenGL.translate(1.26F, 1.985F, -0.375F);
                 OpenGL.rotate(102.4F, 1.0F, 0.0F, 0.0F);
                 OpenGL.rotate(115F, 0.0F, 1.0F, 0.0F);
@@ -109,7 +86,7 @@ public class RenderItemSniper extends ItemRenderer
             }
             else
             {
-                this.getModel().setFirstPerson(false);
+                this.getModel().getModel().setFirstPerson(false);
                 OpenGL.translate(1.5F, 0.95F, 0.35F);
                 OpenGL.rotate(95.0F, 1.0F, 0.0F, 0.0F);
                 OpenGL.rotate(120.0F, 0.0F, 1.0F, 0.0F);
@@ -117,20 +94,33 @@ public class RenderItemSniper extends ItemRenderer
                 OpenGL.scale(2.2F, 2.2F, 2.2F);
             }
             OpenGL.disable(GL11.GL_CULL_FACE);
-            new Texture(Remote.downloadResource(String.format(URLs.SKIN_SNIPER, Game.session().getPlayerID()), this.getModelTexMap().getTexture())).bind();;
-            this.getModel().render();
+            this.getModel().draw();
         }
+        this.renderZoom();
     }
 
     @Override
-    public void renderInInventory(ItemStack item, Object... data)
+    public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         OpenGL.disable(GL11.GL_CULL_FACE);
         OpenGL.rotate(45F, 0.0F, 1.0F, 0.0F);
         OpenGL.translate(12F, 0F, 0F);
         float glScale = 20F;
         OpenGL.scale(glScale, glScale, glScale);
-        new Texture(Remote.downloadResource(String.format(URLs.SKIN_SNIPER, Game.session().getPlayerID()), this.getModelTexMap().getTexture())).bind();;
-        this.getModel().render();
+        this.getModel().draw();
+    }
+
+    @Override
+    public void renderThirdPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
+    {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void renderFirstPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
+    {
+        // TODO Auto-generated method stub
+
     }
 }

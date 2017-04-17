@@ -14,6 +14,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 public class EntityWristbracer extends EntityThrowable
@@ -26,7 +28,6 @@ public class EntityWristbracer extends EntityThrowable
     {
         super(world);
         this.setSize(0.5F, 0.5F);
-        this.yOffset = this.height / 2.0F;
         this.ignoreFrustumCheck = true;
         this.preInitTicks = 1;
         this.initTicks = 1;
@@ -98,7 +99,7 @@ public class EntityWristbracer extends EntityThrowable
                     Game.minecraft().effectRenderer.addEffect(new EntityFXElectricArc(this.worldObj, sX, sY, sZ, pX, pY, pZ, 10, arcFluctuation, arcComplexity, arcDensity, 0xFF4455AA));
                 }
 
-                this.worldObj.setBlockToAir((int) Math.round(pX), (int) Math.round(pY), (int) Math.round(pZ));
+                this.worldObj.setBlockToAir(new BlockPos((int) Math.round(pX), (int) Math.round(pY), (int) Math.round(pZ)));
             }
 
             if (this.getPostInitTicks() >= this.getPostInitTicksMax() * 2)
@@ -106,9 +107,9 @@ public class EntityWristbracer extends EntityThrowable
                 if (AliensVsPredator.settings().areExplosionsEnabled())
                 {
                     ArrayList<Block> excludedBlocks = new ArrayList<Block>();
-                    excludedBlocks.add(Blocks.bedrock);
+                    excludedBlocks.add(Blocks.BEDROCK);
                     ArrayList<Material> excludedMaterials = new ArrayList<Material>();
-                    excludedMaterials.add(Material.rock);
+                    excludedMaterials.add(Material.ROCK);
                     LargeExplosion explosion = new LargeExplosion(worldObj, explosionWidthMax, explosionHeightMax, explosionWidthMax, (int) this.posX, (int) this.posY, (int) this.posZ, 1000F, new Random().nextLong(), excludedBlocks, excludedMaterials, 0, 2);
                     explosion.start();
                 }
@@ -149,7 +150,7 @@ public class EntityWristbracer extends EntityThrowable
     }
 
     @Override
-    protected void onImpact(MovingObjectPosition movingObjectPosition)
+    protected void onImpact(RayTraceResult RayTraceResult)
     {
         ;
     }

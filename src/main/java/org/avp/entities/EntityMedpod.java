@@ -5,21 +5,25 @@ import java.util.UUID;
 
 import org.avp.entities.living.EntitySpeciesAlien;
 import org.avp.tile.TileEntityMedpod;
+import org.avp.world.capabilities.IOrganism.Organism;
+import org.avp.world.capabilities.IOrganism.Provider;
 
 import com.arisux.mdxlib.lib.world.Worlds;
+import com.arisux.mdxlib.lib.world.entity.Entities;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class EntityMedpod extends Entity
 {
     private TileEntityMedpod tile;
-    private Entity lastRiddenEntity;
-    private UUID lastRiddenEntityUUID;
+    private Entity           lastRiddenEntity;
+    private UUID             lastRiddenEntityUUID;
 
     public EntityMedpod(World worldObj)
     {
@@ -33,9 +37,11 @@ public class EntityMedpod extends Entity
     {
         super.onUpdate();
 
+        BlockPos pos = new BlockPos((int) Math.floor(this.posX), ((int) this.posY), ((int) Math.floor(this.posZ)));
+
         if (this.tile == null && this.worldObj.isRemote)
         {
-            TileEntity tile = this.worldObj.getTileEntity(((int) Math.floor(this.posX)), ((int) this.posY), ((int) Math.floor(this.posZ)));
+            TileEntity tile = this.worldObj.getTileEntity(pos);
 
             if (tile != null)
             {
@@ -53,9 +59,9 @@ public class EntityMedpod extends Entity
             this.setDead();
         }
 
-        if (!this.worldObj.isRemote && this.riddenByEntity == null && this.getTileEntity() != null)
+        if (!this.worldObj.isRemote && Entities.getEntityRiddenBy(this) == null && this.getTileEntity() != null)
         {
-            List<Entity> entities = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ));
+            List<Entity> entities = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().addCoord(this.motionX, this.motionY, this.motionZ));
 
             if (entities != null && !entities.isEmpty())
             {
@@ -64,10 +70,10 @@ public class EntityMedpod extends Entity
                 if (!entity.isRiding() && !entity.isSneaking() && (entity != this.lastRiddenEntity && !entity.getPersistentID().equals(this.lastRiddenEntityUUID)) && !(entity instanceof EntitySpeciesAlien))
                 {
                     lastRiddenEntity = entity;
-                    
+
                     if (this.getTileEntity().isOpen())
                     {
-                        entity.mountEntity(this);
+                        entity.startRiding(this);
                     }
                 }
             }
@@ -86,14 +92,14 @@ public class EntityMedpod extends Entity
             }
         }
 
-        if (this.riddenByEntity != null && this.getTileEntity() != null)
+        if (Entities.getEntityRiddenBy(this) != null && this.getTileEntity() != null)
         {
-            if (this.getTileEntity().getVoltage() > 0 && this.getTileEntity().getDoorProgress() <= 0 && !this.getTileEntity().isOpen() && this.riddenByEntity instanceof EntityLivingBase)
+            if (this.getTileEntity().getVoltage() > 0 && this.getTileEntity().getDoorProgress() <= 0 && !this.getTileEntity().isOpen() && Entities.getEntityRiddenBy(this) instanceof EntityLivingBase)
             {
-                EntityLivingBase living = (EntityLivingBase) this.riddenByEntity;
-                Organism organism = Organism.get(living);
+                EntityLivingBase living = (EntityLivingBase) Entities.getEntityRiddenBy(this);
+                Organism organism = (Organism) living.getCapability(Provider.CAPABILITY, null);
                 
-                organism.heal();
+                organism.heal(living);
             }
         }
     }
@@ -105,7 +111,7 @@ public class EntityMedpod extends Entity
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox()
+    public AxisAlignedBB getEntityBoundingBox()
     {
         return null;
     }
@@ -146,17 +152,17 @@ public class EntityMedpod extends Entity
     {
         ;
     }
-    
+
     public Entity getLastRiddenEntity()
     {
         return lastRiddenEntity;
     }
-    
+
     public UUID getLastRiddenEntityUUID()
     {
         return lastRiddenEntityUUID;
     }
-    
+
     public void clearLastRidden()
     {
         this.lastRiddenEntity = null;

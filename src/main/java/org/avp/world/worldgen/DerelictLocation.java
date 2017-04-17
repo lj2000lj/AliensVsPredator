@@ -6,7 +6,6 @@ import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.StructureGenerationHandler;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 
 public class DerelictLocation
@@ -98,7 +97,7 @@ public class DerelictLocation
 
     public void generate(World world, int addX, int addY, int addZ)
     {
-        StructureGenerationHandler.addStructureToQueue(new StructureDerelict(MinecraftServer.getServer().worldServerForDimension(0), this.getCoord().add(addX, addY, addZ)));
+        StructureGenerationHandler.addStructureToQueue(new StructureDerelict(world.getMinecraftServer().worldServerForDimension(0), this.getCoord().add(addX, addY, addZ)));
         this.setGenerated(true);
     }
 }

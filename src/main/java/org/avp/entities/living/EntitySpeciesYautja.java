@@ -4,16 +4,18 @@ import org.avp.DamageSources;
 import org.avp.EntityItemDrops;
 import org.avp.api.parasitoidic.IHost;
 import org.avp.client.Sounds;
+import org.avp.entities.ai.EntityAICustomAttackOnCollide;
 import org.avp.item.ItemDisc;
 import org.avp.item.ItemFirearm;
 import org.avp.item.ItemPlasmaCannon;
 import org.avp.item.ItemShuriken;
 import org.avp.item.ItemWristbracer;
 
+import com.google.common.base.Predicate;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
@@ -23,33 +25,36 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.Potion;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
-public abstract class EntitySpeciesYautja extends EntityMob implements IHost, IEntitySelector
+public abstract class EntitySpeciesYautja extends EntityMob implements IHost, Predicate<EntityLivingBase>
 {
-    public static int WEARING_MASK_DATAWATCHER_ID = 17;
+    private static final DataParameter<Boolean> WEARING_MASK = EntityDataManager.createKey(EntitySpeciesYautja.class, DataSerializers.BOOLEAN);
 
     public EntitySpeciesYautja(World world)
     {
         super(world);
         this.experienceValue = 250;
         this.setSize(1.0F, 2.5F);
-        this.getNavigator().setCanSwim(true);
+        
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityLivingBase.class, 1D, true));
+        this.tasks.addTask(2, new EntityAICustomAttackOnCollide(this, EntityLivingBase.class, 1D, true));
         this.tasks.addTask(2, new EntityAIWatchClosest(this, EntityMob.class, 16F));
         this.tasks.addTask(2, new EntityAIWander(this, 0.8D));
         this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.6F));
         this.targetTasks.addTask(0, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityLivingBase.class, 0, false, false, this));
+        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<EntityLivingBase>(this, EntityLivingBase.class, 0, false, false, this));
     }
 
     @Override
@@ -66,7 +71,7 @@ public abstract class EntitySpeciesYautja extends EntityMob implements IHost, IE
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(WEARING_MASK_DATAWATCHER_ID, this.rand.nextBoolean() ? 1 : 0);
+        this.getDataManager().register(WEARING_MASK, this.rand.nextBoolean());
     }
     
     @Override
@@ -76,7 +81,7 @@ public abstract class EntitySpeciesYautja extends EntityMob implements IHost, IE
     }
 
     @Override
-    public boolean isEntityApplicable(Entity entity)
+    public boolean apply(EntityLivingBase entity)
     {
         if (entity instanceof EntityPlayer)
         {
@@ -106,54 +111,21 @@ public abstract class EntitySpeciesYautja extends EntityMob implements IHost, IE
     }
 
     @Override
-    protected void attackEntity(Entity entity, float damage)
-    {
-        if (this.attackTime <= 0 && damage < 2.0F && entity.boundingBox.maxY > this.boundingBox.minY && entity.boundingBox.minY < this.boundingBox.maxY)
-        {
-            this.attackTime = 20;
-            this.attackEntityAsMob(entity);
-        }
-
-        if (damage > 2.0F && damage < 6.0F && this.rand.nextInt(10) == 0)
-        {
-            if (this.onGround)
-            {
-                double dX = entity.posX - this.posX;
-                double dZ = entity.posZ - this.posZ;
-                float speed = MathHelper.sqrt_double(dX * dX + dZ * dZ);
-                this.motionX = dX / speed * 0.5D * 0.800000011920929D + this.motionX * 0.20000000298023224D;
-                this.motionZ = dZ / speed * 0.5D * 0.800000011920929D + this.motionZ * 0.20000000298023224D;
-                this.motionY = 0.4000000059604645D;
-            }
-        }
-        else
-        {
-            super.attackEntity(entity, damage);
-        }
-    }
-
-    @Override
     public boolean attackEntityAsMob(Entity entity)
     {
         int damage = 6;
 
-        if (this.isPotionActive(Potion.damageBoost))
+        if (this.isPotionActive(MobEffects.INSTANT_DAMAGE))
         {
-            damage += 3 << this.getActivePotionEffect(Potion.damageBoost).getAmplifier();
+            damage += 3 << this.getActivePotionEffect(MobEffects.INSTANT_DAMAGE).getAmplifier();
         }
 
-        if (this.isPotionActive(Potion.weakness))
+        if (this.isPotionActive(MobEffects.WEAKNESS))
         {
-            damage -= 2 << this.getActivePotionEffect(Potion.weakness).getAmplifier();
+            damage -= 2 << this.getActivePotionEffect(MobEffects.WEAKNESS).getAmplifier();
         }
 
         return entity.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
-    }
-
-    @Override
-    protected boolean isAIEnabled()
-    {
-        return true;
     }
 
     @Override
@@ -181,21 +153,21 @@ public abstract class EntitySpeciesYautja extends EntityMob implements IHost, IE
     }
 
     @Override
-    protected String getLivingSound()
+    protected SoundEvent getAmbientSound()
     {
-        return Sounds.SOUND_YAUTJA_LIVING.getKey();
+        return Sounds.SOUND_YAUTJA_LIVING.event();
     }
 
     @Override
-    protected String getHurtSound()
+    protected SoundEvent getHurtSound()
     {
-        return Sounds.SOUND_YAUTJA_HURT.getKey();
+        return Sounds.SOUND_YAUTJA_HURT.event();
     }
 
     @Override
-    protected String getDeathSound()
+    protected SoundEvent getDeathSound()
     {
-        return Sounds.SOUND_YAUTJA_DEATH.getKey();
+        return Sounds.SOUND_YAUTJA_DEATH.event();
     }
 
     @Override
@@ -240,14 +212,14 @@ public abstract class EntitySpeciesYautja extends EntityMob implements IHost, IE
 
     public boolean isWearingMask()
     {
-        return this.dataWatcher.getWatchableObjectInt(WEARING_MASK_DATAWATCHER_ID) == 1;
+        return this.getDataManager().get(WEARING_MASK);
     }
 
     public void setWearingMask(boolean wearingMask)
     {
         if (!this.worldObj.isRemote)
         {
-            this.dataWatcher.updateObject(WEARING_MASK_DATAWATCHER_ID, wearingMask ? 1 : 0);
+            this.getDataManager().set(WEARING_MASK, wearingMask);
         }
     }
 

@@ -9,12 +9,11 @@ import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.game.Game;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
 
-public class RenderStasisMechanism extends TileEntitySpecialRenderer
+public class RenderStasisMechanism extends TileEntitySpecialRenderer<TileEntityStasisMechanism>
 {
     @Override
-    public void renderTileEntityAt(TileEntity te, double posX, double posY, double posZ, float renderPartialTicks)
+    public void renderTileEntityAt(TileEntityStasisMechanism te, double posX, double posY, double posZ, float renderPartialTicks, int destroyStage)
     {
         TileEntityStasisMechanism tile = (TileEntityStasisMechanism) te;
 

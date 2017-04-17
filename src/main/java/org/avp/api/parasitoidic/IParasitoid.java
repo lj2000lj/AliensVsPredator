@@ -1,6 +1,8 @@
 package org.avp.api.parasitoidic;
 
 
+import com.google.common.base.Predicate;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 
@@ -24,5 +26,5 @@ public interface IParasitoid
     
     public int getDetachTime();
     
-    public IEntitySelector getEntitySelector();
+    public Predicate<EntityLivingBase> getEntitySelector();
 }

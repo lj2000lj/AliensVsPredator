@@ -1,15 +1,18 @@
 package org.avp.client.render.items;
 
 import org.avp.AliensVsPredator;
+import org.avp.client.model.tile.ModelWorkstation;
 import org.lwjgl.opengl.GL11;
 
 import com.arisux.mdxlib.lib.client.render.ItemRenderer;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.game.Game;
 
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 
-public class RenderItemWorkstation extends ItemRenderer
+public class RenderItemWorkstation extends ItemRenderer<ModelWorkstation>
 {
     public RenderItemWorkstation()
     {
@@ -17,13 +20,7 @@ public class RenderItemWorkstation extends ItemRenderer
     }
 
     @Override
-    public void renderItem(ItemRenderType type, ItemStack item, Object... data)
-    {
-        super.renderItem(type, item, data);
-    }
-
-    @Override
-    public void renderThirdPerson(ItemStack item, Object... data)
+    public void renderThirdPersonRight(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         float glScale = 1.6F;
 
@@ -32,15 +29,15 @@ public class RenderItemWorkstation extends ItemRenderer
         OpenGL.translate(0.4F, -0.1F, 0F);
         OpenGL.disable(GL11.GL_CULL_FACE);
         OpenGL.scale(glScale, -glScale, glScale);
-        this.getModelTexMap().draw();
+        this.getModel().draw();
     }
 
     @Override
-    public void renderFirstPerson(ItemStack item, Object... data)
+    public void renderFirstPersonRight(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         float glScale = 0.8F;
 
-        if (firstPersonRenderCheck(data[1]))
+        if (firstPersonRenderCheck(entity))
         {
             OpenGL.translate(0.1F, 1.0F, 0.2F);
             OpenGL.rotate(95.0F, 1.0F, 0.0F, 0.0F);
@@ -48,12 +45,12 @@ public class RenderItemWorkstation extends ItemRenderer
             OpenGL.rotate(79.0F, 0.0F, 0.0F, 1.0F);
             OpenGL.disable(GL11.GL_CULL_FACE);
             OpenGL.scale(glScale, glScale, glScale);
-            this.getModelTexMap().draw();
+            this.getModel().draw();
         }
     }
 
     @Override
-    public void renderInInventory(ItemStack item, Object... data)
+    public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         OpenGL.pushMatrix();
         {
@@ -64,23 +61,37 @@ public class RenderItemWorkstation extends ItemRenderer
             OpenGL.disable(GL11.GL_CULL_FACE);
             OpenGL.scale(glScale, glScale, glScale);
             OpenGL.enableBlend();
-            this.getModelTexMap().draw();
+            this.getModel().draw();
         }
         OpenGL.popMatrix();
     }
     
     @Override
-    public void renderInWorld(ItemStack item, Object... data)
+    public void renderInWorld(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        super.renderInWorld(item, data);
+        
         OpenGL.pushMatrix();
         {
             OpenGL.scale(1F, -1F, 1F);
             OpenGL.translate(0F, -1F, 0F);
-            OpenGL.rotate((this.mc.theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
+            OpenGL.rotate((mc.theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
             OpenGL.disable(GL11.GL_CULL_FACE);
-            this.getModelTexMap().draw();
+            this.getModel().draw();
         }
         OpenGL.popMatrix();
+    }
+
+    @Override
+    public void renderThirdPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void renderFirstPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
+    {
+        // TODO Auto-generated method stub
+        
     }
 }

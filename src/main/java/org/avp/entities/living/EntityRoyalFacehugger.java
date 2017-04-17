@@ -1,7 +1,8 @@
 package org.avp.entities.living;
 
-import org.avp.entities.Organism;
 import org.avp.world.Embryo;
+import org.avp.world.capabilities.IOrganism.Organism;
+import org.avp.world.capabilities.IOrganism.Provider;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -28,12 +29,6 @@ public class EntityRoyalFacehugger extends EntityFacehugger
     }
 
     @Override
-    protected boolean isAIEnabled()
-    {
-        return true;
-    }
-
-    @Override
     public void onUpdate()
     {
         super.onUpdate();
@@ -56,19 +51,19 @@ public class EntityRoyalFacehugger extends EntityFacehugger
     {
         return false;
     }
-
-    @Override
-    protected void attackEntity(Entity entity, float damage)
-    {
-        ;
-    }
     
+    @Override
+    public boolean attackEntityAsMob(Entity entity)
+    {
+        return false;
+    }
+
     @Override
     public void implantEmbryo(EntityLivingBase living)
     {
-        Organism organism = (Organism) living.getExtendedProperties(Organism.IDENTIFIER);
+        Organism organism = (Organism) living.getCapability(Provider.CAPABILITY, null);
         organism.impregnate(Embryo.QUEEN);
-        organism.syncWithClients();
+        organism.syncWithClients(living);
         this.setFertility(false);
     }
 }

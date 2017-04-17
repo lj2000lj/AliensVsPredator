@@ -9,22 +9,24 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockSand;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.IProgressUpdate;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.ChunkPosition;
-import net.minecraft.world.SpawnerAnimals;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldEntitySpawner;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.ChunkPrimer;
+import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 
-public class ChunkProviderAcheron implements IChunkProvider
+public class ChunkProviderAcheron implements IChunkProvider, IChunkGenerator
 {
 	private NoiseGeneratorOctaves[] noiseGenOctaves = new NoiseGeneratorOctaves[6];
 	private Random randomSeed;
 	private World world;
-	private double[] noiseArray;
+	private double[] heightMap;
 	private double[] stoneNoise = new double[256];
 
 	private Biome[] biomesForGeneration;
@@ -48,150 +50,140 @@ public class ChunkProviderAcheron implements IChunkProvider
 		new NoiseGeneratorOctaves(this.randomSeed, 8);
 	}
 
-	public void generateTerrain(int chunkX, int chunkZ, Block[] blocksInChunk)
+	public void setBlocksInChunk(int chunkX, int chunkZ, ChunkPrimer primer)
 	{
 		byte var4 = 4;
-		byte var5 = 16;
-		byte var6 = 63;
 		int var7 = var4 + 1;
 		byte var8 = 17;
 		int var9 = var4 + 1;
-		this.biomesForGeneration = this.world.getWorldChunkManager().getBiomesForGeneration(this.biomesForGeneration, chunkX * 4 - 2, chunkZ * 4 - 2, var7 + 5, var9 + 5);
-		this.noiseArray = initializeNoiseField(this.noiseArray, chunkX * var4, 0, chunkZ * var4, var7, var8, var9);
+		this.biomesForGeneration = this.world.getBiomeProvider().getBiomesForGeneration(this.biomesForGeneration, chunkX * 4 - 2, chunkZ * 4 - 2, 10, 10);
+		this.heightMap = this.generateHeightmap(this.heightMap, chunkX * var4, 0, chunkZ * var4, var7, var8, var9);
 
-		for (int var10 = 0; var10 < var4; var10++)
-		{
-			for (int var11 = 0; var11 < var4; var11++)
-			{
-				for (int var12 = 0; var12 < var5; var12++)
-				{
-					double var13 = 0.125D;
-					double var15 = this.noiseArray[(((var10 + 0) * var9 + var11 + 0) * var8 + var12 + 0)];
-					double var17 = this.noiseArray[(((var10 + 0) * var9 + var11 + 1) * var8 + var12 + 0)];
-					double var19 = this.noiseArray[(((var10 + 1) * var9 + var11 + 0) * var8 + var12 + 0)];
-					double var21 = this.noiseArray[(((var10 + 1) * var9 + var11 + 1) * var8 + var12 + 0)];
-					double var23 = (this.noiseArray[(((var10 + 0) * var9 + var11 + 0) * var8 + var12 + 1)] - var15) * var13;
-					double var25 = (this.noiseArray[(((var10 + 0) * var9 + var11 + 1) * var8 + var12 + 1)] - var17) * var13;
-					double var27 = (this.noiseArray[(((var10 + 1) * var9 + var11 + 0) * var8 + var12 + 1)] - var19) * var13;
-					double var29 = (this.noiseArray[(((var10 + 1) * var9 + var11 + 1) * var8 + var12 + 1)] - var21) * var13;
+        for (int i = 0; i < 4; ++i)
+        {
+            int j = i * 5;
+            int k = (i + 1) * 5;
 
-					for (int var31 = 0; var31 < 8; var31++)
-					{
-						double var32 = 0.25D;
-						double var34 = var15;
-						double var36 = var17;
-						double var38 = (var19 - var15) * var32;
-						for (int var42 = 0; var42 < 4; var42++)
-						{
-							int var43 = var42 + var10 * 4 << 11 | 0 + var11 * 4 << 7 | var12 * 8 + var31;
-							short var44 = 128;
-							var43 -= var44;
-							double var45 = 0.25D;
-							double var47 = (var36 - var34) * var45;
-							double var49 = var34 - var47;
+            for (int l = 0; l < 4; ++l)
+            {
+                int i1 = (j + l) * 33;
+                int j1 = (j + l + 1) * 33;
+                int k1 = (k + l) * 33;
+                int l1 = (k + l + 1) * 33;
 
-							for (int var51 = 0; var51 < 4; var51++)
-							{
-								if ((var49 += var47) > 0.0D)
-								{
-									int tmp510_509 = (var43 + var44);
-									var43 = tmp510_509;
-									blocksInChunk[tmp510_509] = AliensVsPredator.blocks().terrainUniStone;
-								}
-								else if (var12 * 8 + var31 < var6)
-								{
-									int tmp543_542 = (var43 + var44);
-									var43 = tmp543_542;
-									blocksInChunk[tmp543_542] = Blocks.water;
-								}
-								else
-								{
-									int tmp563_562 = (var43 + var44);
-									var43 = tmp563_562;
-									blocksInChunk[tmp563_562] = Blocks.AIR;
-								}
-							}
+                for (int i2 = 0; i2 < 32; ++i2)
+                {
+                    double d1 = this.heightMap[i1 + i2];
+                    double d2 = this.heightMap[j1 + i2];
+                    double d3 = this.heightMap[k1 + i2];
+                    double d4 = this.heightMap[l1 + i2];
+                    double d5 = (this.heightMap[i1 + i2 + 1] - d1) * 0.125D;
+                    double d6 = (this.heightMap[j1 + i2 + 1] - d2) * 0.125D;
+                    double d7 = (this.heightMap[k1 + i2 + 1] - d3) * 0.125D;
+                    double d8 = (this.heightMap[l1 + i2 + 1] - d4) * 0.125D;
 
-							var34 += var38;
-							// tmp543_542 += var40;
-						}
+                    for (int j2 = 0; j2 < 8; ++j2)
+                    {
+                        double d10 = d1;
+                        double d11 = d2;
+                        double d12 = (d3 - d1) * 0.25D;
+                        double d13 = (d4 - d2) * 0.25D;
 
-						var15 += var23;
-						var17 += var25;
-						var19 += var27;
-						var21 += var29;
-					}
-				}
-			}
-		}
+                        for (int k2 = 0; k2 < 4; ++k2)
+                        {
+                            double d16 = (d11 - d10) * 0.25D;
+                            double lvt_45_1_ = d10 - d16;
+
+                            for (int l2 = 0; l2 < 4; ++l2)
+                            {
+                                if ((lvt_45_1_ += d16) > 0.0D)
+                                {
+                                    primer.setBlockState(i * 4 + k2, i2 * 8 + j2, l * 4 + l2, AliensVsPredator.blocks().terrainUniStone.getDefaultState());
+                                }
+                                else if (i2 * 8 + j2 < 60 /** sea level **/)
+                                {
+                                    primer.setBlockState(i * 4 + k2, i2 * 8 + j2, l * 4 + l2, Blocks.WATER.getDefaultState());
+                                }
+                            }
+
+                            d10 += d12;
+                            d11 += d13;
+                        }
+
+                        d1 += d5;
+                        d2 += d6;
+                        d3 += d7;
+                        d4 += d8;
+                    }
+                }
+            }
+        }
 	}
 
-	public void replaceBlocksForBiome(int var1, int var2, Block[] var3, Biome[] var4)
+	//TODO: Expirimental coords on setBlockState()
+	public void replaceBlocksForBiome(int chunkX, int chunkZ, ChunkPrimer primer, Biome[] biomeList)
 	{
 		byte var5 = 63;
 		double var6 = 0.03125D;
-		this.stoneNoise = this.noiseGenOctaves[3].generateNoiseOctaves(this.stoneNoise, var1 * 16, var2 * 16, 0, 16, 16, 1, var6 * 2.0D, var6 * 2.0D, var6 * 2.0D);
+		this.stoneNoise = this.noiseGenOctaves[3].generateNoiseOctaves(this.stoneNoise, chunkX * 16, chunkZ * 16, 0, 16, 16, 1, var6 * 2.0D, var6 * 2.0D, var6 * 2.0D);
 
-		for (int var8 = 0; var8 < 16; var8++)
+		for (int x = 0; x < 16; x++)
 		{
-			for (int var9 = 0; var9 < 16; var9++)
+			for (int z = 0; z < 16; z++)
 			{
-				Biome var10 = var4[(var9 + var8 * 16)];
-				// float var11 =
-				// var10.getFloatTemperature(p_150564_1_,
-				// p_150564_2_, p_150564_3_)
-				int var12 = (int) (this.stoneNoise[(var8 + var9 * 16)] / 3.0D + 3.0D + this.randomSeed.nextDouble() * 0.25D);
+				Biome biome = biomeList[(z + x * 16)];
+				int var12 = (int) (this.stoneNoise[(x + z * 16)] / 3.0D + 3.0D + this.randomSeed.nextDouble() * 0.25D);
 				int var13 = -1;
-				Block var14 = var10.topBlock;
-				Block var15 = var10.fillerBlock;
+				Block top = biome.topBlock.getBlock();
+				Block filler = biome.fillerBlock.getBlock();
 
-				for (int var16 = 127; var16 >= 0; var16--)
+				for (int y = 127; y >= 0; y--)
 				{
-					int var17 = (var9 * 16 + var8) * 128 + var16;
+					int idx = (z * 16 + x) * 128 + y;
 
-					if (var16 <= 0 + this.randomSeed.nextInt(5))
+					if (y <= 0 + this.randomSeed.nextInt(5))
 					{
-						var3[var17] = Blocks.bedrock;
+						primer.setBlockState(x, y, z, Blocks.BEDROCK.getDefaultState());
 					}
 					else
 					{
-						Block var18 = var3[var17];
+						Block block = primer.getBlockState(x, y, z).getBlock();
 
-						if (var18 == Blocks.AIR)
+						if (block == Blocks.AIR)
 						{
 							var13 = -1;
 						}
 						else
 						{
-							if (var18 == Blocks.stone)
+							if (block == Blocks.STONE)
 								continue;
 							if (var13 == -1)
 							{
 								if (var12 <= 0)
 								{
-									var14 = Blocks.AIR;
-									var15 = AliensVsPredator.blocks().terrainUniStone;
+									top = Blocks.AIR;
+									filler = AliensVsPredator.blocks().terrainUniStone;
 								}
-								else if ((var16 >= var5 - 4) && (var16 <= var5 + 1))
+								else if ((y >= var5 - 4) && (y <= var5 + 1))
 								{
-									var14 = var10.topBlock;
-									var15 = var10.fillerBlock;
+									top = biome.topBlock.getBlock();
+									filler = biome.fillerBlock.getBlock();
 								}
 
-								if ((var16 < var5) && (var14 == Blocks.AIR))
+								if ((y < var5) && (top == Blocks.AIR))
 								{
-									var14 = Blocks.water;
+									top = Blocks.WATER;
 								}
 
 								var13 = var12;
 
-								if (var16 >= var5 - 1)
+								if (y >= var5 - 1)
 								{
-									var3[var17] = var14;
+									primer.setBlockState(x, y, z, top.getDefaultState());
 								}
 								else
 								{
-									var3[var17] = var15;
+									primer.setBlockState(x, y, z, filler.getDefaultState());
 								}
 							}
 							else
@@ -199,12 +191,12 @@ public class ChunkProviderAcheron implements IChunkProvider
 								if (var13 <= 0)
 									continue;
 								var13--;
-								var3[var17] = var15;
+								primer.setBlockState(x, y, z, filler.getDefaultState());
 
-								if ((var13 != 0) || (var15 != Blocks.sand))
+								if ((var13 != 0) || (filler != Blocks.SAND))
 									continue;
 								var13 = this.randomSeed.nextInt(4);
-								var15 = Blocks.sandstone;
+								filler = Blocks.SANDSTONE;
 							}
 						}
 					}
@@ -214,7 +206,7 @@ public class ChunkProviderAcheron implements IChunkProvider
 	}
 
 	@Override
-	public Chunk loadChunk(int chunkX, int chunkZ)
+	public Chunk getLoadedChunk(int chunkX, int chunkZ)
 	{
 		return provideChunk(chunkX, chunkZ);
 	}
@@ -222,25 +214,18 @@ public class ChunkProviderAcheron implements IChunkProvider
 	@Override
 	public Chunk provideChunk(int chunkX, int chunkZ)
 	{
-		Block[] blocksInChunk = new Block[16 * 16 * 128];
 		this.randomSeed.setSeed(chunkX * 341873128712L + chunkZ * 132897987541L);
-		this.generateTerrain(chunkX, chunkZ, blocksInChunk);
-		this.biomesForGeneration = this.world.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, chunkX * 16, chunkZ * 16, 16, 16);
-		this.replaceBlocksForBiome(chunkX, chunkZ, blocksInChunk, this.biomesForGeneration);
+        ChunkPrimer chunkprimer = new ChunkPrimer();
+		this.setBlocksInChunk(chunkX, chunkZ, chunkprimer);
+		this.biomesForGeneration = this.world.getBiomeProvider().getBiomesForGeneration(this.biomesForGeneration, chunkX * 16, chunkZ * 16, 16, 16);
+		this.replaceBlocksForBiome(chunkX, chunkZ, chunkprimer, this.biomesForGeneration);
 
-		Chunk chunk = new Chunk(this.world, blocksInChunk, chunkX, chunkZ);
-		byte[] biomes = chunk.getBiomeArray();
-
-		for (int x = 0; x < biomes.length; x++)
-		{
-			biomes[x] = (byte) this.biomesForGeneration[x].biomeID;
-		}
-
+		Chunk chunk = new Chunk(this.world, chunkprimer, chunkX, chunkZ);
 		chunk.generateSkylightMap();
 		return chunk;
 	}
 
-	private double[] initializeNoiseField(double[] var1, int var2, int var3, int var4, int var5, int var6, int var7)
+	private double[] generateHeightmap(double[] var1, int var2, int var3, int var4, int var5, int var6, int var7)
 	{
 		if (var1 == null)
 		{
@@ -279,22 +264,22 @@ public class ChunkProviderAcheron implements IChunkProvider
 				float var19 = 0.0F;
 				float var20 = 0.0F;
 				byte var21 = 2;
-				Biome var22 = this.biomesForGeneration[(var16 + 2 + (var17 + 2) * (var5 + 5))];
+				Biome biome = this.biomesForGeneration[(var16 + 2 + (var17 + 2) * (var5 + 5))];
 
 				for (int var23 = -var21; var23 <= var21; var23++)
 				{
 					for (int var24 = -var21; var24 <= var21; var24++)
 					{
-						Biome var25 = this.biomesForGeneration[(var16 + var23 + 2 + (var17 + var24 + 2) * (var5 + 5))];
-						float var26 = this.field_35388_l[(var23 + 2 + (var24 + 2) * 5)] / (var25.minHeight + 2.0F);
+						Biome biome1 = this.biomesForGeneration[(var16 + var23 + 2 + (var17 + var24 + 2) * (var5 + 5))];
+						float var26 = this.field_35388_l[(var23 + 2 + (var24 + 2) * 5)] / (biome1.getBaseHeight() + 2.0F);
 
-						if (var25.minHeight > var22.minHeight)
+						if (biome1.getBaseHeight() > biome.getBaseHeight())
 						{
 							var26 /= 2.0F;
 						}
 
-						var18 += var25.maxHeight * var26;
-						var19 += var25.minHeight * var26;
+						var18 += biome1.getHeightVariation() * var26;
+						var19 += biome1.getBaseHeight() * var26;
 						var20 += var26;
 					}
 				}
@@ -386,99 +371,58 @@ public class ChunkProviderAcheron implements IChunkProvider
 	}
 
 	@Override
-	public boolean chunkExists(int var1, int var2)
-	{
-		return true;
-	}
-
-	@Override
-	public void populate(IChunkProvider chunkProvider, int chunkX, int chunkZ)
-	{
-		BlockSand.fallInstantly = true;
-		int posX = chunkX * 16;
-		int posZ = chunkZ * 16;
-		Biome biome = this.world.getBiomeGenForCoords(posX + 16, posZ + 16);
-		this.randomSeed.setSeed(this.world.getSeed());
-		this.randomSeed.setSeed(chunkX * (this.randomSeed.nextLong() / 2L * 2L + 1L) + chunkZ * (this.randomSeed.nextLong() / 2L * 2L + 1L) ^ this.world.getSeed());
-
-		biome.decorate(this.world, this.randomSeed, posX, posZ);
-		SpawnerAnimals.performWorldGenSpawning(this.world, biome, posX + 8, posZ + 8, 16, 16, this.randomSeed);
-		posX += 8;
-		posZ += 8;
-
-		for (int subX = 0; subX < 16; subX++)
-		{
-			for (int subZ = 0; subZ < 16; subZ++)
-			{
-				int precipitationHeight = this.world.getPrecipitationHeight(posX + subX, posZ + subZ);
-
-				if (this.world.isBlockFreezable(subX + posX, precipitationHeight - 1, subZ + posZ))
-				{
-					this.world.setBlock(subX + posX, precipitationHeight - 1, subZ + posZ, Blocks.ice);
-				}
-
-				if (this.world.canBlockFreeze(subX + posX, precipitationHeight, subZ + posZ, true))
-				{
-					this.world.setBlock(subX + posX, precipitationHeight, subZ + posZ, Blocks.snow);
-				}
-			}
-		}
-
-		BlockSand.fallInstantly = false;
-	}
-
-	@Override
-	public boolean saveChunks(boolean singlePass, IProgressUpdate progressUpdate)
-	{
-		return true;
-	}
-
-	@Override
-	public boolean canSave()
-	{
-		return true;
-	}
-
-	@Override
 	public String makeString()
 	{
 		return "RandomLevelSource";
 	}
-
-	@Override
-	public List<?> getPossibleCreatures(EnumCreatureType creatureType, int posX, int posY, int posZ)
-	{
-		Biome biome = this.world.getBiomeGenForCoords(posX, posZ);
-		return biome == null ? null : biome.getSpawnableList(creatureType);
-	}
-
-	@Override
-	public int getLoadedChunkCount()
-	{
-		return 0;
-	}
-
+	
 	@Override
 	public boolean unloadQueuedChunks()
 	{
 		return false;
 	}
 
-	@Override
-	public void recreateStructures(int i, int j)
-	{
-		;
-	}
+    @Override
+    public void populate(int chunkX, int chunkZ)
+    {
+        BlockSand.fallInstantly = true;
+        int posX = chunkX * 16;
+        int posZ = chunkZ * 16;
+        Biome biome = this.world.getBiomeForCoordsBody(new BlockPos(posX + 16, 0, posZ + 16));
+        this.randomSeed.setSeed(this.world.getSeed());
+        this.randomSeed.setSeed(chunkX * (this.randomSeed.nextLong() / 2L * 2L + 1L) + chunkZ * (this.randomSeed.nextLong() / 2L * 2L + 1L) ^ this.world.getSeed());
 
-	@Override
-	public void saveExtraData()
-	{
-		;
-	}
+        biome.decorate(this.world, this.randomSeed, new BlockPos(chunkX, 0, chunkZ));
+        WorldEntitySpawner.performWorldGenSpawning(this.world, biome, posX + 8, posZ + 8, 16, 16, this.randomSeed);
+        
+        BlockSand.fallInstantly = false;
+    }
 
-	@Override
-	public ChunkPosition findClosestStructure(World world, String var2, int posX, int posY, int posZ)
-	{
-		return null;
-	}
+    @Override
+    public boolean generateStructures(Chunk chunkIn, int x, int z)
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public List<SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public BlockPos getStrongholdGen(World worldIn, String structureName, BlockPos position)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void recreateStructures(Chunk chunkIn, int x, int z)
+    {
+        // TODO Auto-generated method stub
+        
+    }
 }

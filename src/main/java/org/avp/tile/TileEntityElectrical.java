@@ -4,13 +4,13 @@ import org.avp.api.power.IVoltageProvider;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 
 
-public abstract class TileEntityElectrical extends TileEntity
+public abstract class TileEntityElectrical extends TileEntity implements ITickable
 {
     protected double voltage;
     protected double voltagePrev;
@@ -33,27 +33,33 @@ public abstract class TileEntityElectrical extends TileEntity
     }
 
     @Override
-    public Packet getDescriptionPacket()
+    public SPacketUpdateTileEntity getUpdatePacket()
     {
-        NBTTagCompound nbtTag = new NBTTagCompound();
-        this.writeToNBT(nbtTag);
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbtTag);
+        return new SPacketUpdateTileEntity(this.getPos(), 1, this.getUpdateTag());
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet)
+    public NBTTagCompound getUpdateTag()
     {
-        readFromNBT(packet.getNbtCompound());
+        return this.writeToNBT(new NBTTagCompound());
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet)
+    {
+        this.readFromNBT(packet.getNbtCompound());
     }
 
     /**
      * Saves the amount of voltage this component contains to the world.
      */
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
         nbt.setDouble("voltage", this.voltage);
+        
+        return nbt;
     }
 
     /**
@@ -204,6 +210,12 @@ public abstract class TileEntityElectrical extends TileEntity
     {
         this.isSrc = isSrc;
     }
+    
+    @Override
+    public void update()
+    {
+        ;
+    }
 
     /**
      * Updates the voltage of this component based on surrounding components.
@@ -212,9 +224,9 @@ public abstract class TileEntityElectrical extends TileEntity
     {
         this.voltagePrev = this.voltage;
 
-        for (EnumFacing direction : EnumFacing.VALID_DIRECTIONS)
+        for (EnumFacing direction : EnumFacing.VALUES)
         {
-            TileEntity tile = this.worldObj.getTileEntity(this.xCoord + direction.offsetX, this.yCoord + direction.offsetY, this.zCoord + direction.offsetZ);
+            TileEntity tile = this.worldObj.getTileEntity(this.getPos().offset(direction));
 
             if (tile != null && tile instanceof TileEntityElectrical)
             {
@@ -234,9 +246,9 @@ public abstract class TileEntityElectrical extends TileEntity
 
         TileEntity surroundingTile = null;
 
-        for (EnumFacing direction : EnumFacing.VALID_DIRECTIONS)
+        for (EnumFacing direction : EnumFacing.VALUES)
         {
-            TileEntity tile = this.worldObj.getTileEntity(this.xCoord + direction.offsetX, this.yCoord + direction.offsetY, this.zCoord + direction.offsetZ);
+            TileEntity tile = this.worldObj.getTileEntity(this.getPos().offset(direction));
 
             if (tile != null && tile instanceof TileEntityElectrical)
             {
@@ -270,7 +282,7 @@ public abstract class TileEntityElectrical extends TileEntity
      */
     public double extractVoltage(EnumFacing from, double maxExtract, boolean simulate)
     {
-        TileEntity tile = this.worldObj.getTileEntity(this.xCoord + from.offsetX, this.yCoord + from.offsetY, this.zCoord + from.offsetZ);
+        TileEntity tile = this.worldObj.getTileEntity(this.getPos().offset(from));
 
         if (tile != null && tile instanceof TileEntityElectrical)
         {

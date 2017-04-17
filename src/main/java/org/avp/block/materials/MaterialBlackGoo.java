@@ -15,7 +15,7 @@ public class MaterialBlackGoo extends MaterialLiquid implements IMaterialPhysics
     
     public MaterialBlackGoo()
     {
-        super(MapColor.blackColor);
+        super(MapColor.BLACK);
         this.setNoPushMobility();
     }
     

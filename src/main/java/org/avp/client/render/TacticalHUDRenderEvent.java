@@ -11,8 +11,10 @@ import org.avp.AliensVsPredator;
 import org.avp.client.gui.GuiTacticalHUDSettings;
 import org.avp.client.render.wavegraph.Wavegraph;
 import org.avp.client.render.wavegraph.ekg.Electrocardiogram;
-import org.avp.entities.Organism;
-import org.avp.entities.SharedPlayer;
+
+import org.avp.world.capabilities.IOrganism.Organism;
+import org.avp.world.capabilities.IOrganism.Provider;
+import org.avp.world.capabilities.ISpecialPlayer.SpecialPlayer;
 import org.lwjgl.opengl.GL11;
 
 import com.arisux.mdxlib.lib.client.gui.GuiCustomButton;
@@ -45,7 +47,7 @@ public class TacticalHUDRenderEvent
     public static final TacticalHUDRenderEvent instance          = new TacticalHUDRenderEvent();
     private GuiTacticalHUDSettings             guiSettings;
     private ArrayList<EntityPlayer>            playersInHUD      = new ArrayList<EntityPlayer>();
-    private SharedPlayer                      specialPlayer;
+    private SpecialPlayer                       specialPlayer;
     private Organism                           playerOrganism;
     private GuiCustomButton                    buttonMarineHelmConfig;
     private boolean                            gammaRestored     = true;
@@ -93,13 +95,13 @@ public class TacticalHUDRenderEvent
 
                         if (Game.minecraft().thePlayer != null && specialPlayer != null)
                         {
-                            for (EntityLivingBase entity : trackedEntities)
+                            for (EntityLivingBase living : trackedEntities)
                             {
-                                if (entity != null && (Entities.canEntityBeSeenBy(entity, Game.minecraft().thePlayer) || !specialPlayer.isEntityCullingEnabled()) && entity instanceof EntityLivingBase)
+                                if (living != null && (Entities.canEntityBeSeenBy(living, Game.minecraft().thePlayer) || !specialPlayer.isEntityCullingEnabled()) && living instanceof EntityLivingBase)
                                 {
-                                    Organism livingProperties = Organism.get((EntityLivingBase) entity);
+                                    Organism organism = (Organism) living.getCapability(Provider.CAPABILITY, null);
 
-                                    Vec3d t = new Vec3d(entity.posX, entity.posY, entity.posZ).addVector(0, entity.getEyeHeight() / 2, 0);
+                                    Vec3d t = new Vec3d(living.posX, living.posY, living.posZ).addVector(0, living.getEyeHeight() / 2, 0);
                                     t = t.subtract(new Vec3d(Game.minecraft().thePlayer.getPosition().getX(), Game.minecraft().thePlayer.getPosition().getY(), Game.minecraft().thePlayer.getPosition().getZ()));
                                     Vec3d tmp = p.addVector(t.xCoord, t.yCoord, t.zCoord).normalize();
                                     Vec3d res = p.addVector(tmp.xCoord, tmp.yCoord, tmp.zCoord);
@@ -127,13 +129,13 @@ public class TacticalHUDRenderEvent
                                             OpenGL.scale(indicatorScale, indicatorScale, indicatorScale);
                                             OpenGL.rotate(-Game.minecraft().thePlayer.rotationYaw, 0, 1, 0);
 
-                                            if (livingProperties.hasEmbryo())
+                                            if (organism.hasEmbryo())
                                             {
                                                 OpenGL.color4i(0xFFFF0000);
                                                 Draw.drawResourceCentered(AliensVsPredator.resources().INFECTION_INDICATOR, 2, -1, 2, 2, 255, 0, 0, 255);
                                             }
 
-                                            int color = livingProperties.hasEmbryo() || livingProperties.getEntity() instanceof IMob ? 0xFFFF0000 : 0xFF00AAFF;
+                                            int color = organism.hasEmbryo() || living instanceof IMob ? 0xFFFF0000 : 0xFF00AAFF;
                                             int textMultiplier = 10;
                                             int textX = 20;
                                             int textY = -38 + textMultiplier;
@@ -141,12 +143,12 @@ public class TacticalHUDRenderEvent
                                             OpenGL.rotate(180F, 0F, 1F, 0F);
                                             OpenGL.scale(textScale, -textScale, textScale);
 
-                                            String dist = ((int) livingProperties.getEntity().getDistanceToEntity(Game.minecraft().thePlayer)) + "";
+                                            String dist = ((int) living.getDistanceToEntity(Game.minecraft().thePlayer)) + "";
                                             Draw.drawString(dist, textX - 19 - (Draw.getStringRenderWidth(dist) / 2), (textY += textMultiplier) + 15, color, false);
 
-                                            if (livingProperties.hasEmbryo())
+                                            if (organism.hasEmbryo())
                                             {
-                                                int lifeTimeTicks = livingProperties.getEmbryo().getGestationPeriod() - livingProperties.getEmbryo().getAge();
+                                                int lifeTimeTicks = organism.getEmbryo().getGestationPeriod() - organism.getEmbryo().getAge();
                                                 int lifeTimeSeconds = lifeTimeTicks / 20;
                                                 Draw.drawString("FOREIGN ORGANISM", textX, textY += textMultiplier, 0xFFFF0000, false);
                                                 Draw.drawString("VITAL.TIME: " + lifeTimeSeconds / 60 + "." + lifeTimeSeconds % 60 + "M", textX, textY += textMultiplier, 0xFFFF0000, false);
@@ -182,10 +184,10 @@ public class TacticalHUDRenderEvent
             {
                 if (Inventories.getHelmSlotItemStack(Game.minecraft().thePlayer) != null && Game.minecraft().gameSettings.thirdPersonView == 0 && Inventories.getHelmSlotItemStack(Game.minecraft().thePlayer).getItem() == AliensVsPredator.items().helmMarine)
                 {
-                    SharedPlayer player = SharedPlayer.get(Game.minecraft().thePlayer);
+                    SpecialPlayer specialPlayer = (SpecialPlayer) Game.minecraft().thePlayer.getCapability(SpecialPlayer.Provider.CAPABILITY, null);
 
                     this.gammaRestored = false;
-                    LightmapUpdateEvent.instance.gammaValue = player.isNightvisionEnabled() ? 8F : 0F;
+                    LightmapUpdateEvent.instance.gammaValue = specialPlayer.isNightvisionEnabled() ? 8F : 0F;
                     this.scanForNearbyPlayers();
                     OpenGL.enableBlend();
                     OpenGL.blendClear();
@@ -261,14 +263,14 @@ public class TacticalHUDRenderEvent
         }
     }
 
-    public SharedPlayer getSpecialPlayer()
+    public SpecialPlayer getSpecialPlayer()
     {
-        return Game.minecraft() != null ? Game.minecraft().thePlayer != null ? this.specialPlayer = SharedPlayer.get(Game.minecraft().thePlayer) : null : null;
+        return Game.minecraft() != null ? Game.minecraft().thePlayer != null ? this.specialPlayer = (SpecialPlayer) Game.minecraft().thePlayer.getCapability(SpecialPlayer.Provider.CAPABILITY, null) : null : null;
     }
 
     public Organism getPlayerOrganism()
     {
-        return Game.minecraft() != null ? Game.minecraft().thePlayer != null ? this.playerOrganism = Organism.get(Game.minecraft().thePlayer) : null : null;
+        return Game.minecraft() != null ? Game.minecraft().thePlayer != null ? this.playerOrganism = (Organism) Game.minecraft().thePlayer.getCapability(Provider.CAPABILITY, null) : null : null;
     }
 
     public void changeChannel(String channel)
@@ -437,13 +439,13 @@ public class TacticalHUDRenderEvent
 
     public void scanForNearbyPlayers()
     {
-        EntityPlayer playerFound = (EntityPlayer) Game.minecraft().thePlayer.worldObj.findNearestEntityWithinAABB(EntityPlayer.class, Game.minecraft().thePlayer.boundingBox.expand(this.getSpecialPlayer().getBroadcastRadius(), 128.0D, this.getSpecialPlayer().getBroadcastRadius()), Game.minecraft().thePlayer);
+        EntityPlayer playerFound = (EntityPlayer) Game.minecraft().thePlayer.worldObj.findNearestEntityWithinAABB(EntityPlayer.class, Game.minecraft().thePlayer.getEntityBoundingBox().expand(this.getSpecialPlayer().getBroadcastRadius(), 128.0D, this.getSpecialPlayer().getBroadcastRadius()), Game.minecraft().thePlayer);
 
         if (playerFound != null)
         {
-            SharedPlayer extendedPlayer = (SharedPlayer) playerFound.getExtendedProperties(SharedPlayer.IDENTIFIER);
+            SpecialPlayer specialPlayer = (SpecialPlayer) playerFound.getCapability(SpecialPlayer.Provider.CAPABILITY, null);
 
-            if (!isPlayerInHUD(playerFound) && extendedPlayer.getBroadcastChannel().equalsIgnoreCase(this.specialPlayer.getBroadcastChannel()))
+            if (!isPlayerInHUD(playerFound) && specialPlayer.getBroadcastChannel().equalsIgnoreCase(this.specialPlayer.getBroadcastChannel()))
             {
                 playersInHUD.add(playerFound);
             }
@@ -455,7 +457,7 @@ public class TacticalHUDRenderEvent
         for (int x = 0; x < playersInHUD.size(); x++)
         {
             EntityPlayer player = playersInHUD.get(x);
-            SharedPlayer specialPlayer = (SharedPlayer) player.getExtendedProperties(SharedPlayer.IDENTIFIER);
+            SpecialPlayer specialPlayer = (SpecialPlayer) player.getCapability(SpecialPlayer.Provider.CAPABILITY, null);
 
             if (player != null || player != null && !specialPlayer.getBroadcastChannel().equalsIgnoreCase(this.specialPlayer.getBroadcastChannel()))
             {

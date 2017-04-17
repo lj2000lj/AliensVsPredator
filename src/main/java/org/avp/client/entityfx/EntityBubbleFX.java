@@ -4,6 +4,8 @@ import com.arisux.mdxlib.lib.client.render.Draw;
 
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -40,42 +42,44 @@ public class EntityBubbleFX extends Particle
 
         if (this.particleMaxAge-- <= 0)
         {
-            this.setDead();
+            this.setExpired();
         }
     }
-
-    @Override
-    public void renderParticle(Tessellator tessellator, float partialTickTime, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ)
-    {
-        super.renderParticle(tessellator, partialTickTime, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
-        Draw.drawParticle(32, 0, 0, 1, 1);
-    }    
     
+    @Override
+    public void renderParticle(VertexBuffer buffer, Entity entity, float partialTicks, float rX, float rZ, float rYZ, float rXY, float rXZ)
+    {
+        super.renderParticle(buffer, entity, partialTicks, rX, rZ, rYZ, rXY, rXZ);
+        Draw.drawParticle(32, 0, 0, 1, 1);
+    }
     
     public void renderParticleNew(Tessellator tessellator, float partialTickTime, float rX, float rZ, float rYZ, float rXY, float rXZ)
     {
-        float u = (float)this.particleTextureIndexX / 16.0F;
-        float mU = u + 0.0624375F;
-        float v = (float)this.particleTextureIndexY / 16.0F;
-        float mV = v + 0.0624375F;
-        float f10 = 0.1F * this.particleScale;
+        float minU = (float) this.particleTextureIndexX / 16.0F;
+        float maxU = minU + 0.0624375F;
+        float minV = (float) this.particleTextureIndexY / 16.0F;
+        float maxV = minV + 0.0624375F;
+        float scale = 0.1F * this.particleScale;
 
-        if (this.particleIcon != null)
+        if (this.particleTexture != null)
         {
-            u = this.particleIcon.getMinU();
-            mU = this.particleIcon.getMaxU();
-            v = this.particleIcon.getMinV();
-            mV = this.particleIcon.getMaxV();
+            minU = this.particleTexture.getMinU();
+            maxU = this.particleTexture.getMaxU();
+            minV = this.particleTexture.getMinV();
+            maxV = this.particleTexture.getMaxV();
         }
 
-        float f11 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)partialTickTime - interpPosX);
-        float f12 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)partialTickTime - interpPosY);
-        float f13 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTickTime - interpPosZ);
-        tessellator.setColorRGBA_F(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha);
-        tessellator.addVertexWithUV((double)(f11 - rX * f10 - rXY * f10), (double)(f12 - rZ * f10), (double)(f13 - rYZ * f10 - rXZ * f10), (double)mU, (double)mV);
-        tessellator.addVertexWithUV((double)(f11 - rX * f10 + rXY * f10), (double)(f12 + rZ * f10), (double)(f13 - rYZ * f10 + rXZ * f10), (double)mU, (double)v);
-        tessellator.addVertexWithUV((double)(f11 + rX * f10 + rXY * f10), (double)(f12 + rZ * f10), (double)(f13 + rYZ * f10 + rXZ * f10), (double)u, (double)v);
-        tessellator.addVertexWithUV((double)(f11 + rX * f10 - rXY * f10), (double)(f12 - rZ * f10), (double)(f13 + rYZ * f10 - rXZ * f10), (double)u, (double)mV);
+        float f11 = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) partialTickTime - interpPosX);
+        float f12 = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) partialTickTime - interpPosY);
+        float f13 = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) partialTickTime - interpPosZ);
+
+        Draw.startQuads();
+        Draw.vertex((double) (f11 - rX * scale - rXY * scale), (double) (f12 - rZ * scale), (double) (f13 - rYZ * scale - rXZ * scale), maxU, maxV).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).endVertex();
+        Draw.vertex((double) (f11 - rX * scale + rXY * scale), (double) (f12 + rZ * scale), (double) (f13 - rYZ * scale + rXZ * scale), maxU, minV).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).endVertex();
+        Draw.vertex((double) (f11 + rX * scale + rXY * scale), (double) (f12 + rZ * scale), (double) (f13 + rYZ * scale + rXZ * scale), minU, minV).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).endVertex();
+        Draw.vertex((double) (f11 + rX * scale - rXY * scale), (double) (f12 - rZ * scale), (double) (f13 + rYZ * scale - rXZ * scale), minU, maxV).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).endVertex();
+        Draw.tessellate();
+        Draw.startQuads();
     }
 
     @Override

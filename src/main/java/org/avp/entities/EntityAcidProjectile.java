@@ -4,19 +4,28 @@ import java.util.List;
 
 import org.avp.DamageSources;
 
+import com.arisux.mdxlib.lib.world.Pos;
+
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.Potion;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -24,40 +33,36 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityAcidProjectile extends Entity implements IProjectile
 {
-    private int xTile = -1;
-    private int yTile = -1;
-    private int zTile = -1;
-    private Block inTile;
-    private int inData;
-    private boolean inGround;
-    public int canBePickedUp;
-    public int shake;
-    public Entity shootingEntity;
-    private int ticksInGround;
-    private int ticksInAir;
-    private double damage = 2.0D;
-    private int knockbackStrength;
+    private BlockPos    tile;
+    private Block       inTile;
+    private boolean     inGround;
+    public int          canBePickedUp;
+    public int          shake;
+    public Entity       shootingEntity;
+    private int         ticksInGround;
+    private int         ticksInAir;
+    private double      damage = 2.0D;
+    private int         knockbackStrength;
 
     public EntityAcidProjectile(World world)
     {
         super(world);
-        this.renderDistanceWeight = 10.0D;
+        setRenderDistanceWeight(10D);
         this.setSize(0.5F, 0.5F);
     }
 
     public EntityAcidProjectile(World world, double posX, double posY, double posZ)
     {
         super(world);
-        this.renderDistanceWeight = 10.0D;
+        setRenderDistanceWeight(10D);
         this.setSize(0.5F, 0.5F);
         this.setPosition(posX, posY, posZ);
-        this.yOffset = 0.0F;
     }
 
     public EntityAcidProjectile(World world, EntityLivingBase shooter, EntityLivingBase target, float velocity, float deviation)
     {
         super(world);
-        this.renderDistanceWeight = 10.0D;
+        setRenderDistanceWeight(10D);
         this.shootingEntity = shooter;
 
         if (shooter instanceof EntityPlayer)
@@ -67,13 +72,12 @@ public class EntityAcidProjectile extends Entity implements IProjectile
 
         this.posY = shooter.posY + shooter.getEyeHeight() - 0.10000000149011612D;
         double distX = target.posX - shooter.posX;
-        double distY = target.boundingBox.minY + target.height / 3.0F - this.posY;
+        double distY = target.getEntityBoundingBox().minY + target.height / 3.0F - this.posY;
         double distZ = target.posZ - shooter.posZ;
         double distSq = MathHelper.sqrt_double(distX * distX + distZ * distZ);
 
         if (distSq >= 1.0E-7D)
         {
-            this.yOffset = 0.0F;
             this.setLocationAndAngles(shooter.posX + (distX / distSq), this.posY, shooter.posZ + (distZ / distSq), (float) (Math.atan2(distZ, distX) * 180.0D / Math.PI) - 90.0F, (float) (-(Math.atan2(distY, distSq) * 180.0D / Math.PI)));
             this.setThrowableHeading(distX, distY + ((float) distSq * 0.2F), distZ, velocity, deviation);
         }
@@ -82,7 +86,7 @@ public class EntityAcidProjectile extends Entity implements IProjectile
     public EntityAcidProjectile(World world, EntityLivingBase shooter, float velocity)
     {
         super(world);
-        this.renderDistanceWeight = 10.0D;
+        setRenderDistanceWeight(10D);
         this.shootingEntity = shooter;
 
         if (shooter instanceof EntityPlayer)
@@ -96,17 +100,18 @@ public class EntityAcidProjectile extends Entity implements IProjectile
         this.posY -= 0.10000000149011612D;
         this.posZ -= MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
         this.setPosition(this.posX, this.posY, this.posZ);
-        this.yOffset = 0.0F;
         this.motionX = -MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
         this.motionZ = MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
         this.motionY = (-MathHelper.sin(this.rotationPitch / 180.0F * (float) Math.PI));
         this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, velocity * 1.5F, 1.0F);
     }
 
+    private static final DataParameter<Byte> CRITICAL = EntityDataManager.<Byte> createKey(EntityAcidProjectile.class, DataSerializers.BYTE);
+
     @Override
     protected void entityInit()
     {
-        this.dataWatcher.addObject(16, Byte.valueOf((byte) 0));
+        this.dataManager.register(CRITICAL, (byte) 0);
     }
 
     @Override
@@ -130,15 +135,7 @@ public class EntityAcidProjectile extends Entity implements IProjectile
         this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(par3, f3) * 180.0D / Math.PI);
         this.ticksInGround = 0;
     }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void setPositionAndRotation2(double posX, double posY, double posZ, float yaw, float pitch, int par9)
-    {
-        this.setPosition(posX, posY, posZ);
-        this.setRotation(yaw, pitch);
-    }
-
+    
     @Override
     @SideOnly(Side.CLIENT)
     public void setVelocity(double motionX, double motionY, double motionZ)
@@ -191,14 +188,13 @@ public class EntityAcidProjectile extends Entity implements IProjectile
             this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(this.motionY, MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ)) * 180.0D / Math.PI);
         }
 
-        block = this.worldObj.getBlock(this.xTile, this.yTile, this.zTile);
+        block = this.worldObj.getBlockState(this.getPosition()).getBlock();
 
         if (block != null)
         {
-            block.setBlockBoundsBasedOnState(this.worldObj, this.xTile, this.yTile, this.zTile);
-            AxisAlignedBB Vec3d = block.getCollisionBoundingBoxFromPool(this.worldObj, this.xTile, this.yTile, this.zTile);
+            AxisAlignedBB box = block.getCollisionBoundingBox(this.worldObj.getBlockState(this.getPosition()), this.worldObj, this.tile);
 
-            if (Vec3d != null && Vec3d.isVecInside(new Vec3d(this.posX, this.posY, this.posZ)))
+            if (box != null && box.isVecInside(new Vec3d(this.posX, this.posY, this.posZ)))
             {
                 this.inGround = true;
             }
@@ -211,14 +207,9 @@ public class EntityAcidProjectile extends Entity implements IProjectile
 
         if (this.inGround)
         {
-            Block var17 = this.worldObj.getBlock(this.xTile, this.yTile, this.zTile);
-            int Vec3d1 = this.worldObj.getBlockMetadata(this.xTile, this.yTile, this.zTile);
+            IBlockState state = this.worldObj.getBlockState(tile);
 
-            if (var17 == this.inTile && Vec3d1 == this.inData)
-            {
-
-            }
-            else
+            if (block != this.inTile)
             {
                 this.inGround = false;
                 this.motionX *= this.rand.nextFloat() * 0.2F;
@@ -231,40 +222,38 @@ public class EntityAcidProjectile extends Entity implements IProjectile
         else
         {
             ++this.ticksInAir;
-            Vec3d var18 = new Vec3d(this.posX, this.posY, this.posZ);
-            Vec3d var19 = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-            MovingObjectPosition movingobjectposition = this.worldObj.rayTraceBlocks(var18, var19, false, true, true);
-            var18 = new Vec3d(this.posX, this.posY, this.posZ);
-            var19 = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+            Vec3d pos = new Vec3d(this.posX, this.posY, this.posZ);
+            Vec3d nextPos = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+            RayTraceResult result = this.worldObj.rayTraceBlocks(pos, nextPos, false, true, true);
+            pos = new Vec3d(this.posX, this.posY, this.posZ);
+            nextPos = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
-            if (movingobjectposition != null)
+            if (result != null)
             {
-                var19 = new Vec3d(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord, movingobjectposition.hitVec.zCoord);
+                nextPos = new Vec3d(result.hitVec.xCoord, result.hitVec.yCoord, result.hitVec.zCoord);
             }
 
             Entity entity = null;
-            List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
+            List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
             double d0 = 0.0D;
-            int l;
-            float f1;
+            float radius = 0.3F;
 
-            for (l = 0; l < list.size(); ++l)
+            for (int idx = 0; idx < list.size(); ++idx)
             {
-                Entity f2 = list.get(l);
+                Entity e = list.get(idx);
 
-                if (f2.canBeCollidedWith() && (f2 != this.shootingEntity || this.ticksInAir >= 5))
+                if (e.canBeCollidedWith() && (e != this.shootingEntity || this.ticksInAir >= 5))
                 {
-                    f1 = 0.3F;
-                    AxisAlignedBB f3 = f2.boundingBox.expand(f1, f1, f1);
-                    MovingObjectPosition f4 = f3.calculateIntercept(var18, var19);
+                    AxisAlignedBB boundingBox = e.getEntityBoundingBox().expand(radius, radius, radius);
+                    RayTraceResult interceptResult = boundingBox.calculateIntercept(pos, nextPos);
 
-                    if (f4 != null)
+                    if (interceptResult != null)
                     {
-                        double j1 = var18.distanceTo(f4.hitVec);
+                        double j1 = pos.distanceTo(interceptResult.hitVec);
 
                         if (j1 < d0 || d0 == 0.0D)
                         {
-                            entity = f2;
+                            entity = e;
                             d0 = j1;
                         }
                     }
@@ -273,25 +262,25 @@ public class EntityAcidProjectile extends Entity implements IProjectile
 
             if (entity != null)
             {
-                movingobjectposition = new MovingObjectPosition(entity);
+                result = new RayTraceResult(entity);
             }
 
-            if (movingobjectposition != null && movingobjectposition.entityHit != null && movingobjectposition.entityHit instanceof EntityPlayer)
+            if (result != null && result.entityHit != null && result.entityHit instanceof EntityPlayer)
             {
-                EntityPlayer player = (EntityPlayer) movingobjectposition.entityHit;
+                EntityPlayer player = (EntityPlayer) result.entityHit;
 
                 if (player.capabilities.disableDamage || this.shootingEntity instanceof EntityPlayer && !((EntityPlayer) this.shootingEntity).canAttackPlayer(player))
                 {
-                    movingobjectposition = null;
+                    result = null;
                 }
             }
 
             float var21;
             float var22;
 
-            if (movingobjectposition != null)
+            if (result != null)
             {
-                if (movingobjectposition.entityHit != null)
+                if (result.entityHit != null)
                 {
                     var22 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
                     int var23 = MathHelper.ceiling_double_int(var22 * this.damage);
@@ -312,16 +301,16 @@ public class EntityAcidProjectile extends Entity implements IProjectile
                         damagesource = DamageSources.causeAcidicProjectileDamage(this, this.shootingEntity);
                     }
 
-                    if (this.isBurning() && !(movingobjectposition.entityHit instanceof EntityEnderman))
+                    if (this.isBurning() && !(result.entityHit instanceof EntityEnderman))
                     {
-                        movingobjectposition.entityHit.setFire(5);
+                        result.entityHit.setFire(5);
                     }
 
-                    if (movingobjectposition.entityHit.attackEntityFrom(damagesource, var23))
+                    if (result.entityHit.attackEntityFrom(damagesource, var23))
                     {
-                        if (movingobjectposition.entityHit instanceof EntityLivingBase)
+                        if (result.entityHit instanceof EntityLivingBase)
                         {
-                            EntityLivingBase entitylivingbase = (EntityLivingBase) movingobjectposition.entityHit;
+                            EntityLivingBase entitylivingbase = (EntityLivingBase) result.entityHit;
 
                             if (!this.worldObj.isRemote)
                             {
@@ -334,12 +323,12 @@ public class EntityAcidProjectile extends Entity implements IProjectile
 
                                 if (var21 > 0.0F)
                                 {
-                                    movingobjectposition.entityHit.addVelocity(this.motionX * this.knockbackStrength * 0.6000000238418579D / var21, 0.1D, this.motionZ * this.knockbackStrength * 0.6000000238418579D / var21);
+                                    result.entityHit.addVelocity(this.motionX * this.knockbackStrength * 0.6000000238418579D / var21, 0.1D, this.motionZ * this.knockbackStrength * 0.6000000238418579D / var21);
                                 }
                             }
                         }
 
-                        if (!(movingobjectposition.entityHit instanceof EntityEnderman))
+                        if (!(result.entityHit instanceof EntityEnderman))
                         {
                             this.setDead();
                         }
@@ -356,14 +345,11 @@ public class EntityAcidProjectile extends Entity implements IProjectile
                 }
                 else
                 {
-                    this.xTile = movingobjectposition.blockX;
-                    this.yTile = movingobjectposition.blockY;
-                    this.zTile = movingobjectposition.blockZ;
-                    this.inTile = this.worldObj.getBlock(this.xTile, this.yTile, this.zTile);
-                    this.inData = this.worldObj.getBlockMetadata(this.xTile, this.yTile, this.zTile);
-                    this.motionX = ((float) (movingobjectposition.hitVec.xCoord - this.posX));
-                    this.motionY = ((float) (movingobjectposition.hitVec.yCoord - this.posY));
-                    this.motionZ = ((float) (movingobjectposition.hitVec.zCoord - this.posZ));
+                    this.tile = result.getBlockPos();
+                    this.inTile = this.worldObj.getBlockState(this.getPosition()).getBlock();
+                    this.motionX = ((float) (result.hitVec.xCoord - this.posX));
+                    this.motionY = ((float) (result.hitVec.yCoord - this.posY));
+                    this.motionZ = ((float) (result.hitVec.zCoord - this.posZ));
                     var22 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
                     this.posX -= this.motionX / var22 * 0.05000000074505806D;
                     this.posY -= this.motionY / var22 * 0.05000000074505806D;
@@ -374,16 +360,16 @@ public class EntityAcidProjectile extends Entity implements IProjectile
 
                     if (this.inTile != null)
                     {
-                        inTile.onEntityCollidedWithBlock(this.worldObj, this.xTile, this.yTile, this.zTile, this);
+                        inTile.onEntityCollidedWithBlock(this.worldObj, this.getPosition(), this.worldObj.getBlockState(this.getPosition()), this);
                     }
                 }
             }
 
             if (this.getIsCritical())
             {
-                for (l = 0; l < 4; ++l)
+                for (int l = 0; l < 4; ++l)
                 {
-                    this.worldObj.spawnParticle("crit", this.posX + this.motionX * l / 4.0D, this.posY + this.motionY * l / 4.0D, this.posZ + this.motionZ * l / 4.0D, -this.motionX, -this.motionY + 0.2D, -this.motionZ);
+                    this.worldObj.spawnParticle(EnumParticleTypes.CRIT, this.posX + this.motionX * l / 4.0D, this.posY + this.motionY * l / 4.0D, this.posZ + this.motionZ * l / 4.0D, -this.motionX, -this.motionY + 0.2D, -this.motionZ);
                 }
             }
 
@@ -416,14 +402,14 @@ public class EntityAcidProjectile extends Entity implements IProjectile
             this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.2F;
             this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
             float var24 = 0.99F;
-            f1 = 0.05F;
+            radius = 0.05F;
 
             if (this.isInWater())
             {
                 for (int var26 = 0; var26 < 4; ++var26)
                 {
                     var21 = 0.25F;
-                    this.worldObj.spawnParticle("bubble", this.posX - this.motionX * var21, this.posY - this.motionY * var21, this.posZ - this.motionZ * var21, this.motionX, this.motionY, this.motionZ);
+                    this.worldObj.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * var21, this.posY - this.motionY * var21, this.posZ - this.motionZ * var21, this.motionX, this.motionY, this.motionZ);
                 }
 
                 var24 = 0.8F;
@@ -432,46 +418,41 @@ public class EntityAcidProjectile extends Entity implements IProjectile
             this.motionX *= var24;
             this.motionY *= var24;
             this.motionZ *= var24;
-            this.motionY -= f1;
+            this.motionY -= radius;
             this.setPosition(this.posX, this.posY, this.posZ);
         }
     }
 
     @Override
-    public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
+    public void writeEntityToNBT(NBTTagCompound tag)
     {
-        par1NBTTagCompound.setShort("xTile", (short) this.xTile);
-        par1NBTTagCompound.setShort("yTile", (short) this.yTile);
-        par1NBTTagCompound.setShort("zTile", (short) this.zTile);
-        par1NBTTagCompound.setByte("inData", (byte) this.inData);
-        par1NBTTagCompound.setByte("shake", (byte) this.shake);
-        par1NBTTagCompound.setByte("inGround", (byte) (this.inGround ? 1 : 0));
-        par1NBTTagCompound.setByte("pickup", (byte) this.canBePickedUp);
-        par1NBTTagCompound.setDouble("damage", this.damage);
+        new Pos(this.tile).writeToNBT(tag);
+        tag.setByte("shake", (byte) this.shake);
+        tag.setByte("inGround", (byte) (this.inGround ? 1 : 0));
+        tag.setByte("pickup", (byte) this.canBePickedUp);
+        tag.setDouble("damage", this.damage);
     }
 
     @Override
-    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
+    public void readEntityFromNBT(NBTTagCompound tag)
     {
-        this.xTile = par1NBTTagCompound.getShort("xTile");
-        this.yTile = par1NBTTagCompound.getShort("yTile");
-        this.zTile = par1NBTTagCompound.getShort("zTile");
-        this.inData = par1NBTTagCompound.getByte("inData") & 255;
-        this.shake = par1NBTTagCompound.getByte("shake") & 255;
-        this.inGround = par1NBTTagCompound.getByte("inGround") == 1;
+        Pos pos = Pos.readFromNBT(tag);
+        this.tile = new BlockPos(pos.x, pos.y, pos.z);
+        this.shake = tag.getByte("shake") & 255;
+        this.inGround = tag.getByte("inGround") == 1;
 
-        if (par1NBTTagCompound.hasKey("damage"))
+        if (tag.hasKey("damage"))
         {
-            this.damage = par1NBTTagCompound.getDouble("damage");
+            this.damage = tag.getDouble("damage");
         }
 
-        if (par1NBTTagCompound.hasKey("pickup"))
+        if (tag.hasKey("pickup"))
         {
-            this.canBePickedUp = par1NBTTagCompound.getByte("pickup");
+            this.canBePickedUp = tag.getByte("pickup");
         }
-        else if (par1NBTTagCompound.hasKey("player"))
+        else if (tag.hasKey("player"))
         {
-            this.canBePickedUp = par1NBTTagCompound.getBoolean("player") ? 1 : 0;
+            this.canBePickedUp = tag.getBoolean("player") ? 1 : 0;
         }
     }
 
@@ -482,15 +463,14 @@ public class EntityAcidProjectile extends Entity implements IProjectile
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public float getShadowSize()
+    public float getCollisionBorderSize()
     {
         return 0.0F;
     }
 
-    public void setDamage(double par1)
+    public void setDamage(double damage)
     {
-        this.damage = par1;
+        this.damage = damage;
     }
 
     public double getDamage()
@@ -498,57 +478,46 @@ public class EntityAcidProjectile extends Entity implements IProjectile
         return this.damage;
     }
 
-    public void setKnockbackStrength(int par1)
+    public void setKnockbackStrength(int strength)
     {
-        this.knockbackStrength = par1;
+        this.knockbackStrength = strength;
     }
 
-    @Override
-    public boolean canAttackWithItem()
+    public void setIsCritical(boolean value)
     {
-        return false;
-    }
-
-    public void setIsCritical(boolean par1)
-    {
-        byte b0 = this.dataWatcher.getWatchableObjectByte(16);
-
-        if (par1)
-        {
-            this.dataWatcher.updateObject(16, Byte.valueOf((byte) (b0 | 1)));
-        }
-        else
-        {
-            this.dataWatcher.updateObject(16, Byte.valueOf((byte) (b0 & -2)));
-        }
+        byte critical = this.dataManager.get(CRITICAL);
+        this.getDataManager().set(CRITICAL, Byte.valueOf(value ? (byte) (critical | 1) : (byte) (critical & -2)));
     }
 
     public boolean getIsCritical()
     {
-        byte b0 = this.dataWatcher.getWatchableObjectByte(16);
-        return (b0 & 1) != 0;
+        return (this.dataManager.get(CRITICAL) & 1) != 0;
     }
 
     @Override
-    public void onCollideWithPlayer(EntityPlayer var1)
+    public void onCollideWithPlayer(EntityPlayer player)
     {
         if (!this.worldObj.isRemote)
         {
-            byte b0 = 14;
-            var1.addPotionEffect(new PotionEffect(Potion.poison.id, b0 * 20, 0));
+            this.applyAcid(player, 14 * 20);
         }
     }
 
-    protected void onImpact(MovingObjectPosition var1)
+    protected void onImpact(RayTraceResult result)
     {
         if (!this.worldObj.isRemote)
         {
-            if (var1.entityHit != null)
+            if (result.entityHit != null)
             {
-                ((EntityLiving) var1.entityHit).addPotionEffect(new PotionEffect(Potion.poison.id, 7 * 20, 0));
+                this.applyAcid((EntityLiving) result.entityHit, 7 * 20);
             }
 
             this.setDead();
         }
+    }
+
+    private void applyAcid(EntityLivingBase living, int ticks)
+    {
+        living.addPotionEffect(new PotionEffect(MobEffects.POISON, ticks, 0));
     }
 }

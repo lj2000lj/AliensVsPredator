@@ -1,10 +1,10 @@
 package org.avp.entities.living;
 
 import org.avp.api.parasitoidic.IHost;
+import org.avp.entities.ai.EntityAICustomAttackOnCollide;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIMoveThroughVillage;
 import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
@@ -13,6 +13,7 @@ import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.IMob;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
 public class EntityUrsuidae extends EntityMob implements IMob, IHost
@@ -22,14 +23,14 @@ public class EntityUrsuidae extends EntityMob implements IMob, IHost
         super(world);
         this.setSize(1.5F, 1.75F);
         this.experienceValue = 0;
-        this.getNavigator().setBreakDoors(false);
+        
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIMoveTowardsRestriction(this, 0.55D));
         this.tasks.addTask(2, new EntityAIMoveThroughVillage(this, 0.55D, false));
         this.tasks.addTask(3, new EntityAIWander(this, 1.0D));
         this.tasks.addTask(4, new EntityAIWatchClosest(this, EntityLivingBase.class, 16.0F));
         this.tasks.addTask(5, new EntityAILookIdle(this));
-        this.tasks.addTask(6, new EntityAIAttackOnCollide(this, EntityLivingBase.class, 0.6D, true));
+        this.tasks.addTask(6, new EntityAICustomAttackOnCollide(this, EntityLivingBase.class, 0.6D, true));
     }
 
     @Override
@@ -43,31 +44,25 @@ public class EntityUrsuidae extends EntityMob implements IMob, IHost
     }
     
     @Override
-    protected boolean isAIEnabled()
-    {
-        return true;
-    }
-
-    @Override
     public int getTotalArmorValue()
     {
         return 1;
     }
 
     @Override
-    protected String getLivingSound()
+    protected SoundEvent getAmbientSound()
     {
         return null;
     }
 
     @Override
-    protected String getHurtSound()
+    protected SoundEvent getHurtSound()
     {
         return null;
     }
 
     @Override
-    protected String getDeathSound()
+    protected SoundEvent getDeathSound()
     {
         return null;
     }

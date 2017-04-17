@@ -8,7 +8,6 @@ import org.avp.packets.client.PacketOpenable;
 
 import com.arisux.mdxlib.lib.world.tile.IRotatable;
 
-import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
@@ -17,11 +16,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 
 
 public class TileEntitySupplyCrate extends TileEntity implements IOpenable, IRotatable
@@ -39,8 +38,26 @@ public class TileEntitySupplyCrate extends TileEntity implements IOpenable, IRot
 		this.inventory = new InventoryBasic("container.supplycrate.slots", true, 64);
 	}
 
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket()
+    {
+        return new SPacketUpdateTileEntity(this.getPos(), 1, this.getUpdateTag());
+    }
+
+    @Override
+    public NBTTagCompound getUpdateTag()
+    {
+        return this.writeToNBT(new NBTTagCompound());
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet)
+    {
+        this.readFromNBT(packet.getNbtCompound());
+    }
+
 	@Override
-	public void writeToNBT(NBTTagCompound nbt)
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt)
 	{
 		super.writeToNBT(nbt);
 
@@ -58,6 +75,8 @@ public class TileEntitySupplyCrate extends TileEntity implements IOpenable, IRot
 		{
 		    nbt.setInteger("Type", this.type.id());
 		}
+		
+		return nbt;
 	}
 
 	private void saveInventoryToNBT(NBTTagCompound nbt, IInventory inventory)
@@ -77,7 +96,7 @@ public class TileEntitySupplyCrate extends TileEntity implements IOpenable, IRot
 			}
 		}
 
-		nbt.setTag(inventory.getInventoryName(), items);
+		nbt.setTag(inventory.getName(), items);
 	}
 
 	@Override
@@ -85,9 +104,9 @@ public class TileEntitySupplyCrate extends TileEntity implements IOpenable, IRot
 	{
 		super.readFromNBT(nbt);
 
-		if (EnumFacing.getOrientation(nbt.getInteger("Direction")) != null)
+		if (EnumFacing.getFront(nbt.getInteger("Direction")) != null)
 		{
-			this.direction = EnumFacing.getOrientation(nbt.getInteger("Direction"));
+			this.direction = EnumFacing.getFront(nbt.getInteger("Direction"));
 		}
 
 		this.readInventoryFromNBT(nbt, this.inventory);
@@ -96,7 +115,7 @@ public class TileEntitySupplyCrate extends TileEntity implements IOpenable, IRot
 
 	private void readInventoryFromNBT(NBTTagCompound nbt, IInventory inventory)
 	{
-		NBTTagList items = nbt.getTagList(inventory.getInventoryName(), Constants.NBT.TAG_COMPOUND);
+		NBTTagList items = nbt.getTagList(inventory.getName(), Constants.NBT.TAG_COMPOUND);
 
 		for (byte x = 0; x < items.tagCount(); x++)
 		{
@@ -115,33 +134,13 @@ public class TileEntitySupplyCrate extends TileEntity implements IOpenable, IRot
 	{
 		if (!player.worldObj.isRemote)
 		{
-			FMLNetworkHandler.openGui(player, AliensVsPredator.instance(), AliensVsPredator.interfaces().GUI_SUPPLYCRATE, player.worldObj, xCoord, yCoord, zCoord);
+			FMLNetworkHandler.openGui(player, AliensVsPredator.instance(), AliensVsPredator.interfaces().GUI_SUPPLYCRATE, player.worldObj, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
 		}
-	}
-
-	@Override
-	public void updateEntity()
-	{
-		super.updateEntity();
-	}
-
-	@Override
-	public Packet getDescriptionPacket()
-	{
-		NBTTagCompound nbtTag = new NBTTagCompound();
-		this.writeToNBT(nbtTag);
-		return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbtTag);
 	}
 
 	public Container getNewContainer(EntityPlayer player)
 	{
 		return (container = new ContainerSupplyCrate(player, this));
-	}
-
-	@Override
-	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet)
-	{
-		readFromNBT(packet.getNbtCompound());
 	}
 
 	@Override
@@ -163,7 +162,7 @@ public class TileEntitySupplyCrate extends TileEntity implements IOpenable, IRot
 
 		if (!this.worldObj.isRemote)
 		{
-			AliensVsPredator.network().sendToAll(new PacketOpenable(isOpen, this.xCoord, this.yCoord, this.zCoord));
+			AliensVsPredator.network().sendToAll(new PacketOpenable(isOpen, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ()));
 		}
 	}
 

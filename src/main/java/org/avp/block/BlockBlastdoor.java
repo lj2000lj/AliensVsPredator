@@ -6,26 +6,32 @@ import org.avp.tile.TileEntityBlastdoor;
 import com.arisux.mdxlib.MDX;
 import com.arisux.mdxlib.lib.client.Notification;
 import com.arisux.mdxlib.lib.client.Notification.DynamicNotification;
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-
+import net.minecraftforge.common.property.IUnlistedProperty;
 
 public class BlockBlastdoor extends Block
 {
     private DynamicNotification notification = new DynamicNotification();
-    
+
     public BlockBlastdoor(Material material)
     {
         super(material);
@@ -33,27 +39,9 @@ public class BlockBlastdoor extends Block
     }
 
     @Override
-    public void registerIcons(IIconRegister register)
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        return;
-    }
-
-    @Override
-    public boolean renderAsNormalBlock()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isOpaqueCube()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean onBlockActivated(World world, int posX, int posY, int posZ, EntityPlayer player, int side, float subX, float subY, float subZ)
-    {
-        TileEntity tile = world.getTileEntity(posX, posY, posZ);
+        TileEntity tile = world.getTileEntity(pos);
 
         if (tile != null && tile instanceof TileEntityBlastdoor)
         {
@@ -68,6 +56,7 @@ public class BlockBlastdoor extends Block
                 this.onOpen(blastdoor, world, player);
             }
         }
+
         return true;
     }
 
@@ -130,15 +119,9 @@ public class BlockBlastdoor extends Block
     }
 
     @Override
-    public boolean canPlaceBlockAt(World world, int posX, int posY, int posZ)
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        return super.canPlaceBlockAt(world, posX, posY, posZ);
-    }
-
-    @Override
-    public void onBlockPlacedBy(World world, int posX, int posY, int posZ, EntityLivingBase placer, ItemStack itemstack)
-    {
-        TileEntity tile = world.getTileEntity(posX, posY, posZ);
+        TileEntity tile = world.getTileEntity(pos);
 
         if (tile != null && tile instanceof TileEntityBlastdoor && placer != null)
         {
@@ -148,15 +131,15 @@ public class BlockBlastdoor extends Block
 
             if (!blastdoor.setup(true))
             {
-                world.setBlockToAir(posX, posY, posZ);
+                world.setBlockToAir(pos);
             }
         }
     }
 
     @Override
-    public void breakBlock(World world, int posX, int posY, int posZ, Block blockBroken, int meta)
+    public void breakBlock(World world, BlockPos pos, IBlockState state)
     {
-        TileEntity tile = world.getTileEntity(posX, posY, posZ);
+        TileEntity tile = world.getTileEntity(pos);
 
         if (tile != null && tile instanceof TileEntityBlastdoor)
         {
@@ -166,7 +149,7 @@ public class BlockBlastdoor extends Block
             {
                 if (blastdoor.getParent() != null)
                 {
-                    world.setBlockToAir(blastdoor.getParent().xCoord, blastdoor.getParent().yCoord, blastdoor.getParent().zCoord);
+                    world.setBlockToAir(blastdoor.getParent().getPos());
                     blastdoor.getParent().breakChildren();
                 }
             }
@@ -176,54 +159,67 @@ public class BlockBlastdoor extends Block
             }
         }
 
-        world.removeTileEntity(posX, posY, posZ);
+        world.removeTileEntity(pos);
 
-        super.breakBlock(world, posX, posY, posZ, blockBroken, meta);
+        super.breakBlock(world, pos, state);
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int posX, int posY, int posZ)
+    protected BlockStateContainer createBlockState()
     {
-        TileEntity tileEntity = world.getTileEntity(posX, posY, posZ);
-
-        if (tileEntity != null && tileEntity instanceof TileEntityBlastdoor)
+        return new BlockStateContainer(this, new IProperty[0])
         {
-            TileEntityBlastdoor tile = (TileEntityBlastdoor) tileEntity;
-
-            if (tile.isOpen())
+            @Override
+            protected StateImplementation createState(Block block, ImmutableMap<IProperty<?>, Comparable<?>> properties, ImmutableMap<IUnlistedProperty<?>, Optional<?>> unlistedProperties)
             {
-                return null;
-            }
-            else
-            {
-                return AxisAlignedBB.getBoundingBox((double) posX + this.minX, (double) posY + this.minY, (double) posZ + this.minZ, (double) posX + this.maxX, (double) posY + this.maxY, (double) posZ + this.maxZ);
-            }
-        }
+                return new StateImplementation(block, properties)
+                {
+                    @Override
+                    public AxisAlignedBB getCollisionBoundingBox(World world, BlockPos pos)
+                    {
+                        TileEntity tileEntity = world.getTileEntity(pos);
 
-        return AxisAlignedBB.getBoundingBox((double) posX + this.minX, (double) posY + this.minY, (double) posZ + this.minZ, (double) posX + this.maxX, (double) posY + this.maxY, (double) posZ + this.maxZ);
+                        if (tileEntity != null && tileEntity instanceof TileEntityBlastdoor)
+                        {
+                            TileEntityBlastdoor tile = (TileEntityBlastdoor) tileEntity;
+
+                            if (tile.isOpen())
+                            {
+                                return null;
+                            }
+                            else
+                            {
+                                return super.getCollisionBoundingBox(world, pos);
+                            }
+                        }
+                        return super.getCollisionBoundingBox(world, pos);
+                    }
+                    
+                    @Override
+                    public EnumBlockRenderType getRenderType()
+                    {
+                        return EnumBlockRenderType.INVISIBLE;
+                    }
+                };
+            }
+        };
     }
-
+    
     @Override
-    public TileEntity createTileEntity(World world, int metadata)
+    public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TileEntityBlastdoor();
     }
-
+    
     @Override
-    public boolean hasTileEntity(int metadata)
+    public boolean hasTileEntity(IBlockState state)
     {
         return true;
-    }
-
-    @Override
-    public int getRenderType()
-    {
-        return -1;
     }
 
     public static EnumFacing getFacing(Entity entity)
     {
         int dir = MathHelper.floor_double((entity.rotationYaw / 90) + 0.5) & 3;
-        return EnumFacing.VALID_DIRECTIONS[Direction.directionToFacing[dir]];
+        return EnumFacing.getFront(dir);
     }
 }

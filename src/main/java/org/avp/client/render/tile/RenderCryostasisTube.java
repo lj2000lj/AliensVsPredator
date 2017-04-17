@@ -14,16 +14,15 @@ import org.lwjgl.opengl.GL12;
 
 import com.arisux.mdxlib.lib.client.TexturedModel;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
+import com.arisux.mdxlib.lib.game.Game;
 
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class RenderCryostasisTube extends TileEntitySpecialRenderer
+public class RenderCryostasisTube extends TileEntitySpecialRenderer<TileEntityCryostasisTube>
 {
     public static ArrayList<CryostasisEntityRenderer> renderers = new ArrayList<CryostasisEntityRenderer>();
     private static final CryostasisEntityRenderer     renderer  = new CryostasisEntityRenderer()
@@ -108,17 +107,15 @@ public class RenderCryostasisTube extends TileEntitySpecialRenderer
                     OpenGL.disableLight();
                 }
 
-                RenderManager.instance.renderEntityWithPosYaw(tile.stasisEntity, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
+                Game.renderManager().renderEntityStatic(tile.stasisEntity, Game.partialTicks(), false);
                 OpenGL.popMatrix();
             }
         }
     }
 
     @Override
-    public void renderTileEntityAt(TileEntity tileEntity, double posX, double posY, double posZ, float partialTicks)
+    public void renderTileEntityAt(TileEntityCryostasisTube tile, double posX, double posY, double posZ, float partialTicks, int destroyStage)
     {
-        TileEntityCryostasisTube tile = (TileEntityCryostasisTube) tileEntity;
-
         OpenGL.pushMatrix();
         {
             CryostasisEntityRenderer cachedRenderer = null;

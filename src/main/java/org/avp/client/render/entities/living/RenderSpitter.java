@@ -1,6 +1,7 @@
 package org.avp.client.render.entities.living;
 
 import org.avp.AliensVsPredator;
+import org.avp.client.model.entities.living.ModelSpitter;
 import org.avp.entities.living.EntitySpitter;
 import org.lwjgl.opengl.GL11;
 
@@ -8,24 +9,22 @@ import com.arisux.mdxlib.lib.client.RenderLivingWrapper;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.entity.EntityLivingBase;
 
-public class RenderSpitter extends RenderLivingWrapper
+public class RenderSpitter extends RenderLivingWrapper<EntitySpitter, ModelSpitter>
 {
     public RenderSpitter()
     {
         super(AliensVsPredator.resources().models().SPITTER);
-        this.setRenderPassModel(this.getModelTexMap().getModel());
+//        this.setRenderPassModel(this.getModel().getModel());
     }
 
     @Override
-    protected void preRenderCallback(EntityLivingBase entityLivingBase, float shadowSize)
+    protected void preRenderCallback(EntitySpitter entityLivingBase, float shadowSize)
     {
         super.preRenderCallback(entityLivingBase, shadowSize);
     }
 
-    @Override
-    protected int shouldRenderPass(EntityLivingBase entityLivingBase, int par2, float par3)
+    protected int shouldRenderPass(EntitySpitter entityLivingBase, int par2, float par3)
     {
         return this.setRenderPassModelBrightness((EntitySpitter) entityLivingBase, par2);
     }

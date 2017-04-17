@@ -5,12 +5,16 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public abstract class EntityItemStackProjectile extends EntityProjectile
 {
-    protected ItemStack itemstack;
+    private static final DataParameter<Byte> WEAPON_MATERIAL_ID = EntityDataManager.<Byte> createKey(EntityGrenade.class, DataSerializers.BYTE);
+    protected ItemStack                      itemstack;
 
     public EntityItemStackProjectile(World world)
     {
@@ -21,7 +25,7 @@ public abstract class EntityItemStackProjectile extends EntityProjectile
     public void entityInit()
     {
         super.entityInit();
-        dataWatcher.addObject(25, Byte.valueOf((byte) 0));
+        this.getDataManager().register(WEAPON_MATERIAL_ID, (byte) 0);
     }
 
     @Override
@@ -31,7 +35,7 @@ public abstract class EntityItemStackProjectile extends EntityProjectile
 
         if (shootingEntity instanceof EntityLivingBase && entity instanceof EntityLivingBase)
         {
-            int knockback = EnchantmentHelper.getKnockbackModifier((EntityLivingBase) shootingEntity, (EntityLivingBase) entity);
+            int knockback = EnchantmentHelper.getKnockbackModifier((EntityLivingBase) shootingEntity);
 
             if (knockback != 0)
             {
@@ -60,7 +64,7 @@ public abstract class EntityItemStackProjectile extends EntityProjectile
 
     public int getWeaponMaterialId()
     {
-        return dataWatcher.getWatchableObjectByte(25);
+        return this.getDataManager().get(WEAPON_MATERIAL_ID);
     }
 
     @Override

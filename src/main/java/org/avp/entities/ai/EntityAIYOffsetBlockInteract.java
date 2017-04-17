@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 
 public abstract class EntityAIYOffsetBlockInteract extends EntityAIBase
 {
@@ -22,7 +23,7 @@ public abstract class EntityAIYOffsetBlockInteract extends EntityAIBase
     @Override
     public boolean shouldExecute()
     {
-        this.block = this.theEntity.worldObj.getBlock((int) this.theEntity.posX, (int) this.theEntity.posY + yOffset, (int) this.theEntity.posZ);
+        this.block = this.theEntity.worldObj.getBlockState(new BlockPos((int) this.theEntity.posX, (int) this.theEntity.posY + yOffset, (int) this.theEntity.posZ)).getBlock();
         return this.block != null;
     }
 
@@ -48,7 +49,7 @@ public abstract class EntityAIYOffsetBlockInteract extends EntityAIBase
     {
         if (this.block == Blocks.AIR)
         {
-            this.block = this.theEntity.worldObj.getBlock((int) this.theEntity.posX, (int) this.theEntity.posY + this.yOffset, (int) this.theEntity.posZ);
+            this.block = this.theEntity.worldObj.getBlockState(new BlockPos((int) this.theEntity.posX, (int) this.theEntity.posY + yOffset, (int) this.theEntity.posZ)).getBlock();
         }
     }
 }

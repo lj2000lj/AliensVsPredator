@@ -10,12 +10,13 @@ import org.avp.entities.EntityBullet;
 import org.avp.entities.EntityLiquidPool;
 import org.avp.world.MarineTypes;
 
-import net.minecraft.entity.Entity;
+import com.google.common.base.Predicate;
+
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIArrowAttack;
+import net.minecraft.entity.ai.EntityAIAttackRanged;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
@@ -28,39 +29,46 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class EntityMarine extends EntityCreature implements IMob, IRangedAttackMob, IEntitySelector
+public class EntityMarine extends EntityCreature implements IMob, IRangedAttackMob, Predicate<EntityLivingBase>
 {
-    private MarineTypes  marineType;
-    private EntityAIBase aiRangedAttack;
-    private boolean      isFiring;
-    private long         lastShotFired;
+    private DataParameter<Boolean> FIRING = EntityDataManager.createKey(EntityMarine.class, DataSerializers.BOOLEAN);
+    private DataParameter<Integer> TYPE   = EntityDataManager.createKey(EntityMarine.class, DataSerializers.VARINT);
+    private EntityAIBase           rangedAttackAI;
+    private long                   lastShotFired;
 
     public EntityMarine(World world)
     {
         super(world);
-        this.marineType = MarineTypes.getTypeForId(new Random(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis())).nextInt(MarineTypes.values().length));
-        this.aiRangedAttack = new EntityAIArrowAttack(this, 0.4D, (int) getMarineType().getFirearmItem().getFireRate(), 24);
+        this.rangedAttackAI = new EntityAIAttackRanged(this, 0.4D, (int) getMarineType().getFirearmItem().getProfile().getShotsPerTick(), 24);
         this.experienceValue = 5;
-        this.dataWatcher.addObject(18, new Integer(15));
-        this.dataWatcher.addObject(17, "false");
-        this.dataWatcher.addObject(16, Byte.valueOf((byte) 0));
-        this.tasks.addTask(1, this.aiRangedAttack);
+        this.tasks.addTask(1, this.rangedAttackAI);
         this.tasks.addTask(2, new EntityAIWander(this, this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue()));
         this.tasks.addTask(3, new EntityAISwimming(this));
         this.tasks.addTask(4, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
         this.tasks.addTask(5, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, Entity.class, /** targetChance **/
-            0, /** shouldCheckSight **/
-            false, /** nearbyOnly **/
-            false, this));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityLivingBase>(this, EntityLivingBase.class, 0, false, false, this));
     }
 
     @Override
-    public boolean isEntityApplicable(Entity entity)
+    protected void entityInit()
+    {
+        super.entityInit();
+        this.getDataManager().register(FIRING, false);
+        this.getDataManager().register(TYPE, new Random(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis())).nextInt(MarineTypes.values().length));
+    }
+
+    @Override
+    public boolean apply(EntityLivingBase entity)
     {
         if (entity instanceof EntitySpeciesAlien)
             return true;
@@ -93,17 +101,6 @@ public class EntityMarine extends EntityCreature implements IMob, IRangedAttackM
     }
 
     @Override
-    protected boolean isAIEnabled()
-    {
-        return true;
-    }
-
-    public MarineTypes getMarineType()
-    {
-        return marineType;
-    }
-
-    @Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
@@ -112,9 +109,9 @@ public class EntityMarine extends EntityCreature implements IMob, IRangedAttackM
     }
 
     @Override
-    public float getBlockPathWeight(int posX, int posY, int posZ)
+    public float getBlockPathWeight(BlockPos pos)
     {
-        return 0.5F - this.worldObj.getLightBrightness(posX, posY, posZ);
+        return 0.5F - this.worldObj.getLightBrightness(pos);
     }
 
     @Override
@@ -124,15 +121,15 @@ public class EntityMarine extends EntityCreature implements IMob, IRangedAttackM
     }
 
     @Override
-    protected String getHurtSound()
+    protected SoundEvent getHurtSound()
     {
-        return Sounds.SOUND_MARINE_HURT.getKey();
+        return Sounds.SOUND_MARINE_HURT.event();
     }
 
     @Override
-    protected String getDeathSound()
+    protected SoundEvent getDeathSound()
     {
-        return Sounds.SOUND_MARINE_DEATH.getKey();
+        return Sounds.SOUND_MARINE_DEATH.event();
     }
 
     @Override
@@ -142,11 +139,9 @@ public class EntityMarine extends EntityCreature implements IMob, IRangedAttackM
     }
 
     @Override
-    protected void updateAITick()
+    protected void updateAITasks()
     {
-        super.updateAITick();
-
-        this.dataWatcher.updateObject(18, Integer.valueOf(15));
+        super.updateAITasks();
     }
 
     @Override
@@ -159,24 +154,17 @@ public class EntityMarine extends EntityCreature implements IMob, IRangedAttackM
     public void onUpdate()
     {
         super.onUpdate();
-        this.isFiring = !(System.currentTimeMillis() - getLastShotFired() >= 1000 * 3);
 
         if (!this.worldObj.isRemote)
         {
-            this.getDataWatcher().updateObject(17, String.valueOf(this.isFiring));
-        }
-
-        if (this.worldObj.isRemote)
-        {
-            this.isFiring = Boolean.parseBoolean(getDataWatcher().getWatchableObjectString(17));
+            this.getDataManager().set(FIRING, !(System.currentTimeMillis() - getLastShotFired() >= 1000 * 3));
         }
     }
-    
+
     @Override
     public void onDeath(DamageSource source)
     {
         super.onDeath(source);
-        
         EntityItemDrops.AMMUNITION.tryDrop(this);
     }
 
@@ -189,17 +177,22 @@ public class EntityMarine extends EntityCreature implements IMob, IRangedAttackM
             EntityBullet entityBullet = new EntityBullet(this.worldObj, this, targetEntity, 10F, 0.0000001F);
             this.worldObj.spawnEntityInWorld(entityBullet);
             this.playSound(getMarineType().getGunfireSound(), 0.7F, 1F);
-            this.worldObj.spawnParticle("largesmoke", this.posX, this.posY + this.getEyeHeight(), this.posZ, 1, 1, 1);
+            this.worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.posX, this.posY + this.getEyeHeight(), this.posZ, 1, 1, 1);
         }
+    }
+    
+    public MarineTypes getMarineType()
+    {
+        return MarineTypes.getTypeForId(this.getDataManager().get(TYPE));
     }
 
     public boolean isFiring()
     {
-        return isFiring;
+        return this.getDataManager().get(FIRING);
     }
 
     public long getLastShotFired()
     {
-        return lastShotFired;
+        return this.lastShotFired;
     }
 }

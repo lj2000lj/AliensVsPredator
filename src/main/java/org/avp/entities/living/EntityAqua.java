@@ -8,12 +8,13 @@ import org.avp.entities.EntityAcidPool;
 import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.block.Blocks;
 import com.arisux.mdxlib.lib.world.entity.Entities;
+import com.google.common.base.Predicate;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
 @SuppressWarnings("all")
@@ -23,12 +24,12 @@ public class EntityAqua extends EntityXenomorph
     {
         super(world);
         this.jumpMovementFactor = 0.2F;
-        this.getNavigator().setCanSwim(true);
-        this.getNavigator().setAvoidsWater(false);
+        
+        
         this.experienceValue = 100;
         this.setSize(0.8F, 1.8F);
-        this.getNavigator().setCanSwim(true);
-        this.getNavigator().setAvoidsWater(false);
+        
+        
         this.tasks.addTask(0, new EntityAISwimming(this));
         
         this.addStandardXenomorphAISet();
@@ -40,10 +41,10 @@ public class EntityAqua extends EntityXenomorph
         super.entityInit();
     }
 
-    public static IEntitySelector entitySelector = new IEntitySelector()
+    public static Predicate<EntityLivingBase> entitySelector = new Predicate<EntityLivingBase>()
     {
         @Override
-        public boolean isEntityApplicable(Entity entity)
+        public boolean apply(EntityLivingBase entity)
         {
             return !(entity instanceof EntitySpeciesAlien) && !(entity instanceof EntityAqua) && !(entity instanceof EntityAcidPool);
         }
@@ -62,7 +63,7 @@ public class EntityAqua extends EntityXenomorph
 
             for (EntityLivingBase entity : entities)
             {
-                if (entitySelector.isEntityApplicable(entity) && Entities.canEntityBeSeenBy(entity, this) && (!entitySelector.isEntityApplicable(entity.getLastAttacker()) && (entity.ticksExisted - entity.getLastAttackerTime() > 150)))
+                if (entitySelector.apply(entity) && Entities.canEntityBeSeenBy(entity, this) && (!entitySelector.apply(entity.getLastAttacker()) && (entity.ticksExisted - entity.getLastAttackerTime() > 150)))
                 {
                     if (entity instanceof EntityPlayer && !((EntityPlayer) entity).capabilities.isCreativeMode)
                     {
@@ -79,10 +80,10 @@ public class EntityAqua extends EntityXenomorph
         {
             if (this.worldObj.getWorldTime() % 40 == 0 && this.rand.nextInt(4) == 0)
             {
-                if (this.worldObj.getBlock((int) this.posX, (int) this.posY, (int) this.posZ) != net.minecraft.init.Blocks.water)
+                if (this.worldObj.getBlockState(this.getPosition()).getBlock() != net.minecraft.init.Blocks.WATER)
                 {
                     double range = this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getAttributeValue() / 2;
-                    ArrayList<Pos> coordData = Blocks.getCoordDataInRangeIncluding((int) this.posX, (int) this.posY, (int) this.posZ, (int) range, this.worldObj, net.minecraft.init.Blocks.water);
+                    ArrayList<Pos> coordData = Blocks.getCoordDataInRangeIncluding((int) this.posX, (int) this.posY, (int) this.posZ, (int) range, this.worldObj, net.minecraft.init.Blocks.WATER);
 
                     if (coordData.size() > 0)
                     {
@@ -104,27 +105,21 @@ public class EntityAqua extends EntityXenomorph
     }
 
     @Override
-    protected boolean isAIEnabled()
+    protected SoundEvent getHurtSound()
     {
-        return true;
+        return Sounds.SOUND_ALIEN_HURT.event();
     }
 
     @Override
-    protected String getHurtSound()
+    protected SoundEvent getAmbientSound()
     {
-        return Sounds.SOUND_ALIEN_HURT.getKey();
+        return Sounds.SOUND_ALIEN_LIVING.event();
     }
 
     @Override
-    protected String getLivingSound()
+    protected SoundEvent getDeathSound()
     {
-        return Sounds.SOUND_ALIEN_LIVING.getKey();
-    }
-
-    @Override
-    protected String getDeathSound()
-    {
-        return Sounds.SOUND_ALIEN_DEATH.getKey();
+        return Sounds.SOUND_ALIEN_DEATH.event();
     }
 
     @Override

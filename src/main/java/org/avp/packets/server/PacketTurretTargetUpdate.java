@@ -6,10 +6,11 @@ import com.arisux.mdxlib.lib.client.render.Rotation;
 import com.arisux.mdxlib.lib.game.Game;
 import com.arisux.mdxlib.lib.world.Pos;
 
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketTurretTargetUpdate implements IMessage, IMessageHandler<PacketTurretTargetUpdate, PacketTurretTargetUpdate>
 {
@@ -25,9 +26,9 @@ public class PacketTurretTargetUpdate implements IMessage, IMessageHandler<Packe
 
     public PacketTurretTargetUpdate(TileEntityTurret turret)
     {
-        this.x = turret.xCoord;
-        this.y = turret.yCoord;
-        this.z = turret.zCoord;
+        this.x = turret.getPos().getX();
+        this.y = turret.getPos().getY();
+        this.z = turret.getPos().getZ();
         this.id = turret.getTargetEntity().getEntityId();
         this.focrot = turret.getFocusRotation();
         this.foc = turret.getFocusPosition();
@@ -58,7 +59,7 @@ public class PacketTurretTargetUpdate implements IMessage, IMessageHandler<Packe
     @Override
     public PacketTurretTargetUpdate onMessage(PacketTurretTargetUpdate packet, MessageContext ctx)
     {
-        TileEntityTurret tile = (TileEntityTurret) Game.minecraft().theWorld.getTileEntity(packet.x, packet.y, packet.z);
+        TileEntityTurret tile = (TileEntityTurret) Game.minecraft().theWorld.getTileEntity(new BlockPos(packet.x, packet.y, packet.z));
 
         if (tile != null)
         {

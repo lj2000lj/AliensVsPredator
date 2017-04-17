@@ -2,14 +2,12 @@ package org.avp.client.model.entities.living;
 
 import org.avp.entities.living.EntityFacehugger;
 
-import com.arisux.mdxlib.lib.client.Model;
-
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.MathHelper;
 
 
-public class ModelRoyalFacehugger extends Model
+public class ModelRoyalFacehugger extends ModelFacehugger
 {
     public ModelRenderer spine;
     public ModelRenderer spine2;

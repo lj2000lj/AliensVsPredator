@@ -12,12 +12,16 @@ import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.entity.Entities;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.pathfinding.Path;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -33,8 +37,8 @@ public class EntityDrone extends EntityXenomorph implements IMaturable
         this.experienceValue = 100;
         this.setSize(0.8F, 1.8F);
         this.mobType = this.rand.nextInt(2);
-        this.getNavigator().setCanSwim(true);
-        this.getNavigator().setAvoidsWater(true);
+        
+        
 
         this.addStandardXenomorphAISet();
     }
@@ -49,21 +53,21 @@ public class EntityDrone extends EntityXenomorph implements IMaturable
     }
 
     @Override
-    protected String getHurtSound()
+    protected SoundEvent getHurtSound()
     {
-        return Sounds.SOUND_ALIEN_HURT.getKey();
+        return Sounds.SOUND_ALIEN_HURT.event();
     }
 
     @Override
-    protected String getLivingSound()
+    protected SoundEvent getAmbientSound()
     {
-        return Sounds.SOUND_ALIEN_LIVING.getKey();
+        return Sounds.SOUND_ALIEN_LIVING.event();
     }
 
     @Override
-    protected String getDeathSound()
+    protected SoundEvent getDeathSound()
     {
-        return Sounds.SOUND_ALIEN_DEATH.getKey();
+        return Sounds.SOUND_ALIEN_DEATH.event();
     }
 
     @Override
@@ -78,7 +82,7 @@ public class EntityDrone extends EntityXenomorph implements IMaturable
         {
             if (!this.hive.isEntityWithinRange(this))
             {
-                PathEntity path = this.getNavigator().getPathToXYZ(this.hive.xCoord(), this.hive.yCoord(), this.hive.zCoord());
+                Path path = this.getNavigator().getPathToXYZ(this.hive.xCoord(), this.hive.yCoord(), this.hive.zCoord());
 
                 if (path != null)
                 {
@@ -89,9 +93,9 @@ public class EntityDrone extends EntityXenomorph implements IMaturable
     }
 
     @Override
-    protected void attackEntity(Entity entity, float damage)
+    public boolean attackEntityFrom(DamageSource source, float damage)
     {
-        super.attackEntity(entity, damage);
+        return super.attackEntityFrom(source, damage);
     }
 
     @Override
@@ -149,16 +153,16 @@ public class EntityDrone extends EntityXenomorph implements IMaturable
                 {
                     if (this.getJellyLevel() >= 16)
                     {
-                        Pos coord = findNextSuitableResinLocation(3);
+                        BlockPos pos = findNextSuitableResinLocation(3);
 
-                        if (coord != null)
+                        if (pos != null)
                         {
-                            Block block = coord.getBlock(this.worldObj);
-                            int meta = coord.getBlockMetadata(this.worldObj);
+                            IBlockState state = this.worldObj.getBlockState(pos);
+                            Block block = state.getBlock();
 
                             if (block != null)
                             {
-                                PathEntity path = this.worldObj.getEntityPathToXYZ(this, (int) coord.x, (int) coord.y, (int) coord.z, 12, true, false, true, false);
+                                Path path = this.getNavigator().getPathToXYZ((int) pos.getX(), (int) pos.getY(), (int) pos.getZ());
 
                                 if (path == null)
                                 {
@@ -166,16 +170,15 @@ public class EntityDrone extends EntityXenomorph implements IMaturable
                                 }
 
                                 this.getNavigator().setPath(path, 0.8D);
-                                this.worldObj.setBlock((int) coord.x, (int) coord.y, (int) coord.z, AliensVsPredator.blocks().terrainHiveResin);
+                                this.worldObj.setBlockState(pos, AliensVsPredator.blocks().terrainHiveResin.getDefaultState());
 
-                                TileEntity tileEntity = coord.getTileEntity(this.worldObj);
+                                TileEntity tileEntity = this.worldObj.getTileEntity(pos);
 
                                 if (tileEntity != null && tileEntity instanceof TileEntityHiveResin)
                                 {
                                     TileEntityHiveResin resin = (TileEntityHiveResin) tileEntity;
                                     resin.setHiveSignature(this.getHive().getUniqueIdentifier());
-                                    resin.setBlockCovering(block, 0);
-                                    this.worldObj.setBlockMetadataWithNotify((int) coord.x, (int) coord.y, (int) coord.z, meta, 3);
+                                    resin.setBlockCovering(state, 0);
                                     this.hive.addResin(resin);
                                 }
 
@@ -188,9 +191,9 @@ public class EntityDrone extends EntityXenomorph implements IMaturable
         }
     }
 
-    public Pos findNextSuitableResinLocation(int range)
+    public BlockPos findNextSuitableResinLocation(int range)
     {
-        ArrayList<Pos> data = new ArrayList<Pos>();
+        ArrayList<BlockPos> data = new ArrayList<BlockPos>();
 
         for (int x = (int) (posX - range); x < posX + range; x++)
         {
@@ -198,25 +201,26 @@ public class EntityDrone extends EntityXenomorph implements IMaturable
             {
                 for (int z = (int) (posZ - range); z < posZ + range; z++)
                 {
-                    Pos location = new Pos(x, y, z);
-                    Block block = location.getBlock(this.worldObj);
+                    BlockPos location = new BlockPos(x, y, z);
+                    IBlockState blockstate = this.worldObj.getBlockState(location);
+                    Block block = blockstate.getBlock();
 
-                    if (this.canReplaceWithResin(block))
+                    if (this.canReplaceWithResin(blockstate))
                     {
                         Vec3d start = new Vec3d(this.posX, this.posY + (double) this.getEyeHeight(), this.posZ);
                         Vec3d end = new Vec3d(x, y, z);
-                        MovingObjectPosition hit = this.worldObj.rayTraceBlocks(start, end);
+                        RayTraceResult hit = this.worldObj.rayTraceBlocks(start, end);
 
-                        if (hit != null && hit.typeOfHit == MovingObjectType.BLOCK || hit == null)
+                        if (hit != null && hit.typeOfHit == RayTraceResult.Type.BLOCK || hit == null)
                         {
                             boolean canSeeCoord = true;
 
                             if (hit != null)
                             {
-                                canSeeCoord = hit.blockX == x && hit.blockY == y && hit.blockZ == z;
+                                canSeeCoord = hit.hitVec.xCoord == x && hit.hitVec.yCoord == y && hit.hitVec.zCoord == z;
                             }
 
-                            if (location.isAnySurfaceEmpty(this.worldObj) && canSeeCoord)
+                            if (Pos.isAnySurfaceEmpty(location, this.worldObj) && canSeeCoord)
                             {
                                 data.add(location);
                             }
@@ -229,9 +233,9 @@ public class EntityDrone extends EntityXenomorph implements IMaturable
         return data.size() > 0 ? data.get(this.rand.nextInt(data.size())) : null;
     }
 
-    protected boolean canReplaceWithResin(Block block)
+    protected boolean canReplaceWithResin(IBlockState blockstate)
     {
-        return !(block == net.minecraft.init.Blocks.AIR) && !(block instanceof BlockHiveResin) && block.isOpaqueCube();
+        return !(blockstate.getBlock() == net.minecraft.init.Blocks.AIR) && !(blockstate.getBlock() instanceof BlockHiveResin) && blockstate.isOpaqueCube();
     }
 
     @Override

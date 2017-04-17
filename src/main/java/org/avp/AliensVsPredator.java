@@ -5,6 +5,7 @@ import org.avp.client.KeybindHandler;
 import org.avp.client.Renderers;
 import org.avp.client.Resources;
 import org.avp.client.Sounds;
+import org.avp.world.CapabilityHandler;
 import org.avp.world.hives.HiveHandler;
 
 import com.arisux.mdxlib.MDX;
@@ -102,10 +103,10 @@ public class AliensVsPredator implements IMod
         return EntityHandler.instance;
     }
 
-    public static RenderTypes renderTypes()
-    {
-        return RenderTypes.instance;
-    }
+//    public static RenderTypes renderTypes()
+//    {
+//        return RenderTypes.instance;
+//    }
 
     @SideOnly(Side.CLIENT)
     public static Renderers renderers()
@@ -143,6 +144,11 @@ public class AliensVsPredator implements IMod
     public static CraftingHandler crafting()
     {
         return CraftingHandler.instance;
+    }
+    
+    public static CapabilityHandler capabilities()
+    {
+        return CapabilityHandler.instance;
     }
 
     public static PlayerModeHandler playermodehandler()
@@ -194,7 +200,7 @@ public class AliensVsPredator implements IMod
     {
         return CreativeTab.tabRecipeItems;
     }
-
+    
     @Override
     @Mod.EventHandler
     public void pre(FMLPreInitializationEvent event)
@@ -210,11 +216,12 @@ public class AliensVsPredator implements IMod
         settings().pre(event);
         fluids().pre(event);
         items().pre(event);
+        capabilities().pre(event);
 
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
         {
             sounds().pre(event);
-            renderTypes().pre(event);
+//            renderTypes().pre(event);
         }
     }
 

@@ -12,45 +12,44 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
 public class EntityGrenade extends EntityThrowable
 {
-    public double velocity = 0.9800000190734863D;
-    public double velocityGround = 0.699999988079071D;
-    public boolean explodeOnImpact;
-    private int fuse;
+    private static final DataParameter<Integer> FLAMING        = EntityDataManager.<Integer> createKey(EntityGrenade.class, DataSerializers.VARINT);
+    public double                               velocity       = 0.9800000190734863D;
+    public double                               velocityGround = 0.699999988079071D;
+    public boolean                              explodeOnImpact;
+    private int                                 fuse;
 
     public EntityGrenade(World world)
     {
         super(world);
         this.setSize(0.5F, 0.5F);
-        this.yOffset = this.height / 2.0F;
         this.fuse = 0;
     }
 
     @Override
     protected void entityInit()
     {
-        this.dataWatcher.addObject(17, new Integer(0));
+        this.getDataManager().register(FLAMING, 0);
     }
 
-    public void setFlaming(boolean value)
+    public void setFlaming(boolean flaming)
     {
-        if (value)
-            this.dataWatcher.updateObject(17, 1);
-        else
-            this.dataWatcher.updateObject(17, 0);
+        this.getDataManager().set(FLAMING, flaming ? 1 : 0);
     }
 
     public boolean isFlaming()
     {
-        if (this.dataWatcher.getWatchableObjectInt(17) == 1)
-            return true;
-        else
-            return false;
+        return this.getDataManager().get(FLAMING) == 1 ? true : false;
     }
 
     public EntityGrenade(World world, EntityLivingBase shooter)
@@ -88,7 +87,7 @@ public class EntityGrenade extends EntityThrowable
         }
         else
         {
-            this.worldObj.spawnParticle("smoke", this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D);
+            this.worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D);
         }
     }
 
@@ -99,15 +98,14 @@ public class EntityGrenade extends EntityThrowable
         {
             Explosion explosion = Worlds.createExplosion(null, worldObj, new Pos(this), 2F, isFlaming(), true, AliensVsPredator.settings().areExplosionsEnabled());
 
-            List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(4, 4, 4));
+            List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(4, 4, 4));
 
-            for (int i1 = 0; i1 < list.size(); ++i1)
+            for (int idx = 0; idx < list.size(); ++idx)
             {
-                Entity entity = list.get(i1);
+                Entity entity = list.get(idx);
                 float targetDamage = entity instanceof EntityXenomorph ? 8F * 2 : 8F;
-                entity.attackEntityFrom(DamageSource.setExplosionSource(explosion), targetDamage);
+                entity.attackEntityFrom(DamageSource.causeExplosionDamage(explosion), targetDamage);
             }
-
         }
 
         this.setDead();
@@ -128,7 +126,7 @@ public class EntityGrenade extends EntityThrowable
     }
 
     @Override
-    protected void onImpact(MovingObjectPosition movingObjectPosition)
+    protected void onImpact(RayTraceResult result)
     {
         ;
     }

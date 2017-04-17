@@ -1,11 +1,13 @@
 package org.avp.entities.living;
 
 import org.avp.api.parasitoidic.IHost;
+import org.avp.entities.ai.EntityAICustomAttackOnCollide;
 
-import net.minecraft.entity.Entity;
+import com.google.common.base.Predicate;
+
 import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIMoveThroughVillage;
@@ -17,14 +19,15 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
 public class EntityBabyhead extends EntityMob implements IMob, IHost
 {
-    IEntitySelector mobSelector = new IEntitySelector()
+    Predicate<EntityLivingBase> mobSelector = new Predicate<EntityLivingBase>()
     {
         @Override
-        public boolean isEntityApplicable(Entity target)
+        public boolean apply(EntityLivingBase target)
         {
             if (target instanceof EntityGooMutant)
             {
@@ -45,11 +48,11 @@ public class EntityBabyhead extends EntityMob implements IMob, IHost
         super(world);
         this.setSize(1.0F, 2.75F);
         this.experienceValue = 150;
-        this.getNavigator().setBreakDoors(true);
+        
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityCreature.class, 1.0D, false));
-        this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
-//        this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityMob.class, 1.0D, false));
+        this.tasks.addTask(2, new EntityAICustomAttackOnCollide(this, EntityCreature.class, 1.0D, false));
+        this.tasks.addTask(2, new EntityAICustomAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
+//        this.tasks.addTask(2, new EntityAICustomAttackOnCollide(this, EntityMob.class, 1.0D, false));
         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));
         this.tasks.addTask(6, new EntityAIMoveThroughVillage(this, 1.0D, false));
         this.tasks.addTask(7, new EntityAIWander(this, 1.0D));
@@ -71,31 +74,25 @@ public class EntityBabyhead extends EntityMob implements IMob, IHost
     }
     
     @Override
-    protected boolean isAIEnabled()
-    {
-        return true;
-    }
-
-    @Override
     public int getTotalArmorValue()
     {
         return 0;
     }
 
     @Override
-    protected String getLivingSound()
+    protected SoundEvent getAmbientSound()
     {
         return null;
     }
 
     @Override
-    protected String getHurtSound()
+    protected SoundEvent getHurtSound()
     {
         return null;
     }
 
     @Override
-    protected String getDeathSound()
+    protected SoundEvent getDeathSound()
     {
         return null;
     }

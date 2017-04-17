@@ -1,24 +1,13 @@
 package org.avp.world.dimension;
 
-import org.avp.AliensVsPredator;
-import org.avp.world.dimension.acheron.BiomeAcheron;
-
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeDecorator;
 
-
 public abstract class BiomeGenLV extends Biome
 {
-    public static BiomeGenLV acheron     = new BiomeAcheron(AliensVsPredator.settings().biomeIdAcheron()).setColor(0x353825);
-    
-    public BiomeGenLV(int biomeId)
+    public BiomeGenLV(BiomeProperties properties)
     {
-        this(biomeId, true);
-    }
-
-    public BiomeGenLV(int biomeId, boolean register)
-    {
-        super(biomeId, register);
+        super(properties);
         this.spawnableMonsterList.clear();
         this.spawnableWaterCreatureList.clear();
         this.spawnableCreatureList.clear();
@@ -33,6 +22,6 @@ public abstract class BiomeGenLV extends Biome
     @Override
     public BiomeDecorator createBiomeDecorator()
     {
-        return this.theBiomeDecorator;
+        return super.createBiomeDecorator();
     }
 }

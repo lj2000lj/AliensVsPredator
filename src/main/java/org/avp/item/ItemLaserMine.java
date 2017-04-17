@@ -7,6 +7,10 @@ import org.avp.entities.EntityLaserMine;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -14,22 +18,22 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemLaserMine extends Item
 {
     @Override
-    public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int posX, int posY, int posZ, int side, float hitX, float hitY, float hitZ)
+    public EnumActionResult onItemUse(ItemStack itemstack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        byte metaValue = (byte) (side == 5 ? 3 : side == 4 ? 1 : side == 3 ? 2 : 0);
+        byte metaValue = (byte) (facing.ordinal() == 5 ? 3 : facing.ordinal() == 4 ? 1 : facing.ordinal() == 3 ? 2 : 0);
 
-        EntityLaserMine entity = new EntityLaserMine(world, posX, posY, posZ, metaValue, entityplayer.getUniqueID().toString());
+        EntityLaserMine entity = new EntityLaserMine(world, pos, metaValue, player.getUniqueID().toString());
 
         if (!world.isRemote && entity.canStay())
         {
             --itemstack.stackSize;
             world.spawnEntityInWorld(entity);
-            return true;
+            return EnumActionResult.SUCCESS;
         }
-
-        return false;
+        
+        return EnumActionResult.FAIL;
     }
-
+    
     @Override
     @SideOnly(Side.CLIENT)
     @SuppressWarnings("all")

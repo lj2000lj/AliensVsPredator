@@ -1,16 +1,18 @@
 package org.avp.packets.client;
 
-import org.avp.entities.SharedPlayer;
+
+
+import org.avp.world.capabilities.ISpecialPlayer.SpecialPlayer;
 
 import com.arisux.mdxlib.lib.game.Game;
 
-import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class SpecialPlayerClientSync implements IMessage, IMessageHandler<SpecialPlayerClientSync, SpecialPlayerClientSync>
 {
@@ -50,11 +52,11 @@ public class SpecialPlayerClientSync implements IMessage, IMessageHandler<Specia
 
         if (entity != null)
         {
-            SharedPlayer extendedPlayer = (SharedPlayer) entity.getExtendedProperties(SharedPlayer.IDENTIFIER);
+            SpecialPlayer specialPlayer = (SpecialPlayer) entity.getCapability(SpecialPlayer.Provider.CAPABILITY, null);
 
-            if (extendedPlayer != null)
+            if (specialPlayer != null)
             {
-                extendedPlayer.loadNBTData(packet.tag);
+                specialPlayer.readNBT(SpecialPlayer.Provider.CAPABILITY, specialPlayer, null, packet.tag);
             }
         }
 

@@ -5,10 +5,10 @@ import org.avp.entities.EntityGrenade;
 
 import com.arisux.mdxlib.lib.world.entity.player.inventory.Inventories;
 
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketLaunchGrenade implements IMessage, IMessageHandler<PacketLaunchGrenade, PacketLaunchGrenade>
 {
@@ -34,8 +34,8 @@ public class PacketLaunchGrenade implements IMessage, IMessageHandler<PacketLaun
     {
         if (ctx.getServerHandler().playerEntity != null && ctx.getServerHandler().playerEntity.worldObj != null)
         {
-            boolean hasNormal = ctx.getServerHandler().playerEntity.inventory.hasItem(AliensVsPredator.items().itemGrenade);
-            boolean hasIncendiary = ctx.getServerHandler().playerEntity.inventory.hasItem(AliensVsPredator.items().itemIncendiaryGrenade);
+            boolean hasNormal = Inventories.playerHas(AliensVsPredator.items().itemGrenade, ctx.getServerHandler().playerEntity);
+            boolean hasIncendiary = Inventories.playerHas(AliensVsPredator.items().itemIncendiaryGrenade, ctx.getServerHandler().playerEntity);
 
             if (hasNormal || hasIncendiary)
             {

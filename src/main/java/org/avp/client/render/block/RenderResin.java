@@ -7,9 +7,11 @@ import org.avp.tile.TileEntityHiveResin;
 import com.arisux.mdxlib.config.GraphicsSetting;
 
 import net.minecraft.block.Block;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
-public class RenderResin implements ISimpleBlockRenderingHandler
+//implements ISimpleBlockRenderingHandler
+public class RenderResin
 {
     private int renderId;
 
@@ -18,49 +20,37 @@ public class RenderResin implements ISimpleBlockRenderingHandler
         this.renderId = renderId;
     }
 
-    @Override
-    public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer)
-    {
-        ;
-    }
+//    @Override
+//    public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer)
+//    {
+//        ;
+//    }
 
-    @Override
-    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
-    {
-        if (world != null)
-        {
-            GraphicsSetting hiveTessellation = ClientSettings.instance.hiveTessellation().value();
-            Block renderBlock = AliensVsPredator.blocks().blockStandardHiveResin;
-            TileEntityHiveResin resin = (TileEntityHiveResin) world.getTileEntity(x, y, z);
-
-            if (hiveTessellation != GraphicsSetting.LOW)
-            {
-                if (resin != null && resin.getBlockCovering() != null)
-                {
-                    renderBlock = resin.getBlockCovering();
-                }
-            }
-
-            if (resin != null && renderBlock != null)
-            {
-                RenderBlocks.getInstance().blockAccess = world;
-                RenderBlocks.getInstance().renderBlockAllFaces(renderBlock, x, y, z);
-                RenderBlocks.getInstance().blockAccess = null;
-            }
-        }
-
-        return false;
-    }
-
-    @Override
-    public boolean shouldRender3DInInventory(int modelId)
-    {
-        return false;
-    }
-
-    @Override
-    public int getRenderId()
-    {
-        return this.renderId;
-    }
+//    @Override
+//    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
+//    {
+//        if (world != null)
+//        {
+//            GraphicsSetting hiveTessellation = ClientSettings.instance.hiveTessellation().value();
+//            Block renderBlock = AliensVsPredator.blocks().blockStandardHiveResin;
+//            TileEntityHiveResin resin = (TileEntityHiveResin) world.getTileEntity(new BlockPos(x, y, z));
+//
+//            if (hiveTessellation != GraphicsSetting.LOW)
+//            {
+//                if (resin != null && resin.getBlockCovering() != null)
+//                {
+//                    renderBlock = resin.getBlockCovering().getBlock();
+//                }
+//            }
+//
+//            if (resin != null && renderBlock != null)
+//            {
+////                RenderBlocks.getInstance().blockAccess = world;
+////                RenderBlocks.getInstance().renderBlockAllFaces(renderBlock, x, y, z);
+////                RenderBlocks.getInstance().blockAccess = null;
+//            }
+//        }
+//
+//        return false;
+//    }
 }

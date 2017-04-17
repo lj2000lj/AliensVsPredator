@@ -1,26 +1,33 @@
 package org.avp.block;
 
-import java.util.Random;
-
 import org.avp.AliensVsPredator;
 import org.avp.packets.server.PacketAddTuretTarget;
 import org.avp.tile.TileEntityTurret;
 
 import com.arisux.mdxlib.lib.world.entity.Entities;
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableMap;
 
-import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.IUnlistedProperty;
+import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 
 public class BlockTurret extends Block
 {
@@ -31,53 +38,55 @@ public class BlockTurret extends Block
     }
 
     @Override
-    public void registerIcons(IIconRegister register)
+    protected BlockStateContainer createBlockState()
     {
-        return;
+        return new BlockStateContainer(this, new IProperty[0])
+        {
+            @Override
+            protected StateImplementation createState(Block block, ImmutableMap<IProperty<?>, Comparable<?>> properties, ImmutableMap<IUnlistedProperty<?>, Optional<?>> unlistedProperties)
+            {
+                return new StateImplementation(block, properties)
+                {
+                    @Override
+                    public boolean isOpaqueCube()
+                    {
+                        return false;
+                    }
+
+                    @Override
+                    public EnumBlockRenderType getRenderType()
+                    {
+                        return EnumBlockRenderType.INVISIBLE;
+                    }
+
+                    @Override
+                    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos)
+                    {
+                        return null;
+                    }
+                };
+            }
+        };
     }
 
     @Override
-    public boolean renderAsNormalBlock()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isOpaqueCube()
-    {
-        return false;
-    }
-
-    @Override
-    public int getRenderType()
-    {
-        return -1;
-    }
-
-    @Override
-    public void updateTick(World world, int posX, int posY, int posZ, Random rand)
-    {
-        super.updateTick(world, posX, posY, posZ, rand);
-    }
-
-    @Override
-    public TileEntity createTileEntity(World world, int meta)
+    public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TileEntityTurret();
     }
 
     @Override
-    public boolean hasTileEntity(int metadata)
+    public boolean hasTileEntity(IBlockState state)
     {
         return true;
     }
 
     @Override
-    public void onBlockPlacedBy(World worldObj, int x, int y, int z, EntityLivingBase placer, ItemStack itemIn)
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        super.onBlockPlacedBy(worldObj, x, y, z, placer, itemIn);
+        super.onBlockPlacedBy(world, pos, state, placer, stack);
 
-        TileEntityTurret tile = (TileEntityTurret) worldObj.getTileEntity(x, y, z);
+        TileEntityTurret tile = (TileEntityTurret) world.getTileEntity(pos);
 
         if (tile != null)
         {
@@ -86,39 +95,39 @@ public class BlockTurret extends Block
     }
 
     @Override
-    public boolean onBlockActivated(World worldObj, int xCoord, int yCoord, int zCoord, EntityPlayer player, int side, float subX, float subY, float subZ)
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        TileEntityTurret tile = (TileEntityTurret) worldObj.getTileEntity(xCoord, yCoord, zCoord);
+        TileEntityTurret tile = (TileEntityTurret) world.getTileEntity(pos);
 
         if (tile != null)
         {
-            if (!worldObj.isRemote)
+            if (!world.isRemote)
             {
                 for (int i = 0; i < tile.getDangerousTargets().size(); i++)
                 {
                     if (tile.getDangerousTargets().get(i) != null)
                     {
-                        AliensVsPredator.network().sendToAll(new PacketAddTuretTarget(xCoord, yCoord, zCoord, Entities.getEntityRegistrationId(tile.getDangerousTargets().get(i))));
+                        AliensVsPredator.network().sendToAll(new PacketAddTuretTarget(pos.getX(), pos.getY(), pos.getZ(), Entities.getEntityRegistrationId(tile.getDangerousTargets().get(i))));
                     }
                 }
             }
         }
 
-        FMLNetworkHandler.openGui(player, AliensVsPredator.instance(), AliensVsPredator.interfaces().GUI_TURRET, worldObj, xCoord, yCoord, zCoord);
+        FMLNetworkHandler.openGui(player, AliensVsPredator.instance(), AliensVsPredator.interfaces().GUI_TURRET, world, pos.getX(), pos.getY(), pos.getZ());
 
         return true;
     }
 
     @Override
-    public void onBlockDestroyedByPlayer(World worldObj, int posX, int posY, int posZ, int meta)
+    public void onBlockDestroyedByPlayer(World world, BlockPos pos, IBlockState state)
     {
-        super.onBlockDestroyedByPlayer(worldObj, posX, posY, posZ, meta);
+        super.onBlockDestroyedByPlayer(world, pos, state);
 
-        TileEntityTurret tile = (TileEntityTurret) worldObj.getTileEntity(posX, posY, posZ);
+        TileEntityTurret tile = (TileEntityTurret) world.getTileEntity(pos);
 
         if (tile != null)
         {
-            if (!worldObj.isRemote)
+            if (!world.isRemote)
             {
                 for (int i = 0; i < tile.inventoryAmmo.getSizeInventory(); i++)
                 {
@@ -126,9 +135,9 @@ public class BlockTurret extends Block
 
                     if (stack != null)
                     {
-                        EntityItem entityitem = new EntityItem(worldObj, posX, posY, posZ, stack);
-                        entityitem.delayBeforeCanPickup = 10;
-                        worldObj.spawnEntityInWorld(entityitem);
+                        EntityItem entityitem = new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), stack);
+                        entityitem.setPickupDelay(10);
+                        world.spawnEntityInWorld(entityitem);
                     }
                 }
 
@@ -138,30 +147,24 @@ public class BlockTurret extends Block
 
                     if (stack != null)
                     {
-                        EntityItem entityitem = new EntityItem(worldObj, posX, posY, posZ, stack);
-                        entityitem.delayBeforeCanPickup = 10;
-                        worldObj.spawnEntityInWorld(entityitem);
+                        EntityItem entityitem = new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), stack);
+                        entityitem.setPickupDelay(10);
+                        world.spawnEntityInWorld(entityitem);
                     }
                 }
             }
 
-//            if (tile.getEntity() != null)
-//            {
-//                tile.getEntity().setDead();
-//            }
+            // if (tile.getEntity() != null)
+            // {
+            // tile.getEntity().setDead();
+            // }
         }
-    }
-
-    @Override
-    public void onBlockDestroyedByExplosion(World world, int posX, int posY, int posZ, Explosion sourceExplosion)
-    {
-        super.onBlockDestroyedByExplosion(world, posX, posY, posZ, sourceExplosion);
-        this.onBlockDestroyedByPlayer(world, posX, posY, posZ, 0);
     }
     
     @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World worldIn, int x, int y, int z)
+    public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosionIn)
     {
-        return null;
+        super.onBlockDestroyedByExplosion(worldIn, pos, explosionIn);
+        this.onBlockDestroyedByPlayer(worldIn, pos, worldIn.getBlockState(pos));
     }
 }

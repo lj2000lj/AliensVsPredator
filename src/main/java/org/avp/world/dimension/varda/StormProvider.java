@@ -9,20 +9,20 @@ import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.game.Game;
 import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.Worlds;
+import com.google.common.base.Predicate;
 
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class StormProvider implements IEntitySelector
+public class StormProvider implements Predicate<Entity>
 {
     private float[] stormX = null;
     private float[] stormZ = null;
@@ -39,7 +39,7 @@ public class StormProvider implements IEntitySelector
 
                     if (entity.worldObj.provider instanceof ProviderVarda)
                     {
-                        if (this.isEntityApplicable(entity) && Worlds.canSeeSky(new Pos(entity), world))
+                        if (this.apply(entity) && Worlds.canSeeSky(new Pos(entity), world))
                         {
                             entity.motionZ += 0.03F;
                             entity.motionY += MathHelper.sin(world.getWorldTime() * 0.4F) * 0.1F;
@@ -96,22 +96,6 @@ public class StormProvider implements IEntitySelector
         return 4000;
     }
 
-    @Override
-    public boolean isEntityApplicable(Entity entity)
-    {
-        if (entity instanceof EntityPlayer)
-        {
-            EntityPlayer player = (EntityPlayer) entity;
-
-            if (player.capabilities.isCreativeMode)
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     @SideOnly(Side.CLIENT)
     public void render(float partialTicks)
     {
@@ -119,8 +103,8 @@ public class StormProvider implements IEntitySelector
         {
             return;
         }
-        
-        EntityLivingBase renderViewEntity = Game.minecraft().renderViewEntity;
+
+        Entity renderViewEntity = Game.minecraft().getRenderViewEntity();
         WorldClient worldclient = Game.minecraft().theWorld;
         int posX = MathHelper.floor_double(renderViewEntity.posX);
         int posY = MathHelper.floor_double(renderViewEntity.posY);
@@ -130,7 +114,7 @@ public class StormProvider implements IEntitySelector
         double renderPartialZ = renderViewEntity.lastTickPosZ + (renderViewEntity.posZ - renderViewEntity.lastTickPosZ) * partialTicks;
         int renderYFloor = MathHelper.floor_double(renderPartialY);
 
-        Game.minecraft().entityRenderer.enableLightmap(partialTicks);
+        Game.minecraft().entityRenderer.enableLightmap();
         OpenGL.disable(GL11.GL_CULL_FACE);
         GL11.glNormal3f(0.0F, 1.0F, 0.0F);
         OpenGL.enable(GL11.GL_BLEND);
@@ -145,13 +129,15 @@ public class StormProvider implements IEntitySelector
             {
                 int idx = (vZ - posZ + 16) * 32 + vX - posX + 16;
 
+                BlockPos pos = new BlockPos(vX, 0, vZ);
                 float rX = stormX[idx] * 0.5F;
                 float rZ = stormZ[idx] * 0.5F;
-                Biome Biome = worldclient.getBiomeGenForCoords(vX, vZ);
 
-                if (Biome == BiomeGenVarda.vardaBadlands)
+                Biome b = worldclient.getBiome(pos);
+
+                if (b == BiomeVarda.vardaBadlands)
                 {
-                    int stormHeight = worldclient.getPrecipitationHeight(vX, vZ);
+                    int stormHeight = worldclient.getPrecipitationHeight(pos).getY();
                     int minY = posY - (Game.minecraft().gameSettings.fancyGraphics ? 64 : 16);
                     int maxY = posY + (Game.minecraft().gameSettings.fancyGraphics ? 64 : 16);
 
@@ -171,18 +157,20 @@ public class StormProvider implements IEntitySelector
 
                     if (minY != maxY)
                     {
+                        pos = new BlockPos(vX, vY, vZ);
                         float size = 0.5F;
                         float o = (((Game.minecraft().theWorld.getWorldTime() + (vX * vX) + vX + (vZ * vZ) + vZ) & 31) + partialTicks) / 2;
-                        Tessellator.instance.startDrawingQuads();
-                        Tessellator.instance.setBrightness(worldclient.getLightBrightnessForSkyBlocks(vX, vY, vZ, 0));
-                        Tessellator.instance.setColorRGBA_F(0.3F, 0.3F, 0.3F, 1F);
-                        Tessellator.instance.setTranslation(-renderPartialX * 1.0D, -renderPartialY * 1.0D, -renderPartialZ * 1.0D);
-                        Tessellator.instance.addVertexWithUV(vX - rX, minY, (vZ - rZ + o), 0.0F * size, minY * size / 4.0F + o * size);
-                        Tessellator.instance.addVertexWithUV(vX + rX, minY, (vZ + rZ + o), 1.0F * size, minY * size / 4.0F + o * size);
-                        Tessellator.instance.addVertexWithUV(vX + rX, maxY, (vZ + rZ + o), 1.0F * size, maxY * size / 4.0F + o * size);
-                        Tessellator.instance.addVertexWithUV(vX - rX, maxY, (vZ - rZ + o), 0.0F * size, maxY * size / 4.0F + o * size);
-                        Tessellator.instance.setTranslation(0.0D, 0.0D, 0.0D);
-                        Tessellator.instance.draw();
+
+                        Draw.startQuads();
+                        // Tessellator.instance.setBrightness(worldclient.getLightBrightness(pos));
+                        Draw.buffer().color(0.3F, 0.3F, 0.3F, 1F);
+                        Draw.buffer().setTranslation(-renderPartialX * 1.0D, -renderPartialY * 1.0D, -renderPartialZ * 1.0D);
+                        Draw.vertex(vX - rX, minY, (vZ - rZ + o), 0.0F * size, minY * size / 4.0F + o * size).endVertex();
+                        Draw.vertex(vX + rX, minY, (vZ + rZ + o), 1.0F * size, minY * size / 4.0F + o * size).endVertex();
+                        Draw.vertex(vX + rX, maxY, (vZ + rZ + o), 1.0F * size, maxY * size / 4.0F + o * size).endVertex();
+                        Draw.vertex(vX - rX, maxY, (vZ - rZ + o), 0.0F * size, maxY * size / 4.0F + o * size).endVertex();
+                        Draw.buffer().setTranslation(0.0D, 0.0D, 0.0D);
+                        Draw.tessellate();
                     }
                 }
             }
@@ -191,6 +179,22 @@ public class StormProvider implements IEntitySelector
         OpenGL.enable(GL11.GL_CULL_FACE);
         OpenGL.disable(GL11.GL_BLEND);
         GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
-        Game.minecraft().entityRenderer.disableLightmap(partialTicks);
+        Game.minecraft().entityRenderer.disableLightmap();
+    }
+
+    @Override
+    public boolean apply(Entity entity)
+    {
+        if (entity instanceof EntityPlayer)
+        {
+            EntityPlayer player = (EntityPlayer) entity;
+
+            if (player.capabilities.isCreativeMode)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

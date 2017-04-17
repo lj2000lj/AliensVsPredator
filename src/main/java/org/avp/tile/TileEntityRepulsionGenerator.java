@@ -16,7 +16,7 @@ public class TileEntityRepulsionGenerator extends TileEntityElectrical implement
     public int rotation;
 
     @Override
-    public void updateEntity()
+    public void update()
     {
         if (this.getWorld().getWorldTime() % (1000 / this.getSourceHertz()) == 0)
         {

@@ -1,14 +1,16 @@
 package org.avp.world.dimension.varda;
 
 import org.avp.AliensVsPredator;
+import org.avp.DimensionHandler;
 
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -22,24 +24,22 @@ public class ProviderVarda extends WorldProvider
 
     public ProviderVarda()
     {
-        ;
-    }
-    
-    @Override
-    public void updateWeather()
-    {
-        super.updateWeather();
-        this.stormProvider.update(this.worldObj);
-    }
-
-    @Override
-    public void registerWorldChunkManager()
-    {
-        this.worldChunkMgr = new ChunkManagerVarda(this.getSeed(), WorldType.DEFAULT);
         this.hasNoSky = false;
         this.isHellWorld = false;
     }
+    
+    @Override
+    public IChunkGenerator createChunkGenerator()
+    {
+        return new ChunkProviderVarda(this.worldObj);
+    }
 
+    @Override
+    protected void createBiomeProvider()
+    {
+        this.biomeProvider = new ChunkManagerVarda(this.getSeed(), WorldType.DEFAULT);
+    }
+    
     @Override
     @SideOnly(Side.CLIENT)
     public IRenderHandler getSkyRenderer()
@@ -70,25 +70,20 @@ public class ProviderVarda extends WorldProvider
     {
         return "Leaving " + AliensVsPredator.properties().DIMENSION_NAME_VARDA;
     }
-
+    
     @Override
-    public ChunkCoordinates getEntrancePortalLocation()
+    public void updateWeather()
     {
-        return new ChunkCoordinates(0, 160, 0);
+        super.updateWeather();
+        this.stormProvider.update(this.worldObj);
     }
-
+    
     @Override
     public int getAverageGroundLevel()
     {
         return 110;
     }
-
-    @Override
-    public IChunkProvider createChunkGenerator()
-    {
-        return new ChunkProviderVarda(this.worldObj, worldObj.getSeed());
-    }
-
+    
     @Override
     public boolean canRespawnHere()
     {
@@ -108,12 +103,6 @@ public class ProviderVarda extends WorldProvider
     }
 
     @Override
-    public String getDimensionName()
-    {
-        return AliensVsPredator.properties().DIMENSION_NAME_VARDA;
-    }
-
-    @Override
     public float getStarBrightness(float var1)
     {
         return 0.2F;
@@ -125,9 +114,9 @@ public class ProviderVarda extends WorldProvider
     {
         return new Vec3d(0.0F, 0.0F, 0.01F);
     }
-
+    
     @Override
-    public Vec3d drawClouds(float partialTicks)
+    public Vec3d getCloudColor(float partialTicks)
     {
         return new Vec3d(0.0F, 0.0F, 0.0F);
     }
@@ -150,7 +139,7 @@ public class ProviderVarda extends WorldProvider
 
         brightness = 1.0F - brightness;
         brightness = (float) (brightness * (1.0D - this.worldObj.getRainStrength(angle) * 5.0F / 16.0D));
-        brightness = (float) (brightness * (1.0D - this.worldObj.getWeightedThunderStrength(angle) * 5.0F / 16.0D));
+        brightness = (float) (brightness * (1.0D - this.worldObj.getThunderStrength(angle) * 5.0F / 16.0D));
         return brightness * 0.45F;
     }
 
@@ -158,9 +147,9 @@ public class ProviderVarda extends WorldProvider
     {
         return this.stormProvider;
     }
-
+    
     @Override
-    public boolean canSnowAt(int x, int y, int z, boolean checkLight)
+    public boolean canSnowAt(BlockPos pos, boolean checkLight)
     {
         return false;
     }
@@ -169,5 +158,11 @@ public class ProviderVarda extends WorldProvider
     public boolean canDoRainSnowIce(Chunk chunk)
     {
         return false;
+    }
+
+    @Override
+    public DimensionType getDimensionType()
+    {
+        return DimensionHandler.VARDA.getType();
     }
 }

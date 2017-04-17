@@ -1,9 +1,10 @@
 package org.avp.client.render;
 
 import org.avp.PlayerModeHandler;
-import org.avp.entities.SharedPlayer;
+
 import org.avp.item.ItemFirearm;
 import org.avp.item.ItemFlamethrower;
+import org.avp.world.capabilities.ISpecialPlayer.SpecialPlayer;
 import org.avp.world.playermode.PlayerMode;
 import org.lwjgl.opengl.GL11;
 
@@ -56,7 +57,7 @@ public class PlayerModeRenderEvent
     @SubscribeEvent
     public void renderEntityTick(RenderPlayerEvent.Pre event)
     {
-        SharedPlayer extendedPlayer = (SharedPlayer) event.getEntityPlayer().getExtendedProperties(SharedPlayer.IDENTIFIER);
+        SpecialPlayer specialPlayer = (SpecialPlayer) event.getEntityPlayer().getCapability(SpecialPlayer.Provider.CAPABILITY, null);
         ItemStack itemstack = event.getEntityPlayer().inventory.getCurrentItem();
 
         if (itemstack != null && (itemstack.getItem() instanceof ItemFirearm || itemstack.getItem() instanceof ItemFlamethrower))
@@ -68,7 +69,7 @@ public class PlayerModeRenderEvent
             event.getRenderer().getMainModel().rightArmPose = ModelBiped.ArmPose.EMPTY;
         }
 
-        if (event.getEntity() != null && extendedPlayer.getPlayerMode() != PlayerMode.NORMAL)
+        if (event.getEntity() != null && specialPlayer.getPlayerMode() != PlayerMode.NORMAL)
         {
             renderLiving.doRender((EntityLivingBase) event.getEntity(), event.getEntity().posX, event.getEntity().posY, event.getEntity().posZ, event.getEntity().rotationYaw, event.getPartialRenderTick());
             event.setCanceled(true);

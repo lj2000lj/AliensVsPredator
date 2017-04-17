@@ -14,19 +14,20 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 public class MaterialHandler implements IInitEvent
 {
     public static MaterialHandler instance = new MaterialHandler();
-    private Armors armors = new Armors();
-    private Tools tools = new Tools();
+    private static final Armors armors = new Armors();
+    private static final Tools tools = new Tools();
 
     public final Material mist = new MaterialMist();
     public final Material blackgoo = new MaterialBlackGoo();
 
+    //TODO: Armor enum textures, sounds, and toughness
     public static class Armors
     {
-        public final ArmorMaterial celtic = EnumHelper.addArmorMaterial("celtic", 34, new int[] { 4, 7, 5, 3 }, 9);
-        public final ArmorMaterial chitin = EnumHelper.addArmorMaterial("chitin", 30, new int[] { 2, 7, 5, 3 }, 7);
-        public final ArmorMaterial kevlar = EnumHelper.addArmorMaterial("kevlar", 26, new int[] { 2, 6, 3, 2 }, 5);
-        public final ArmorMaterial pressuresuit = EnumHelper.addArmorMaterial("pressuresuit", 22, new int[] { 2, 4, 3, 2 }, 6);
-        public final ArmorMaterial mk50 = EnumHelper.addArmorMaterial("mk50", 24, new int[] { 2, 4, 3, 2 }, 6);
+        public final ArmorMaterial celtic = EnumHelper.addArmorMaterial("celtic", "avp:celtic", 34, new int[] { 4, 7, 5, 3 }, 20, null, 5);
+        public final ArmorMaterial chitin = EnumHelper.addArmorMaterial("chitin", "avp:chitin", 30, new int[] { 2, 7, 5, 3 }, 7, null, 1);
+        public final ArmorMaterial kevlar = EnumHelper.addArmorMaterial("kevlar", "avp:kevlar", 26, new int[] { 2, 6, 3, 2 }, 5, null, 2);
+        public final ArmorMaterial pressuresuit = EnumHelper.addArmorMaterial("pressuresuit", "avp:pressuresuit", 22, new int[] { 2, 4, 3, 2 }, 6, null, 1);
+        public final ArmorMaterial mk50 = EnumHelper.addArmorMaterial("mk50", "avp:mk50", 24, new int[] { 2, 4, 3, 2 }, 6, null, 1);
     }
 
     public static class Tools

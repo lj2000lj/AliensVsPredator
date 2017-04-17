@@ -3,6 +3,7 @@ package org.avp.inventory;
 import org.avp.tile.TileEntityTurret;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -56,12 +57,12 @@ public class ContainerTurret extends Container
 
         for (int id = 0; id < tile.inventoryExpansion.getSizeInventory(); id++)
         {
-            this.tile.inventoryExpansion.setInventorySlotContents(id, this.tile.inventoryExpansion.getStackInSlotOnClosing(id));
+            this.tile.inventoryExpansion.setInventorySlotContents(id, this.tile.inventoryExpansion.getStackInSlot(id));
         }
 
         for (int id = 0; id < this.tile.inventoryAmmo.getSizeInventory(); id++)
         {
-            this.tile.inventoryAmmo.setInventorySlotContents(id, this.tile.inventoryAmmo.getStackInSlotOnClosing(id));
+            this.tile.inventoryAmmo.setInventorySlotContents(id, this.tile.inventoryAmmo.getStackInSlot(id));
         }
 
         tile.applyUpgrades();
@@ -105,16 +106,11 @@ public class ContainerTurret extends Container
 
         return null;
     }
-
+    
     @Override
-    public ItemStack slotClick(int slotId, int clickedButton, int mode, EntityPlayer player)
+    public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player)
     {
-        if (mode != 1)
-        {
-            return super.slotClick(slotId, clickedButton, mode, player);
-        }
-
-        return null;
+        return super.slotClick(slotId, dragType, clickTypeIn, player);
     }
 
     @Override

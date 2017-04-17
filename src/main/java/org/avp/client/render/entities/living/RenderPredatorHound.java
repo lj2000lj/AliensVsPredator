@@ -1,34 +1,33 @@
 package org.avp.client.render.entities.living;
 
 import org.avp.AliensVsPredator;
+import org.avp.client.model.entities.living.ModelPredatorHound;
+import org.avp.entities.living.EntityPredatorHound;
 
-import com.arisux.mdxlib.lib.client.Model;
 import com.arisux.mdxlib.lib.client.RenderLivingWrapper;
 import com.arisux.mdxlib.lib.client.TexturedModel;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-
-public class RenderPredatorHound extends RenderLivingWrapper
+public class RenderPredatorHound extends RenderLivingWrapper<EntityPredatorHound, ModelPredatorHound>
 {
     public RenderPredatorHound()
     {
         super(AliensVsPredator.resources().models().PREDATOR_HOUND);
     }
     
-    public RenderPredatorHound(TexturedModel<? extends Model> model)
+    public RenderPredatorHound(TexturedModel<ModelPredatorHound> model)
     {
         super(model);
     }
 
-    public void doRender(Entity entity, double posX, double posY, double posZ, float yaw, float renderPartialTicks)
+    @Override
+    public void doRender(EntityPredatorHound entity, double posX, double posY, double posZ, float yaw, float renderPartialTicks)
     {
         super.doRender(entity, posX, posY, posZ, yaw, renderPartialTicks);
     }
 
     @Override
-    protected void preRenderCallback(EntityLivingBase entityliving, float renderPartialTicks)
+    protected void preRenderCallback(EntityPredatorHound entityliving, float renderPartialTicks)
     {
         float scale = 1.5F;
         OpenGL.scale(scale, scale, scale);

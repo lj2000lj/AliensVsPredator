@@ -1,12 +1,13 @@
 package org.avp.client.render.entities.living;
 
 import org.avp.AliensVsPredator;
+import org.avp.client.model.entities.living.ModelDeaconShark;
 import org.avp.entities.living.EntityDeaconShark;
 
 import com.arisux.mdxlib.lib.client.RenderLivingWrapper;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
-public class RenderDeaconShark extends RenderLivingWrapper<EntityDeaconShark>
+public class RenderDeaconShark extends RenderLivingWrapper<EntityDeaconShark, ModelDeaconShark>
 {
     public RenderDeaconShark()
     {

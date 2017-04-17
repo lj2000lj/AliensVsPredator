@@ -94,7 +94,7 @@ public class ItemWristbracer extends HookedItem
                         {
                             wristbracerContents.removeTag(s);
                             bladesStack.writeToNBT(slot);
-                            slot.setShort("Damage", (short) (bladesStack.getCurrentDurability() + 1));
+                            slot.setShort("Damage", (short) (bladesStack.getItemDamage() + 1));
                             slot.setByte(TAG_WRISTBRACER_ITEMS_SLOT, (byte) s);
                             wristbracerContents.appendTag(slot);
                             break;

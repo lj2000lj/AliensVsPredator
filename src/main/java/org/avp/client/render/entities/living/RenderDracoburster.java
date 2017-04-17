@@ -1,21 +1,21 @@
 package org.avp.client.render.entities.living;
 
 import org.avp.AliensVsPredator;
+import org.avp.client.model.entities.living.ModelDracoburster;
 import org.avp.entities.living.EntityDracoburster;
 
-import com.arisux.mdxlib.lib.client.Model;
 import com.arisux.mdxlib.lib.client.RenderLivingWrapper;
 import com.arisux.mdxlib.lib.client.TexturedModel;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
-public class RenderDracoburster extends RenderLivingWrapper<EntityDracoburster>
+public class RenderDracoburster extends RenderLivingWrapper<EntityDracoburster, ModelDracoburster>
 {
     public RenderDracoburster()
     {
         super(AliensVsPredator.resources().models().DRACOBURSTER);
     }
     
-    public RenderDracoburster(TexturedModel<? extends Model> model)
+    public RenderDracoburster(TexturedModel<ModelDracoburster> model)
     {
         super(model);
     }

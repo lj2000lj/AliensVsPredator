@@ -13,15 +13,12 @@ import org.lwjgl.opengl.GL12;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
 
-public class RenderRepulsionGenerator extends TileEntitySpecialRenderer
+public class RenderRepulsionGenerator extends TileEntitySpecialRenderer<TileEntityRepulsionGenerator>
 {
     @Override
-    public void renderTileEntityAt(TileEntity tileEntity, double posX, double posY, double posZ, float var8)
+    public void renderTileEntityAt(TileEntityRepulsionGenerator tile, double posX, double posY, double posZ, float partialTicks, int destroyStage)
     {
-        TileEntityRepulsionGenerator tile = (TileEntityRepulsionGenerator) tileEntity;
-
         OpenGL.pushMatrix();
         {
             OpenGL.disable(GL_CULL_FACE);

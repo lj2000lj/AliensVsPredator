@@ -9,12 +9,13 @@ import static org.lwjgl.opengl.GL11.glDepthMask;
 
 import org.avp.AliensVsPredator;
 import org.avp.api.power.IVoltageReceiver;
-import org.avp.entities.Organism;
-import org.avp.entities.SharedPlayer;
 import org.avp.entities.living.EntityMarine;
 import org.avp.entities.living.EntitySpeciesAlien;
 import org.avp.tile.TileEntityPowercell;
 import org.avp.tile.TileEntityStasisMechanism;
+import org.avp.world.capabilities.IOrganism.Organism;
+import org.avp.world.capabilities.IOrganism.Provider;
+import org.avp.world.capabilities.ISpecialPlayer.SpecialPlayer;
 import org.avp.world.dimension.varda.ProviderVarda;
 
 import com.arisux.mdxlib.lib.client.render.Draw;
@@ -33,6 +34,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -43,7 +45,6 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
-
 
 public class PressureHUDRenderEvent
 {
@@ -65,10 +66,10 @@ public class PressureHUDRenderEvent
             {
                 if (Inventories.getHelmSlotItemStack(Game.minecraft().thePlayer) != null && Game.minecraft().gameSettings.thirdPersonView == 0 && Inventories.getHelmSlotItemStack(Game.minecraft().thePlayer).getItem() == AliensVsPredator.items().pressureMask)
                 {
-                    SharedPlayer playerProperties = SharedPlayer.get(Game.minecraft().thePlayer);
+                    SpecialPlayer specialPlayer = (SpecialPlayer) Game.minecraft().thePlayer.getCapability(SpecialPlayer.Provider.CAPABILITY, null);
 
                     this.gammaRestored = false;
-                    LightmapUpdateEvent.instance.gammaValue = playerProperties.isNightvisionEnabled() ? 8F : 0F;
+                    LightmapUpdateEvent.instance.gammaValue = specialPlayer.isNightvisionEnabled() ? 8F : 0F;
                     OpenGL.disableLight();
                     OpenGL.disableLightMapping();
 
@@ -87,7 +88,7 @@ public class PressureHUDRenderEvent
                     OpenGL.disable(GL_BLEND);
 
                     this.drawInfoBar();
-                    this.drawImpregnationIndicator(getProperties());
+                    this.drawImpregnationIndicator(Game.minecraft().thePlayer, getProperties());
                 }
                 else if (!gammaRestored)
                 {
@@ -115,9 +116,9 @@ public class PressureHUDRenderEvent
         }
     }
 
-    public SharedPlayer getProperties()
+    public SpecialPlayer getProperties()
     {
-        return Game.minecraft() != null ? Game.minecraft().thePlayer != null ? SharedPlayer.get(Game.minecraft().thePlayer) : null : null;
+        return Game.minecraft() != null ? Game.minecraft().thePlayer != null ? (SpecialPlayer) Game.minecraft().thePlayer.getCapability(SpecialPlayer.Provider.CAPABILITY, null) : null : null;
     }
 
     public void drawInfoBar()
@@ -383,16 +384,17 @@ public class PressureHUDRenderEvent
         OpenGL.popMatrix();
     }
 
-    public void drawImpregnationIndicator(SharedPlayer playerProperties)
+    public void drawImpregnationIndicator(EntityLivingBase living, SpecialPlayer playerProperties)
     {
         if (playerProperties != null)
         {
-            Organism livingProperties = Organism.get(playerProperties.getEntity());
+            EntityPlayer player = (EntityPlayer) living;
+            Organism organism = (Organism) living.getCapability(Provider.CAPABILITY, null);
 
-            if (livingProperties.hasEmbryo() && livingProperties.getEntity().worldObj.getWorldTime() % 20 <= 10)
+            if (organism.hasEmbryo() && living.worldObj.getWorldTime() % 20 <= 10)
             {
                 ScaledResolution res = Screen.scaledDisplayResolution();
-                int lifeTimeTicks = livingProperties.getEmbryo().getGestationPeriod() - livingProperties.getEmbryo().getAge();
+                int lifeTimeTicks = organism.getEmbryo().getGestationPeriod() - organism.getEmbryo().getAge();
                 int lifeTimeSeconds = lifeTimeTicks / 20;
                 int iconSize = 64;
 
@@ -408,7 +410,7 @@ public class PressureHUDRenderEvent
                 Draw.drawStringAlignRight("1 Foreign Organism(s) Detected", res.getScaledWidth() - iconSize, 25, 0x666666);
                 Draw.drawStringAlignRight("Please do NOT terminate organism.", res.getScaledWidth() - iconSize, 35, 0x666666);
 
-                if (!playerProperties.getEntity().capabilities.isCreativeMode)
+                if (!player.capabilities.isCreativeMode)
                 {
                     Draw.drawStringAlignRight(lifeTimeSeconds / 60 + " Minute(s) Estimated Until Death", res.getScaledWidth() - iconSize, 45, 0xFFFFAA00);
                 }

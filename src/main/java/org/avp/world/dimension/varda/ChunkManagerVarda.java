@@ -10,29 +10,29 @@ import org.avp.world.dimension.varda.gen.layer.GenLayerVarda;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.util.ReportedException;
-import net.minecraft.world.ChunkPosition;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeCache;
-import net.minecraft.world.biome.WorldChunkManager;
+import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ChunkManagerVarda extends WorldChunkManager
+public class ChunkManagerVarda extends BiomeProvider
 {
-    public static ArrayList<BiomeGenVarda> allowedBiomes = new ArrayList<BiomeGenVarda>(Arrays.asList(BiomeGenVarda.vardaBadlands, BiomeGenVarda.vardaForest));
-    private GenLayer                       genBiomes;
-    private GenLayer                       biomeIndexLayer;
-    private BiomeCache                     biomeCache;
-    private List<BiomeGenVarda>            biomesToSpawnIn;
+    public static ArrayList<BiomeVarda> allowedBiomes = new ArrayList<BiomeVarda>(Arrays.asList(BiomeVarda.vardaBadlands, BiomeVarda.vardaForest));
+    private GenLayer                    genBiomes;
+    private GenLayer                    biomeIndexLayer;
+    private BiomeCache                  biomeCache;
+    private List<BiomeVarda>            biomesToSpawnIn;
 
     protected ChunkManagerVarda()
     {
         this.biomeCache = new BiomeCache(this);
-        this.biomesToSpawnIn = new ArrayList<BiomeGenVarda>();
+        this.biomesToSpawnIn = new ArrayList<BiomeVarda>();
         this.biomesToSpawnIn.addAll(allowedBiomes);
     }
 
@@ -56,51 +56,9 @@ public class ChunkManagerVarda extends WorldChunkManager
     }
 
     @Override
-    public Biome getBiomeGenAt(int chunkX, int chunkZ)
+    public Biome getBiome(BlockPos pos)
     {
-        return this.biomeCache.getBiomeGenAt(chunkX, chunkZ);
-    }
-
-    @Override
-    public float[] getRainfall(float[] rainfallValues, int chunkX, int chunkZ, int width, int depth)
-    {
-        IntCache.resetIntCache();
-
-        if (rainfallValues == null || rainfallValues.length < width * depth)
-        {
-            rainfallValues = new float[width * depth];
-        }
-
-        int[] indexes = this.biomeIndexLayer.getInts(chunkX, chunkZ, width, depth);
-
-        for (int idx = 0; idx < width * depth; ++idx)
-        {
-            try
-            {
-                float rainfall = (float) Biome.getBiome(indexes[idx]).getIntRainfall() / 65536.0F;
-
-                if (rainfall > 1.0F)
-                {
-                    rainfall = 1.0F;
-                }
-
-                rainfallValues[idx] = rainfall;
-            }
-            catch (Throwable throwable)
-            {
-                CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Invalid Biome id");
-                CrashReportCategory crashreportcategory = crashreport.makeCategory("DownfallBlock");
-                crashreportcategory.addCrashSection("biome id", Integer.valueOf(idx));
-                crashreportcategory.addCrashSection("downfalls[] size", Integer.valueOf(rainfallValues.length));
-                crashreportcategory.addCrashSection("x", Integer.valueOf(chunkX));
-                crashreportcategory.addCrashSection("z", Integer.valueOf(chunkZ));
-                crashreportcategory.addCrashSection("w", Integer.valueOf(width));
-                crashreportcategory.addCrashSection("h", Integer.valueOf(depth));
-                throw new ReportedException(crashreport);
-            }
-        }
-
-        return rainfallValues;
+        return this.biomeCache.getBiome(pos.getX(), pos.getY(), BiomeVarda.vardaBadlands);
     }
 
     @Override
@@ -110,8 +68,15 @@ public class ChunkManagerVarda extends WorldChunkManager
         return temperature;
     }
 
+
     @Override
-    public Biome[] getBiomesForGeneration(Biome[] biomes, int chunkX, int chunkZ, int width, int depth)
+    public Biome[] getBiomesForGeneration(Biome[] biomeList, int posX, int posZ, int width, int length)
+    {
+        return this.getBiomes(biomeList, posX, posZ, width, length, true);
+    }
+    
+    @Override
+    public Biome[] getBiomes(Biome[] biomes, int chunkX, int chunkZ, int width, int depth, boolean cacheFlag)
     {
         IntCache.resetIntCache();
 
@@ -120,47 +85,7 @@ public class ChunkManagerVarda extends WorldChunkManager
             biomes = new Biome[width * depth];
         }
 
-        int[] indexes = this.genBiomes.getInts(chunkX, chunkZ, width, depth);
-
-        try
-        {
-            for (int idx = 0; idx < width * depth; ++idx)
-            {
-                biomes[idx] = BiomeGenVarda.getBiome(indexes[idx]);
-            }
-
-            return biomes;
-        }
-        catch (Throwable throwable)
-        {
-            CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Invalid Biome id");
-            CrashReportCategory crashreportcategory = crashreport.makeCategory("RawBiomeBlock");
-            crashreportcategory.addCrashSection("biomes[] size", Integer.valueOf(biomes.length));
-            crashreportcategory.addCrashSection("x", Integer.valueOf(chunkX));
-            crashreportcategory.addCrashSection("z", Integer.valueOf(chunkZ));
-            crashreportcategory.addCrashSection("w", Integer.valueOf(width));
-            crashreportcategory.addCrashSection("h", Integer.valueOf(depth));
-            throw new ReportedException(crashreport);
-        }
-    }
-
-    @Override
-    public Biome[] loadBlockGeneratorData(Biome[] oldBiomes, int chunkX, int chunkZ, int width, int depth)
-    {
-        return this.getBiomeGenAt(oldBiomes, chunkX, chunkZ, width, depth, true);
-    }
-
-    @Override
-    public Biome[] getBiomeGenAt(Biome[] biomes, int chunkX, int chunkZ, int width, int depth, boolean checkCache)
-    {
-        IntCache.resetIntCache();
-
-        if (biomes == null || biomes.length < width * depth)
-        {
-            biomes = new Biome[width * depth];
-        }
-
-        if (checkCache && width == 16 && depth == 16 && (chunkX & 15) == 0 && (chunkZ & 15) == 0)
+        if (cacheFlag && width == 16 && depth == 16 && (chunkX & 15) == 0 && (chunkZ & 15) == 0)
         {
             Biome[] aBiome1 = this.biomeCache.getCachedBiomes(chunkX, chunkZ);
             System.arraycopy(aBiome1, 0, biomes, 0, width * depth);
@@ -172,7 +97,7 @@ public class ChunkManagerVarda extends WorldChunkManager
 
             for (int idx = 0; idx < width * depth; ++idx)
             {
-                biomes[idx] = Biome.getBiome(indexes[idx]);
+                biomes[idx] = BiomeVarda.getBiome(indexes[idx]);
             }
 
             return biomes;
@@ -195,9 +120,9 @@ public class ChunkManagerVarda extends WorldChunkManager
         {
             for (int idx = 0; idx < width * depth; ++idx)
             {
-                Biome Biome = Biome.getBiome(indexes[idx]);
+                Biome b = Biome.getBiome(indexes[idx]);
 
-                if (!allowedBiomes.contains(Biome))
+                if (!allowedBiomes.contains(b))
                 {
                     return false;
                 }
@@ -219,7 +144,7 @@ public class ChunkManagerVarda extends WorldChunkManager
     }
 
     @Override
-    public ChunkPosition findBiomePosition(int chunkX, int chunkZ, int radius, List biomes, Random seed)
+    public BlockPos findBiomePosition(int chunkX, int chunkZ, int radius, List<Biome> biomes, Random seed)
     {
         IntCache.resetIntCache();
         int chunkMinX = chunkX - radius >> 2;
@@ -229,7 +154,7 @@ public class ChunkManagerVarda extends WorldChunkManager
         int width = chunkMaxX - chunkMinX + 1;
         int depth = chunkMaxZ - chunkMinZ + 1;
         int[] indexes = this.genBiomes.getInts(chunkMinX, chunkMinZ, width, depth);
-        ChunkPosition chunkposition = null;
+        BlockPos chunkposition = null;
         int count = 0;
 
         for (int idx = 0; idx < width * depth; ++idx)
@@ -240,7 +165,7 @@ public class ChunkManagerVarda extends WorldChunkManager
 
             if (biomes.contains(biomegen) && (chunkposition == null || seed.nextInt(count + 1) == 0))
             {
-                chunkposition = new ChunkPosition(biomeChunkX, 0, biomeChunkZ);
+                chunkposition = new BlockPos(biomeChunkX, 0, biomeChunkZ);
                 ++count;
             }
         }

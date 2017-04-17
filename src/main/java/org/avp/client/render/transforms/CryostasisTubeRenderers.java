@@ -20,8 +20,8 @@ import org.lwjgl.opengl.GL12;
 import com.arisux.mdxlib.lib.client.TexturedModel;
 import com.arisux.mdxlib.lib.client.render.Draw;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
+import com.arisux.mdxlib.lib.game.Game;
 
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 
 public class CryostasisTubeRenderers
@@ -46,7 +46,7 @@ public class CryostasisTubeRenderers
                         OpenGL.disableLight();
                     OpenGL.translate(0F, -0.5F, 0F);
                     OpenGL.rotate(90F, 1F, 0F, 0F);
-                    RenderManager.instance.renderEntityWithPosYaw(tile.stasisEntity, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
+                    Game.renderManager().renderEntityStatic(tile.stasisEntity, Game.partialTicks(), false);
                     OpenGL.popMatrix();
                 }
             }
@@ -70,7 +70,7 @@ public class CryostasisTubeRenderers
                         OpenGL.disableLight();
                     OpenGL.translate(0F, -0.5F, 0F);
                     OpenGL.rotate(90F, 1F, 0F, 0F);
-                    RenderManager.instance.renderEntityWithPosYaw(tile.stasisEntity, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
+                    Game.renderManager().renderEntityStatic(tile.stasisEntity, Game.partialTicks(), false);
                     OpenGL.popMatrix();
                 }
             }
@@ -90,7 +90,7 @@ public class CryostasisTubeRenderers
                     OpenGL.translate(0F, 0.75F, 0F);
                     OpenGL.rotate(180F, 1F, 0F, 0F);
                     OpenGL.rotate(23.5F, 0F, 1F, 0F);
-                    RenderManager.instance.renderEntityWithPosYaw(tile.stasisEntity, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
+                    Game.renderManager().renderEntityStatic(tile.stasisEntity, Game.partialTicks(), false);
                     OpenGL.popMatrix();
                 }
             }
@@ -135,7 +135,7 @@ public class CryostasisTubeRenderers
                         OpenGL.disableLight();
                     OpenGL.translate(0F, -2.75F, depth);
                     OpenGL.rotate(90F, 1F, 0F, 0F);
-                    RenderManager.instance.renderEntityWithPosYaw(tile.stasisEntity, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
+                    Game.renderManager().renderEntityStatic(tile.stasisEntity, Game.partialTicks(), false);
                     OpenGL.popMatrix();
                 }
                 else if (tile.stasisEntity instanceof EntityQueen)

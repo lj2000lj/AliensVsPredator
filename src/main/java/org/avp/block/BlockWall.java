@@ -1,13 +1,13 @@
 package org.avp.block;
 
-import org.avp.AliensVsPredator;
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraftforge.common.property.IUnlistedProperty;
 
 public class BlockWall extends Block
 {
@@ -15,18 +15,18 @@ public class BlockWall extends Block
     {
         super(material);
     }
-
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta)
+    protected BlockStateContainer createBlockState()
     {
-        return AliensVsPredator.resources().ICONSET_WALLW.getIconForSide(side);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister register)
-    {
-        AliensVsPredator.resources().ICONSET_WALLW.registerIcons(register);
+        return new BlockStateContainer(this, new IProperty[0])
+        {
+            @Override
+            protected StateImplementation createState(Block block, ImmutableMap<IProperty<?>, Comparable<?>> properties, ImmutableMap<IUnlistedProperty<?>, Optional<?>> unlistedProperties)
+            {
+                return new StateImplementation(block, properties)
+                {
+                };
+            }
+        };
     }
 }

@@ -5,28 +5,33 @@ import java.util.ArrayList;
 import org.avp.AliensVsPredator;
 import org.avp.client.Sounds;
 import org.avp.entities.EntityAcidPool;
+import org.avp.entities.ai.EntityAICustomAttackOnCollide;
 
 import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.block.Blocks;
+import com.google.common.base.Predicate;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.monster.IMob;
+import net.minecraft.init.MobEffects;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class EntityHammerpede extends EntitySpeciesAlien implements IMob
 {
-    public static IEntitySelector entitySelector = new IEntitySelector()
+    public static Predicate<EntityLivingBase> entitySelector = new Predicate<EntityLivingBase>()
     {
         @Override
-        public boolean isEntityApplicable(Entity entity)
+        public boolean apply(EntityLivingBase entity)
         {
             return !(entity instanceof EntitySpeciesAlien) && !(entity instanceof EntityHammerpede) && !(entity instanceof EntityAcidPool);
         }
@@ -38,10 +43,10 @@ public class EntityHammerpede extends EntitySpeciesAlien implements IMob
 
         this.setSize(0.5F, 0.5F);
         this.experienceValue = 16;
-        this.getNavigator().setCanSwim(true);
-        this.getNavigator().setAvoidsWater(false);
+        
+        
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIAttackOnCollide(this, 0.8D, true));
+        this.tasks.addTask(2, new EntityAICustomAttackOnCollide(this, 0.8D, true));
         this.targetTasks.addTask(0, new EntityAIHurtByTarget(this, true));
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, Entity.class, 10 /** targetChance **/
             , false /** checkSight **/
@@ -72,12 +77,6 @@ public class EntityHammerpede extends EntitySpeciesAlien implements IMob
     }
 
     @Override
-    protected boolean isAIEnabled()
-    {
-        return true;
-    }
-
-    @Override
     public void onUpdate()
     {
         super.onUpdate();
@@ -91,32 +90,32 @@ public class EntityHammerpede extends EntitySpeciesAlien implements IMob
         {
             if (this.worldObj.getWorldTime() % 40 == 0 && this.rand.nextInt(4) == 0)
             {
-                if (this.worldObj.getBlock((int) this.posX, (int) this.posY, (int) this.posZ) != AliensVsPredator.blocks().blockBlackGoo)
+                if (this.worldObj.getBlockState(new BlockPos((int) this.posX, (int) this.posY, (int) this.posZ)).getBlock() != AliensVsPredator.blocks().blockBlackGoo)
                 {
-                    ArrayList<Pos> coordData = Blocks.getCoordDataInRangeIncluding((int) this.posX, (int) this.posY, (int) this.posZ, (int) 10, this.worldObj, AliensVsPredator.blocks().blockBlackGoo);
+                    ArrayList<Pos> locations = Blocks.getCoordDataInRangeIncluding((int) this.posX, (int) this.posY, (int) this.posZ, (int) 10, this.worldObj, AliensVsPredator.blocks().blockBlackGoo);
 
-                    if (coordData.size() > 0)
+                    if (locations.size() > 0)
                     {
-                        Pos selectedCoord = coordData.get(this.rand.nextInt(coordData.size()));
+                        Pos selectedCoord = locations.get(this.rand.nextInt(locations.size()));
                         this.getNavigator().tryMoveToXYZ((double) selectedCoord.x, (double) selectedCoord.y, (double) selectedCoord.z, this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue());
                     }
-                    coordData.clear();
-                    coordData = null;
+                    locations.clear();
+                    locations = null;
                 }
             }
         }
     }
 
     @Override
-    protected String getDeathSound()
+    protected SoundEvent getDeathSound()
     {
-        return Sounds.SOUND_CHESTBURSTER_ATTACK.getKey();
+        return Sounds.SOUND_CHESTBURSTER_ATTACK.event();
     }
 
     @Override
-    protected String getHurtSound()
+    protected SoundEvent getHurtSound()
     {
-        return Sounds.SOUND_CHESTBURSTER_HURT.getKey();
+        return Sounds.SOUND_CHESTBURSTER_HURT.event();
     }
 
     @Override
@@ -143,15 +142,15 @@ public class EntityHammerpede extends EntitySpeciesAlien implements IMob
     }
 
     @Override
-    protected void attackEntity(Entity entity, float damage)
+    public boolean attackEntityFrom(DamageSource source, float damage)
     {
-        super.attackEntity(entity, damage);
+        return super.attackEntityFrom(source, damage);
     }
 
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect)
     {
-        return potionEffect.getPotionID() == Potion.poison.id ? false : super.isPotionApplicable(potionEffect);
+        return potionEffect.getPotion() == MobEffects.POISON ? false : super.isPotionApplicable(potionEffect);
     }
 
     @Override

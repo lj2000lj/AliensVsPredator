@@ -8,20 +8,21 @@ import org.avp.world.hives.XenomorphHive;
 
 import com.arisux.mdxlib.lib.world.Worlds;
 
-import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class TileEntityHiveResin extends TileEntity
+//TODO: Redo this
+public class TileEntityHiveResin extends TileEntity implements ITickable
 {
     private ResinVariant variant;
     private UUID         signature;
-    private Block        blockCovering;
+    private IBlockState  blockCovering;
     public Block         northBlock;
     public Block         northTopBlock;
     public Block         northBottomBlock;
@@ -82,30 +83,30 @@ public class TileEntityHiveResin extends TileEntity
     }
 
     @Override
-    public void updateEntity()
+    public void update()
     {
         if (this.worldObj.getWorldTime() % 20 == 0)
         {
             if (variant != null)
             {
-                bottomBlock = this.worldObj.getBlock(this.xCoord, this.yCoord - 1, this.zCoord);
-                topBlock = this.worldObj.getBlock(this.xCoord, this.yCoord + 1, this.zCoord);
+                bottomBlock = this.worldObj.getBlockState(this.getPos().add(0, -1, 0)).getBlock();
+                topBlock = this.worldObj.getBlockState(this.getPos().add(0, 1, 0)).getBlock();
 
-                northBlock = this.worldObj.getBlock(this.xCoord + variant.nX, this.yCoord, this.zCoord + variant.nZ);
-                northTopBlock = this.worldObj.getBlock(this.xCoord + variant.nX, this.yCoord + 1, this.zCoord + variant.nZ);
-                northBottomBlock = this.worldObj.getBlock(this.xCoord + variant.nX, this.yCoord - 1, this.zCoord + variant.nZ);
+                northBlock = this.worldObj.getBlockState(this.getPos().add(variant.nX, 0, variant.nZ)).getBlock();
+                northTopBlock = this.worldObj.getBlockState(this.getPos().add(variant.nX, 1, variant.nZ)).getBlock();
+                northBottomBlock = this.worldObj.getBlockState(this.getPos().add(variant.nX, -1, variant.nZ)).getBlock();
 
-                southBlock = this.worldObj.getBlock(this.xCoord + variant.sX, this.yCoord, this.zCoord + variant.sZ);
-                southTopBlock = this.worldObj.getBlock(this.xCoord + variant.sX, this.yCoord + 1, this.zCoord + variant.sZ);
-                southBottomBlock = this.worldObj.getBlock(this.xCoord + variant.sX, this.yCoord - 1, this.zCoord + variant.sZ);
+                southBlock = this.worldObj.getBlockState(this.getPos().add(variant.sX, 0, variant.sZ)).getBlock();
+                southTopBlock = this.worldObj.getBlockState(this.getPos().add(variant.sX, 1, variant.sZ)).getBlock();
+                southBottomBlock = this.worldObj.getBlockState(this.getPos().add(variant.sX, -1, variant.sZ)).getBlock();
 
-                eastBlock = this.worldObj.getBlock(this.xCoord + variant.eX, this.yCoord, this.zCoord + variant.eZ);
-                eastTopBlock = this.worldObj.getBlock(this.xCoord + variant.eX, this.yCoord + 1, this.zCoord + variant.eZ);
-                eastBottomBlock = this.worldObj.getBlock(this.xCoord + variant.eX, this.yCoord - 1, this.zCoord + variant.eZ);
+                eastBlock = this.worldObj.getBlockState(this.getPos().add(variant.eX, 0, variant.eZ)).getBlock();
+                eastTopBlock = this.worldObj.getBlockState(this.getPos().add(variant.eX, 1, variant.eZ)).getBlock();
+                eastBottomBlock = this.worldObj.getBlockState(this.getPos().add(variant.eX, -1, variant.eZ)).getBlock();
 
-                westBlock = this.worldObj.getBlock(this.xCoord + variant.wX, this.yCoord, this.zCoord + variant.wZ);
-                westTopBlock = this.worldObj.getBlock(this.xCoord + variant.wX, this.yCoord + 1, this.zCoord + variant.wZ);
-                westBottomBlock = this.worldObj.getBlock(this.xCoord + variant.wX, this.yCoord - 1, this.zCoord + variant.wZ);
+                westBlock = this.worldObj.getBlockState(this.getPos().add(variant.wX, 0, variant.wZ)).getBlock();
+                westTopBlock = this.worldObj.getBlockState(this.getPos().add(variant.wX, 1, variant.wZ)).getBlock();
+                westBottomBlock = this.worldObj.getBlockState(this.getPos().add(variant.wX, -1, variant.wZ)).getBlock();
             }
             else
             {
@@ -129,28 +130,32 @@ public class TileEntityHiveResin extends TileEntity
         this.signature = signature;
     }
 
-    public void setBlockCovering(Block blockCovering, int meta)
+    public void setBlockCovering(IBlockState blockCovering, int meta)
     {
         this.blockCovering = blockCovering;
     }
 
-    public Block getBlockCovering()
+    public IBlockState getBlockCovering()
     {
         return this.blockCovering;
     }
-    
+
     @Override
-    public Packet getDescriptionPacket()
+    public SPacketUpdateTileEntity getUpdatePacket()
     {
-        NBTTagCompound nbtTag = new NBTTagCompound();
-        this.writeToNBT(nbtTag);
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbtTag);
+        return new SPacketUpdateTileEntity(this.getPos(), 1, this.getUpdateTag());
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet)
+    public NBTTagCompound getUpdateTag()
     {
-        readFromNBT(packet.getNbtCompound());
+        return this.writeToNBT(new NBTTagCompound());
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet)
+    {
+        this.readFromNBT(packet.getNbtCompound());
     }
 
     @Override
@@ -164,7 +169,7 @@ public class TileEntityHiveResin extends TileEntity
         if (blockString != null && blockString.contains(":"))
         {
             String[] identifier = blockString.split(":");
-            this.blockCovering = GameRegistry.findBlock(identifier[0], identifier[1]);
+            this.blockCovering = GameRegistry.findBlock(identifier[0], identifier[1]).getDefaultState();
         }
 
         this.signature = Worlds.uuidFromNBT(compound, "HiveSignature");
@@ -172,22 +177,22 @@ public class TileEntityHiveResin extends TileEntity
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound compound)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        super.writeToNBT(compound);
+        super.writeToNBT(nbt);
 
         if (blockCovering != null)
         {
-            UniqueIdentifier identifier = GameRegistry.findUniqueIdentifierFor(this.blockCovering);
-
-            if (identifier != null)
+            if (this.blockCovering.getBlock().getRegistryName() != null)
             {
-                compound.setString("BlockCovered", String.format("%s:%s", identifier.modId, identifier.name));
+                nbt.setString("BlockCovered", this.blockCovering.getBlock().getRegistryName().toString());
             }
         }
 
-        compound.setString("HiveSignature", signature != null ? this.signature.toString() : "");
-        compound.setInteger("RandomVariant", this.variant != null ? this.variant.id : 0);
+        nbt.setString("HiveSignature", signature != null ? this.signature.toString() : "");
+        nbt.setInteger("RandomVariant", this.variant != null ? this.variant.id : 0);
+
+        return nbt;
     }
 
     public ResinVariant getVariant()

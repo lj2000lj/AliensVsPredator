@@ -3,7 +3,6 @@ package org.avp.world;
 import java.util.ArrayList;
 
 import org.avp.api.parasitoidic.INascentic;
-import org.avp.entities.Organism;
 import org.avp.entities.living.EntityAqua;
 import org.avp.entities.living.EntityBatXeno;
 import org.avp.entities.living.EntityBelugaburster;
@@ -27,6 +26,7 @@ import org.avp.entities.living.EntitySpitter;
 import org.avp.entities.living.EntityUltramorph;
 import org.avp.entities.living.EntityYautja;
 import org.avp.entities.living.EntityYautjaBerserker;
+import org.avp.world.capabilities.IOrganism.Organism;
 
 import com.arisux.mdxlib.lib.world.entity.Entities;
 
@@ -96,13 +96,13 @@ public class Embryo implements Cloneable
         return this;
     }
 
-    public void grow(Organism host)
+    public void grow(EntityLivingBase host, Organism hostOrganism)
     {
         this.age++;
 
         if (this.getNascenticOrganism() != null)
         {
-            this.getNascenticOrganism().grow(host.getEntity());
+            this.getNascenticOrganism().grow(host);
         }
     }
 

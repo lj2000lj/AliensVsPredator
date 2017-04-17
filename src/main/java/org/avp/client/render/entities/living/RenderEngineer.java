@@ -1,21 +1,21 @@
 package org.avp.client.render.entities.living;
 
 import org.avp.AliensVsPredator;
+import org.avp.client.model.entities.living.ModelEngineer;
 import org.avp.entities.living.EntityEngineer;
 
-import com.arisux.mdxlib.lib.client.Model;
 import com.arisux.mdxlib.lib.client.RenderLivingWrapper;
 import com.arisux.mdxlib.lib.client.TexturedModel;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
-public class RenderEngineer extends RenderLivingWrapper<EntityEngineer>
+public class RenderEngineer extends RenderLivingWrapper<EntityEngineer, ModelEngineer>
 {
     public RenderEngineer()
     {
         super(AliensVsPredator.resources().models().ENGINEER);
     }
     
-    public RenderEngineer(TexturedModel<? extends Model> model)
+    public RenderEngineer(TexturedModel<ModelEngineer> model)
     {
         super(model);
     }

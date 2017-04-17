@@ -7,21 +7,28 @@ import org.avp.item.ItemSupplyChute.SupplyChuteType;
 import org.avp.tile.TileEntitySupplyCrate;
 
 import com.arisux.mdxlib.lib.world.tile.IRotatable;
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableMap;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-
+import net.minecraftforge.common.property.IUnlistedProperty;
 
 public class BlockSupplyCrate extends BlockFalling
 {
@@ -29,18 +36,38 @@ public class BlockSupplyCrate extends BlockFalling
     
     public BlockSupplyCrate(SupplyChuteType type)
     {
-        super(Material.iron);
+        super(Material.IRON);
         this.type = type;
     }
-
+    
     @Override
-    public void registerIcons(IIconRegister reg)
+    protected BlockStateContainer createBlockState()
     {
-        ;
+        return new BlockStateContainer(this, new IProperty[0])
+        {
+            @Override
+            protected StateImplementation createState(Block block, ImmutableMap<IProperty<?>, Comparable<?>> properties, ImmutableMap<IUnlistedProperty<?>, Optional<?>> unlistedProperties)
+            {
+                return new StateImplementation(block, properties)
+                {
+                    @Override
+                    public boolean isOpaqueCube()
+                    {
+                        return false;
+                    }
+
+                    @Override
+                    public EnumBlockRenderType getRenderType()
+                    {
+                        return EnumBlockRenderType.INVISIBLE;
+                    }
+                };
+            }
+        };
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int metadata)
+    public TileEntity createTileEntity(World world, IBlockState state)
     {
         TileEntitySupplyCrate crate = new TileEntitySupplyCrate();
         crate.setType(this.type);
@@ -49,27 +76,9 @@ public class BlockSupplyCrate extends BlockFalling
     }
 
     @Override
-    public boolean hasTileEntity(int metadata)
+    public boolean hasTileEntity(IBlockState state)
     {
         return true;
-    }
-
-    @Override
-    public int getRenderType()
-    {
-        return -1;
-    }
-
-    @Override
-    public boolean isOpaqueCube()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean renderAsNormalBlock()
-    {
-        return false;
     }
 
     @Override
@@ -77,27 +86,27 @@ public class BlockSupplyCrate extends BlockFalling
     {
         return 2;
     }
-
+    
     @Override
-    public void updateTick(World world, int posX, int posY, int posZ, Random random)
+    public void updateTick(World world, BlockPos pos, IBlockState state, Random rand)
     {
         if (!world.isRemote)
         {
-            if (canFallBelow(world, posX, posY - 1, posZ) && posY >= 0)
+            if (canFallThrough(world.getBlockState(pos.add(0, -1, 0))) && pos.getY() > 0)
             {
-                byte b0 = 32;
-
-                if (!fallInstantly && world.checkChunksExist(posX - b0, posY - b0, posZ - b0, posX + b0, posY + b0, posZ + b0))
+                byte r = 32;
+                
+                if (!fallInstantly && world.isBlockLoaded(pos.add(-r, -r, -r)) && world.isBlockLoaded(pos.add(r, r, r)))
                 {
-                    this.spawnParachute(world, posX, posY, posZ);
+                    this.spawnParachute(world, pos);
                 }
             }
         }
     }
-    
-    public void spawnParachute(World world, int posX, int posY, int posZ)
+
+    public void spawnParachute(World world, BlockPos pos)
     {
-        EntitySupplyChute chute = this.getType().createEntity(world, (double) ((float) posX + 0.5F), (double) ((float) posY + 0.5F), (double) ((float) posZ + 0.5F));
+        EntitySupplyChute chute = this.getType().createEntity(world, (double) ((float) pos.getX() + 0.5F), (double) ((float) pos.getY() + 0.5F), (double) ((float) pos.getZ() + 0.5F));
         world.spawnEntityInWorld(chute);
     }
     
@@ -105,11 +114,11 @@ public class BlockSupplyCrate extends BlockFalling
     {
         return this.type;
     }
-
+    
     @Override
-    public boolean onBlockActivated(World world, int posX, int posY, int posZ, EntityPlayer player, int side, float blockX, float blockY, float blockZ)
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        TileEntity tileEntity = world.getTileEntity(posX, posY, posZ);
+        TileEntity tileEntity = world.getTileEntity(pos);
 
         if (tileEntity != null && tileEntity instanceof TileEntitySupplyCrate)
         {
@@ -127,11 +136,11 @@ public class BlockSupplyCrate extends BlockFalling
 
         return true;
     }
-
+    
     @Override
-    public void onBlockPlacedBy(World world, int posX, int posY, int posZ, EntityLivingBase placer, ItemStack itemstack)
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        TileEntity tile = world.getTileEntity(posX, posY, posZ);
+        TileEntity tile = world.getTileEntity(pos);
 
         if (tile != null && tile instanceof IRotatable && placer != null)
         {
@@ -139,13 +148,13 @@ public class BlockSupplyCrate extends BlockFalling
             rotatable.setDirection(getFacing(placer));
         }
     }
-
+    
     @Override
-    public void onBlockPreDestroy(World worldIn, int x, int y, int z, int meta)
+    public void onBlockClicked(World worldIn, BlockPos pos, EntityPlayer playerIn)
     {
-        super.onBlockPreDestroy(worldIn, x, y, z, meta);
+        super.onBlockClicked(worldIn, pos, playerIn);
         
-        TileEntitySupplyCrate crate = (TileEntitySupplyCrate) worldIn.getTileEntity(x, y, z);
+        TileEntitySupplyCrate crate = (TileEntitySupplyCrate) worldIn.getTileEntity(pos);
         
         if (crate != null)
         {
@@ -155,16 +164,15 @@ public class BlockSupplyCrate extends BlockFalling
                 
                 if (stack != null)
                 {
-                    EntityItem entityItem = new EntityItem(worldIn, x, y, z, stack);
+                    EntityItem entityItem = new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), stack);
                     worldIn.spawnEntityInWorld(entityItem);
                 }
             }
         }
     }
-    
     public static EnumFacing getFacing(Entity entity)
     {
         int dir = MathHelper.floor_double((entity.rotationYaw / 90) + 0.5) & 3;
-        return EnumFacing.VALID_DIRECTIONS[Direction.directionToFacing[dir]];
+        return EnumFacing.getFront(dir);
     }
 }

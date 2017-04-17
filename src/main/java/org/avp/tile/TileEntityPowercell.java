@@ -25,13 +25,13 @@ public class TileEntityPowercell extends TileEntityElectrical implements IVoltag
     }
 
     @Override
-    public void updateEntity()
+    public void update()
     {
-        super.updateEntity();
+        super.update();
 
-        for (EnumFacing direction : EnumFacing.VALID_DIRECTIONS)
+        for (EnumFacing direction : EnumFacing.VALUES)
         {
-            TileEntity tile = this.worldObj.getTileEntity(this.xCoord + direction.offsetX, this.yCoord + direction.offsetY, this.zCoord + direction.offsetZ);
+            TileEntity tile = this.worldObj.getTileEntity(this.getPos().offset(direction));
 
             if (tile != null && tile instanceof TileEntityElectrical)
             {
@@ -78,12 +78,14 @@ public class TileEntityPowercell extends TileEntityElectrical implements IVoltag
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
 
         nbt.setLong("energyStored", this.energyStored);
         nbt.setDouble("voltageCapacity", this.voltageCapacity);
+        
+        return nbt;
     }
 
     @Override

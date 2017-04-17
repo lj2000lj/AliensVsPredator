@@ -4,58 +4,57 @@ import java.util.Random;
 
 import org.avp.AliensVsPredator;
 import org.avp.world.dimension.BiomeGenLV;
+import org.avp.world.dimension.WorldGenSurfaceBlock;
 
-import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.Worlds;
 
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeDecorator;
-import net.minecraft.world.gen.feature.WorldGenFlowers;
+import net.minecraft.world.gen.ChunkProviderSettings;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
 public class BiomeDecoratorAcheron extends BiomeDecorator
 {
-    protected World world;
-    public BiomeGenLV biome;
+    protected World       world;
+    public BiomeGenLV     biome;
     public WorldGenerator stalagmiteGen;
 
     public BiomeDecoratorAcheron(BiomeGenLV biome)
     {
         super();
         this.biome = biome;
-        this.stalagmiteGen = new WorldGenFlowers(AliensVsPredator.blocks().terrainStalagmite);
     }
 
     @Override
-    public void decorateChunk(World world, Random seed, Biome biome, int chunkX, int chunkZ)
+    public void decorate(World worldIn, Random random, Biome biome, BlockPos pos)
     {
-        if (this.world != null)
+        if (this.decorating)
         {
-            return;
+            throw new RuntimeException("Already decorating");
         }
-
-        this.world = world;
-        this.randomGenerator = seed;
-        this.chunk_X = chunkX;
-        this.chunk_Z = chunkZ;
-        this.genDecorations(biome);
-        this.world = null;
-        this.randomGenerator = null;
+        else
+        {
+            this.chunkProviderSettings = ChunkProviderSettings.Factory.jsonToFactory(worldIn.getWorldInfo().getGeneratorOptions()).build();
+            this.chunkPos = pos;
+            this.stalagmiteGen = new WorldGenSurfaceBlock(AliensVsPredator.blocks().terrainStalagmite.getDefaultState());
+            this.genDecorations(biome, worldIn, random);
+            this.decorating = false;
+        }
+    }
+    
+    @Override
+    protected void genDecorations(Biome biome, World world, Random random)
+    {
+        this.generateOres(world, random);
+        Worlds.generateInChunk(world, this.stalagmiteGen, random, 10, chunkPos);
     }
 
     @Override
-    protected void genDecorations(Biome biome)
+    protected void generateOres(World world, Random random)
     {
-        this.generateOres();
-
-        Worlds.generateInChunk(world, this.stalagmiteGen, this.randomGenerator, 10, new Pos(chunk_X, 0, chunk_Z));
-    }
-
-    @Override
-    protected void generateOres()
-    {
-        Worlds.generateInChunk(world, new WorldGenMinable(AliensVsPredator.blocks().terrainUniDirt, 32), this.randomGenerator, 20, 0, 128, new Pos(chunk_X, 0, chunk_Z));
+        Worlds.generateInChunk(world, new WorldGenMinable(AliensVsPredator.blocks().terrainUniDirt.getDefaultState(), 32), random, 20, 0, 128, chunkPos);
     }
 }

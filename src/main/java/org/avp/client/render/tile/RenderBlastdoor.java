@@ -8,21 +8,18 @@ import org.avp.tile.TileEntityBlastdoor;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
 
-public class RenderBlastdoor extends TileEntitySpecialRenderer
+public class RenderBlastdoor extends TileEntitySpecialRenderer<TileEntityBlastdoor>
 {
     @Override
-    public void renderTileEntityAt(TileEntity tileEntity, double posX, double posY, double posZ, float renderPartialTicks)
+    public void renderTileEntityAt(TileEntityBlastdoor tile, double x, double y, double z, float partialTicks, int destroyStage)
     {
-        TileEntityBlastdoor tile = (TileEntityBlastdoor) tileEntity;
-
         if (tile != null && !tile.isChild())
         {
             OpenGL.pushMatrix();
             {
                 OpenGL.disable(GL_CULL_FACE);
-                OpenGL.translate(posX + 0.5F, posY + 1.5F, posZ + 0.5F);
+                OpenGL.translate(x + 0.5F, y + 1.5F, z + 0.5F);
                 OpenGL.scale(1.0F, -1.0F, 1.0F);
                 OpenGL.rotate(tile);
                 AliensVsPredator.resources().models().BLASTDOOR.draw(tile);

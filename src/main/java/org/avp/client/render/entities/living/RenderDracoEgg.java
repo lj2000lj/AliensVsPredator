@@ -1,12 +1,13 @@
 package org.avp.client.render.entities.living;
 
 import org.avp.AliensVsPredator;
+import org.avp.client.model.entities.living.ModelDracoOvamorph;
 import org.avp.entities.living.EntityDracoEgg;
 
 import com.arisux.mdxlib.lib.client.RenderLivingWrapper;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
-public class RenderDracoEgg extends RenderLivingWrapper<EntityDracoEgg>
+public class RenderDracoEgg extends RenderLivingWrapper<EntityDracoEgg, ModelDracoOvamorph>
 {
     public RenderDracoEgg()
     {

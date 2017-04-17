@@ -6,23 +6,24 @@ import org.avp.api.blocks.material.IMaterialRenderer;
 import com.arisux.mdxlib.MDX;
 import com.arisux.mdxlib.lib.game.Game;
 
-
-import cpw.mods.fml.common.gameevent.Tickevent.getType();
-import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.client.event.getEntity()ViewRenderEvent.FogColors;
-import net.minecraftforge.client.event.getEntity()ViewRenderEvent.RenderFogEvent;
+import net.minecraftforge.client.event.EntityViewRenderEvent.FogColors;
+import net.minecraftforge.client.event.EntityViewRenderEvent.RenderFogEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
+import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -110,9 +111,9 @@ public class MaterialHandler
                     {
                         Vec3d fogColor = renderer.getFogColor();
 
-                        event.red = (float) fogColor.xCoord;
-                        event.green = (float) fogColor.yCoord;
-                        event.blue = (float) fogColor.zCoord;
+                        event.setRed((float) fogColor.xCoord);
+                        event.setGreen((float) fogColor.yCoord);
+                        event.setBlue((float) fogColor.zCoord);
                     }
                 }
             }
@@ -122,7 +123,7 @@ public class MaterialHandler
     @SubscribeEvent
     public void onUpdate(WorldTickEvent event)
     {
-        if (event.getType() == Type.WORLD && event.phase == Phase.END)
+        if (event.getPhase() == EventPriority.NORMAL && event.phase == Phase.END)
         {
             this.update(event.world);
         }
@@ -168,7 +169,7 @@ public class MaterialHandler
 
     public static Material getMaterialInside(Entity entity)
     {
-        AxisAlignedBB box = entity.boundingBox;
+        AxisAlignedBB box = entity.getEntityBoundingBox();
         int minX = MathHelper.floor_double(box.minX);
         int maxX = MathHelper.floor_double(box.maxX + 1.0D);
         int minY = MathHelper.floor_double(box.minY);
@@ -176,7 +177,7 @@ public class MaterialHandler
         int minZ = MathHelper.floor_double(box.minZ);
         int maxZ = MathHelper.floor_double(box.maxZ + 1.0D);
 
-        if (!entity.worldObj.checkChunksExist(minX, minY, minZ, maxX, maxY, maxZ))
+        if (!entity.worldObj.isBlockLoaded(entity.getPosition()))
         {
             return null;
         }
@@ -188,7 +189,7 @@ public class MaterialHandler
                 {
                     for (int z = minZ; z < maxZ; ++z)
                     {
-                        Block block = entity.worldObj.getBlock(x, y, z);
+                        IBlockState block = entity.worldObj.getBlockState(new BlockPos(x, y, z));
 
                         if (block != null)
                         {
@@ -204,7 +205,7 @@ public class MaterialHandler
 
     public Vec3d handleMaterialAcceleration(Entity entity, Material material, IMaterialPhysics physics)
     {
-        AxisAlignedBB box = entity.boundingBox.expand(0.0D, -0.4D, 0.0D).contract(0.001D, 0.001D, 0.001D);
+        AxisAlignedBB box = entity.getEntityBoundingBox().expand(0.0D, -0.4D, 0.0D).contract(0.001D);
 
         int minX = MathHelper.floor_double(box.minX);
         int maxX = MathHelper.floor_double(box.maxX + 1.0D);
@@ -213,7 +214,7 @@ public class MaterialHandler
         int minZ = MathHelper.floor_double(box.minZ);
         int maxZ = MathHelper.floor_double(box.maxZ + 1.0D);
 
-        if (!entity.worldObj.checkChunksExist(minX, minY, minZ, maxX, maxY, maxZ))
+        if (!entity.worldObj.isBlockLoaded(entity.getPosition()))
         {
             return null;
         }
@@ -227,15 +228,16 @@ public class MaterialHandler
                 {
                     for (int z = minZ; z < maxZ; ++z)
                     {
-                        Block block = entity.worldObj.getBlock(x, y, z);
+                        BlockPos pos = new BlockPos(x, y, z);
+                        IBlockState block = entity.worldObj.getBlockState(pos);
 
                         if (block.getMaterial() == material)
                         {
-                            double lhp = (double) ((float) (y + 1) - BlockLiquid.getLiquidHeightPercent(entity.worldObj.getBlockMetadata(x, y, z)));
+                            double lhp = (double) ((float) (y + 1) - BlockLiquid.getLiquidHeightPercent(block.getBlock().getMetaFromState(block)));
 
                             if ((double) maxY >= lhp)
                             {
-                                block.modifyEntityVelocity(entity.worldObj, x, y, z, entity, motion = new Vec3d(0.0D, 0.0D, 0.0D));
+                                block.getBlock().modifyAcceleration(entity.worldObj, pos, entity, motion = new Vec3d(0.0D, 0.0D, 0.0D));
                             }
                         }
                     }

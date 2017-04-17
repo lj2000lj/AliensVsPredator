@@ -1,6 +1,7 @@
 package org.avp.entities.living;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.avp.AliensVsPredator;
 import org.avp.EntityItemDrops;
@@ -15,7 +16,6 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class EntityOvamorph extends EntitySpeciesAlien implements IMob
@@ -88,12 +88,6 @@ public class EntityOvamorph extends EntitySpeciesAlien implements IMob
     }
 
     @Override
-    protected boolean isAIEnabled()
-    {
-        return true;
-    }
-
-    @Override
     public boolean canBreatheUnderwater()
     {
         return true;
@@ -128,20 +122,16 @@ public class EntityOvamorph extends EntitySpeciesAlien implements IMob
 
         if (this.containsFacehugger)
         {
-            int x = MathHelper.floor_double(this.posX);
-            int y = MathHelper.floor_double(this.posY);
-            int z = MathHelper.floor_double(this.posZ);
-
-            if (this.worldObj.getBlock(x, y, z).getMaterial() != AliensVsPredator.materials().mist || this.acceleratedHatching)
+            if (this.worldObj.getBlockState(this.getPosition()).getMaterial() != AliensVsPredator.materials().mist || this.acceleratedHatching)
             {
                 int hatchAcceleration = this.acceleratedHatching ? 20 : 1;
-                ArrayList<Entity> potentialHosts = (ArrayList<Entity>) Entities.getEntitiesInCoordsRange(this.worldObj, EntityLivingBase.class, new Pos(this), 8);
+                List<EntityLivingBase> potentialHosts = Entities.getEntitiesInCoordsRange(this.worldObj, EntityLivingBase.class, new Pos(this), 8);
 
-                for (Entity entity : new ArrayList<Entity>(potentialHosts))
+                for (EntityLivingBase living : new ArrayList<EntityLivingBase>(potentialHosts))
                 {
-                    if (!EntityParasitoid.parasiteSelector.isEntityApplicable(entity))
+                    if (!EntityParasitoid.parasiteSelector.apply(living))
                     {
-                        potentialHosts.remove(entity);
+                        potentialHosts.remove(living);
                     }
                 }
 

@@ -4,12 +4,13 @@ import org.avp.api.machines.IOpenable;
 
 import com.arisux.mdxlib.lib.game.Game;
 
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketOpenable implements IMessage, IMessageHandler<PacketOpenable, PacketOpenable>
 {
@@ -53,7 +54,7 @@ public class PacketOpenable implements IMessage, IMessageHandler<PacketOpenable,
     public PacketOpenable onMessage(PacketOpenable packet, MessageContext ctx)
     {
         World world = Game.minecraft().thePlayer.worldObj;
-        TileEntity tile = world.getTileEntity(packet.x, packet.y, packet.z);
+        TileEntity tile = world.getTileEntity(new BlockPos(packet.x, packet.y, packet.z));
 
         if (world != null && tile != null && tile instanceof IOpenable)
         {

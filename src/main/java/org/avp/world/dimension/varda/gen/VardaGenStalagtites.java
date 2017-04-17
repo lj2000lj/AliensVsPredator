@@ -2,34 +2,33 @@ package org.avp.world.dimension.varda.gen;
 
 import java.util.Random;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
 public class VardaGenStalagtites extends WorldGenerator
 {
-    private Block block;
+    private IBlockState state;
 
-    public VardaGenStalagtites(Block block)
+    public VardaGenStalagtites(IBlockState block)
     {
-        this.block = block;
+        this.state = block;
     }
-
+    
     @Override
-    public boolean generate(World world, Random rand, int posX, int posY, int posZ)
+    public boolean generate(World world, Random rand, BlockPos pos)
     {
         for (int x = 0; x < 64; x++)
         {
-            int blockX = posX + rand.nextInt(8) - rand.nextInt(8);
-            int blockY = posY + rand.nextInt(4) - rand.nextInt(4);
-            int blockZ = posZ + rand.nextInt(8) - rand.nextInt(8);
+            BlockPos posRand = pos.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
 
-            if (world.isAirBlock(blockX, blockY, blockZ) && block.canBlockStay(world, blockX, blockY, blockZ))
+            if (world.isAirBlock(posRand) && state.getBlock().canPlaceBlockAt(world, posRand))
             {
-                world.setBlock(blockX, blockY, blockZ, this.block);
+                world.setBlockState(posRand, this.state);
             }
         }
-
+        
         return true;
     }
 }

@@ -10,9 +10,7 @@ import com.arisux.mdxlib.lib.client.RenderLivingWrapper;
 import com.arisux.mdxlib.lib.client.TexturedModel;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
-import net.minecraft.entity.EntityLivingBase;
-
-public class RenderMarine extends RenderLivingWrapper
+public class RenderMarine extends RenderLivingWrapper<EntityMarine, ModelMarine>
 {
     public RenderMarine()
     {
@@ -20,34 +18,28 @@ public class RenderMarine extends RenderLivingWrapper
     }
 
     @Override
-    protected void preRenderCallback(EntityLivingBase living, float partialTicks)
+    protected void preRenderCallback(EntityMarine living, float partialTicks)
     {
         super.preRenderCallback(living, partialTicks);
     }
     
-    public ModelMarine getModel()
+    protected void renderEquippedItems(EntityMarine living, float partialTicks)
     {
-        return (ModelMarine) this.getModelTexMap().getModel();
-    }
-
-    @Override
-    protected void renderEquippedItems(EntityLivingBase living, float partialTicks)
-    {
-        super.renderEquippedItems(living, partialTicks);
+        //super.renderEquippedItems(living, partialTicks);
 
         EntityMarine marine = (EntityMarine) living;
         TexturedModel<? extends Model> model = marine.getMarineType().getFirearmModelTexMap();
 
         OpenGL.pushMatrix();
         {
-            this.getModel().bipedRightArm.postRender(Model.DEFAULT_SCALE);
+            this.getModel().getModel().bipedRightArm.postRender(Model.DEFAULT_SCALE);
             if (marine.isFiring())
             {
-                this.getModel().aimedBow = true;
+                this.getModel().getModel().aimedBow = true;
             }
             else
             {
-                this.getModel().aimedBow = false;
+                this.getModel().getModel().aimedBow = false;
             }
             OpenGL.translate(-0.35F, 0.8F, -0.85F);
             OpenGL.rotate(270.0F, 1.0F, 0.0F, 0.0F);
@@ -66,7 +58,7 @@ public class RenderMarine extends RenderLivingWrapper
                     break;
                 case M56SG:
                     OpenGL.translate(-0.15F, 0.7F, -0.73F);
-                    this.getModel().aimedBow = false;
+                    this.getModel().getModel().aimedBow = false;
                     break;
                 default:
                     break;

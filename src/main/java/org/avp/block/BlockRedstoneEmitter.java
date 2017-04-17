@@ -2,67 +2,60 @@ package org.avp.block;
 
 import org.avp.tile.TileEntityRedstoneEmitter;
 
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableMap;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.IUnlistedProperty;
 
 public class BlockRedstoneEmitter extends Block
 {
     public BlockRedstoneEmitter(Material material)
     {
         super(material);
-        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         this.setTickRandomly(true);
     }
-
     @Override
-    public void registerIcons(IIconRegister register)
+    protected BlockStateContainer createBlockState()
     {
-        return;
+        return new BlockStateContainer(this, new IProperty[0])
+        {
+            @Override
+            protected StateImplementation createState(Block block, ImmutableMap<IProperty<?>, Comparable<?>> properties, ImmutableMap<IUnlistedProperty<?>, Optional<?>> unlistedProperties)
+            {
+                return new StateImplementation(block, properties)
+                {
+                    @Override
+                    public EnumBlockRenderType getRenderType()
+                    {
+                        return EnumBlockRenderType.INVISIBLE;
+                    }
+
+                    @Override
+                    public boolean isOpaqueCube()
+                    {
+                        return false;
+                    }
+                };
+            }
+        };
     }
 
     @Override
-    public boolean renderAsNormalBlock()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isOpaqueCube()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean onBlockActivated(World worldObj, int xCoord, int yCoord, int zCoord, EntityPlayer player, int side, float subX, float subY, float subZ)
-    {
-        return super.onBlockActivated(worldObj, xCoord, yCoord, zCoord, player, side, subX, subY, subZ);
-    }
-    
-    @Override
-    public int isProvidingWeakPower(IBlockAccess worldIn, int x, int y, int z, int side)
-    {
-        return worldIn.getBlockMetadata(x, y, z);
-    }
-
-    @Override
-    public int getRenderType()
-    {
-        return -1;
-    }
-
-    @Override
-    public TileEntity createTileEntity(World world, int meta)
+    public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TileEntityRedstoneEmitter();
     }
 
     @Override
-    public boolean hasTileEntity(int metadata)
+    public boolean hasTileEntity(IBlockState state)
     {
         return true;
     }

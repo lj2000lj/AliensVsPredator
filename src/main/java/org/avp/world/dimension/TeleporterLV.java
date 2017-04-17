@@ -7,6 +7,7 @@ import org.avp.AliensVsPredator;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.WorldServer;
@@ -23,25 +24,25 @@ public class TeleporterLV extends Teleporter
         this.worldServer = worldServer;
         this.rand = new Random(worldServer.getSeed());
     }
-
+    
     @Override
-    public void placeInPortal(Entity entity, double posX, double posY, double posZ, float yaw)
+    public void placeInPortal(Entity entity, float yaw)
     {
-        portal = this.worldServer.provider.dimensionId == AliensVsPredator.settings().dimensionIdVarda() ? AliensVsPredator.blocks().blockPortalVarda : AliensVsPredator.blocks().blockPortalAcheron;
+        portal = this.worldServer.provider.getDimension() == AliensVsPredator.settings().dimensionIdVarda() ? AliensVsPredator.blocks().blockPortalVarda : AliensVsPredator.blocks().blockPortalAcheron;
 
-        if (this.worldServer.provider.dimensionId != 1)
+        if (this.worldServer.provider.getDimension() != 1)
         {
-            if (!this.placeInExistingPortal(entity, posX, posY, posZ, yaw))
+            if (!this.placeInExistingPortal(entity, yaw))
             {
                 this.makePortal(entity);
-                this.placeInExistingPortal(entity, posX, posY, posZ, yaw);
+                this.placeInExistingPortal(entity, yaw);
             }
         }
         else
         {
-            int i = MathHelper.floor_double(entity.posX);
-            int j = MathHelper.floor_double(entity.posY) - 1;
-            int k = MathHelper.floor_double(entity.posZ);
+            int x = MathHelper.floor_double(entity.posX);
+            int y = MathHelper.floor_double(entity.posY) - 1;
+            int z = MathHelper.floor_double(entity.posZ);
             byte b0 = 1;
             byte b1 = 0;
 
@@ -51,16 +52,15 @@ public class TeleporterLV extends Teleporter
                 {
                     for (int j1 = -1; j1 < 3; ++j1)
                     {
-                        int k1 = i + i1 * b0 + l * b1;
-                        int l1 = j + j1;
-                        int i2 = k + i1 * b1 - l * b0;
-                        boolean flag = j1 < 0;
-                        this.worldServer.setBlock(k1, l1, i2, flag ? AliensVsPredator.blocks().blockEngineerShipFloor : Blocks.AIR);
+                        int bX = x + i1 * b0 + l * b1;
+                        int bY = y + j1;
+                        int bZ = z + i1 * b1 - l * b0;
+                        this.worldServer.setBlockState(new BlockPos(bX, bY, bZ), AliensVsPredator.blocks().blockEngineerShipFloor.getDefaultState());
                     }
                 }
             }
 
-            entity.setLocationAndAngles((double) i, (double) j, (double) k, entity.rotationYaw, 0.0F);
+            entity.setLocationAndAngles((double) x, (double) y, (double) z, entity.rotationYaw, 0.0F);
             entity.motionX = entity.motionY = entity.motionZ = 0.0D;
         }
     }
@@ -78,11 +78,11 @@ public class TeleporterLV extends Teleporter
         int j1 = k;
         int k1 = 0;
         int l1 = this.rand.nextInt(4);
-        int i2;
+        int x;
         double d1;
-        int k2;
+        int z;
         double d2;
-        int i3;
+        int y;
         int j3;
         int k3;
         int l3;
@@ -94,22 +94,22 @@ public class TeleporterLV extends Teleporter
         double d3;
         double d4;
 
-        for (i2 = i - b0; i2 <= i + b0; ++i2)
+        for (x = i - b0; x <= i + b0; ++x)
         {
-            d1 = (double) i2 + 0.5D - entity.posX;
+            d1 = (double) x + 0.5D - entity.posX;
 
-            for (k2 = k - b0; k2 <= k + b0; ++k2)
+            for (z = k - b0; z <= k + b0; ++z)
             {
-                d2 = (double) k2 + 0.5D - entity.posZ;
+                d2 = (double) z + 0.5D - entity.posZ;
                 label274:
 
-                for (i3 = this.worldServer.getActualHeight() - 1; i3 >= 0; --i3)
+                for (y = this.worldServer.getActualHeight() - 1; y >= 0; --y)
                 {
-                    if (this.worldServer.isAirBlock(i2, i3, k2))
+                    if (this.worldServer.isAirBlock(new BlockPos(x, y, z)))
                     {
-                        while (i3 > 0 && this.worldServer.isAirBlock(i2, i3 - 1, k2))
+                        while (y > 0 && this.worldServer.isAirBlock(new BlockPos(x, y - 1, z)))
                         {
-                            --i3;
+                            --y;
                         }
 
                         for (j3 = l1; j3 < l1 + 4; ++j3)
@@ -129,11 +129,12 @@ public class TeleporterLV extends Teleporter
                                 {
                                     for (k4 = -1; k4 < 4; ++k4)
                                     {
-                                        l4 = i2 + (j4 - 1) * k3 + i4 * l3;
-                                        i5 = i3 + k4;
-                                        int j5 = k2 + (j4 - 1) * l3 - i4 * k3;
+                                        l4 = x + (j4 - 1) * k3 + i4 * l3;
+                                        i5 = y + k4;
+                                        int j5 = z + (j4 - 1) * l3 - i4 * k3;
+                                        BlockPos pos = new BlockPos(l4, i5, j5);
 
-                                        if (k4 < 0 && !this.worldServer.getBlock(l4, i5, j5).getMaterial().isSolid() || k4 >= 0 && !this.worldServer.isAirBlock(l4, i5, j5))
+                                        if (k4 < 0 && !this.worldServer.getBlockState(pos).getMaterial().isSolid() || k4 >= 0 && !this.worldServer.isAirBlock(pos))
                                         {
                                             continue label274;
                                         }
@@ -141,15 +142,15 @@ public class TeleporterLV extends Teleporter
                                 }
                             }
 
-                            d3 = (double) i3 + 0.5D - entity.posY;
+                            d3 = (double) y + 0.5D - entity.posY;
                             d4 = d1 * d1 + d3 * d3 + d2 * d2;
 
                             if (d0 < 0.0D || d4 < d0)
                             {
                                 d0 = d4;
-                                l = i2;
-                                i1 = i3;
-                                j1 = k2;
+                                l = x;
+                                i1 = y;
+                                j1 = z;
                                 k1 = j3 % 4;
                             }
                         }
@@ -160,22 +161,22 @@ public class TeleporterLV extends Teleporter
 
         if (d0 < 0.0D)
         {
-            for (i2 = i - b0; i2 <= i + b0; ++i2)
+            for (x = i - b0; x <= i + b0; ++x)
             {
-                d1 = (double) i2 + 0.5D - entity.posX;
+                d1 = (double) x + 0.5D - entity.posX;
 
-                for (k2 = k - b0; k2 <= k + b0; ++k2)
+                for (z = k - b0; z <= k + b0; ++z)
                 {
-                    d2 = (double) k2 + 0.5D - entity.posZ;
+                    d2 = (double) z + 0.5D - entity.posZ;
                     label222:
 
-                    for (i3 = this.worldServer.getActualHeight() - 1; i3 >= 0; --i3)
+                    for (y = this.worldServer.getActualHeight() - 1; y >= 0; --y)
                     {
-                        if (this.worldServer.isAirBlock(i2, i3, k2))
+                        if (this.worldServer.isAirBlock(new BlockPos(x, y, z)))
                         {
-                            while (i3 > 0 && this.worldServer.isAirBlock(i2, i3 - 1, k2))
+                            while (y > 0 && this.worldServer.isAirBlock(new BlockPos(x, y - 1, z)))
                             {
-                                --i3;
+                                --y;
                             }
 
                             for (j3 = l1; j3 < l1 + 2; ++j3)
@@ -187,26 +188,27 @@ public class TeleporterLV extends Teleporter
                                 {
                                     for (j4 = -1; j4 < 4; ++j4)
                                     {
-                                        k4 = i2 + (i4 - 1) * k3;
-                                        l4 = i3 + j4;
-                                        i5 = k2 + (i4 - 1) * l3;
-
-                                        if (j4 < 0 && !this.worldServer.getBlock(k4, l4, i5).getMaterial().isSolid() || j4 >= 0 && !this.worldServer.isAirBlock(k4, l4, i5))
+                                        k4 = x + (i4 - 1) * k3;
+                                        l4 = y + j4;
+                                        i5 = z + (i4 - 1) * l3;
+                                        BlockPos pos = new BlockPos(k4, l4, i5);
+                                        
+                                        if (j4 < 0 && !this.worldServer.getBlockState(pos).getMaterial().isSolid() || j4 >= 0 && !this.worldServer.isAirBlock(pos))
                                         {
                                             continue label222;
                                         }
                                     }
                                 }
 
-                                d3 = (double) i3 + 0.5D - entity.posY;
+                                d3 = (double) y + 0.5D - entity.posY;
                                 d4 = d1 * d1 + d3 * d3 + d2 * d2;
 
                                 if (d0 < 0.0D || d4 < d0)
                                 {
                                     d0 = d4;
-                                    l = i2;
-                                    i1 = i3;
-                                    j1 = k2;
+                                    l = x;
+                                    i1 = y;
+                                    j1 = z;
                                     k1 = j3 % 2;
                                 }
                             }
@@ -218,7 +220,7 @@ public class TeleporterLV extends Teleporter
 
         int k5 = l;
         int j2 = i1;
-        k2 = j1;
+        z = j1;
         int l5 = k1 % 2;
         int l2 = 1 - l5;
 
@@ -244,23 +246,23 @@ public class TeleporterLV extends Teleporter
 
             j2 = i1;
 
-            for (i3 = -1; i3 <= 1; ++i3)
+            for (y = -1; y <= 1; ++y)
             {
                 for (j3 = 1; j3 < 3; ++j3)
                 {
                     for (k3 = -1; k3 < 3; ++k3)
                     {
-                        l3 = k5 + (j3 - 1) * l5 + i3 * l2;
+                        l3 = k5 + (j3 - 1) * l5 + y * l2;
                         i4 = j2 + k3;
-                        j4 = k2 + (j3 - 1) * l2 - i3 * l5;
+                        j4 = z + (j3 - 1) * l2 - y * l5;
                         flag = k3 < 0;
-                        this.worldServer.setBlock(l3, i4, j4, flag ? AliensVsPredator.blocks().blockEngineerShipFloor : Blocks.AIR);
+                        this.worldServer.setBlockState(new BlockPos(l3, i4, j4), flag ? AliensVsPredator.blocks().blockEngineerShipFloor.getDefaultState() : Blocks.AIR.getDefaultState());
                     }
                 }
             }
         }
 
-        for (i3 = 0; i3 < 4; ++i3)
+        for (y = 0; y < 4; ++y)
         {
             for (j3 = 0; j3 < 4; ++j3)
             {
@@ -268,9 +270,9 @@ public class TeleporterLV extends Teleporter
                 {
                     l3 = k5 + (j3 - 1) * l5;
                     i4 = j2 + k3;
-                    j4 = k2 + (j3 - 1) * l2;
+                    j4 = z + (j3 - 1) * l2;
                     flag = j3 == 0 || j3 == 3 || k3 == -1 || k3 == 3;
-                    this.worldServer.setBlock(l3, i4, j4, (Block) (flag ? AliensVsPredator.blocks().blockEngineerShipFloor : portal), 0, 2);
+                    this.worldServer.setBlockState(new BlockPos(l3, i4, j4), (flag ? AliensVsPredator.blocks().blockEngineerShipFloor.getDefaultState() : portal.getDefaultState()));
                 }
             }
 
@@ -280,8 +282,8 @@ public class TeleporterLV extends Teleporter
                 {
                     l3 = k5 + (j3 - 1) * l5;
                     i4 = j2 + k3;
-                    j4 = k2 + (j3 - 1) * l2;
-                    this.worldServer.notifyBlocksOfNeighborChange(l3, i4, j4, this.worldServer.getBlock(l3, i4, j4));
+                    j4 = z + (j3 - 1) * l2;
+                    this.worldServer.notifyBlockOfStateChange(new BlockPos(l3, i4, j4), this.worldServer.getBlockState(new BlockPos(l3, i4, j4)).getBlock());
                 }
             }
         }

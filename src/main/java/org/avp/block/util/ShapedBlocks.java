@@ -123,7 +123,7 @@ public class ShapedBlocks
         {
             shaped.setResistance(Blocks.getBlockResistance(blockParent));
             shaped.setHardness(Blocks.getBlockHardness(blockParent));
-            shaped.setLightOpacity(blockParent.getLightOpacity());
+            shaped.setLightOpacity(blockParent.getLightOpacity(blockParent.getDefaultState()));
         }
     }
 }

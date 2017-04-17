@@ -2,39 +2,46 @@ package org.avp.block;
 
 import java.util.List;
 
-import org.avp.AliensVsPredator;
-
 import com.arisux.mdxlib.lib.client.render.Matrix3;
 import com.arisux.mdxlib.lib.client.render.Vertex;
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.common.property.IUnlistedProperty;
 
 public class BlockShape extends Block
 {
     public static enum ShapeTypes
     {
-        SLOPE(0), CORNER(1), INVERTED_CORNER(2), RIDGE(3), SMART_RIDGE(4), INVERTED_RIDGE(5), SMART_INVERTED_RIDGE(6);
+        SLOPE(0),
+        CORNER(1),
+        INVERTED_CORNER(2),
+        RIDGE(3),
+        SMART_RIDGE(4),
+        INVERTED_RIDGE(5),
+        SMART_INVERTED_RIDGE(6);
 
-        public int id;
+        public int                     id;
 
-        public final static ShapeTypes ridges[] = { RIDGE, SMART_RIDGE
+        public final static ShapeTypes ridges[]                 = { RIDGE, SMART_RIDGE
         };
-        public final static ShapeTypes ridgesOrSlopes[] = { RIDGE, SMART_RIDGE, SLOPE, CORNER, INVERTED_CORNER
+        public final static ShapeTypes ridgesOrSlopes[]         = { RIDGE, SMART_RIDGE, SLOPE, CORNER, INVERTED_CORNER
         };
-        public final static ShapeTypes invertedRidges[] = { INVERTED_RIDGE, SMART_INVERTED_RIDGE
+        public final static ShapeTypes invertedRidges[]         = { INVERTED_RIDGE, SMART_INVERTED_RIDGE
         };
         public final static ShapeTypes invertedRidgesOrSlopes[] = { INVERTED_RIDGE, SMART_INVERTED_RIDGE, SLOPE, INVERTED_CORNER
         };
@@ -51,15 +58,13 @@ public class BlockShape extends Block
     }
 
     private ShapeTypes shape;
-    private Material material;
-    private int textureSide;
-    private Block textureBlock;
+    private int        textureSide;
+    private Block      textureBlock;
 
     public BlockShape(ShapeTypes shape)
     {
-        super(Material.ground);
+        super(Material.GROUND);
         this.shape = shape;
-        this.material = Material.ground;
         this.textureSide = 0;
         this.setLightOpacity(1);
     }
@@ -68,18 +73,107 @@ public class BlockShape extends Block
     {
         super(material);
         this.shape = shape;
-        this.material = material;
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, new IProperty[0])
+        {
+            @Override
+            protected StateImplementation createState(Block block, ImmutableMap<IProperty<?>, Comparable<?>> properties, ImmutableMap<IUnlistedProperty<?>, Optional<?>> unlistedProperties)
+            {
+                return new StateImplementation(block, properties)
+                {
+                    @Override
+                    public EnumBlockRenderType getRenderType()
+                    {
+                        // AliensVsPredator.renderTypes().RENDER_TYPE_SHAPED
+                        return EnumBlockRenderType.MODEL;
+                    }
+
+                    @Override
+                    public boolean isOpaqueCube()
+                    {
+                        return false;
+                    }
+                    
+                    @Override
+                    public void addCollisionBoxToList(World world, BlockPos pos, AxisAlignedBB clip, List<AxisAlignedBB> list, Entity entity)
+                    {
+                        super.addCollisionBoxToList(world, pos, clip, list, entity);
+                        IBlockState state = world.getBlockState(pos);
+                        int data = state.getBlock().getMetaFromState(state);
+                        Matrix3 rot = Matrix3.rotations[data >> 2];
+                        Vertex org = new Vertex(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+
+                        this.addBox(-0.5, 0.5, -0.5, 0.0, -0.5, 0.5, rot, org, clip, list);
+
+                        if (shape.getId() == 0 || shape.getId() == 2)
+                        {
+                            this.addBox(-0.5, 0.5, 0.0, 0.5, 0.0, 0.5, rot, org, clip, list);
+                        }
+                        if (shape.getId() == 1)
+                        {
+                            this.addBox(-0.5, 0.0, 0.0, 0.5, 0.0, 0.5, rot, org, clip, list);
+                        }
+                        if (shape.getId() == 2)
+                        {
+                            this.addBox(-0.5, 0.0, 0.0, 0.5, -0.5, 0.0, rot, org, clip, list);
+                        }
+                    }
+                    
+                    @SuppressWarnings({ "rawtypes", "unchecked" })
+                    public void addBox(double x0, double x1, double y0, double y1, double z0, double z1, Matrix3 rot, Vertex org, AxisAlignedBB clip, List list)
+                    {
+                        Vertex p0 = rot.mul(x0, y0, z0).add(org);
+                        Vertex p1 = rot.mul(x1, y1, z1).add(org);
+
+                        if (p0.x < p1.x)
+                        {
+                            x0 = p0.x;
+                            x1 = p1.x;
+                        }
+                        else
+                        {
+                            x0 = p1.x;
+                            x1 = p0.x;
+                        }
+                        if (p0.y < p1.y)
+                        {
+                            y0 = p0.y;
+                            y1 = p1.y;
+                        }
+                        else
+                        {
+                            y0 = p1.y;
+                            y1 = p0.y;
+                        }
+                        if (p0.z < p1.z)
+                        {
+                            z0 = p0.z;
+                            z1 = p1.z;
+                        }
+                        else
+                        {
+                            z0 = p1.z;
+                            z1 = p0.z;
+                        }
+                        AxisAlignedBB box = new AxisAlignedBB(x0, y0, z0, x1, y1, z1);
+
+                        if (box != null && clip.intersectsWith(box))
+                        {
+                            list.add(box);
+                        }
+                    }
+                };
+            }
+        };
     }
 
     public void setIconsFromBlock(Block block)
     {
         this.textureBlock = block;
-    }
-    
-    @Override
-    public void registerIcons(IIconRegister reg)
-    {
-        ;
     }
 
     public Block getTextureBlock()
@@ -88,177 +182,34 @@ public class BlockShape extends Block
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta)
-    {
-        if (this.textureBlock != null)
-        {
-            return textureBlock.getBlockTextureFromSide(side);
-        }
-
-        return super.getIcon(side, meta);
-    }
-
-    @Override
-    public int getRenderType()
-    {
-        return AliensVsPredator.renderTypes().RENDER_TYPE_SHAPED;
-    }
-
-    @Override
-    public boolean renderAsNormalBlock()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isOpaqueCube()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean canPlaceBlockAt(World world, int x, int y, int z)
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
         return true;
     }
-
+    
     @Override
-    public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side)
+    public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side)
     {
         return true;
     }
-
+    
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack)
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        world.setBlockMetadataWithNotify(x, y, z, placementRotation(player), 3);
-    }
-
-    @Override
-    @SuppressWarnings("rawtypes")
-    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB clip, List list, Entity entity)
-    {
-        super.addCollisionBoxesToList(world, x, y, z, clip, list, entity);
-        int data = world.getBlockMetadata(x, y, z);
-        Matrix3 rot = Matrix3.rotations[data >> 2];
-        Vertex org = new Vertex(x + 0.5, y + 0.5, z + 0.5);
-
-        this.addBox(-0.5, 0.5, -0.5, 0.0, -0.5, 0.5, rot, org, clip, list);
-
-        if (shape.getId() == 0 || shape.getId() == 2)
-        {
-            this.addBox(-0.5, 0.5, 0.0, 0.5, 0.0, 0.5, rot, org, clip, list);
-        }
-        if (shape.getId() == 1)
-        {
-            this.addBox(-0.5, 0.0, 0.0, 0.5, 0.0, 0.5, rot, org, clip, list);
-        }
-        if (shape.getId() == 2)
-        {
-            this.addBox(-0.5, 0.0, 0.0, 0.5, -0.5, 0.0, rot, org, clip, list);
-        }
-    }
-
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public void addBox(double x0, double x1, double y0, double y1, double z0, double z1, Matrix3 rot, Vertex org, AxisAlignedBB clip, List list)
-    {
-        Vertex p0 = rot.mul(x0, y0, z0).add(org);
-        Vertex p1 = rot.mul(x1, y1, z1).add(org);
-
-        if (p0.x < p1.x)
-        {
-            x0 = p0.x;
-            x1 = p1.x;
-        }
-        else
-        {
-            x0 = p1.x;
-            x1 = p0.x;
-        }
-        if (p0.y < p1.y)
-        {
-            y0 = p0.y;
-            y1 = p1.y;
-        }
-        else
-        {
-            y0 = p1.y;
-            y1 = p0.y;
-        }
-        if (p0.z < p1.z)
-        {
-            z0 = p0.z;
-            z1 = p1.z;
-        }
-        else
-        {
-            z0 = p1.z;
-            z1 = p0.z;
-        }
-        AxisAlignedBB box = AxisAlignedBB.getBoundingBox(x0, y0, z0, x1, y1, z1);
-
-        if (box != null && clip.intersectsWith(box))
-        {
-            list.add(box);
-        }
-    }
-
-    @Override
-    public boolean canHarvestBlock(EntityPlayer player, int meta)
-    {
-        return super.canHarvestBlock(player, meta);
-    }
-
-    @Override
-    public void onBlockHarvested(World world, int x, int y, int z, int data, EntityPlayer player)
-    {
-        super.onBlockHarvested(world, x, y, z, data, player);
-    }
-
-    @Override
-    public float getPlayerRelativeBlockHardness(EntityPlayer player, World world, int x, int y, int z)
-    {
-        return super.getPlayerRelativeBlockHardness(player, world, x, y, z);
-    }
-
-    @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
-    {
-        super.setBlockBoundsBasedOnState(world, x, y, z);
-
-        if (shape.getId() <= 2)
-        {
-            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-        }
-        else
-        {
-            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
-        }
+        world.setBlockState(pos, this.getStateFromMeta(placementRotation(placer)), 3);
     }
 
     public static int placementRotation(EntityLivingBase player)
     {
         int meta = (MathHelper.floor_double((player.rotationYaw * 4.0 / 360.0) + 0.5)) & 3;
         meta = meta | ((player.rotationPitch < 0 ? 1 : 0) << 2);
+        
         return meta;
     }
 
     public ShapeTypes getShape()
     {
         return this.shape;
-    }
-
-    public BlockShape setMaterial(Material material)
-    {
-        this.material = material;
-        return this;
-    }
-
-    @Override
-    public Material getMaterial()
-    {
-        return material;
     }
 
     public int getTextureSide()

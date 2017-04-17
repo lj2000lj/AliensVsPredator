@@ -22,12 +22,15 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
 public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IRoyalOrganism
 {
-    protected final int     JELLY_LEVEL_DW_ID = 26;
+    private static final DataParameter<Integer> JELLY_LEVEL = EntityDataManager.createKey(EntitySpeciesAlien.class, DataSerializers.VARINT);
     protected XenomorphHive hive;
     private UUID            signature;
     protected boolean       jellyLimitOverride;
@@ -43,7 +46,7 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IRoy
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(JELLY_LEVEL_DW_ID, this.getJellyLevelStart());
+        this.getDataManager().register(JELLY_LEVEL, this.getJellyLevelStart());
     }
 
     @Override
@@ -75,12 +78,6 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IRoy
     protected boolean canDespawn()
     {
         return false;
-    }
-
-    @Override
-    protected boolean isAIEnabled()
-    {
-        return true;
     }
 
     @Override
@@ -136,13 +133,13 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IRoy
     {
         if (!this.worldObj.isRemote && this.worldObj.getWorldTime() % 40 == 0)
         {
-            ArrayList<EntityItem> entityItemList = (ArrayList<EntityItem>) worldObj.getEntitiesWithinAABB(EntityItem.class, this.boundingBox.expand(8, 8, 8));
+            ArrayList<EntityItem> entityItemList = (ArrayList<EntityItem>) worldObj.getEntitiesWithinAABB(EntityItem.class, this.getEntityBoundingBox().expand(8, 8, 8));
 
             for (EntityItem entityItem : entityItemList)
             {
-                if (entityItem.delayBeforeCanPickup <= 0)
+                if (!entityItem.cannotPickup())
                 {
-                    ItemStack stack = entityItem.getDataWatcher().getWatchableObjectItemStack(10);
+                    ItemStack stack = entityItem.getEntityItem();
 
                     if (stack.getItem() == AliensVsPredator.items().itemRoyalJelly)
                     {
@@ -264,19 +261,19 @@ public abstract class EntitySpeciesAlien extends EntityMob implements IMob, IRoy
     @Override
     public int getJellyLevel()
     {
-        return this.dataWatcher.getWatchableObjectInt(JELLY_LEVEL_DW_ID);
+        return this.getDataManager().get(JELLY_LEVEL);
     }
 
     @Override
     public void setJellyLevel(int level)
     {
-        this.dataWatcher.updateObject(JELLY_LEVEL_DW_ID, level);
+        this.getDataManager().set(JELLY_LEVEL, level);
     }
 
     @Override
     public boolean isCreatureType(EnumCreatureType type, boolean forSpawnCount)
     {
-        return type == EnumCreatureType.monster ? true : false;
+        return type == EnumCreatureType.MONSTER ? true : false;
     }
 
     protected void negateFallDamage()

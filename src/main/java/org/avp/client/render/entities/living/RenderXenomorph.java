@@ -1,43 +1,43 @@
 package org.avp.client.render.entities.living;
 
+import org.avp.entities.living.EntityXenomorph;
+
 import com.arisux.mdxlib.lib.client.Model;
 import com.arisux.mdxlib.lib.client.RenderLivingWrapper;
 import com.arisux.mdxlib.lib.client.TexturedModel;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 
-public class RenderXenomorph extends RenderLivingWrapper
+public class RenderXenomorph<MODEL extends Model> extends RenderLivingWrapper<EntityXenomorph, MODEL>
 {
     private float renderScale;
 
-    public RenderXenomorph(TexturedModel<? extends Model> modelTexMap)
+    public RenderXenomorph(TexturedModel<MODEL> modelTexMap)
     {
         this(modelTexMap, 1F);
     }
 
-    public RenderXenomorph(TexturedModel<? extends Model> modelTexMap, float renderScale)
+    public RenderXenomorph(TexturedModel<MODEL> modelTexMap, float renderScale)
     {
         super(modelTexMap);
         this.renderScale = renderScale;
     }
 
     @Override
-    protected void preRenderCallback(EntityLivingBase entity, float renderPartialTicks)
+    protected void preRenderCallback(EntityXenomorph entity, float renderPartialTicks)
     {
         OpenGL.scale(this.renderScale, this.renderScale, this.renderScale);
         super.preRenderCallback(entity, renderPartialTicks);
     }
     
     @Override
-    public ResourceLocation getEntityTexture(Entity entity)
+    public ResourceLocation getEntityTexture(EntityXenomorph entity)
     {
-        return model.getTexture();
+        return this.getModel().getTexture();
     }
 
-    public RenderXenomorph setScale(float renderScale)
+    public RenderXenomorph<MODEL> setScale(float renderScale)
     {
         this.renderScale = renderScale;
         return this;

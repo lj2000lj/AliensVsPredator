@@ -8,7 +8,6 @@ import org.avp.packets.client.PacketOpenable;
 
 import com.arisux.mdxlib.lib.world.tile.IRotatable;
 
-import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
@@ -17,11 +16,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 
 
 public class TileEntityLocker extends TileEntity implements IOpenable, IRotatable
@@ -47,17 +46,21 @@ public class TileEntityLocker extends TileEntity implements IOpenable, IRotatabl
     }
 
     @Override
-    public Packet getDescriptionPacket()
+    public SPacketUpdateTileEntity getUpdatePacket()
     {
-        NBTTagCompound nbtTag = new NBTTagCompound();
-        this.writeToNBT(nbtTag);
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbtTag);
+        return new SPacketUpdateTileEntity(this.getPos(), 1, this.getUpdateTag());
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet)
+    public NBTTagCompound getUpdateTag()
     {
-        readFromNBT(packet.getNbtCompound());
+        return this.writeToNBT(new NBTTagCompound());
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet)
+    {
+        this.readFromNBT(packet.getNbtCompound());
     }
 
     public Container getNewContainer(EntityPlayer player)
@@ -66,7 +69,7 @@ public class TileEntityLocker extends TileEntity implements IOpenable, IRotatabl
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
 
@@ -79,6 +82,8 @@ public class TileEntityLocker extends TileEntity implements IOpenable, IRotatabl
         {
             this.saveInventoryToNBT(nbt, inventory);
         }
+        
+        return nbt;
     }
 
     private void saveInventoryToNBT(NBTTagCompound nbt, IInventory inventory)
@@ -98,7 +103,7 @@ public class TileEntityLocker extends TileEntity implements IOpenable, IRotatabl
             }
         }
 
-        nbt.setTag(inventory.getInventoryName(), items);
+        nbt.setTag(inventory.getName(), items);
     }
 
     @Override
@@ -106,9 +111,9 @@ public class TileEntityLocker extends TileEntity implements IOpenable, IRotatabl
     {
         super.readFromNBT(nbt);
 
-        if (EnumFacing.getOrientation(nbt.getInteger("Direction")) != null)
+        if (EnumFacing.getFront(nbt.getInteger("Direction")) != null)
         {
-            this.direction = EnumFacing.getOrientation(nbt.getInteger("Direction"));
+            this.direction = EnumFacing.getFront(nbt.getInteger("Direction"));
         }
 
         this.readInventoryFromNBT(nbt, this.inventory);
@@ -116,7 +121,7 @@ public class TileEntityLocker extends TileEntity implements IOpenable, IRotatabl
 
     private void readInventoryFromNBT(NBTTagCompound nbt, IInventory inventory)
     {
-        NBTTagList items = nbt.getTagList(inventory.getInventoryName(), Constants.NBT.TAG_COMPOUND);
+        NBTTagList items = nbt.getTagList(inventory.getName(), Constants.NBT.TAG_COMPOUND);
 
         for (byte x = 0; x < items.tagCount(); x++)
         {
@@ -135,16 +140,10 @@ public class TileEntityLocker extends TileEntity implements IOpenable, IRotatabl
     {
         if (!player.worldObj.isRemote)
         {
-            FMLNetworkHandler.openGui(player, AliensVsPredator.instance(), AliensVsPredator.interfaces().GUI_LOCKER, player.worldObj, xCoord, yCoord, zCoord);
+            FMLNetworkHandler.openGui(player, AliensVsPredator.instance(), AliensVsPredator.interfaces().GUI_LOCKER, player.worldObj, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
         }
     }
-
-    @Override
-    public void updateEntity()
-    {
-        super.updateEntity();
-    }
-
+    
     @Override
     public EnumFacing getDirection()
     {
@@ -164,7 +163,7 @@ public class TileEntityLocker extends TileEntity implements IOpenable, IRotatabl
 
         if (!this.worldObj.isRemote)
         {
-            AliensVsPredator.network().sendToAll(new PacketOpenable(isOpen, this.xCoord, this.yCoord, this.zCoord));
+            AliensVsPredator.network().sendToAll(new PacketOpenable(isOpen, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ()));
         }
     }
 

@@ -2,7 +2,7 @@ package org.avp.item;
 
 import org.avp.AliensVsPredator;
 import org.avp.client.model.entities.living.ModelDrone;
-import org.avp.entities.SharedPlayer;
+import org.avp.world.capabilities.ISpecialPlayer.SpecialPlayer;
 
 import com.arisux.mdxlib.lib.client.render.Draw;
 import com.arisux.mdxlib.lib.game.Game;
@@ -11,6 +11,7 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -22,34 +23,34 @@ public class ItemArmorXeno extends ItemArmor
     @SideOnly(Side.CLIENT)
     public ModelDrone mainModel;
 
-    public ItemArmorXeno(ArmorMaterial material, int renderIndex, int armorType)
+    public ItemArmorXeno(ArmorMaterial material, int renderIndex, EntityEquipmentSlot armorType)
     {
         super(material, renderIndex, armorType);
     }
 
     @Override
-    public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type)
+    public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type)
     {
         switch (slot)
         {
-            case 0:
+            case FEET:
                 return Draw.getResourcePath(AliensVsPredator.resources().XENO1);
-            case 1:
+            case LEGS:
                 return Draw.getResourcePath(AliensVsPredator.resources().XENO1);
-            case 2:
+            case CHEST:
                 return Draw.getResourcePath(AliensVsPredator.resources().XENO2);
             default:
                 return Draw.getResourcePath(AliensVsPredator.resources().XENO1);
         }
     }
-
+    
     @Override
     @SideOnly(Side.CLIENT)
-    public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int armorSlot)
+    public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default)
     {
         return null;
     }
-
+    
     public static boolean isPlayerWearingXenoArmorSet(EntityPlayer player)
     {
         if (player != null)
@@ -66,11 +67,11 @@ public class ItemArmorXeno extends ItemArmor
     {
         if (isPlayerWearingXenoArmorSet(player))
         {
-            SharedPlayer specialPlayer = SharedPlayer.get(player);
+            SpecialPlayer specialPlayer = (SpecialPlayer) player.getCapability(SpecialPlayer.Provider.CAPABILITY, null);
 
             if (world.isRemote)
             {
-                this.controlledAbility(specialPlayer);
+                this.controlledAbility(player, specialPlayer);
             }
 
             player.fallDistance = 0.0F;
@@ -83,7 +84,7 @@ public class ItemArmorXeno extends ItemArmor
     }
 
     @SideOnly(Side.CLIENT)
-    public void controlledAbility(SharedPlayer specialPlayer)
+    public void controlledAbility(EntityPlayer player, SpecialPlayer specialPlayer)
     {
         boolean canClimbPrev = specialPlayer.canClimb();
 
@@ -98,7 +99,7 @@ public class ItemArmorXeno extends ItemArmor
 
         if (canClimbPrev != specialPlayer.canClimb())
         {
-            specialPlayer.syncWithServer();
+            specialPlayer.syncWithServer(player);
         }
     }
 }

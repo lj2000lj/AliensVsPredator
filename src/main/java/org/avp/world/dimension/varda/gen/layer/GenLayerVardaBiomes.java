@@ -1,13 +1,14 @@
 package org.avp.world.dimension.varda.gen.layer;
 
-import org.avp.world.dimension.varda.BiomeGenVarda;
+import org.avp.world.dimension.varda.BiomeVarda;
 
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
 
 public class GenLayerVardaBiomes extends GenLayer
 {
-    protected BiomeGenVarda[] allowedBiomes = { BiomeGenVarda.vardaBadlands, BiomeGenVarda.vardaForest };
+    protected BiomeVarda[] allowedBiomes = { BiomeVarda.vardaBadlands, BiomeVarda.vardaForest };
 
     public GenLayerVardaBiomes(long seed, GenLayer genlayer)
     {
@@ -21,7 +22,6 @@ public class GenLayerVardaBiomes extends GenLayer
     }
 
     @Override
-
     public int[] getInts(int x, int z, int width, int depth)
     {
         int[] dest = IntCache.getIntCache(width * depth);
@@ -31,7 +31,7 @@ public class GenLayerVardaBiomes extends GenLayer
             for (int dx = 0; dx < width; dx++)
             {
                 this.initChunkSeed(dx + x, dz + z);
-                dest[(dx + dz * width)] = this.allowedBiomes[nextInt(this.allowedBiomes.length)].biomeID;
+                dest[(dx + dz * width)] = Biome.getIdForBiome(this.allowedBiomes[nextInt(this.allowedBiomes.length)]);
             }
         }
 

@@ -2,13 +2,14 @@ package org.avp.packets.server;
 
 import org.avp.tile.TileEntityTurret;
 
-import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketAddTuretTarget implements IMessage, IMessageHandler<PacketAddTuretTarget, PacketAddTuretTarget>
 {
@@ -50,11 +51,11 @@ public class PacketAddTuretTarget implements IMessage, IMessageHandler<PacketAdd
     @Override
     public PacketAddTuretTarget onMessage(PacketAddTuretTarget packet, MessageContext ctx)
     {
-        TileEntityTurret tile = (TileEntityTurret) ctx.getServerHandler().playerEntity.worldObj.getTileEntity(packet.x, packet.y, packet.z);
+        TileEntityTurret tile = (TileEntityTurret) ctx.getServerHandler().playerEntity.worldObj.getTileEntity(new BlockPos(packet.x, packet.y, packet.z));
 
         if (tile != null)
         {
-            tile.addTargetType((Class<? extends Entity>) EntityList.stringToClassMapping.get(packet.entityIdentifier));
+            tile.addTargetType((Class<? extends Entity>) EntityList.NAME_TO_CLASS.get(packet.entityIdentifier));
         }
 
         return null;

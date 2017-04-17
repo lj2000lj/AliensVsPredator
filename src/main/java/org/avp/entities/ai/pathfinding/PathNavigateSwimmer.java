@@ -1,6 +1,11 @@
 package org.avp.entities.ai.pathfinding;
 
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.pathfinding.PathFinder;
+import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.pathfinding.SwimNodeProcessor;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -61,9 +66,9 @@ public class PathNavigateSwimmer extends PathNavigate
     }
 
     @Override
-    protected boolean isDirectPathBetweenPoints(Vec3d posVec3d1, Vec3d posVec3d2, int sizeX, int sizeY, int sizeZ)
+    protected boolean isDirectPathBetweenPoints(Vec3d pos1, Vec3d pso2, int sizeX, int sizeY, int sizeZ)
     {
-        MovingObjectPosition movingobjectposition = this.worldObj.rayTraceBlocks(posVec3d1, new Vec3d(posVec3d2.xCoord, posVec3d2.yCoord + (double) this.theEntity.height * 0.5D, posVec3d2.zCoord), false);
-        return movingobjectposition == null || movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.MISS;
+        RayTraceResult result = this.worldObj.rayTraceBlocks(pos1, new Vec3d(pso2.xCoord, pso2.yCoord + (double) this.theEntity.height * 0.5D, pso2.zCoord), false);
+        return result == null || result.typeOfHit == Type.MISS;
     }
 }

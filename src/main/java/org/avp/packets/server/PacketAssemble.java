@@ -3,13 +3,13 @@ package org.avp.packets.server;
 import org.avp.item.crafting.AssemblyManager;
 import org.avp.item.crafting.Schematic;
 
-import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketAssemble implements IMessage, IMessageHandler<PacketAssemble, PacketAssemble>
 {
@@ -66,11 +66,11 @@ public class PacketAssemble implements IMessage, IMessageHandler<PacketAssemble,
 
             if (amount > 0)
             {
-                player.addChatMessage(new ChatComponentText(String.format("Assembled %sx %s", amount, schematic.getItemStackAssembled().getDisplayName())));
+                player.addChatMessage(new TextComponentString(String.format("Assembled %sx %s", amount, schematic.getItemStackAssembled().getDisplayName())));
             }
             else if (amount == 0)
             {
-                player.addChatMessage(new ChatComponentText(String.format("Not enough materials to assemble %sx %s", packet.count, schematic.getItemStackAssembled().getDisplayName())));
+                player.addChatMessage(new TextComponentString(String.format("Not enough materials to assemble %sx %s", packet.count, schematic.getItemStackAssembled().getDisplayName())));
             }
         }
 

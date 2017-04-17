@@ -16,13 +16,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.IRenderHandler;
 
 public class SkyProviderAcheron extends IRenderHandler
 {
-    private Tessellator tessellator = Tessellator.instance;
     protected Color skyColor = new com.arisux.mdxlib.lib.client.render.Color(0.0F, 0.0F, 0.0F, 1F);
     protected Color cloudColor = new com.arisux.mdxlib.lib.client.render.Color(0.03F, 0.03F, 0.05F, 0.8F);
     protected Color starColor = new com.arisux.mdxlib.lib.client.render.Color(0.0F, 0.5F, 1.0F, 0.15F);
@@ -49,12 +47,12 @@ public class SkyProviderAcheron extends IRenderHandler
             {
                 for (int z = -levels * size; z <= levels * size; z += levels)
                 {
-                    tessellator.startDrawingQuads();
-                    tessellator.addVertex(x + 0.000F, skylineHeight, z + 0.000F);
-                    tessellator.addVertex(x + levels, skylineHeight, z + 0.000F);
-                    tessellator.addVertex(x + levels, skylineHeight, z + levels);
-                    tessellator.addVertex(x + 0.000F, skylineHeight, z + levels);
-                    tessellator.draw();
+                    Draw.startQuads();
+                    Draw.vertex(x + 0.000F, skylineHeight, z + 0.000F).endVertex();
+                    Draw.vertex(x + levels, skylineHeight, z + 0.000F).endVertex();
+                    Draw.vertex(x + levels, skylineHeight, z + levels).endVertex();
+                    Draw.vertex(x + 0.000F, skylineHeight, z + levels).endVertex();
+                    Draw.tessellate();
                 }
             }
         }
@@ -90,12 +88,12 @@ public class SkyProviderAcheron extends IRenderHandler
             OpenGL.color(1.0F, 1.0F, 1.0F, 1.0F);
             OpenGL.rotate(world.getCelestialAngle(renderPartialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
             Draw.bindTexture(GameResources.SKY_SUN);
-            tessellator.startDrawingQuads();
-            tessellator.addVertexWithUV(-scale, 150.0D, -scale, 0.0D, 0.0D);
-            tessellator.addVertexWithUV(scale, 150.0D, -scale, 1.0D, 0.0D);
-            tessellator.addVertexWithUV(scale, 150.0D, scale, 1.0D, 1.0D);
-            tessellator.addVertexWithUV(-scale, 150.0D, scale, 0.0D, 1.0D);
-            tessellator.draw();
+            Draw.startQuads();
+            Draw.vertex(-scale, 150.0D, -scale, 0.0D, 0.0).endVertex();
+            Draw.vertex(scale, 150.0D, -scale, 1.0D, 0.0D).endVertex();
+            Draw.vertex(scale, 150.0D, scale, 1.0D, 1.0D).endVertex();
+            Draw.vertex(-scale, 150.0D, scale, 0.0D, 1.0D).endVertex();
+            Draw.tessellate();
         }
         OpenGL.popMatrix();
 
@@ -108,12 +106,12 @@ public class SkyProviderAcheron extends IRenderHandler
             OpenGL.rotate(DimensionUtil.calculateCelestialAngle(world.getWorldTime(), renderPartialTicks) * 30.0F, 10.0F, -6.0F, -20.0F);
             OpenGL.rotate(155F, 0.0F, 1.0F, 0.0F);
             Draw.bindTexture(AliensVsPredator.resources().SKY_VARDA);
-            tessellator.startDrawingQuads();
-            tessellator.addVertexWithUV(-scale, 150.0D, -scale, 0.0D, 0.0D);
-            tessellator.addVertexWithUV(scale, 150.0D, -scale, 1.0D, 0.0D);
-            tessellator.addVertexWithUV(scale, 150.0D, scale, 1.0D, 1.0D);
-            tessellator.addVertexWithUV(-scale, 150.0D, scale, 0.0D, 1.0D);
-            tessellator.draw();
+            Draw.startQuads();
+            Draw.vertex(-scale, 150.0D, -scale, 0.0D, 0.0D).endVertex();
+            Draw.vertex(scale, 150.0D, -scale, 1.0D, 0.0D).endVertex();
+            Draw.vertex(scale, 150.0D, scale, 1.0D, 1.0D).endVertex();
+            Draw.vertex(-scale, 150.0D, scale, 0.0D, 1.0D).endVertex();
+            Draw.tessellate();
         }
         OpenGL.popMatrix();
 
@@ -126,12 +124,12 @@ public class SkyProviderAcheron extends IRenderHandler
             OpenGL.rotate(DimensionUtil.calculateCelestialAngle(world.getWorldTime(), renderPartialTicks) * 360.0F, 10.0F, -6.0F, -20.0F);
             OpenGL.rotate(135F, 0.0F, 1.0F, 0.0F);
             Draw.bindTexture(AliensVsPredator.resources().SKY_CALPAMOS);
-            tessellator.startDrawingQuads();
-            tessellator.addVertexWithUV(-scale, 150.0D, -scale, 0.0D, 0.0D);
-            tessellator.addVertexWithUV(scale, 150.0D, -scale, 1.0D, 0.0D);
-            tessellator.addVertexWithUV(scale, 150.0D, scale, 1.0D, 1.0D);
-            tessellator.addVertexWithUV(-scale, 150.0D, scale, 0.0D, 1.0D);
-            tessellator.draw();
+            Draw.startQuads();
+            Draw.vertex(-scale, 150.0D, -scale, 0.0D, 0.0D).endVertex();
+            Draw.vertex(scale, 150.0D, -scale, 1.0D, 0.0D).endVertex();
+            Draw.vertex(scale, 150.0D, scale, 1.0D, 1.0D).endVertex();
+            Draw.vertex(-scale, 150.0D, scale, 0.0D, 1.0D).endVertex();
+            Draw.tessellate();;
         }
         OpenGL.popMatrix();
 
@@ -140,7 +138,7 @@ public class SkyProviderAcheron extends IRenderHandler
         OpenGL.enable(GL11.GL_TEXTURE_2D);
         GL11.glDepthMask(true);
 
-        if (Game.minecraft().gameSettings.shouldRenderClouds())
+        if (Game.minecraft().gameSettings.shouldRenderClouds() >= 1)
         {
             OpenGL.pushMatrix();
             {
@@ -160,13 +158,13 @@ public class SkyProviderAcheron extends IRenderHandler
     {
         for (int cloudPass = 1; cloudPass > 0; cloudPass--)
         {
-            float relativeHeight = (float) (Game.minecraft().renderViewEntity.lastTickPosY + (Game.minecraft().renderViewEntity.posY - Game.minecraft().renderViewEntity.lastTickPosY) * renderPartialTicks);
+            float relativeHeight = (float) (Game.minecraft().getRenderViewEntity().lastTickPosY + (Game.minecraft().getRenderViewEntity().posY - Game.minecraft().getRenderViewEntity().lastTickPosY) * renderPartialTicks);
             float cloudSpan = 10.0F;
             float cloudHeight = 12.0F * cloudPass;
             float cloudSpeed = 20;
             double time = Game.minecraft().theWorld.getWorldTime() * cloudSpeed + renderPartialTicks;
-            double viewX = (Game.minecraft().renderViewEntity.prevPosX + (Game.minecraft().renderViewEntity.posX - Game.minecraft().renderViewEntity.prevPosX) * renderPartialTicks + time * 0.029999999329447746D) / cloudSpan;
-            double viewZ = (Game.minecraft().renderViewEntity.prevPosZ + (Game.minecraft().renderViewEntity.posZ - Game.minecraft().renderViewEntity.prevPosZ) * renderPartialTicks) / cloudSpan + 0.33000001311302185D;
+            double viewX = (Game.minecraft().getRenderViewEntity().prevPosX + (Game.minecraft().getRenderViewEntity().posX - Game.minecraft().getRenderViewEntity().prevPosX) * renderPartialTicks + time * 0.029999999329447746D) / cloudSpan;
+            double viewZ = (Game.minecraft().getRenderViewEntity().prevPosZ + (Game.minecraft().getRenderViewEntity().posZ - Game.minecraft().getRenderViewEntity().prevPosZ) * renderPartialTicks) / cloudSpan + 0.33000001311302185D;
             float cloudY = Game.minecraft().theWorld.provider.getCloudHeight() - relativeHeight;
             viewX -= (MathHelper.floor_double(viewX / 2048.0D)) * 2048;
             viewZ -= (MathHelper.floor_double(viewZ / 2048.0D)) * 2048;
@@ -202,85 +200,69 @@ public class SkyProviderAcheron extends IRenderHandler
                         float cloudX = cloudU - ((float) (viewX - MathHelper.floor_double(viewX)));
                         float cloudZ = cloudV - ((float) (viewZ - MathHelper.floor_double(viewZ)));
 
-                        tessellator.startDrawingQuads();
+                        Draw.startQuads();
 
                         if (cloudY > -cloudHeight - 1.0F)
                         {
-                            tessellator.setColorRGBA_F(cloudColor.r * 0.7F, cloudColor.g * 0.7F, cloudColor.b * 0.7F, cloudColor.a + 0.1F);
-                            tessellator.setNormal(0.0F, -1.0F, 0.0F);
-                            tessellator.addVertexWithUV(cloudX + 0.0F, cloudY + 0.0F, cloudZ + dist, (cloudU + 0.0F) * scaleUV + offsetU, (cloudV + dist) * scaleUV + offsetV);
-                            tessellator.addVertexWithUV(cloudX + dist, cloudY + 0.0F, cloudZ + dist, (cloudU + dist) * scaleUV + offsetU, (cloudV + dist) * scaleUV + offsetV);
-                            tessellator.addVertexWithUV(cloudX + dist, cloudY + 0.0F, cloudZ + 0.0F, (cloudU + dist) * scaleUV + offsetU, (cloudV + 0.0F) * scaleUV + offsetV);
-                            tessellator.addVertexWithUV(cloudX + 0.0F, cloudY + 0.0F, cloudZ + 0.0F, (cloudU + 0.0F) * scaleUV + offsetU, (cloudV + 0.0F) * scaleUV + offsetV);
+                            Draw.vertex(cloudX + 0.0F, cloudY + 0.0F, cloudZ + dist, (cloudU + 0.0F) * scaleUV + offsetU, (cloudV + dist) * scaleUV + offsetV).color(cloudColor.r * 0.7F, cloudColor.g * 0.7F, cloudColor.b * 0.7F, cloudColor.a + 0.1F).normal(0.0F, -1.0F, 0.0F).endVertex();;
+                            Draw.vertex(cloudX + dist, cloudY + 0.0F, cloudZ + dist, (cloudU + dist) * scaleUV + offsetU, (cloudV + dist) * scaleUV + offsetV).color(cloudColor.r * 0.7F, cloudColor.g * 0.7F, cloudColor.b * 0.7F, cloudColor.a + 0.1F).normal(0.0F, -1.0F, 0.0F).endVertex();;
+                            Draw.vertex(cloudX + dist, cloudY + 0.0F, cloudZ + 0.0F, (cloudU + dist) * scaleUV + offsetU, (cloudV + 0.0F) * scaleUV + offsetV).color(cloudColor.r * 0.7F, cloudColor.g * 0.7F, cloudColor.b * 0.7F, cloudColor.a + 0.1F).normal(0.0F, -1.0F, 0.0F).endVertex();;
+                            Draw.vertex(cloudX + 0.0F, cloudY + 0.0F, cloudZ + 0.0F, (cloudU + 0.0F) * scaleUV + offsetU, (cloudV + 0.0F) * scaleUV + offsetV).color(cloudColor.r * 0.7F, cloudColor.g * 0.7F, cloudColor.b * 0.7F, cloudColor.a + 0.1F).normal(0.0F, -1.0F, 0.0F).endVertex();;
                         }
 
                         if (cloudY <= cloudHeight + 1.0F)
                         {
-                            tessellator.setColorRGBA_F(cloudColor.r, cloudColor.g, cloudColor.b, cloudColor.a + 0.15F);
-                            tessellator.setNormal(0.0F, 1.0F, 0.0F);
-                            tessellator.addVertexWithUV(cloudX + 0.0F, cloudY + cloudHeight, cloudZ + dist, (cloudU + 0.0F) * scaleUV + offsetU, (cloudV + dist) * scaleUV + offsetV);
-                            tessellator.addVertexWithUV(cloudX + dist, cloudY + cloudHeight, cloudZ + dist, (cloudU + dist) * scaleUV + offsetU, (cloudV + dist) * scaleUV + offsetV);
-                            tessellator.addVertexWithUV(cloudX + dist, cloudY + cloudHeight, cloudZ + 0.0F, (cloudU + dist) * scaleUV + offsetU, (cloudV + 0.0F) * scaleUV + offsetV);
-                            tessellator.addVertexWithUV(cloudX + 0.0F, cloudY + cloudHeight, cloudZ + 0.0F, (cloudU + 0.0F) * scaleUV + offsetU, (cloudV + 0.0F) * scaleUV + offsetV);
+                            Draw.vertex(cloudX + 0.0F, cloudY + cloudHeight, cloudZ + dist, (cloudU + 0.0F) * scaleUV + offsetU, (cloudV + dist) * scaleUV + offsetV).normal(0.0F, 1.0F, 0.0F).color(cloudColor.r, cloudColor.g, cloudColor.b, cloudColor.a + 0.15F).endVertex();;
+                            Draw.vertex(cloudX + dist, cloudY + cloudHeight, cloudZ + dist, (cloudU + dist) * scaleUV + offsetU, (cloudV + dist) * scaleUV + offsetV).normal(0.0F, 1.0F, 0.0F).color(cloudColor.r, cloudColor.g, cloudColor.b, cloudColor.a + 0.15F).endVertex();;
+                            Draw.vertex(cloudX + dist, cloudY + cloudHeight, cloudZ + 0.0F, (cloudU + dist) * scaleUV + offsetU, (cloudV + 0.0F) * scaleUV + offsetV).normal(0.0F, 1.0F, 0.0F).color(cloudColor.r, cloudColor.g, cloudColor.b, cloudColor.a + 0.15F).endVertex();;
+                            Draw.vertex(cloudX + 0.0F, cloudY + cloudHeight, cloudZ + 0.0F, (cloudU + 0.0F) * scaleUV + offsetU, (cloudV + 0.0F) * scaleUV + offsetV).normal(0.0F, 1.0F, 0.0F).color(cloudColor.r, cloudColor.g, cloudColor.b, cloudColor.a + 0.15F).endVertex();;
                         }
-
-                        tessellator.setColorRGBA_F(cloudColor.r * 0.9F, cloudColor.g * 0.9F, cloudColor.b * 0.9F, cloudColor.a);
 
                         if (x > -1)
                         {
-                            tessellator.setNormal(-1.0F, 0.0F, 0.0F);
-
                             for (int size = 0; size < dist; ++size)
                             {
-                                tessellator.addVertexWithUV(cloudX + size + 0.0F, cloudY + 0.0F, cloudZ + dist, (cloudU + size + 0.5F) * scaleUV + offsetU, (cloudV + dist) * scaleUV + offsetV);
-                                tessellator.addVertexWithUV(cloudX + size + 0.0F, cloudY + cloudHeight, cloudZ + dist, (cloudU + size + 0.5F) * scaleUV + offsetU, (cloudV + dist) * scaleUV + offsetV);
-                                tessellator.addVertexWithUV(cloudX + size + 0.0F, cloudY + cloudHeight, cloudZ + 0.0F, (cloudU + size + 0.5F) * scaleUV + offsetU, (cloudV + 0.0F) * scaleUV + offsetV);
-                                tessellator.addVertexWithUV(cloudX + size + 0.0F, cloudY + 0.0F, cloudZ + 0.0F, (cloudU + size + 0.5F) * scaleUV + offsetU, (cloudV + 0.0F) * scaleUV + offsetV);
+                                Draw.vertex(cloudX + size + 0.0F, cloudY + 0.0F, cloudZ + dist, (cloudU + size + 0.5F) * scaleUV + offsetU, (cloudV + dist) * scaleUV + offsetV).normal(-1.0F, 0.0F, 0.0F).color(cloudColor.r * 0.9F, cloudColor.g * 0.9F, cloudColor.b * 0.9F, cloudColor.a).endVertex();
+                                Draw.vertex(cloudX + size + 0.0F, cloudY + cloudHeight, cloudZ + dist, (cloudU + size + 0.5F) * scaleUV + offsetU, (cloudV + dist) * scaleUV + offsetV).normal(-1.0F, 0.0F, 0.0F).color(cloudColor.r * 0.9F, cloudColor.g * 0.9F, cloudColor.b * 0.9F, cloudColor.a).endVertex();
+                                Draw.vertex(cloudX + size + 0.0F, cloudY + cloudHeight, cloudZ + 0.0F, (cloudU + size + 0.5F) * scaleUV + offsetU, (cloudV + 0.0F) * scaleUV + offsetV).normal(-1.0F, 0.0F, 0.0F).color(cloudColor.r * 0.9F, cloudColor.g * 0.9F, cloudColor.b * 0.9F, cloudColor.a).endVertex();
+                                Draw.vertex(cloudX + size + 0.0F, cloudY + 0.0F, cloudZ + 0.0F, (cloudU + size + 0.5F) * scaleUV + offsetU, (cloudV + 0.0F) * scaleUV + offsetV).normal(-1.0F, 0.0F, 0.0F).color(cloudColor.r * 0.9F, cloudColor.g * 0.9F, cloudColor.b * 0.9F, cloudColor.a).endVertex();
                             }
                         }
 
                         if (x <= 1)
                         {
-                            tessellator.setNormal(1.0F, 0.0F, 0.0F);
-
                             for (int size = 0; size < dist; ++size)
                             {
-                                tessellator.addVertexWithUV(cloudX + size + 1.0F, cloudY + 0.0F, cloudZ + dist, (cloudU + size + 0.5F) * scaleUV + offsetU, (cloudV + dist) * scaleUV + offsetV);
-                                tessellator.addVertexWithUV(cloudX + size + 1.0F, cloudY + cloudHeight, cloudZ + dist, (cloudU + size + 0.5F) * scaleUV + offsetU, (cloudV + dist) * scaleUV + offsetV);
-                                tessellator.addVertexWithUV(cloudX + size + 1.0F, cloudY + cloudHeight, cloudZ + 0.0F, (cloudU + size + 0.5F) * scaleUV + offsetU, (cloudV + 0.0F) * scaleUV + offsetV);
-                                tessellator.addVertexWithUV(cloudX + size + 1.0F, cloudY + 0.0F, cloudZ + 0.0F, (cloudU + size + 0.5F) * scaleUV + offsetU, (cloudV + 0.0F) * scaleUV + offsetV);
+                                Draw.vertex(cloudX + size + 1.0F, cloudY + 0.0F, cloudZ + dist, (cloudU + size + 0.5F) * scaleUV + offsetU, (cloudV + dist) * scaleUV + offsetV).normal(1.0F, 0.0F, 0.0F).color(cloudColor.r * 0.9F, cloudColor.g * 0.9F, cloudColor.b * 0.9F, cloudColor.a).endVertex();
+                                Draw.vertex(cloudX + size + 1.0F, cloudY + cloudHeight, cloudZ + dist, (cloudU + size + 0.5F) * scaleUV + offsetU, (cloudV + dist) * scaleUV + offsetV).normal(1.0F, 0.0F, 0.0F).color(cloudColor.r * 0.9F, cloudColor.g * 0.9F, cloudColor.b * 0.9F, cloudColor.a).endVertex();
+                                Draw.vertex(cloudX + size + 1.0F, cloudY + cloudHeight, cloudZ + 0.0F, (cloudU + size + 0.5F) * scaleUV + offsetU, (cloudV + 0.0F) * scaleUV + offsetV).normal(1.0F, 0.0F, 0.0F).color(cloudColor.r * 0.9F, cloudColor.g * 0.9F, cloudColor.b * 0.9F, cloudColor.a).endVertex();
+                                Draw.vertex(cloudX + size + 1.0F, cloudY + 0.0F, cloudZ + 0.0F, (cloudU + size + 0.5F) * scaleUV + offsetU, (cloudV + 0.0F) * scaleUV + offsetV).normal(1.0F, 0.0F, 0.0F).color(cloudColor.r * 0.9F, cloudColor.g * 0.9F, cloudColor.b * 0.9F, cloudColor.a).endVertex();
                             }
                         }
 
-                        tessellator.setColorRGBA_F(cloudColor.r * 0.8F, cloudColor.g * 0.8F, cloudColor.b * 0.8F, 0.8F);
-
                         if (z > -1)
                         {
-                            tessellator.setNormal(0.0F, 0.0F, -1.0F);
-
                             for (int size = 0; size < dist; ++size)
                             {
-                                tessellator.addVertexWithUV(cloudX + 0.0F, cloudY + cloudHeight, cloudZ + size + 0.0F, (cloudU + 0.0F) * scaleUV + offsetU, (cloudV + size + 0.5F) * scaleUV + offsetV);
-                                tessellator.addVertexWithUV(cloudX + dist, cloudY + cloudHeight, cloudZ + size + 0.0F, (cloudU + dist) * scaleUV + offsetU, (cloudV + size + 0.5F) * scaleUV + offsetV);
-                                tessellator.addVertexWithUV(cloudX + dist, cloudY + 0.0F, cloudZ + size + 0.0F, (cloudU + dist) * scaleUV + offsetU, (cloudV + size + 0.5F) * scaleUV + offsetV);
-                                tessellator.addVertexWithUV(cloudX + 0.0F, cloudY + 0.0F, cloudZ + size + 0.0F, (cloudU + 0.0F) * scaleUV + offsetU, (cloudV + size + 0.5F) * scaleUV + offsetV);
+                                Draw.vertex(cloudX + 0.0F, cloudY + cloudHeight, cloudZ + size + 0.0F, (cloudU + 0.0F) * scaleUV + offsetU, (cloudV + size + 0.5F) * scaleUV + offsetV).normal(0.0F, 0.0F, -1.0F).color(cloudColor.r * 0.8F, cloudColor.g * 0.8F, cloudColor.b * 0.8F, 0.8F).endVertex();
+                                Draw.vertex(cloudX + dist, cloudY + cloudHeight, cloudZ + size + 0.0F, (cloudU + dist) * scaleUV + offsetU, (cloudV + size + 0.5F) * scaleUV + offsetV).normal(0.0F, 0.0F, -1.0F).color(cloudColor.r * 0.8F, cloudColor.g * 0.8F, cloudColor.b * 0.8F, 0.8F).endVertex();
+                                Draw.vertex(cloudX + dist, cloudY + 0.0F, cloudZ + size + 0.0F, (cloudU + dist) * scaleUV + offsetU, (cloudV + size + 0.5F) * scaleUV + offsetV).normal(0.0F, 0.0F, -1.0F).color(cloudColor.r * 0.8F, cloudColor.g * 0.8F, cloudColor.b * 0.8F, 0.8F).endVertex();
+                                Draw.vertex(cloudX + 0.0F, cloudY + 0.0F, cloudZ + size + 0.0F, (cloudU + 0.0F) * scaleUV + offsetU, (cloudV + size + 0.5F) * scaleUV + offsetV).normal(0.0F, 0.0F, -1.0F).color(cloudColor.r * 0.8F, cloudColor.g * 0.8F, cloudColor.b * 0.8F, 0.8F).endVertex();
                             }
                         }
 
                         if (z <= 1)
                         {
-                            tessellator.setNormal(0.0F, 0.0F, 1.0F);
-
                             for (int size = 0; size < dist; ++size)
                             {
-                                tessellator.addVertexWithUV(cloudX + 0.0F, cloudY + cloudHeight, cloudZ + size + 1.0F, (cloudU + 0.0F) * scaleUV + offsetU, (cloudV + size + 0.5F) * scaleUV + offsetV);
-                                tessellator.addVertexWithUV(cloudX + dist, cloudY + cloudHeight, cloudZ + size + 1.0F, (cloudU + dist) * scaleUV + offsetU, (cloudV + size + 0.5F) * scaleUV + offsetV);
-                                tessellator.addVertexWithUV(cloudX + dist, cloudY + 0.0F, cloudZ + size + 1.0F, (cloudU + dist) * scaleUV + offsetU, (cloudV + size + 0.5F) * scaleUV + offsetV);
-                                tessellator.addVertexWithUV(cloudX + 0.0F, cloudY + 0.0F, cloudZ + size + 1.0F, (cloudU + 0.0F) * scaleUV + offsetU, (cloudV + size + 0.5F) * scaleUV + offsetV);
+                                Draw.vertex(cloudX + 0.0F, cloudY + cloudHeight, cloudZ + size + 1.0F, (cloudU + 0.0F) * scaleUV + offsetU, (cloudV + size + 0.5F) * scaleUV + offsetV).normal(0.0F, 0.0F, 1.0F).color(cloudColor.r * 0.8F, cloudColor.g * 0.8F, cloudColor.b * 0.8F, 0.8F).endVertex();
+                                Draw.vertex(cloudX + dist, cloudY + cloudHeight, cloudZ + size + 1.0F, (cloudU + dist) * scaleUV + offsetU, (cloudV + size + 0.5F) * scaleUV + offsetV).normal(0.0F, 0.0F, 1.0F).color(cloudColor.r * 0.8F, cloudColor.g * 0.8F, cloudColor.b * 0.8F, 0.8F).endVertex();
+                                Draw.vertex(cloudX + dist, cloudY + 0.0F, cloudZ + size + 1.0F, (cloudU + dist) * scaleUV + offsetU, (cloudV + size + 0.5F) * scaleUV + offsetV).normal(0.0F, 0.0F, 1.0F).color(cloudColor.r * 0.8F, cloudColor.g * 0.8F, cloudColor.b * 0.8F, 0.8F).endVertex();
+                                Draw.vertex(cloudX + 0.0F, cloudY + 0.0F, cloudZ + size + 1.0F, (cloudU + 0.0F) * scaleUV + offsetU, (cloudV + size + 0.5F) * scaleUV + offsetV).normal(0.0F, 0.0F, 1.0F).color(cloudColor.r * 0.8F, cloudColor.g * 0.8F, cloudColor.b * 0.8F, 0.8F).endVertex();
                             }
                         }
 
-                        tessellator.draw();
+                        Draw.tessellate();;
                     }
                 }
             }

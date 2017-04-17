@@ -1,22 +1,22 @@
 package org.avp.client.render.tile;
 
+import org.avp.tile.TileEntitySatelliteModem;
 import org.lwjgl.opengl.GL11;
 
 import com.arisux.mdxlib.lib.client.render.Draw;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
 
-public class RenderSatelliteModem extends TileEntitySpecialRenderer
+public class RenderSatelliteModem extends TileEntitySpecialRenderer<TileEntitySatelliteModem>
 {
     @Override
-    public void renderTileEntityAt(TileEntity tileEntity, double posX, double posY, double posZ, float renderPartialTicks)
+    public void renderTileEntityAt(TileEntitySatelliteModem tile, double x, double y, double z, float partialTicks, int destroyStage)
     {
         OpenGL.pushMatrix();
         {
             OpenGL.disable(GL11.GL_CULL_FACE);
-            OpenGL.translate(posX, posY, posZ);
+            OpenGL.translate(x, y, z);
             Draw.drawRect(0, 0, 1, 1, 0xFFFF0000);
             OpenGL.translate(0, 0, 1);
             Draw.drawRect(0, 0, 1, 1, 0xFFFF0000);

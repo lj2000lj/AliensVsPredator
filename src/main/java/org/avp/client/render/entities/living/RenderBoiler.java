@@ -1,6 +1,7 @@
 package org.avp.client.render.entities.living;
 
 import org.avp.AliensVsPredator;
+import org.avp.client.model.entities.living.ModelBoiler;
 import org.avp.entities.living.EntityBoiler;
 import org.lwjgl.opengl.GL11;
 
@@ -9,7 +10,7 @@ import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.renderer.OpenGlHelper;
 
-public class RenderBoiler extends RenderLivingWrapper<EntityBoiler>
+public class RenderBoiler extends RenderLivingWrapper<EntityBoiler, ModelBoiler>
 {
     public RenderBoiler()
     {

@@ -12,12 +12,11 @@ import com.arisux.mdxlib.lib.client.render.Draw;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
 
-public class RenderAssembler extends TileEntitySpecialRenderer
+public class RenderAssembler extends TileEntitySpecialRenderer<TileEntityAssembler>
 {
     @Override
-    public void renderTileEntityAt(TileEntity tile, double posX, double posY, double posZ, float renderPartialTicks)
+    public void renderTileEntityAt(TileEntityAssembler tile, double posX, double posY, double posZ, float renderPartialTicks, int destroy)
     {
         OpenGL.pushMatrix();
         {

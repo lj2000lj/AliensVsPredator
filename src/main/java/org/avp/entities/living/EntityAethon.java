@@ -3,11 +3,14 @@ package org.avp.entities.living;
 import org.avp.EntityItemDrops;
 import org.avp.api.parasitoidic.IHost;
 import org.avp.entities.EntityLiquidPool;
+import org.avp.entities.ai.EntityAICustomAttackOnCollide;
 
-import net.minecraft.entity.Entity;
+import com.arisux.mdxlib.lib.world.Pos;
+import com.google.common.base.Predicate;
+
 import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIMoveThroughVillage;
@@ -19,53 +22,63 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class EntityAethon extends EntityMob implements IMob, IHost
 {
-    public static final int FLYING_DATAWATCHER_ID = 19;
+    private static final DataParameter<Integer> FLYING = EntityDataManager.<Integer> createKey(EntityAethon.class, DataSerializers.VARINT);
 
-    IEntitySelector         mobSelector           = new IEntitySelector()
-                                                  {
-                                                      @Override
-                                                      public boolean isEntityApplicable(Entity target)
+    Predicate<EntityLivingBase> mobSelector           = new Predicate<EntityLivingBase>()
                                                       {
-                                                          if (target instanceof EntityAethon)
+                                                          @Override
+                                                          public boolean apply(EntityLivingBase target)
                                                           {
-                                                              return false;
-                                                          }
+                                                              if (target instanceof EntityAethon)
+                                                              {
+                                                                  return false;
+                                                              }
 
-                                                          if (target instanceof EntityLiquidPool)
-                                                          {
-                                                              return false;
-                                                          }
+                                                              if (target instanceof EntityLiquidPool)
+                                                              {
+                                                                  return false;
+                                                              }
 
-                                                          return true;
-                                                      }
-                                                  };
+                                                              return true;
+                                                          }
+                                                      };
+
+    private BlockPos    flyToPosition;
 
     public EntityAethon(World world)
     {
         super(world);
         this.experienceValue = 150;
         this.setSize(3, 7);
-        this.getNavigator().setBreakDoors(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityCreature.class, 1.0D, false));
-        this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
+        this.tasks.addTask(2, new EntityAICustomAttackOnCollide(this, EntityCreature.class, 1.0D, false));
+        this.tasks.addTask(2, new EntityAICustomAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));
         this.tasks.addTask(6, new EntityAIMoveThroughVillage(this, 1.0D, false));
         this.tasks.addTask(7, new EntityAIWander(this, 1.0D));
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityCreature.class, 0, true, false, mobSelector));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true, false, mobSelector));
-
-        this.dataWatcher.addObject(FLYING_DATAWATCHER_ID, 0);
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityCreature>(this, EntityCreature.class, 0, true, false, mobSelector));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, 0, true, false, mobSelector));
+    }
+    
+    @Override
+    protected void entityInit()
+    {
+        super.entityInit();
+        this.getDataManager().register(FLYING, 0);
     }
 
     @Override
@@ -80,24 +93,22 @@ public class EntityAethon extends EntityMob implements IMob, IHost
     }
 
     @Override
-    protected boolean isAIEnabled()
+    public boolean isAIDisabled()
     {
-        return true;
+        return false;
     }
-    
+
     @Override
     public boolean canParasiteAttach()
     {
         return this.canHostParasite();
     }
-    
+
     @Override
     public boolean canHostParasite()
     {
         return false;
     }
-
-    private ChunkCoordinates flyToPosition;
 
     @Override
     public void onUpdate()
@@ -115,40 +126,40 @@ public class EntityAethon extends EntityMob implements IMob, IHost
 
             if (this.getAttackTarget() != null && this.getDistance(this.getAttackTarget().posX, this.getAttackTarget().posY, this.getAttackTarget().posZ) <= 12)
             {
-                this.dataWatcher.updateObject(FLYING_DATAWATCHER_ID, 0);
+                this.getDataManager().set(FLYING, 0);
             }
             else if (this.getAttackTarget() == null && this.rand.nextInt(30) == 0)
             {
-                this.dataWatcher.updateObject(FLYING_DATAWATCHER_ID, 1);
+                this.getDataManager().set(FLYING, 1);
             }
 
-            if (this.flyToPosition != null && (!this.worldObj.isAirBlock(this.flyToPosition.posX, this.flyToPosition.posY, this.flyToPosition.posZ) || this.flyToPosition.posY < 1))
+            if (this.flyToPosition != null && (!this.worldObj.isAirBlock(this.flyToPosition) || this.flyToPosition.getY() < 1))
             {
                 this.flyToPosition = null;
             }
 
-            if (this.flyToPosition == null || this.rand.nextInt(30) == 0 || this.flyToPosition.getDistanceSquared((int) this.posX, (int) this.posY, (int) this.posZ) < 4.0F)
+            if (this.flyToPosition == null || this.rand.nextInt(30) == 0 || Pos.distanceSq(flyToPosition.getX(), flyToPosition.getY(), flyToPosition.getZ(), (int) this.posX, (int) this.posY, (int) this.posZ) < 4.0F)
             {
                 if (this.getAttackTarget() != null)
                 {
-                    this.flyToPosition = new ChunkCoordinates((int) this.getAttackTarget().posX, (int) this.getAttackTarget().posY, (int) this.getAttackTarget().posZ);
+                    this.flyToPosition = new BlockPos((int) this.getAttackTarget().posX, (int) this.getAttackTarget().posY, (int) this.getAttackTarget().posZ);
                 }
                 else
                 {
-                    this.flyToPosition = new ChunkCoordinates((int) this.posX + this.rand.nextInt(16) - this.rand.nextInt(16), (int) this.posY + this.rand.nextInt(14) - this.rand.nextInt(16), (int) this.posZ + this.rand.nextInt(16) - this.rand.nextInt(16));
+                    this.flyToPosition = new BlockPos((int) this.posX + this.rand.nextInt(16) - this.rand.nextInt(16), (int) this.posY + this.rand.nextInt(14) - this.rand.nextInt(16), (int) this.posZ + this.rand.nextInt(16) - this.rand.nextInt(16));
                 }
             }
 
             if (this.isFlying())
             {
-                double d0 = (double) this.flyToPosition.posX + 0.5D - this.posX;
-                double d1 = (double) this.flyToPosition.posY + 0.1D - this.posY;
-                double d2 = (double) this.flyToPosition.posZ + 0.5D - this.posZ;
+                double d0 = (double) this.flyToPosition.getX() + 0.5D - this.posX;
+                double d1 = (double) this.flyToPosition.getY() + 0.1D - this.posY;
+                double d2 = (double) this.flyToPosition.getZ() + 0.5D - this.posZ;
                 this.motionX += (Math.signum(d0) * 0.65D - this.motionX) * 0.10000000149011612D;
                 this.motionY += (Math.signum(d1) * 2.199999988079071D - this.motionY) * 0.10000000149011612D;
                 this.motionZ += (Math.signum(d2) * 0.65D - this.motionZ) * 0.10000000149011612D;
                 float f = (float) (Math.atan2(this.motionZ, this.motionX) * 180.0D / Math.PI) - 90.0F;
-                float f1 = MathHelper.wrapAngleTo180_float(f - this.rotationYaw);
+                float f1 = MathHelper.wrapDegrees(f - this.rotationYaw);
                 this.moveForward = 0.5F;
                 this.rotationYaw += f1;
             }
@@ -157,7 +168,7 @@ public class EntityAethon extends EntityMob implements IMob, IHost
 
     public boolean isFlying()
     {
-        return this.dataWatcher.getWatchableObjectInt(FLYING_DATAWATCHER_ID) == 0 ? false : true;
+        return this.getDataManager().get(FLYING) == 0 ? false : true;
     }
 
     @Override
@@ -165,21 +176,22 @@ public class EntityAethon extends EntityMob implements IMob, IHost
     {
         return 6;
     }
-
+    
     @Override
-    protected String getLivingSound()
+    protected SoundEvent getAmbientSound()
+    {
+        // TODO Auto-generated method stub
+        return super.getAmbientSound();
+    }
+    
+    @Override
+    protected SoundEvent getHurtSound()
     {
         return null;
     }
 
     @Override
-    protected String getHurtSound()
-    {
-        return null;
-    }
-
-    @Override
-    protected String getDeathSound()
+    protected SoundEvent getDeathSound()
     {
         return null;
     }

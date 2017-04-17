@@ -6,6 +6,7 @@ import org.avp.client.Sounds;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAISwimming;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
 public class EntityPraetorian extends EntityXenomorph implements IMaturable
@@ -15,8 +16,8 @@ public class EntityPraetorian extends EntityXenomorph implements IMaturable
         super(world);
         this.experienceValue = 300;
         this.setSize(1.0F, 3.0F);
-        this.getNavigator().setCanSwim(true);
-        this.getNavigator().setAvoidsWater(true);
+        
+        
         this.tasks.addTask(0, new EntityAISwimming(this));
         
         this.addStandardXenomorphAISet();
@@ -33,27 +34,21 @@ public class EntityPraetorian extends EntityXenomorph implements IMaturable
     }
 
     @Override
-    protected boolean isAIEnabled()
+    protected SoundEvent getHurtSound()
     {
-        return true;
+        return Sounds.SOUND_PRAETORIAN_HURT.event();
     }
 
     @Override
-    protected String getHurtSound()
+    protected SoundEvent getAmbientSound()
     {
-        return Sounds.SOUND_PRAETORIAN_HURT.getKey();
+        return Sounds.SOUND_PRAETORIAN_LIVING.event();
     }
 
     @Override
-    protected String getLivingSound()
+    protected SoundEvent getDeathSound()
     {
-        return Sounds.SOUND_PRAETORIAN_LIVING.getKey();
-    }
-
-    @Override
-    protected String getDeathSound()
-    {
-        return Sounds.SOUND_PRAETORIAN_DEATH.getKey();
+        return Sounds.SOUND_PRAETORIAN_DEATH.event();
     }
 
     @Override

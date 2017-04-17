@@ -1,27 +1,29 @@
 package org.avp.client.render.items.parts;
 
+import org.avp.client.model.items.ModelSniper;
 import org.avp.client.render.items.ItemRendererGroup;
 import org.lwjgl.opengl.GL11;
 
-import com.arisux.mdxlib.lib.client.Model;
 import com.arisux.mdxlib.lib.client.TexturedModel;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.game.Game;
 
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 
-public class RenderItemSniperStock extends ItemRendererGroup
+public class RenderItemSniperStock extends ItemRendererGroup<ModelSniper>
 {
-    public RenderItemSniperStock(TexturedModel<? extends Model> model, ModelRenderer... modelRenderers)
+    public RenderItemSniperStock(TexturedModel<ModelSniper> model, ModelRenderer... modelRenderers)
     {
         super(model, modelRenderers);
     }
 
     @Override
-    public void renderInInventory(ItemStack item, Object... data)
+    public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        super.renderInInventory(item, data);
+        
 
         OpenGL.pushMatrix();
         {
@@ -36,7 +38,7 @@ public class RenderItemSniperStock extends ItemRendererGroup
     }
     
     @Override
-    public void renderInWorld(ItemStack item, Object... data)
+    public void renderInWorld(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         OpenGL.pushMatrix();
         {

@@ -5,7 +5,6 @@ import org.avp.api.power.IVoltageReceiver;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
-
 public class TileEntityRedstoneEmitter extends TileEntityElectrical implements IVoltageReceiver
 {
     public TileEntityRedstoneEmitter()
@@ -14,26 +13,27 @@ public class TileEntityRedstoneEmitter extends TileEntityElectrical implements I
     }
 
     @Override
-    public void updateEntity()
+    public void update()
     {
-        super.updateEntity();
+        super.update();
         this.updateEnergyAsReceiver();
 
         World world = this.getWorld();
-        int x = this.xCoord;
-        int y = this.yCoord;
-        int z = this.zCoord;
+//        int x = this.xCoord;
+//        int y = this.yCoord;
+//        int z = this.zCoord;
 
         if (this.voltagePrev != this.voltage)
         {
-            if (world.getBlockMetadata(x, y, z) == 0 && this.voltage >= 1)
-            {
-                world.setBlockMetadataWithNotify(x, y, z, 15, 3);
-            }
-            if (world.getBlockMetadata(x, y, z) == 15 && this.voltage == 0)
-            {
-                world.setBlockMetadataWithNotify(x, y, z, 0, 3);
-            }
+            //TODO: Functionaility disabled until new redstone functionality is analyzed properly.
+//            if (world.getBlockMetadata(x, y, z) == 0 && this.voltage >= 1)
+//            {
+//                world.setBlockMetadataWithNotify(x, y, z, 15, 3);
+//            }
+//            if (world.getBlockMetadata(x, y, z) == 15 && this.voltage == 0)
+//            {
+//                world.setBlockMetadataWithNotify(x, y, z, 0, 3);
+//            }
         }
     }
 

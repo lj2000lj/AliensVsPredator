@@ -10,9 +10,11 @@ import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.game.Game;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 
-public class RenderItemSupplyCrate extends ItemRenderer
+public class RenderItemSupplyCrate extends ItemRenderer<ModelSupplyChute>
 {
     public RenderItemSupplyCrate()
     {
@@ -20,7 +22,7 @@ public class RenderItemSupplyCrate extends ItemRenderer
     }
 
     @Override
-    public void renderThirdPerson(ItemStack item, Object... data)
+    public void renderThirdPersonRight(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         OpenGL.pushMatrix();
         {
@@ -31,7 +33,7 @@ public class RenderItemSupplyCrate extends ItemRenderer
             OpenGL.translate(0F, -0.5F, -0.9F);
             OpenGL.disable(GL11.GL_CULL_FACE);
             
-            TexturedModel<ModelSupplyChute> texturedModel = SupplyChuteType.get(Block.getBlockFromItem(item.getItem())).getModel();
+            TexturedModel<ModelSupplyChute> texturedModel = SupplyChuteType.get(Block.getBlockFromItem(itemstack.getItem())).getModel();
             texturedModel.bindTexture();
             texturedModel.getModel().drawCrate();
         }
@@ -39,13 +41,13 @@ public class RenderItemSupplyCrate extends ItemRenderer
     }
 
     @Override
-    public void renderFirstPerson(ItemStack item, Object... data)
+    public void renderFirstPersonRight(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         OpenGL.pushMatrix();
         {
             OpenGL.disable(GL11.GL_CULL_FACE);
             
-            TexturedModel<ModelSupplyChute> texturedModel = SupplyChuteType.get(Block.getBlockFromItem(item.getItem())).getModel();
+            TexturedModel<ModelSupplyChute> texturedModel = SupplyChuteType.get(Block.getBlockFromItem(itemstack.getItem())).getModel();
             texturedModel.bindTexture();
             texturedModel.getModel().drawCrate();
         }
@@ -53,7 +55,7 @@ public class RenderItemSupplyCrate extends ItemRenderer
     }
 
     @Override
-    public void renderInInventory(ItemStack item, Object... data)
+    public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         OpenGL.pushMatrix();
         {
@@ -63,7 +65,7 @@ public class RenderItemSupplyCrate extends ItemRenderer
             OpenGL.rotate(45F, 0.0F, 1.0F, 0.0F);
             OpenGL.scale(glScale, glScale, glScale);
             
-            TexturedModel<ModelSupplyChute> texturedModel = SupplyChuteType.get(Block.getBlockFromItem(item.getItem())).getModel();
+            TexturedModel<ModelSupplyChute> texturedModel = SupplyChuteType.get(Block.getBlockFromItem(itemstack.getItem())).getModel();
             texturedModel.bindTexture();
             texturedModel.getModel().drawCrate();
         }
@@ -71,9 +73,9 @@ public class RenderItemSupplyCrate extends ItemRenderer
     }
     
     @Override
-    public void renderInWorld(ItemStack item, Object... data)
+    public void renderInWorld(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        super.renderInWorld(item, data);
+        
         OpenGL.pushMatrix();
         {
             OpenGL.scale(1F, -1F, 1F);
@@ -81,10 +83,24 @@ public class RenderItemSupplyCrate extends ItemRenderer
             OpenGL.rotate((Game.minecraft().theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
             OpenGL.disable(GL11.GL_CULL_FACE);
             
-            TexturedModel<ModelSupplyChute> texturedModel = SupplyChuteType.get(Block.getBlockFromItem(item.getItem())).getModel();
+            TexturedModel<ModelSupplyChute> texturedModel = SupplyChuteType.get(Block.getBlockFromItem(itemstack.getItem())).getModel();
             texturedModel.bindTexture();
             texturedModel.getModel().drawCrate();
         }
         OpenGL.popMatrix();
+    }
+
+    @Override
+    public void renderThirdPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void renderFirstPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
+    {
+        // TODO Auto-generated method stub
+        
     }
 }

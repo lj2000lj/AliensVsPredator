@@ -6,7 +6,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityLookHelper;
 import net.minecraft.util.math.MathHelper;
 
-
 public class EntityExtendedLookHelper extends EntityLookHelper
 {
     private EntityLiving entity;
@@ -48,7 +47,7 @@ public class EntityExtendedLookHelper extends EntityLookHelper
         }
         else
         {
-            this.posY = (entity.boundingBox.minY + entity.boundingBox.maxY) / 2.0D;
+            this.posY = (entity.getEntityBoundingBox().minY + entity.getEntityBoundingBox().maxY) / 2.0D;
         }
 
         this.posZ = entity.posZ;
@@ -79,7 +78,7 @@ public class EntityExtendedLookHelper extends EntityLookHelper
             this.entity.rotationYawHead = updateRotationNew(this.entity.rotationYawHead, this.entity.renderYawOffset, 10.0F);
         }
 
-        float angle = MathHelper.wrapAngleTo180_float(this.entity.rotationYawHead - this.entity.renderYawOffset);
+        float angle = MathHelper.wrapDegrees(this.entity.rotationYawHead - this.entity.renderYawOffset);
 
         if (!this.entity.getNavigator().noPath())
         {
@@ -97,7 +96,7 @@ public class EntityExtendedLookHelper extends EntityLookHelper
 
     public static float updateRotationNew(float angle1, float angle2, float angle3)
     {
-        float wrappedAngle = MathHelper.wrapAngleTo180_float(angle2 - angle1);
+        float wrappedAngle = MathHelper.wrapDegrees(angle2 - angle1);
 
         if (wrappedAngle > angle3)
         {

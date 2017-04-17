@@ -12,12 +12,11 @@ import com.arisux.mdxlib.lib.game.Game;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 
-public class RenderPowerline extends TileEntitySpecialRenderer
+public class RenderPowerline extends TileEntitySpecialRenderer<TileEntityPowerline>
 {
     @Override
-    public void renderTileEntityAt(TileEntity te, double posX, double posY, double posZ, float renderPartialTicks)
+    public void renderTileEntityAt(TileEntityPowerline tile, double posX, double posY, double posZ, float renderPartialTicks, int destroyStage)
     {
-        TileEntityPowerline tile = (TileEntityPowerline) te;
 
         OpenGL.pushMatrix();
         {
@@ -35,7 +34,7 @@ public class RenderPowerline extends TileEntitySpecialRenderer
 
             if (Game.minecraft().objectMouseOver != null)
             {
-                TileEntity tileOver = Game.minecraft().thePlayer.worldObj.getTileEntity(Game.minecraft().objectMouseOver.blockX, Game.minecraft().objectMouseOver.blockY, Game.minecraft().objectMouseOver.blockZ);
+                TileEntity tileOver = Game.minecraft().thePlayer.worldObj.getTileEntity(Game.minecraft().objectMouseOver.getBlockPos());
 
                 if (tileOver != null && tileOver == tile)
                 {

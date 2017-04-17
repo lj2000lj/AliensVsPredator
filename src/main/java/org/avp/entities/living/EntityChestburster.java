@@ -5,7 +5,9 @@ import org.avp.api.parasitoidic.IMaturable;
 import org.avp.api.parasitoidic.INascentic;
 import org.avp.api.parasitoidic.IRoyalOrganism;
 import org.avp.client.Sounds;
-import org.avp.entities.Organism;
+import org.avp.entities.ai.EntityAICustomAttackOnCollide;
+import org.avp.world.capabilities.IOrganism.Organism;
+import org.avp.world.capabilities.IOrganism.Provider;
 
 import com.arisux.mdxlib.lib.game.Game;
 import com.arisux.mdxlib.lib.world.Pos;
@@ -14,7 +16,6 @@ import com.arisux.mdxlib.lib.world.entity.Entities;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
@@ -22,9 +23,12 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
 public class EntityChestburster extends EntitySpeciesAlien implements IMob, INascentic
@@ -37,14 +41,12 @@ public class EntityChestburster extends EntitySpeciesAlien implements IMob, INas
         this.matureState = EntityDrone.class;
         this.setSize(1.0F, 0.4F);
         this.experienceValue = 16;
-        this.getNavigator().setCanSwim(true);
-        this.getNavigator().setAvoidsWater(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIAvoidEntity(this, EntityPlayer.class, 16.0F, 0.23F, 0.4F));
         this.tasks.addTask(1, new EntityAIAvoidEntity(this, EntityYautja.class, 16.0F, 0.23F, 0.4F));
         this.tasks.addTask(1, new EntityAIAvoidEntity(this, EntityEngineer.class, 16.0F, 0.23F, 0.4F));
         this.tasks.addTask(1, new EntityAIAvoidEntity(this, EntityMarine.class, 16.0F, 0.23F, 0.4F));
-        this.tasks.addTask(3, new EntityAIAttackOnCollide(this, 0.800000011920929D, true));
+        this.tasks.addTask(3, new EntityAICustomAttackOnCollide(this, 0.800000011920929D, true));
         this.tasks.addTask(8, new EntityAIWander(this, 0.800000011920929D));
         this.targetTasks.addTask(0, new EntityAIHurtByTarget(this, true));
         this.targetTasks.addTask(2, new EntityAILeapAtTarget(this, 0.8F));
@@ -64,13 +66,6 @@ public class EntityChestburster extends EntitySpeciesAlien implements IMob, INas
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(16, new Byte((byte) 0));
-    }
-
-    @Override
-    protected boolean isAIEnabled()
-    {
-        return true;
     }
 
     @Override
@@ -111,7 +106,7 @@ public class EntityChestburster extends EntitySpeciesAlien implements IMob, INas
 
             for (int particleCount = 0; particleCount < 8; ++particleCount)
             {
-                this.worldObj.spawnParticle("snowballpoof", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+                this.worldObj.spawnParticle(EnumParticleTypes.SNOWBALL, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
             }
 
         }
@@ -129,7 +124,7 @@ public class EntityChestburster extends EntitySpeciesAlien implements IMob, INas
 
         if (brightness < 0.5F)
         {
-            return this.worldObj.getClosestVulnerablePlayerToEntity(this, 32.0D);
+            return this.worldObj.getClosestPlayerToEntity(this, 32D);
         }
         else
         {
@@ -138,15 +133,15 @@ public class EntityChestburster extends EntitySpeciesAlien implements IMob, INas
     }
 
     @Override
-    protected String getDeathSound()
+    protected SoundEvent getDeathSound()
     {
-        return Sounds.SOUND_CHESTBURSTER_DEATH.getKey();
+        return Sounds.SOUND_CHESTBURSTER_DEATH.event();
     }
 
     @Override
-    protected String getHurtSound()
+    protected SoundEvent getHurtSound()
     {
-        return Sounds.SOUND_CHESTBURSTER_HURT.getKey();
+        return Sounds.SOUND_CHESTBURSTER_HURT.event();
     }
 
     @Override
@@ -171,17 +166,17 @@ public class EntityChestburster extends EntitySpeciesAlien implements IMob, INas
     {
         return this.isOnLadder() && this.motionY > 1.0099999997764826D;
     }
-
+    
     @Override
-    protected void attackEntity(Entity entity, float damage)
+    public boolean attackEntityFrom(DamageSource source, float amount)
     {
-        super.attackEntity(entity, damage);
+        return super.attackEntityFrom(source, amount);
     }
 
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect)
     {
-        return potionEffect.getPotionID() == Potion.poison.id ? false : super.isPotionApplicable(potionEffect);
+        return potionEffect.getPotion() == MobEffects.POISON ? false : super.isPotionApplicable(potionEffect);
     }
 
     @Override
@@ -210,14 +205,14 @@ public class EntityChestburster extends EntitySpeciesAlien implements IMob, INas
     @Override
     public void grow(EntityLivingBase host)
     {
-        Organism hostOrganism = (Organism) host.getExtendedProperties(Organism.IDENTIFIER);
+        Organism organism = (Organism) host.getCapability(Provider.CAPABILITY, null);
     }
 
     @Override
     public void vitalize(EntityLivingBase host)
     {
-        Organism hostOrganism = (Organism) host.getExtendedProperties(Organism.IDENTIFIER);
-        this.matureState = hostOrganism.getEmbryo().getResultingOrganism();
+        Organism organism = (Organism) host.getCapability(Provider.CAPABILITY, null);
+        this.matureState = organism.getEmbryo().getResultingOrganism();
         
         Pos safeLocation = Entities.getSafeLocationAround(this, new Pos((int)host.posX, (int)host.posY, (int)host.posZ));
         
@@ -228,7 +223,7 @@ public class EntityChestburster extends EntitySpeciesAlien implements IMob, INas
         
         this.setLocationAndAngles(safeLocation.x(), safeLocation.y(), safeLocation.z(), 0.0F, 0.0F);
         host.worldObj.spawnEntityInWorld(this);
-        hostOrganism.removeEmbryo();
+        organism.removeEmbryo();
         host.getActivePotionEffects().clear();
         host.attackEntityFrom(DamageSources.causeChestbursterDamage(this, host), 100000F);
     }

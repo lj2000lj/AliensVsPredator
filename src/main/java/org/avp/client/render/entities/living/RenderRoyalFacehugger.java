@@ -1,13 +1,13 @@
 package org.avp.client.render.entities.living;
 
 import org.avp.AliensVsPredator;
+import org.avp.client.model.entities.living.ModelRoyalFacehugger;
 import org.avp.entities.living.EntityFacehugger;
+import org.avp.entities.living.EntityRoyalFacehugger;
 
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
-import net.minecraft.entity.EntityLivingBase;
-
-public class RenderRoyalFacehugger extends RenderFacehugger
+public class RenderRoyalFacehugger extends RenderFacehugger<EntityRoyalFacehugger, ModelRoyalFacehugger>
 {
     public RenderRoyalFacehugger()
     {
@@ -15,16 +15,16 @@ public class RenderRoyalFacehugger extends RenderFacehugger
     }
 
     @Override
-    protected void preRenderCallback(EntityLivingBase entityliving, float partialTicks)
+    protected void preRenderCallback(EntityRoyalFacehugger facehugger, float partialTicks)
     {
-        super.preRenderCallback(entityliving, partialTicks);
+        super.preRenderCallback(facehugger, partialTicks);
 
         float glScale = 1.5F;
         OpenGL.scale(glScale, glScale, glScale);
 
-        if (entityliving instanceof EntityFacehugger)
+        if (facehugger instanceof EntityFacehugger)
         {
-            if (!((EntityFacehugger) entityliving).isFertile())
+            if (!((EntityFacehugger) facehugger).isFertile())
             {
                 OpenGL.translate(0, 0.1, 0);
             }
@@ -32,7 +32,7 @@ public class RenderRoyalFacehugger extends RenderFacehugger
     }
 
     @Override
-    protected void scale(EntityFacehugger facehugger, float glScale)
+    protected void scale(EntityRoyalFacehugger facehugger, float glScale)
     {
         super.scale(facehugger, glScale);
     }

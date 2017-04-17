@@ -1,14 +1,16 @@
 package org.avp.packets.server;
 
-import org.avp.entities.Organism;
 
-import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import org.avp.world.capabilities.IOrganism.Organism;
+import org.avp.world.capabilities.IOrganism.Provider;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class OrganismServerSync implements IMessage, IMessageHandler<OrganismServerSync, OrganismServerSync>
 {
@@ -47,11 +49,11 @@ public class OrganismServerSync implements IMessage, IMessageHandler<OrganismSer
 
         if (entity != null)
         {
-            Organism extendedLiving = (Organism) entity.getExtendedProperties(Organism.IDENTIFIER);
+            Organism organism = (Organism) entity.getCapability(Provider.CAPABILITY, null);
 
-            if (extendedLiving != null)
+            if (organism != null)
             {
-                extendedLiving.loadNBTData(packet.tag);
+                Provider.CAPABILITY.getStorage().readNBT(Provider.CAPABILITY, organism, null, packet.tag);
             }
         }
 

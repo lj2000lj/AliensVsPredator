@@ -15,12 +15,14 @@ import com.arisux.mdxlib.lib.world.block.Blocks;
 import com.arisux.mdxlib.lib.world.entity.Entities;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.particle.EntityFlameFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -82,7 +84,7 @@ public class EntityFlame extends EntityThrowable
     public void onUpdate()
     {
         this.moveEntity(this.motionX, this.motionY, this.motionZ);
-        MovingObjectPosition movingObjectPosition = this.worldObj.rayTraceBlocks(new Vec3d(this.posX, this.posY, this.posZ), new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ));
+        RayTraceResult result = this.worldObj.rayTraceBlocks(new Vec3d(this.posX, this.posY, this.posZ), new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ));
 
         if (!this.worldObj.isRemote)
         {
@@ -95,9 +97,9 @@ public class EntityFlame extends EntityThrowable
             }
         }
 
-        if (movingObjectPosition != null)
+        if (result != null)
         {
-            this.onImpact(movingObjectPosition);
+            this.onImpact(result);
         }
 
         if (this.ticksExisted >= flameLife)
@@ -128,19 +130,19 @@ public class EntityFlame extends EntityThrowable
     @SideOnly(Side.CLIENT)
     public void spawnFlameParticle(double flameX, double flameY, double flameZ, float flameGravity)
     {
-        Game.minecraft().effectRenderer.addEffect(new EntityFlameFX(this.worldObj, this.posX - (flameX / 2), this.posY - (flameY / 2), this.posZ - (flameZ / 2), this.rand.nextGaussian() * flameTailWidth, -this.motionY * (flameGravity * this.ticksExisted) - this.rand.nextGaussian() * flameTailWidth, this.rand.nextGaussian() * flameTailWidth));
+        Game.minecraft().theWorld.spawnParticle(EnumParticleTypes.FLAME, this.posX - (flameX / 2), this.posY - (flameY / 2), this.posZ - (flameZ / 2), this.rand.nextGaussian() * flameTailWidth, -this.motionY * (flameGravity * this.ticksExisted) - this.rand.nextGaussian() * flameTailWidth, this.rand.nextGaussian() * flameTailWidth);
     }
 
     @Override
-    protected void onImpact(MovingObjectPosition movingObjectPosition)
+    protected void onImpact(RayTraceResult result)
     {
-        int posX = movingObjectPosition.blockX;
-        int posY = movingObjectPosition.blockY;
-        int posZ = movingObjectPosition.blockZ;
+        int posX = (int)result.hitVec.xCoord;
+        int posY = (int)result.hitVec.yCoord;
+        int posZ = (int)result.hitVec.zCoord;
 
         if (!this.worldObj.isRemote)
         {
-            switch (movingObjectPosition.sideHit)
+            switch (result.sideHit.ordinal())
             {
                 case 0:
                     --posY;
@@ -169,7 +171,7 @@ public class EntityFlame extends EntityThrowable
 
         if (rand.nextInt(10) == 0)
         {
-            ArrayList<Pos> list = Blocks.getCoordDataInRangeIncluding(movingObjectPosition.blockX, movingObjectPosition.blockY, movingObjectPosition.blockZ, 1, this.worldObj, AliensVsPredator.blocks().blockCryostasisTube);
+            ArrayList<Pos> list = Blocks.getCoordDataInRangeIncluding((int)result.hitVec.xCoord, (int)result.hitVec.yCoord, (int)result.hitVec.zCoord, 1, this.worldObj, AliensVsPredator.blocks().blockCryostasisTube);
 
             for (Pos coord : list)
             {
@@ -215,11 +217,11 @@ public class EntityFlame extends EntityThrowable
 
     public void setFire(int posX, int posY, int posZ)
     {
-        Block block = this.worldObj.getBlock(posX, posY, posZ);
+        Block block = this.worldObj.getBlockState(new BlockPos(posX, posY, posZ)).getBlock();
 
         if (block == net.minecraft.init.Blocks.AIR)
         {
-            this.worldObj.setBlock(posX, posY, posZ, net.minecraft.init.Blocks.fire);
+            this.worldObj.setBlockState(new BlockPos(posX, posY, posZ), net.minecraft.init.Blocks.FIRE.getDefaultState());
         }
     }
 }

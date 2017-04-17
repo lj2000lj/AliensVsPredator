@@ -4,40 +4,36 @@ import java.util.Random;
 
 import org.avp.AliensVsPredator;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class TerrainFormation1 extends TerrainFormation
 {
-    protected Block[] getSpawnBlocks()
-    {
-        return new Block[] { AliensVsPredator.blocks().terrainUniDirt };
-    }
-
+    private static final IBlockState block = AliensVsPredator.blocks().terrainUniDirt.getDefaultState();
+    
     @Override
-    public boolean generate(World world, Random rand, int posX, int posY, int posZ)
+    public boolean generate(World world, Random rand, BlockPos pos)
     {
-        if ((!isLocationValid(world, posX, posY, posZ)) || (!isLocationValid(world, posX + 2, posY, posZ)) || (!isLocationValid(world, posX + 2, posY, posZ + 2)) || (!isLocationValid(world, posX, posY, posZ + 2)))
+        if (this.shouldNotGenerate(world, pos))
         {
             return false;
         }
 
-        Block blockDirt = AliensVsPredator.blocks().terrainUniDirt;
-
-        world.setBlock(posX + 0, posY + 0, posZ + 1, blockDirt);
-        world.setBlock(posX + 0, posY + 1, posZ + 1, blockDirt);
-        world.setBlock(posX + 0, posY + 2, posZ + 1, blockDirt);
-        world.setBlock(posX + 1, posY + 0, posZ + 0, blockDirt);
-        world.setBlock(posX + 1, posY + 0, posZ + 1, blockDirt);
-        world.setBlock(posX + 1, posY + 0, posZ + 2, blockDirt);
-        world.setBlock(posX + 1, posY + 1, posZ + 0, blockDirt);
-        world.setBlock(posX + 1, posY + 1, posZ + 1, blockDirt);
-        world.setBlock(posX + 1, posY + 2, posZ + 1, blockDirt);
-        world.setBlock(posX + 1, posY + 3, posZ + 1, blockDirt);
-        world.setBlock(posX + 1, posY + 4, posZ + 1, blockDirt);
-        world.setBlock(posX + 1, posY + 5, posZ + 1, blockDirt);
-        world.setBlock(posX + 2, posY + 0, posZ + 1, blockDirt);
-        world.setBlock(posX + 2, posY + 1, posZ + 1, blockDirt);
+        this.setBlock(world, pos, 0, 0, 1, block);
+        this.setBlock(world, pos, 0, 1, 1, block);
+        this.setBlock(world, pos, 0, 2, 1, block);
+        this.setBlock(world, pos, 1, 0, 0, block);
+        this.setBlock(world, pos, 1, 0, 1, block);
+        this.setBlock(world, pos, 1, 0, 2, block);
+        this.setBlock(world, pos, 1, 1, 0, block);
+        this.setBlock(world, pos, 1, 1, 1, block);
+        this.setBlock(world, pos, 1, 2, 1, block);
+        this.setBlock(world, pos, 1, 3, 1, block);
+        this.setBlock(world, pos, 1, 4, 1, block);
+        this.setBlock(world, pos, 1, 5, 1, block);
+        this.setBlock(world, pos, 2, 0, 1, block);
+        this.setBlock(world, pos, 2, 1, 1, block);
 
         return true;
     }

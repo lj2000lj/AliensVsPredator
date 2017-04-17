@@ -5,7 +5,7 @@ import org.avp.client.render.util.EntityRenderTransforms;
 
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
-import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.monster.EntityCaveSpider;
@@ -73,7 +73,7 @@ public class VanillaFaceLocationTransforms
 
                 if (entity.getRidingEntity()instanceof EntityZombie)
                 {
-                    EntityZombie zombie = (EntityZombie) entity.ridingEntity;
+                    EntityZombie zombie = (EntityZombie) entity.getRidingEntity();
 
                     if (zombie.isChild())
                     {
@@ -83,7 +83,7 @@ public class VanillaFaceLocationTransforms
             }
         });
 
-        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntityClientPlayerMP.class)
+        RenderFacehugger.transforms.add(new EntityRenderTransforms(EntityPlayerSP.class)
         {
             @Override
             public void pre(Entity entity, float partialTicks)
@@ -94,7 +94,7 @@ public class VanillaFaceLocationTransforms
             @Override
             public void post(Entity entity, float partialTicks)
             {
-                EntityClientPlayerMP player = (EntityClientPlayerMP) entity.ridingEntity;
+                EntityPlayerSP player = (EntityPlayerSP) entity.getRidingEntity();
                 OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
                 OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
                 OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
@@ -222,7 +222,7 @@ public class VanillaFaceLocationTransforms
             @Override
             public void post(Entity entity, float partialTicks)
             {
-                EntitySlime slime = (EntitySlime) entity.ridingEntity;
+                EntitySlime slime = (EntitySlime) entity.getRidingEntity();
                 OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);
                 OpenGL.rotate(90.0F, 0.0F, 1.0F, 0.0F);
                 OpenGL.rotate(90.0F, 0.0F, 0.0F, 1.0F);

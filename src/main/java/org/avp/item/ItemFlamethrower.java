@@ -12,6 +12,9 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -26,25 +29,24 @@ public abstract class ItemFlamethrower extends HookedItem
         this.maxStackSize = 1;
         this.ammo = ammo;
     }
-
+    
     @Override
-    public ItemStack onItemRightClick(ItemStack itemstack, World worldObj, EntityPlayer entityPlayer)
+    public ActionResult<ItemStack> onItemRightClick(ItemStack itemstack, World worldObj, EntityPlayer player, EnumHand hand)
     {
-        if (this.hasAmmo(worldObj, entityPlayer))
+        if (this.hasAmmo(worldObj, player))
         {
             if (!worldObj.isRemote)
             {
-                EntityFlame entity = new EntityFlame(worldObj, entityPlayer);
+                EntityFlame entity = new EntityFlame(worldObj, player);
                 entity.setLocationAndAngles(entity.posX, entity.posY - 0.35, entity.posZ, entity.rotationYaw, entity.rotationPitch);
                 worldObj.spawnEntityInWorld(entity);
             }
 
-            Sounds.SOUND_WEAPON_FLAMETHROWER.playSound(entityPlayer);
+            Sounds.SOUND_WEAPON_FLAMETHROWER.playSound(player);
         }
-
-        return itemstack;
+        return super.onItemRightClick(itemstack, worldObj, player, hand);
     }
-
+    
     @Override
     @SideOnly(Side.CLIENT)
     @SuppressWarnings("all")
@@ -59,33 +61,33 @@ public abstract class ItemFlamethrower extends HookedItem
     {
         return true;
     }
-
+    
     @Override
-    public boolean onBlockStartBreak(ItemStack itemstack, int posX, int posY, int posZ, EntityPlayer player)
+    public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, EntityPlayer player)
     {
         return false;
     }
 
-    public boolean hasAmmo(World worldObj, EntityPlayer playerIn)
+    public boolean hasAmmo(World worldObj, EntityPlayer player)
     {
-        if (playerIn.capabilities.isCreativeMode)
+        if (player.capabilities.isCreativeMode)
         {
             return true;
         }
-        
-        if (playerIn.inventory.hasItem(this.ammo))
+
+        if (Inventories.playerHas(this.ammo, player))
         {
-            ItemStack ammoStack = playerIn.inventory.getStackInSlot(Inventories.getSlotForItemIn(this.ammo, playerIn.inventory));
+            ItemStack ammoStack = player.inventory.getStackInSlot(Inventories.getSlotForItemIn(this.ammo, player.inventory));
 
             if (ammoStack != null && ammoStack.getItem() != null)
             {
-                if (ammoStack.getCurrentDurability() < ammoStack.getMaxDurability())
+                if (ammoStack.getItemDamage() < ammoStack.getMaxDamage())
                 {
-                    ammoStack.damageItem(1, playerIn);
+                    ammoStack.damageItem(1, player);
                 }
                 else
                 {
-                    playerIn.inventory.consumeInventoryItem(ammoStack.getItem());
+                    Inventories.consumeItem(player, ammoStack.getItem());
                 }
 
                 return true;

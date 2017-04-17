@@ -2,14 +2,12 @@ package org.avp.world;
 
 import org.avp.Settings.ClientSettings;
 import org.avp.client.entityfx.EntityBloodFX;
-import org.avp.entities.Organism;
 import org.avp.entities.living.EntitySpeciesYautja;
+import org.avp.world.capabilities.IOrganism.Organism;
+import org.avp.world.capabilities.IOrganism.Provider;
 
 import com.arisux.mdxlib.lib.game.Game;
 
-import cpw.mods.fml.common.eventhandler.Event.Result;
-import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
@@ -20,11 +18,14 @@ import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.passive.EntityMooshroom;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.potion.Potion;
+import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
-import net.minecraftforge.event.getEntity().living.LivingSpawnEvent;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -56,7 +57,7 @@ public class EntityImpregnationHandler
                 if (entity != null && entity instanceof EntityLivingBase)
                 {
                     EntityLivingBase host = (EntityLivingBase) entity;
-                    Organism hostOrganism = (Organism) host.getExtendedProperties(Organism.IDENTIFIER);
+                    Organism organism = (Organism) host.getCapability(Provider.CAPABILITY, null);
                     EntityPlayer player = null;
 
                     if (host instanceof EntityPlayer)
@@ -64,43 +65,43 @@ public class EntityImpregnationHandler
                         player = (EntityPlayer) host;
                     }
 
-                    hostOrganism.onTick(world);
+                    organism.onTick(host, organism);
 
-                    if (host.isEntityAlive() && hostOrganism.hasEmbryo())
+                    if (host.isEntityAlive() && organism.hasEmbryo())
                     {
 
                         if (player != null && !player.capabilities.isCreativeMode || player == null)
                         {
                             if (!world.isRemote)
                             {
-                                hostOrganism.gestate();
+                                organism.gestate(host);
                             }
                             else if (world.isRemote)
                             {
                                 if (!Game.minecraft().isGamePaused())
                                 {
-                                    hostOrganism.gestate();
+                                    organism.gestate(host);
                                 }
                             }
                         }
 
-                        if (hostOrganism.getEmbryo().getAge() >= hostOrganism.getEmbryo().getGestationPeriod())
+                        if (organism.getEmbryo().getAge() >= organism.getEmbryo().getGestationPeriod())
                         {
-                            if (hostOrganism.getEmbryo().getNascenticOrganism() != null)
+                            if (organism.getEmbryo().getNascenticOrganism() != null)
                             {
                                 if (!world.isRemote)
                                 {
-                                    hostOrganism.getEmbryo().getNascenticOrganism().vitalize(host);
+                                    organism.getEmbryo().getNascenticOrganism().vitalize(host);
                                 }
                             }
                         }
 
-                        if (hostOrganism.hasEmbryo() && hostOrganism.getEmbryo().getAge() > 0)
+                        if (organism.hasEmbryo() && organism.getEmbryo().getAge() > 0)
                         {
                             if (player == null || player != null && !player.capabilities.isCreativeMode)
                             {
-                                int age = hostOrganism.getEmbryo().getAge();
-                                int gestationPeriod = hostOrganism.getEmbryo().getGestationPeriod();
+                                int age = organism.getEmbryo().getAge();
+                                int gestationPeriod = organism.getEmbryo().getGestationPeriod();
                                 int timeLeft = gestationPeriod - age;
                                 int timeBlind = gestationPeriod - (gestationPeriod / 2);
                                 int timeBleed = gestationPeriod - (gestationPeriod / 10);
@@ -109,7 +110,7 @@ public class EntityImpregnationHandler
                                 {
                                     if (!world.isRemote)
                                     {
-                                        host.addPotionEffect(new PotionEffect(Potion.blindness.getId(), hostOrganism.getEmbryo().getGestationPeriod() / 2));
+                                        host.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, organism.getEmbryo().getGestationPeriod() / 2));
                                     }
                                 }
 
@@ -213,21 +214,21 @@ public class EntityImpregnationHandler
     public void respawnEvent(PlayerRespawnEvent event)
     {
         EntityLivingBase living = (EntityLivingBase) event.player;
-        Organism livingProperties = (Organism) living.getExtendedProperties(Organism.IDENTIFIER);
+        Organism organism = (Organism) living.getCapability(Provider.CAPABILITY, null);
 
-        if (livingProperties.hasEmbryo())
+        if (organism.hasEmbryo())
         {
-            livingProperties.removeEmbryo();
+            organism.removeEmbryo();
         }
     }
 
     @SubscribeEvent
     public void despawnEvent(LivingSpawnEvent.AllowDespawn event)
     {
-        EntityLivingBase living = (EntityLivingBase) event.getEntity()Living;
-        Organism livingProperties = (Organism) living.getExtendedProperties(Organism.IDENTIFIER);
+        EntityLivingBase living = (EntityLivingBase) event.getEntityLiving();
+        Organism organism = (Organism) living.getCapability(Provider.CAPABILITY, null);
 
-        if (livingProperties.hasEmbryo())
+        if (organism.hasEmbryo())
         {
             event.setResult(Result.DENY);
         }

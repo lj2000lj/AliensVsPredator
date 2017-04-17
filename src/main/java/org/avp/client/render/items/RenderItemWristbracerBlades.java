@@ -9,50 +9,38 @@ import com.arisux.mdxlib.lib.client.render.ItemRenderer;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.game.Game;
 
-import net.minecraft.client.gui.inventory.GuiContainerCreative;
-import net.minecraft.client.gui.inventory.GuiInventory;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 
-public class RenderItemWristbracerBlades extends ItemRenderer
+public class RenderItemWristbracerBlades extends ItemRenderer<ModelWristBlade>
 {
     public RenderItemWristbracerBlades()
     {
         super(AliensVsPredator.resources().models().WRISTBLADES);
     }
-    
+
     @Override
-    public ModelWristBlade getModel()
+    public void renderThirdPersonRight(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        return (ModelWristBlade) this.getModelTexMap().getModel();
-    }
-    
-    @Override
-    public void renderThirdPerson(ItemStack item, Object... data)
-    {
-        super.renderThirdPerson(item, data);
-        
         OpenGL.rotate(-78.0F, 0.0F, 1.0F, 0.0F);
         OpenGL.rotate(-165.0F, 1.0F, 0.0F, 0.0F);
         OpenGL.rotate(13.0F, 0.0F, 0.0F, 1.0F);
         OpenGL.translate(-0.25F, -0.15F, 0.3F);
         OpenGL.scale(2F, 2F, 2F);
-        this.getModelTexMap().getTexture().bind();
-        this.getModel().b6.render(Model.DEFAULT_SCALE);
-        this.getModel().bladeLeft.render(Model.DEFAULT_SCALE);
+        this.getModel().getTexture().bind();
+        this.getModel().getModel().b6.render(Model.DEFAULT_SCALE);
+        this.getModel().getModel().bladeLeft.render(Model.DEFAULT_SCALE);
     }
     
     @Override
-    public void renderFirstPerson(ItemStack item, Object... data)
+    public void renderFirstPersonRight(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        super.renderFirstPerson(item, data);
-
         OpenGL.rotate(186.0F, 1.0F, 0.0F, 0.0F);
         OpenGL.rotate(3.0F, 0.0F, 1.0F, 0.0F);
         OpenGL.rotate(-35.0F, 0.0F, 0.0F, 1.0F);
 
-        if ((EntityPlayer) data[1] == Game.minecraft().renderViewEntity && Game.minecraft().gameSettings.thirdPersonView == 0 && (!(Game.minecraft().currentScreen instanceof GuiInventory) && !(Game.minecraft().currentScreen instanceof GuiContainerCreative) || RenderManager.instance.playerViewY != 180.0F))
+        if (firstPersonRenderCheck(entity))
         {
             OpenGL.translate(0.4F, 0.1F, -0.1F);
             OpenGL.rotate(340.0F, 1.0F, 0.0F, 0.0F);
@@ -66,38 +54,52 @@ public class RenderItemWristbracerBlades extends ItemRenderer
         }
 
         OpenGL.scale(1.6F, 1.6F, 1.6F);
-        this.getModelTexMap().getTexture().bind();
-        this.getModel().b6.render(Model.DEFAULT_SCALE);
-        this.getModel().bladeLeft.render(Model.DEFAULT_SCALE);
+        this.getModel().getTexture().bind();
+        this.getModel().getModel().b6.render(Model.DEFAULT_SCALE);
+        this.getModel().getModel().bladeLeft.render(Model.DEFAULT_SCALE);
     }
     
     @Override
-    public void renderInInventory(ItemStack item, Object... data)
+    public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        super.renderInInventory(item, data);
+        
 
         OpenGL.disable(GL11.GL_CULL_FACE);
         OpenGL.enable(GL11.GL_BLEND);
         OpenGL.rotate(-45F, 0.0F, 1.0F, 0.0F);
         OpenGL.translate(-24F, -7F, -18F);
         OpenGL.scale(46F, 46F, 46F);
-        this.getModelTexMap().getTexture().bind();
-        this.getModel().b6.render(Model.DEFAULT_SCALE);
-        this.getModel().bladeLeft.render(Model.DEFAULT_SCALE);
+        this.getModel().getTexture().bind();
+        this.getModel().getModel().b6.render(Model.DEFAULT_SCALE);
+        this.getModel().getModel().bladeLeft.render(Model.DEFAULT_SCALE);
     }
     
     @Override
-    public void renderInWorld(ItemStack item, Object... data)
+    public void renderInWorld(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        super.renderInWorld(item, data);
+        
         OpenGL.pushMatrix();
         {
-            OpenGL.rotate((this.mc.theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
+            OpenGL.rotate((mc.theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
             OpenGL.disable(GL11.GL_CULL_FACE);
-            this.getModelTexMap().getTexture().bind();
-            Model.draw(this.getModel().b6);
-            Model.draw(this.getModel().bladeLeft);
+            this.getModel().getTexture().bind();
+            Model.draw(this.getModel().getModel().b6);
+            Model.draw(this.getModel().getModel().bladeLeft);
         }
         OpenGL.popMatrix();
+    }
+
+    @Override
+    public void renderThirdPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void renderFirstPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
+    {
+        // TODO Auto-generated method stub
+        
     }
 }

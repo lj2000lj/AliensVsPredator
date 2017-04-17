@@ -5,6 +5,7 @@ import org.avp.client.Sounds;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
 public class EntityDeacon extends EntityXenomorph
@@ -18,8 +19,8 @@ public class EntityDeacon extends EntityXenomorph
         this.setSize(0.8F, 1.8F);
         this.ableToClimb = false;
         this.isDependant = false;
-        this.getNavigator().setCanSwim(true);
-        this.getNavigator().setAvoidsWater(true);
+        
+        
         this.tasks.addTask(0, new EntityAISwimming(this));
         
         this.addStandardXenomorphAISet();
@@ -35,21 +36,21 @@ public class EntityDeacon extends EntityXenomorph
     }
 
     @Override
-    protected String getHurtSound()
+    protected SoundEvent getHurtSound()
     {
-        return Sounds.SOUND_ALIEN_HURT.getKey();
+        return Sounds.SOUND_ALIEN_HURT.event();
     }
 
     @Override
-    protected String getLivingSound()
+    protected SoundEvent getAmbientSound()
     {
-        return Sounds.SOUND_ALIEN_LIVING.getKey();
+        return Sounds.SOUND_ALIEN_LIVING.event();
     }
 
     @Override
-    protected String getDeathSound()
+    protected SoundEvent getDeathSound()
     {
-        return Sounds.SOUND_ALIEN_DEATH.getKey();
+        return Sounds.SOUND_ALIEN_DEATH.event();
     }
 
     @Override

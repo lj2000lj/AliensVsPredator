@@ -1,6 +1,7 @@
 package org.avp;
 
-import org.avp.entities.SharedPlayer;
+
+import org.avp.world.capabilities.ISpecialPlayer.SpecialPlayer;
 import org.avp.world.playermode.LevelData;
 import org.avp.world.playermode.PlayerMode;
 
@@ -13,8 +14,8 @@ import com.arisux.mdxlib.lib.world.entity.player.Players;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.getEntity().EntityJoinWorldEvent;
-import net.minecraftforge.event.getEntity().player.PlayerPickupXpEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -60,9 +61,9 @@ public class PlayerModeHandler implements IInitEvent
         if (event.getEntity() instanceof EntityPlayer)
         {
             EntityPlayer player = (EntityPlayer) event.getEntity();
-            SharedPlayer playerExtension = (SharedPlayer) player.getExtendedProperties(SharedPlayer.IDENTIFIER);
+            SpecialPlayer specialPlayer = (SpecialPlayer) player.getCapability(SpecialPlayer.Provider.CAPABILITY, null);
 
-            playerExtension.setPlayerMode(PlayerMode.NORMAL);
+            specialPlayer.setPlayerMode(PlayerMode.NORMAL);
             {
                 // Query the player to choose their PlayerMode type.
             }
@@ -92,7 +93,8 @@ public class PlayerModeHandler implements IInitEvent
 
     public static boolean isPlayerInMode(EntityPlayer player, PlayerMode playerMode)
     {
-        return ((SharedPlayer) player.getExtendedProperties(SharedPlayer.IDENTIFIER)).getPlayerMode() == playerMode;
+        SpecialPlayer specialPlayer = (SpecialPlayer) player.getCapability(SpecialPlayer.Provider.CAPABILITY, null);
+        return specialPlayer.getPlayerMode() == playerMode;
     }
 
     public static boolean isNormal(EntityPlayer player)
@@ -117,7 +119,8 @@ public class PlayerModeHandler implements IInitEvent
 
     public PlayerMode getPlayerModeForPlayer(EntityPlayer player)
     {
-        return ((SharedPlayer) player.getExtendedProperties(SharedPlayer.IDENTIFIER)).getPlayerMode();
+        SpecialPlayer specialPlayer = (SpecialPlayer) player.getCapability(SpecialPlayer.Provider.CAPABILITY, null);
+        return specialPlayer.getPlayerMode();
     }
 
     public LevelData getLevelMappingForPlayer(EntityPlayer player)

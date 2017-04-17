@@ -6,18 +6,20 @@ import org.avp.AliensVsPredator;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.MapGenBase;
 
 public class VardaGenCaves extends MapGenBase
 {
-    protected void generateLargeCaveNode(long seed, int chunkX, int chunkZ, Block[] blocks, double startX, double startY, double startZ)
+    protected void generateLargeCaveNode(long seed, int chunkX, int chunkZ, ChunkPrimer blocks, double startX, double startY, double startZ)
     {
         generateCaveNode(seed, chunkX, chunkZ, blocks, startX, startY, startZ, 1.0F + this.rand.nextFloat() * 6.0F, 0.0F, 0.0F, -1, -1, 0.5D);
     }
 
-    protected void generateCaveNode(long seed, int chunkX, int chunkZ, Block[] blocks, double startX, double startY, double startZ, float diameterVariance, float diameter, float aggressiveness, int currentDist, int caveLength, double caveHeight)
+    protected void generateCaveNode(long seed, int chunkX, int chunkZ, ChunkPrimer blocks, double startX, double startY, double startZ, float diameterVariance, float diameter, float aggressiveness, int currentDist, int caveLength, double caveHeight)
     {
         double chunkCenterX = chunkX * 16 + 8;
         double chunkCenterZ = chunkZ * 16 + 8;
@@ -133,19 +135,19 @@ public class VardaGenCaves extends MapGenBase
                 {
                     for (int height = maxHeight + 1; (!underwater) && (height >= minHeight - 1); height--)
                     {
-                        int at = (x * 16 + z) * 128 + height;
+                        int idx = (x * 16 + z) * 128 + height;
 
                         if ((height < 0) || (height >= 128))
                             continue;
                         
-                        if ((blocks[at] == Blocks.flowing_water) || (blocks[at] == Blocks.water))
+                        if ((blocks.getBlockState(x, height, z) == Blocks.FLOWING_WATER) || (blocks.getBlockState(x, height, z) == Blocks.WATER))
                         {
                             underwater = true;
                         }
 
                         if ((height == minHeight - 1) || (x == minX) || (x == maxX - 1) || (z == minZ) || (z == maxZ - 1))
                             continue;
-                        
+
                         height = minHeight;
                     }
 
@@ -155,7 +157,7 @@ public class VardaGenCaves extends MapGenBase
 
             if (underwater)
                 continue;
-            
+
             for (int somethingX = minX; somethingX < maxX; somethingX++)
             {
                 double var63 = (somethingX + chunkX * 16 + 0.5D - startX) / variation;
@@ -163,19 +165,20 @@ public class VardaGenCaves extends MapGenBase
                 for (int somethingZ = minZ; somethingZ < maxZ; somethingZ++)
                 {
                     double var54 = (somethingZ + chunkZ * 16 + 0.5D - startZ) / variation;
-                    int at = (somethingX * 16 + somethingZ) * 128 + maxHeight;
+                    //TODO: See for ChunkPrimer conversion
+                    int idx = (somethingX * 16 + somethingZ) * 128 + maxHeight;
                     boolean atSurface = false;
 
                     if (var63 * var63 + var54 * var54 >= 1.0D)
                         continue;
-                    
-                    for (int var58 = maxHeight - 1; var58 >= minHeight; var58--)
+
+                    for (int somethingY = maxHeight - 1; somethingY >= minHeight; somethingY--)
                     {
-                        double var59 = (var58 + 0.5D - startY) / heightVariation;
+                        double var59 = (somethingY + 0.5D - startY) / heightVariation;
 
                         if ((var59 > -0.7D) && (var63 * var63 + var59 * var59 + var54 * var54 < 1.0D))
                         {
-                            Block ceilBlock = blocks[at];
+                            Block ceilBlock = blocks.getBlockState(somethingX, somethingY, somethingZ).getBlock();
 
                             if (ceilBlock == AliensVsPredator.blocks().terrainUniDirt)
                             {
@@ -184,23 +187,23 @@ public class VardaGenCaves extends MapGenBase
 
                             if ((ceilBlock != AliensVsPredator.blocks().terrainUniStone) || (ceilBlock != AliensVsPredator.blocks().terrainUniDirt) || (ceilBlock != AliensVsPredator.blocks().terrainUniDirt))
                             {
-                                if (var58 < 10)
+                                if (somethingY < 10)
                                 {
-                                    blocks[at] = Blocks.flowing_lava;
+                                    blocks.setBlockState(somethingX, somethingY, somethingZ, Blocks.FLOWING_LAVA.getDefaultState());
                                 }
                                 else
                                 {
-                                    blocks[at] = Blocks.AIR;
+                                    blocks.setBlockState(somethingX, somethingY, somethingZ, Blocks.AIR.getDefaultState());
 
-                                    if ((atSurface) && (blocks[(at - 1)] == AliensVsPredator.blocks().terrainUniDirt))
+                                    if (atSurface && blocks.getBlockState(somethingX, somethingY - 1, somethingZ) == AliensVsPredator.blocks().terrainUniDirt)
                                     {
-                                        blocks[(at - 1)] = this.worldObj.getBiomeGenForCoords(somethingX + chunkX * 16, somethingZ + chunkZ * 16).topBlock;
+                                        blocks.setBlockState(somethingX, somethingY - 1, somethingZ, this.worldObj.getBiome(new BlockPos(somethingX + chunkX * 16, 0, somethingZ + chunkZ * 16)).topBlock);
                                     }
                                 }
                             }
                         }
 
-                        at--;
+                        idx--;
                     }
                 }
 
@@ -211,11 +214,8 @@ public class VardaGenCaves extends MapGenBase
         }
     }
 
-    /**
-     * recursiveGenerate()
-     */
     @Override
-    protected void func_151538_a(World world, int chunkStartX, int chunkStartZ, int chunkX, int chunkZ, Block[] blocks)
+    protected void recursiveGenerate(World world, int chunkStartX, int chunkStartZ, int chunkX, int chunkZ, ChunkPrimer chunkPrimerIn)
     {
         int caves = this.rand.nextInt(this.rand.nextInt(this.rand.nextInt(40) + 1) + 1);
 
@@ -233,7 +233,7 @@ public class VardaGenCaves extends MapGenBase
 
             if (this.rand.nextInt(2) == 0)
             {
-                generateLargeCaveNode(this.rand.nextLong(), chunkX, chunkZ, blocks, startX, startY, startZ);
+                generateLargeCaveNode(this.rand.nextLong(), chunkX, chunkZ, chunkPrimerIn, startX, startY, startZ);
                 branchedCaves += this.rand.nextInt(4);
             }
 
@@ -248,7 +248,7 @@ public class VardaGenCaves extends MapGenBase
                     diameterVariation *= (this.rand.nextFloat() * this.rand.nextFloat() * 3.0F + 1.0F);
                 }
 
-                generateCaveNode(this.rand.nextLong(), chunkX, chunkZ, blocks, startX, startY, startZ, diameterVariation, diameter, aggressiveness, 0, 0, 1.0D);
+                generateCaveNode(this.rand.nextLong(), chunkX, chunkZ, chunkPrimerIn, startX, startY, startZ, diameterVariation, diameter, aggressiveness, 0, 0, 1.0D);
             }
         }
     }

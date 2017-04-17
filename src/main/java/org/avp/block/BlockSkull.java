@@ -1,25 +1,28 @@
 package org.avp.block;
 
-import java.util.Random;
-
 import org.avp.tile.TileEntitySkull;
 
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.client.render.Texture;
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -27,8 +30,34 @@ public abstract class BlockSkull extends Block
 {
     public BlockSkull()
     {
-        super(Material.iron);
+        super(Material.IRON);
         this.setLightOpacity(2);
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, new IProperty[0])
+        {
+            @Override
+            protected StateImplementation createState(Block block, ImmutableMap<IProperty<?>, Comparable<?>> properties, ImmutableMap<IUnlistedProperty<?>, Optional<?>> unlistedProperties)
+            {
+                return new StateImplementation(block, properties)
+                {
+                    @Override
+                    public boolean isOpaqueCube()
+                    {
+                        return false;
+                    }
+                    
+                    @Override
+                    public EnumBlockRenderType getRenderType()
+                    {
+                        return EnumBlockRenderType.INVISIBLE;
+                    }
+                };
+            }
+        };
     }
 
     @SideOnly(Side.CLIENT)
@@ -38,53 +67,29 @@ public abstract class BlockSkull extends Block
         OpenGL.scale(scale, scale, scale);
         OpenGL.translate(0F, 0.05F, 0F);
     }
-    
+
     @SideOnly(Side.CLIENT)
     public ModelRenderer[] getSkullModelRenderers()
     {
         return new ModelRenderer[] {};
     }
-    
+
     @SideOnly(Side.CLIENT)
     public Texture getSkullTexture()
     {
         return null;
     }
-    
-    @Override
-    public void registerIcons(IIconRegister reg)
-    {
-    	return;
-    }
 
     @Override
-    public boolean renderAsNormalBlock()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isOpaqueCube()
-    {
-        return false;
-    }
-
-    @Override
-    public void updateTick(World world, int posX, int posY, int posZ, Random random)
-    {
-        super.updateTick(world, posX, posY, posZ, random);
-    }
-
-    @Override
-    public TileEntity createTileEntity(World world, int metadata)
+    public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TileEntitySkull();
     }
-
+    
     @Override
-    public void onBlockPlacedBy(World world, int posX, int posY, int posZ, EntityLivingBase placer, ItemStack itemstack)
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        TileEntity tile = world.getTileEntity(posX, posY, posZ);
+        TileEntity tile = world.getTileEntity(pos);
 
         if (tile != null && tile instanceof TileEntitySkull && placer != null)
         {
@@ -94,20 +99,14 @@ public abstract class BlockSkull extends Block
     }
 
     @Override
-    public boolean hasTileEntity(int metadata)
+    public boolean hasTileEntity(IBlockState state)
     {
         return true;
-    }
-
-    @Override
-    public boolean shouldSideBeRendered(IBlockAccess blockaccess, int posX, int posY, int posZ, int side)
-    {
-        return false;
     }
 
     public static EnumFacing getFacing(Entity entity)
     {
         int dir = MathHelper.floor_double((entity.rotationYaw / 90) + 0.5) & 3;
-        return EnumFacing.VALID_DIRECTIONS[Direction.directionToFacing[dir]];
+        return EnumFacing.getFront(dir);
     }
 }

@@ -6,31 +6,32 @@ import com.arisux.mdxlib.lib.client.render.Draw;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
 public class ItemArmorMarine extends ItemArmor
 {
-    public ItemArmorMarine(ArmorMaterial material, int renderIndex, int armorType)
+    public ItemArmorMarine(ArmorMaterial material, int renderIndex, EntityEquipmentSlot slot)
     {
-        super(material, renderIndex, armorType);
+        super(material, renderIndex, slot);
     }
-
+    
     @Override
-    public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type)
+    public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type)
     {
         switch (slot)
         {
-            case 0:
+            case FEET:
                 return Draw.getResourcePath(AliensVsPredator.resources().MARINE1);
-            case 1:
+            case LEGS:
                 return Draw.getResourcePath(AliensVsPredator.resources().MARINE1);
-            case 2:
+            case CHEST:
                 return Draw.getResourcePath(AliensVsPredator.resources().MARINE2);
-            case 3:
+            case HEAD:
                 return Draw.getResourcePath(AliensVsPredator.resources().MARINE1);
             default:
                 return Draw.getResourcePath(AliensVsPredator.resources().MARINE1);
@@ -43,8 +44,8 @@ public class ItemArmorMarine extends ItemArmor
         // if you are wearing the set, you will receive resistance and damageBoost
         if (player.inventory.armorItemInSlot(3) != null && player.inventory.armorItemInSlot(3).getItem() == AliensVsPredator.items().helmMarine && player.inventory.armorItemInSlot(2) != null && player.inventory.armorItemInSlot(2).getItem() == AliensVsPredator.items().plateMarine && player.inventory.armorItemInSlot(1) != null && player.inventory.armorItemInSlot(1).getItem() == AliensVsPredator.items().legsMarine && player.inventory.armorItemInSlot(0) != null && player.inventory.armorItemInSlot(0).getItem() == AliensVsPredator.items().bootsMarine)
         {
-            player.addPotionEffect(new PotionEffect(Potion.resistance.getId(), 1, 1));
-            player.addPotionEffect(new PotionEffect(Potion.damageBoost.getId(), 1, 1));
+            player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 1, 1));
+            player.addPotionEffect(new PotionEffect(MobEffects.INSTANT_DAMAGE, 1, 1));
         }
     }
 }

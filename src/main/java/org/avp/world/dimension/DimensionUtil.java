@@ -2,15 +2,13 @@ package org.avp.world.dimension;
 
 import java.util.Random;
 
-import net.minecraft.client.renderer.Tessellator;
+import com.arisux.mdxlib.lib.client.render.Draw;
 
 public class DimensionUtil
 {
-    private static Tessellator tessellator = Tessellator.instance;
-
     public static void renderStars(Random rand, int stars, double starSize)
     {
-        tessellator.startDrawingQuads();
+        Draw.startQuads();
 
         for (int amountOfStars = 0; amountOfStars < stars; amountOfStars++)
         {
@@ -51,12 +49,12 @@ public class DimensionUtil
                     double randX = var51 * var22 - var47 * var24;
                     double randY = var45 * var28 + dist * var30;
                     double randZ = var47 * var22 + var51 * var24;
-                    tessellator.addVertex(sizeX + randX, sizeY + randY, sizeZ + randZ);
+                    Draw.vertex(sizeX + randX, sizeY + randY, sizeZ + randZ).endVertex();
                 }
             }
         }
 
-        tessellator.draw();
+        Draw.tessellate();
     }
 
     public static float calculateCelestialAngle(long worldTime, float renderPartialTicks)

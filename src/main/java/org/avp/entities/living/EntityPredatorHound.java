@@ -12,6 +12,7 @@ import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.IMob;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
 public class EntityPredatorHound extends EntityMob implements IMob, IHost
@@ -21,7 +22,6 @@ public class EntityPredatorHound extends EntityMob implements IMob, IHost
         super(world);
         this.setSize(1.5F, 1.75F);
         this.experienceValue = 0;
-        this.getNavigator().setBreakDoors(false);
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIMoveTowardsRestriction(this, 5.5D));
         this.tasks.addTask(2, new EntityAIMoveThroughVillage(this, 5.5D, false));
@@ -41,31 +41,25 @@ public class EntityPredatorHound extends EntityMob implements IMob, IHost
     }
     
     @Override
-    protected boolean isAIEnabled()
-    {
-        return true;
-    }
-
-    @Override
     public int getTotalArmorValue()
     {
         return 3;
     }
 
     @Override
-    protected String getLivingSound()
+    protected SoundEvent getAmbientSound()
     {
         return null;
     }
 
     @Override
-    protected String getHurtSound()
+    protected SoundEvent getHurtSound()
     {
         return null;
     }
 
     @Override
-    protected String getDeathSound()
+    protected SoundEvent getDeathSound()
     {
         return null;
     }

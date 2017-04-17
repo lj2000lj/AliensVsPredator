@@ -3,18 +3,19 @@ package org.avp.world.fluids;
 import java.util.HashMap;
 import java.util.Map;
 
-import cpw.mods.fml.common.eventhandler.Event.Result;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import net.minecraftforge.event.getEntity().player.FillBucketEvent;
+import net.minecraftforge.event.entity.player.FillBucketEvent;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class BucketHandlingEvent
 {
     public static BucketHandlingEvent instance = new BucketHandlingEvent();
-    public Map<Block, Item> buckets = new HashMap<Block, Item>();
+    public Map<Block, Item>           buckets  = new HashMap<Block, Item>();
 
     private BucketHandlingEvent()
     {
@@ -24,30 +25,28 @@ public class BucketHandlingEvent
     @SubscribeEvent
     public void onBucketFill(FillBucketEvent event)
     {
-        ItemStack result = fillCustomBucket(event.world, event.target);
+        ItemStack bucket = fillCustomBucket(event.getWorld(), event.getTarget());
 
-        if (result == null)
+        if (bucket == null)
         {
             return;
         }
 
-        event.result = result;
+        event.setFilledBucket(bucket);
         event.setResult(Result.ALLOW);
     }
 
-    private ItemStack fillCustomBucket(World world, MovingObjectPosition pos)
+    private ItemStack fillCustomBucket(World world, RayTraceResult result)
     {
-        Block block = world.getBlock(pos.blockX, pos.blockY, pos.blockZ);
+        Block block = world.getBlockState(result.getBlockPos()).getBlock();
         Item bucket = buckets.get(block);
 
-        if (bucket != null && world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0)
+        if (bucket != null)
         {
-            world.setBlockToAir(pos.blockX, pos.blockY, pos.blockZ);
+            world.setBlockToAir(result.getBlockPos());
             return new ItemStack(bucket);
         }
-        else
-        {
-            return null;
-        }
+
+        return null;
     }
 }

@@ -7,37 +7,46 @@ import com.arisux.mdxlib.lib.game.GameSounds;
 import com.arisux.mdxlib.lib.world.entity.player.inventory.Inventories;
 import com.arisux.mdxlib.lib.world.item.HookedItem;
 
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
 public class ItemDisc extends HookedItem
 {
     @Override
-    public void onPlayerStoppedUsing(ItemStack itemstack, World world, EntityPlayer entityplayer, int itemInUseCount)
+    public void onPlayerStoppedUsing(ItemStack itemstack, World world, EntityLivingBase living, int itemInUseCount)
     {
-        if (entityplayer.inventory.hasItemStack(new ItemStack(AliensVsPredator.items().itemDisc)))
+        if (living instanceof EntityPlayer)
         {
-            int remainingCount = this.getMaxItemUseDuration(itemstack) - itemInUseCount;
-            float charge = remainingCount / 20.0F;
-            charge = (charge * charge + charge * 2.0F) / 3.0F;
+            EntityPlayer player = (EntityPlayer) living;
 
-            if (charge >= 0.1F)
+            if (player.inventory.hasItemStack(new ItemStack(AliensVsPredator.items().itemDisc)))
             {
-                boolean crit = charge > 1.5F ? true : false;
-                charge = charge > 1.5F ? 1.5F : charge;
-                charge *= 1.5F;
+                int remainingCount = this.getMaxItemUseDuration(itemstack) - itemInUseCount;
+                float charge = remainingCount / 20.0F;
+                charge = (charge * charge + charge * 2.0F) / 3.0F;
 
-                if (!world.isRemote)
+                if (charge >= 0.1F)
                 {
-                    EntitySmartDisc entity = new EntitySmartDisc(world, entityplayer, itemstack, charge);
-                    entity.setIsCritical(crit);
-                    world.spawnEntityInWorld(entity);
-                }
+                    boolean crit = charge > 1.5F ? true : false;
+                    charge = charge > 1.5F ? 1.5F : charge;
+                    charge *= 1.5F;
 
-                GameSounds.fxBow.playSound(entityplayer, 0.6F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.0F));
-                Inventories.consumeItem(entityplayer, this);
+                    if (!world.isRemote)
+                    {
+                        EntitySmartDisc entity = new EntitySmartDisc(world, living, itemstack, charge);
+                        entity.setIsCritical(crit);
+                        world.spawnEntityInWorld(entity);
+                    }
+
+                    GameSounds.fxBow.playSound(living, 0.6F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.0F));
+                    Inventories.consumeItem(player, this);
+                }
             }
         }
     }
@@ -51,17 +60,17 @@ public class ItemDisc extends HookedItem
     @Override
     public EnumAction getItemUseAction(ItemStack itemstack)
     {
-        return EnumAction.block;
+        return EnumAction.BLOCK;
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer)
+    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
     {
-        if (entityplayer.inventory.hasItemStack(new ItemStack(AliensVsPredator.items().itemDisc)))
+        if (playerIn.inventory.hasItemStack(new ItemStack(AliensVsPredator.items().itemDisc)))
         {
-            entityplayer.setItemInUse(itemstack, this.getMaxItemUseDuration(itemstack));
+            return super.onItemRightClick(itemStackIn, worldIn, playerIn, hand);
         }
-
-        return itemstack;
+        
+        return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
     }
 }

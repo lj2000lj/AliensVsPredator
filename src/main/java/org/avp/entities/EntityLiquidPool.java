@@ -2,6 +2,7 @@ package org.avp.entities;
 
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
 public class EntityLiquidPool extends EntityCreature
@@ -23,11 +24,11 @@ public class EntityLiquidPool extends EntityCreature
     {
         super.entityInit();
     }
-
+    
     @Override
-    protected boolean isAIEnabled()
+    public boolean isAIDisabled()
     {
-        return true;
+        return false;
     }
 
     @Override
@@ -85,13 +86,13 @@ public class EntityLiquidPool extends EntityCreature
     }
     
     @Override
-    protected String getHurtSound()
+    protected SoundEvent getHurtSound()
     {
         return null;
     }
     
     @Override
-    protected String getDeathSound()
+    protected SoundEvent getDeathSound()
     {
         return null;
     }

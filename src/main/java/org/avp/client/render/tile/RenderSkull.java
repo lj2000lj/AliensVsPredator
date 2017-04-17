@@ -8,15 +8,12 @@ import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
 
-public class RenderSkull extends TileEntitySpecialRenderer
+public class RenderSkull extends TileEntitySpecialRenderer<TileEntitySkull>
 {
     @Override
-    public void renderTileEntityAt(TileEntity tile, double posX, double posY, double posZ, float renderPartialTicks)
+    public void renderTileEntityAt(TileEntitySkull skull, double posX, double posY, double posZ, float renderPartialTicks, int destroyStage)
     {
-        TileEntitySkull skull = (TileEntitySkull) tile;
-
         OpenGL.pushMatrix();
         {
             float scale = 0.64F;

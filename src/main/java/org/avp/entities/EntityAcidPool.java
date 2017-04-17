@@ -1,20 +1,25 @@
 package org.avp.entities;
 
+import javax.annotation.Nullable;
+
 import org.avp.DamageSources;
 import org.avp.entities.ai.EntityAIMeltBlock;
 import org.avp.entities.living.EntitySpeciesAlien;
 
-import net.minecraft.entity.Entity;
+import com.google.common.base.Predicate;
+
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.potion.Potion;
+import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 
-public class EntityAcidPool extends EntityLiquidPool implements IMob, IEntitySelector
+public class EntityAcidPool extends EntityLiquidPool implements IMob
 {
     public EntityAcidPool(World world)
     {
@@ -23,27 +28,27 @@ public class EntityAcidPool extends EntityLiquidPool implements IMob, IEntitySel
         this.ignoreFrustumCheck = true;
         this.setSize(0.08F, 0.08F);
         this.tasks.addTask(0, new EntityAIMeltBlock(this, -1));
-        this.targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, Entity.class, /** targetChance **/
-            0, /** shouldCheckSight **/
-            false, /** nearbyOnly **/
-            false, this));
+        this.targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, EntityLiving.class, 0, false, false, SELECTOR));
     }
 
-    @Override
-    public boolean isEntityApplicable(Entity entity)
+    private static final Predicate<EntityLivingBase> SELECTOR = new Predicate<EntityLivingBase>()
     {
-        if (entity instanceof EntityLiquidPool)
+        @Override
+        public boolean apply(@Nullable EntityLivingBase living)
         {
-            return false;
-        }
-        
-        if (entity instanceof EntitySpeciesAlien)
-        {
-            return false;
-        }
+            if (living instanceof EntityLiquidPool)
+            {
+                return false;
+            }
 
-        return true;
-    }
+            if (living instanceof EntitySpeciesAlien)
+            {
+                return false;
+            }
+
+            return true;
+        }
+    };
 
     @Override
     protected void entityInit()
@@ -52,9 +57,9 @@ public class EntityAcidPool extends EntityLiquidPool implements IMob, IEntitySel
     }
 
     @Override
-    protected boolean isAIEnabled()
+    public boolean isAIDisabled()
     {
-        return true;
+        return false;
     }
 
     @Override
@@ -102,9 +107,9 @@ public class EntityAcidPool extends EntityLiquidPool implements IMob, IEntitySel
         if (!this.worldObj.isRemote)
         {
             double range = 1.2;
-            EntityLivingBase target = (EntityLivingBase) (this.worldObj.findNearestEntityWithinAABB(EntityLivingBase.class, this.boundingBox.expand(range, 0.1D, range), this));
+            EntityLivingBase target = (EntityLivingBase) (this.worldObj.findNearestEntityWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().expand(range, 0.1D, range), this));
 
-            if (target != null && isEntityApplicable(target))
+            if (target != null && SELECTOR.apply(target))
             {
                 this.setAttackTarget(target);
                 target.attackEntityFrom(DamageSources.acid, 4F);
@@ -113,7 +118,7 @@ public class EntityAcidPool extends EntityLiquidPool implements IMob, IEntitySel
 
         if (worldObj.isRemote && worldObj.getWorldTime() % 4 <= 0)
         {
-            this.worldObj.spawnParticle("smoke", this.posX + this.rand.nextDouble(), this.posY + this.rand.nextDouble(), this.posZ + this.rand.nextDouble(), 0.0D, 0.0D, 0.0D);
+            this.worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.posX + this.rand.nextDouble(), this.posY + this.rand.nextDouble(), this.posZ + this.rand.nextDouble(), 0.0D, 0.0D, 0.0D);
         }
     }
 
@@ -124,15 +129,9 @@ public class EntityAcidPool extends EntityLiquidPool implements IMob, IEntitySel
         {
             if (!player.capabilities.isCreativeMode)
             {
-                player.addPotionEffect(new PotionEffect(Potion.poison.id, (14 * 20), 0));
+                player.addPotionEffect(new PotionEffect(MobEffects.POISON, (14 * 20), 0));
             }
         }
-    }
-
-    @Override
-    protected void attackEntity(Entity entity, float damage)
-    {
-        super.attackEntity(entity, damage);
     }
 
     public int getLifetime()

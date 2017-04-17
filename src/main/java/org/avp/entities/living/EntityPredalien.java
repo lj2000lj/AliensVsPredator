@@ -6,6 +6,7 @@ import org.avp.client.Sounds;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
 public class EntityPredalien extends EntityXenomorph implements IMob
@@ -17,10 +18,10 @@ public class EntityPredalien extends EntityXenomorph implements IMob
         this.experienceValue = 225;
         this.setSize(1.0F, 2.5F);
         this.ignoreFrustumCheck = true;
-        this.getNavigator().setAvoidsWater(true);
-        this.getNavigator().setBreakDoors(true);
-        this.getNavigator().setCanSwim(true);
-        this.getNavigator().setAvoidsWater(true);
+        
+        
+        
+        
         
         this.addStandardXenomorphAISet();
     }
@@ -42,27 +43,21 @@ public class EntityPredalien extends EntityXenomorph implements IMob
     }
 
     @Override
-    protected boolean isAIEnabled()
+    protected SoundEvent getHurtSound()
     {
-        return true;
+        return Sounds.SOUND_PRAETORIAN_HURT.event();
     }
 
     @Override
-    protected String getHurtSound()
+    protected SoundEvent getAmbientSound()
     {
-        return Sounds.SOUND_PRAETORIAN_HURT.getKey();
+        return Sounds.SOUND_PRAETORIAN_LIVING.event();
     }
 
     @Override
-    protected String getLivingSound()
+    protected SoundEvent getDeathSound()
     {
-        return Sounds.SOUND_PRAETORIAN_LIVING.getKey();
-    }
-
-    @Override
-    protected String getDeathSound()
-    {
-        return Sounds.SOUND_PRAETORIAN_DEATH.getKey();
+        return Sounds.SOUND_PRAETORIAN_DEATH.event();
     }
 
     @Override

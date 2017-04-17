@@ -9,7 +9,7 @@ import com.arisux.mdxlib.lib.client.RenderLivingWrapper;
 import com.arisux.mdxlib.lib.client.SpecialModelBiped;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
-public class RenderCombatSynthetic extends RenderLivingWrapper<EntityCombatSynthetic>
+public class RenderCombatSynthetic extends RenderLivingWrapper<EntityCombatSynthetic, SpecialModelBiped>
 {
     public RenderCombatSynthetic()
     {

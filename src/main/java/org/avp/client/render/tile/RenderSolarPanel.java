@@ -1,31 +1,31 @@
 package org.avp.client.render.tile;
 
 import org.avp.AliensVsPredator;
+import org.avp.tile.TileEntitySolarPanel;
 import org.lwjgl.opengl.GL11;
 
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
 
-public class RenderSolarPanel extends TileEntitySpecialRenderer
+public class RenderSolarPanel extends TileEntitySpecialRenderer<TileEntitySolarPanel>
 {
     @Override
-    public void renderTileEntityAt(TileEntity tileEntity, double posX, double posY, double posZ, float renderPartialTicks)
+    public void renderTileEntityAt(TileEntitySolarPanel tile, double x, double y, double z, float partialTicks, int destroyStage)
     {
         OpenGL.pushMatrix();
         {
             OpenGL.disable(GL11.GL_CULL_FACE);
-            OpenGL.translate(posX + 0.5, posY + 0.5, posZ + 0.5);
+            OpenGL.translate(x + 0.5, y + 0.5, z + 0.5);
 
-            if (tileEntity != null)
+            if (tile != null)
             {
-                float angle = tileEntity.getWorld().getCelestialAngle(renderPartialTicks) * 360;
+                float angle = tile.getWorld().getCelestialAngle(partialTicks) * 360;
                 OpenGL.rotate(angle > 90 && angle < 270 ? 90 : angle, 0, 0, 1);
                 OpenGL.translate(0F, -1.4F, 0F);
             }
 
-            AliensVsPredator.resources().models().SOLAR_PANEL.draw(tileEntity);
+            AliensVsPredator.resources().models().SOLAR_PANEL.draw(tile);
         }
         OpenGL.popMatrix();
     }

@@ -45,6 +45,7 @@ public class Sounds implements IPreInitEvent
     public static final Sound  SOUND_PRAETORIAN_LIVING            = new Sound(new ResourceLocation(AliensVsPredator.properties().DOMAIN + "praetorian.living"));
     public static final Sound  SOUND_PRAETORIAN_DEATH             = new Sound(new ResourceLocation(AliensVsPredator.properties().DOMAIN + "xeno.death"));
     public static final Sound  SOUND_QUEEN_HURT                   = new Sound(new ResourceLocation(AliensVsPredator.properties().DOMAIN + "queen.hurt"));
+    public static final Sound  SOUND_QUEEN_LIVING_CONSTANT                 = new Sound(new ResourceLocation(AliensVsPredator.properties().DOMAIN + "queen.living.constant"));
     public static final Sound  SOUND_QUEEN_LIVING                 = new Sound(new ResourceLocation(AliensVsPredator.properties().DOMAIN + "queen.living"));
     public static final Sound  SOUND_QUEEN_DEATH                  = new Sound(new ResourceLocation(AliensVsPredator.properties().DOMAIN + "queen.death"));
     public static final Sound  SOUND_SPITTER_HURT                 = new Sound(new ResourceLocation(AliensVsPredator.properties().DOMAIN + "praetorian.hurt"));

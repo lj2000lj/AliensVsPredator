@@ -10,17 +10,22 @@ import com.arisux.mdxlib.lib.game.Game;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class RenderItemSkull extends ItemRenderer
+public class RenderItemSkull extends ItemRenderer<Model>
 {
+    private BlockSkull skull;
+    
     public RenderItemSkull()
     {
         super(null);
     }
 
     @Override
-    public void renderThirdPerson(ItemStack item, Object... data)
+    public void renderThirdPersonRight(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         OpenGL.pushMatrix();
         {
@@ -30,13 +35,13 @@ public class RenderItemSkull extends ItemRenderer
             OpenGL.rotate(90F, 1F, 0F, 0F);
             OpenGL.translate(0F, 1.0F, -1.25F);
             OpenGL.disable(GL11.GL_CULL_FACE);
-            this.draw((BlockSkull) Block.getBlockFromItem(item.getItem()));
+            this.draw(itemstack.getItem());
         }
         OpenGL.popMatrix();
     }
 
     @Override
-    public void renderFirstPerson(ItemStack item, Object... data)
+    public void renderFirstPersonRight(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         OpenGL.pushMatrix();
         {
@@ -44,13 +49,13 @@ public class RenderItemSkull extends ItemRenderer
             OpenGL.scale(glScale, glScale, glScale);
             OpenGL.translate(0.5F, 3F, -1.5F);
             OpenGL.disable(GL11.GL_CULL_FACE);
-            this.draw((BlockSkull) Block.getBlockFromItem(item.getItem()));
+            this.draw(itemstack.getItem());
         }
         OpenGL.popMatrix();
     }
 
     @Override
-    public void renderInInventory(ItemStack item, Object... data)
+    public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         OpenGL.pushMatrix();
         {
@@ -59,27 +64,32 @@ public class RenderItemSkull extends ItemRenderer
             OpenGL.translate(8F, 1F, -16F);
             OpenGL.rotate(0F, 1.0F, 0.0F, 0.0F);
             OpenGL.scale(glScale, glScale, glScale);
-            this.draw((BlockSkull) Block.getBlockFromItem(item.getItem()));
+            this.draw(itemstack.getItem());
         }
         OpenGL.popMatrix();
     }
     
     @Override
-    public void renderInWorld(ItemStack item, Object... data)
+    public void renderInWorld(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         OpenGL.pushMatrix();
         {
             float glScale = 1F;
             OpenGL.disable(GL11.GL_CULL_FACE);
-            OpenGL.rotate((this.mc.theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
+            OpenGL.rotate((mc.theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
             OpenGL.scale(glScale, -glScale, glScale);
-            this.draw((BlockSkull) Block.getBlockFromItem(item.getItem()));
+            this.draw(itemstack.getItem());
         }
         OpenGL.popMatrix();
     }
     
-    private void draw(BlockSkull skull)
+    private void draw(Item item)
     {
+        if (this.skull == null)
+        {
+            this.skull = (BlockSkull) Block.getBlockFromItem(item);
+        }
+        
         if (skull.getSkullTexture() != null)
         {
             skull.getSkullTexture().bind();
@@ -91,5 +101,19 @@ public class RenderItemSkull extends ItemRenderer
         {
             renderer.render(Model.DEFAULT_SCALE);
         }
+    }
+
+    @Override
+    public void renderThirdPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void renderFirstPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
+    {
+        // TODO Auto-generated method stub
+        
     }
 }

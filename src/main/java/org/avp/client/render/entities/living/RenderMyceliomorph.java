@@ -1,6 +1,7 @@
 package org.avp.client.render.entities.living;
 
 import org.avp.AliensVsPredator;
+import org.avp.client.model.entities.living.ModelMyceliomorph;
 import org.avp.entities.living.EntityMyceliomorph;
 import org.lwjgl.opengl.GL11;
 
@@ -8,24 +9,22 @@ import com.arisux.mdxlib.lib.client.RenderLivingWrapper;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.entity.EntityLivingBase;
 
-public class RenderMyceliomorph extends RenderLivingWrapper
+public class RenderMyceliomorph extends RenderLivingWrapper<EntityMyceliomorph, ModelMyceliomorph>
 {
     public RenderMyceliomorph()
     {
         super(AliensVsPredator.resources().models().MYCELIOMORPH);
-        this.setRenderPassModel(this.getModelTexMap().getModel());
+//        this.setRenderPassModel(this.getModel().getModel());
     }
 
     @Override
-    protected void preRenderCallback(EntityLivingBase entityLivingBase, float shadowSize)
+    protected void preRenderCallback(EntityMyceliomorph entityLivingBase, float shadowSize)
     {
         super.preRenderCallback(entityLivingBase, shadowSize);
     }
 
-    @Override
-    protected int shouldRenderPass(EntityLivingBase entityLivingBase, int par2, float par3)
+    protected int shouldRenderPass(EntityMyceliomorph entityLivingBase, int par2, float par3)
     {
         return this.setRenderPassModelBrightness((EntityMyceliomorph) entityLivingBase, par2);
     }

@@ -23,7 +23,7 @@ public class InputHandlerFirearm implements IInputHandler
             {
                 ItemFirearm fireArm = (ItemFirearm) Game.minecraft().thePlayer.inventory.getCurrentItem().getItem();
 
-                if (AliensVsPredator.keybinds().specialSecondary.isPressed() && this.lastReload > fireArm.getReloadRate())
+                if (AliensVsPredator.keybinds().specialSecondary.isPressed() && this.lastReload > fireArm.getProfile().getReloadTime())
                 {
                     this.lastReload = 0;
                     AliensVsPredator.network().sendToServer(new PacketReloadFirearm());

@@ -1,27 +1,29 @@
 package org.avp.client.render.items.parts;
 
+import org.avp.client.model.items.ModelM56SG;
 import org.avp.client.render.items.ItemRendererGroup;
 import org.lwjgl.opengl.GL11;
 
-import com.arisux.mdxlib.lib.client.Model;
 import com.arisux.mdxlib.lib.client.TexturedModel;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.game.Game;
 
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 
-public class RenderItemM56SGStock extends ItemRendererGroup
+public class RenderItemM56SGStock extends ItemRendererGroup<ModelM56SG>
 {
-    public RenderItemM56SGStock(TexturedModel<? extends Model> model, ModelRenderer... modelRenderers)
+    public RenderItemM56SGStock(TexturedModel<ModelM56SG> model, ModelRenderer... modelRenderers)
     {
         super(model, modelRenderers);
     }
 
     @Override
-    public void renderInInventory(ItemStack item, Object... data)
+    public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        super.renderInInventory(item, data);
+        
 
         OpenGL.pushMatrix();
         {
@@ -36,7 +38,7 @@ public class RenderItemM56SGStock extends ItemRendererGroup
     }
     
     @Override
-    public void renderInWorld(ItemStack item, Object... data)
+    public void renderInWorld(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         OpenGL.pushMatrix();
         {

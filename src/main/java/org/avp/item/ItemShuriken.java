@@ -7,34 +7,42 @@ import com.arisux.mdxlib.lib.game.GameSounds;
 import com.arisux.mdxlib.lib.world.entity.player.inventory.Inventories;
 import com.arisux.mdxlib.lib.world.item.HookedItem;
 
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
 public class ItemShuriken extends HookedItem
 {
     @Override
-    public void onPlayerStoppedUsing(ItemStack itemstack, World world, EntityPlayer entityplayer, int itemInUseCount)
+    public void onPlayerStoppedUsing(ItemStack itemstack, World world, EntityLivingBase entityLiving, int timeLeft)
     {
-        if (entityplayer.inventory.hasItemStack(new ItemStack(AliensVsPredator.items().itemShuriken)))
+        if (entityLiving instanceof EntityPlayer)
         {
-            int remainingCount = this.getMaxItemUseDuration(itemstack) - itemInUseCount;
-            float f = remainingCount / 20.0F;
-            f = (f * f + f * 2.0F) / 3.0F;
-
-            if (f >= 0.1F)
+            EntityPlayer player = (EntityPlayer) entityLiving;
+            
+            if (player.inventory.hasItemStack(new ItemStack(AliensVsPredator.items().itemShuriken)))
             {
-                f = f > 1.5F ? 1.5F : f;
-                f *= 1.5F;
+                int remainingCount = this.getMaxItemUseDuration(itemstack) - timeLeft;
+                float velocity = remainingCount / 20.0F;
+                velocity = (velocity * velocity + velocity * 2.0F) / 3.0F;
 
-                if (!world.isRemote)
+                if (velocity >= 0.1F)
                 {
-                    world.spawnEntityInWorld(new EntityShuriken(world, entityplayer, f * 1.5F));
-                }
+                    velocity = velocity > 1.5F ? 1.5F : velocity;
+                    velocity *= 1.5F;
 
-                GameSounds.fxBow.playSound(entityplayer, 0.6F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.0F));
-                Inventories.consumeItem(entityplayer, this);
+                    if (!world.isRemote)
+                    {
+                        world.spawnEntityInWorld(new EntityShuriken(world, player, velocity * 1.5F));
+                    }
+
+                    GameSounds.fxBow.playSound(player, 0.6F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.0F));
+                    Inventories.consumeItem(player, this);
+                }
             }
         }
     }
@@ -48,17 +56,17 @@ public class ItemShuriken extends HookedItem
     @Override
     public EnumAction getItemUseAction(ItemStack itemstack)
     {
-        return EnumAction.block;
+        return EnumAction.BLOCK;
     }
-
+    
     @Override
-    public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer)
+    public ActionResult<ItemStack> onItemRightClick(ItemStack itemstack, World world, EntityPlayer player, EnumHand hand)
     {
-        if (entityplayer.inventory.hasItemStack(new ItemStack(AliensVsPredator.items().itemShuriken)))
+        if (player.inventory.hasItemStack(new ItemStack(AliensVsPredator.items().itemShuriken)))
         {
-            entityplayer.setItemInUse(itemstack, this.getMaxItemUseDuration(itemstack));
+            player.setActiveHand(hand);
         }
-
-        return itemstack;
+        
+        return super.onItemRightClick(itemstack, world, player, hand);
     }
 }

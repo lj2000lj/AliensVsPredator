@@ -4,46 +4,54 @@ import java.util.Random;
 
 import org.avp.AliensVsPredator;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
 public class VardaGenLakes extends WorldGenerator
 {
-    private Block blockIndex;
+    private IBlockState state;
 
-    public VardaGenLakes(Block var1)
+    public VardaGenLakes(IBlockState state)
     {
-        this.blockIndex = var1;
+        this.state = state;
     }
-
+    
     @Override
-    public boolean generate(World var1, Random var2, int var3, int var4, int var5)
+    public boolean generate(World world, Random rand, BlockPos position)
     {
-        var3 -= 8;
+        int x = position.getX();
+        int y = position.getY();
+        int z = position.getZ();
+        
+        x -= 8;
 
-        for (var5 -= 8; (var4 > 5) && (var1.isAirBlock(var3, var4, var5)); var4--)
+        for (z -= 8; (y > 5) && (world.isAirBlock(new BlockPos(x, y, z))); y--)
             ;
-        if (var4 <= 4)
+        if (y <= 4)
         {
             return false;
         }
 
-        var4 -= 4;
+        y -= 4;
+        
+        position = new BlockPos(x, y, z);
+
         boolean[] var6 = new boolean[2048];
-        int var7 = var2.nextInt(4) + 4;
+        int var7 = rand.nextInt(4) + 4;
 
         for (int var8 = 0; var8 < var7; var8++)
         {
-            double var9 = var2.nextDouble() * 6.0D + 3.0D;
-            double var11 = var2.nextDouble() * 4.0D + 2.0D;
-            double var13 = var2.nextDouble() * 6.0D + 3.0D;
-            double var15 = var2.nextDouble() * (16.0D - var9 - 2.0D) + 1.0D + var9 / 2.0D;
-            double var17 = var2.nextDouble() * (8.0D - var11 - 4.0D) + 2.0D + var11 / 2.0D;
-            double var19 = var2.nextDouble() * (16.0D - var13 - 2.0D) + 1.0D + var13 / 2.0D;
+            double var9 = rand.nextDouble() * 6.0D + 3.0D;
+            double var11 = rand.nextDouble() * 4.0D + 2.0D;
+            double var13 = rand.nextDouble() * 6.0D + 3.0D;
+            double var15 = rand.nextDouble() * (16.0D - var9 - 2.0D) + 1.0D + var9 / 2.0D;
+            double var17 = rand.nextDouble() * (8.0D - var11 - 4.0D) + 2.0D + var11 / 2.0D;
+            double var19 = rand.nextDouble() * (16.0D - var13 - 2.0D) + 1.0D + var13 / 2.0D;
 
             for (int var21 = 1; var21 < 15; var21++)
             {
@@ -67,24 +75,25 @@ public class VardaGenLakes extends WorldGenerator
 
         }
 
-        for (int var8 = 0; var8 < 16; var8++)
+        for (int rX = 0; rX < 16; rX++)
         {
-            for (int var32 = 0; var32 < 16; var32++)
+            for (int rZ = 0; rZ < 16; rZ++)
             {
-                for (int var10 = 0; var10 < 8; var10++)
+                for (int rY = 0; rY < 8; rY++)
                 {
-                    boolean var33 = (var6[((var8 * 16 + var32) * 8 + var10)] == false) && (((var8 < 15) && (var6[(((var8 + 1) * 16 + var32) * 8 + var10)] != false)) || ((var8 > 0) && (var6[(((var8 - 1) * 16 + var32) * 8 + var10)] != false)) || ((var32 < 15) && (var6[((var8 * 16 + var32 + 1) * 8 + var10)] != false)) || ((var32 > 0) && (var6[((var8 * 16 + (var32 - 1)) * 8 + var10)] != false)) || ((var10 < 7) && (var6[((var8 * 16 + var32) * 8 + var10 + 1)] != false)) || ((var10 > 0) && (var6[((var8 * 16 + var32) * 8 + (var10 - 1))] != false)));
+                    boolean var33 = (var6[((rX * 16 + rZ) * 8 + rY)] == false) && (((rX < 15) && (var6[(((rX + 1) * 16 + rZ) * 8 + rY)] != false)) || ((rX > 0) && (var6[(((rX - 1) * 16 + rZ) * 8 + rY)] != false)) || ((rZ < 15) && (var6[((rX * 16 + rZ + 1) * 8 + rY)] != false)) || ((rZ > 0) && (var6[((rX * 16 + (rZ - 1)) * 8 + rY)] != false)) || ((rY < 7) && (var6[((rX * 16 + rZ) * 8 + rY + 1)] != false)) || ((rY > 0) && (var6[((rX * 16 + rZ) * 8 + (rY - 1))] != false)));
 
                     if (!var33)
                         continue;
-                    Material var12 = var1.getBlock(var3 + var8, var4 + var10, var5 + var32).getMaterial();
+                    IBlockState blockstate = world.getBlockState(position.add(rX, rY, rZ));
+                    Material material = blockstate.getMaterial();
 
-                    if ((var10 >= 4) && (var12.isLiquid()))
+                    if ((rY >= 4) && (material.isLiquid()))
                     {
                         return false;
                     }
 
-                    if ((var10 < 4) && (!var12.isSolid()) && (var1.getBlock(var3 + var8, var4 + var10, var5 + var32) != this.blockIndex))
+                    if ((rY < 4) && (!material.isSolid()) && blockstate != this.state)
                     {
                         return false;
                     }
@@ -93,64 +102,53 @@ public class VardaGenLakes extends WorldGenerator
 
         }
 
-        for (int var8 = 0; var8 < 16; var8++)
+        for (int rX = 0; rX < 16; rX++)
         {
-            for (int var32 = 0; var32 < 16; var32++)
+            for (int rZ = 0; rZ < 16; rZ++)
             {
-                for (int var10 = 0; var10 < 8; var10++)
+                for (int rY = 0; rY < 8; rY++)
                 {
-                    if (var6[((var8 * 16 + var32) * 8 + var10)] == false)
+                    if (var6[((rX * 16 + rZ) * 8 + rY)] == false)
                         continue;
-                    var1.setBlock(var3 + var8, var4 + var10, var5 + var32, var10 >= 4 ? Blocks.AIR : this.blockIndex);
+                    world.setBlockState(position.add(rX, rY, rZ), rY >= 4 ? Blocks.AIR.getDefaultState() : this.state);
                 }
             }
 
         }
 
-        for (int var8 = 0; var8 < 16; var8++)
+        for (int rX = 0; rX < 16; rX++)
         {
-            for (int var32 = 0; var32 < 16; var32++)
+            for (int rZ = 0; rZ < 16; rZ++)
             {
-                for (int var10 = 4; var10 < 8; var10++)
+                for (int rY = 4; rY < 8; rY++)
                 {
-                    if ((var6[((var8 * 16 + var32) * 8 + var10)] == false) || (var1.getBlock(var3 + var8, var4 + var10 - 1, var5 + var32) != Blocks.dirt) || (var1.getSavedLightValue(EnumSkyBlock.Sky, var3 + var8, var4 + var10, var5 + var32) <= 0))
+                    BlockPos rPos = position.add(rX, rY, rZ);
+                    BlockPos rPosBelow = rPos.add(0, -1, 0);
+                    
+                    if ((var6[((rX * 16 + rZ) * 8 + rY)] == false) || (world.getBlockState(rPosBelow) != Blocks.DIRT.getDefaultState()) || (world.getLightFor(EnumSkyBlock.SKY, rPos) <= 0))
                         continue;
-                    var1.setBlock(var3 + var8, var4 + var10 - 1, var5 + var32, AliensVsPredator.blocks().terrainUniDirt);
+                    
+                    world.setBlockState(rPosBelow, AliensVsPredator.blocks().terrainUniDirt.getDefaultState());
                 }
             }
 
         }
 
-        if (this.blockIndex.getMaterial() == Material.lava)
+        if (this.state.getMaterial() == Material.LAVA)
         {
-            for (int var8 = 0; var8 < 16; var8++)
+            for (int rX = 0; rX < 16; rX++)
             {
-                for (int var32 = 0; var32 < 16; var32++)
+                for (int rZ = 0; rZ < 16; rZ++)
                 {
-                    for (int var10 = 0; var10 < 8; var10++)
+                    for (int rY = 0; rY < 8; rY++)
                     {
-                        boolean var33 = (var6[((var8 * 16 + var32) * 8 + var10)] == false) && (((var8 < 15) && (var6[(((var8 + 1) * 16 + var32) * 8 + var10)] != false)) || ((var8 > 0) && (var6[(((var8 - 1) * 16 + var32) * 8 + var10)] != false)) || ((var32 < 15) && (var6[((var8 * 16 + var32 + 1) * 8 + var10)] != false)) || ((var32 > 0) && (var6[((var8 * 16 + (var32 - 1)) * 8 + var10)] != false)) || ((var10 < 7) && (var6[((var8 * 16 + var32) * 8 + var10 + 1)] != false)) || ((var10 > 0) && (var6[((var8 * 16 + var32) * 8 + (var10 - 1))] != false)));
+                        BlockPos rPos = position.add(rX, rY, rZ);
+                        boolean flag = (var6[((rX * 16 + rZ) * 8 + rY)] == false) && (((rX < 15) && (var6[(((rX + 1) * 16 + rZ) * 8 + rY)] != false)) || ((rX > 0) && (var6[(((rX - 1) * 16 + rZ) * 8 + rY)] != false)) || ((rZ < 15) && (var6[((rX * 16 + rZ + 1) * 8 + rY)] != false)) || ((rZ > 0) && (var6[((rX * 16 + (rZ - 1)) * 8 + rY)] != false)) || ((rY < 7) && (var6[((rX * 16 + rZ) * 8 + rY + 1)] != false)) || ((rY > 0) && (var6[((rX * 16 + rZ) * 8 + (rY - 1))] != false)));
 
-                        if ((!var33) || ((var10 >= 4) && (var2.nextInt(2) == 0)) || (!var1.getBlock(var3 + var8, var4 + var10, var5 + var32).getMaterial().isSolid()))
+                        if ((!flag) || ((rY >= 4) && (rand.nextInt(2) == 0)) || (!world.getBlockState(rPos).getMaterial().isSolid()))
                             continue;
-                        var1.setBlock(var3 + var8, var4 + var10, var5 + var32, AliensVsPredator.blocks().terrainUniStone);
+                        world.setBlockState(rPos, AliensVsPredator.blocks().terrainUniStone.getDefaultState());
                     }
-                }
-            }
-
-        }
-
-        if (this.blockIndex.getMaterial() == Material.water)
-        {
-            for (int var8 = 0; var8 < 16; var8++)
-            {
-                for (int var32 = 0; var32 < 16; var32++)
-                {
-                    byte var34 = 4;
-
-                    if (!var1.isBlockFreezable(var3 + var8, var4 + var34, var5 + var32))
-                        continue;
-                    var1.setBlock(var3 + var8, var4 + var34, var5 + var32, Blocks.ice);
                 }
             }
 

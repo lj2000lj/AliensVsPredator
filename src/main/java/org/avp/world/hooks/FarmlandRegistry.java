@@ -4,10 +4,13 @@ import java.util.ArrayList;
 
 import org.avp.AliensVsPredator;
 
-import cpw.mods.fml.common.eventhandler.Event.Result;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraftforge.event.getEntity().player.UseHoeEvent;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.event.entity.player.UseHoeEvent;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class FarmlandRegistry
@@ -17,29 +20,31 @@ public class FarmlandRegistry
 
     private FarmlandRegistry()
     {
-        this.farmlandRegistry.add(Blocks.dirt);
-        this.farmlandRegistry.add(Blocks.grass);
+        this.farmlandRegistry.add(Blocks.DIRT);
+        this.farmlandRegistry.add(Blocks.GRASS);
         this.farmlandRegistry.add(AliensVsPredator.blocks().terrainUniDirt);
     }
 
     @SubscribeEvent
     public void onUseHoe(UseHoeEvent event)
     {
-        Block block = event.world.getBlock(event.getX(), event.getY(), event.getZ());
+        Block block = event.getWorld().getBlockState(event.getPos()).getBlock();
+        BlockPos posUp = event.getPos().add(0, 1, 0);
+        IBlockState up = event.getWorld().getBlockState(posUp);
 
-        if (event.world.getBlock(event.getX(), event.getY() + 1, event.getZ()).isAir(event.world, event.getX(), event.getY() + 1, event.getZ()) && (farmlandRegistry.contains(block)))
+        if (up.getBlock().isAir(up, event.getWorld(), posUp) && (farmlandRegistry.contains(block)))
         {
-            Block farmland = Blocks.farmland;
-            event.world.playSoundEffect((double) ((float) event.getX() + 0.5F), (double) ((float) event.getY() + 0.5F), (double) ((float) event.getZ() + 0.5F), farmland.stepSound.getStepSound(), (farmland.stepSound.getVolume() + 1.0F) / 2.0F, farmland.stepSound.getFrequency() * 0.8F);
+            Block farmland = Blocks.FARMLAND;
+            event.getWorld().playSound(event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), farmland.getSoundType().getStepSound(), SoundCategory.BLOCKS, (farmland.getSoundType().getVolume() + 1.0F) / 2.0F, farmland.getSoundType().getPitch() * 0.8F, false);
 
-            if (event.world.isRemote)
+            if (event.getWorld().isRemote)
             {
                 event.setResult(Result.ALLOW);
             }
             else
             {
-                event.world.setBlock(event.getX(), event.getY(), event.getZ(), farmland);
-                event.current.damageItem(1, event.getEntity()Player);
+                event.getWorld().setBlockState(event.getPos(), farmland.getDefaultState());
+                event.getCurrent().damageItem(1, event.getEntityPlayer());
                 event.setResult(Result.ALLOW);
             }
         }

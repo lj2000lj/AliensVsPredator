@@ -8,7 +8,6 @@ import org.avp.entities.living.EntitySpeciesYautja;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
@@ -21,7 +20,7 @@ public class MedpodTransforms
 {
     public static void register()
     {
-        RenderMedpod.transforms.add(new EntityRenderTransforms(EntityPlayerSP.class, EntityPlayerMP.class, EntityClientPlayerMP.class, EntityOtherPlayerMP.class, AbstractClientPlayer.class, EntityPlayer.class)
+        RenderMedpod.transforms.add(new EntityRenderTransforms(EntityPlayerSP.class, EntityPlayerMP.class, EntityPlayerSP.class, EntityOtherPlayerMP.class, AbstractClientPlayer.class, EntityPlayer.class)
         {
             @Override
             public void pre(Entity entity, float partialTicks)

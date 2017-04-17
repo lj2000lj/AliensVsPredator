@@ -6,27 +6,25 @@ import org.avp.tile.TileEntityLocker;
 import org.lwjgl.opengl.GL11;
 
 import com.arisux.mdxlib.lib.client.render.Draw;
+import com.arisux.mdxlib.lib.client.render.ItemRenderer;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
+import com.arisux.mdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.game.Renderers;
 
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.IItemRenderer.ItemRenderType;
-import net.minecraftforge.client.MinecraftForgeClient;
 
-public class RenderLocker extends TileEntitySpecialRenderer
+public class RenderLocker extends TileEntitySpecialRenderer<TileEntityLocker>
 {
     @Override
-    public void renderTileEntityAt(TileEntity tileEntity, double posX, double posY, double posZ, float renderPartialTicks)
+    public void renderTileEntityAt(TileEntityLocker tile, double x, double y, double z, float partialTicks, int destroyStage)
     {
-        TileEntityLocker tile = (TileEntityLocker) tileEntity;
-
         OpenGL.pushMatrix();
         {
             float scale = 0.95F;
             OpenGL.disable(GL11.GL_CULL_FACE);
-            OpenGL.translate(posX + 0.5F, posY + 1.41F, posZ + 0.5F);
+            OpenGL.translate(x + 0.5F, y + 1.41F, z + 0.5F);
             OpenGL.scale(scale, -scale, scale);
             OpenGL.enable(GL11.GL_ALPHA_TEST);
             OpenGL.disableCullFace();
@@ -57,16 +55,14 @@ public class RenderLocker extends TileEntitySpecialRenderer
 
                             if (stack != null)
                             {
-                                IItemRenderer renderer = MinecraftForgeClient.getItemRenderer(stack, ItemRenderType.INVENTORY);
+                                ItemRenderer<?> renderer = Renderers.getItemRenderer(stack.getItem());
 
                                 if (renderer != null)
                                 {
-                                    Object[] args = {};
-
                                     OpenGL.pushMatrix();
                                     {
                                         OpenGL.translate(8F, 0F, 0F);
-                                        renderer.renderItem(ItemRenderType.INVENTORY, stack, args);
+                                        renderer.renderInInventory(stack, Game.minecraft().thePlayer, TransformType.GUI);
                                         OpenGL.enableLight();
                                     }
                                     OpenGL.popMatrix();

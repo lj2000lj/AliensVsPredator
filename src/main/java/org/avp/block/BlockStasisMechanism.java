@@ -1,73 +1,87 @@
 package org.avp.block;
 
-import java.util.Random;
-
 import org.avp.item.ItemEntitySummoner;
 import org.avp.tile.TileEntityStasisMechanism;
 
 import com.arisux.mdxlib.lib.world.entity.player.inventory.Inventories;
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.IUnlistedProperty;
 
 public class BlockStasisMechanism extends Block
 {
     public BlockStasisMechanism(Material material)
     {
         super(material);
-        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         this.setTickRandomly(true);
     }
 
     @Override
-    public void registerIcons(IIconRegister register)
+    protected BlockStateContainer createBlockState()
     {
-        return;
+        return new BlockStateContainer(this, new IProperty[0])
+        {
+            @Override
+            protected StateImplementation createState(Block block, ImmutableMap<IProperty<?>, Comparable<?>> properties, ImmutableMap<IUnlistedProperty<?>, Optional<?>> unlistedProperties)
+            {
+                return new StateImplementation(block, properties)
+                {
+                    @Override
+                    public EnumBlockRenderType getRenderType()
+                    {
+                        return EnumBlockRenderType.INVISIBLE;
+                    }
+
+                    @Override
+                    public boolean isOpaqueCube()
+                    {
+                        return false;
+                    }
+                    
+                    @Override
+                    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos)
+                    {
+                        return null;
+                    }
+                };
+            }
+        };
     }
 
     @Override
-    public boolean renderAsNormalBlock()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isOpaqueCube()
-    {
-        return false;
-    }
-
-    @Override
-    public void updateTick(World worldObj, int xCoord, int yCoord, int zCoord, Random par5Random)
-    {
-        super.updateTick(worldObj, xCoord, yCoord, zCoord, par5Random);
-    }
-
-    @Override
-    public TileEntity createTileEntity(World world, int meta)
+    public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TileEntityStasisMechanism();
     }
 
     @Override
-    public boolean hasTileEntity(int metadata)
+    public boolean hasTileEntity(IBlockState state)
     {
         return true;
     }
-
+    
     @Override
-    public boolean onBlockActivated(World worldObj, int xCoord, int yCoord, int zCoord, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        TileEntityStasisMechanism tile = (TileEntityStasisMechanism) worldObj.getTileEntity(xCoord, yCoord, zCoord);
+        TileEntityStasisMechanism tile = (TileEntityStasisMechanism) world.getTileEntity(pos);
 
         if (tile != null)
         {
@@ -88,11 +102,11 @@ public class BlockStasisMechanism extends Block
     }
 
     @Override
-    public void onBlockPreDestroy(World world, int posX, int posY, int posZ, int meta)
+    public void onBlockClicked(World world, BlockPos pos, EntityPlayer playerIn)
     {
-        super.onBlockPreDestroy(world, posX, posY, posZ, meta);
+        super.onBlockClicked(world, pos, playerIn);
 
-        TileEntityStasisMechanism tile = (TileEntityStasisMechanism) world.getTileEntity(posX, posY, posZ);
+        TileEntityStasisMechanism tile = (TileEntityStasisMechanism) world.getTileEntity(pos);
 
         if (tile != null)
         {
@@ -103,48 +117,24 @@ public class BlockStasisMechanism extends Block
 
             if (tile.itemstack != null)
             {
-                EntityItem entityitem = new EntityItem(world, posX, posY, posZ, tile.itemstack);
-                entityitem.delayBeforeCanPickup = 10;
+                EntityItem entityitem = new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), tile.itemstack);
+                entityitem.setPickupDelay(10);
                 world.spawnEntityInWorld(entityitem);
             }
         }
     }
-
+    
     @Override
-    public void onBlockDestroyedByPlayer(World world, int posX, int posY, int posZ, int meta)
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        super.onBlockDestroyedByPlayer(world, posX, posY, posZ, meta);
-    }
+        super.onBlockPlacedBy(world, pos, state, placer, stack);
 
-    @Override
-    public void onBlockClicked(World world, int posX, int posY, int posZ, EntityPlayer player)
-    {
-        super.onBlockClicked(world, posX, posY, posZ, player);
-    }
-
-    @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase living, ItemStack stack)
-    {
-        super.onBlockPlacedBy(world, x, y, z, living, stack);
-
-        TileEntityStasisMechanism tile = (TileEntityStasisMechanism) world.getTileEntity(x, y, z);
+        TileEntityStasisMechanism tile = (TileEntityStasisMechanism) world.getTileEntity(pos);
 
         if (tile != null)
         {
-            tile.setDirection((byte) (MathHelper.floor_double(((living.rotationYaw * 4F) / 360F) + 0.5D) & 3));
-            world.markBlockForUpdate(tile.xCoord, tile.yCoord, tile.zCoord);
+            tile.setDirection((byte) (MathHelper.floor_double(((placer.rotationYaw * 4F) / 360F) + 0.5D) & 3));
+            world.markBlockRangeForRenderUpdate(pos, pos);
         }
-    }
-
-    @Override
-    public int getRenderType()
-    {
-        return -1;
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
-    {
-        return null;
     }
 }

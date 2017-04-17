@@ -7,8 +7,7 @@ import com.arisux.mdxlib.lib.world.tile.IRotatable;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 
@@ -25,21 +24,25 @@ public class TileEntityTransformer extends TileEntityElectrical implements IVolt
     }
 
     @Override
-    public Packet getDescriptionPacket()
+    public SPacketUpdateTileEntity getUpdatePacket()
     {
-        NBTTagCompound nbtTag = new NBTTagCompound();
-        this.writeToNBT(nbtTag);
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbtTag);
+        return new SPacketUpdateTileEntity(this.getPos(), 1, this.getUpdateTag());
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet)
+    public NBTTagCompound getUpdateTag()
+    {
+        return this.writeToNBT(new NBTTagCompound());
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet)
     {
         this.readFromNBT(packet.getNbtCompound());
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
 
@@ -47,6 +50,8 @@ public class TileEntityTransformer extends TileEntityElectrical implements IVolt
         {
             nbt.setInteger("Direction", this.direction.ordinal());
         }
+        
+        return nbt;
     }
 
     @Override
@@ -54,18 +59,18 @@ public class TileEntityTransformer extends TileEntityElectrical implements IVolt
     {
         super.readFromNBT(nbt);
 
-        this.direction = EnumFacing.getOrientation(nbt.getInteger("Direction"));
+        this.direction = EnumFacing.getFront(nbt.getInteger("Direction"));
     }
 
     @Override
-    public void updateEntity()
+    public void update()
     {
-        super.updateEntity();
+        super.update();
         this.updateEnergyAsReceiver();
 
         if (this.voltage > 0)
         {
-            TileEntity tile = this.worldObj.getTileEntity(this.xCoord + direction.offsetX, this.yCoord + direction.offsetY, this.zCoord + direction.offsetZ);
+            TileEntity tile = this.worldObj.getTileEntity(this.getPos().offset(direction));
 
             if (tile != null && tile instanceof TileEntityElectrical)
             {
@@ -107,7 +112,7 @@ public class TileEntityTransformer extends TileEntityElectrical implements IVolt
     @Override
     public double extractVoltage(EnumFacing from, double maxExtract, boolean simulate)
     {
-        TileEntity tile = this.worldObj.getTileEntity(this.xCoord + from.offsetX, this.yCoord + from.offsetY, this.zCoord + from.offsetZ);
+        TileEntity tile = this.worldObj.getTileEntity(this.getPos().offset(from));
 
         if (tile != null && tile instanceof TileEntityElectrical)
         {

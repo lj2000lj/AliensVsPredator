@@ -4,14 +4,22 @@ import java.util.Random;
 
 import org.avp.DimensionHandler;
 
+import com.arisux.mdxlib.lib.world.entity.Entities;
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableMap;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.common.property.IUnlistedProperty;
 
 public class BlockPortal extends Block
 {
@@ -19,52 +27,53 @@ public class BlockPortal extends Block
 
     public BlockPortal(int dimensionId)
     {
-        super(Material.portal);
+        super(Material.PORTAL);
         setLightOpacity(100);
         setTickRandomly(true);
         this.dimensionId = dimensionId;
     }
-
+    
     @Override
-    public boolean isOpaqueCube()
+    protected BlockStateContainer createBlockState()
     {
-        return false;
+        return new BlockStateContainer(this, new IProperty[0])
+        {
+            @Override
+            protected StateImplementation createState(Block block, ImmutableMap<IProperty<?>, Comparable<?>> properties, ImmutableMap<IUnlistedProperty<?>, Optional<?>> unlistedProperties)
+            {
+                return new StateImplementation(block, properties)
+                {
+                    @Override
+                    public boolean isOpaqueCube()
+                    {
+                        return false;
+                    }
+                    
+                    @Override
+                    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos)
+                    {
+                        return null;
+                    }
+                };
+            }
+        };
     }
-
+    
     @Override
-    public boolean renderAsNormalBlock()
+    public void randomDisplayTick(IBlockState stateIn, World world, BlockPos pos, Random rand)
     {
-        return false;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public int getRenderBlockPass()
-    {
-        return 1;
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int posX, int posY, int posZ)
-    {
-        return null;
-    }
-
-    @Override
-    public void randomDisplayTick(World worldObj, int posX, int posY, int posZ, Random rand)
-    {
-        super.randomDisplayTick(worldObj, posX, posY, posZ, rand);
+        super.randomDisplayTick(stateIn, world, pos, rand);
 
         for (int i = 6; i > 0; --i)
         {
-            worldObj.spawnParticle("enchantmenttable", posX + rand.nextDouble(), posY + rand.nextDouble(), posZ + rand.nextDouble(), 0.0D, 0.0D, 0.0D);
+            world.spawnParticle(EnumParticleTypes.ENCHANTMENT_TABLE, pos.getX() + rand.nextDouble(), pos.getY() + rand.nextDouble(), pos.getZ() + rand.nextDouble(), 0.0D, 0.0D, 0.0D);
         }
     }
-
+    
     @Override
-    public void onEntityCollidedWithBlock(World world, int posX, int posY, int posZ, Entity entity)
+    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entity)
     {
-        if ((entity.getRidingEntity()== null) && (entity.riddenByEntity == null) && ((entity instanceof EntityPlayerMP)))
+        if ((entity.getRidingEntity()== null) && (Entities.getEntityRiddenBy(entity) == null) && ((entity instanceof EntityPlayerMP)))
         {
             EntityPlayerMP player = (EntityPlayerMP) entity;
 

@@ -1,11 +1,15 @@
 package org.avp.client.entityfx;
 
+import com.arisux.mdxlib.lib.client.render.Draw;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
@@ -17,7 +21,7 @@ public class EntityBloodFX extends Particle
 
     public EntityBloodFX(World worldIn, double posX, double posY, double posZ, int color, boolean glow)
     {
-        super(worldIn, posX, posY, posZ, null);
+        super(worldIn, posX, posY, posZ);
         this.particleMaxAge = ((60 * 20) * 3) + ((this.rand.nextInt(30 * 20)));
         this.color = color;
         this.glow = glow;
@@ -64,31 +68,33 @@ public class EntityBloodFX extends Particle
 
         if (this.particleMaxAge-- <= 0)
         {
-            this.setDead();
+            this.setExpired();
         }
 
-        if (this.onGround)
+        if (this.isCollided)
         {
             this.setParticleTextureIndex(114);
             this.motionX *= 0.699999988079071D;
             this.motionZ *= 0.699999988079071D;
         }
 
-        Material material = this.worldObj.getBlock(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)).getMaterial();
+        BlockPos pos = new BlockPos(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
+        IBlockState blockstate = this.worldObj.getBlockState(pos);
+        Material material = blockstate.getMaterial();
 
         if (material.isLiquid() || material.isSolid())
         {
-            double d0 = (double) ((float) (MathHelper.floor_double(this.posY) + 1) - BlockLiquid.getLiquidHeightPercent(this.worldObj.getBlockMetadata(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ))));
+            double d0 = (double) ((float) (MathHelper.floor_double(this.posY) + 1) - BlockLiquid.getLiquidHeightPercent(blockstate.getBlock().getMetaFromState(blockstate)));
 
             if (this.posY < d0)
             {
-                this.setDead();
+                this.setExpired();
             }
         }
     }
-
+    
     @Override
-    public void renderParticle(Tessellator tessellator, float partialTicks, float rX, float rXZ, float rZ, float rYZ, float rXY)
+    public void renderParticle(VertexBuffer buffer, Entity entity, float partialTicks, float rX, float rZ, float rYZ, float rXY, float rXZ)
     {
         float minU = (float) this.particleTextureIndexX / 16.0F;
         float maxU = minU + 0.0624375F;
@@ -96,12 +102,12 @@ public class EntityBloodFX extends Particle
         float maxV = minV + 0.0624375F;
         float scale = 0.1F * this.particleScale;
 
-        if (this.particleIcon != null)
+        if (this.particleTexture != null)
         {
-            minU = this.particleIcon.getMinU();
-            maxU = this.particleIcon.getMaxU();
-            minV = this.particleIcon.getMinV();
-            maxV = this.particleIcon.getMaxV();
+            minU = this.particleTexture.getMinU();
+            maxU = this.particleTexture.getMaxU();
+            minV = this.particleTexture.getMinV();
+            maxV = this.particleTexture.getMaxV();
         }
 
         float x = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) partialTicks - interpPosX);
@@ -117,13 +123,13 @@ public class EntityBloodFX extends Particle
             OpenGL.disableLightMapping();
         }
         
-        tessellator.setColorRGBA_F(r, g, b, 1F);
-        tessellator.addVertexWithUV((double) (x - rX * scale - rYZ * scale), (double) (y - rXZ * scale), (double) (z - rZ * scale - rXY * scale), (double) maxU, (double) maxV);
-        tessellator.addVertexWithUV((double) (x - rX * scale + rYZ * scale), (double) (y + rXZ * scale), (double) (z - rZ * scale + rXY * scale), (double) maxU, (double) minV);
-        tessellator.addVertexWithUV((double) (x + rX * scale + rYZ * scale), (double) (y + rXZ * scale), (double) (z + rZ * scale + rXY * scale), (double) minU, (double) minV);
-        tessellator.addVertexWithUV((double) (x + rX * scale - rYZ * scale), (double) (y - rXZ * scale), (double) (z + rZ * scale - rXY * scale), (double) minU, (double) maxV);
-        tessellator.draw();
-        tessellator.startDrawingQuads();
+//        Draw.startQuads();
+        Draw.vertex((double) (x - rX * scale - rXY * scale), (double) (y - rZ * scale), (double) (z - rYZ * scale - rXZ * scale), maxU, maxV).color(r, g, b, 1F).endVertex();
+        Draw.vertex((double) (x - rX * scale + rXY * scale), (double) (y + rZ * scale), (double) (z - rYZ * scale + rXZ * scale), maxU, minV).color(r, g, b, 1F).endVertex();
+        Draw.vertex((double) (x + rX * scale + rXY * scale), (double) (y + rZ * scale), (double) (z + rYZ * scale + rXZ * scale), minU, minV).color(r, g, b, 1F).endVertex();
+        Draw.vertex((double) (x + rX * scale - rXY * scale), (double) (y - rZ * scale), (double) (z + rYZ * scale - rXZ * scale), minU, maxV).color(r, g, b, 1F).endVertex();
+        Draw.tessellate();
+        Draw.startQuads();
         
         if (glow)
         {

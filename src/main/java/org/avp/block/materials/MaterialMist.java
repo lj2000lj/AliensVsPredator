@@ -15,7 +15,7 @@ public class MaterialMist extends MaterialTransparent implements IMaterialPhysic
 
     public MaterialMist()
     {
-        super(MapColor.lightBlueColor);
+        super(MapColor.LIGHT_BLUE);
     }
     
     @Override

@@ -2,10 +2,11 @@ package org.avp.packets.server;
 
 import org.avp.api.machines.IDataDevice;
 
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketWriteToDataDevice implements IMessage, IMessageHandler<PacketWriteToDataDevice, PacketWriteToDataDevice>
 {
@@ -48,7 +49,7 @@ public class PacketWriteToDataDevice implements IMessage, IMessageHandler<Packet
     @Override
     public PacketWriteToDataDevice onMessage(PacketWriteToDataDevice packet, MessageContext ctx)
     {
-        IDataDevice device = (IDataDevice) ctx.getServerHandler().playerEntity.worldObj.getTileEntity(packet.x, packet.y, packet.z);
+        IDataDevice device = (IDataDevice) ctx.getServerHandler().playerEntity.worldObj.getTileEntity(new BlockPos(packet.x, packet.y, packet.z));
 
         if (device != null)
         {

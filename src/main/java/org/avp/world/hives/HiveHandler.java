@@ -13,16 +13,18 @@ import com.arisux.mdxlib.lib.game.Game;
 import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.Worlds;
 
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntitySlime;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 public class HiveHandler implements IWorldSaveHandler
 {
@@ -79,7 +81,8 @@ public class HiveHandler implements IWorldSaveHandler
 
     public static boolean breakResinAt(World world, int x, int y, int z)
     {
-        TileEntity tile = world.getTileEntity(x, y, z);
+        BlockPos pos = new BlockPos(x, y, z);
+        TileEntity tile = world.getTileEntity(pos);
 
         if (tile instanceof TileEntityHiveResin)
         {
@@ -87,9 +90,8 @@ public class HiveHandler implements IWorldSaveHandler
 
             if (resin != null && resin.getBlockCovering() != null)
             {
-                int meta = world.getBlockMetadata(x, y, z);
-                world.setBlock(x, y, z, resin.getBlockCovering());
-                world.setBlockMetadataWithNotify(x, y, z, meta, 3);
+                world.setBlockState(pos, resin.getBlockCovering(), 3);
+                
                 return true;
             }
         }
@@ -100,7 +102,7 @@ public class HiveHandler implements IWorldSaveHandler
     @SubscribeEvent
     public void breakResin(BlockEvent.BreakEvent event)
     {
-        if (breakResinAt(event.world, event.getX(), event.getY(), event.getZ()))
+        if (breakResinAt(event.getWorld(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ()))
         {
             event.setCanceled(true);
         }
@@ -125,15 +127,13 @@ public class HiveHandler implements IWorldSaveHandler
 
         for (Pos coord : new ArrayList<Pos>(this.burntResin))
         {
-            int meta = event.world.getBlockMetadata((int) coord.x, (int) coord.y, (int) coord.z);
-            event.world.setBlock((int) coord.x, (int) coord.y, (int) coord.z, coord.getBlock(event.world));
-            event.world.setBlockMetadataWithNotify((int) coord.x, (int) coord.y, (int) coord.z, meta, 3);
+            event.world.setBlockState(coord.blockPos(), Blocks.AIR.getDefaultState(), 3);
             this.burntResin.remove(coord);
         }
 
         for (XenomorphHive hive : (ArrayList<XenomorphHive>) this.hives.clone())
         {
-            if (hive != null && hive.getDimensionId() == event.world.provider.dimensionId)
+            if (hive != null && hive.getDimensionId() == event.world.provider.getDimension())
             {
                 hive.update(event.world);
             }
@@ -159,7 +159,7 @@ public class HiveHandler implements IWorldSaveHandler
 
                 for (XenomorphHive hive : this.hives)
                 {
-                    if (hive.getDimensionId() == world.provider.dimensionId)
+                    if (hive.getDimensionId() == world.provider.getDimension())
                     {
                         MDX.log().info(String.format("Saving Hive(%s) at %s, %s, %s", hive.getUniqueIdentifier(), hive.xCoord(), hive.yCoord(), hive.zCoord()));
                         hiveCount++;
@@ -177,7 +177,7 @@ public class HiveHandler implements IWorldSaveHandler
             return false;
         }
 
-        MDX.log().info(String.format("Saved %s hives for level '%s'/%s", hiveCount, world.getSaveHandler().getWorldDirectoryName(), world.provider.getDimensionName()));
+        MDX.log().info(String.format("Saved %s hives for level '%s'/%s", hiveCount, world.getSaveHandler().getWorldDirectory(), world.provider.getDimensionType().getName()));
 
         return true;
     }
@@ -228,7 +228,7 @@ public class HiveHandler implements IWorldSaveHandler
             return false;
         }
 
-        MDX.log().info(String.format("%s hives have been loaded for level '%s'/%s. %s hives are globally accessable.", hiveCount, world.getSaveHandler().getWorldDirectoryName(), world.provider.getDimensionName(), this.hives.size()));
+        MDX.log().info(String.format("%s hives have been loaded for level '%s'/%s. %s hives are globally accessable.", hiveCount, world.getSaveHandler().getWorldDirectory(), world.provider.getDimensionType().getName(), this.hives.size()));
 
         return true;
     }

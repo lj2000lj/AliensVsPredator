@@ -22,7 +22,7 @@ public class TileEntityRedstoneSensor extends TileEntityElectrical implements IV
     }
 
     @Override
-    public void updateEntity()
+    public void update()
     {
         if (this.canOutputPower())
         {
@@ -61,9 +61,9 @@ public class TileEntityRedstoneSensor extends TileEntityElectrical implements IV
     public boolean canOutputPower()
     {
         World world = this.getWorld();
-        int x = this.xCoord;
-        int y = this.yCoord;
-        int z = this.zCoord;
+        int x = this.getPos().getX();
+        int y = this.getPos().getY();
+        int z = this.getPos().getZ();
 
         ArrayList<Pos> locations = new ArrayList<Pos>();
         Pos loc = new Pos(x, y, z);
@@ -85,29 +85,29 @@ public class TileEntityRedstoneSensor extends TileEntityElectrical implements IV
 
         for (Pos location : locations)
         {
-            if (location.getBlock(world).getMaterial() == Material.circuits)
+            if (location.getBlockState(world).getMaterial() == Material.CIRCUITS)
             {
-                if (location.getBlock(world) == Blocks.redstone_wire && location.getBlockMetadata(world) > 0)
+                if (location.getBlock(world) == Blocks.REDSTONE_WIRE && location.getBlockMetadata(world) > 0)
                 {
                     this.isActiveRedstoneWireAttached = true;
                     break;
                 }
-                if (location.getBlock(world) == Blocks.lever && location.getBlockMetadata(world) >= 9)
+                if (location.getBlock(world) == Blocks.LEVER && location.getBlockMetadata(world) >= 9)
                 {
                     this.isActiveRedstoneWireAttached = true;
                     break;
                 }
-                if (location.getBlock(world) == Blocks.detector_rail && location.getBlockMetadata(world) >= 8)
+                if (location.getBlock(world) == Blocks.DETECTOR_RAIL && location.getBlockMetadata(world) >= 8)
                 {
                     this.isActiveRedstoneWireAttached = true;
                     break;
                 }
-                if (location.getBlock(world) == Blocks.powered_repeater)
+                if (location.getBlock(world) == Blocks.POWERED_REPEATER)
                 {
                     this.isActiveRedstoneWireAttached = true;
                     break;
                 }
-                if (location.getBlock(world) == Blocks.redstone_torch)
+                if (location.getBlock(world) == Blocks.REDSTONE_TORCH)
                 {
                     this.isActiveRedstoneWireAttached = true;
                     break;

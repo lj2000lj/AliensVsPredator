@@ -3,30 +3,27 @@ package org.avp.client.render.block;
 import org.avp.block.BlockShape;
 import org.avp.block.BlockShape.ShapeTypes;
 
+import com.arisux.mdxlib.lib.client.render.Draw;
 import com.arisux.mdxlib.lib.client.render.Matrix3;
 import com.arisux.mdxlib.lib.client.render.Vertex;
 
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
-@SuppressWarnings("unused")
-public class RenderShape implements ISimpleBlockRenderingHandler
+// implements ISimpleBlockRenderingHandler
+public class RenderShape
 {
-    public Tessellator tessellator;
     public boolean ambientOcclusion;
     private Block baseBlock;
     private IBlockAccess blockAccess;
     private Matrix3 rotation;
     private double posX, posY, posZ;
     private double vertexPosX, vertexPosY, vertexPosZ;
-    private double texU, texV;
-    private double minU, minV;
-    private double iconWidth, iconHeight;
+    private float texU, texV;
+    private float minU, minV;
+    private float iconWidth, iconHeight;
     private float r, g, b;
     private float faceLightValue;
     private int blockBrightness;
@@ -37,102 +34,101 @@ public class RenderShape implements ISimpleBlockRenderingHandler
     public RenderShape(int renderId)
     {
         this.renderId = renderId;
-        this.tessellator = Tessellator.instance;
     }
 
-    @Override
-    public int getRenderId()
-    {
-        return this.renderId;
-    }
+//    @Override
+//    public int getRenderId()
+//    {
+//        return this.renderId;
+//    }
+//
+//    @Override
+//    public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
+//    {
+//        Draw.startQuads();
+//        render(null, (BlockShape) block, 0, 0, 0, 0, block.getBlockTextureFromSide(block instanceof BlockShape ? ((BlockShape) block).getTextureSide() : 2));
+//        Draw.tessellate();
+//    }
+//
+//    @Override
+//    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks render)
+//    {
+//        return render(world, (BlockShape) block, world.getBlockMetadata(x, y, z), x, y, z, block.getBlockTextureFromSide(block instanceof BlockShape ? ((BlockShape) block).getTextureSide() : 2));
+//    }
+//
+//    @Override
+//    public boolean shouldRender3DInInventory(int meta)
+//    {
+//        return true;
+//    }
 
-    @Override
-    public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
-    {
-        tessellator.startDrawingQuads();
-        render(null, (BlockShape) block, 0, 0, 0, 0, block.getBlockTextureFromSide(block instanceof BlockShape ? ((BlockShape) block).getTextureSide() : 2));
-        tessellator.draw();
-    }
-
-    @Override
-    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks render)
-    {
-        return render(world, (BlockShape) block, world.getBlockMetadata(x, y, z), x, y, z, block.getBlockTextureFromSide(block instanceof BlockShape ? ((BlockShape) block).getTextureSide() : 2));
-    }
-
-    @Override
-    public boolean shouldRender3DInInventory(int meta)
-    {
-        return true;
-    }
-
-    public boolean render(IBlockAccess world, BlockShape block, int metadata, int x, int y, int z, IIcon icon)
-    {
-        if (icon == null)
-        {
-            return false;
-        }
-
-        baseBlock = block;
-        blockAccess = world;
-        posX = x + 0.5;
-        posY = y + 0.5;
-        posZ = z + 0.5;
-
-        boolean flipped = (metadata >> 2) != 0;
-        Matrix3 flip = Matrix3.rot(flipped ? 180 : 0, 1, ((metadata & 3) != 1 && (metadata & 3) != 3) ? 0 : 2);
-        rotation = Matrix3.rotations[metadata & 3].mul(flip);
-
-        if (icon == null)
-        {
-            icon = block.getIcon(2, metadata);
-        }
-
-        minU = icon.getMinU();
-        minV = icon.getMinV();
-        iconWidth = icon.getMaxU() - minU;
-        iconHeight = icon.getMaxV() - minV;
-
-        if (world != null)
-        {
-            blockBrightness = block.getMixedBrightnessForBlock(world, x, y, z);
-            setColorMultiplier(block.colorMultiplier(world, x, y, z));
-        }
-        else
-        {
-            blockBrightness = 0xf000f0;
-            setColorMultiplier(0xffffff);
-        }
-
-        ambientOcclusion = Minecraft.isAmbientOcclusionEnabled();
-
-        switch (block.getShape())
-        {
-            case SLOPE:
-                renderSlope();
-                break;
-            case CORNER:
-                renderCorner();
-                break;
-            case INVERTED_CORNER:
-                renderInvertedCorner();
-                break;
-            case RIDGE:
-                renderRidge();
-                break;
-            case SMART_RIDGE:
-                renderSmartRidge();
-                break;
-            case INVERTED_RIDGE:
-                renderValley();
-                break;
-            case SMART_INVERTED_RIDGE:
-                renderSmartValley();
-                break;
-        }
-
-        return true;
-    }
+//    public boolean render(IBlockAccess world, BlockShape block, int metadata, int x, int y, int z, IIcon icon)
+//    {
+//        if (icon == null)
+//        {
+//            return false;
+//        }
+//
+//        baseBlock = block;
+//        blockAccess = world;
+//        posX = x + 0.5;
+//        posY = y + 0.5;
+//        posZ = z + 0.5;
+//
+//        boolean flipped = (metadata >> 2) != 0;
+//        Matrix3 flip = Matrix3.rot(flipped ? 180 : 0, 1, ((metadata & 3) != 1 && (metadata & 3) != 3) ? 0 : 2);
+//        rotation = Matrix3.rotations[metadata & 3].mul(flip);
+//
+//        if (icon == null)
+//        {
+//            icon = block.getIcon(2, metadata);
+//        }
+//
+//        minU = icon.getMinU();
+//        minV = icon.getMinV();
+//        iconWidth = icon.getMaxU() - minU;
+//        iconHeight = icon.getMaxV() - minV;
+//
+//        if (world != null)
+//        {
+//            blockBrightness = block.getMixedBrightnessForBlock(world, x, y, z);
+//            setColorMultiplier(block.colorMultiplier(world, x, y, z));
+//        }
+//        else
+//        {
+//            blockBrightness = 0xf000f0;
+//            setColorMultiplier(0xffffff);
+//        }
+//
+//        ambientOcclusion = Minecraft.isAmbientOcclusionEnabled();
+//
+//        switch (block.getShape())
+//        {
+//            case SLOPE:
+//                renderSlope();
+//                break;
+//            case CORNER:
+//                renderCorner();
+//                break;
+//            case INVERTED_CORNER:
+//                renderInvertedCorner();
+//                break;
+//            case RIDGE:
+//                renderRidge();
+//                break;
+//            case SMART_RIDGE:
+//                renderSmartRidge();
+//                break;
+//            case INVERTED_RIDGE:
+//                renderValley();
+//                break;
+//            case SMART_INVERTED_RIDGE:
+//                renderSmartValley();
+//                break;
+//        }
+//
+//        return true;
+//    }
 
     public void setColorMultiplier(int color)
     {
@@ -224,7 +220,7 @@ public class RenderShape implements ISimpleBlockRenderingHandler
 
         if (blockAccess != null)
         {
-            faceBrightness = baseBlock.getMixedBrightnessForBlock(blockAccess, (int) Math.floor(vertex.x), (int) Math.floor(vertex.y), (int) Math.floor(vertex.z));
+            //faceBrightness = baseBlock.getMixedBrightnessForBlock(blockAccess, (int) Math.floor(vertex.x), (int) Math.floor(vertex.y), (int) Math.floor(vertex.z));
         }
 
         double nx = faceN.x * faceN.x;
@@ -236,20 +232,30 @@ public class RenderShape implements ISimpleBlockRenderingHandler
     public void normal(double x, double y, double z)
     {
         Vertex v = rotation.mul(x, y, z);
-        tessellator.setNormal(v.x, v.y, v.z);
+        Draw.buffer().normal(v.x, v.y, v.z);
     }
 
-    public void corner(double x, double y, double z, double tx, double ty)
+    public void corner(double x, double y, double z, float tx, float ty)
     {
         cornerOrInteriorVertex(x, y, z, tx, ty, true);
     }
 
-    public void vertex(double x, double y, double z, double tx, double ty)
+    public void vertex(double x, double y, double z, float tx, float ty)
     {
         cornerOrInteriorVertex(x, y, z, tx, ty, false);
     }
 
-    public void cornerOrInteriorVertex(double x, double y, double z, double tx, double ty, boolean corner)
+    public void corner(double x, double y, double z, double tx, double ty)
+    {
+        cornerOrInteriorVertex(x, y, z, (float)tx, (float)ty, true);
+    }
+
+    public void vertex(double x, double y, double z, double tx, double ty)
+    {
+        cornerOrInteriorVertex(x, y, z, (float)tx, (float)ty, false);
+    }
+
+    public void cornerOrInteriorVertex(double x, double y, double z, float tx, float ty, boolean corner)
     {
         Vertex p = rotation.mul(x - 0.5, y - 0.5, z - 0.5);
         vertexPosX = posX + p.x;
@@ -273,17 +279,18 @@ public class RenderShape implements ISimpleBlockRenderingHandler
 
         texU = minU + tx * iconWidth;
         texV = minV + ty * iconHeight;
-        tessellator.addVertexWithUV(vertexPosX, vertexPosY, vertexPosZ, texU, texV);
+        Draw.vertex(vertexPosX, vertexPosY, vertexPosZ, texU, texV);
     }
 
     public void addVertexWithUV()
     {
-        tessellator.addVertexWithUV(vertexPosX, vertexPosY, vertexPosZ, texU, texV);
+        Draw.vertex(vertexPosX, vertexPosY, vertexPosZ, texU, texV);
     }
 
     public void lightCornerVertex(double x, double y, double z)
     {
-        int aoBrightness, aoBrightnessSum = 0;
+        int aoBrightness = 0;
+        int aoBrightnessSum = 0;
         float aoLightValueSum = 0;
         Vertex p = faceN.mul(0.5).add(x, y, z);
 
@@ -295,11 +302,11 @@ public class RenderShape implements ISimpleBlockRenderingHandler
                 int qx = (int) Math.floor(q.x);
                 int qy = (int) Math.floor(q.y);
                 int qz = (int) Math.floor(q.z);
-                aoBrightness = baseBlock.getMixedBrightnessForBlock(blockAccess, qx, qy, qz);
+                //aoBrightness = baseBlock.getMixedBrightnessForBlock(blockAccess, qx, qy, qz);
                 if (aoBrightness == 0)
                     aoBrightness = faceBrightness;
                 aoBrightnessSum += aoBrightness;
-                aoLightValueSum += blockAccess.getBlock(qx, qy, qz).getAmbientOcclusionLightValue();
+                aoLightValueSum += blockAccess.getBlockState(new BlockPos(qx, qy, qz)).getAmbientOcclusionLightValue();
             }
         }
 
@@ -319,7 +326,8 @@ public class RenderShape implements ISimpleBlockRenderingHandler
                     int xb = (int) Math.floor(xv - 0.5 + i);
                     int yb = (int) Math.floor(yv - 0.5 + j);
                     int zb = (int) Math.floor(zv - 0.5 + k);
-                    br = baseBlock.getMixedBrightnessForBlock(blockAccess, xb, yb, zb);
+                    //br = baseBlock.getMixedBrightnessForBlock(blockAccess, xb, yb, zb);
+                    
                     if (br != 0)
                     {
                         brSum += br;
@@ -341,13 +349,13 @@ public class RenderShape implements ISimpleBlockRenderingHandler
 
     public void lightFace(float bm, int br)
     {
-        tessellator.setBrightness(br);
+        Draw.buffer().putBrightness4(br, br, br, br);
         shadeFace(bm);
     }
 
     public void shadeFace(float bm)
     {
-        tessellator.setColorOpaque_F(bm * r, bm * g, bm * b);
+        Draw.buffer().color(bm * r, bm * g, bm * b, 1F);
     }
 
     public boolean hasNeighbour(int dx, int dy, int dz, ShapeTypes[] ridgeshapes)

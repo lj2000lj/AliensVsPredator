@@ -4,12 +4,13 @@ import org.avp.tile.TileEntityRedstoneFluxGenerator;
 
 import com.arisux.mdxlib.lib.game.Game;
 
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketSyncRF implements IMessage, IMessageHandler<PacketSyncRF, PacketSyncRF>
 {
@@ -56,7 +57,7 @@ public class PacketSyncRF implements IMessage, IMessageHandler<PacketSyncRF, Pac
 
         if (world != null)
         {
-            TileEntity tile = world.getTileEntity(packet.x, packet.y, packet.z);
+            TileEntity tile = world.getTileEntity(new BlockPos(packet.x, packet.y, packet.z));
 
             if (tile != null && tile instanceof TileEntityRedstoneFluxGenerator)
             {

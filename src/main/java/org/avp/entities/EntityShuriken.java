@@ -8,6 +8,7 @@ import org.avp.DamageSources;
 import com.arisux.mdxlib.lib.game.GameSounds;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,8 +16,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -28,7 +32,6 @@ public class EntityShuriken extends Entity
     private int yTile = -1;
     private int zTile = -1;
     private Block inTile = Blocks.AIR;
-    private int inData = 0;
     private boolean inGround = false;
     public boolean doesArrowBelongToPlayer = false;
     public int arrowShake = 0;
@@ -48,7 +51,6 @@ public class EntityShuriken extends Entity
         super(world);
         this.setSize(0.5F, 0.5F);
         this.setPosition(posX, posY, posZ);
-        this.yOffset = 0.0F;
     }
 
     public EntityShuriken(World world, EntityLivingBase entityliving, float velocity)
@@ -62,7 +64,6 @@ public class EntityShuriken extends Entity
         this.posY -= 0.10000000149011612D;
         this.posZ -= MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
         this.setPosition(this.posX, this.posY, this.posZ);
-        this.yOffset = 0.0F;
         this.motionX = -MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
         this.motionZ = MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
         this.motionY = (-MathHelper.sin(this.rotationPitch / 180.0F * (float) Math.PI));
@@ -77,10 +78,10 @@ public class EntityShuriken extends Entity
 
     public void setArrowHeading(double motionX, double motionY, double motionZ, float velocity, float deviation)
     {
-        float f2 = MathHelper.sqrt_double(motionX * motionX + motionY * motionY + motionZ * motionZ);
-        motionX /= f2;
-        motionY /= f2;
-        motionZ /= f2;
+        float v = MathHelper.sqrt_double(motionX * motionX + motionY * motionY + motionZ * motionZ);
+        motionX /= v;
+        motionY /= v;
+        motionZ /= v;
         motionX += this.rand.nextGaussian() * 0.007499999832361937D * deviation;
         motionY += this.rand.nextGaussian() * 0.007499999832361937D * deviation;
         motionZ += this.rand.nextGaussian() * 0.007499999832361937D * deviation;
@@ -128,17 +129,17 @@ public class EntityShuriken extends Entity
             this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(this.motionY, i) * 180.0D / Math.PI);
         }
 
-        Block block = this.worldObj.getBlock(this.xTile, this.yTile, this.zTile);
+        BlockPos pos = new BlockPos(this.xTile, this.yTile, this.zTile);
+        IBlockState blockstate = this.worldObj.getBlockState(pos);
+        Block block = blockstate.getBlock();
 
         if (block != Blocks.AIR)
         {
-            block.setBlockBoundsBasedOnState(this.worldObj, this.xTile, this.yTile, this.zTile);
-
             if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
             {
-                AxisAlignedBB Vec3dd = block.getSelectedBoundingBoxFromPool(this.worldObj, this.xTile, this.yTile, this.zTile);
+                AxisAlignedBB box = blockstate.getBoundingBox(this.worldObj, pos);
 
-                if (Vec3dd != null && Vec3dd.isVecInside(new Vec3d(this.posX, this.posY, this.posZ)))
+                if (box != null && box.isVecInside(new Vec3d(this.posX, this.posY, this.posZ)))
                 {
                     this.inGround = true;
                 }
@@ -152,10 +153,7 @@ public class EntityShuriken extends Entity
 
         if (this.inGround)
         {
-            Block var18 = this.worldObj.getBlock(this.xTile, this.yTile, this.zTile);
-            int var19 = this.worldObj.getBlockMetadata(this.xTile, this.yTile, this.zTile);
-
-            if (var18 == this.inTile && var19 == this.inData)
+            if (block == this.inTile)
             {
                 ++this.ticksInGround;
 
@@ -179,17 +177,17 @@ public class EntityShuriken extends Entity
             ++this.ticksInAir;
             Vec3d var17 = new Vec3d(this.posX, this.posY, this.posZ);
             Vec3d Vec3dd1 = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-            MovingObjectPosition movingobjectposition = this.worldObj.rayTraceBlocks(var17, Vec3dd1, false, true, true);
+            RayTraceResult result = this.worldObj.rayTraceBlocks(var17, Vec3dd1, false, true, true);
             var17 = new Vec3d(this.posX, this.posY, this.posZ);
             Vec3dd1 = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
-            if (movingobjectposition != null)
+            if (result != null)
             {
-                Vec3dd1 = new Vec3d(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord, movingobjectposition.hitVec.zCoord);
+                Vec3dd1 = new Vec3d(result.hitVec.xCoord, result.hitVec.yCoord, result.hitVec.zCoord);
             }
 
             Entity entity = null;
-            List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
+            List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
             double d = 0.0D;
             int f3;
             float f6;
@@ -201,8 +199,8 @@ public class EntityShuriken extends Entity
                 if (f4.canBeCollidedWith() && (f4 != this.shootingEntity || this.ticksInAir >= 5))
                 {
                     f6 = 0.3F;
-                    AxisAlignedBB k1 = f4.boundingBox.expand(f6, f6, f6);
-                    MovingObjectPosition f7 = k1.calculateIntercept(var17, Vec3dd1);
+                    AxisAlignedBB k1 = f4.getEntityBoundingBox().expand(f6, f6, f6);
+                    RayTraceResult f7 = k1.calculateIntercept(var17, Vec3dd1);
 
                     if (f7 != null)
                     {
@@ -219,21 +217,21 @@ public class EntityShuriken extends Entity
 
             if (entity != null)
             {
-                movingobjectposition = new MovingObjectPosition(entity);
+                result = new RayTraceResult(entity);
             }
 
             float velocity;
 
-            if (movingobjectposition != null)
+            if (result != null)
             {
-                if (movingobjectposition.entityHit != null)
+                if (result.entityHit != null)
                 {
                     velocity = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
-                    int var23 = (int) Math.ceil(velocity * 2.0D);
+                    int damage = (int) Math.ceil(velocity * 2.0D);
 
                     if (this.arrowCritical)
                     {
-                        var23 += this.rand.nextInt(var23 / 2 + 2);
+                        damage += this.rand.nextInt(damage / 2 + 2);
                     }
 
                     DamageSource damagesource = null;
@@ -247,11 +245,11 @@ public class EntityShuriken extends Entity
                         damagesource = DamageSources.causeShurikenDamage(this.shootingEntity);
                     }
 
-                    if (movingobjectposition.entityHit.attackEntityFrom(damagesource, var23))
+                    if (result.entityHit.attackEntityFrom(damagesource, damage))
                     {
-                        if (movingobjectposition.entityHit instanceof EntityLivingBase)
+                        if (result.entityHit instanceof EntityLivingBase)
                         {
-                            ++((EntityLivingBase) movingobjectposition.entityHit).arrowHitTimer;
+                            ++((EntityLivingBase) result.entityHit).arrowHitTimer;
                         }
 
                         GameSounds.fxBowHit.playSound(this, 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
@@ -268,14 +266,13 @@ public class EntityShuriken extends Entity
                 }
                 else
                 {
-                    this.xTile = movingobjectposition.blockX;
-                    this.yTile = movingobjectposition.blockY;
-                    this.zTile = movingobjectposition.blockZ;
-                    this.inTile = this.worldObj.getBlock(this.xTile, this.yTile, this.zTile);
-                    this.inData = this.worldObj.getBlockMetadata(this.xTile, this.yTile, this.zTile);
-                    this.motionX = ((float) (movingobjectposition.hitVec.xCoord - this.posX));
-                    this.motionY = ((float) (movingobjectposition.hitVec.yCoord - this.posY));
-                    this.motionZ = ((float) (movingobjectposition.hitVec.zCoord - this.posZ));
+                    this.xTile = (int) result.hitVec.xCoord;
+                    this.yTile = (int) result.hitVec.yCoord;
+                    this.zTile = (int) result.hitVec.zCoord;
+                    this.inTile = block;
+                    this.motionX = ((float) (result.hitVec.xCoord - this.posX));
+                    this.motionY = ((float) (result.hitVec.yCoord - this.posY));
+                    this.motionZ = ((float) (result.hitVec.zCoord - this.posZ));
                     velocity = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
                     this.posX -= this.motionX / velocity * 0.05000000074505806D;
                     this.posY -= this.motionY / velocity * 0.05000000074505806D;
@@ -291,7 +288,7 @@ public class EntityShuriken extends Entity
             {
                 for (f3 = 0; f3 < 4; ++f3)
                 {
-                    this.worldObj.spawnParticle("crit", this.posX + this.motionX * f3 / 4.0D, this.posY + this.motionY * f3 / 4.0D, this.posZ + this.motionZ * f3 / 4.0D, -this.motionX, -this.motionY + 0.2D, -this.motionZ);
+                    this.worldObj.spawnParticle(EnumParticleTypes.CRIT, this.posX + this.motionX * f3 / 4.0D, this.posY + this.motionY * f3 / 4.0D, this.posZ + this.motionZ * f3 / 4.0D, -this.motionX, -this.motionY + 0.2D, -this.motionZ);
                 }
             }
 
@@ -331,7 +328,7 @@ public class EntityShuriken extends Entity
                 for (int var24 = 0; var24 < 4; ++var24)
                 {
                     float var25 = 0.25F;
-                    this.worldObj.spawnParticle("bubble", this.posX - this.motionX * var25, this.posY - this.motionY * var25, this.posZ - this.motionZ * var25, this.motionX, this.motionY, this.motionZ);
+                    this.worldObj.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * var25, this.posY - this.motionY * var25, this.posZ - this.motionZ * var25, this.motionX, this.motionY, this.motionZ);
                 }
 
                 var22 = 0.8F;
@@ -346,27 +343,25 @@ public class EntityShuriken extends Entity
     }
 
     @Override
-    public void writeEntityToNBT(NBTTagCompound nbttagcompound)
+    public void writeEntityToNBT(NBTTagCompound tag)
     {
-        nbttagcompound.setShort("xTile", (short) this.xTile);
-        nbttagcompound.setShort("yTile", (short) this.yTile);
-        nbttagcompound.setShort("zTile", (short) this.zTile);
-        nbttagcompound.setByte("inData", (byte) this.inData);
-        nbttagcompound.setByte("shake", (byte) this.arrowShake);
-        nbttagcompound.setByte("inGround", (byte) (this.inGround ? 1 : 0));
-        nbttagcompound.setBoolean("player", this.doesArrowBelongToPlayer);
+        tag.setShort("xTile", (short) this.xTile);
+        tag.setShort("yTile", (short) this.yTile);
+        tag.setShort("zTile", (short) this.zTile);
+        tag.setByte("shake", (byte) this.arrowShake);
+        tag.setByte("inGround", (byte) (this.inGround ? 1 : 0));
+        tag.setBoolean("player", this.doesArrowBelongToPlayer);
     }
 
     @Override
-    public void readEntityFromNBT(NBTTagCompound nbttagcompound)
+    public void readEntityFromNBT(NBTTagCompound tag)
     {
-        this.xTile = nbttagcompound.getShort("xTile");
-        this.yTile = nbttagcompound.getShort("yTile");
-        this.zTile = nbttagcompound.getShort("zTile");
-        this.inData = nbttagcompound.getByte("inData") & 255;
-        this.arrowShake = nbttagcompound.getByte("shake") & 255;
-        this.inGround = nbttagcompound.getByte("inGround") == 1;
-        this.doesArrowBelongToPlayer = nbttagcompound.getBoolean("player");
+        this.xTile = tag.getShort("xTile");
+        this.yTile = tag.getShort("yTile");
+        this.zTile = tag.getShort("zTile");
+        this.arrowShake = tag.getByte("shake") & 255;
+        this.inGround = tag.getByte("inGround") == 1;
+        this.doesArrowBelongToPlayer = tag.getBoolean("player");
     }
 
     @Override
@@ -387,8 +382,8 @@ public class EntityShuriken extends Entity
     }
 
     @Override
-    public float getShadowSize()
+    public float getCollisionBorderSize()
     {
-        return 1.0F;
+        return 1F;
     }
 }

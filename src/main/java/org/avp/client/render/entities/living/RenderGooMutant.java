@@ -1,33 +1,32 @@
 package org.avp.client.render.entities.living;
 
 import org.avp.AliensVsPredator;
+import org.avp.client.model.entities.living.ModelGooMutant;
+import org.avp.entities.living.EntityGooMutant;
 
-import com.arisux.mdxlib.lib.client.Model;
 import com.arisux.mdxlib.lib.client.RenderLivingWrapper;
 import com.arisux.mdxlib.lib.client.TexturedModel;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-
-public class RenderGooMutant extends RenderLivingWrapper
+public class RenderGooMutant extends RenderLivingWrapper<EntityGooMutant, ModelGooMutant>
 {
     public RenderGooMutant()
     {
         super(AliensVsPredator.resources().models().GOO_MUTANT);
     }
     
-    public RenderGooMutant(TexturedModel<? extends Model> model)
+    public RenderGooMutant(TexturedModel<ModelGooMutant> model)
     {
         super(model);
     }
 
-    public void doRender(Entity entity, double posX, double posY, double posZ, float yaw, float renderPartialTicks)
+    @Override
+    public void doRender(EntityGooMutant entity, double posX, double posY, double posZ, float yaw, float renderPartialTicks)
     {
         super.doRender(entity, posX, posY, posZ, yaw, renderPartialTicks);
     }
 
     @Override
-    protected void preRenderCallback(EntityLivingBase entityliving, float renderPartialTicks)
+    protected void preRenderCallback(EntityGooMutant entityliving, float renderPartialTicks)
     {
         super.preRenderCallback(entityliving, renderPartialTicks);
     }

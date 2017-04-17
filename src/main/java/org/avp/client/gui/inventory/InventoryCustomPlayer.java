@@ -6,6 +6,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 
 public class InventoryCustomPlayer implements IInventory
 {
@@ -51,7 +53,7 @@ public class InventoryCustomPlayer implements IInventory
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int slot)
+    public ItemStack removeStackFromSlot(int slot)
     {
         ItemStack stack = getStackInSlot(slot);
         setInventorySlotContents(slot, null);
@@ -70,17 +72,7 @@ public class InventoryCustomPlayer implements IInventory
 
         this.onInventoryChanged();
     }
-
-    public String getInvName()
-    {
-        return name;
-    }
-
-    public boolean isInvNameLocalized()
-    {
-        return name.length() > 0;
-    }
-
+    
     @Override
     public int getInventoryStackLimit()
     {
@@ -102,12 +94,16 @@ public class InventoryCustomPlayer implements IInventory
         return true;
     }
 
-    public void openChest()
+    @Override
+    public void openInventory(EntityPlayer player)
     {
+        ;
     }
 
-    public void closeChest()
+    @Override
+    public void closeInventory(EntityPlayer player)
     {
+        ;
     }
 
     @Override
@@ -116,7 +112,7 @@ public class InventoryCustomPlayer implements IInventory
         return itemstack.getItem() instanceof Item;
     }
 
-    public void writeToNBT(NBTTagCompound compound)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         NBTTagList items = new NBTTagList();
 
@@ -131,7 +127,9 @@ public class InventoryCustomPlayer implements IInventory
             }
         }
 
-        compound.setTag(tagName, items);
+        nbt.setTag(tagName, items);
+        
+        return nbt;
     }
 
     public void readFromNBT(NBTTagCompound compound)
@@ -151,19 +149,50 @@ public class InventoryCustomPlayer implements IInventory
     }
 
     @Override
-    public String getInventoryName()
+    public String getName()
     {
-        return null;
+        return this.name;
     }
 
     @Override
-    public boolean isCustomInventoryName()
+    public boolean hasCustomName()
     {
         return false;
     }
 
     @Override
     public void markDirty()
+    {
+        ;
+    }
+    
+    @Override
+    public ITextComponent getDisplayName()
+    {
+        return new TextComponentString(this.name);
+    }
+    
+    //TODO: Implement Unused Features
+    @Override
+    public int getField(int id)
+    {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value)
+    {
+        ;
+    }
+
+    @Override
+    public int getFieldCount()
+    {
+        return 0;
+    }
+
+    @Override
+    public void clear()
     {
         ;
     }

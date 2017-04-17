@@ -9,6 +9,8 @@ import com.arisux.mdxlib.lib.world.item.HookedItem;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -25,19 +27,19 @@ public class ItemGrenade extends HookedItem
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack itemstack, World worldObj, EntityPlayer entityplayer)
+    public ActionResult<ItemStack> onItemRightClick(ItemStack itemstack, World worldObj, EntityPlayer player, EnumHand hand)
     {
         if (!worldObj.isRemote)
         {
-            EntityGrenade grenade = new EntityGrenade(worldObj, entityplayer);
+            EntityGrenade grenade = new EntityGrenade(worldObj, player);
             grenade.setFlaming(this.isFlaming);
             worldObj.spawnEntityInWorld(grenade);
-            Inventories.consumeItem(entityplayer, this);
+            Inventories.consumeItem(player, this);
         }
-
-        return itemstack;
+        
+        return super.onItemRightClick(itemstack, worldObj, player, hand);
     }
-
+    
     @Override
     @SideOnly(Side.CLIENT)
     @SuppressWarnings("all")

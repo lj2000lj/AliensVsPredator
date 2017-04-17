@@ -1,5 +1,6 @@
 package org.avp.client.gui;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.avp.AliensVsPredator;
@@ -152,13 +153,13 @@ public class GuiAssembler extends GuiContainer
         AliensVsPredator.resources().GUI_ASSEMBLER.bind();
         drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
     }
-
+    
     @Override
-    protected void actionPerformed(GuiButton button)
+    protected void actionPerformed(GuiButton button) throws IOException
     {
         super.actionPerformed(button);
     }
-
+    
     @Override
     public void drawScreen(int mouseX, int mouseY, float renderPartial)
     {

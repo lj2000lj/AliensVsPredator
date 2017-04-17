@@ -2,13 +2,13 @@ package org.avp.entities.living;
 
 import org.avp.DamageSources;
 import org.avp.EntityItemDrops;
+import org.avp.entities.ai.EntityAICustomAttackOnCollide;
 import org.avp.entities.ai.alien.EntitySelectorXenomorph;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
@@ -17,25 +17,28 @@ import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
 public abstract class EntityXenomorph extends EntitySpeciesAlien implements IMob
 {
-    private static final int   JAW_PROGRESS_DATAWATCHER_ID   = 21;
-    private static final float JAW_PROGRESS_INCR             = 0.3F;
-    public static final float  JAW_PROGRESS_MAX              = 1.0F;
+    public static final float                   JAW_PROGRESS_INCR   = 0.3F;
+    public static final float                   JAW_PROGRESS_MAX    = 1.0F;
 
-    private static final int   MOUTH_PROGRESS_DATAWATCHER_ID = 22;
-    private static final float MOUTH_PROGRESS_INCR           = 0.175F;
-    public static final float  MOUTH_PROGRESS_MAX            = 1.0F;
+    public static final float                   MOUTH_PROGRESS_INCR = 0.175F;
+    public static final float                   MOUTH_PROGRESS_MAX  = 1.0F;
 
-    private static final int   CRAWLING_DATAWATCHER_ID       = 20;
+    private static final DataParameter<Boolean> CRAWLING            = EntityDataManager.createKey(EntityXenomorph.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Float>   JAW_PROGRESS        = EntityDataManager.createKey(EntityXenomorph.class, DataSerializers.FLOAT);
+    private static final DataParameter<Float>   MOUTH_PROGRESS      = EntityDataManager.createKey(EntityXenomorph.class, DataSerializers.FLOAT);
 
-    private boolean            startBite                     = false;
-    private boolean            retractMouth                  = false;
-    protected boolean          ableToClimb;
-    protected boolean          isDependant;
+    private boolean                             startBite           = false;
+    private boolean                             retractMouth        = false;
+    protected boolean                           ableToClimb;
+    protected boolean                           isDependant;
 
     public EntityXenomorph(World world)
     {
@@ -43,12 +46,6 @@ public abstract class EntityXenomorph extends EntitySpeciesAlien implements IMob
         this.jumpMovementFactor = 0.045F;
         this.ableToClimb = false;
         this.isDependant = true;
-        this.getNavigator().setCanSwim(true);
-
-        this.dataWatcher.addObject(CRAWLING_DATAWATCHER_ID, 0);
-        this.dataWatcher.addObject(JAW_PROGRESS_DATAWATCHER_ID, 0F);
-        this.dataWatcher.addObject(MOUTH_PROGRESS_DATAWATCHER_ID, 0F);
-        
         this.addStandardXenomorphAISet();
     }
 
@@ -56,15 +53,25 @@ public abstract class EntityXenomorph extends EntitySpeciesAlien implements IMob
     {
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIWander(this, 0.8D));
-        this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityCreature.class, 1.0D, false));
-        this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
+        this.tasks.addTask(2, new EntityAICustomAttackOnCollide(this, EntityCreature.class, 1.0D, false));
+        this.tasks.addTask(2, new EntityAICustomAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
         this.tasks.addTask(2, new EntityAIWatchClosest(this, EntityLivingBase.class, 16F));
         this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.6F));
         this.targetTasks.addTask(0, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityCreature.class, 0, false, false, EntitySelectorXenomorph.instance));
-        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, false, false, EntitySelectorXenomorph.instance));
+        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<EntityCreature>(this, EntityCreature.class, 0, false, false, EntitySelectorXenomorph.instance));
+        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, 0, false, false, EntitySelectorXenomorph.instance));
     }
-    
+
+    @Override
+    protected void entityInit()
+    {
+        super.entityInit();
+
+        this.getDataManager().register(CRAWLING, false);
+        this.getDataManager().register(JAW_PROGRESS, 0F);
+        this.getDataManager().register(MOUTH_PROGRESS, 0F);
+    }
+
     @Override
     protected void applyEntityAttributes()
     {
@@ -85,40 +92,34 @@ public abstract class EntityXenomorph extends EntitySpeciesAlien implements IMob
         this.shareJelly();
     }
 
-    @Override
-    protected boolean isAIEnabled()
-    {
-        return true;
-    }
-
     public boolean isCrawling()
     {
-        return this.dataWatcher.getWatchableObjectInt(20) == 1 ? true : false;
+        return this.getDataManager().get(CRAWLING);
     }
 
     public boolean isStanding()
     {
-        return this.dataWatcher.getWatchableObjectInt(20) == 0 ? true : false;
+        return !this.getDataManager().get(CRAWLING);
     }
 
     protected void setCrawling()
     {
-        this.dataWatcher.updateObject(CRAWLING_DATAWATCHER_ID, 1);
+        this.getDataManager().set(CRAWLING, true);
     }
 
     protected void setStanding()
     {
-        this.dataWatcher.updateObject(CRAWLING_DATAWATCHER_ID, 0);
+        this.getDataManager().set(CRAWLING, false);
     }
 
     public float getOuterJawProgress()
     {
-        return this.dataWatcher.getWatchableObjectFloat(JAW_PROGRESS_DATAWATCHER_ID);
+        return this.getDataManager().get(JAW_PROGRESS);
     }
 
     public float getInnerJawProgress()
     {
-        return this.dataWatcher.getWatchableObjectFloat(MOUTH_PROGRESS_DATAWATCHER_ID);
+        return this.getDataManager().get(JAW_PROGRESS);
     }
 
     protected void decreaseOuterJawProgress()
@@ -127,7 +128,7 @@ public abstract class EntityXenomorph extends EntitySpeciesAlien implements IMob
 
         if (p > 0F)
         {
-            this.dataWatcher.updateObject(JAW_PROGRESS_DATAWATCHER_ID, p - JAW_PROGRESS_INCR);
+            this.getDataManager().set(JAW_PROGRESS, p - JAW_PROGRESS_INCR);
         }
     }
 
@@ -137,7 +138,7 @@ public abstract class EntityXenomorph extends EntitySpeciesAlien implements IMob
 
         if (p < JAW_PROGRESS_MAX)
         {
-            this.dataWatcher.updateObject(JAW_PROGRESS_DATAWATCHER_ID, p + JAW_PROGRESS_INCR);
+            this.getDataManager().set(JAW_PROGRESS, p + JAW_PROGRESS_INCR);
         }
     }
 
@@ -147,7 +148,7 @@ public abstract class EntityXenomorph extends EntitySpeciesAlien implements IMob
 
         if (p > 0F)
         {
-            this.dataWatcher.updateObject(MOUTH_PROGRESS_DATAWATCHER_ID, p - MOUTH_PROGRESS_INCR);
+            this.getDataManager().set(MOUTH_PROGRESS, p - MOUTH_PROGRESS_INCR);
         }
     }
 
@@ -157,7 +158,7 @@ public abstract class EntityXenomorph extends EntitySpeciesAlien implements IMob
 
         if (p < MOUTH_PROGRESS_MAX)
         {
-            this.dataWatcher.updateObject(MOUTH_PROGRESS_DATAWATCHER_ID, p + MOUTH_PROGRESS_INCR);
+            this.getDataManager().set(MOUTH_PROGRESS, p + MOUTH_PROGRESS_INCR);
         }
     }
 

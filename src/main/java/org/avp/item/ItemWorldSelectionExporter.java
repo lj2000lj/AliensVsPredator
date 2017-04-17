@@ -9,6 +9,10 @@ import com.arisux.mdxlib.lib.world.item.HookedItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -22,26 +26,24 @@ public class ItemWorldSelectionExporter extends HookedItem
     }
 
     @Override
-    public boolean onBlockStartBreak(ItemStack stack, int posX, int posY, int posZ, EntityPlayer player)
+    public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, EntityPlayer player)
     {
         if (!player.worldObj.isRemote)
         {
-            player.worldObj.markBlockForUpdate(posX, posY, posZ);
-            this.writeSelectionDataToStack(new Pos(posX, posY, posZ).store(new BlockDataStore(player.worldObj.getBlock(posX, posY, posZ), (byte) 0)), null, stack);
+            this.writeSelectionDataToStack(new Pos(pos).store(new BlockDataStore(player.worldObj.getBlockState(pos).getBlock(), (byte) 0)), null, itemstack);
         }
-
         return true;
     }
-
+    
     @Override
-    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int posX, int posY, int posZ, int side, float hitX, float hitY, float hitZ)
+    public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand)
     {
         if (!player.worldObj.isRemote)
         {
-            this.writeSelectionDataToStack(null, new Pos(posX, posY, posZ).store(new BlockDataStore(player.worldObj.getBlock(posX, posY, posZ), (byte) 0)), stack);
+            this.writeSelectionDataToStack(null, new Pos(pos).store(new BlockDataStore(player.worldObj.getBlockState(pos).getBlock(), (byte) 0)), stack);
         }
-
-        return super.onItemUseFirst(stack, player, world, posX, posY, posZ, side, hitX, hitY, hitZ);
+        
+        return super.onItemUseFirst(stack, player, world, pos, side, hitX, hitY, hitZ, hand);
     }
 
     public void writeSelectionDataToStack(Pos pos1, Pos pos2, ItemStack stack)
@@ -49,8 +51,8 @@ public class ItemWorldSelectionExporter extends HookedItem
         NBTTagCompound tag = stack.getTagCompound() != null ? stack.getTagCompound() : new NBTTagCompound();
         NBTTagCompound lastSelection1 = (NBTTagCompound) tag.getTag("SelectedPos1");
         NBTTagCompound lastSelection2 = (NBTTagCompound) tag.getTag("SelectedPos2");
-        Pos lastPos1 = lastSelection1 != null ? new Pos(lastSelection1.getInteger("PosX"), lastSelection1.getInteger("PosY"), lastSelection1.getInteger("PosZ")).store(new BlockDataStore(lastSelection1.getString("Id"), (byte) 0)) : null;
-        Pos lastPos2 = lastSelection2 != null ? new Pos(lastSelection2.getInteger("PosX"), lastSelection2.getInteger("PosY"), lastSelection2.getInteger("PosZ")).store(new BlockDataStore(lastSelection1.getString("Id"), (byte) 0)) : null;
+        Pos lastPos1 = lastSelection1 != null ? new Pos(lastSelection1.getInteger("PosX"), lastSelection1.getInteger("PosY"), lastSelection1.getInteger("PosZ")) : null;
+        Pos lastPos2 = lastSelection2 != null ? new Pos(lastSelection2.getInteger("PosX"), lastSelection2.getInteger("PosY"), lastSelection2.getInteger("PosZ")) : null;
 
         if (pos1 != null)
         {

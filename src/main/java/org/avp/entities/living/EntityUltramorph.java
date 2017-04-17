@@ -5,6 +5,7 @@ import org.avp.client.Sounds;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
 public class EntityUltramorph extends EntityXenomorph implements IMob
@@ -18,8 +19,6 @@ public class EntityUltramorph extends EntityXenomorph implements IMob
         this.setSize(1.5F, 4F);
         this.ableToClimb = false;
         this.isDependant = false;
-        this.getNavigator().setCanSwim(true);
-        this.getNavigator().setAvoidsWater(true);
     }
 
     @Override
@@ -32,21 +31,21 @@ public class EntityUltramorph extends EntityXenomorph implements IMob
     }
 
     @Override
-    protected String getHurtSound()
+    protected SoundEvent getHurtSound()
     {
-        return Sounds.SOUND_ALIEN_HURT.getKey();
+        return Sounds.SOUND_ALIEN_HURT.event();
     }
 
     @Override
-    protected String getLivingSound()
+    protected SoundEvent getAmbientSound()
     {
-        return Sounds.SOUND_ALIEN_LIVING.getKey();
+        return Sounds.SOUND_ALIEN_LIVING.event();
     }
 
     @Override
-    protected String getDeathSound()
+    protected SoundEvent getDeathSound()
     {
-        return Sounds.SOUND_ALIEN_DEATH.getKey();
+        return Sounds.SOUND_ALIEN_DEATH.event();
     }
 
     @Override

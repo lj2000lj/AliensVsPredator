@@ -11,12 +11,12 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 
 
-public class TileEntityCryostasisTube extends TileEntityElectrical implements IVoltageReceiver, IRotatable
+public class TileEntityCryostasisTube extends TileEntityElectrical implements IVoltageReceiver, IRotatable, ITickable
 {
     private EnumFacing direction;
     public Entity stasisEntity;
@@ -32,10 +32,10 @@ public class TileEntityCryostasisTube extends TileEntityElectrical implements IV
     }
 
     @Override
-    public void updateEntity()
+    public void update()
     {
         this.ticksExisted++;
-        super.updateEntity();
+        super.update();
         this.updateEnergyAsReceiver();
 
         if (this.stasisEntity != null && !this.isOperational())
@@ -65,7 +65,7 @@ public class TileEntityCryostasisTube extends TileEntityElectrical implements IV
                 {
                     if (!this.worldObj.isRemote)
                     {
-                        entity.setLocationAndAngles(this.xCoord, this.yCoord, this.zCoord, 0F, 0F);
+                        entity.setLocationAndAngles(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), 0F, 0F);
                         this.worldObj.spawnEntityInWorld(entity);
                     }
 
@@ -88,25 +88,29 @@ public class TileEntityCryostasisTube extends TileEntityElectrical implements IV
     @Override
     public Block getBlockType()
     {
-        return Blocks.beacon;
+        return Blocks.BEACON;
     }
 
     @Override
-    public Packet getDescriptionPacket()
+    public SPacketUpdateTileEntity getUpdatePacket()
     {
-        NBTTagCompound nbtTag = new NBTTagCompound();
-        this.writeToNBT(nbtTag);
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbtTag);
+        return new SPacketUpdateTileEntity(this.getPos(), 1, this.getUpdateTag());
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet)
+    public NBTTagCompound getUpdateTag()
     {
-        readFromNBT(packet.getNbtCompound());
+        return this.writeToNBT(new NBTTagCompound());
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet)
+    {
+        this.readFromNBT(packet.getNbtCompound());
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
         nbt.setBoolean("Cracked", this.cracked);
@@ -123,6 +127,8 @@ public class TileEntityCryostasisTube extends TileEntityElectrical implements IV
             this.stasisItemstack.writeToNBT(nbtStack);
             nbt.setTag("StasisItemstack", nbtStack);
         }
+        
+        return nbt;
     }
 
     @Override
@@ -132,9 +138,9 @@ public class TileEntityCryostasisTube extends TileEntityElectrical implements IV
         this.cracked = nbt.getBoolean("Cracked");
         this.shattered = nbt.getBoolean("Shattered");
 
-        if (EnumFacing.getOrientation(nbt.getInteger("Direction")) != null)
+        if (EnumFacing.getFront(nbt.getInteger("Direction")) != null)
         {
-            this.direction = EnumFacing.getOrientation(nbt.getInteger("Direction"));
+            this.direction = EnumFacing.getFront(nbt.getInteger("Direction"));
         }
 
         NBTTagCompound nbtStack = nbt.getCompoundTag("StasisItemstack");

@@ -1,6 +1,7 @@
 package org.avp.client.render.entities;
 
 import org.avp.AliensVsPredator;
+import org.avp.entities.EntityShuriken;
 import org.lwjgl.opengl.GL11;
 
 import com.arisux.mdxlib.lib.client.render.Draw;
@@ -8,18 +9,17 @@ import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.game.Game;
 
 import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 
-public class RenderShuriken extends Render
+public class RenderShuriken extends Render<EntityShuriken>
 {
-    protected RenderShuriken()
+    public RenderShuriken()
     {
         super(Game.renderManager());
     }
 
     @Override
-    public void doRender(Entity entity, double posX, double posY, double posZ, float yaw, float renderPartialTicks)
+    public void doRender(EntityShuriken entity, double posX, double posY, double posZ, float yaw, float renderPartialTicks)
     {
         OpenGL.pushMatrix();
         {
@@ -37,7 +37,7 @@ public class RenderShuriken extends Render
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(Entity entity)
+    protected ResourceLocation getEntityTexture(EntityShuriken entity)
     {
         return null;
     }

@@ -6,13 +6,13 @@ import org.avp.api.power.IVoltageReceiver;
 import org.avp.entities.EntityMedpod;
 import org.avp.packets.client.PacketOpenable;
 
+import com.arisux.mdxlib.lib.world.entity.Entities;
 import com.arisux.mdxlib.lib.world.tile.IRotatable;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 
 
@@ -41,21 +41,25 @@ public class TileEntityMedpod extends TileEntityElectrical implements IOpenable,
     }
 
     @Override
-    public Packet getDescriptionPacket()
+    public SPacketUpdateTileEntity getUpdatePacket()
     {
-        NBTTagCompound nbtTag = new NBTTagCompound();
-        this.writeToNBT(nbtTag);
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbtTag);
+        return new SPacketUpdateTileEntity(this.getPos(), 1, this.getUpdateTag());
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet)
+    public NBTTagCompound getUpdateTag()
     {
-        readFromNBT(packet.getNbtCompound());
+        return this.writeToNBT(new NBTTagCompound());
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet)
+    {
+        this.readFromNBT(packet.getNbtCompound());
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
 
@@ -65,6 +69,8 @@ public class TileEntityMedpod extends TileEntityElectrical implements IOpenable,
         }
         nbt.setFloat("DoorProgress", this.doorProgress);
         nbt.setBoolean("Open", this.isOpen);
+        
+        return nbt;
     }
 
     @Override
@@ -72,25 +78,25 @@ public class TileEntityMedpod extends TileEntityElectrical implements IOpenable,
     {
         super.readFromNBT(nbt);
 
-        if (EnumFacing.getOrientation(nbt.getInteger("Direction")) != null)
+        if (EnumFacing.getFront(nbt.getInteger("Direction")) != null)
         {
-            this.direction = EnumFacing.getOrientation(nbt.getInteger("Direction"));
+            this.direction = EnumFacing.getFront(nbt.getInteger("Direction"));
         }
         this.doorProgress = nbt.getFloat("DoorProgress");
         this.isOpen = nbt.getBoolean("Open");
     }
 
     @Override
-    public void updateEntity()
+    public void update()
     {
-        super.updateEntity();
+        super.update();
         this.updateEnergyAsReceiver();
 
         if (this.getEntity() == null && !this.worldObj.isRemote)
         {
             this.medpodEntity = new EntityMedpod(worldObj);
             this.medpodEntity.setTile(this);
-            this.medpodEntity.setLocationAndAngles(this.xCoord, this.yCoord, this.zCoord, 0F, 0F);
+            this.medpodEntity.setLocationAndAngles(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), 0F, 0F);
             this.worldObj.spawnEntityInWorld(this.medpodEntity);
         }
 
@@ -110,7 +116,7 @@ public class TileEntityMedpod extends TileEntityElectrical implements IOpenable,
             if (this.getDirection() == EnumFacing.WEST)
                 rotation = -90F;
 
-            this.getEntity().setLocationAndAngles(this.xCoord + getEntity().width / 2, this.yCoord, this.zCoord + getEntity().width / 2, rotation, 0F);
+            this.getEntity().setLocationAndAngles(this.getPos().getX() + getEntity().width / 2, this.getPos().getY(), this.getPos().getZ() + getEntity().width / 2, rotation, 0F);
         }
 
         if (this.isOpen())
@@ -145,19 +151,20 @@ public class TileEntityMedpod extends TileEntityElectrical implements IOpenable,
 
             if (!this.worldObj.isRemote)
             {
-                AliensVsPredator.network().sendToAll(new PacketOpenable(isOpen, this.xCoord, this.yCoord, this.zCoord));
+                AliensVsPredator.network().sendToAll(new PacketOpenable(isOpen, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ()));
             }
 
             if (this.getEntity() != null)
             {
-                if (this.getEntity().riddenByEntity == null)
+                Entity riddenBy = Entities.getEntityRiddenBy(this.getEntity());
+                if (riddenBy == null)
                 {
                     this.getEntity().clearLastRidden();
                 }
 
-                if (isOpen && this.getEntity() != null && this.getEntity().riddenByEntity != null)
+                if (isOpen && this.getEntity() != null && riddenBy != null)
                 {
-                    this.getEntity().riddenByEntity = null;
+                    riddenBy.dismountRidingEntity();
                 }
             }
         }

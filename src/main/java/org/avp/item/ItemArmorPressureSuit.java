@@ -6,30 +6,31 @@ import com.arisux.mdxlib.lib.client.render.Draw;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
 public class ItemArmorPressureSuit extends ItemAntiVacuumArmor
 {
-    public ItemArmorPressureSuit(ArmorMaterial material, int renderIndex, int armorType)
+    public ItemArmorPressureSuit(ArmorMaterial material, int renderIndex, EntityEquipmentSlot armorType)
     {
         super(material, renderIndex, armorType);
     }
-
+    
     @Override
-    public String getArmorTexture(ItemStack stack, Entity entity, int slot, String layer)
+    public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type)
     {
         switch (slot)
         {
-            case 0:
+            case FEET:
                 return Draw.getResourcePath(AliensVsPredator.resources().PRESSURESUIT1);
-            case 1:
+            case LEGS:
                 return Draw.getResourcePath(AliensVsPredator.resources().PRESSURESUIT1);
-            case 2:
+            case CHEST:
                 return Draw.getResourcePath(AliensVsPredator.resources().PRESSURESUIT2);
-            case 3:
+            case HEAD:
                 return Draw.getResourcePath(AliensVsPredator.resources().PRESSURESUIT1);
             default:
                 return Draw.getResourcePath(AliensVsPredator.resources().PRESSURESUIT2);
@@ -41,8 +42,8 @@ public class ItemArmorPressureSuit extends ItemAntiVacuumArmor
     {
         if (player.inventory.armorItemInSlot(3) != null && player.inventory.armorItemInSlot(3).getItem() == AliensVsPredator.items().pressureMask && player.inventory.armorItemInSlot(2) != null && player.inventory.armorItemInSlot(2).getItem() == AliensVsPredator.items().pressureChest && player.inventory.armorItemInSlot(1) != null && player.inventory.armorItemInSlot(1).getItem() == AliensVsPredator.items().pressurePants && player.inventory.armorItemInSlot(0) != null && player.inventory.armorItemInSlot(0).getItem() == AliensVsPredator.items().pressureBoots)
         {
-            player.addPotionEffect(new PotionEffect(Potion.waterBreathing.getId(), 1, 0));
-            player.addPotionEffect(new PotionEffect(Potion.nightVision.getId(), 1, 0));
+            player.addPotionEffect(new PotionEffect(MobEffects.WATER_BREATHING, 1, 0));
+            player.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 1, 0));
         }
     }
 }

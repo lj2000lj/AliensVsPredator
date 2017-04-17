@@ -3,22 +3,28 @@ package org.avp.block;
 import org.avp.tile.TileEntityLocker;
 
 import com.arisux.mdxlib.lib.world.tile.IRotatable;
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-
+import net.minecraftforge.common.property.IUnlistedProperty;
 
 public class BlockLocker extends Block
 {
@@ -26,37 +32,51 @@ public class BlockLocker extends Block
     {
         super(material);
         setTickRandomly(true);
-        this.setBlockBounds(0, 0, 0, 1, 2, 1);
     }
-
     @Override
-    public void registerIcons(IIconRegister register)
+    protected BlockStateContainer createBlockState()
     {
-        return;
+        return new BlockStateContainer(this, new IProperty[0])
+        {
+            @Override
+            protected StateImplementation createState(Block block, ImmutableMap<IProperty<?>, Comparable<?>> properties, ImmutableMap<IUnlistedProperty<?>, Optional<?>> unlistedProperties)
+            {
+                return new StateImplementation(block, properties)
+                {
+                    @Override
+                    public boolean isOpaqueCube()
+                    {
+                        return false;
+                    }
+                    
+                    @Override
+                    public EnumBlockRenderType getRenderType()
+                    {
+                        return EnumBlockRenderType.INVISIBLE;
+                    }
+                    
+                    @Override
+                    public AxisAlignedBB getCollisionBoundingBox(World world, BlockPos pos)
+                    {
+                        TileEntity tile = world.getTileEntity(pos);
+
+                        if (tile != null && tile instanceof TileEntityLocker)
+                        {
+                            TileEntityLocker locker = (TileEntityLocker) tile;
+                            return locker.isOpen() ? null : super.getCollisionBoundingBox(world, pos);
+                        }
+
+                        return super.getCollisionBoundingBox(world, pos);
+                    }
+                };
+            }
+        };
     }
-
+    
     @Override
-    public boolean renderAsNormalBlock()
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        return false;
-    }
-
-    @Override
-    public boolean isOpaqueCube()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean canPlaceBlockAt(World world, int posX, int posY, int posZ)
-    {
-        return super.canPlaceBlockAt(world, posX, posY, posZ);
-    }
-
-    @Override
-    public boolean onBlockActivated(World world, int posX, int posY, int posZ, EntityPlayer player, int side, float blockX, float blockY, float blockZ)
-    {
-        TileEntity tileEntity = world.getTileEntity(posX, posY, posZ);
+        TileEntity tileEntity = world.getTileEntity(pos);
 
         if (tileEntity != null && tileEntity instanceof TileEntityLocker)
         {
@@ -76,9 +96,9 @@ public class BlockLocker extends Block
     }
 
     @Override
-    public void onBlockPlacedBy(World world, int posX, int posY, int posZ, EntityLivingBase placer, ItemStack itemstack)
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        TileEntity tile = world.getTileEntity(posX, posY, posZ);
+        TileEntity tile = world.getTileEntity(pos);
 
         if (tile != null && tile instanceof IRotatable && placer != null)
         {
@@ -86,13 +106,13 @@ public class BlockLocker extends Block
             rotatable.setDirection(getFacing(placer));
         }
     }
-
+    
     @Override
-    public void onBlockPreDestroy(World worldIn, int x, int y, int z, int meta)
+    public void onBlockClicked(World worldIn, BlockPos pos, EntityPlayer playerIn)
     {
-        super.onBlockPreDestroy(worldIn, x, y, z, meta);
+        super.onBlockClicked(worldIn, pos, playerIn);
         
-        TileEntityLocker locker = (TileEntityLocker) worldIn.getTileEntity(x, y, z);
+        TileEntityLocker locker = (TileEntityLocker) worldIn.getTileEntity(pos);
         
         if (locker != null)
         {
@@ -102,7 +122,7 @@ public class BlockLocker extends Block
                 
                 if (stack != null)
                 {
-                    EntityItem entityItem = new EntityItem(worldIn, x, y, z, stack);
+                    EntityItem entityItem = new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), stack);
                     worldIn.spawnEntityInWorld(entityItem); 
                 }
             }
@@ -110,40 +130,20 @@ public class BlockLocker extends Block
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int metadata)
+    public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TileEntityLocker();
     }
-
+    
     @Override
-    public boolean hasTileEntity(int metadata)
+    public boolean hasTileEntity(IBlockState state)
     {
         return true;
-    }
-
-    @Override
-    public int getRenderType()
-    {
-        return -1;
     }
 
     public static EnumFacing getFacing(Entity entity)
     {
         int dir = MathHelper.floor_double((entity.rotationYaw / 90) + 0.5) & 3;
-        return EnumFacing.VALID_DIRECTIONS[Direction.directionToFacing[dir]];
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int posX, int posY, int posZ)
-    {
-        TileEntity tile = world.getTileEntity(posX, posY, posZ);
-
-        if (tile != null && tile instanceof TileEntityLocker)
-        {
-            TileEntityLocker locker = (TileEntityLocker) tile;
-            return locker.isOpen() ? null : super.getCollisionBoundingBoxFromPool(world, posX, posY, posZ);
-        }
-
-        return super.getCollisionBoundingBoxFromPool(world, posX, posY, posZ);
+        return EnumFacing.getFront(dir);
     }
 }

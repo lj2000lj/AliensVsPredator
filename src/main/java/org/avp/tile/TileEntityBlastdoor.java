@@ -1,6 +1,7 @@
 package org.avp.tile;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import org.avp.AliensVsPredator;
@@ -9,33 +10,34 @@ import org.avp.api.power.IVoltageReceiver;
 import org.avp.packets.client.PacketOpenBlastdoor;
 
 import com.arisux.mdxlib.lib.game.Game;
+import com.arisux.mdxlib.lib.world.block.IMultiBlock;
 import com.arisux.mdxlib.lib.world.tile.IRotatable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 
-
-public class TileEntityBlastdoor extends TileEntityElectrical implements IVoltageReceiver, IRotatable, IOpenable
+public class TileEntityBlastdoor extends TileEntityElectrical implements IVoltageReceiver, IRotatable, IOpenable, IMultiBlock
 {
-    private EnumFacing direction;
-    private float doorProgress;
-    private float doorProgressPrev;
-    private boolean doorOpen;
-    private boolean isParent;
-    private boolean placedByPlayer;
-    private TileEntityBlastdoor parent;
+    private EnumFacing                     direction;
+    private float                          doorProgress;
+    private float                          doorProgressPrev;
+    private boolean                        doorOpen;
+    private boolean                        isParent;
+    private boolean                        placedByPlayer;
+    private TileEntityBlastdoor            parent;
     private ArrayList<TileEntityBlastdoor> children;
-    private int ticksExisted;
-    private String identifier;
-    private String password;
-    private long timeOfLastPry;
+    private int                            ticksExisted;
+    private String                         identifier;
+    private String                         password;
+    private long                           timeOfLastPry;
 
     public TileEntityBlastdoor()
     {
@@ -61,21 +63,25 @@ public class TileEntityBlastdoor extends TileEntityElectrical implements IVoltag
     }
 
     @Override
-    public Packet getDescriptionPacket()
+    public SPacketUpdateTileEntity getUpdatePacket()
     {
-        NBTTagCompound nbtTag = new NBTTagCompound();
-        this.writeToNBT(nbtTag);
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbtTag);
+        return new SPacketUpdateTileEntity(this.getPos(), 1, this.getUpdateTag());
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet)
+    public NBTTagCompound getUpdateTag()
     {
-        readFromNBT(packet.getNbtCompound());
+        return this.writeToNBT(new NBTTagCompound());
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet)
+    {
+        this.readFromNBT(packet.getNbtCompound());
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
 
@@ -94,6 +100,8 @@ public class TileEntityBlastdoor extends TileEntityElectrical implements IVoltag
 
         if (!password.isEmpty())
             nbt.setString("Password", this.password);
+        
+        return nbt;
     }
 
     @Override
@@ -101,9 +109,9 @@ public class TileEntityBlastdoor extends TileEntityElectrical implements IVoltag
     {
         super.readFromNBT(nbt);
 
-        if (EnumFacing.getOrientation(nbt.getInteger("Direction")) != null)
+        if (EnumFacing.getFront(nbt.getInteger("Direction")) != null)
         {
-            this.direction = EnumFacing.getOrientation(nbt.getInteger("Direction"));
+            this.direction = EnumFacing.getFront(nbt.getInteger("Direction"));
         }
 
         this.doorProgress = nbt.getFloat("DoorProgress");
@@ -115,9 +123,9 @@ public class TileEntityBlastdoor extends TileEntityElectrical implements IVoltag
     }
 
     @Override
-    public void updateEntity()
+    public void update()
     {
-        super.updateEntity();
+        super.update();
         this.doorProgressPrev = this.doorProgress;
         this.updateEnergyAsReceiver();
         this.ticksExisted++;
@@ -217,7 +225,7 @@ public class TileEntityBlastdoor extends TileEntityElectrical implements IVoltag
 
             if (this.worldObj != null && !this.worldObj.isRemote && sendPacket)
             {
-                AliensVsPredator.network().sendToAll(new PacketOpenBlastdoor(doorOpen, this.xCoord, this.yCoord, this.zCoord));
+                AliensVsPredator.network().sendToAll(new PacketOpenBlastdoor(doorOpen, this.getPos()));
             }
         }
     }
@@ -225,7 +233,7 @@ public class TileEntityBlastdoor extends TileEntityElectrical implements IVoltag
     @Override
     public Block getBlockType()
     {
-        return Blocks.beacon;
+        return Blocks.BEACON;
     }
 
     public float getDoorProgress()
@@ -233,22 +241,23 @@ public class TileEntityBlastdoor extends TileEntityElectrical implements IVoltag
         return this.doorProgress;
     }
 
-    public boolean setChildTile(int posX, int posY, int posZ)
+    public boolean setChildTile(BlockPos pos)
     {
-        Block block = worldObj.getBlock(posX, posY, posZ);
+        IBlockState blockstate = this.worldObj.getBlockState(pos);
+        Block block = blockstate.getBlock();
 
-        if (block.getMaterial() != Material.AIR && block != AliensVsPredator.blocks().blockBlastdoor)
+        if (blockstate.getMaterial() != Material.AIR && block != AliensVsPredator.blocks().blockBlastdoor)
         {
             if (this.worldObj.isRemote)
             {
-                Game.minecraft().thePlayer.addChatMessage(new ChatComponentText("Unable to place a blastdoor here. Blocks are in the way."));
+                Game.minecraft().thePlayer.addChatMessage(new TextComponentString("Unable to place a blastdoor here. Blocks are in the way."));
             }
 
             return false;
         }
 
-        worldObj.setBlock(posX, posY, posZ, AliensVsPredator.blocks().blockBlastdoor);
-        TileEntityBlastdoor blastdoor = (TileEntityBlastdoor) worldObj.getTileEntity(posX, posY, posZ);
+        worldObj.setBlockState(pos, AliensVsPredator.blocks().blockBlastdoor.getDefaultState());
+        TileEntityBlastdoor blastdoor = (TileEntityBlastdoor) worldObj.getTileEntity(pos);
 
         if (blastdoor == null)
         {
@@ -269,7 +278,7 @@ public class TileEntityBlastdoor extends TileEntityElectrical implements IVoltag
     {
         for (TileEntityBlastdoor child : this.getChildren())
         {
-            worldObj.setBlockToAir(child.xCoord, child.yCoord, child.zCoord);
+            worldObj.setBlockToAir(child.getPos());
         }
     }
 
@@ -295,34 +304,22 @@ public class TileEntityBlastdoor extends TileEntityElectrical implements IVoltag
 
     public boolean setup(boolean placedByPlayer)
     {
-        EnumFacing direction = this.direction;
-
         this.isParent = true;
         this.placedByPlayer = true;
-
-        if (direction != null)
+        
+        if (this.direction != null)
         {
-            if (direction == EnumFacing.SOUTH)
+            for (BlockPos pos : this.setFor(this.direction))
             {
-                return this.setChildTile(this.xCoord + 1, this.yCoord, this.zCoord) && this.setChildTile(this.xCoord + 2, this.yCoord, this.zCoord) && this.setChildTile(this.xCoord + 3, this.yCoord, this.zCoord) && this.setChildTile(this.xCoord, this.yCoord + 1, this.zCoord) && this.setChildTile(this.xCoord, this.yCoord + 2, this.zCoord) && this.setChildTile(this.xCoord + 1, this.yCoord + 2, this.zCoord) && this.setChildTile(this.xCoord + 1, this.yCoord + 1, this.zCoord) && this.setChildTile(this.xCoord + 2, this.yCoord + 2, this.zCoord) && this.setChildTile(this.xCoord + 2, this.yCoord + 1, this.zCoord) && this.setChildTile(this.xCoord + 3, this.yCoord + 2, this.zCoord) && this.setChildTile(this.xCoord + 3, this.yCoord + 1, this.zCoord);
+                if (!this.setChildTile(pos))
+                {
+                    return false;
+                }
             }
-
-            if (direction == EnumFacing.NORTH)
-            {
-                return this.setChildTile(this.xCoord - 1, this.yCoord, this.zCoord) && this.setChildTile(this.xCoord - 2, this.yCoord, this.zCoord) && this.setChildTile(this.xCoord - 3, this.yCoord, this.zCoord) && this.setChildTile(this.xCoord, this.yCoord + 1, this.zCoord) && this.setChildTile(this.xCoord, this.yCoord + 2, this.zCoord) && this.setChildTile(this.xCoord - 1, this.yCoord + 2, this.zCoord) && this.setChildTile(this.xCoord - 1, this.yCoord + 1, this.zCoord) && this.setChildTile(this.xCoord - 2, this.yCoord + 2, this.zCoord) && this.setChildTile(this.xCoord - 2, this.yCoord + 1, this.zCoord) && this.setChildTile(this.xCoord - 3, this.yCoord + 2, this.zCoord) && this.setChildTile(this.xCoord - 3, this.yCoord + 1, this.zCoord);
-            }
-
-            if (direction == EnumFacing.EAST)
-            {
-                return this.setChildTile(this.xCoord, this.yCoord, this.zCoord - 1) && this.setChildTile(this.xCoord, this.yCoord, this.zCoord - 2) && this.setChildTile(this.xCoord, this.yCoord, this.zCoord - 3) && this.setChildTile(this.xCoord, this.yCoord + 1, this.zCoord) && this.setChildTile(this.xCoord, this.yCoord + 2, this.zCoord) && this.setChildTile(this.xCoord, this.yCoord + 2, this.zCoord - 1) && this.setChildTile(this.xCoord, this.yCoord + 1, this.zCoord - 1) && this.setChildTile(this.xCoord, this.yCoord + 2, this.zCoord - 2) && this.setChildTile(this.xCoord, this.yCoord + 1, this.zCoord - 2) && this.setChildTile(this.xCoord, this.yCoord + 2, this.zCoord - 3) && this.setChildTile(this.xCoord, this.yCoord + 1, this.zCoord - 3);
-            }
-
-            if (direction == EnumFacing.WEST)
-            {
-                return this.setChildTile(this.xCoord, this.yCoord, this.zCoord + 1) && this.setChildTile(this.xCoord, this.yCoord, this.zCoord + 2) && this.setChildTile(this.xCoord, this.yCoord, this.zCoord + 3) && this.setChildTile(this.xCoord, this.yCoord + 1, this.zCoord) && this.setChildTile(this.xCoord, this.yCoord + 2, this.zCoord) && this.setChildTile(this.xCoord, this.yCoord + 2, this.zCoord + 1) && this.setChildTile(this.xCoord, this.yCoord + 1, this.zCoord + 1) && this.setChildTile(this.xCoord, this.yCoord + 2, this.zCoord + 2) && this.setChildTile(this.xCoord, this.yCoord + 1, this.zCoord + 2) && this.setChildTile(this.xCoord, this.yCoord + 2, this.zCoord + 3) && this.setChildTile(this.xCoord, this.yCoord + 1, this.zCoord + 3);
-            }
+            
+            return true;
         }
-
+        
         return false;
     }
 
@@ -381,5 +378,24 @@ public class TileEntityBlastdoor extends TileEntityElectrical implements IVoltag
     public float getDoorProgressPrev()
     {
         return this.doorProgressPrev;
+    }
+
+    @Override
+    public BlockPos[] defaultSet()
+    {
+        List<BlockPos> set = new ArrayList<BlockPos>();
+        set.add(this.getPos().add(1, 0, 0));
+        set.add(this.getPos().add(2, 0, 0));
+        set.add(this.getPos().add(3, 0, 0));
+        set.add(this.getPos().add(0, 1, 0));
+        set.add(this.getPos().add(0, 2, 0));
+        set.add(this.getPos().add(1, 2, 0));
+        set.add(this.getPos().add(1, 1, 0));
+        set.add(this.getPos().add(2, 2, 0));
+        set.add(this.getPos().add(2, 1, 0));
+        set.add(this.getPos().add(3, 2, 0));
+        set.add(this.getPos().add(3, 1, 0));
+
+        return set.toArray(new BlockPos[set.size()]);
     }
 }

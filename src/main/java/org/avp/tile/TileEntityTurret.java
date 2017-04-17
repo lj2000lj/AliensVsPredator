@@ -47,7 +47,6 @@ import com.arisux.mdxlib.lib.world.Pos;
 import com.arisux.mdxlib.lib.world.entity.Entities;
 import com.arisux.mdxlib.lib.world.storage.NBTStorage;
 
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -62,12 +61,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.Constants.NBT;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -117,22 +117,92 @@ public class TileEntityTurret extends TileEntityElectrical implements IDataDevic
     }
 
     @Override
-    public void updateEntity()
+    public SPacketUpdateTileEntity getUpdatePacket()
     {
-        super.updateEntity();
+        return new SPacketUpdateTileEntity(this.getPos(), 1, this.getUpdateTag());
+    }
+
+    @Override
+    public NBTTagCompound getUpdateTag()
+    {
+        return this.writeToNBT(new NBTTagCompound());
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet)
+    {
+        this.readFromNBT(packet.getNbtCompound());
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        super.readFromNBT(nbt);
+
+        this.direction = nbt.getInteger("Direction");
+        this.focrot.setYaw(nbt.getFloat("FocusYaw")).setPitch(nbt.getFloat("FocusPitch"));
+        this.readTargetListFromCompoundTag(nbt);
+        this.readInventoryFromNBT(nbt, this.inventoryAmmo);
+        this.readInventoryFromNBT(nbt, this.inventoryExpansion);
+        this.readInventoryFromNBT(nbt, this.inventoryDrive);
+        this.sendSyncPacket();
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    {
+        super.writeToNBT(nbt);
+
+        nbt.setInteger("Direction", this.direction);
+        nbt.setFloat("FocusYaw", this.focrot.yaw);
+        nbt.setFloat("FocusPitch", this.focrot.pitch);
+        nbt.setTag("Targets", this.getTargetListTag());
+        this.saveInventoryToNBT(nbt, this.inventoryAmmo);
+        this.saveInventoryToNBT(nbt, this.inventoryExpansion);
+        this.saveInventoryToNBT(nbt, this.inventoryDrive);
+        
+        return nbt;
+    }
+
+    private void sendSyncPacket()
+    {
+        AliensVsPredator.network().sendToAll(new PacketTurretSync(this));
+    }
+
+    public void onReceiveInitPacket(PacketTurretSync packet, MessageContext ctx)
+    {
+        this.applyUpgrades();
+        this.readTargetList(packet.targets);
+        this.rot.yaw = packet.rotation.yaw;
+        this.rot.pitch = packet.rotation.pitch;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void onReceiveTargetUpdatePacket(PacketTurretTargetUpdate packet, MessageContext ctx)
+    {
+        Entity entity = Game.minecraft().theWorld.getEntityByID(packet.id);
+        this.setTargetEntity(entity);
+        this.foc = packet.foc;
+        this.focrot = packet.focrot;
+    }
+
+    @Override
+    public void update()
+    {
+        super.update();
         super.updateEnergyAsReceiver();
 
         // System.out.println(this.getRotation().yaw);
 
         if (this.pos == null)
         {
-            this.pos = new Pos(this.xCoord, this.yCoord, this.zCoord);
+            this.pos = new Pos(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
         }
         else
         {
-            this.pos.x = this.xCoord;
-            this.pos.y = this.yCoord;
-            this.pos.z = this.zCoord;
+            this.pos.x = this.getPos().getX();
+            this.pos.y = this.getPos().getY();
+            this.pos.z = this.getPos().getZ();
         }
 
         this.isFiring = false;
@@ -171,7 +241,7 @@ public class TileEntityTurret extends TileEntityElectrical implements IDataDevic
     {
         if (e != null)
         {
-            double distance = Pos.distance(this.xCoord, this.yCoord, this.zCoord, e.posX, e.posY, e.posZ);
+            double distance = Pos.distance(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), e.posX, e.posY, e.posZ);
             return !e.isDead && this.canTargetType(e.getClass()) && distance <= this.range;
         }
 
@@ -180,16 +250,16 @@ public class TileEntityTurret extends TileEntityElectrical implements IDataDevic
 
     private boolean canSee(Entity e)
     {
-        double height = e.boundingBox.maxY - e.boundingBox.minY;
+        double height = e.getEntityBoundingBox().maxY - e.getEntityBoundingBox().minY;
         double halfHeight = height / 2;
 
-        Pos middlePos = new Pos(e.posX, e.boundingBox.maxY - (halfHeight), e.posZ);
-        Pos topPos = new Pos(e.posX, e.boundingBox.maxY - (halfHeight + halfHeight), e.posZ);
-        Pos botPos = new Pos(e.posX, e.boundingBox.maxY - (halfHeight - halfHeight), e.posZ);
+        Pos middlePos = new Pos(e.posX, e.getEntityBoundingBox().maxY - (halfHeight), e.posZ);
+        Pos topPos = new Pos(e.posX, e.getEntityBoundingBox().maxY - (halfHeight + halfHeight), e.posZ);
+        Pos botPos = new Pos(e.posX, e.getEntityBoundingBox().maxY - (halfHeight - halfHeight), e.posZ);
         Pos newPos = this.pos.add(0.5, 1, 0.5);
-        MovingObjectPosition middle = Entities.rayTraceBlocks(this.worldObj, middlePos, newPos, false, true, false);
-        MovingObjectPosition top = Entities.rayTraceBlocks(this.worldObj, topPos, newPos, false, true, false);
-        MovingObjectPosition bot = Entities.rayTraceBlocks(this.worldObj, botPos, newPos, false, true, false);
+        RayTraceResult middle = Entities.rayTraceBlocks(this.worldObj, middlePos, newPos, false, true, false);
+        RayTraceResult top = Entities.rayTraceBlocks(this.worldObj, topPos, newPos, false, true, false);
+        RayTraceResult bot = Entities.rayTraceBlocks(this.worldObj, botPos, newPos, false, true, false);
 
         if (middle == null || top == null || bot == null)
         {
@@ -340,9 +410,9 @@ public class TileEntityTurret extends TileEntityElectrical implements IDataDevic
 
             for (EntityItem entityItem : entityItemList)
             {
-                if (entityItem.delayBeforeCanPickup <= 0)
+                if (!entityItem.cannotPickup())
                 {
-                    ItemStack stack = entityItem.getDataWatcher().getWatchableObjectItemStack(10);
+                    ItemStack stack = entityItem.getEntityItem();
 
                     if (stack.getItem() == this.itemAmmo)
                     {
@@ -393,7 +463,7 @@ public class TileEntityTurret extends TileEntityElectrical implements IDataDevic
         this.targetEntity.attackEntityFrom(DamageSources.bullet, 1F);
         this.targetEntity.hurtResistantTime = 0;
         // this.worldObj.spawnParticle("largesmoke", xCoord, yCoord, zCoord, 1, 1, 1);
-        Sounds.SOUND_WEAPON_M56SG.playSound(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+        Sounds.SOUND_WEAPON_M56SG.playSound(this.worldObj, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
     }
 
     public Rotation turnTurretToPoint(Pos pos, Rotation rotation, float deltaYaw, float deltaPitch)
@@ -499,70 +569,6 @@ public class TileEntityTurret extends TileEntityElectrical implements IDataDevic
         this.setCycleCount(cycles);
     }
 
-    @Override
-    public Packet getDescriptionPacket()
-    {
-        NBTTagCompound nbtTag = new NBTTagCompound();
-        this.writeToNBT(nbtTag);
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbtTag);
-    }
-
-    @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet)
-    {
-        this.readFromNBT(packet.getNbtCompound());
-    }
-
-    @Override
-    public void readFromNBT(NBTTagCompound nbt)
-    {
-        super.readFromNBT(nbt);
-
-        this.direction = nbt.getInteger("Direction");
-        this.focrot.setYaw(nbt.getFloat("FocusYaw")).setPitch(nbt.getFloat("FocusPitch"));
-        this.readTargetListFromCompoundTag(nbt);
-        this.readInventoryFromNBT(nbt, this.inventoryAmmo);
-        this.readInventoryFromNBT(nbt, this.inventoryExpansion);
-        this.readInventoryFromNBT(nbt, this.inventoryDrive);
-        this.sendSyncPacket();
-    }
-
-    @Override
-    public void writeToNBT(NBTTagCompound nbt)
-    {
-        super.writeToNBT(nbt);
-
-        nbt.setInteger("Direction", this.direction);
-        nbt.setFloat("FocusYaw", this.focrot.yaw);
-        nbt.setFloat("FocusPitch", this.focrot.pitch);
-        nbt.setTag("Targets", this.getTargetListTag());
-        this.saveInventoryToNBT(nbt, this.inventoryAmmo);
-        this.saveInventoryToNBT(nbt, this.inventoryExpansion);
-        this.saveInventoryToNBT(nbt, this.inventoryDrive);
-    }
-
-    private void sendSyncPacket()
-    {
-        AliensVsPredator.network().sendToAll(new PacketTurretSync(this));
-    }
-
-    public void onReceiveInitPacket(PacketTurretSync packet, MessageContext ctx)
-    {
-        this.applyUpgrades();
-        this.readTargetList(packet.targets);
-        this.rot.yaw = packet.rotation.yaw;
-        this.rot.pitch = packet.rotation.pitch;
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void onReceiveTargetUpdatePacket(PacketTurretTargetUpdate packet, MessageContext ctx)
-    {
-        Entity entity = Game.minecraft().theWorld.getEntityByID(packet.id);
-        this.setTargetEntity(entity);
-        this.foc = packet.foc;
-        this.focrot = packet.focrot;
-    }
-
     public NBTTagList getTargetListTag()
     {
         ArrayList<String> entityIDs = new ArrayList<String>();
@@ -592,7 +598,7 @@ public class TileEntityTurret extends TileEntityElectrical implements IDataDevic
         {
             String id = list.getStringTagAt(i);
 
-            Class<? extends Entity> c = (Class<? extends Entity>) EntityList.stringToClassMapping.get(id);
+            Class<? extends Entity> c = (Class<? extends Entity>) EntityList.NAME_TO_CLASS.get(id);
             this.addTargetType(c);
         }
     }
@@ -614,12 +620,12 @@ public class TileEntityTurret extends TileEntityElectrical implements IDataDevic
             }
         }
 
-        nbt.setTag(inventory.getInventoryName(), items);
+        nbt.setTag(inventory.getName(), items);
     }
 
     private void readInventoryFromNBT(NBTTagCompound nbt, IInventory inventory)
     {
-        NBTTagList items = nbt.getTagList(inventory.getInventoryName(), Constants.NBT.TAG_COMPOUND);
+        NBTTagList items = nbt.getTagList(inventory.getName(), Constants.NBT.TAG_COMPOUND);
 
         for (byte x = 0; x < items.tagCount(); x++)
         {
@@ -636,7 +642,7 @@ public class TileEntityTurret extends TileEntityElectrical implements IDataDevic
 
     public ContainerTurret getNewContainer(EntityPlayer player)
     {
-        return (container = new ContainerTurret(player, this, worldObj, xCoord, yCoord, zCoord));
+        return (container = new ContainerTurret(player, this, worldObj, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ()));
     }
 
     public ContainerTurret getContainer(EntityPlayer player)
@@ -796,7 +802,7 @@ public class TileEntityTurret extends TileEntityElectrical implements IDataDevic
                     {
                         String id = list.getStringTagAt(i);
 
-                        Class<? extends Entity> c = (Class<? extends Entity>) EntityList.stringToClassMapping.get(id);
+                        Class<? extends Entity> c = (Class<? extends Entity>) EntityList.NAME_TO_CLASS.get(id);
                         this.addTargetType(c);
                         builder.append(id + "-");
                     }
@@ -839,7 +845,7 @@ public class TileEntityTurret extends TileEntityElectrical implements IDataDevic
     @Override
     public Block getBlockType()
     {
-        return Blocks.beacon;
+        return Blocks.BEACON;
     }
 
     @Override

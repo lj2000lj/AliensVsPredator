@@ -5,92 +5,111 @@ import java.util.Random;
 import org.avp.AliensVsPredator;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
 public class TerrainFormation extends WorldGenerator
 {
-    protected Block[] getValidTargetBlocks()
+    private static final IBlockState block       = AliensVsPredator.blocks().terrainUniDirt.getDefaultState();
+    Block[]                          validBlocks = new Block[] { AliensVsPredator.blocks().terrainUniDirt
+    };
+
+    public boolean isLocationValid(World world, BlockPos pos)
     {
-        return new Block[] { AliensVsPredator.blocks().terrainUniDirt };
-    }
+        int distanceToAir = 0;
+        Block check = world.getBlockState(pos).getBlock();
 
-    public boolean isLocationValid(World world, int posX, int posY, int posZ)
-    {
-        int airDist = 0;
-        Block checkID = world.getBlock(posX, posY, posZ);
-
-        while (checkID != Blocks.AIR)
+        while (check != Blocks.AIR)
         {
-            airDist++;
-            checkID = world.getBlock(posX, posY + airDist, posZ);
-        }
-
-        if (airDist > 3)
-        {
-            return false;
-        }
-        posY += airDist - 1;
-
-        Block block = world.getBlock(posX, posY, posZ);
-        Block above = world.getBlock(posX, posY + 1, posZ);
-        Block below = world.getBlock(posX, posY - 1, posZ);
-
-        for (Block target : getValidTargetBlocks())
-        {
-            if (above != Blocks.AIR)
+            if (distanceToAir > 3)
             {
                 return false;
             }
-            if (block == target)
+
+            distanceToAir++;
+            check = world.getBlockState(pos.add(0, distanceToAir, 0)).getBlock();
+        }
+
+        pos = pos.add(0, distanceToAir - 1, 0);
+
+        Block block = world.getBlockState(pos).getBlock();
+        Block blockAbove = world.getBlockState(pos.add(0, 1, 0)).getBlock();
+        Block blockBelow = world.getBlockState(pos.add(0, -1, 0)).getBlock();
+
+        for (Block validBlock : validBlocks)
+        {
+            if (blockAbove != Blocks.AIR)
+            {
+                return false;
+            }
+            if (block == validBlock)
             {
                 return true;
             }
-            if ((block == Blocks.snow) && (below == target))
+            else if (block == Blocks.SNOW && blockBelow == validBlock)
             {
                 return true;
             }
         }
+
         return false;
     }
 
-    public boolean generate(World world, Random rand, int posX, int posY, int posZ)
+    public void setBlock(World world, BlockPos posStart, int offsetX, int offsetY, int offsetZ, IBlockState state)
     {
-        if ((!isLocationValid(world, posX, posY, posZ)) || (!isLocationValid(world, posX + 2, posY, posZ)) || (!isLocationValid(world, posX + 2, posY, posZ + 2)) || (!isLocationValid(world, posX, posY, posZ + 2)))
+        BlockPos pos = posStart.add(offsetX, offsetY, offsetZ);
+        IBlockState s1 = world.getBlockState(pos);
+        Block b1 = s1.getBlock();
+
+        if (b1.isAir(s1, world, pos) || b1.isLeaves(s1, world, pos))
+        {
+            world.setBlockState(pos, state, 2);
+        }
+    }
+    
+    public boolean shouldNotGenerate(World world, BlockPos pos)
+    {
+        return (!isLocationValid(world, pos)) || (!isLocationValid(world, pos.add(2, 0, 0))) || (!isLocationValid(world, pos.add(2, 0, 2))) || (!isLocationValid(world, pos.add(0, 0, 2)));
+    }
+
+    @Override
+    public boolean generate(World world, Random rand, BlockPos pos)
+    {
+        if (this.shouldNotGenerate(world, pos))
         {
             return false;
         }
 
-        Block blockDirt = AliensVsPredator.blocks().terrainUniDirt;
-
-        world.setBlock(posX + 0, posY + 0, posZ + 1, blockDirt);
-        world.setBlock(posX + 0, posY + 1, posZ + 1, blockDirt);
-        world.setBlock(posX + 0, posY + 2, posZ + 1, blockDirt);
-        world.setBlock(posX + 0, posY + 3, posZ + 1, blockDirt);
-        world.setBlock(posX + 0, posY + 4, posZ + 1, blockDirt);
-        world.setBlock(posX + 1, posY + 0, posZ + 0, blockDirt);
-        world.setBlock(posX + 1, posY + 0, posZ + 1, blockDirt);
-        world.setBlock(posX + 1, posY + 0, posZ + 2, blockDirt);
-        world.setBlock(posX + 1, posY + 1, posZ + 0, blockDirt);
-        world.setBlock(posX + 1, posY + 1, posZ + 1, blockDirt);
-        world.setBlock(posX + 1, posY + 1, posZ + 2, blockDirt);
-        world.setBlock(posX + 1, posY + 2, posZ + 0, blockDirt);
-        world.setBlock(posX + 1, posY + 2, posZ + 1, blockDirt);
-        world.setBlock(posX + 1, posY + 2, posZ + 2, blockDirt);
-        world.setBlock(posX + 1, posY + 3, posZ + 0, blockDirt);
-        world.setBlock(posX + 1, posY + 3, posZ + 1, blockDirt);
-        world.setBlock(posX + 1, posY + 3, posZ + 2, blockDirt);
-        world.setBlock(posX + 1, posY + 4, posZ + 0, blockDirt);
-        world.setBlock(posX + 1, posY + 4, posZ + 1, blockDirt);
-        world.setBlock(posX + 1, posY + 5, posZ + 0, blockDirt);
-        world.setBlock(posX + 1, posY + 5, posZ + 1, blockDirt);
-        world.setBlock(posX + 1, posY + 6, posZ + 1, blockDirt);
-        world.setBlock(posX + 1, posY + 7, posZ + 1, blockDirt);
-        world.setBlock(posX + 1, posY + 8, posZ + 1, blockDirt);
-        world.setBlock(posX + 2, posY + 0, posZ + 1, blockDirt);
-        world.setBlock(posX + 2, posY + 1, posZ + 1, blockDirt);
-        world.setBlock(posX + 2, posY + 2, posZ + 1, blockDirt);
+        this.setBlock(world, pos, 0, 0, 1, block);
+        this.setBlock(world, pos, 0, 1, 1, block);
+        this.setBlock(world, pos, 0, 2, 1, block);
+        this.setBlock(world, pos, 0, 3, 1, block);
+        this.setBlock(world, pos, 0, 4, 1, block);
+        this.setBlock(world, pos, 1, 0, 0, block);
+        this.setBlock(world, pos, 1, 0, 1, block);
+        this.setBlock(world, pos, 1, 0, 2, block);
+        this.setBlock(world, pos, 1, 1, 0, block);
+        this.setBlock(world, pos, 1, 1, 1, block);
+        this.setBlock(world, pos, 1, 1, 2, block);
+        this.setBlock(world, pos, 1, 2, 0, block);
+        this.setBlock(world, pos, 1, 2, 1, block);
+        this.setBlock(world, pos, 1, 2, 2, block);
+        this.setBlock(world, pos, 1, 3, 0, block);
+        this.setBlock(world, pos, 1, 3, 1, block);
+        this.setBlock(world, pos, 1, 3, 2, block);
+        this.setBlock(world, pos, 1, 4, 0, block);
+        this.setBlock(world, pos, 1, 4, 1, block);
+        this.setBlock(world, pos, 1, 5, 0, block);
+        this.setBlock(world, pos, 1, 5, 1, block);
+        this.setBlock(world, pos, 1, 6, 1, block);
+        this.setBlock(world, pos, 1, 7, 1, block);
+        this.setBlock(world, pos, 1, 8, 1, block);
+        this.setBlock(world, pos, 2, 0, 1, block);
+        this.setBlock(world, pos, 2, 1, 1, block);
+        this.setBlock(world, pos, 2, 2, 1, block);
 
         return true;
     }

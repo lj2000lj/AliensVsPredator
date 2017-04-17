@@ -1,21 +1,21 @@
 package org.avp.client.render.entities.living;
 
 import org.avp.AliensVsPredator;
+import org.avp.client.model.entities.living.ModelBabyhead;
 import org.avp.entities.living.EntityBabyhead;
 
-import com.arisux.mdxlib.lib.client.Model;
 import com.arisux.mdxlib.lib.client.RenderLivingWrapper;
 import com.arisux.mdxlib.lib.client.TexturedModel;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
-public class RenderBabyhead extends RenderLivingWrapper<EntityBabyhead>
+public class RenderBabyhead extends RenderLivingWrapper<EntityBabyhead, ModelBabyhead>
 {
     public RenderBabyhead()
     {
         super(AliensVsPredator.resources().models().BABYHEAD);
     }
     
-    public RenderBabyhead(TexturedModel<? extends Model> model)
+    public RenderBabyhead(TexturedModel<ModelBabyhead> model)
     {
         super(model);
     }

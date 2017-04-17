@@ -5,17 +5,25 @@ import org.avp.DamageSources;
 
 import com.arisux.mdxlib.lib.game.GameSounds;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 public class EntitySmartDisc extends EntityProjectile
 {
+    private static final DataParameter<Float> FLOAT_STRENGTH = EntityDataManager.<Float> createKey(EntitySmartDisc.class, DataSerializers.FLOAT);
     public static final double RETURN_STRENGTH = 0.05D;
     public static final float MIN_FLOAT_STRENGTH = 0.7F;
     private float soundTimer;
@@ -43,28 +51,26 @@ public class EntitySmartDisc extends EntityProjectile
         this.posY -= 0.1D;
         this.posZ -= MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
         this.setPosition(this.posX, this.posY, this.posZ);
-        this.yOffset = 0.0F;
         this.motionX = -MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
         this.motionZ = MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
         this.motionY = (-MathHelper.sin(this.rotationPitch / 180.0F * (float) Math.PI));
         this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, velocity, 5.0F);
         this.soundTimer = 0.0F;
         this.floatStrength = Math.min(1.5F, velocity);
-        this.dataWatcher.updateObject(29, Integer.valueOf(Float.floatToRawIntBits(this.floatStrength)));
     }
 
     @Override
     public void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(29, Integer.valueOf(Float.floatToRawIntBits(0.0F)));
+        this.getDataManager().register(FLOAT_STRENGTH, 0F);
     }
 
     @Override
     public void onUpdate()
     {
         super.onUpdate();
-        this.floatStrength = Float.intBitsToFloat(this.dataWatcher.getWatchableObjectInt(29));
+        this.floatStrength = this.getDataManager().get(FLOAT_STRENGTH);
 
         if (!this.inGround)
         {
@@ -108,7 +114,7 @@ public class EntitySmartDisc extends EntityProjectile
                 }
             }
 
-            this.dataWatcher.updateObject(29, Integer.valueOf(Float.floatToRawIntBits(this.floatStrength)));
+            this.getDataManager().set(FLOAT_STRENGTH, this.floatStrength);
         }
     }
 
@@ -137,7 +143,7 @@ public class EntitySmartDisc extends EntityProjectile
                 {
                     this.playHitSound();
 
-                    if (this.thrownItem.getMaxDurability() + 1 <= this.thrownItem.getMaxDurability())
+                    if (this.thrownItem.getMaxDamage() + 1 <= this.thrownItem.getMaxDamage())
                     {
                         this.setVelocity(0.2D * this.rand.nextDouble() - 0.1D, 0.2D * this.rand.nextDouble() - 0.1D, 0.2D * this.rand.nextDouble() - 0.1D);
                     }
@@ -172,15 +178,17 @@ public class EntitySmartDisc extends EntityProjectile
     }
 
     @Override
-    public void onGroundHit(MovingObjectPosition mop)
+    public void onGroundHit(RayTraceResult result)
     {
-        this.xTile = mop.blockX;
-        this.yTile = mop.blockY;
-        this.zTile = mop.blockZ;
-        this.inTile = this.worldObj.getBlock(this.xTile, this.yTile, this.zTile);
-        this.motionX = ((float) (mop.hitVec.xCoord - this.posX));
-        this.motionY = ((float) (mop.hitVec.yCoord - this.posY));
-        this.motionZ = ((float) (mop.hitVec.zCoord - this.posZ));
+        BlockPos pos = new BlockPos(this.xTile, this.yTile, this.zTile);
+        IBlockState blockstate = worldObj.getBlockState(pos);
+        this.xTile = (int) result.hitVec.xCoord;
+        this.yTile = (int) result.hitVec.yCoord;
+        this.zTile = (int) result.hitVec.zCoord;
+        this.inTile = blockstate.getBlock();
+        this.motionX = ((float) (result.hitVec.xCoord - this.posX));
+        this.motionY = ((float) (result.hitVec.yCoord - this.posY));
+        this.motionZ = ((float) (result.hitVec.zCoord - this.posZ));
         float f1 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
         this.posX -= this.motionX / f1 * 0.05D;
         this.posY -= this.motionY / f1 * 0.05D;
@@ -189,7 +197,7 @@ public class EntitySmartDisc extends EntityProjectile
         this.motionZ *= -this.rand.nextFloat() * 0.5F;
         this.motionY = this.rand.nextFloat() * 0.1F;
 
-        if (mop.sideHit == 1)
+        if (result.sideHit == EnumFacing.getFront(1))
         {
             this.inGround = true;
         }
@@ -260,5 +268,11 @@ public class EntitySmartDisc extends EntityProjectile
                 }
             }
         }
+    }
+
+    @Override
+    protected ItemStack getArrowStack()
+    {
+        return null;
     }
 }

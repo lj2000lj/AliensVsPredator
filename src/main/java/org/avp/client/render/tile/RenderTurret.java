@@ -7,21 +7,17 @@ import org.lwjgl.opengl.GL11;
 import com.arisux.mdxlib.lib.client.render.Draw;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
 
-public class RenderTurret extends TileEntitySpecialRenderer
+public class RenderTurret extends TileEntitySpecialRenderer<TileEntityTurret>
 {
     @Override
-    public void renderTileEntityAt(TileEntity tileEntity, double posX, double posY, double posZ, float renderPartialTicks)
+    public void renderTileEntityAt(TileEntityTurret tile, double x, double y, double z, float partialTicks, int destroyStage)
     {
-        TileEntityTurret tile = (TileEntityTurret) tileEntity;
-
         OpenGL.pushMatrix();
         {
             OpenGL.disable(GL11.GL_CULL_FACE);
-            OpenGL.translate(posX + 0.5F, posY + 1.5F, posZ + 0.25F);
+            OpenGL.translate(x + 0.5F, y + 1.5F, z + 0.25F);
 //            OpenGL.rotate(tile.getDirection() * (-90F), 0F, 1F, 0F);
 
             OpenGL.scale(1F, -1F, 1F);
@@ -90,15 +86,12 @@ public class RenderTurret extends TileEntitySpecialRenderer
             OpenGL.enable(GL11.GL_BLEND);
             OpenGL.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
             GL11.glShadeModel(GL11.GL_SMOOTH);
-            Tessellator tessellator = Tessellator.instance;
-            tessellator.startDrawingQuads();
-            tessellator.setColorRGBA_F((color2 >> 16 & 255) / 255.0F, (color2 >> 8 & 255) / 255.0F, (color2 & 255) / 255.0F, (color2 >> 24 & 255) / 255.0F);
-            tessellator.addVertex(w, y, zLevel);
-            tessellator.addVertex(x, y, zLevel);
-            tessellator.setColorRGBA_F((color1 >> 16 & 255) / 255.0F, (color1 >> 8 & 255) / 255.0F, (color1 & 255) / 255.0F, (color1 >> 24 & 255) / 255.0F);
-            tessellator.addVertex(x, l, zLevel);
-            tessellator.addVertex(w, h, zLevel);
-            tessellator.draw();
+            Draw.startQuadsColored();
+            Draw.vertex(w, y, zLevel).color((color2 >> 16 & 255) / 255.0F, (color2 >> 8 & 255) / 255.0F, (color2 & 255) / 255.0F, (color2 >> 24 & 255) / 255.0F).endVertex();
+            Draw.vertex(x, y, zLevel).color((color2 >> 16 & 255) / 255.0F, (color2 >> 8 & 255) / 255.0F, (color2 & 255) / 255.0F, (color2 >> 24 & 255) / 255.0F).endVertex();
+            Draw.vertex(x, l, zLevel).color((color1 >> 16 & 255) / 255.0F, (color1 >> 8 & 255) / 255.0F, (color1 & 255) / 255.0F, (color1 >> 24 & 255) / 255.0F).endVertex();
+            Draw.vertex(w, h, zLevel).color((color1 >> 16 & 255) / 255.0F, (color1 >> 8 & 255) / 255.0F, (color1 & 255) / 255.0F, (color1 >> 24 & 255) / 255.0F).endVertex();
+            Draw.tessellate();
             GL11.glShadeModel(GL11.GL_FLAT);
             OpenGL.enable(GL11.GL_LIGHTING);
             OpenGL.enableLight();

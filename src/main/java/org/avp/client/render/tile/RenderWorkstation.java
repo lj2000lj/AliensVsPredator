@@ -16,17 +16,15 @@ import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.util.SystemInfo;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
 
-public class RenderWorkstation extends TileEntitySpecialRenderer
+public class RenderWorkstation extends TileEntitySpecialRenderer<TileEntityWorkstation>
 {
     private int lines = 12;
     private String[] displayText = new String[lines];
 
     @Override
-    public void renderTileEntityAt(TileEntity t, double posX, double posY, double posZ, float var8)
+    public void renderTileEntityAt(TileEntityWorkstation tile, double posX, double posY, double posZ, float partialTicks, int destroyStage)
     {
-        TileEntityWorkstation tile = (TileEntityWorkstation) t;
 
         OpenGL.pushMatrix();
         {

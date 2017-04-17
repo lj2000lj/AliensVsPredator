@@ -9,7 +9,8 @@ import com.arisux.mdxlib.lib.client.render.Draw;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -55,15 +56,15 @@ public class EntityFXElectricArc extends Particle
         this.color = color;
         this.changeDirection((float) (this.posX - this.targetX), (float) (this.posY - this.targetY), (float) (this.posZ - this.targetZ));
     }
-
+    
     @Override
-    public void renderParticle(Tessellator tessellator, float partialTicks, float rX, float rXZ, float rZ, float rYZ, float rXY)
+    public void renderParticle(VertexBuffer buffer, Entity entity, float partialTicks, float rX, float rZ, float rYZ, float rXY, float rXZ)
     {
-        tessellator.draw();
-        super.renderParticle(tessellator, partialTicks, rX, rXZ, rZ, rYZ, rXY);
-        this.drawArc(tessellator, posX, posY, posZ, targetX, targetY, targetZ, displacement, complexity, density);
+        super.renderParticle(buffer, entity, partialTicks, rX, rZ, rYZ, rXY, rXZ);
+        Draw.tessellate();
+        this.drawArc(buffer, posX, posY, posZ, targetX, targetY, targetZ, displacement, complexity, density);
         Draw.bindTexture(particleTextures);
-        tessellator.startDrawingQuads();
+        Draw.startQuads();
     }
 
     public EntityFXElectricArc setTessellation(int tessellation)
@@ -79,7 +80,7 @@ public class EntityFXElectricArc extends Particle
         this.rotPitch = ((float) (Math.atan2(y, variance) * 180.0D / Math.PI));
     }
 
-    private void drawArc(Tessellator tessellator, double sX, double sY, double sZ, double tX, double tY, double tZ, double displacement, double complexity, float density)
+    private void drawArc(VertexBuffer buffer, double sX, double sY, double sZ, double tX, double tY, double tZ, double displacement, double complexity, float density)
     {
         if (displacement < complexity)
         {
@@ -114,13 +115,12 @@ public class EntityFXElectricArc extends Particle
             for (int i = 0; i < tessellation; i++)
             {
                 GL11.glRotatef((360F / tessellation) / 2, 0.0F, 1.0F, 0.0F);
-                tessellator.startDrawingQuads();
-                tessellator.setColorRGBA(r, g, b, a);
-                tessellator.addVertexWithUV(vX2, vY2, 0.0, 0.0, 1.0);
-                tessellator.addVertexWithUV(vX1, vY1, 0.0, 0.0, 0.0);
-                tessellator.addVertexWithUV(-vX1, vY1, 0.0, 1.0, 0.0);
-                tessellator.addVertexWithUV(-vX2, vY2, 0.0, 1.0, 1.0);
-                tessellator.draw();
+                Draw.startQuads();
+                Draw.vertex(vX2, vY2, 0, 0.0F, 1.0F).color(r, g, b, a).endVertex();
+                Draw.vertex(vX1, vY1, 0.0, 0.0F, 0.0F).color(r, g, b, a).endVertex();
+                Draw.vertex(-vX1, vY1, 0.0, 1.0F, 0.0F).color(r, g, b, a).endVertex();
+                Draw.vertex(-vX2, vY2, 0.0, 1.0F, 1.0F).color(r, g, b, a).endVertex();
+                Draw.tessellate();
             }
 
             OpenGL.enableLight();
@@ -138,8 +138,8 @@ public class EntityFXElectricArc extends Particle
             splitX += (rand.nextFloat() - 0.5) * displacement;
             splitY += (rand.nextFloat() - 0.5) * displacement;
             splitZ += (rand.nextFloat() - 0.5) * displacement;
-            drawArc(tessellator, sX, sY, sZ, splitX, splitY, splitZ, displacement / 2, complexity, density);
-            drawArc(tessellator, tX, tY, tZ, splitX, splitY, splitZ, displacement / 2, complexity, density);
+            drawArc(buffer, sX, sY, sZ, splitX, splitY, splitZ, displacement / 2, complexity, density);
+            drawArc(buffer, tX, tY, tZ, splitX, splitY, splitZ, displacement / 2, complexity, density);
         }
     }
 
@@ -148,7 +148,7 @@ public class EntityFXElectricArc extends Particle
     {
         if (this.particleAge++ > this.particleMaxAge)
         {
-            this.setDead();
+            this.setExpired();
         }
     }
 }

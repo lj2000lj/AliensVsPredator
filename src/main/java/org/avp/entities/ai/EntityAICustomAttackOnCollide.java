@@ -4,10 +4,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathPoint;
-import net.minecraft.util.math.MathHelper;
-
 
 public class EntityAICustomAttackOnCollide extends EntityAIBase
 {
@@ -15,7 +13,7 @@ public class EntityAICustomAttackOnCollide extends EntityAIBase
     private int                     attackTick;
     private double                  speedTowardsTarget;
     private boolean                 longMemory;
-    private PathEntity              entityPathEntity;
+    private Path                    entityPathEntity;
     private Class<? extends Entity> classTarget;
     private int                     damage;
     private double                  targetX;
@@ -74,7 +72,7 @@ public class EntityAICustomAttackOnCollide extends EntityAIBase
     public boolean continueExecuting()
     {
         EntityLivingBase entitylivingbase = this.attacker.getAttackTarget();
-        return entitylivingbase == null ? false : (!entitylivingbase.isEntityAlive() ? false : (!this.longMemory ? !this.attacker.getNavigator().noPath() : this.attacker.isWithinHomeDistance(MathHelper.floor_double(entitylivingbase.posX), MathHelper.floor_double(entitylivingbase.posY), MathHelper.floor_double(entitylivingbase.posZ))));
+        return entitylivingbase == null ? false : (!entitylivingbase.isEntityAlive() ? false : (!this.longMemory ? !this.attacker.getNavigator().noPath() : this.attacker.isWithinHomeDistanceCurrentPosition()));
     }
 
     @Override
@@ -107,21 +105,21 @@ public class EntityAICustomAttackOnCollide extends EntityAIBase
             if (entitylivingbase != null)
             {
                 this.attacker.getLookHelper().setLookPositionWithEntity(entitylivingbase, 30.0F, 30.0F);
-                double distance = this.attacker.getDistanceSq(entitylivingbase.posX, entitylivingbase.boundingBox.minY, entitylivingbase.posZ);
+                double distance = this.attacker.getDistanceSq(entitylivingbase.posX, entitylivingbase.getEntityBoundingBox().minY, entitylivingbase.posZ);
                 double width = (double) (this.attacker.width * 2.0F * this.attacker.width * 2.0F + entitylivingbase.width);
                 --this.damage;
 
                 if ((this.longMemory || this.attacker.getEntitySenses().canSee(entitylivingbase)) && this.damage <= 0 && (this.targetX == 0.0D && this.targetY == 0.0D && this.targetZ == 0.0D || entitylivingbase.getDistanceSq(this.targetX, this.targetY, this.targetZ) >= 1.0D || this.attacker.getRNG().nextFloat() < 0.05F))
                 {
                     this.targetX = entitylivingbase.posX;
-                    this.targetY = entitylivingbase.boundingBox.minY;
+                    this.targetY = entitylivingbase.getEntityBoundingBox().minY;
                     this.targetZ = entitylivingbase.posZ;
                     this.damage = failedPathFindingPenalty + 4 + this.attacker.getRNG().nextInt(7);
 
                     if (this.attacker.getNavigator().getPath() != null)
                     {
                         PathPoint finalPathPoint = this.attacker.getNavigator().getPath().getFinalPathPoint();
-                        
+
                         if (finalPathPoint != null && entitylivingbase.getDistanceSq(finalPathPoint.xCoord, finalPathPoint.yCoord, finalPathPoint.zCoord) < 1)
                         {
                             failedPathFindingPenalty = 0;
@@ -159,7 +157,7 @@ public class EntityAICustomAttackOnCollide extends EntityAIBase
 
                     if (this.attacker.getHeldItemMainhand() != null)
                     {
-                        this.attacker.swingItem();
+                        //this.attacker.swingItem();
                     }
 
                     this.attacker.attackEntityAsMob(entitylivingbase);

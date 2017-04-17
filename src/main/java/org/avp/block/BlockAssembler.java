@@ -1,21 +1,19 @@
 package org.avp.block;
 
-import java.util.Random;
-
-import org.avp.AliensVsPredator;
 import org.avp.tile.TileEntityAssembler;
 
 import com.arisux.mdxlib.lib.world.entity.player.inventory.Inventories;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockAssembler extends Block
 {
@@ -23,33 +21,13 @@ public class BlockAssembler extends Block
     {
         super(material);
     }
-
+    
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta)
-    {
-        return AliensVsPredator.resources().ICONSET_ASSEMBLER.getIconForSide(side);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister register)
-    {
-        AliensVsPredator.resources().ICONSET_ASSEMBLER.registerIcons(register);
-    }
-
-    @Override
-    public void updateTick(World par1World, int posX, int posY, int posZ, Random rand)
-    {
-        super.updateTick(par1World, posX, posY, posZ, rand);
-    }
-
-    @Override
-    public boolean onBlockActivated(World world, int xCoord, int yCoord, int zCoord, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         if (!world.isRemote)
         {
-            TileEntityAssembler tile = (TileEntityAssembler) world.getTileEntity(xCoord, yCoord, zCoord);
+            TileEntityAssembler tile = (TileEntityAssembler) world.getTileEntity(pos);
 
             if (tile != null)
             {
@@ -57,26 +35,25 @@ public class BlockAssembler extends Block
                 tile.openGui(player);
             }
         }
-
+        
         return true;
     }
-
+    
     @Override
-    public void breakBlock(World world, int xCoord, int yCoord, int zCoord, Block block, int metadata)
+    public void breakBlock(World world, BlockPos pos, IBlockState state)
     {
-        Inventories.dropItemsInAt((TileEntityAssembler) world.getTileEntity(xCoord, yCoord, zCoord), world, xCoord, yCoord, zCoord);
-
-        super.breakBlock(world, xCoord, yCoord, zCoord, block, metadata);
+        Inventories.dropItemsInAt((TileEntityAssembler) world.getTileEntity(pos), world, pos);
+        super.breakBlock(world, pos, state);
     }
-
+    
     @Override
-    public TileEntity createTileEntity(World world, int metadata)
+    public TileEntity createTileEntity(World world, IBlockState state)
     {
         return new TileEntityAssembler();
     }
-
+    
     @Override
-    public boolean hasTileEntity(int metadata)
+    public boolean hasTileEntity(IBlockState state)
     {
         return true;
     }

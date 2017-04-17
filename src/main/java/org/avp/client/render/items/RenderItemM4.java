@@ -1,21 +1,19 @@
 package org.avp.client.render.items;
 
 import org.avp.AliensVsPredator;
-import org.avp.URLs;
+import org.avp.client.model.items.ModelM4;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import com.arisux.mdxlib.lib.client.render.ItemRenderer;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
-import com.arisux.mdxlib.lib.client.render.PlayerResource;
-import com.arisux.mdxlib.lib.client.render.Texture;
 import com.arisux.mdxlib.lib.game.Game;
-import com.arisux.mdxlib.lib.util.Remote;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 
-public class RenderItemM4 extends ItemRenderer
+public class RenderItemM4 extends ItemRenderer<ModelM4>
 {
     public RenderItemM4()
     {
@@ -23,44 +21,32 @@ public class RenderItemM4 extends ItemRenderer
     }
 
     @Override
-    public void renderItem(ItemRenderType type, ItemStack item, Object... data)
+    public void renderInWorld(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        super.renderItem(type, item, data);
-    }
-
-    @Override
-    public void renderInWorld(ItemStack item, Object... data)
-    {
-        super.renderInWorld(item, data);
+        
         OpenGL.rotate((Game.minecraft().theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
         OpenGL.translate(0.3F, 1F, 0F);
         OpenGL.scale(1F, -1F, 1F);
         OpenGL.disable(GL11.GL_CULL_FACE);
-        this.getModelTexMap().draw();
+        this.getModel().draw();
     }
 
     @Override
-    public void renderThirdPerson(ItemStack item, Object... data)
+    public void renderThirdPersonRight(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        PlayerResource resource = resourceStorage.create(((EntityPlayer) data[1]).getName());
-
-        if (resource != null)
-        {
             OpenGL.translate(0.2F, 1.15F, 0.25F);
             OpenGL.rotate(97.0F, 1.0F, 0.0F, 0.0F);
             OpenGL.rotate(130.0F, 0.0F, 1.0F, 0.0F);
             OpenGL.rotate(80.0F, 0.0F, 0.0F, 1.0F);
             OpenGL.disable(GL11.GL_CULL_FACE);
             OpenGL.scale(1.2F, 1.2F, 1.2F);
-            new Texture(Remote.downloadResource(String.format(URLs.SKIN_M4, resource.playerUUID()), this.getModelTexMap().getTexture())).bind();
-            this.getModelTexMap().getModel().render();
-        }
+            this.getModel().draw();
     }
 
     @Override
-    public void renderFirstPerson(ItemStack item, Object... data)
+    public void renderFirstPersonRight(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        if (firstPersonRenderCheck(data[1]))
+        if (firstPersonRenderCheck(entity))
         {
             if (Mouse.isButtonDown(0) && mc.inGameHasFocus)
             {
@@ -80,19 +66,31 @@ public class RenderItemM4 extends ItemRenderer
 
             OpenGL.disable(GL11.GL_CULL_FACE);
             OpenGL.scale(2.0F, 2.0F, 2.0F);
-            new Texture(Remote.downloadResource(String.format(URLs.SKIN_M4, Game.session().getPlayerID()), this.getModelTexMap().getTexture())).bind();
-            this.getModelTexMap().getModel().render();
+            this.getModel().draw();
         }
     }
 
     @Override
-    public void renderInInventory(ItemStack item, Object... data)
+    public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         OpenGL.disable(GL11.GL_CULL_FACE);
         OpenGL.rotate(45F, 0.0F, 1.0F, 0.0F);
         OpenGL.translate(14F, -7F, 0F);
         OpenGL.scale(20F, 20F, 20F);
-        new Texture(Remote.downloadResource(String.format(URLs.SKIN_M4, Game.session().getPlayerID()), this.getModelTexMap().getTexture())).bind();
-        this.getModelTexMap().getModel().render();
+        this.getModel().draw();
+    }
+
+    @Override
+    public void renderThirdPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void renderFirstPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
+    {
+        // TODO Auto-generated method stub
+        
     }
 }

@@ -11,12 +11,11 @@ import com.arisux.mdxlib.lib.client.render.OpenGL;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.init.Blocks;
-import net.minecraft.tileentity.TileEntity;
 
-public class RenderHiveResin extends TileEntitySpecialRenderer
+public class RenderHiveResin extends TileEntitySpecialRenderer<TileEntityHiveResin>
 {
     @Override
-    public void renderTileEntityAt(TileEntity tile, double posX, double posY, double posZ, float partialTicks)
+    public void renderTileEntityAt(TileEntityHiveResin tile, double posX, double posY, double posZ, float partialTicks, int destroyStage)
     {
         GraphicsSetting hiveTessellation = ClientSettings.instance.hiveTessellation().value();
 
