@@ -53,6 +53,7 @@ public class PacketOpenable implements IMessage, IMessageHandler<PacketOpenable,
     @Override
     public PacketOpenable onMessage(PacketOpenable packet, MessageContext ctx)
     {
+        System.out.println("Sent packet " + this.getClass().getName());
         World world = Game.minecraft().thePlayer.worldObj;
         TileEntity tile = world.getTileEntity(new BlockPos(packet.x, packet.y, packet.z));
 

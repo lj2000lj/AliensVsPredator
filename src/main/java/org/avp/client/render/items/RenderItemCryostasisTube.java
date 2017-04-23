@@ -64,28 +64,20 @@ public class RenderItemCryostasisTube extends ItemRenderer<ModelCryostasisTube>
     @Override
     public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        float glScale = 7F;
-        OpenGL.translate(8F, 10F, 0F);
-        OpenGL.translate(0F, 0F, 0F);
-        OpenGL.rotate(-180F, 0.0F, 1.0F, 0.0F);
-        OpenGL.rotate(45F, 1.0F, 0.0F, 0.0F);
-        OpenGL.disable(GL11.GL_CULL_FACE);
+        float glScale = 0.5F;
         OpenGL.scale(glScale, glScale, glScale);
-        OpenGL.enable(GL11.GL_BLEND);
-        OpenGL.blendClear();
+        OpenGL.translate(0.25F, 0.1F, 0F);
+        OpenGL.rotate(230F, 1F, 0F, 0F);
+        OpenGL.rotate(45F, 0F, 0F, 1F);
+        OpenGL.rotate(230F, 0.0F, 1.0F, 0.0F);
         this.getModel().draw();
-
-        OpenGL.pushMatrix();
-        {
-            AliensVsPredator.resources().models().CRYOSTASIS_TUBE_MASK.draw();
-        }
-        OpenGL.popMatrix();
+        AliensVsPredator.resources().models().CRYOSTASIS_TUBE_MASK.draw();
     }
-    
+
     @Override
     public void renderInWorld(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        
+
         OpenGL.pushMatrix();
         {
             OpenGL.scale(0.5F, -0.5F, 0.5F);
@@ -108,13 +100,13 @@ public class RenderItemCryostasisTube extends ItemRenderer<ModelCryostasisTube>
     public void renderThirdPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void renderFirstPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         // TODO Auto-generated method stub
-        
+
     }
 }

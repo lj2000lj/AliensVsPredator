@@ -75,12 +75,10 @@ public class RenderItemSpear extends ItemRenderer<ModelSpear>
     @Override
     public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        OpenGL.disable(GL11.GL_CULL_FACE);
-        OpenGL.enable(GL11.GL_BLEND);
-        OpenGL.translate(0.5F, 0F, 0F);
-        OpenGL.rotate(-135, 0.0F, 0.0F, 1.0F);
-        OpenGL.translate(-12F, 0F, 0F);
-        OpenGL.scale(10F, 10F, 10F);
+        OpenGL.scale(0.6F, 0.6F, 0.6F);
+        OpenGL.translate(0F, 0F, 0F);
+        OpenGL.rotate(90F, 1F, 0F, 1F);
+        OpenGL.rotate(-10F, 0.0F, 1.0F, 0.0F);
         this.getModel().draw();
     }
 

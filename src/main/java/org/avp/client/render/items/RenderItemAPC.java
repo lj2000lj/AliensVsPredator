@@ -64,10 +64,12 @@ public class RenderItemAPC extends ItemRenderer<Model>
     {
         OpenGL.pushMatrix();
         {
-            float scale = 2.5F;
+            float scale = 0.2F;
+            OpenGL.scale(scale, scale, scale);
+            OpenGL.translate(0F, -1F, 0F);
+            OpenGL.rotate(230F, 1F, 0F, 0F);
+            OpenGL.rotate(180F, 0F, 0F, 1F);
             OpenGL.rotate(45F, 0.0F, 1.0F, 0.0F);
-            OpenGL.translate(20F, -7F, -8F);
-            OpenGL.scale(scale, -scale, scale);
 
             for (Part p : AliensVsPredator.resources().models().M577_APC.parts.values())
             {
@@ -80,8 +82,6 @@ public class RenderItemAPC extends ItemRenderer<Model>
     @Override
     public void renderInWorld(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        
-
         OpenGL.pushMatrix();
         {
             OpenGL.scale(0.2F, 0.2F, 0.2F);

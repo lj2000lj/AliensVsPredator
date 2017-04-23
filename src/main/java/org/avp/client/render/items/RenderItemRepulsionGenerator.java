@@ -52,42 +52,36 @@ public class RenderItemRepulsionGenerator extends ItemRenderer<ModelRepulsionGen
     @Override
     public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        float glScale = 10F;
-        OpenGL.translate(8F, 2F, 0F);
-        OpenGL.translate(0F, 0F, 0F);
-        OpenGL.rotate(-45F, 0.0F, 1.0F, 0.0F);
-        OpenGL.rotate(-180F, 0.0F, 1.0F, 0.0F);
-        OpenGL.disable(GL11.GL_CULL_FACE);
+        float glScale = 0.65F;
         OpenGL.scale(glScale, glScale, glScale);
+        OpenGL.translate(0.65F, 0.45F, 0F);
+        OpenGL.rotate(230F, 1F, 0F, 0F);
+        OpenGL.rotate(45F, 0F, 0F, 1F);
+        OpenGL.rotate(90F, 0.0F, 1.0F, 0.0F);
         this.getModel().draw();
     }
-    
+
     @Override
     public void renderInWorld(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        
-        OpenGL.pushMatrix();
-        {
-            OpenGL.scale(1F, -1F, 1F);
-            OpenGL.translate(0F, -1.5F, 0F);
-            OpenGL.rotate((Game.minecraft().theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
-            OpenGL.disable(GL11.GL_CULL_FACE);
-            this.getModel().draw();
-        }
-        OpenGL.popMatrix();
+        OpenGL.scale(1F, -1F, 1F);
+        OpenGL.translate(0F, -1.5F, 0F);
+        OpenGL.rotate((Game.minecraft().theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
+        OpenGL.disable(GL11.GL_CULL_FACE);
+        this.getModel().draw();
     }
 
     @Override
     public void renderThirdPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void renderFirstPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         // TODO Auto-generated method stub
-        
+
     }
 }

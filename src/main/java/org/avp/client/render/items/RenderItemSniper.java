@@ -102,11 +102,11 @@ public class RenderItemSniper extends ItemRenderer<ModelSniper>
     @Override
     public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
+        OpenGL.translate(0F, 0.1F, 0F);
+        OpenGL.rotate(180F, 1F, 0F, 0F);
+        OpenGL.rotate(-45F, 0F, 0F, 1F);
+        OpenGL.rotate(90F, 0.0F, 1.0F, 0.0F);
         OpenGL.disable(GL11.GL_CULL_FACE);
-        OpenGL.rotate(45F, 0.0F, 1.0F, 0.0F);
-        OpenGL.translate(12F, 0F, 0F);
-        float glScale = 20F;
-        OpenGL.scale(glScale, glScale, glScale);
         this.getModel().draw();
     }
 

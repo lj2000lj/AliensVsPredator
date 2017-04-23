@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 
 public abstract class EntityItemStackProjectile extends EntityProjectile
 {
-    private static final DataParameter<Byte> WEAPON_MATERIAL_ID = EntityDataManager.<Byte> createKey(EntityGrenade.class, DataSerializers.BYTE);
+    private static final DataParameter<Byte> WEAPON_MATERIAL_ID = EntityDataManager.<Byte> createKey(EntityItemStackProjectile.class, DataSerializers.BYTE);
     protected ItemStack                      itemstack;
 
     public EntityItemStackProjectile(World world)

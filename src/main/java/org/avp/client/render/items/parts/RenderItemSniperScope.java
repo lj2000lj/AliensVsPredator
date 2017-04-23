@@ -4,6 +4,7 @@ import org.avp.client.model.items.ModelSniper;
 import org.avp.client.render.items.ItemRendererGroup;
 import org.lwjgl.opengl.GL11;
 
+import com.arisux.mdxlib.lib.client.Model;
 import com.arisux.mdxlib.lib.client.TexturedModel;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.game.Game;
@@ -23,15 +24,12 @@ public class RenderItemSniperScope extends ItemRendererGroup<ModelSniper>
     @Override
     public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        
-
         OpenGL.pushMatrix();
         {
-            float glScale = 38F;
-            OpenGL.translate(8F, 8F, 0F);
-
+            float glScale = 38F * Model.DEFAULT_SCALE;
             OpenGL.rotate(45, 1F, 0F, 0F);
-            OpenGL.scale(glScale, glScale, glScale);
+            OpenGL.scale(glScale, -glScale, glScale);
+            OpenGL.rotate(45F, -1F, 1F, 0F);
             OpenGL.translate(0F, 0F, 0.1F);
             this.renderPart();
         }

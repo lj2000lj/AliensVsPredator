@@ -44,6 +44,7 @@ public class PacketDamageEntity implements IMessage, IMessageHandler<PacketDamag
     @Override
     public PacketDamageEntity onMessage(PacketDamageEntity packet, MessageContext ctx)
     {
+        System.out.println("Sent packet " + this.getClass().getName());
         if (packet.entityId != -1)
         {
             Entity entity = ctx.getServerHandler().playerEntity.worldObj.getEntityByID(packet.entityId);

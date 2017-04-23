@@ -19,8 +19,6 @@ import org.avp.client.model.items.ModelM4;
 import org.avp.client.model.items.ModelM41A;
 import org.avp.client.model.items.ModelM56SG;
 import org.avp.client.model.items.ModelSniper;
-import org.avp.client.render.block.RenderResin;
-import org.avp.client.render.block.RenderShape;
 import org.avp.client.render.entities.RenderAPC;
 import org.avp.client.render.entities.RenderAcidPool;
 import org.avp.client.render.entities.RenderAcidSpit;
@@ -249,23 +247,23 @@ import org.avp.tile.TileEntityWorkstation;
 
 import com.arisux.mdxlib.lib.client.TexturedModel;
 import com.arisux.mdxlib.lib.client.render.ItemRenderer;
-import com.arisux.mdxlib.lib.game.IPostInitEvent;
+import com.arisux.mdxlib.lib.game.IInitEvent;
 
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class Renderers implements IPostInitEvent
+public class Renderers implements IInitEvent
 {
     public static Renderers instance = new Renderers();
 
     @Override
-    public void post(FMLPostInitializationEvent event)
+    public void init(FMLInitializationEvent event)
     {
         registerTileEntitySpecialRenderers();
         registerItemRenderers(AliensVsPredator.items());
@@ -355,7 +353,7 @@ public class Renderers implements IPostInitEvent
         registerEntityRenderingHandler(EntitySupplyChuteSeegson.class, new RenderSupplyChute());
     }
     
-    private void registerItemRenderer(Item item, ItemRenderer renderer)
+    private void registerItemRenderer(Item item, ItemRenderer<?> renderer)
     {
         com.arisux.mdxlib.lib.game.Renderers.register(item, renderer);
     }
@@ -413,7 +411,7 @@ public class Renderers implements IPostInitEvent
         Summoners summoners = items.summoners;
 
         registerItemRenderer(summoners.itemSummonerDrone, (new RenderItemSummoner(AliensVsPredator.resources().models().DRONE_ADVANCED)).setScale(7.5F).setY(6F));
-        registerItemRenderer(summoners.itemSummonerProtomorph, (new RenderItemSummoner(AliensVsPredator.resources().models().PROTOMORPH)).setScale(16F).setY(0F));
+        registerItemRenderer(summoners.itemSummonerProtomorph, (new RenderItemSummoner(AliensVsPredator.resources().models().PROTOMORPH)).setScale(14F).setY(-4F));
         registerItemRenderer(summoners.itemSummonerWarrior, (new RenderItemSummoner(AliensVsPredator.resources().models().WARRIOR)).setScale(7.5F).setY(9F));
         registerItemRenderer(summoners.itemSummonerRunnerDrone, (new RenderItemSummoner(AliensVsPredator.resources().models().RUNNER_DRONE)).setScale(7.5F).setY(6F));
         registerItemRenderer(summoners.itemSummonerRunnerWarrior, (new RenderItemSummoner(AliensVsPredator.resources().models().RUNNER_WARRIOR)).setScale(7.5F).setY(9F));
@@ -421,16 +419,16 @@ public class Renderers implements IPostInitEvent
         registerItemRenderer(summoners.itemSummonerSpitter, (new RenderItemSummoner(AliensVsPredator.resources().models().SPITTER)).setScale(7.5F).setY(9F));
         registerItemRenderer(summoners.itemSummonerCrusher, (new RenderItemSummoner(AliensVsPredator.resources().models().CRUSHER)).setScale(7.5F).setY(9.5F));
         registerItemRenderer(summoners.itemSummonerQueen, (new RenderItemSummoner(AliensVsPredator.resources().models().XENOQUEEN)).setScale(7.5F).setY(8F));
-        registerItemRenderer(summoners.itemSummonerOvamorph, (new RenderItemSummoner(AliensVsPredator.resources().models().OVAMORPH)).setScale(20F).setY(-26F));
-        registerItemRenderer(summoners.itemSummonerChestburster, (new RenderItemSummoner(AliensVsPredator.resources().models().CHESTBUSTER)).setScale(9F).setY(1F));
-        registerItemRenderer(summoners.itemSummonerFacehugger, (new RenderItemSummoner(AliensVsPredator.resources().models().FACEHUGGER)).setScale(15F).setY(-18F));
-        registerItemRenderer(summoners.itemSummonerRoyalFacehugger, (new RenderItemSummoner(AliensVsPredator.resources().models().ROYALFACEHUGGER)).setScale(15F).setY(-16F));
+        registerItemRenderer(summoners.itemSummonerOvamorph, (new RenderItemSummoner(AliensVsPredator.resources().models().OVAMORPH)).setScale(20F).setY(-16F));
+        registerItemRenderer(summoners.itemSummonerChestburster, (new RenderItemSummoner(AliensVsPredator.resources().models().CHESTBUSTER)).setScale(9F).setY(3F).setX(5F));
+        registerItemRenderer(summoners.itemSummonerFacehugger, (new RenderItemSummoner(AliensVsPredator.resources().models().FACEHUGGER)).setScale(15F).setY(-8F));
+        registerItemRenderer(summoners.itemSummonerRoyalFacehugger, (new RenderItemSummoner(AliensVsPredator.resources().models().ROYALFACEHUGGER)).setScale(15F).setY(-8F));
         registerItemRenderer(summoners.itemSummonerMarine, (new RenderItemSummoner(AliensVsPredator.resources().models().MARINE)).setScale(10F).setY(3F));
         registerItemRenderer(summoners.itemSummonerYautja, (new RenderItemSummoner(AliensVsPredator.resources().models().YAUTJA)).setScale(7.5F).setY(8F));
         registerItemRenderer(summoners.itemSummonerPredalien, (new RenderItemSummoner(AliensVsPredator.resources().models().PREDALIEN)).setScale(8F).setY(6F));
         registerItemRenderer(summoners.itemSummonerAqua, (new RenderItemSummoner(AliensVsPredator.resources().models().AQUA_XENOMORPH)).setScale(7.5F).setY(8F));
         registerItemRenderer(summoners.itemSummonerCombatSynthetic, (new RenderItemSummoner(AliensVsPredator.resources().models().COMBAT_SYNTHETIC)).setScale(16F).setY(-12F));
-        registerItemRenderer(summoners.itemSummonerHammerpede, (new RenderItemSummoner(AliensVsPredator.resources().models().HAMMERPEDE)).setScale(10.5F).setY(-4F));
+        registerItemRenderer(summoners.itemSummonerHammerpede, (new RenderItemSummoner(AliensVsPredator.resources().models().HAMMERPEDE)).setScale(10.5F).setX(3F));
         registerItemRenderer(summoners.itemSummonerTrilobite, (new RenderItemSummoner(AliensVsPredator.resources().models().TRILOBITE)).setScale(8F).setY(4F));
         registerItemRenderer(summoners.itemSummonerSpaceJockey, (new RenderItemSummoner(AliensVsPredator.resources().models().SPACE_JOCKEY)).setScale(10F).setY(0F));
         registerItemRenderer(summoners.itemSummonerEngineer, (new RenderItemSummoner(AliensVsPredator.resources().models().ENGINEER)).setScale(10F).setY(0F));
@@ -439,24 +437,24 @@ public class Renderers implements IPostInitEvent
         registerItemRenderer(summoners.itemSummonerUltramorph, (new RenderItemSummoner(AliensVsPredator.resources().models().ULTRAMORPH)).setScale(7.5F).setY(6F));
         registerItemRenderer(summoners.itemSummonerGooMutant, (new RenderItemSummoner(AliensVsPredator.resources().models().GOO_MUTANT)).setScale(10F).setY(3F));
         registerItemRenderer(summoners.itemSummonerAethon, (new RenderItemSummoner(AliensVsPredator.resources().models().AETHON)).setScale(7.5F).setY(6F));
-        registerItemRenderer(summoners.itemSummonerOctohugger, (new RenderItemSummoner(AliensVsPredator.resources().models().OCTOHUGGER)).setScale(24F).setY(-10F));
-        registerItemRenderer(summoners.itemSummonerBelugaburster, (new RenderItemSummoner(AliensVsPredator.resources().models().BELUGABURSTER)).setScale(9F).setY(1F));
-        registerItemRenderer(summoners.itemSummonerBelugamorph, (new RenderItemSummoner(AliensVsPredator.resources().models().BELUGAMORPH)).setScale(7.5F).setY(6F));
-        registerItemRenderer(summoners.itemSummonerPredalienChestburster, (new RenderItemSummoner(AliensVsPredator.resources().models().CHESTBUSTER_PREDALIEN)).setScale(9F).setY(1F));
-        registerItemRenderer(summoners.itemSummonerQueenChestburster, (new RenderItemSummoner(AliensVsPredator.resources().models().CHESTBUSTER_QUEEN)).setScale(9F).setY(1F));
-        registerItemRenderer(summoners.itemSummonerRunnerChestburster, (new RenderItemSummoner(AliensVsPredator.resources().models().CHESTBUSTER_RUNNER)).setScale(9F).setY(1F));
+        registerItemRenderer(summoners.itemSummonerOctohugger, (new RenderItemSummoner(AliensVsPredator.resources().models().OCTOHUGGER)).setScale(24F).setY(-4F));
+        registerItemRenderer(summoners.itemSummonerBelugaburster, (new RenderItemSummoner(AliensVsPredator.resources().models().BELUGABURSTER)).setScale(9F).setY(0F).setX(2F));
+        registerItemRenderer(summoners.itemSummonerBelugamorph, (new RenderItemSummoner(AliensVsPredator.resources().models().BELUGAMORPH)).setScale(7.5F).setY(8F));
+        registerItemRenderer(summoners.itemSummonerPredalienChestburster, (new RenderItemSummoner(AliensVsPredator.resources().models().CHESTBUSTER_PREDALIEN)).setScale(9F).setY(3F).setX(5F));
+        registerItemRenderer(summoners.itemSummonerQueenChestburster, (new RenderItemSummoner(AliensVsPredator.resources().models().CHESTBUSTER_QUEEN)).setScale(9F).setY(5F).setX(5F));
+        registerItemRenderer(summoners.itemSummonerRunnerChestburster, (new RenderItemSummoner(AliensVsPredator.resources().models().CHESTBUSTER_RUNNER)).setScale(9F).setY(5F).setX(5F));
         registerItemRenderer(summoners.itemSummonerBabyhead, (new RenderItemSummoner(AliensVsPredator.resources().models().BABYHEAD)).setScale(9F).setY(1F));
         registerItemRenderer(summoners.itemSummonerBatXeno, (new RenderItemSummoner(AliensVsPredator.resources().models().BAT_XENO)).setScale(7.5F).setY(1F));
         registerItemRenderer(summoners.itemSummonerBoiler, (new RenderItemSummoner(AliensVsPredator.resources().models().BOILER)).setScale(9F).setY(1F));
-        registerItemRenderer(summoners.itemSummonerDracoburster, (new RenderItemSummoner(AliensVsPredator.resources().models().DRACOBURSTER)).setScale(7.5F).setY(2F).setX(-3F));
-        registerItemRenderer(summoners.itemSummonerDracoEgg, (new RenderItemSummoner(AliensVsPredator.resources().models().DRACO_OVAMORPH)).setScale(20F).setY(-26F));
-        registerItemRenderer(summoners.itemSummonerDracomorph, (new RenderItemSummoner(AliensVsPredator.resources().models().DRACOMORPH)).setScale(6F).setY(10F).setX(-3F));
-        registerItemRenderer(summoners.itemSummonerMyceliomorph, (new RenderItemSummoner(AliensVsPredator.resources().models().MYCELIOMORPH)).setScale(9F).setY(1F).setX(-3F));
-        registerItemRenderer(summoners.itemSummonerPantheramorph, (new RenderItemSummoner(AliensVsPredator.resources().models().PANTHERAMORPH)).setScale(7.5F).setY(2F).setX(-3F));
-        registerItemRenderer(summoners.itemSummonerPredatorHound, (new RenderItemSummoner(AliensVsPredator.resources().models().PREDATOR_HOUND)).setScale(12F).setY(-10F));
-        registerItemRenderer(summoners.itemSummonerUrsuidae, (new RenderItemSummoner(AliensVsPredator.resources().models().URSUIDAE)).setScale(14F).setY(-12F));
+        registerItemRenderer(summoners.itemSummonerDracoburster, (new RenderItemSummoner(AliensVsPredator.resources().models().DRACOBURSTER)).setScale(7.5F).setY(6F).setX(3F));
+        registerItemRenderer(summoners.itemSummonerDracoEgg, (new RenderItemSummoner(AliensVsPredator.resources().models().DRACO_OVAMORPH)).setScale(20F).setY(-18F));
+        registerItemRenderer(summoners.itemSummonerDracomorph, (new RenderItemSummoner(AliensVsPredator.resources().models().DRACOMORPH)).setScale(6F).setY(10F).setX(3F));
+        registerItemRenderer(summoners.itemSummonerMyceliomorph, (new RenderItemSummoner(AliensVsPredator.resources().models().MYCELIOMORPH)).setScale(9F).setY(4F).setX(3F));
+        registerItemRenderer(summoners.itemSummonerPantheramorph, (new RenderItemSummoner(AliensVsPredator.resources().models().PANTHERAMORPH)).setScale(7.5F).setY(4F).setX(3F));
+        registerItemRenderer(summoners.itemSummonerPredatorHound, (new RenderItemSummoner(AliensVsPredator.resources().models().PREDATOR_HOUND)).setScale(12F).setY(-3F));
+        registerItemRenderer(summoners.itemSummonerUrsuidae, (new RenderItemSummoner(AliensVsPredator.resources().models().URSUIDAE)).setScale(14F).setY(-8F));
         registerItemRenderer(summoners.itemSummonerVardaMonkey, (new RenderItemSummoner(AliensVsPredator.resources().models().VARDA_MONKEY)).setScale(16F).setY(-14F));
-        registerItemRenderer(summoners.itemSummonerYautjaMutant, (new RenderItemSummoner(AliensVsPredator.resources().models().MUTANT_YAUTJA)).setScale(9F).setY(1F));
+        registerItemRenderer(summoners.itemSummonerYautjaMutant, (new RenderItemSummoner(AliensVsPredator.resources().models().MUTANT_YAUTJA)).setScale(9F).setY(6F));
 
         TexturedModel<Model88MOD4> _88MOD4 = AliensVsPredator.resources().models()._88MOD4;
         registerItemRenderer(items.itemPistolBarrel, new RenderItem88Mod4Barrel(_88MOD4, _88MOD4.getModel().getBarrel()));

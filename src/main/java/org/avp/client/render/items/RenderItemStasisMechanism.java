@@ -26,7 +26,7 @@ public class RenderItemStasisMechanism extends ItemRenderer<ModelStasisMechanism
         OpenGL.translate(-0.1F, 0.3F, 0F);
         OpenGL.scale(1F, -1F, 1F);
         OpenGL.disable(GL11.GL_CULL_FACE);
-        OpenGL.rotate((this.mc.theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
+        OpenGL.rotate((mc.theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
         this.getModel().draw();
     }
 
@@ -63,12 +63,12 @@ public class RenderItemStasisMechanism extends ItemRenderer<ModelStasisMechanism
     @Override
     public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        float glScale = 13F;
-        OpenGL.translate(8F, 12F, 0F);
-        OpenGL.rotate(-10, 1F, 0F, 0F);
-        OpenGL.translate(0F, 0F, 0F);
-        OpenGL.disable(GL11.GL_CULL_FACE);
+        float glScale = 0.85F;
         OpenGL.scale(glScale, glScale, glScale);
+        OpenGL.translate(0.05F, -0.05F, 0F);
+        OpenGL.rotate(230F, 1F, 0F, 0F);
+        OpenGL.rotate(-15F, 0F, 0F, 1F);
+        OpenGL.rotate(90F, 0.0F, 1.0F, 0.0F);
         this.getModel().draw();
     }
 

@@ -44,6 +44,7 @@ public class PacketAssemble implements IMessage, IMessageHandler<PacketAssemble,
     @Override
     public PacketAssemble onMessage(PacketAssemble packet, MessageContext ctx)
     {
+        System.out.println("Sent packet " + this.getClass().getName());
         EntityPlayer player = ctx.getServerHandler().playerEntity;
 
         if (player != null)

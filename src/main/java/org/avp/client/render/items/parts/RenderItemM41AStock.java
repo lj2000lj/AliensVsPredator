@@ -4,6 +4,7 @@ import org.avp.client.model.items.ModelM41A;
 import org.avp.client.render.items.ItemRendererGroup;
 import org.lwjgl.opengl.GL11;
 
+import com.arisux.mdxlib.lib.client.Model;
 import com.arisux.mdxlib.lib.client.TexturedModel;
 import com.arisux.mdxlib.lib.client.render.OpenGL;
 import com.arisux.mdxlib.lib.game.Game;
@@ -23,14 +24,11 @@ public class RenderItemM41AStock extends ItemRendererGroup<ModelM41A>
     @Override
     public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        
-
         OpenGL.pushMatrix();
         {
-            float glScale = 32F;
-            OpenGL.translate(8F, 8F, 0F);
-
-            OpenGL.scale(glScale, glScale, glScale);
+            float glScale = 32F * Model.DEFAULT_SCALE;
+            OpenGL.scale(glScale, -glScale, glScale);
+            OpenGL.rotate(45F, -1F, 1F, 0F);
             OpenGL.translate(0.25F, -0.65F, 0.2F);
             this.renderPart();
         }

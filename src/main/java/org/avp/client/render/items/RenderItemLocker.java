@@ -49,24 +49,19 @@ public class RenderItemLocker extends ItemRenderer<ModelLocker>
     @Override
     public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        OpenGL.pushMatrix();
-        {
-            float glScale = 8F;
-            OpenGL.disable(GL11.GL_CULL_FACE);
-            OpenGL.translate(8F, 8F, 0F);
-            OpenGL.rotate(45F, 0.0F, 1.0F, 0.0F);
-            OpenGL.scale(glScale, glScale, glScale);
-            OpenGL.enableLight();
-            this.getModel().draw();
-            OpenGL.disableLight();
-        }
-        OpenGL.popMatrix();
+        float glScale = 0.5F;
+        OpenGL.scale(glScale, glScale, glScale);
+        OpenGL.translate(0.35F, 0.275F, 0F);
+        OpenGL.rotate(230F, 1F, 0F, 0F);
+        OpenGL.rotate(45F, 0F, 0F, 1F);
+        OpenGL.rotate(90F, 0.0F, 1.0F, 0.0F);
+        this.getModel().draw();
     }
-    
+
     @Override
     public void renderInWorld(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        
+
         OpenGL.pushMatrix();
         {
             OpenGL.scale(1F, -1F, 1F);
@@ -82,13 +77,13 @@ public class RenderItemLocker extends ItemRenderer<ModelLocker>
     public void renderThirdPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void renderFirstPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         // TODO Auto-generated method stub
-        
+
     }
 }

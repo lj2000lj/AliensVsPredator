@@ -30,6 +30,7 @@ public class PacketReloadFirearm implements IMessage, IMessageHandler<PacketRelo
     @Override
     public PacketReloadFirearm onMessage(PacketReloadFirearm message, MessageContext ctx)
     {
+        System.out.println("Sent packet " + this.getClass().getName());
         EntityPlayer player = ctx.getServerHandler().playerEntity;
 
         if (player != null && player.inventory != null && player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof ItemFirearm)

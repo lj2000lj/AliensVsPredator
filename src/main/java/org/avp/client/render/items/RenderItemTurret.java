@@ -39,22 +39,19 @@ public class RenderItemTurret extends ItemRenderer<ModelTurret>
     @Override
     public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        OpenGL.pushMatrix();
-        {
-            float glScale = 15F;
-            OpenGL.disable(GL11.GL_CULL_FACE);
-            OpenGL.translate(10F, -7.5F, 0F);
-            OpenGL.rotate(220F, 0.0F, 1.0F, 0.0F);
-            OpenGL.scale(glScale, glScale, glScale);
-            this.getModel().draw();
-        }
-        OpenGL.popMatrix();
+        float glScale = 0.9F;
+        OpenGL.scale(glScale, glScale, glScale);
+        OpenGL.translate(0.25F, 0.75F, 0F);
+        OpenGL.rotate(230F, 1F, 0F, 0F);
+//        OpenGL.rotate(-45F, 0F, 0F, 1F);
+        OpenGL.rotate(-135F, 0.0F, 1.0F, 0.0F);
+        this.getModel().draw();
     }
-    
+
     @Override
     public void renderInWorld(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        
+
         OpenGL.pushMatrix();
         {
             OpenGL.scale(1F, -1F, 1F);
@@ -70,13 +67,13 @@ public class RenderItemTurret extends ItemRenderer<ModelTurret>
     public void renderThirdPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void renderFirstPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         // TODO Auto-generated method stub
-        
+
     }
 }

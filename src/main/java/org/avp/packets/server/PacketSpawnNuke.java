@@ -34,6 +34,7 @@ public class PacketSpawnNuke implements IMessage, IMessageHandler<PacketSpawnNuk
     @Override
     public PacketSpawnNuke onMessage(PacketSpawnNuke packet, MessageContext ctx)
     {
+        System.out.println("Sent packet " + this.getClass().getName());
         EntityPlayer player = ctx.getServerHandler().playerEntity;
 
         if (player != null && AliensVsPredator.settings().areNukesEnabled())

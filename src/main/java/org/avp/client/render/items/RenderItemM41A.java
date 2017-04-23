@@ -31,7 +31,6 @@ public class RenderItemM41A extends ItemRenderer<ModelM41A>
     @Override
     public void renderInWorld(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-
         OpenGL.rotate((Game.minecraft().theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
         OpenGL.translate(0.3F, 1F, 0F);
         OpenGL.scale(1F, -1F, 1F);
@@ -109,9 +108,10 @@ public class RenderItemM41A extends ItemRenderer<ModelM41A>
     @Override
     public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        OpenGL.rotate(45F, 0.0F, 1.0F, 0.0F);
-        OpenGL.translate(14F, -7F, 0F);
-        OpenGL.scale(20F, 20F, 20F);
+        OpenGL.rotate(180F, 1F, 0F, 0F);
+        OpenGL.rotate(-45F, 0F, 0F, 1F);
+        OpenGL.translate(0F, -0.65F, 0F);
+        OpenGL.rotate(90F, 0.0F, 1.0F, 0.0F);
         OpenGL.disable(GL11.GL_CULL_FACE);
         new Texture(Remote.downloadResource(String.format(URLs.SKIN_M41A, Game.session().getPlayerID()), this.getModel().getTexture())).bind();
         this.getModel().getModel().render();

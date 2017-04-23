@@ -32,6 +32,7 @@ public class PacketLaunchGrenade implements IMessage, IMessageHandler<PacketLaun
     @Override
     public PacketLaunchGrenade onMessage(PacketLaunchGrenade packet, MessageContext ctx)
     {
+        System.out.println("Sent packet " + this.getClass().getName());
         if (ctx.getServerHandler().playerEntity != null && ctx.getServerHandler().playerEntity.worldObj != null)
         {
             boolean hasNormal = Inventories.playerHas(AliensVsPredator.items().itemGrenade, ctx.getServerHandler().playerEntity);

@@ -55,24 +55,19 @@ public class RenderItemRedstoneFluxGenerator extends ItemRenderer<ModelRedstoneF
     @Override
     public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        float glScale = 11F;
-        OpenGL.pushMatrix();
-        {
-            OpenGL.scale(glScale, glScale, glScale);
-            OpenGL.translate(0.72F, -0.25F, 0F);
-            OpenGL.rotate(-45, 0.0F, -1.0F, 0.0F);
-            OpenGL.translate(0F, 0F, 0F);
-            OpenGL.disable(GL11.GL_CULL_FACE);
-            OpenGL.enable(GL11.GL_BLEND);
-            this.getModel().draw();
-        }
-        OpenGL.popMatrix();
+        float glScale = 0.75F;
+        OpenGL.scale(glScale, glScale, glScale);
+        OpenGL.translate(0.85F, 0.6F, 0F);
+        OpenGL.rotate(230F, 1F, 0F, 0F);
+        OpenGL.rotate(45F, 0F, 0F, 1F);
+        OpenGL.rotate(90F, 0.0F, 1.0F, 0.0F);
+        this.getModel().draw();
     }
 
     @Override
     public void renderInWorld(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        
+
         OpenGL.pushMatrix();
         {
             OpenGL.rotate((this.mc.theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
@@ -86,13 +81,13 @@ public class RenderItemRedstoneFluxGenerator extends ItemRenderer<ModelRedstoneF
     public void renderThirdPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void renderFirstPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         // TODO Auto-generated method stub
-        
+
     }
 }

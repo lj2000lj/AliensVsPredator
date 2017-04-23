@@ -96,9 +96,10 @@ public class RenderItemM240ICU extends ItemRenderer<ModelM240ICU>
     public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         OpenGL.enableBlend();
-        OpenGL.translate(8F, 11F, 0F);
-        OpenGL.rotate(45F, 0F, 1F, 0F);
-        OpenGL.scale(14F, 14F, 14F);
+        OpenGL.translate(0F, 0F, 0F);
+        OpenGL.rotate(180F, 1F, 0F, 0F);
+        OpenGL.rotate(-45F, 0F, 0F, 1F);
+        OpenGL.rotate(90F, 0.0F, 1.0F, 0.0F);
         OpenGL.disable(GL11.GL_CULL_FACE);
         this.getModel().draw();
     }

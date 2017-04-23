@@ -47,10 +47,10 @@ public class PacketAddTuretTarget implements IMessage, IMessageHandler<PacketAdd
         ByteBufUtils.writeUTF8String(buf, this.entityIdentifier);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public PacketAddTuretTarget onMessage(PacketAddTuretTarget packet, MessageContext ctx)
     {
+        System.out.println("Sent packet " + this.getClass().getName());
         TileEntityTurret tile = (TileEntityTurret) ctx.getServerHandler().playerEntity.worldObj.getTileEntity(new BlockPos(packet.x, packet.y, packet.z));
 
         if (tile != null)

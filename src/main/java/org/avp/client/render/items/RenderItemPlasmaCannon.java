@@ -49,20 +49,17 @@ public class RenderItemPlasmaCannon extends ItemRenderer<ModelPlasmaCannon>
     @Override
     public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        
-
+        OpenGL.translate(-0.35F, -0.25F, 0F);
+        OpenGL.rotate(230F, 1F, 0F, 0F);
+        OpenGL.rotate(45F, 0.0F, 1.0F, 0.0F);
         OpenGL.enable(GL11.GL_BLEND);
         OpenGL.disable(GL11.GL_CULL_FACE);
-        OpenGL.translate(13.5F, -4F, -18F);
-        OpenGL.rotate(-45F, 0.0F, 1.0F, 0.0F);
-        OpenGL.scale(16F, 16F, 16F);
         this.getModel().draw();
     }
 
     @Override
     public void renderInWorld(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        
         OpenGL.pushMatrix();
         {
             OpenGL.rotate((mc.theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);

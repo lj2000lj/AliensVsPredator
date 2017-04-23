@@ -32,7 +32,7 @@ public class RenderItemSupplyCrate extends ItemRenderer<ModelSupplyChute>
             OpenGL.rotate(90F, 1F, 0F, 0F);
             OpenGL.translate(0F, -0.5F, -0.9F);
             OpenGL.disable(GL11.GL_CULL_FACE);
-            
+
             TexturedModel<ModelSupplyChute> texturedModel = SupplyChuteType.get(Block.getBlockFromItem(itemstack.getItem())).getModel();
             texturedModel.bindTexture();
             texturedModel.getModel().drawCrate();
@@ -46,7 +46,7 @@ public class RenderItemSupplyCrate extends ItemRenderer<ModelSupplyChute>
         OpenGL.pushMatrix();
         {
             OpenGL.disable(GL11.GL_CULL_FACE);
-            
+
             TexturedModel<ModelSupplyChute> texturedModel = SupplyChuteType.get(Block.getBlockFromItem(itemstack.getItem())).getModel();
             texturedModel.bindTexture();
             texturedModel.getModel().drawCrate();
@@ -57,32 +57,29 @@ public class RenderItemSupplyCrate extends ItemRenderer<ModelSupplyChute>
     @Override
     public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        OpenGL.pushMatrix();
-        {
-            float glScale = 15F;
-            OpenGL.disable(GL11.GL_CULL_FACE);
-            OpenGL.translate(8F, -6F, 0F);
-            OpenGL.rotate(45F, 0.0F, 1.0F, 0.0F);
-            OpenGL.scale(glScale, glScale, glScale);
-            
-            TexturedModel<ModelSupplyChute> texturedModel = SupplyChuteType.get(Block.getBlockFromItem(itemstack.getItem())).getModel();
-            texturedModel.bindTexture();
-            texturedModel.getModel().drawCrate();
-        }
-        OpenGL.popMatrix();
+        float glScale = 0.75F;
+        OpenGL.scale(glScale, glScale, glScale);
+        OpenGL.translate(0F, 0.75F, 0F);
+        OpenGL.rotate(230F, 1F, 0F, 0F);
+//        OpenGL.rotate(45F, 0F, 0F, 1F);
+        OpenGL.rotate(45F, 0.0F, 1.0F, 0.0F);
+
+        TexturedModel<ModelSupplyChute> texturedModel = SupplyChuteType.get(Block.getBlockFromItem(itemstack.getItem())).getModel();
+        texturedModel.bindTexture();
+        texturedModel.getModel().drawCrate();
     }
-    
+
     @Override
     public void renderInWorld(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        
+
         OpenGL.pushMatrix();
         {
             OpenGL.scale(1F, -1F, 1F);
             OpenGL.translate(0F, -1.5F, 0F);
             OpenGL.rotate((Game.minecraft().theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
             OpenGL.disable(GL11.GL_CULL_FACE);
-            
+
             TexturedModel<ModelSupplyChute> texturedModel = SupplyChuteType.get(Block.getBlockFromItem(itemstack.getItem())).getModel();
             texturedModel.bindTexture();
             texturedModel.getModel().drawCrate();
@@ -94,13 +91,13 @@ public class RenderItemSupplyCrate extends ItemRenderer<ModelSupplyChute>
     public void renderThirdPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void renderFirstPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         // TODO Auto-generated method stub
-        
+
     }
 }

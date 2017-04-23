@@ -62,10 +62,12 @@ public class RenderItem88MOD4 extends ItemRenderer<Model88MOD4>
     @Override
     public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        OpenGL.disable(GL11.GL_CULL_FACE);
-        OpenGL.translate(12F, 6F, 0F);
-        OpenGL.scale(26F, 26F, 26F);
+        OpenGL.translate(0F, 0F, 0F);
+        OpenGL.rotate(180F, 1F, 0F, 0F);
+        OpenGL.rotate(-45F, 0F, 0F, 1F);
+        OpenGL.rotate(90F, 0.0F, 1.0F, 0.0F);
         OpenGL.rotate(220, 0F, 1F, 0F);
+        OpenGL.disable(GL11.GL_CULL_FACE);
         this.getModel().draw();
     }
 

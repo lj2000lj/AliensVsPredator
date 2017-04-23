@@ -22,7 +22,6 @@ public class RenderItemM56SG extends ItemRenderer<ModelM56SG>
     @Override
     public void renderInWorld(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-
         OpenGL.rotate((Game.minecraft().theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
         OpenGL.translate(-0.1F, 0.5F, -0.5F);
         OpenGL.scale(1F, -1F, 1F);
@@ -59,10 +58,11 @@ public class RenderItemM56SG extends ItemRenderer<ModelM56SG>
     @Override
     public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
+        OpenGL.translate(-0.3F, -0.2F, 0F);
+        OpenGL.rotate(180F, 1F, 0F, 0F);
+        OpenGL.rotate(-45F, 0F, 0F, 1F);
+        OpenGL.rotate(90F, 0.0F, 1.0F, 0.0F);
         OpenGL.disable(GL11.GL_CULL_FACE);
-        OpenGL.rotate(45F, 0.0F, 1.0F, 0.0F);
-        OpenGL.translate(16F, -8F, -14F);
-        OpenGL.scale(20F, 20F, 20F);
         this.getModel().draw();
     }
 

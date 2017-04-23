@@ -29,6 +29,7 @@ public class PacketFireAPC implements IMessage, IMessageHandler<PacketFireAPC, P
     @Override
     public PacketFireAPC onMessage(PacketFireAPC packet, MessageContext ctx)
     {
+        System.out.println("Sent packet " + this.getClass().getName());
         if (ctx.getServerHandler().playerEntity != null && ctx.getServerHandler().playerEntity.worldObj != null)
         {
             EntityGrenade grenade = new EntityGrenade(ctx.getServerHandler().playerEntity.worldObj, ctx.getServerHandler().playerEntity);

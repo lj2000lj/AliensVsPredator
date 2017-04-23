@@ -44,6 +44,7 @@ public class PacketOvamorphContainsFacehugger implements IMessage, IMessageHandl
     @Override
     public PacketOvamorphContainsFacehugger onMessage(PacketOvamorphContainsFacehugger packet, MessageContext ctx)
     {
+//        System.out.println("Sent packet " + this.getClass().getName());
         World world = Game.minecraft().thePlayer.worldObj;
         Entity entity = world.getEntityByID(packet.entityId);
 

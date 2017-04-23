@@ -51,7 +51,7 @@ public class CreativeTab
                                                   @Override
                                                   public Item getTabIconItem()
                                                   {
-                                                      return AliensVsPredator.items().itemMaintenanceJack;
+                                                      return AliensVsPredator.items().summoners.itemSummonerBabyhead;
                                                   }
 
                                                   public String getTranslatedTabLabel()
@@ -64,7 +64,7 @@ public class CreativeTab
                                                   @Override
                                                   public Item getTabIconItem()
                                                   {
-                                                      return AliensVsPredator.items().itemM41A;
+                                                      return AliensVsPredator.items().itemM56SGStock;
                                                   }
 
                                                   public String getTranslatedTabLabel()

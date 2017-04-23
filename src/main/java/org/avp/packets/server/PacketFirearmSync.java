@@ -70,6 +70,7 @@ public class PacketFirearmSync implements IMessage, IMessageHandler<PacketFirear
     @Override
     public PacketFirearmSync onMessage(PacketFirearmSync packet, MessageContext ctx)
     {
+        System.out.println("Sent packet " + this.getClass().getName());
         if (ctx.getServerHandler().playerEntity.getHeldItemMainhand() != null)
         {
             EntityPlayer player = ctx.getServerHandler().playerEntity;
@@ -80,7 +81,7 @@ public class PacketFirearmSync implements IMessage, IMessageHandler<PacketFirear
 
             if (itemFirearm != null && itemFirearm.canSoundPlay())
             {
-                world.playSound(player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ(), firearm.getSound().event(), SoundCategory.PLAYERS, 0.5F, 1F, true);
+                //world.playSound(player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ(), firearm.getSound().event(), SoundCategory.PLAYERS, 0.5F, 1F, true);
                 itemFirearm.setLastSoundPlayed(System.currentTimeMillis());
             }
 
@@ -93,7 +94,8 @@ public class PacketFirearmSync implements IMessage, IMessageHandler<PacketFirear
                     if (entity != null)
                     {
                         entity.hurtResistantTime = 0;
-                        entity.attackEntityFrom(DamageSources.causeBulletDamage(ctx.getServerHandler().playerEntity), firearm.getClassification().getBaseDamage());
+                        //TODO: Thread context
+                        //entity.attackEntityFrom(DamageSources.causeBulletDamage(ctx.getServerHandler().playerEntity), firearm.getClassification().getBaseDamage());
                     }
                 }
             }

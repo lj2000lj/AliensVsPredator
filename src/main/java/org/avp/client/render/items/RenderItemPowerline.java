@@ -44,15 +44,13 @@ public class RenderItemPowerline extends ItemRenderer<ModelCable>
     @Override
     public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        float glScale = 22F;
-        OpenGL.pushMatrix();
+        float glScale = 1.3F;
         OpenGL.scale(glScale, glScale, glScale);
-        OpenGL.translate(0.375, 0.4F, 0);
-        OpenGL.rotate(45, 0, 1, 0);
-        OpenGL.disableCullFace();
+        OpenGL.translate(0.025F, 0.025F, 0F);
+        OpenGL.rotate(230F, 1F, 0F, 0F);
+        OpenGL.rotate(45F, 0F, 0F, 1F);
+        OpenGL.rotate(90F, 0.0F, 1.0F, 0.0F);
         this.getModel().draw();
-        OpenGL.enableCullFace();
-        OpenGL.popMatrix();
     }
 
     @Override

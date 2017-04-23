@@ -62,13 +62,12 @@ public class RenderItemWristbracerBlades extends ItemRenderer<ModelWristBlade>
     @Override
     public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        
-
+        float scale = 2.75F;
+        OpenGL.scale(scale, scale, scale);
+        OpenGL.translate(-0.375F, -0.25F, 0F);
+        OpenGL.rotate(220F, 1F, 0F, 0F);
+        OpenGL.rotate(-45F, 0F, 0F, 1F);
         OpenGL.disable(GL11.GL_CULL_FACE);
-        OpenGL.enable(GL11.GL_BLEND);
-        OpenGL.rotate(-45F, 0.0F, 1.0F, 0.0F);
-        OpenGL.translate(-24F, -7F, -18F);
-        OpenGL.scale(46F, 46F, 46F);
         this.getModel().getTexture().bind();
         this.getModel().getModel().b6.render(Model.DEFAULT_SCALE);
         this.getModel().getModel().bladeLeft.render(Model.DEFAULT_SCALE);
@@ -77,7 +76,6 @@ public class RenderItemWristbracerBlades extends ItemRenderer<ModelWristBlade>
     @Override
     public void renderInWorld(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        
         OpenGL.pushMatrix();
         {
             OpenGL.rotate((mc.theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);

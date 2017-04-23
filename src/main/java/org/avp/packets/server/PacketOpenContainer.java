@@ -38,6 +38,7 @@ public class PacketOpenContainer implements IMessage, IMessageHandler<PacketOpen
     @Override
     public PacketOpenContainer onMessage(PacketOpenContainer packet, MessageContext ctx)
     {
+        System.out.println("Sent packet " + this.getClass().getName());
         EntityPlayer player = ctx.getServerHandler().playerEntity;
         FMLNetworkHandler.openGui(player, AliensVsPredator.instance(), packet.guiIdentifier, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
         return null;

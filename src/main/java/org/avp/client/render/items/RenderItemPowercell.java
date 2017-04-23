@@ -31,7 +31,7 @@ public class RenderItemPowercell extends ItemRenderer<ModelPowercell>
             OpenGL.disable(GL11.GL_CULL_FACE);
             this.getModel().draw();
             AliensVsPredator.resources().models().POWERCELL_LIQUID.draw();
-            
+
         }
         OpenGL.popMatrix();
     }
@@ -58,24 +58,20 @@ public class RenderItemPowercell extends ItemRenderer<ModelPowercell>
     @Override
     public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        float glScale = 12F;
-        OpenGL.pushMatrix();
-        {
-            OpenGL.scale(glScale, -glScale, glScale);
-            OpenGL.translate(0.65F, -1.9F, 0F);
-            OpenGL.rotate(45, 0.0F, 1.0F, 0.0F);
-            OpenGL.translate(0F, 0F, 0F);
-            OpenGL.disable(GL11.GL_CULL_FACE);
-            this.getModel().draw();
-            AliensVsPredator.resources().models().POWERCELL_LIQUID.draw();
-        }
-        OpenGL.popMatrix();
+        float glScale = 0.75F;
+        OpenGL.scale(glScale, glScale, glScale);
+        OpenGL.translate(0.7F, 0.5F, 0F);
+        OpenGL.rotate(230F, 1F, 0F, 0F);
+        OpenGL.rotate(45F, 0F, 0F, 1F);
+        OpenGL.rotate(90F, 0.0F, 1.0F, 0.0F);
+        this.getModel().draw();
+        AliensVsPredator.resources().models().POWERCELL_LIQUID.draw();
     }
 
     @Override
     public void renderInWorld(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        
+
         OpenGL.pushMatrix();
         {
             OpenGL.rotate((Game.minecraft().theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
@@ -90,13 +86,13 @@ public class RenderItemPowercell extends ItemRenderer<ModelPowercell>
     public void renderThirdPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void renderFirstPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         // TODO Auto-generated method stub
-        
+
     }
 }

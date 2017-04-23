@@ -49,22 +49,17 @@ public class RenderItemSupplyChute extends ItemRenderer<ModelSupplyChute>
     @Override
     public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        OpenGL.pushMatrix();
-        {
-            float glScale = 10F;
-            OpenGL.disable(GL11.GL_CULL_FACE);
-            OpenGL.translate(8F, 4F, 0F);
-            OpenGL.rotate(45F, 0.0F, 1.0F, 0.0F);
-            OpenGL.scale(glScale, glScale, glScale);
-            ((ItemSupplyChute) itemstack.getItem()).getType().getModel().draw();
-        }
-        OpenGL.popMatrix();
+        float scale = 0.45F;
+        OpenGL.scale(scale, scale, scale);
+        OpenGL.translate(0F, 0F, 0F);
+        OpenGL.rotate(230F, 1F, 0F, 0F);
+        OpenGL.rotate(45F, 0.0F, 1.0F, 0.0F);
+        ((ItemSupplyChute) itemstack.getItem()).getType().getModel().draw();
     }
-    
+
     @Override
     public void renderInWorld(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        
         OpenGL.pushMatrix();
         {
             OpenGL.scale(1F, -1F, 1F);
@@ -80,13 +75,13 @@ public class RenderItemSupplyChute extends ItemRenderer<ModelSupplyChute>
     public void renderThirdPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void renderFirstPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         // TODO Auto-generated method stub
-        
+
     }
 }

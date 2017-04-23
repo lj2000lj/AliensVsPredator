@@ -57,11 +57,11 @@ public class RenderItemMotionTracker extends ItemRenderer<ModelMotionTracker>
     @Override
     public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        float glScale = 20F;
-        OpenGL.translate(8F, 8F, 0F);
-        OpenGL.translate(0F, 0F, -5F);
+        float glScale = 1.5F;
         OpenGL.scale(glScale, glScale, glScale);
-        OpenGL.disable(GL11.GL_CULL_FACE);
+        OpenGL.translate(-0.2F, -0.15F, 0F);
+        OpenGL.rotate(230F, 1F, 0F, 0F);
+        OpenGL.rotate(45F, 0.0F, 1.0F, 0.0F);
         this.getModel().draw();
     }
 
@@ -82,7 +82,6 @@ public class RenderItemMotionTracker extends ItemRenderer<ModelMotionTracker>
     @Override
     public void renderInWorld(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        
         OpenGL.rotate((Game.minecraft().theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
         OpenGL.disable(GL11.GL_CULL_FACE);
         this.getModel().draw();

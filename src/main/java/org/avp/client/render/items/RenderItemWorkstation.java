@@ -52,24 +52,18 @@ public class RenderItemWorkstation extends ItemRenderer<ModelWorkstation>
     @Override
     public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        OpenGL.pushMatrix();
-        {
-            float glScale = 7F;
-            OpenGL.translate(8F, 8F, 0F);
-            OpenGL.translate(0F, 0F, 0F);
-            OpenGL.rotate(-20F, 1.0F, 0.0F, 0.0F);
-            OpenGL.disable(GL11.GL_CULL_FACE);
-            OpenGL.scale(glScale, glScale, glScale);
-            OpenGL.enableBlend();
-            this.getModel().draw();
-        }
-        OpenGL.popMatrix();
+        float glScale = 0.5F;
+        OpenGL.scale(glScale, glScale, glScale);
+        OpenGL.translate(0F, 0.2F, 0F);
+        OpenGL.rotate(210F, 1F, 0F, 0F);
+        OpenGL.rotate(45F, 0.0F, 1.0F, 0.0F);
+        this.getModel().draw();
     }
-    
+
     @Override
     public void renderInWorld(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        
+
         OpenGL.pushMatrix();
         {
             OpenGL.scale(1F, -1F, 1F);
@@ -85,13 +79,13 @@ public class RenderItemWorkstation extends ItemRenderer<ModelWorkstation>
     public void renderThirdPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void renderFirstPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         // TODO Auto-generated method stub
-        
+
     }
 }

@@ -41,7 +41,7 @@ public class RenderItemSummoner extends ItemRenderer<Model>
         this.scale = scale;
         return this;
     }
-
+    
     public void renderCachedModel()
     {
         OpenGL.pushMatrix();
@@ -86,9 +86,12 @@ public class RenderItemSummoner extends ItemRenderer<Model>
     @Override
     public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        OpenGL.translate(8F + x, -2F + y, 4F);
-        OpenGL.rotate(0F, 1.0F, 0.0F, 0.0F);
-        OpenGL.scale(scale, scale, scale);
+        OpenGL.translate(x * Model.DEFAULT_SCALE, y * -Model.DEFAULT_SCALE, 0F);
+        OpenGL.translate(0F, 0.9F, 0F);
+        OpenGL.scale(scale * Model.DEFAULT_SCALE, scale * Model.DEFAULT_SCALE, scale * Model.DEFAULT_SCALE);
+        OpenGL.rotate(45F, 1.0F, 0.0F, 0.0F);
+        OpenGL.rotate(180F, 0.0F, 0.0F, 1.0F);
+        OpenGL.rotate(90F, 0.0F, 1.0F, 0.0F);
         this.renderCachedModel();
     }
 

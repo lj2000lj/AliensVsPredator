@@ -79,9 +79,12 @@ public class RenderItemNostromoFlamethrower extends ItemRenderer<ModelNostromoFl
     @Override
     public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        OpenGL.translate(11F, 7F, 0F);
-        OpenGL.rotate(220F, 0F, 1F, 0F);
-        OpenGL.scale(7F, 7F, 7F);
+        float glScale = 0.45F;
+        OpenGL.scale(glScale, glScale, glScale);
+        OpenGL.translate(-0.4F, -0.4F, 0F);
+        OpenGL.rotate(180F, 1F, 0F, 0F);
+        OpenGL.rotate(-45F, 0F, 0F, 1F);
+        OpenGL.rotate(90F, 0.0F, 1.0F, 0.0F);
         OpenGL.disable(GL11.GL_CULL_FACE);
         this.getModel().draw();
     }

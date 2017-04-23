@@ -52,14 +52,12 @@ public class RenderItemSatelliteDish extends ItemRenderer<ModelSatelliteDish>
     @Override
     public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        float glScale = 5F;
-        OpenGL.translate(8F, 9F, 0F);
-        OpenGL.translate(0F, 0F, 0F);
-        OpenGL.rotate(-180F, 0.0F, 1.0F, 0.0F);
-        OpenGL.disable(GL11.GL_CULL_FACE);
+        float glScale = 0.35F;
         OpenGL.scale(glScale, glScale, glScale);
-        OpenGL.enable(GL11.GL_BLEND);
-        OpenGL.blendClear();
+        OpenGL.translate(0.3F, 0F, 0F);
+        OpenGL.rotate(230F, 1F, 0F, 0F);
+        OpenGL.rotate(45F, 0F, 0F, 1F);
+        OpenGL.rotate(90F + Game.minecraft().theWorld.getWorldTime() % 360 + Game.partialTicks(), 0.0F, 1.0F, 0.0F);
         this.getModel().draw();
     }
     

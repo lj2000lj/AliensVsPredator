@@ -48,17 +48,13 @@ public class RenderItemSolarPanel extends ItemRenderer<ModelSolarPanel>
     @Override
     public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        OpenGL.pushMatrix();
-        {
-            float glScale = 12F;
-            OpenGL.scale(glScale, -glScale, glScale);
-            OpenGL.translate(0.65F, -2.4F, 0F);
-            OpenGL.rotate(45F, 0F, 1F, 0F);
-            OpenGL.translate(0F, 0F, 0F);
-            OpenGL.disable(GL11.GL_CULL_FACE);
-            this.getModel().draw();
-        }
-        OpenGL.popMatrix();
+        float glScale = 0.8F;
+        OpenGL.scale(glScale, glScale, glScale);
+        OpenGL.rotate(45F, 1F, 0F, 0F);
+        OpenGL.rotate(35F, 0F, 0F, 1F);
+        OpenGL.translate(0F, -1.45F, 0F);
+        // OpenGL.rotate(45F, 0.0F, 1.0F, 0.0F);
+        this.getModel().draw();
     }
 
     @Override
@@ -74,13 +70,13 @@ public class RenderItemSolarPanel extends ItemRenderer<ModelSolarPanel>
     public void renderThirdPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void renderFirstPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         // TODO Auto-generated method stub
-        
+
     }
 }

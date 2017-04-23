@@ -136,7 +136,7 @@ public class EntityQueen extends EntityXenomorph implements IMob
                 double ovamorphX = (this.posX + (ovipositorDist * (Math.cos(rotationYawRadians))));
                 double ovamorphZ = (this.posZ + (ovipositorDist * (Math.sin(rotationYawRadians))));
 
-                this.worldObj.playSound(this.getPosition().getX(), this.getPosition().getY(), this.getPosition().getZ(), AliensVsPredator.sounds().SOUND_QUEEN_HURT.event(), SoundCategory.HOSTILE, 1F, this.rand.nextInt(10) / 100, true);
+                //this.worldObj.playSound(this.getPosition().getX(), this.getPosition().getY(), this.getPosition().getZ(), AliensVsPredator.sounds().SOUND_QUEEN_HURT.event(), SoundCategory.HOSTILE, 1F, this.rand.nextInt(10) / 100, true);
 
                 if (this.worldObj.isRemote)
                 {

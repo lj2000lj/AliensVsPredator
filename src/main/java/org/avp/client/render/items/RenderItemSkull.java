@@ -18,7 +18,7 @@ import net.minecraft.item.ItemStack;
 public class RenderItemSkull extends ItemRenderer<Model>
 {
     private BlockSkull skull;
-    
+
     public RenderItemSkull()
     {
         super(null);
@@ -57,18 +57,15 @@ public class RenderItemSkull extends ItemRenderer<Model>
     @Override
     public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        OpenGL.pushMatrix();
-        {
-            float glScale = 10F;
-            OpenGL.disable(GL11.GL_CULL_FACE);
-            OpenGL.translate(8F, 1F, -16F);
-            OpenGL.rotate(0F, 1.0F, 0.0F, 0.0F);
-            OpenGL.scale(glScale, glScale, glScale);
-            this.draw(itemstack.getItem());
-        }
-        OpenGL.popMatrix();
+        float glScale = 0.6F;
+        OpenGL.scale(glScale, glScale, glScale);
+        OpenGL.translate(0F, -0.5F, 0F);
+        OpenGL.rotate(200F, 1F, 0F, 0F);
+//        OpenGL.rotate(-45F, 0F, 0F, 1F);
+        OpenGL.rotate(45F, 0.0F, 1.0F, 0.0F);
+        this.draw(itemstack.getItem());
     }
-    
+
     @Override
     public void renderInWorld(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
@@ -82,19 +79,19 @@ public class RenderItemSkull extends ItemRenderer<Model>
         }
         OpenGL.popMatrix();
     }
-    
+
     private void draw(Item item)
     {
         if (this.skull == null)
         {
             this.skull = (BlockSkull) Block.getBlockFromItem(item);
         }
-        
+
         if (skull.getSkullTexture() != null)
         {
             skull.getSkullTexture().bind();
         }
-        
+
         skull.preRenderTransforms();
 
         for (ModelRenderer renderer : skull.getSkullModelRenderers())
@@ -107,13 +104,13 @@ public class RenderItemSkull extends ItemRenderer<Model>
     public void renderThirdPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void renderFirstPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         // TODO Auto-generated method stub
-        
+
     }
 }

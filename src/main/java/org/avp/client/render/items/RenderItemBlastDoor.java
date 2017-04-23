@@ -53,25 +53,19 @@ public class RenderItemBlastDoor extends ItemRenderer<ModelBlastdoor>
     @Override
     public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        OpenGL.pushMatrix();
-        {
-            float glScale = 4.25F;
-            OpenGL.translate(-6F, 11F, 0F);
-            OpenGL.translate(7.5F, 0F, 0F);
-            OpenGL.rotate(-10F, 1.0F, 0.0F, 0.0F);
-            OpenGL.disable(GL11.GL_CULL_FACE);
-            OpenGL.scale(glScale, glScale, glScale);
-            OpenGL.enable(GL11.GL_BLEND);
-            OpenGL.blendClear();
-            this.getModel().draw();
-        }
-        OpenGL.popMatrix();
+        float glScale = 0.3F;
+        OpenGL.scale(glScale, glScale, glScale);
+        OpenGL.translate(-1F, 0.75F, 1F);
+        OpenGL.rotate(230F, 1F, 0F, 0F);
+//        OpenGL.rotate(45F, 0F, 0F, 1F);
+        OpenGL.rotate(45F, 0.0F, 1.0F, 0.0F);
+        this.getModel().draw();
     }
-    
+
     @Override
     public void renderInWorld(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        
+
         OpenGL.pushMatrix();
         {
             OpenGL.scale(0.5F, -0.5F, 0.5F);
@@ -88,13 +82,13 @@ public class RenderItemBlastDoor extends ItemRenderer<ModelBlastdoor>
     public void renderThirdPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void renderFirstPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         // TODO Auto-generated method stub
-        
+
     }
 }

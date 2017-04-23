@@ -46,6 +46,7 @@ public class OrganismClientSync implements IMessage, IMessageHandler<OrganismCli
     @Override
     public OrganismClientSync onMessage(OrganismClientSync packet, MessageContext ctx)
     {
+//        System.out.println("Sent packet " + this.getClass().getName());
         if (Game.minecraft().thePlayer != null && Game.minecraft().thePlayer.worldObj != null)
         {
             Entity entity = Game.minecraft().thePlayer.worldObj.getEntityByID(packet.entityId);

@@ -23,7 +23,6 @@ public class RenderItemM4 extends ItemRenderer<ModelM4>
     @Override
     public void renderInWorld(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-        
         OpenGL.rotate((Game.minecraft().theWorld.getWorldTime() + Game.partialTicks() % 360) * 10, 0.0F, 1.0F, 0.0F);
         OpenGL.translate(0.3F, 1F, 0F);
         OpenGL.scale(1F, -1F, 1F);
@@ -34,13 +33,13 @@ public class RenderItemM4 extends ItemRenderer<ModelM4>
     @Override
     public void renderThirdPersonRight(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
-            OpenGL.translate(0.2F, 1.15F, 0.25F);
-            OpenGL.rotate(97.0F, 1.0F, 0.0F, 0.0F);
-            OpenGL.rotate(130.0F, 0.0F, 1.0F, 0.0F);
-            OpenGL.rotate(80.0F, 0.0F, 0.0F, 1.0F);
-            OpenGL.disable(GL11.GL_CULL_FACE);
-            OpenGL.scale(1.2F, 1.2F, 1.2F);
-            this.getModel().draw();
+        OpenGL.translate(0.2F, 1.15F, 0.25F);
+        OpenGL.rotate(97.0F, 1.0F, 0.0F, 0.0F);
+        OpenGL.rotate(130.0F, 0.0F, 1.0F, 0.0F);
+        OpenGL.rotate(80.0F, 0.0F, 0.0F, 1.0F);
+        OpenGL.disable(GL11.GL_CULL_FACE);
+        OpenGL.scale(1.2F, 1.2F, 1.2F);
+        this.getModel().draw();
     }
 
     @Override
@@ -73,10 +72,11 @@ public class RenderItemM4 extends ItemRenderer<ModelM4>
     @Override
     public void renderInInventory(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
+        OpenGL.translate(-0.5F, 0.4F, 0F);
+        OpenGL.rotate(180F, 1F, 0F, 0F);
+        OpenGL.rotate(-45F, 0F, 0F, 1F);
+        OpenGL.rotate(90F, 0.0F, 1.0F, 0.0F);
         OpenGL.disable(GL11.GL_CULL_FACE);
-        OpenGL.rotate(45F, 0.0F, 1.0F, 0.0F);
-        OpenGL.translate(14F, -7F, 0F);
-        OpenGL.scale(20F, 20F, 20F);
         this.getModel().draw();
     }
 
@@ -84,13 +84,13 @@ public class RenderItemM4 extends ItemRenderer<ModelM4>
     public void renderThirdPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void renderFirstPersonLeft(ItemStack itemstack, EntityLivingBase entity, TransformType cameraTransformType)
     {
         // TODO Auto-generated method stub
-        
+
     }
 }
